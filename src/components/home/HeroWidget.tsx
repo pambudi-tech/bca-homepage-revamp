@@ -10,7 +10,10 @@ const PLACEHOLDERS = [
   "Install myBCA",
 ];
 
-const PLACEHOLDER_LINE_HEIGHT = 28;
+const PLACEHOLDER_LINE_HEIGHT = 48;
+
+type SlotState = "active" | "exiting" | "waiting";
+type Slot = { text: string; state: SlotState; instant: boolean };
 
 const softLightBorderVars = (thickness: string, gradient: string): CSSProperties =>
   ({
@@ -18,12 +21,52 @@ const softLightBorderVars = (thickness: string, gradient: string): CSSProperties
     "--slb-gradient": gradient,
   }) as CSSProperties;
 
+function slotStyle(state: SlotState): CSSProperties {
+  if (state === "active") return { transform: "translateY(0px)", opacity: 1 };
+  if (state === "exiting")
+    return { transform: `translateY(-${PLACEHOLDER_LINE_HEIGHT}px)`, opacity: 0 };
+  return { transform: `translateY(${PLACEHOLDER_LINE_HEIGHT}px)`, opacity: 0 }; // waiting (below, ready to enter)
+}
+
 function SearchPlaceholderCarousel({ visible }: { visible: boolean }) {
-  const [index, setIndex] = useState(0);
+  const [slots, setSlots] = useState<Slot[]>([
+    { text: PLACEHOLDERS[0], state: "active", instant: false },
+    { text: PLACEHOLDERS[1 % PLACEHOLDERS.length], state: "waiting", instant: false },
+  ]);
+  const activeSlotRef = useRef(0);
+  const nextIndexRef = useRef(2 % PLACEHOLDERS.length);
 
   useEffect(() => {
     const id = setInterval(() => {
-      setIndex((i) => (i + 1) % PLACEHOLDERS.length);
+      const activeIdx = activeSlotRef.current;
+      const waitingIdx = activeIdx === 0 ? 1 : 0;
+
+      setSlots((prev) => {
+        const next = [...prev];
+        next[activeIdx] = { ...next[activeIdx], state: "exiting" };
+        next[waitingIdx] = { ...next[waitingIdx], state: "active" };
+        return next;
+      });
+      activeSlotRef.current = waitingIdx;
+
+      setTimeout(() => {
+        const text = PLACEHOLDERS[nextIndexRef.current % PLACEHOLDERS.length];
+        nextIndexRef.current += 1;
+        setSlots((prev) => {
+          const next = [...prev];
+          next[activeIdx] = { text, state: "waiting", instant: true };
+          return next;
+        });
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setSlots((prev) => {
+              const next = [...prev];
+              next[activeIdx] = { ...next[activeIdx], instant: false };
+              return next;
+            });
+          });
+        });
+      }, 700);
     }, 2500);
     return () => clearInterval(id);
   }, []);
@@ -35,20 +78,18 @@ function SearchPlaceholderCarousel({ visible }: { visible: boolean }) {
         visible ? "opacity-100" : "opacity-0"
       }`}
     >
-      <div className="h-7 overflow-hidden">
-        <div
-          className="flex flex-col transition-transform duration-700 ease-in-out"
-          style={{ transform: `translateY(-${index * PLACEHOLDER_LINE_HEIGHT}px)` }}
-        >
-          {PLACEHOLDERS.map((text) => (
-            <span
-              key={text}
-              className="flex h-7 items-center whitespace-nowrap text-lg font-semibold text-[#cfcfcf]"
-            >
-              {text}
-            </span>
-          ))}
-        </div>
+      <div className="relative h-12 w-full overflow-hidden">
+        {slots.map((slot, i) => (
+          <span
+            key={i}
+            className={`absolute inset-0 flex h-12 items-center whitespace-nowrap text-lg font-semibold text-[#cfcfcf] ${
+              slot.instant ? "" : "transition-all duration-700 ease-in-out"
+            }`}
+            style={slotStyle(slot.state)}
+          >
+            {slot.text}
+          </span>
+        ))}
       </div>
     </div>
   );
@@ -65,18 +106,36 @@ const QUICK_ACTIONS = [
 export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
   const [searchValue, setSearchValue] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
   const [tickerPaused, setTickerPaused] = useState(false);
   const [order, setOrder] = useState<number[]>(() => kurs.map((_, i) => i));
+  const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const firstCardRef = useRef<HTMLDivElement>(null);
   const cardStepRef = useRef(0);
   const offsetRef = useRef(0);
   const tickerPausedRef = useRef(false);
   const tickerHoveringRef = useRef(false);
+  const tickerVisibleRef = useRef(true);
 
   useEffect(() => {
     setOrder(kurs.map((_, i) => i));
   }, [kurs]);
+
+  // Pause the ticker animation loop while the widget is scrolled off-screen —
+  // no point compositing an invisible marquee every frame.
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        tickerVisibleRef.current = entry.isIntersecting;
+      },
+      { rootMargin: "100px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     tickerPausedRef.current = tickerPaused;
@@ -96,21 +155,24 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
   useEffect(() => {
     let raf: number;
     const step = () => {
-      if (!tickerPausedRef.current && cardStepRef.current > 0) {
+      if (!tickerPausedRef.current && tickerVisibleRef.current && cardStepRef.current > 0) {
+        // One full set = every card once. The track renders the set multiple times,
+        // so wrapping the offset back by one set width is visually seamless — no
+        // React re-order per card (that async reorder was the glitch source).
+        const period = kurs.length * cardStepRef.current;
         offsetRef.current += 0.6;
-        if (offsetRef.current >= cardStepRef.current) {
-          offsetRef.current -= cardStepRef.current;
-          setOrder((o) => [...o.slice(1), o[0]]);
+        if (offsetRef.current >= period) {
+          offsetRef.current -= period;
         }
         if (trackRef.current) {
-          trackRef.current.style.transform = `translateX(-${offsetRef.current}px)`;
+          trackRef.current.style.transform = `translate3d(-${offsetRef.current}px, 0, 0)`;
         }
       }
       raf = requestAnimationFrame(step);
     };
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [kurs.length]);
 
   const scrollByCard = (dir: 1 | -1) => {
     setTickerPaused(true);
@@ -129,19 +191,28 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
   };
 
   return (
-    <div className="relative mx-auto h-[288px] w-[1280px]">
+    <div ref={rootRef} className="relative mx-auto h-[288px] w-[1280px]">
       {/* search + quick action */}
       <div className="absolute top-0 h-[184px] w-full">
         <div
-          className="soft-light-border relative z-0 flex h-36 w-full items-start justify-center overflow-clip rounded-t-3xl p-5 backdrop-blur-sm"
+          className="hero-search relative z-0 flex h-36 w-full items-start justify-center overflow-clip rounded-t-3xl p-5"
           style={{
-            background: "linear-gradient(to bottom, rgba(217,217,217,0.35) 0%, rgba(18,20,23,0.35) 100%)",
-            ...softLightBorderVars(
-              "2px",
-              "linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%)"
-            ),
+            // Reactive glass fill: samples the live banner behind it (works across stacking
+            // contexts), blurs it, then lightly boosts saturation/contrast so the fill picks
+            // up whatever banner colors the content team ships.
+            backdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
+            WebkitBackdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
           }}
         >
+          {/* Depth gradient (normal compositing) for text readability — light sheen at
+              top, darker toward the quick-actions below. */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background: "linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, rgba(5,13,25,0.35) 100%)",
+            }}
+          />
           <div className="relative flex flex-1 items-center justify-center gap-6">
             <div className="flex items-center justify-center px-2">
               <p className="whitespace-nowrap text-xl font-semibold text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
@@ -149,13 +220,15 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
               </p>
             </div>
             <div
-              className="soft-light-border relative flex flex-1 items-center gap-2 rounded-[50px] p-2 backdrop-blur-md"
+              className="soft-light-border relative flex flex-1 items-center gap-2 rounded-[50px] p-2"
               style={{
-                background: "rgba(18,20,23,0.5)",
-                ...softLightBorderVars("1px", "#ffffff"),
+                background: "rgba(0,0,0,0.5)",
+                backdropFilter: "blur(12px) saturate(1.25) contrast(1.02)",
+                WebkitBackdropFilter: "blur(12px) saturate(1.25) contrast(1.02)",
+                ...softLightBorderVars("1px", "rgba(255,255,255,0.15)"),
               }}
             >
-              <div className="relative min-w-0 flex-1">
+              <div className="relative flex h-12 min-w-0 flex-1 items-center">
                 <input
                   type="text"
                   value={searchValue}
@@ -177,19 +250,103 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
         </div>
 
         <div className="absolute top-[104px] z-20 flex w-full flex-col items-start px-5">
-          <div className="flex w-full items-center justify-center overflow-clip rounded-3xl border border-[#e9ecef] bg-white">
-            {QUICK_ACTIONS.map((action) => (
-              <button
-                key={action.title}
-                className="flex h-20 flex-1 items-center gap-4 border border-[#e9ecef] px-4 py-5 backdrop-blur-[6px] transition-colors duration-150 hover:bg-[#e6f3ff]"
-              >
-                <img src={action.icon} alt="" className="size-10 shrink-0" />
-                <div className="flex flex-col items-start gap-1 text-left whitespace-nowrap">
-                  <p className="text-base font-bold text-[#26292c]">{action.title}</p>
-                  <p className="text-sm font-normal text-[#495057]">{action.subtitle}</p>
-                </div>
+          <div
+            className="grid w-full items-stretch overflow-clip rounded-3xl border border-[#e9ecef] bg-white transition-[grid-template-columns] duration-300 ease-in-out"
+            style={{
+              gridTemplateColumns: loginOpen
+                ? "248px minmax(0,1fr) 104px 104px 104px 104px"
+                : "1fr 0px 1fr 1fr 1fr 1fr",
+            }}
+          >
+            {QUICK_ACTIONS.map((action, index) => {
+              const isLogin = index === 0;
+              const collapsed = loginOpen && !isLogin;
+              return (
+                <button
+                  key={action.title}
+                  onClick={() => {
+                    if (isLogin) {
+                      setLoginOpen((v) => !v);
+                    } else if (loginOpen) {
+                      setLoginOpen(false);
+                    }
+                  }}
+                  className={`flex h-20 min-w-0 items-center justify-start gap-4 overflow-hidden px-4 py-5 transition-colors duration-300 ease-in-out ${
+                    isLogin && loginOpen ? "bg-[#e6f3ff]" : "hover:bg-[#e6f3ff]"
+                  } ${index === 0 ? "rounded-l-3xl" : ""} ${
+                    index === QUICK_ACTIONS.length - 1 ? "rounded-r-3xl" : ""
+                  }`}
+                  style={{
+                    gridColumn: index === 0 ? 1 : index + 2,
+                    gridRow: 1,
+                    outline: "1px solid #e9ecef",
+                    outlineOffset: "-0.5px",
+                  }}
+                >
+                  <div
+                    className="flex items-center gap-4 transition-transform duration-300 ease-in-out"
+                    style={{ transform: collapsed ? "translateX(16px)" : "translateX(0px)" }}
+                  >
+                    <img src={action.icon} alt="" className="size-10 shrink-0" />
+                    <div
+                      className={`flex min-w-0 flex-col items-start gap-1 overflow-hidden text-left whitespace-nowrap transition-[opacity,transform] duration-200 ease-in-out ${
+                        collapsed ? "translate-x-3 opacity-0" : "translate-x-0 opacity-100"
+                      }`}
+                    >
+                      <p
+                        className={`text-base font-bold ${
+                          isLogin && loginOpen ? "text-[#00213d]" : "text-[#26292c]"
+                        }`}
+                      >
+                        {action.title}
+                      </p>
+                      <p
+                        className={`text-sm font-normal ${
+                          isLogin && loginOpen ? "text-[#00213d]" : "text-[#495057]"
+                        }`}
+                      >
+                        {action.subtitle}
+                      </p>
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+
+            <div
+              className={`flex h-20 min-w-0 items-center gap-3 overflow-hidden px-3 transition-[clip-path,opacity] duration-300 ease-in-out ${
+                loginOpen ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
+              }`}
+              style={{
+                gridColumn: 2,
+                gridRow: 1,
+                clipPath: loginOpen ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)",
+              }}
+            >
+              <button className="flex h-16 flex-1 shrink-0 items-center justify-center gap-4 rounded-xl border border-[#e9ecef] bg-white px-4 transition-colors hover:bg-[#f7f9fa]">
+                <img src="/assets/quick-action/mybca-logo.svg" alt="" className="size-12 shrink-0" />
+                <span className="text-md font-semibold whitespace-nowrap text-[#26292c]">
+                  Login ke myBCA
+                </span>
               </button>
-            ))}
+              <button className="flex h-16 flex-1 shrink-0 items-center justify-center gap-4 rounded-xl border border-[#e9ecef] bg-white px-4 transition-colors hover:bg-[#f7f9fa]">
+                <img
+                  src="/assets/quick-action/klikbca-logo.png"
+                  alt=""
+                  className="h-11 w-auto shrink-0 object-contain"
+                />
+                <span className="text-md font-semibold whitespace-nowrap text-[#26292c]">
+                  Login ke KlikBCA
+                </span>
+              </button>
+              <button
+                onClick={() => setLoginOpen(false)}
+                aria-label="Tutup"
+                className="flex size-10 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-black/5"
+              >
+                <img src="/assets/cycle1/outline-close.svg" alt="" className="size-6" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -230,13 +387,13 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
             className="flex h-14 gap-4"
             style={{ transform: "translateX(0px)" }}
           >
-            {[...order, ...order].map((idx, i) => {
+            {[...order, ...order, ...order].map((idx, i) => {
               const entry = kurs[idx];
               return (
                 <div
                   key={`${entry.code}-${i}`}
                   ref={i === 0 ? firstCardRef : undefined}
-                  className="flex h-14 shrink-0 items-center gap-4 rounded-xl border border-[#017CBD] bg-black/10 p-4 backdrop-blur-[8px]"
+                  className="flex h-14 shrink-0 items-center gap-4 rounded-xl border border-[#017CBD] bg-black/10 p-4"
                 >
                   <div className="flex items-center gap-3">
                     <img src={entry.flag} alt={entry.code} className="size-6" />

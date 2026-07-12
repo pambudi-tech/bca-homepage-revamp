@@ -2,10 +2,33 @@
 
 import { useEffect, useRef, useState } from "react";
 import Navbar from "./Navbar";
-import BorderGlow from "@/components/ui/border-glow";
 
-const SLIDES_COUNT = 5;
-const SLIDE_DURATION_MS = 5000;
+type SlideCta = { label: string; icon: string; variant: "primary" | "secondary" };
+type Slide = { image: string; alt: string; title: string; cta: SlideCta };
+
+const SLIDES: Slide[] = [
+  {
+    image: "/assets/cycle1/hero-image.jpg",
+    alt: "Keluarga BCA",
+    title: "Capai Kebebasan Finansial Lebih Dini bersama BCA",
+    cta: { label: "Download myBCA", icon: "/assets/cycle1/download-icon.svg", variant: "primary" },
+  },
+  {
+    image: "/assets/cycle1/hero-banner.jpg",
+    alt: "BCA Presale The Weeknd",
+    title: 'BCA Presale : The Weeknd "After Hour Til Down Tour" - Jakarta',
+    cta: { label: "Dapatkan Tiket", icon: "/assets/cycle1/download-icon.svg", variant: "secondary" },
+  },
+  {
+    image: "/assets/cycle1/hero-banner-jrf.jpg",
+    alt: "Terus Nabung buat Kejar Tiket myBCA JRF 2026",
+    title: "Terus Nabung buat Kejar Tiket myBCA JRF 2026!",
+    cta: { label: "Pelajari Lebih Lanjut", icon: "/assets/cycle1/download-icon.svg", variant: "secondary" },
+  },
+];
+
+const SLIDES_COUNT = SLIDES.length;
+const SLIDE_DURATION_MS = 8000;
 const TICK_MS = 50;
 const DOT_RADIUS = 14;
 const DOT_CIRCUMFERENCE = 2 * Math.PI * DOT_RADIUS;
@@ -27,62 +50,54 @@ function PauseIcon() {
   );
 }
 
-function DownloadButton() {
+function HeroCta({ label, icon, variant }: SlideCta) {
+  const isSecondary = variant === "secondary";
   return (
     <div className="group/cta relative inline-flex items-start gap-3">
-      <BorderGlow
-        autoAnimate
-        loopDuration={6}
-        edgeSensitivity={30}
-        backgroundColor="transparent"
-        borderRadius={999}
-        glowRadius={20}
-        glowIntensity={1}
-        coneSpread={25}
-        className="!border-none !shadow-none"
+      <button
+        className={`relative flex h-12 items-center justify-center gap-1 rounded-full bg-white px-6 transition-colors duration-300 hover:bg-[#005caa] ${
+          isSecondary ? "border-2 border-[#005caa]" : "border border-transparent"
+        }`}
       >
-        <button className="relative flex h-12 items-center justify-center gap-1 rounded-full border border-transparent bg-white px-6 transition-colors duration-300 hover:bg-[#005caa]">
-          <span className="px-0.5 text-base font-semibold text-[#005caa] transition-colors duration-300 group-hover/cta:text-white">
-            Download myBCA
-          </span>
-          <img
-            src="/assets/cycle1/download-icon.svg"
-            alt=""
-            className="size-5 transition-[filter] duration-300 group-hover/cta:brightness-0 group-hover/cta:invert"
-          />
-        </button>
-      </BorderGlow>
+        <span className="px-0.5 text-base font-semibold text-[#005caa] transition-colors duration-300 group-hover/cta:text-white">
+          {label}
+        </span>
+        <img
+          src={icon}
+          alt=""
+          className="size-5 transition-[filter] duration-300 group-hover/cta:brightness-0 group-hover/cta:invert"
+        />
+      </button>
     </div>
   );
 }
 
 export default function HeroSection() {
   const [activeSlide, setActiveSlide] = useState(0);
-  const [progress, setProgress] = useState(0);
   const [paused, setPaused] = useState(false);
   const [hoveringActive, setHoveringActive] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
   const elapsedRef = useRef(0);
   const pausedRef = useRef(false);
+  const progressCircleRef = useRef<SVGCircleElement>(null);
 
   useEffect(() => {
     pausedRef.current = paused || hoveringActive;
   }, [paused, hoveringActive]);
 
-  useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
+  // The progress ring is written straight to the SVG circle via a ref instead of
+  // React state, so the timer no longer re-renders the whole hero 20×/second.
   useEffect(() => {
     elapsedRef.current = 0;
-    setProgress(0);
+    if (progressCircleRef.current) {
+      progressCircleRef.current.style.strokeDashoffset = String(DOT_CIRCUMFERENCE);
+    }
     const interval = setInterval(() => {
       if (pausedRef.current) return;
       elapsedRef.current += TICK_MS;
       const pct = Math.min(1, elapsedRef.current / SLIDE_DURATION_MS);
-      setProgress(pct);
+      if (progressCircleRef.current) {
+        progressCircleRef.current.style.strokeDashoffset = String(DOT_CIRCUMFERENCE * (1 - pct));
+      }
       if (pct >= 1) {
         setActiveSlide((s) => (s + 1) % SLIDES_COUNT);
       }
@@ -106,43 +121,35 @@ export default function HeroSection() {
   return (
     <div className="relative h-[640px] overflow-clip bg-[#005caa]">
       <div className="absolute inset-0 bg-black">
-        <img
-          src="/assets/cycle1/hero-image.jpg"
-          alt="Keluarga BCA"
-          className="absolute inset-0 size-full object-cover will-change-transform"
+        {SLIDES.map((slide, i) => (
+          <img
+            key={slide.image}
+            src={slide.image}
+            alt={slide.alt}
+            className="absolute inset-0 size-full object-cover transition-opacity duration-700 ease-in-out"
+            style={{ opacity: i === activeSlide ? 1 : 0 }}
+          />
+        ))}
+        <div
+          className="absolute inset-y-0 left-0 w-1/3"
           style={{
-            transform: `translateY(${scrollY * 0.3}px)`,
-            opacity: Math.max(0.1, 1 - scrollY * 0.001),
+            background: "linear-gradient(to right, rgba(15,15,15,0.8) 0%, rgba(15,15,15,0) 100%)",
           }}
         />
-        <div className="absolute inset-y-0 left-0 w-[960px]">
-          <img
-            src="/assets/cycle1/side-fade.png"
-            alt=""
-            className="absolute inset-0 size-full object-cover"
-          />
-        </div>
       </div>
 
       <div className="absolute bottom-[192px] left-[calc(50%-408px)] flex w-[464px] -translate-x-1/2 flex-col items-start justify-end gap-8">
-        <div className="flex flex-col items-start gap-6 w-full">
-          <h1 className="w-full text-[40px] font-semibold leading-[48px] text-white tracking-[-0.8px]">
-            Capai Kebebasan Finansial Lebih Dini bersama BCA
+        <div key={activeSlide} className="flex flex-col items-start gap-8 w-full">
+          <h1 className="animate-hero-title w-full text-[40px] font-semibold leading-[48px] text-white tracking-[-0.8px]">
+            {SLIDES[activeSlide].title}
           </h1>
+          <div className="animate-hero-cta">
+            <HeroCta {...SLIDES[activeSlide].cta} />
+          </div>
         </div>
-        <DownloadButton />
       </div>
 
-      <div
-        className="absolute bottom-[192px] left-[calc(50%+524px)] flex -translate-x-1/2 items-center gap-1 rounded-[40px] bg-[rgba(0,0,0,0.25)] p-1 backdrop-blur-[4px]"
-        style={{
-          border: "1px solid transparent",
-          backgroundImage:
-            "linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), linear-gradient(to right, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.5) 100%)",
-          backgroundOrigin: "border-box",
-          backgroundClip: "padding-box, border-box",
-        }}
-      >
+      <div className="absolute bottom-[192px] right-[calc(50%-640px)] flex items-center gap-1 rounded-[40px] bg-[rgba(0,0,0,0.5)] p-1 backdrop-blur-[4px]">
         <button
           onClick={goPrev}
           aria-label="Sebelumnya"
@@ -165,7 +172,6 @@ export default function HeroSection() {
                 </button>
               );
             }
-            const dashOffset = DOT_CIRCUMFERENCE * (1 - progress);
             const showPauseIcon = !paused && hoveringActive;
             const showIcon = showPauseIcon || paused;
             return (
@@ -187,6 +193,7 @@ export default function HeroSection() {
                     strokeWidth="2"
                   />
                   <circle
+                    ref={progressCircleRef}
                     cx="16"
                     cy="16"
                     r={DOT_RADIUS}
@@ -195,7 +202,7 @@ export default function HeroSection() {
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeDasharray={DOT_CIRCUMFERENCE}
-                    strokeDashoffset={dashOffset}
+                    strokeDashoffset={DOT_CIRCUMFERENCE}
                     style={{ transition: "stroke-dashoffset 50ms linear" }}
                   />
                 </svg>
@@ -221,13 +228,12 @@ export default function HeroSection() {
         </button>
       </div>
 
-      <div className="absolute left-0 right-0 top-0 h-[200px]">
-        <img
-          src="/assets/cycle1/top-fade.svg"
-          alt=""
-          className="absolute inset-0 size-full"
-        />
-      </div>
+      <div
+        className="absolute left-0 right-0 top-0 h-[160px]"
+        style={{
+          background: "linear-gradient(to bottom, rgba(15,15,15,0.8) 0%, rgba(15,15,15,0) 100%)",
+        }}
+      />
 
       <Navbar />
     </div>

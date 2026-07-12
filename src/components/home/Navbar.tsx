@@ -81,7 +81,7 @@ function SearchButton() {
       aria-label="Cari"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className={`flex h-10 items-center justify-center gap-0.5 rounded-full border backdrop-blur-[4px] transition-all duration-300 ${
+      className={`flex h-10 items-center justify-start gap-0.5 rounded-full border backdrop-blur-[4px] transition-all duration-300 ${
         hover
           ? "w-auto border-white/20 bg-[rgba(18,20,23,0.5)] px-4"
           : "w-10 border-white/25 bg-[rgba(5,13,25,0.1)] px-2"
@@ -113,7 +113,9 @@ export default function Navbar() {
   const lastScrollY = useRef(0);
 
   useEffect(() => {
-    const onScroll = () => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
       const y = window.scrollY;
       setScrolled(y > 40);
       if (y < 80) {
@@ -125,9 +127,15 @@ export default function Navbar() {
       }
       lastScrollY.current = y;
     };
-    onScroll();
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
   useEffect(() => {
@@ -159,7 +167,7 @@ export default function Navbar() {
 
   return (
     <div
-      className={`fixed left-0 right-0 top-0 z-30 flex flex-col items-start transition-transform duration-300 ${
+      className={`fixed left-0 right-0 top-0 z-30 flex flex-col items-start transition-transform duration-300 will-change-transform ${
         shouldHide ? "-translate-y-full" : "translate-y-0"
       }`}
       onMouseLeave={scheduleClose}
@@ -169,19 +177,6 @@ export default function Navbar() {
           solid ? "shadow-lg" : ""
         }`}
       >
-        {!solid && (
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 backdrop-blur-md"
-            style={{
-              maskImage:
-                "linear-gradient(to bottom, black 0%, black 40%, transparent 100%)",
-              WebkitMaskImage:
-                "linear-gradient(to bottom, black 0%, black 40%, transparent 100%)",
-            }}
-          />
-        )}
-
         <div
           className={`relative flex w-full items-center justify-center px-10 py-4 transition-colors duration-200 ${
             solid ? "bg-[rgba(18,20,23,0.95)] backdrop-blur-md" : ""
@@ -292,7 +287,7 @@ export default function Navbar() {
                             ? "font-bold text-[#005caa]"
                             : menuOpen
                               ? "font-semibold text-[#26292c]"
-                              : "font-semibold text-white"
+                              : "font-semibold text-white/80"
                         }`}
                       >
                         {tab.label}
@@ -308,7 +303,7 @@ export default function Navbar() {
                           }
                           alt=""
                           className={`size-5 transition-transform duration-200 ${
-                            isOpen ? "rotate-180" : ""
+                            isOpen ? "rotate-180" : menuOpen ? "" : "opacity-80"
                           }`}
                         />
                       )}
