@@ -251,7 +251,7 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
 
         <div className="absolute top-[104px] z-20 flex w-full flex-col items-start px-5">
           <div
-            className="grid w-full items-stretch overflow-clip rounded-3xl border border-[#e9ecef] bg-white transition-[grid-template-columns] duration-300 ease-in-out"
+            className="grid w-full items-stretch overflow-clip rounded-3xl bg-white transition-[grid-template-columns] duration-300 ease-in-out"
             style={{
               gridTemplateColumns: loginOpen
                 ? "248px minmax(0,1fr) 104px 104px 104px 104px"

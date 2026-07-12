@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Navbar from "./Navbar";
 
 type SlideCta = { label: string; icon: string; variant: "primary" | "secondary" };
 type Slide = { image: string; alt: string; title: string; cta: SlideCta };
@@ -234,8 +233,6 @@ export default function HeroSection() {
           background: "linear-gradient(to bottom, rgba(15,15,15,0.8) 0%, rgba(15,15,15,0) 100%)",
         }}
       />
-
-      <Navbar />
     </div>
   );
 }

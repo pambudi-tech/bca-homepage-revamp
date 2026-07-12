@@ -166,19 +166,27 @@ export default function Navbar() {
   };
 
   return (
-    <div
-      className={`fixed left-0 right-0 top-0 z-30 flex flex-col items-start transition-transform duration-300 will-change-transform ${
-        shouldHide ? "-translate-y-full" : "translate-y-0"
-      }`}
-      onMouseLeave={scheduleClose}
-    >
+    <>
+      {/* Focus overlay — dims the page behind the mega menu so the panel stands out. */}
       <div
-        className={`relative flex w-full flex-col items-start transition-shadow duration-200 ${
-          solid ? "shadow-lg" : ""
+        aria-hidden
+        className={`fixed inset-0 z-20 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 ${
+          menuOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
+      />
+      <div
+        className={`fixed left-0 right-0 top-0 z-30 flex flex-col items-start transition-transform duration-300 will-change-transform ${
+          shouldHide ? "-translate-y-full" : "translate-y-0"
+        }`}
+        onMouseLeave={scheduleClose}
       >
         <div
-          className={`relative flex w-full items-center justify-center px-10 py-4 transition-colors duration-200 ${
+          className={`relative flex w-full flex-col items-start transition-shadow duration-200 ${
+            solid ? "shadow-lg" : ""
+          }`}
+        >
+        <div
+          className={`relative z-10 flex w-full items-center justify-center px-10 py-4 transition-colors duration-200 ${
             solid ? "bg-[rgba(18,20,23,0.95)] backdrop-blur-md" : ""
           }`}
           onMouseEnter={closeNow}
@@ -331,5 +339,6 @@ export default function Navbar() {
         </div>
       </div>
     </div>
+    </>
   );
 }

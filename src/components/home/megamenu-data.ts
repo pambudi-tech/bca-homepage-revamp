@@ -3,8 +3,14 @@ export type MegaMenuProduct = {
   description: string;
 };
 
+export type MegaMenuTool = {
+  icon: string;
+  title: string;
+};
+
 export type MegaMenuLink = {
   label: string;
+  type?: "article" | "video";
 };
 
 export type MegaMenuCategory = {
@@ -20,6 +26,7 @@ export type MegaMenuCategory = {
   listTitle: string;
   products: MegaMenuProduct[];
   ctaLabel: string;
+  tools: MegaMenuTool[];
   links: MegaMenuLink[];
 };
 
@@ -42,8 +49,12 @@ export const MEGAMENU: MegaMenuCategory[] = [
       { title: "BCA Dollar", description: "Simpanan valuta asing USD dan SGD" },
     ],
     ctaLabel: "Lihat Semua Pilihan Simpanan",
+    tools: [
+      { icon: "/assets/navbar/icon-calc.svg", title: "Hitung Potensi Simpanan Anda" },
+      { icon: "/assets/navbar/icon-doc-blue.svg", title: "Buka Rekening Secara Online" },
+    ],
     links: [
-      { label: "Cara buka rekening via myBCA" },
+      { label: "Cara buka rekening via myBCA", type: "video" },
       { label: "Simulasi bunga tabungan" },
       { label: "Syarat pembukaan rekening" },
       { label: "Biaya administrasi tabungan" },
@@ -68,8 +79,12 @@ export const MEGAMENU: MegaMenuCategory[] = [
       { title: "BCA tiket.com Mastercard", description: "Extra poin tiap transaksi untuk hotel, penerbangan & perjalananmu" },
     ],
     ctaLabel: "Lihat Semua Pilihan Kartu Kredit",
+    tools: [
+      { icon: "/assets/navbar/icon-calc.svg", title: "Simulasi Cicilan Kartu Kredit" },
+      { icon: "/assets/navbar/kk-reward-image.png", title: "Cek Reward BCA" },
+    ],
     links: [
-      { label: "Cara ajukan kartu kredit via website" },
+      { label: "Cara ajukan kartu kredit via website", type: "video" },
       { label: "Kartu kredit mana yang cocok untuk saya?" },
       { label: "Syarat pengajuan kartu kredit BCA" },
       { label: "Cara bayar tagihan kartu kredit BCA" },
@@ -92,10 +107,14 @@ export const MEGAMENU: MegaMenuCategory[] = [
       { title: "Kredit Tanpa Agunan", description: "Dana cepat tanpa jaminan untuk kebutuhanmu" },
     ],
     ctaLabel: "Lihat Semua Pilihan Pinjaman",
+    tools: [
+      { icon: "/assets/navbar/icon-calc.svg", title: "Simulasi Cicilan Pinjaman" },
+      { icon: "/assets/navbar/icon-doc-blue.svg", title: "Ajukan Pinjaman Online" },
+    ],
     links: [
       { label: "Simulasi cicilan KPR" },
       { label: "Syarat pengajuan KKB" },
-      { label: "Cara pengajuan pinjaman online" },
+      { label: "Cara pengajuan pinjaman online", type: "video" },
     ],
   },
   {
@@ -115,8 +134,12 @@ export const MEGAMENU: MegaMenuCategory[] = [
       { title: "BCA mobile", description: "Transaksi perbankan dalam genggaman" },
     ],
     ctaLabel: "Lihat Semua Layanan e-Banking",
+    tools: [
+      { icon: "/assets/navbar/icon-youtube.svg", title: "Tutorial Aktivasi myBCA" },
+      { icon: "/assets/navbar/icon-doc-blue.svg", title: "Atasi Kendala Login" },
+    ],
     links: [
-      { label: "Cara aktivasi myBCA" },
+      { label: "Cara aktivasi myBCA", type: "video" },
       { label: "Daftar KlikBCA Individu" },
       { label: "Atasi kendala login e-Banking" },
     ],
@@ -138,8 +161,12 @@ export const MEGAMENU: MegaMenuCategory[] = [
       { title: "Obligasi Negara", description: "Investasi surat utang dengan imbal hasil tetap" },
     ],
     ctaLabel: "Lihat Semua Pilihan Investasi",
+    tools: [
+      { icon: "/assets/navbar/icon-calc.svg", title: "Simulasi Imbal Hasil Investasi" },
+      { icon: "/assets/navbar/icon-doc-blue.svg", title: "Mulai Investasi Reksa Dana" },
+    ],
     links: [
-      { label: "Cara mulai investasi reksa dana" },
+      { label: "Cara mulai investasi reksa dana", type: "video" },
       { label: "Panduan investasi untuk pemula" },
       { label: "Simulasi imbal hasil investasi" },
     ],
@@ -161,8 +188,12 @@ export const MEGAMENU: MegaMenuCategory[] = [
       { title: "Asuransi Kendaraan", description: "Proteksi kendaraan dari risiko tak terduga" },
     ],
     ctaLabel: "Lihat Semua Pilihan Asuransi",
+    tools: [
+      { icon: "/assets/navbar/icon-calc.svg", title: "Hitung Premi Asuransi" },
+      { icon: "/assets/navbar/icon-doc-blue.svg", title: "Ajukan Klaim Online" },
+    ],
     links: [
-      { label: "Cara klaim asuransi BCA Life" },
+      { label: "Cara klaim asuransi BCA Life", type: "video" },
       { label: "Pilih proteksi sesuai kebutuhan" },
       { label: "Simulasi premi asuransi" },
     ],
