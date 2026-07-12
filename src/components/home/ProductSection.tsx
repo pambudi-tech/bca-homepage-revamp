@@ -19,7 +19,7 @@ function ProductCard({
   product: Product;
   active: boolean;
   onSelect: () => void;
-  progressRef: React.Ref<SVGCircleElement>;
+  progressRef: React.Ref<SVGCircleElement> | undefined;
   entered: boolean;
   enterDelayMs: number;
 }) {
