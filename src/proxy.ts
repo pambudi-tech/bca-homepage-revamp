@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { AUTH_COOKIE_NAME } from "@/lib/preview-auth";
 
 export function proxy(request: NextRequest) {
   const password = process.env.PREVIEW_PASSWORD;
@@ -9,21 +10,19 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const authHeader = request.headers.get("authorization");
-
-  if (authHeader?.startsWith("Basic ")) {
-    const decoded = atob(authHeader.slice(6));
-    const [, providedPassword] = decoded.split(":");
-
-    if (providedPassword === password) {
-      return NextResponse.next();
-    }
+  if (request.nextUrl.pathname === "/login") {
+    return NextResponse.next();
   }
 
-  return new Response("Authentication required", {
-    status: 401,
-    headers: { "WWW-Authenticate": 'Basic realm="Preview"' },
-  });
+  const cookie = request.cookies.get(AUTH_COOKIE_NAME)?.value;
+
+  if (cookie === password) {
+    return NextResponse.next();
+  }
+
+  const loginUrl = new URL("/login", request.url);
+  loginUrl.searchParams.set("redirectTo", request.nextUrl.pathname);
+  return NextResponse.redirect(loginUrl);
 }
 
 export const config = {
