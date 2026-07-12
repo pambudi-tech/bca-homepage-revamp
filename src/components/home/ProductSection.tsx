@@ -60,10 +60,16 @@ function ProductCard({
         }}
       />
 
-      {/* glass content box — width animates via px (not layout-thrashing auto) */}
+      {/* glass content box — same reactive-glass treatment as the hero search panel
+          (.hero-search border + blur/saturate/brightness/contrast fill), so it picks
+          up whatever photo is behind it instead of a flat tint. */}
       <div
-        className="absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl border border-white/75 bg-black/30 px-5 pb-6 pt-4 backdrop-blur-[10px] transition-[width] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
-        style={{ width: active ? 280 : 184 }}
+        className="hero-search absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[width] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        style={{
+          width: active ? 280 : 184,
+          backdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
+          WebkitBackdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
+        }}
       >
         <p className="w-full text-xl font-semibold leading-7 tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
           {product.title}
@@ -125,10 +131,40 @@ export default function ProductSection() {
   const pausedRef = useRef(false);
   const progressRef = useRef<SVGCircleElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const cloveARef = useRef<HTMLImageElement>(null);
+  const cloveBRef = useRef<HTMLImageElement>(null);
 
   const category =
     PRODUCT_CATEGORIES.find((c) => c.key === activeCategory) ?? PRODUCT_CATEGORIES[0];
   const products = category.products;
+
+  // Parallax for the bg-clove pattern — written straight to the DOM inside a rAF
+  // (no React state) so scrolling never re-renders this section. Two shapes move
+  // at slightly different speeds off the section's own scroll position for depth.
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const section = sectionRef.current;
+      if (!section) return;
+      const rectTop = section.getBoundingClientRect().top;
+      if (cloveARef.current) {
+        cloveARef.current.style.transform = `translate3d(-50%, ${rectTop * 0.12}px, 0)`;
+      }
+      if (cloveBRef.current) {
+        cloveBRef.current.style.transform = `translate3d(-50%, ${rectTop * 0.2}px, 0)`;
+      }
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   // First-view entrance: reveal once when the section scrolls into view, then stop watching.
   useEffect(() => {
@@ -177,14 +213,16 @@ export default function ProductSection() {
       {/* bg pattern — decorative, bleeds upward into the area above the section */}
       <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-visible">
         <img
+          ref={cloveARef}
           src="/assets/product/bg-clove-a.svg"
           alt=""
-          className="absolute left-[calc(50%-937px)] top-[-400px] h-[1614px] w-[1178px] -translate-x-1/2 opacity-80"
+          className="absolute left-[calc(50%-937px)] top-[-400px] h-[1614px] w-[1178px] opacity-80 will-change-transform"
         />
         <img
+          ref={cloveBRef}
           src="/assets/product/bg-clove-b.svg"
           alt=""
-          className="absolute left-[calc(50%+667px)] top-[-96px] h-[1668px] w-[1218px] -translate-x-1/2 opacity-80"
+          className="absolute left-[calc(50%+667px)] top-[-96px] h-[1668px] w-[1218px] opacity-80 will-change-transform"
         />
       </div>
 

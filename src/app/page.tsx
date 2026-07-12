@@ -14,12 +14,12 @@ export default async function Home() {
       <Navbar />
       <div className="relative z-10">
         <HeroSection />
-        <div className="absolute left-1/2 top-[496px] w-[1280px] -translate-x-1/2">
+        <div className="absolute left-1/2 top-[504px] w-[1280px] -translate-x-1/2">
           <HeroWidget kurs={kurs} />
         </div>
       </div>
       {/* spacer for the hero widget that overflows the hero section (496 + 288 - 640) */}
-      <div className="h-[144px]" />
+      <div className="h-[136px]" />
       <ScrollCue />
       <ProductSection />
       <MyBcaSection />

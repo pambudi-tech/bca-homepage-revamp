@@ -82,7 +82,7 @@ function SearchPlaceholderCarousel({ visible }: { visible: boolean }) {
         {slots.map((slot, i) => (
           <span
             key={i}
-            className={`absolute inset-0 flex h-12 items-center whitespace-nowrap text-lg font-semibold text-[#cfcfcf] ${
+            className={`absolute inset-0 flex h-12 items-center whitespace-nowrap text-base font-semibold text-[#cfcfcf] ${
               slot.instant ? "" : "transition-all duration-700 ease-in-out"
             }`}
             style={slotStyle(slot.state)}
@@ -191,11 +191,11 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
   };
 
   return (
-    <div ref={rootRef} className="relative mx-auto h-[288px] w-[1280px]">
+    <div ref={rootRef} className="relative mx-auto h-[272px] w-[1280px]">
       {/* search + quick action */}
       <div className="absolute top-0 h-[184px] w-full">
         <div
-          className="hero-search relative z-0 flex h-36 w-full items-start justify-center overflow-clip rounded-t-3xl p-5"
+          className="hero-search relative z-0 flex h-34 w-full items-start justify-center overflow-clip rounded-t-3xl p-5"
           style={{
             // Reactive glass fill: samples the live banner behind it (works across stacking
             // contexts), blurs it, then lightly boosts saturation/contrast so the fill picks
@@ -215,7 +215,7 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
           />
           <div className="relative flex flex-1 items-center justify-center gap-6">
             <div className="flex items-center justify-center px-2">
-              <p className="whitespace-nowrap text-xl font-semibold text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+              <p className="whitespace-nowrap text-lg font-semibold text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
                 Ada yang bisa kami bantu?
               </p>
             </div>
@@ -228,20 +228,20 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
                 ...softLightBorderVars("1px", "rgba(255,255,255,0.15)"),
               }}
             >
-              <div className="relative flex h-12 min-w-0 flex-1 items-center">
+              <div className="relative flex h-10 min-w-0 flex-1 items-center">
                 <input
                   type="text"
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   onFocus={() => setSearchFocused(true)}
                   onBlur={() => setSearchFocused(false)}
-                  className="relative z-10 h-7 w-full bg-transparent px-6 text-lg font-semibold text-white focus:outline-none"
+                  className="relative z-10 h-7 w-full bg-transparent px-6 text-base font-semibold text-white focus:outline-none"
                 />
                 <SearchPlaceholderCarousel visible={!searchValue && !searchFocused} />
               </div>
               <button
                 aria-label="Cari"
-                className="relative z-10 flex size-12 shrink-0 items-center justify-center rounded-full bg-white transition-transform hover:scale-105"
+                className="relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full bg-white transition-transform hover:scale-105"
               >
                 <img src="/assets/cycle1/outline-search-1.svg" alt="" className="size-6" />
               </button>
@@ -249,7 +249,7 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
           </div>
         </div>
 
-        <div className="absolute top-[104px] z-20 flex w-full flex-col items-start px-5">
+        <div className="absolute top-[96px] z-20 flex w-full flex-col items-start px-5">
           <div
             className="grid w-full items-stretch overflow-clip rounded-3xl bg-white transition-[grid-template-columns] duration-300 ease-in-out"
             style={{
@@ -353,7 +353,7 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
 
       {/* kurs */}
       <div
-        className="absolute bottom-0 z-10 h-36 w-full overflow-clip rounded-b-3xl"
+        className="absolute bottom-0 z-10 h-34 w-full overflow-clip rounded-b-3xl"
         onMouseEnter={() => {
           tickerHoveringRef.current = true;
           setTickerPaused(true);
