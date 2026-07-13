@@ -2,25 +2,27 @@
 
 import { useEffect, useRef, useState } from "react";
 import SlideDots, { DOT_CIRCUMFERENCE } from "./SlideDots";
+import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
+import { useLenis } from "@/components/SmoothScroll";
 
 type SlideCta = { label: string; icon: string; variant: "primary" | "secondary" };
 type Slide = { image: string; alt: string; title: string; cta: SlideCta };
 
 const SLIDES: Slide[] = [
   {
-    image: "/assets/cycle1/hero-image.jpg",
+    image: "/assets/cycle1/hero-image.webp",
     alt: "Keluarga BCA",
     title: "Capai Kebebasan Finansial Lebih Dini bersama BCA",
     cta: { label: "Download myBCA", icon: "/assets/cycle1/download-icon.svg", variant: "primary" },
   },
   {
-    image: "/assets/cycle1/hero-banner.jpg",
+    image: "/assets/cycle1/hero-banner.webp",
     alt: "BCA Presale The Weeknd",
     title: 'BCA Presale : The Weeknd "After Hour Til Down Tour" - Jakarta',
     cta: { label: "Dapatkan Tiket", icon: "/assets/cycle1/download-icon.svg", variant: "secondary" },
   },
   {
-    image: "/assets/cycle1/hero-banner-jrf.jpg",
+    image: "/assets/cycle1/hero-banner-jrf.webp",
     alt: "Terus Nabung buat Kejar Tiket myBCA JRF 2026",
     title: "Terus Nabung buat Kejar Tiket myBCA JRF 2026!",
     cta: { label: "Pelajari Lebih Lanjut", icon: "/assets/cycle1/download-icon.svg", variant: "secondary" },
@@ -29,17 +31,18 @@ const SLIDES: Slide[] = [
 
 const SLIDES_COUNT = SLIDES.length;
 const SLIDE_DURATION_MS = 8000;
-const TICK_MS = 50;
+const PARALLAX_SPEED = 0.45;
 
 function HeroCta({ label, icon, variant }: SlideCta) {
   const isSecondary = variant === "secondary";
   return (
     <div className="group/cta relative inline-flex items-start gap-3">
       <button
-        className={`relative flex h-12 items-center justify-center gap-1 rounded-full bg-white px-6 transition-colors duration-300 hover:bg-[#005caa] ${
+        className={`hero-cta relative flex h-12 items-center justify-center gap-1 rounded-full bg-white px-6 transition-[background-color,box-shadow] duration-300 hover:bg-[#005caa] hover:shadow-[0_0_22px_-6px_rgba(125,211,252,0.75)] ${
           isSecondary ? "border-2 border-[#005caa]" : "border border-transparent"
         }`}
       >
+        <span aria-hidden className="hero-cta-beam" />
         <span className="px-0.5 text-base font-semibold text-[#005caa] transition-colors duration-300 group-hover/cta:text-white">
           {label}
         </span>
@@ -57,34 +60,41 @@ export default function HeroSection() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [paused, setPaused] = useState(false);
   const [hoveringActive, setHoveringActive] = useState(false);
-  const elapsedRef = useRef(0);
   const pausedRef = useRef(false);
   const progressCircleRef = useRef<SVGCircleElement>(null);
+  const parallaxRef = useRef<HTMLDivElement>(null);
+  const lenis = useLenis();
 
   useEffect(() => {
     pausedRef.current = paused || hoveringActive;
   }, [paused, hoveringActive]);
 
-  // The progress ring is written straight to the SVG circle via a ref instead of
-  // React state, so the timer no longer re-renders the whole hero 20×/second.
+  useAutoplayProgress({
+    activeIndex: activeSlide,
+    count: SLIDES_COUNT,
+    durationMs: SLIDE_DURATION_MS,
+    circumference: DOT_CIRCUMFERENCE,
+    progressRef: progressCircleRef,
+    pausedRef,
+    onAdvance: () => setActiveSlide((s) => (s + 1) % SLIDES_COUNT),
+  });
+
   useEffect(() => {
-    elapsedRef.current = 0;
-    if (progressCircleRef.current) {
-      progressCircleRef.current.style.strokeDashoffset = String(DOT_CIRCUMFERENCE);
-    }
-    const interval = setInterval(() => {
-      if (pausedRef.current) return;
-      elapsedRef.current += TICK_MS;
-      const pct = Math.min(1, elapsedRef.current / SLIDE_DURATION_MS);
-      if (progressCircleRef.current) {
-        progressCircleRef.current.style.strokeDashoffset = String(DOT_CIRCUMFERENCE * (1 - pct));
-      }
-      if (pct >= 1) {
-        setActiveSlide((s) => (s + 1) % SLIDES_COUNT);
-      }
-    }, TICK_MS);
-    return () => clearInterval(interval);
-  }, [activeSlide]);
+    if (!lenis) return;
+
+    const updateParallax = () => {
+      if (!parallaxRef.current) return;
+      const scrollY = window.scrollY;
+      parallaxRef.current.style.transform = `translate3d(0, ${scrollY * PARALLAX_SPEED}px, 0) scale(1.1)`;
+    };
+
+    lenis.on("scroll", updateParallax);
+    updateParallax();
+
+    return () => {
+      lenis.off("scroll", updateParallax);
+    };
+  }, [lenis]);
 
   const goPrev = () => {
     setPaused(false);
@@ -101,7 +111,11 @@ export default function HeroSection() {
 
   return (
     <div className="relative h-[620px] overflow-clip bg-[#005caa]">
-      <div className="absolute inset-0 bg-black">
+      <div
+        ref={parallaxRef}
+        className="absolute inset-0 size-full origin-top will-change-transform"
+        style={{ transform: "translate3d(0, 0px, 0) scale(1.1)" }}
+      >
         {SLIDES.map((slide, i) => (
           <img
             key={slide.image}
@@ -111,13 +125,14 @@ export default function HeroSection() {
             style={{ opacity: i === activeSlide ? 1 : 0 }}
           />
         ))}
-        <div
-          className="absolute inset-y-0 left-0 w-1/3"
-          style={{
-            background: "linear-gradient(to right, rgba(15,15,15,0.8) 0%, rgba(15,15,15,0) 100%)",
-          }}
-        />
       </div>
+
+      <div
+        className="absolute inset-y-0 left-0 w-1/3"
+        style={{
+          background: "linear-gradient(to right, rgba(15,15,15,0.8) 0%, rgba(15,15,15,0) 100%)",
+        }}
+      />
 
       <div className="absolute bottom-[192px] left-1/2 flex w-[1280px] -translate-x-1/2 items-end justify-between">
         <div className="flex w-[420px] flex-col items-start gap-8">

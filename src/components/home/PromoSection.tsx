@@ -1,5 +1,6 @@
 import { PROMOS, getPromoBadge, getPromoTimestamp, type PromoBadgeKey } from "./promo-data";
-import PromoSlider from "./PromoSlider";
+import Confetti from "./Confetti";
+import PercentGlass from "./PercentGlass";
 
 const RIBBON_STYLE: Record<Exclude<PromoBadgeKey, "default">, { from: string; to: string; shadow: string; text: string }> = {
   mostLiked: { from: "#00b5f0", to: "#00a5db", shadow: "#01759a", text: "#ffffff" },
@@ -154,7 +155,7 @@ export default function PromoSection() {
   const now = new Date();
 
   return (
-    <section className="relative overflow-clip bg-gradient-to-b from-[#eef6fd] to-[#dcecfb] pb-24 pt-48">
+    <section className="relative overflow-clip bg-gradient-to-b from-[#eef6fd] to-[#dcecfb] pb-24 pt-32">
       {/* clove pattern — left & right, bleeding off the edges */}
       <img
         src="/assets/promo/bg-clove-product-1.svg"
@@ -168,13 +169,8 @@ export default function PromoSection() {
         aria-hidden
         className="pointer-events-none absolute right-[-720px] bottom-[-720px] h-auto w-auto opacity-60 blur-[2px]"
       />
-      {/* confetti — top of the section */}
-      <img
-        src="/assets/promo/confetti.png"
-        alt=""
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-0 h-auto w-[1280px] -translate-x-1/2"
-      />
+      {/* confetti — top of the section (pure JS + CSS, see Confetti.tsx) */}
+      <Confetti />
 
       <div className="relative z-10 mx-auto w-[1280px]">
         <div className="relative flex gap-10">
@@ -186,18 +182,15 @@ export default function PromoSection() {
           <h2 className="w-[560px] text-[32px] font-semibold leading-10 tracking-[-0.64px] text-[#00335e]">
             Apresiasi Terbaik untuk Menemani Setiap Momen Berharga
           </h2>
-          {/* 3D percentage glass, floating to the right of the title */}
-          <img
-            src="/assets/promo/percentage-glass.png"
-            alt=""
-            aria-hidden
-            className="pointer-events-none absolute right-[40px] top-[-72px] h-[260px] w-auto"
-          />
+          {/* 3D percentage glass (three.js), floating to the right of the title.
+              Falls back to /assets/promo/percentage-glass.webp when WebGL is
+              unavailable or reduced-motion is requested. */}
+          <PercentGlass />
         </div>
 
-        <PromoSlider />
+        
 
-        <div className="mt-16 flex flex-wrap content-center items-start gap-6">
+        <div className="mt-10 flex flex-wrap content-center items-start gap-6">
           {PROMOS.map((promo) => (
             <PromoCard key={promo.id} promo={promo} now={now} />
           ))}

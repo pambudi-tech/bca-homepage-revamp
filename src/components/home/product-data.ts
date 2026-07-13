@@ -13,9 +13,9 @@ export type ProductCategory = {
 
 // The Kartu Kredit trio is the one fully specced in the design; other categories
 // reuse the same photography with their own copy for this revamp prototype.
-const EVERYDAY = "/assets/product/card-everyday.jpg";
-const MASTERCARD = "/assets/product/card-mastercard.jpg";
-const AMEX = "/assets/product/card-amex.jpg";
+const EVERYDAY = "/assets/product/card-everyday.webp";
+const MASTERCARD = "/assets/product/card-mastercard.webp";
+const AMEX = "/assets/product/card-amex.webp";
 
 export const PRODUCT_CATEGORIES: ProductCategory[] = [
   {

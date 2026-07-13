@@ -39,7 +39,7 @@ export const MEGAMENU: MegaMenuCategory[] = [
       title: "Temukan Simpanan yang Tepat",
       description: "Bandingkan jenis tabungan dan giro BCA sesuai kebutuhanmu.",
       cta: "Mulai Bandingkan",
-      image: "/assets/navbar/kk-card-image.png",
+      image: "/assets/navbar/kk-card-image.webp",
     },
     listTitle: "SIMPANAN PILIHAN",
     products: [
@@ -69,7 +69,7 @@ export const MEGAMENU: MegaMenuCategory[] = [
       description:
         "Pilih hingga 3 kartu dan lihat perbandingan benefit, biaya, dan limit secara berdampingan.",
       cta: "Mulai Bandingkan",
-      image: "/assets/navbar/kk-card-image.png",
+      image: "/assets/navbar/kk-card-image.webp",
     },
     listTitle: "KARTU KREDIT PILIHAN",
     products: [
@@ -81,7 +81,7 @@ export const MEGAMENU: MegaMenuCategory[] = [
     ctaLabel: "Lihat Semua Pilihan Kartu Kredit",
     tools: [
       { icon: "/assets/navbar/icon-calc.svg", title: "Simulasi Cicilan Kartu Kredit" },
-      { icon: "/assets/navbar/kk-reward-image.png", title: "Cek Reward BCA" },
+      { icon: "/assets/navbar/kk-reward-image.webp", title: "Cek Reward BCA" },
     ],
     links: [
       { label: "Cara ajukan kartu kredit via website", type: "video" },
@@ -98,7 +98,7 @@ export const MEGAMENU: MegaMenuCategory[] = [
       title: "Wujudkan Rencanamu",
       description: "Simulasikan cicilan KPR, KKB, atau kredit tanpa agunan bersama BCA.",
       cta: "Mulai Simulasi",
-      image: "/assets/navbar/kk-card-image.png",
+      image: "/assets/navbar/kk-card-image.webp",
     },
     listTitle: "PINJAMAN PILIHAN",
     products: [
@@ -125,7 +125,7 @@ export const MEGAMENU: MegaMenuCategory[] = [
       title: "Transaksi Digital Tanpa Batas",
       description: "Kelola keuanganmu kapan saja lewat myBCA dan KlikBCA.",
       cta: "Unduh myBCA",
-      image: "/assets/navbar/kk-card-image.png",
+      image: "/assets/navbar/kk-card-image.webp",
     },
     listTitle: "LAYANAN E-BANKING",
     products: [
@@ -152,7 +152,7 @@ export const MEGAMENU: MegaMenuCategory[] = [
       title: "Mulai Investasi Sekarang",
       description: "Reksa dana, obligasi, hingga saham dalam satu aplikasi BCA.",
       cta: "Mulai Investasi",
-      image: "/assets/navbar/kk-card-image.png",
+      image: "/assets/navbar/kk-card-image.webp",
     },
     listTitle: "INVESTASI PILIHAN",
     products: [
@@ -179,7 +179,7 @@ export const MEGAMENU: MegaMenuCategory[] = [
       title: "Lindungi yang Berharga",
       description: "Asuransi jiwa, kesehatan, dan proteksi aset dari BCA Life.",
       cta: "Cari Proteksi",
-      image: "/assets/navbar/kk-card-image.png",
+      image: "/assets/navbar/kk-card-image.webp",
     },
     listTitle: "ASURANSI PILIHAN",
     products: [

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
 
 const bcaSans = localFont({
@@ -19,7 +20,7 @@ const bcaSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "BCA - Solusi Finansial Perbankan Terbaik",
+  title: "BCA - Senantiasa di Sisi Anda",
   description: "Prototype revamp homepage BCA.co.id",
 };
 
@@ -29,8 +30,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={`${bcaSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="id" className={`${bcaSans.variable} h-full antialiased overscroll-none bg-[#f4f8fc]`}>
+      <body className="min-h-full flex flex-col overscroll-none bg-[#f4f8fc]">
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
+      </body>
     </html>
   );
 }

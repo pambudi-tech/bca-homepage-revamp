@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import type { KursEntry } from "@/lib/kurs";
+import SearchRecommendation from "./SearchRecommendation";
+import { getSearchRecommendations } from "./search-data";
 
 const PLACEHOLDERS = [
   "Buka rekening BCA",
@@ -110,6 +112,29 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
   const [tickerPaused, setTickerPaused] = useState(false);
   const [order, setOrder] = useState<number[]>(() => kurs.map((_, i) => i));
   const rootRef = useRef<HTMLDivElement>(null);
+  const searchBarRef = useRef<HTMLDivElement>(null);
+  // Position of the recommendation panel, measured from the search bar. The
+  // panel is rendered at the widget root (outside the search bar's
+  // `overflow-clip` container) so it can spill over the quick-actions + kurs.
+  const [panelPos, setPanelPos] = useState<{ left: number; width: number; top: number } | null>(
+    null
+  );
+
+  const recommendations = useMemo(() => getSearchRecommendations(searchValue), [searchValue]);
+  const showRecommendation = searchFocused;
+
+  useEffect(() => {
+    if (!showRecommendation) return;
+    const measure = () => {
+      if (!searchBarRef.current || !rootRef.current) return;
+      const sb = searchBarRef.current.getBoundingClientRect();
+      const root = rootRef.current.getBoundingClientRect();
+      setPanelPos({ left: sb.left - root.left, width: sb.width, top: sb.bottom - root.top });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [showRecommendation]);
   const trackRef = useRef<HTMLDivElement>(null);
   const firstCardRef = useRef<HTMLDivElement>(null);
   const cardStepRef = useRef(0);
@@ -194,16 +219,7 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
     <div ref={rootRef} className="relative mx-auto h-[272px] w-[1280px]">
       {/* search + quick action */}
       <div className="absolute top-0 h-[184px] w-full">
-        <div
-          className="hero-search relative z-0 flex h-34 w-full items-start justify-center overflow-clip rounded-t-3xl p-5"
-          style={{
-            // Reactive glass fill: samples the live banner behind it (works across stacking
-            // contexts), blurs it, then lightly boosts saturation/contrast so the fill picks
-            // up whatever banner colors the content team ships.
-            backdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
-            WebkitBackdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
-          }}
-        >
+        <div className="hero-search glass-fill relative z-0 flex h-34 w-full items-start justify-center overflow-clip rounded-t-3xl p-5">
           {/* Depth gradient (normal compositing) for text readability — light sheen at
               top, darker toward the quick-actions below. */}
           <div
@@ -220,6 +236,7 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
               </p>
             </div>
             <div
+              ref={searchBarRef}
               className="soft-light-border relative flex flex-1 items-center gap-2 rounded-[50px] p-2"
               style={{
                 background: "rgba(0,0,0,0.5)",
@@ -235,6 +252,9 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
                   onChange={(e) => setSearchValue(e.target.value)}
                   onFocus={() => setSearchFocused(true)}
                   onBlur={() => setSearchFocused(false)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") e.currentTarget.blur();
+                  }}
                   className="relative z-10 h-7 w-full bg-transparent px-6 text-base font-semibold text-white focus:outline-none"
                 />
                 <SearchPlaceholderCarousel visible={!searchValue && !searchFocused} />
@@ -435,6 +455,24 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
           <img src="/assets/cycle1/chevron-right.svg" alt="" className="size-6" />
         </button>
       </div>
+
+      {/* search recommendation — rendered at the widget root so it can overlay
+          the quick-actions and kurs without being clipped by the search bar's
+          overflow-clip container. Positioned under the search bar via measured
+          coordinates. `onMouseDown` preventDefault keeps the input focused so
+          the panel stays open while the user clicks an item. */}
+      {showRecommendation && panelPos && (
+        <div
+          className="absolute z-50"
+          style={{ left: panelPos.left, width: panelPos.width, top: panelPos.top + 8 }}
+        >
+          <SearchRecommendation
+            recommendations={recommendations}
+            keyword={searchValue}
+            onMouseDown={(e) => e.preventDefault()}
+          />
+        </div>
+      )}
     </div>
   );
 }

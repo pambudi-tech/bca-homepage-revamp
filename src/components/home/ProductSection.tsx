@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { PRODUCT_CATEGORIES, type Product } from "./product-data";
+import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 
 const AUTO_ADVANCE_MS = 6000;
-const TICK_MS = 50;
 const RING_RADIUS = 13;
 const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 
@@ -23,21 +23,85 @@ function ProductCard({
   entered: boolean;
   enterDelayMs: number;
 }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef<HTMLButtonElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const lastMouseRef = useRef({ x: -1000, y: -1000 });
+
+  const updateCursor = () => {
+    if (!active || !cardRef.current || !cursorRef.current) {
+      setIsHovered(false);
+      return;
+    }
+    const rect = cardRef.current.getBoundingClientRect();
+    const { x: clientX, y: clientY } = lastMouseRef.current;
+
+    const isInside =
+      clientX >= rect.left &&
+      clientX <= rect.right &&
+      clientY >= rect.top &&
+      clientY <= rect.bottom;
+
+    setIsHovered((prev) => (prev !== isInside ? isInside : prev));
+
+    if (isInside) {
+      const x = clientX - rect.left - 56;
+      const y = clientY - rect.top - 56;
+      cursorRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    }
+  };
+
+  const handleCardClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    lastMouseRef.current = { x: e.clientX, y: e.clientY };
+    updateCursor();
+    onSelect();
+  };
+
+  const handleCardMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    lastMouseRef.current = { x: e.clientX, y: e.clientY };
+  };
+
+  useEffect(() => {
+    if (!active) {
+      setIsHovered(false);
+      return;
+    }
+
+    let frameId: number;
+    const loop = () => {
+      updateCursor();
+      frameId = requestAnimationFrame(loop);
+    };
+    frameId = requestAnimationFrame(loop);
+
+    const onWindowMouseMove = (e: MouseEvent) => {
+      lastMouseRef.current = { x: e.clientX, y: e.clientY };
+    };
+
+    window.addEventListener("mousemove", onWindowMouseMove, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener("mousemove", onWindowMouseMove);
+    };
+  }, [active]);
+
   return (
     <button
-      onClick={onSelect}
-      className="group relative h-[400px] shrink-0 grow-0 overflow-clip rounded-3xl bg-white text-left"
+      ref={cardRef}
+      onClick={handleCardClick}
+      onMouseMove={handleCardMouseMove}
+      onMouseEnter={() => active && setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`group relative h-[400px] shrink-0 grow-0 overflow-clip rounded-3xl bg-white text-left ${
+        active ? "cursor-none" : "cursor-pointer"
+      }`}
       style={{
         flexBasis: active ? 566 : 200,
-        // First-view entrance: the card "grows" into view left-to-right via a
-        // clip-path wipe, staggered per card. Runs once; afterward only
-        // flex-basis (expand/collapse) keeps transitioning.
         clipPath: entered ? "inset(0 0 0 0)" : "inset(0 100% 0 0)",
         transition: `flex-basis 500ms cubic-bezier(0.4,0,0.2,1), clip-path 700ms cubic-bezier(0.16,1,0.3,1) ${enterDelayMs}ms`,
       }}
     >
-      {/* fixed-size photo — translateX (GPU) shifts it right when collapsed so the
-          subject stays framed; the img scales on hover independently. */}
       <div
         className="absolute inset-y-0 right-0 w-[566px] transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
         style={{ transform: active ? "translateX(0)" : "translateX(96px)" }}
@@ -49,7 +113,6 @@ function ProductCard({
         />
       </div>
 
-      {/* overlay gradient (CSS, not an image) — blue when active, dark when collapsed */}
       <div
         aria-hidden
         className="absolute inset-x-0 bottom-0 h-60 transition-[height] duration-300 ease-out group-hover:h-72"
@@ -60,22 +123,17 @@ function ProductCard({
         }}
       />
 
-      {/* glass content box — same reactive-glass treatment as the hero search panel
-          (.hero-search border + blur/saturate/brightness/contrast fill), so it picks
-          up whatever photo is behind it instead of a flat tint. */}
       <div
-        className="hero-search absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[width] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        className="hero-search glass-fill absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[width] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
         style={{
           width: active ? 280 : 184,
           backgroundColor: "rgba(0,0,0,0.3)",
-          backdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
-          WebkitBackdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
+          isolation: "isolate",
         }}
       >
         <p className="w-full text-xl font-semibold leading-7 tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
           {product.title}
         </p>
-        {/* subtitle + CTA reveal — grid-rows 0fr↔1fr animates height smoothly */}
         <div
           className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
           style={{ gridTemplateRows: active ? "1fr" : "0fr", opacity: active ? 1 : 0 }}
@@ -84,7 +142,7 @@ function ProductCard({
             <p className="w-full pt-2 text-base leading-6 text-white/80">
               {product.subtitle}
             </p>
-            <div className="flex items-center gap-0.5 pt-8 text-base font-semibold text-[#f4f8fc]">
+            <div className="flex items-center gap-0.5 pt-8 text-base font-semibold text-[#f4f8fc] md:hidden">
               Pelajari
               <img
                 src="/assets/cycle1/pelajari-icon.svg"
@@ -96,7 +154,6 @@ function ProductCard({
         </div>
       </div>
 
-      {/* auto-advance timer ring (active card only) */}
       <div
         className={`absolute bottom-6 right-6 transition-opacity duration-300 ${
           active ? "opacity-100" : "opacity-0"
@@ -119,6 +176,18 @@ function ProductCard({
           />
         </svg>
       </div>
+
+      <div
+        ref={cursorRef}
+        className={`pointer-events-none absolute left-0 top-0 z-30 flex size-28 items-center justify-center rounded-full border border-white/25 bg-white/[0.01] text-sm font-semibold text-white shadow-lg backdrop-blur-md transition-opacity duration-200 ${
+          active && isHovered ? "opacity-100" : "opacity-0"
+        }`}
+        style={{
+          isolation: "isolate",
+        }}
+      >
+        Pelajari
+      </div>
     </button>
   );
 }
@@ -128,7 +197,6 @@ export default function ProductSection() {
   const [hoverCategory, setHoverCategory] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [entered, setEntered] = useState(false);
-  const elapsedRef = useRef(0);
   const pausedRef = useRef(false);
   const progressRef = useRef<SVGCircleElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -139,9 +207,6 @@ export default function ProductSection() {
     PRODUCT_CATEGORIES.find((c) => c.key === activeCategory) ?? PRODUCT_CATEGORIES[0];
   const products = category.products;
 
-  // Parallax for the bg-clove pattern — written straight to the DOM inside a rAF
-  // (no React state) so scrolling never re-renders this section. Two shapes move
-  // at slightly different speeds off the section's own scroll position for depth.
   useEffect(() => {
     let raf = 0;
     const update = () => {
@@ -167,7 +232,6 @@ export default function ProductSection() {
     };
   }, []);
 
-  // First-view entrance: reveal once when the section scrolls into view, then stop watching.
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
@@ -184,25 +248,15 @@ export default function ProductSection() {
     return () => io.disconnect();
   }, []);
 
-  // Auto-advance the expanded card, timer ring written straight to the SVG via a ref.
-  useEffect(() => {
-    elapsedRef.current = 0;
-    if (progressRef.current) {
-      progressRef.current.style.strokeDashoffset = String(RING_CIRCUMFERENCE);
-    }
-    const interval = setInterval(() => {
-      if (pausedRef.current) return;
-      elapsedRef.current += TICK_MS;
-      const pct = Math.min(1, elapsedRef.current / AUTO_ADVANCE_MS);
-      if (progressRef.current) {
-        progressRef.current.style.strokeDashoffset = String(RING_CIRCUMFERENCE * (1 - pct));
-      }
-      if (pct >= 1) {
-        setActiveIndex((i) => (i + 1) % products.length);
-      }
-    }, TICK_MS);
-    return () => clearInterval(interval);
-  }, [activeIndex, products.length]);
+  useAutoplayProgress({
+    activeIndex,
+    count: products.length,
+    durationMs: AUTO_ADVANCE_MS,
+    circumference: RING_CIRCUMFERENCE,
+    progressRef,
+    pausedRef,
+    onAdvance: () => setActiveIndex((i) => (i + 1) % products.length),
+  });
 
   const selectCategory = (key: string) => {
     setActiveCategory(key);
@@ -210,8 +264,10 @@ export default function ProductSection() {
   };
 
   return (
-    <section ref={sectionRef} className="relative bg-gradient-to-b from-[#f4f8fc] to-[#e6f3ff] pb-40 pt-8">
-      {/* bg pattern — decorative, bleeds upward into the area above the section */}
+    <section
+      ref={sectionRef}
+      className="relative isolate bg-gradient-to-b from-[#f4f8fc] to-[#e6f3ff] pb-36 pt-8"
+    >
       <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-visible">
         <img
           ref={cloveARef}
@@ -228,7 +284,6 @@ export default function ProductSection() {
       </div>
 
       <div className="relative z-10 mx-auto w-[1280px]">
-        {/* title — fades up first */}
         <div
           className={`flex gap-10 transition-all duration-700 ease-out ${
             entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
@@ -244,7 +299,6 @@ export default function ProductSection() {
           </h2>
         </div>
 
-        {/* switcher + showcase */}
         <div className="mt-16 flex gap-10">
           <div
             className={`flex w-[240px] shrink-0 flex-col items-start gap-8 py-4 text-[#005caa] transition-all duration-700 ease-out ${
@@ -280,9 +334,6 @@ export default function ProductSection() {
           >
             <div className="flex gap-4">
               {products.map((product, i) => (
-                // Keyed by position (not title) so the cards persist across category
-                // switches — that lets flex-basis animate the expand/collapse while the
-                // content swaps, instead of remounting into the final state instantly.
                 <ProductCard
                   key={i}
                   product={product}

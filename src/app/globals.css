@@ -32,6 +32,15 @@ body {
   position: relative;
 }
 
+/* Reactive glass fill — samples the live content behind the element (works
+   across stacking contexts), blurs it, then lightly boosts saturation/contrast
+   so the fill picks up whatever banner colors ship. Shared by the hero widget
+   and the product cards so the recipe stays in one place. */
+.glass-fill {
+  backdrop-filter: blur(16px) saturate(1.25) brightness(1.02) contrast(1.02);
+  -webkit-backdrop-filter: blur(16px) saturate(1.25) brightness(1.02) contrast(1.02);
+}
+
 /* No `position` rule here on purpose — this is unlayered CSS, so it would beat
    Tailwind's `.absolute`/`.relative` utilities in the cascade regardless of
    source order. Callers must supply their own `relative`/`absolute` class. */
@@ -88,6 +97,104 @@ body {
   animation-delay: 150ms;
 }
 
+/* Hero CTA border beam — two comets of light chase around the pill's rim when
+   the button is hovered. Preferred path (modern browsers): a pair of pseudo-
+   element comets ride the rounded perimeter via `offset-path`, so the beam keeps
+   a constant speed and a fading tail the whole way round — not the drifting
+   sweep a rotating conic gives on a wide pill. The `padding + mask xor` recipe
+   (same as `.soft-light-border`) clips the glow to a thin ring, and the whole
+   thing is paused + invisible until `.hero-cta:hover`, so it costs nothing at
+   rest. Fallback + reduced-motion (below): a calm static glowing ring. */
+.hero-cta-beam {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 350ms ease;
+  background: conic-gradient(
+    rgba(125, 211, 252, 0.35),
+    rgba(224, 246, 255, 0.9),
+    rgba(125, 211, 252, 0.35),
+    rgba(224, 246, 255, 0.9),
+    rgba(125, 211, 252, 0.35)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.hero-cta:hover .hero-cta-beam {
+  opacity: 1;
+}
+
+@supports (offset-path: rect(0 auto auto 0 round 24px)) {
+  /* Drop the static ring; the travelling comets take over. */
+  .hero-cta-beam {
+    background: none;
+  }
+
+  .hero-cta-beam::before,
+  .hero-cta-beam::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 74px;
+    height: 6px;
+    border-radius: 6px;
+    /* `round 999px` clamps to the pill radius, so this tracks any button width. */
+    offset-path: rect(0 auto auto 0 round 999px);
+    offset-rotate: auto;
+    background: linear-gradient(
+      to right,
+      rgba(125, 211, 252, 0) 0%,
+      rgba(125, 211, 252, 0.5) 55%,
+      rgba(224, 246, 255, 1) 90%,
+      #ffffff 100%
+    );
+    animation: hero-cta-beam-travel 2.4s linear infinite;
+    animation-play-state: paused;
+  }
+
+  /* Second comet starts half a lap ahead → the two sit on opposite sides. */
+  .hero-cta-beam::after {
+    animation-delay: -1.2s;
+  }
+
+  .hero-cta:hover .hero-cta-beam::before,
+  .hero-cta:hover .hero-cta-beam::after {
+    animation-play-state: running;
+  }
+}
+
+@keyframes hero-cta-beam-travel {
+  to {
+    offset-distance: 100%;
+  }
+}
+
+/* Reduced motion: no chasing comet — fade in a calm, symmetric glowing ring so
+   the hover still reads as "lit up" without any perimeter travel. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-cta-beam {
+    background: conic-gradient(
+      rgba(125, 211, 252, 0.35),
+      rgba(224, 246, 255, 0.9),
+      rgba(125, 211, 252, 0.35),
+      rgba(224, 246, 255, 0.9),
+      rgba(125, 211, 252, 0.35)
+    );
+  }
+  .hero-cta-beam::before,
+  .hero-cta-beam::after {
+    display: none;
+  }
+}
+
 @keyframes scroll-cue-dot {
   0% {
     opacity: 0;
@@ -107,4 +214,91 @@ body {
 
 .animate-scroll-cue-dot {
   animation: scroll-cue-dot 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Promo confetti — pure CSS motion; pieces are generated in Confetti.tsx.
+   Three nested animations compose per piece: the outer element falls + fades,
+   the middle sways side to side, the inner shape flips in 3D. */
+.confetti-piece {
+  position: absolute;
+  top: 0;
+  will-change: transform, opacity;
+  animation: confetti-fall var(--confetti-dur) linear var(--confetti-delay) infinite;
+}
+
+.confetti-sway {
+  display: block;
+  will-change: transform;
+  animation: confetti-sway var(--confetti-sway-dur) ease-in-out var(--confetti-delay) infinite alternate;
+}
+
+.confetti-spin {
+  display: block;
+  will-change: transform;
+  animation: confetti-spin var(--confetti-spin-dur) linear var(--confetti-delay) infinite;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(var(--confetti-fall));
+    opacity: 0;
+  }
+}
+
+@keyframes confetti-sway {
+  from {
+    transform: translateX(calc(var(--confetti-sway) * -1));
+  }
+  to {
+    transform: translateX(var(--confetti-sway));
+  }
+}
+
+@keyframes confetti-spin {
+  from {
+    transform: perspective(500px) rotate3d(var(--sx), var(--sy), var(--sz), 0deg);
+  }
+  to {
+    transform: perspective(500px) rotate3d(var(--sx), var(--sy), var(--sz), 360deg);
+  }
+}
+
+/* Reduced motion: freeze the pieces mid-flight (their negative delay leaves a
+   static, scattered spread — much like the original still artwork). */
+@media (prefers-reduced-motion: reduce) {
+  .confetti-piece,
+  .confetti-sway,
+  .confetti-spin {
+    animation-play-state: paused;
+  }
+}
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }
