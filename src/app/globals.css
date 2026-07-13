@@ -32,10 +32,9 @@ body {
   position: relative;
 }
 
-.hero-search {
-  position: relative;
-}
-
+/* No `position` rule here on purpose — this is unlayered CSS, so it would beat
+   Tailwind's `.absolute`/`.relative` utilities in the cascade regardless of
+   source order. Callers must supply their own `relative`/`absolute` class. */
 .hero-search::before {
   content: "";
   position: absolute;

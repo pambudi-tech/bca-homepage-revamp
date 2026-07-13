@@ -367,14 +367,14 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
           aria-hidden
           className="absolute inset-0 rounded-b-3xl bg-gradient-to-b from-[#00b5f0] to-[#005caa]"
         />
-        <div className="absolute bottom-6 left-8 flex h-14 flex-col items-start justify-center gap-2">
+        <div className="absolute bottom-5 left-8 flex h-14 flex-col items-start justify-center gap-2">
           <p className="text-lg font-semibold text-white underline [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
             Kurs Hari Ini
           </p>
         </div>
 
         <div
-          className="absolute bottom-6 left-[249px] right-5 h-14 overflow-hidden"
+          className="absolute bottom-5 left-[249px] right-5 h-14 overflow-hidden"
           style={{
             WebkitMaskImage:
               "linear-gradient(to right, transparent 0%, black 40px, black calc(100% - 40px), transparent 100%)",
@@ -423,14 +423,14 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
         <button
           onClick={() => scrollByCard(-1)}
           aria-label="Kurs sebelumnya"
-          className="absolute bottom-8 right-[1047px] flex size-10 items-center justify-center rounded-full bg-black/20 transition-colors hover:bg-black/40"
+          className="absolute bottom-7 right-[1047px] flex size-10 items-center justify-center rounded-full bg-black/20 transition-colors hover:bg-black/40"
         >
           <img src="/assets/cycle1/chevron-left.svg" alt="" className="size-6" />
         </button>
         <button
           onClick={() => scrollByCard(1)}
           aria-label="Kurs berikutnya"
-          className="absolute bottom-8 right-5 flex size-10 items-center justify-center rounded-full bg-black/20 backdrop-blur-md transition-colors hover:bg-black/40"
+          className="absolute bottom-7 right-5 flex size-10 items-center justify-center rounded-full bg-black/20 backdrop-blur-md transition-colors hover:bg-black/40"
         >
           <img src="/assets/cycle1/chevron-right.svg" alt="" className="size-6" />
         </button>

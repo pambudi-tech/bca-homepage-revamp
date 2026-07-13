@@ -4,6 +4,7 @@ import Navbar from "@/components/home/Navbar";
 import ScrollCue from "@/components/home/ScrollCue";
 import ProductSection from "@/components/home/ProductSection";
 import MyBcaSection from "@/components/home/MyBcaSection";
+import PromoSection from "@/components/home/PromoSection";
 import { getKursHariIni } from "@/lib/kurs";
 
 export default async function Home() {
@@ -23,6 +24,7 @@ export default async function Home() {
       <ScrollCue />
       <ProductSection />
       <MyBcaSection />
+      <PromoSection />
     </main>
   );
 }
