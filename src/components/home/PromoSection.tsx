@@ -1,4 +1,5 @@
 import { PROMOS, getPromoBadge, getPromoTimestamp, type PromoBadgeKey } from "./promo-data";
+import PromoSlider from "./PromoSlider";
 
 const RIBBON_STYLE: Record<Exclude<PromoBadgeKey, "default">, { from: string; to: string; shadow: string; text: string }> = {
   mostLiked: { from: "#00b5f0", to: "#00a5db", shadow: "#01759a", text: "#ffffff" },
@@ -153,7 +154,7 @@ export default function PromoSection() {
   const now = new Date();
 
   return (
-    <section className="relative overflow-clip bg-gradient-to-b from-[#eef6fd] to-[#dcecfb] pb-24 pt-8">
+    <section className="relative overflow-clip bg-gradient-to-b from-[#eef6fd] to-[#dcecfb] pb-24 pt-48">
       {/* clove pattern — left & right, bleeding off the edges */}
       <img
         src="/assets/promo/bg-clove-product-1.svg"
@@ -193,6 +194,8 @@ export default function PromoSection() {
             className="pointer-events-none absolute right-[40px] top-[-72px] h-[260px] w-auto"
           />
         </div>
+
+        <PromoSlider />
 
         <div className="mt-16 flex flex-wrap content-center items-start gap-6">
           {PROMOS.map((promo) => (

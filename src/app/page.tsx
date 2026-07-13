@@ -15,7 +15,7 @@ export default async function Home() {
       <Navbar />
       <div className="relative z-10">
         <HeroSection />
-        <div className="absolute left-1/2 top-[504px] w-[1280px] -translate-x-1/2">
+        <div className="absolute left-1/2 top-[484px] w-[1280px] -translate-x-1/2">
           <HeroWidget kurs={kurs} />
         </div>
       </div>

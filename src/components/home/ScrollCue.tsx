@@ -10,7 +10,7 @@ export default function ScrollCue() {
     const update = () => {
       raf = 0;
       if (ref.current) {
-        ref.current.style.opacity = window.scrollY > 0 ? "0" : "1";
+        ref.current.style.opacity = window.scrollY > 320 ? "0" : "1";
       }
     };
     const onScroll = () => {

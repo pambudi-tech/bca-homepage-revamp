@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import SlideDots, { DOT_CIRCUMFERENCE } from "./SlideDots";
 
 type SlideCta = { label: string; icon: string; variant: "primary" | "secondary" };
 type Slide = { image: string; alt: string; title: string; cta: SlideCta };
@@ -29,25 +30,6 @@ const SLIDES: Slide[] = [
 const SLIDES_COUNT = SLIDES.length;
 const SLIDE_DURATION_MS = 8000;
 const TICK_MS = 50;
-const DOT_RADIUS = 14;
-const DOT_CIRCUMFERENCE = 2 * Math.PI * DOT_RADIUS;
-
-function PlayIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="white" aria-hidden>
-      <path d="M2 1.2v9.6l8-4.8-8-4.8z" />
-    </svg>
-  );
-}
-
-function PauseIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="white" aria-hidden>
-      <rect x="2" y="1.5" width="2.6" height="9" />
-      <rect x="7.4" y="1.5" width="2.6" height="9" />
-    </svg>
-  );
-}
 
 function HeroCta({ label, icon, variant }: SlideCta) {
   const isSecondary = variant === "secondary";
@@ -118,7 +100,7 @@ export default function HeroSection() {
   };
 
   return (
-    <div className="relative h-[640px] overflow-clip bg-[#005caa]">
+    <div className="relative h-[620px] overflow-clip bg-[#005caa]">
       <div className="absolute inset-0 bg-black">
         {SLIDES.map((slide, i) => (
           <img
@@ -137,94 +119,46 @@ export default function HeroSection() {
         />
       </div>
 
-      <div className="absolute bottom-[192px] left-[calc(50%-408px)] flex w-[464px] -translate-x-1/2 flex-col items-start justify-end gap-8">
-        <div key={activeSlide} className="flex flex-col items-start gap-8 w-full">
-          <h1 className="animate-hero-title w-full text-[40px] font-semibold leading-[48px] text-white tracking-[-0.8px]">
-            {SLIDES[activeSlide].title}
-          </h1>
-          <div className="animate-hero-cta">
-            <HeroCta {...SLIDES[activeSlide].cta} />
+      <div className="absolute bottom-[192px] left-1/2 flex w-[1280px] -translate-x-1/2 items-end justify-between">
+        <div className="flex w-[420px] flex-col items-start gap-8">
+          <div key={activeSlide} className="flex flex-col items-start gap-8 w-full">
+            <h1 className="animate-hero-title w-full text-[36px] font-semibold leading-[48px] text-white tracking-[-0.8px]">
+              {SLIDES[activeSlide].title}
+            </h1>
+            <div className="animate-hero-cta">
+              <HeroCta {...SLIDES[activeSlide].cta} />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="absolute bottom-[192px] right-[calc(50%-640px)] flex items-center gap-1 rounded-[40px] bg-[rgba(0,0,0,0.5)] p-1 backdrop-blur-[4px]">
-        <button
-          onClick={goPrev}
-          aria-label="Sebelumnya"
-          className="flex size-10 items-center justify-center rounded-full transition-colors hover:bg-white/20"
-        >
-          <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-6" />
-        </button>
-        <div className="flex items-center gap-0">
-          {Array.from({ length: SLIDES_COUNT }).map((_, i) => {
-            const isActive = i === activeSlide;
-            if (!isActive) {
-              return (
-                <button
-                  key={i}
-                  aria-label={`Slide ${i + 1}`}
-                  onClick={() => goTo(i)}
-                  className="flex size-8 items-center justify-center"
-                >
-                  <span className="size-[10px] rounded-full bg-white/40 transition-colors hover:bg-white/70" />
-                </button>
-              );
-            }
-            const showPauseIcon = !paused && hoveringActive;
-            const showIcon = showPauseIcon || paused;
-            return (
-              <button
-                key={i}
-                aria-label={paused ? "Lanjutkan carousel" : "Jeda carousel"}
-                onClick={() => setPaused((p) => !p)}
-                onMouseEnter={() => setHoveringActive(true)}
-                onMouseLeave={() => setHoveringActive(false)}
-                className="relative flex size-8 items-center justify-center"
-              >
-                <svg viewBox="0 0 32 32" className="absolute inset-0 size-8 -rotate-90">
-                  <circle
-                    cx="16"
-                    cy="16"
-                    r={DOT_RADIUS}
-                    fill="none"
-                    stroke="rgba(255,255,255,0.3)"
-                    strokeWidth="2"
-                  />
-                  <circle
-                    ref={progressCircleRef}
-                    cx="16"
-                    cy="16"
-                    r={DOT_RADIUS}
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeDasharray={DOT_CIRCUMFERENCE}
-                    strokeDashoffset={DOT_CIRCUMFERENCE}
-                    style={{ transition: "stroke-dashoffset 50ms linear" }}
-                  />
-                </svg>
-                {showIcon ? (
-                  paused ? (
-                    <PlayIcon />
-                  ) : (
-                    <PauseIcon />
-                  )
-                ) : (
-                  <span className="size-[10px] rounded-full bg-white" />
-                )}
-              </button>
-            );
-          })}
+        <div className="flex items-center gap-1 rounded-[40px] bg-[rgba(0,0,0,0.5)] p-1 backdrop-blur-[4px]">
+          <button
+            onClick={goPrev}
+            aria-label="Sebelumnya"
+            className="flex size-10 items-center justify-center rounded-full transition-colors hover:bg-white/20"
+          >
+            <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-6" />
+          </button>
+          <SlideDots
+            count={SLIDES_COUNT}
+            activeIndex={activeSlide}
+            paused={paused}
+            onSelect={goTo}
+            onTogglePause={() => setPaused((p) => !p)}
+            onActiveHoverChange={setHoveringActive}
+            progressRef={progressCircleRef}
+            inactiveColor="rgba(255,255,255,0.4)"
+            inactiveHoverColor="rgba(255,255,255,0.7)"
+            showPill={false}
+          />
+          <button
+            onClick={goNext}
+            aria-label="Berikutnya"
+            className="flex size-10 items-center justify-center rounded-full transition-colors hover:bg-white/20"
+          >
+            <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-6" />
+          </button>
         </div>
-        <button
-          onClick={goNext}
-          aria-label="Berikutnya"
-          className="flex size-10 items-center justify-center rounded-full transition-colors hover:bg-white/20"
-        >
-          <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-6" />
-        </button>
       </div>
 
       <div
