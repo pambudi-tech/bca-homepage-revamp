@@ -16,6 +16,8 @@ import { useLenis } from "@/components/SmoothScroll";
 // point, so PromoSection can stay a Server Component.
 
 // Tuning constants.
+const GRADIENT_TOP = 0x1179d1; // deeper BCA blue (top of the symbol)
+const GRADIENT_BOTTOM = 0x00b5f0; // BCA cyan (bottom of the symbol)
 const BASE_SPIN = 0.35; // rad/s, idle auto-rotation
 const SCROLL_SPIN_SCALE = 0.05; // |lenis.velocity| -> extra rad/s
 const MAX_SCROLL_SPIN = 7; // clamp so a fast flick can't blur it out
@@ -121,21 +123,42 @@ export default function PercentGlass() {
       geometry.computeVertexNormals();
       geometry.center();
 
-      // --- glass material: white sparkle from env, royal-blue body from
-      // attenuation. attenuationColor is kept vivid/high-green (not indigo) so
-      // it reads as royal blue rather than picking up a purple cast. ---
+      // Bake a vertical BCA-blue gradient (#1179D1 top -> #00B5F0 bottom) into
+      // the "color" vertex attribute. It's baked along local Y, so the gradient
+      // stays put while the mesh spins around Y. Colors from THREE.Color are in
+      // linear working space, which is exactly what vertex colors expect.
+      geometry.computeBoundingBox();
+      const bbox = geometry.boundingBox!;
+      const spanY = bbox.max.y - bbox.min.y || 1;
+      const cTop = new THREE.Color(GRADIENT_TOP);
+      const cBottom = new THREE.Color(GRADIENT_BOTTOM);
+      const posAttr = geometry.attributes.position;
+      const colorArr = new Float32Array(posAttr.count * 3);
+      const tmpColor = new THREE.Color();
+      for (let i = 0; i < posAttr.count; i++) {
+        const t = (posAttr.getY(i) - bbox.min.y) / spanY; // 0 bottom -> 1 top
+        tmpColor.copy(cBottom).lerp(cTop, t);
+        colorArr[i * 3] = tmpColor.r;
+        colorArr[i * 3 + 1] = tmpColor.g;
+        colorArr[i * 3 + 2] = tmpColor.b;
+      }
+      geometry.setAttribute("color", new THREE.BufferAttribute(colorArr, 3));
+
+      // --- glass material: the gradient rides on vertexColors; transmission is
+      // eased back a touch so the two-tone body reads while it stays glassy. ---
       const material = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(0x3c78ff),
+        vertexColors: true,
+        color: 0xffffff,
         metalness: 0,
-        roughness: 0.05,
-        transmission: 1,
+        roughness: 0.06,
+        transmission: 0.82,
         ior: 1.45,
-        thickness: 1.6,
-        attenuationColor: new THREE.Color(0x1a66e6),
-        attenuationDistance: 1.3,
+        thickness: 1.3,
+        attenuationColor: new THREE.Color(GRADIENT_TOP),
+        attenuationDistance: 2.2,
         clearcoat: 1,
         clearcoatRoughness: 0.08,
-        envMapIntensity: 1.5,
+        envMapIntensity: 1.4,
         specularIntensity: 1,
       });
 
