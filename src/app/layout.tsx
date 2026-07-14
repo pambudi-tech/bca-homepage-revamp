@@ -22,6 +22,17 @@ const bcaSans = localFont({
 export const metadata: Metadata = {
   title: "BCA - Senantiasa di Sisi Anda",
   description: "Prototype revamp homepage BCA.co.id",
+  openGraph: {
+    title: "BCA - Senantiasa di Sisi Anda",
+    description: "Prototype revamp homepage BCA.co.id",
+    images: [{ url: "/opengraph-bcacoid.png", width: 1200, height: 640 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BCA - Senantiasa di Sisi Anda",
+    description: "Prototype revamp homepage BCA.co.id",
+    images: ["/opengraph-bcacoid.png"],
+  },
 };
 
 export const viewport: Viewport = {
