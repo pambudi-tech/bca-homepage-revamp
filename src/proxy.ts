@@ -14,6 +14,12 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Allow the social share thumbnail to be fetched without the gate,
+  // so link previews (WhatsApp, X, Facebook) can load it.
+  if (request.nextUrl.pathname === "/opengraph-bcacoid.png") {
+    return NextResponse.next();
+  }
+
   const cookie = request.cookies.get(AUTH_COOKIE_NAME)?.value;
 
   if (cookie === password) {
