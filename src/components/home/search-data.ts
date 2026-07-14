@@ -240,3 +240,77 @@ export function getSearchRecommendations(keyword: string): SearchRecommendations
 export function bcaSearchResultUrl(keyword: string): string {
   return `https://www.bca.co.id/id/search-result?keyword=${encodeURIComponent(keyword.trim())}`;
 }
+
+/* ---------------------------------------------------------------------------
+ * Empty state (field focused, nothing typed yet). Distinct from the results
+ * state: it guides the user instead of showing filtered products/info.
+ * ------------------------------------------------------------------------- */
+
+/** Trending keyword chips. Clicking one fills the field and runs the search. */
+export const POPULAR_SEARCHES: string[] = [
+  "Buka Rekening",
+  "Kurs Hari Ini",
+  "Promo Kartu Kredit",
+  "KPR BCA",
+  "Aktivasi myBCA",
+  "Lokasi ATM",
+];
+
+/** Guided entry points — richer than a bare chip, but capped at 4 to stay light. */
+export type PopularTopic = { id: string; label: string; keyword: string; icon: ProductIcon };
+
+export const POPULAR_TOPICS: PopularTopic[] = [
+  { id: "topic-rekening", label: "Buka rekening & tabungan", keyword: "rekening", icon: "wallet" },
+  { id: "topic-kartu", label: "Kartu kredit & Paylater", keyword: "kartu", icon: "card" },
+  { id: "topic-kredit", label: "KPR & kredit kendaraan", keyword: "kpr", icon: "house" },
+  { id: "topic-investasi", label: "Investasi & reksa dana", keyword: "investasi", icon: "chart" },
+];
+
+/* ---------------------------------------------------------------------------
+ * Recent searches — persisted in localStorage. Pure helpers; the component
+ * owns the in-memory copy and calls these to read/update the stored list.
+ * ------------------------------------------------------------------------- */
+
+const RECENT_KEY = "bca:recent-searches";
+const RECENT_MAX = 6;
+
+export function getRecentSearches(): string[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.localStorage.getItem(RECENT_KEY);
+    const parsed: unknown = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((x): x is string => typeof x === "string").slice(0, RECENT_MAX);
+  } catch {
+    return [];
+  }
+}
+
+function persistRecent(list: string[]): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(RECENT_KEY, JSON.stringify(list.slice(0, RECENT_MAX)));
+  } catch {
+    /* storage unavailable (private mode / quota) — recents just won't persist */
+  }
+}
+
+/** Returns a new list with `term` moved to the front (deduped, capped). */
+export function addRecentSearch(list: string[], term: string): string[] {
+  const t = term.trim();
+  if (!t) return list;
+  const next = [t, ...list.filter((x) => x.toLowerCase() !== t.toLowerCase())].slice(0, RECENT_MAX);
+  persistRecent(next);
+  return next;
+}
+
+export function removeRecentSearch(list: string[], term: string): string[] {
+  const next = list.filter((x) => x.toLowerCase() !== term.toLowerCase());
+  persistRecent(next);
+  return next;
+}
+
+export function clearRecentSearches(): string[] {
+  persistRecent([]);
+  return [];
+}

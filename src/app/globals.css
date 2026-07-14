@@ -32,6 +32,12 @@ body {
   position: relative;
 }
 
+/* Hide the horizontal scrollbar on the mobile quick-action rail while keeping
+   it swipeable. `scrollbar-width: none` (Firefox) is set inline via a utility. */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* No `position` rule here on purpose — this is unlayered CSS, so it would beat
    Tailwind's `.absolute`/`.relative` utilities in the cascade regardless of
    source order. Callers must supply their own `relative`/`absolute` class. */
@@ -271,6 +277,37 @@ body {
   .confetti-sway,
   .confetti-spin {
     animation-play-state: paused;
+  }
+}
+
+/* Mobile menu view transitions — Apple-style fade + horizontal slide. Going
+   deeper (forward) slides the incoming view in from the right while the old
+   one leaves to the left; going back reverses it. Expo ease-out for a soft
+   settle. Both layers run simultaneously for a true cross-fade. */
+@keyframes menu-enter-fwd {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes menu-exit-fwd {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(-40px); }
+}
+@keyframes menu-enter-back {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes menu-exit-back {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(40px); }
+}
+.menu-enter-fwd { animation: menu-enter-fwd 420ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.menu-exit-fwd { animation: menu-exit-fwd 420ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.menu-enter-back { animation: menu-enter-back 420ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.menu-exit-back { animation: menu-exit-back 420ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-enter-fwd, .menu-exit-fwd, .menu-enter-back, .menu-exit-back {
+    animation-duration: 1ms;
   }
 }
 

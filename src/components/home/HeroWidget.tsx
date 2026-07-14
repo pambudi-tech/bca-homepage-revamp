@@ -5,7 +5,14 @@ import type { KursEntry } from "@/lib/kurs";
 import { useLenis } from "@/components/SmoothScroll";
 import Confetti from "./Confetti";
 import SearchRecommendation from "./SearchRecommendation";
-import { getSearchRecommendations } from "./search-data";
+import {
+  addRecentSearch,
+  bcaSearchResultUrl,
+  clearRecentSearches,
+  getRecentSearches,
+  getSearchRecommendations,
+  removeRecentSearch,
+} from "./search-data";
 
 // Gap (px) between the viewport top and the widget once the search is focused.
 const SEARCH_TOP_GAP = 56;
@@ -135,6 +142,7 @@ export default function HeroWidget({
   const [searchFocused, setSearchFocused] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [hoveredAction, setHoveredAction] = useState<number | null>(null);
+  const [recent, setRecent] = useState<string[]>([]);
   const [tickerPaused, setTickerPaused] = useState(false);
   const [order, setOrder] = useState<number[]>(() => kurs.map((_, i) => i));
   const rootRef = useRef<HTMLDivElement>(null);
@@ -170,6 +178,25 @@ export default function HeroWidget({
   useEffect(() => {
     onSearchActiveChange?.(searchFocused);
   }, [searchFocused, onSearchActiveChange]);
+
+  // Recent searches live in localStorage; load the stored copy on mount.
+  useEffect(() => {
+    setRecent(getRecentSearches());
+  }, []);
+
+  // Chip / topic / recent click → fill the field (shows the results state).
+  const selectQuery = (term: string) => setSearchValue(term);
+  const removeRecent = (term: string) => setRecent((r) => removeRecentSearch(r, term));
+  const clearRecent = () => setRecent(clearRecentSearches());
+
+  // A committed search (Enter or "Lihat semua hasil") — record it and open
+  // BCA's real search-result page.
+  const submitSearch = (term: string) => {
+    const t = term.trim();
+    if (!t) return;
+    setRecent((r) => addRecentSearch(r, t));
+    window.open(bcaSearchResultUrl(t), "_blank", "noopener,noreferrer");
+  };
 
   useEffect(() => {
     if (!showRecommendation) return;
@@ -311,6 +338,10 @@ export default function HeroWidget({
                   onBlur={() => setSearchFocused(false)}
                   onKeyDown={(e) => {
                     if (e.key === "Escape") e.currentTarget.blur();
+                    if (e.key === "Enter") {
+                      submitSearch(searchValue);
+                      e.currentTarget.blur();
+                    }
                   }}
                   className="relative z-10 h-7 w-full bg-transparent px-6 text-base font-semibold text-white focus:outline-none"
                 />
@@ -318,7 +349,8 @@ export default function HeroWidget({
               </div>
               <button
                 aria-label="Cari"
-                className="relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full bg-white transition-transform hover:scale-105"
+                onClick={() => submitSearch(searchValue)}
+                className="relative z-10 flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white transition-transform hover:scale-105"
               >
                 <img src="/assets/cycle1/outline-search-1.svg" alt="" className="size-6" />
               </button>
@@ -538,6 +570,10 @@ export default function HeroWidget({
           <SearchRecommendation
             recommendations={recommendations}
             keyword={searchValue}
+            recent={recent}
+            onSelectQuery={selectQuery}
+            onRemoveRecent={removeRecent}
+            onClearRecent={clearRecent}
             onMouseDown={(e) => e.preventDefault()}
           />
         </div>

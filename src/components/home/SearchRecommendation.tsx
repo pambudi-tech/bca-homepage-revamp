@@ -2,6 +2,8 @@
 
 import {
   INFO_CATEGORY_META,
+  POPULAR_SEARCHES,
+  POPULAR_TOPICS,
   bcaSearchResultUrl,
   type InfoCategory,
   type ProductIcon,
@@ -123,6 +125,23 @@ function ArrowDiagonalIcon({ className }: IconProps) {
   );
 }
 
+function ClockIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7.5V12l3 2" />
+    </svg>
+  );
+}
+
+function CloseIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+      <path d="M6 6l12 12M18 6L6 18" />
+    </svg>
+  );
+}
+
 const PRODUCT_ICONS: Record<ProductIcon, (p: IconProps) => React.ReactElement> = {
   mybca: WalletIcon, // overridden by the logo image below; kept for type completeness
   wallet: WalletIcon,
@@ -143,12 +162,26 @@ const INFO_ICONS: Record<InfoCategory, (p: IconProps) => React.ReactElement> = {
 type Props = {
   recommendations: SearchRecommendations;
   keyword: string;
+  recent: string[];
+  /** Fills the field with a term (from a popular chip / topic / recent item). */
+  onSelectQuery: (term: string) => void;
+  onRemoveRecent: (term: string) => void;
+  onClearRecent: () => void;
   /** Keeps the input focused when interacting with the panel. */
   onMouseDown?: (e: React.MouseEvent) => void;
 };
 
-export default function SearchRecommendation({ recommendations, keyword, onMouseDown }: Props) {
+export default function SearchRecommendation({
+  recommendations,
+  keyword,
+  recent,
+  onSelectQuery,
+  onRemoveRecent,
+  onClearRecent,
+  onMouseDown,
+}: Props) {
   const { products, information } = recommendations;
+  const isEmpty = keyword.trim() === "";
   const hasResults = products.length > 0 || information.length > 0;
   const seeAllUrl = bcaSearchResultUrl(keyword || "");
 
@@ -157,7 +190,90 @@ export default function SearchRecommendation({ recommendations, keyword, onMouse
       onMouseDown={onMouseDown}
       className="overflow-hidden rounded-xl border border-[#e9ecef] bg-white shadow-[0px_10px_6px_rgba(204,204,204,0.07),0px_5px_5px_rgba(204,204,204,0.12),0px_1px_2px_rgba(204,204,204,0.14)]"
     >
-      {hasResults ? (
+      {isEmpty ? (
+        <div className="flex flex-col gap-6 p-6">
+          {recent.length > 0 && (
+            <section className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <p className="text-base font-bold text-[#26292c]">Pencarian Terakhir</p>
+                <button
+                  type="button"
+                  onClick={onClearRecent}
+                  className="text-sm font-semibold text-[#005caa] hover:underline"
+                >
+                  Hapus semua
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {recent.map((term) => (
+                  <span
+                    key={term}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[#e9ecef] py-1.5 pl-3.5 pr-2 transition-colors hover:border-[#005caa] hover:bg-[#f4f8fc]"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => onSelectQuery(term)}
+                      className="flex items-center gap-2 text-sm font-semibold text-[#26292c]"
+                    >
+                      <ClockIcon className="size-4 text-[#8b95a1]" />
+                      {term}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onRemoveRecent(term)}
+                      aria-label={`Hapus ${term}`}
+                      className="flex size-4 items-center justify-center rounded-full text-[#8b95a1] hover:text-[#26292c]"
+                    >
+                      <CloseIcon className="size-3.5" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            </section>
+          )}
+
+          <section className="flex flex-col gap-3">
+            <p className="text-base font-bold text-[#26292c]">Pencarian Populer</p>
+            <div className="flex flex-wrap gap-2">
+              {POPULAR_SEARCHES.map((term) => (
+                <button
+                  key={term}
+                  type="button"
+                  onClick={() => onSelectQuery(term)}
+                  className="inline-flex items-center gap-2 rounded-full border border-[#e9ecef] px-3.5 py-1.5 text-sm font-semibold text-[#26292c] transition-colors hover:border-[#005caa] hover:bg-[#f4f8fc] hover:text-[#005caa]"
+                >
+                  <SearchIcon className="size-4 text-[#8b95a1]" />
+                  {term}
+                </button>
+              ))}
+            </div>
+          </section>
+
+          <section className="flex flex-col gap-3">
+            <p className="text-base font-bold text-[#26292c]">Topik Populer</p>
+            <div className="grid grid-cols-2 gap-2">
+              {POPULAR_TOPICS.map((topic) => {
+                const Icon = PRODUCT_ICONS[topic.icon];
+                return (
+                  <button
+                    key={topic.id}
+                    type="button"
+                    onClick={() => onSelectQuery(topic.keyword)}
+                    className="group flex items-center gap-3 rounded-xl border border-[#e9ecef] p-3 text-left transition-colors hover:border-[#005caa] hover:bg-[#f4f8fc]"
+                  >
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#e6f3ff] text-[#005caa]">
+                      <Icon className="size-5" />
+                    </span>
+                    <span className="text-sm font-semibold text-[#26292c] group-hover:text-[#005caa]">
+                      {topic.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+        </div>
+      ) : hasResults ? (
         <div className="flex flex-col gap-8 p-6">
           {products.length > 0 && (
             <section className="flex flex-col gap-3">
@@ -251,20 +367,24 @@ export default function SearchRecommendation({ recommendations, keyword, onMouse
       )}
 
       <div className="flex items-center justify-between border-t border-[#e9ecef]">
-        <a
-          href={seeAllUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex flex-1 items-center gap-3 p-5 text-sm font-semibold text-[#005caa] transition-colors hover:bg-[#f4f8fc]"
-        >
-          <SearchIcon className="size-6" />
-          Lihat semua hasil
-        </a>
+        {!isEmpty && (
+          <a
+            href={seeAllUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-1 items-center gap-3 p-5 text-sm font-semibold text-[#005caa] transition-colors hover:bg-[#f4f8fc]"
+          >
+            <SearchIcon className="size-6" />
+            Lihat semua hasil
+          </a>
+        )}
         <a
           href="https://www.bca.co.id/id/bantuan/pusat-informasi"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex flex-1 items-center gap-3 border-l border-[#e9ecef] p-5 transition-colors hover:bg-[#f4f8fc]"
+          className={`flex flex-1 items-center gap-3 p-5 transition-colors hover:bg-[#f4f8fc] ${
+            isEmpty ? "" : "border-l border-[#e9ecef]"
+          }`}
         >
           <HeadphoneIcon className="size-6 text-[#26292c]" />
           <span className="flex items-center gap-1">

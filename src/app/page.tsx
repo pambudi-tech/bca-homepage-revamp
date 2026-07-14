@@ -18,8 +18,9 @@ export default async function Home() {
       <div className="relative z-10 bg-[#f4f8fc]">
         <Navbar />
         <HeroArea kurs={kurs} />
-        {/* spacer for the hero widget that overflows the hero section (496 + 288 - 640) */}
-        <div className="h-[136px]" />
+        {/* spacer for the desktop hero widget that overflows the hero section
+            (496 + 288 - 640). Mobile lays the widget out in normal flow. */}
+        <div className="h-0 xl:h-[136px]" />
         <ScrollCue />
         <ProductSection />
         <MyBcaSection />

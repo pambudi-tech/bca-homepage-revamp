@@ -4,33 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import SlideDots, { DOT_CIRCUMFERENCE } from "./SlideDots";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useLenis } from "@/components/SmoothScroll";
+import { SLIDES, SLIDES_COUNT, SLIDE_DURATION_MS, type SlideCta } from "./hero-slides";
 
-type SlideCta = { label: string; icon: string; variant: "primary" | "secondary" };
-type Slide = { image: string; alt: string; title: string; cta: SlideCta };
-
-const SLIDES: Slide[] = [
-  {
-    image: "/assets/cycle1/hero-image.webp",
-    alt: "Keluarga BCA",
-    title: "Capai Kebebasan Finansial Lebih Dini bersama BCA",
-    cta: { label: "Download myBCA", icon: "/assets/cycle1/download-icon.svg", variant: "primary" },
-  },
-  {
-    image: "/assets/cycle1/hero-banner.webp",
-    alt: "BCA Presale The Weeknd",
-    title: 'BCA Presale : The Weeknd "After Hour Til Down Tour" - Jakarta',
-    cta: { label: "Dapatkan Tiket", icon: "/assets/cycle1/download-icon.svg", variant: "secondary" },
-  },
-  {
-    image: "/assets/cycle1/hero-banner-jrf.webp",
-    alt: "Terus Nabung buat Kejar Tiket myBCA JRF 2026",
-    title: "Terus Nabung buat Kejar Tiket myBCA JRF 2026!",
-    cta: { label: "Pelajari Lebih Lanjut", icon: "/assets/cycle1/download-icon.svg", variant: "secondary" },
-  },
-];
-
-const SLIDES_COUNT = SLIDES.length;
-const SLIDE_DURATION_MS = 8000;
 const PARALLAX_SPEED = 0.45;
 
 function HeroCta({ label, icon, variant }: SlideCta) {

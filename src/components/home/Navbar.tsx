@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { MEGAMENU } from "./megamenu-data";
 import MegaMenuPanel from "./MegaMenuPanel";
+import MobileNav from "./MobileNav";
 
 const SEGMENTS = ["Individu", "Bisnis", "Solitaire", "Prioritas"];
 
@@ -167,6 +168,12 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Mobile navigation (logo + search + burger) — below the xl breakpoint. */}
+      <MobileNav scrolled={scrolled} hidden={navHidden} />
+
+      {/* Desktop navigation — hidden on mobile/tablet. `xl:contents` keeps the
+          two fixed children positioning against the viewport. */}
+      <div className="hidden xl:contents">
       {/* Focus overlay — dims the page behind the mega menu so the panel stands out. */}
       <div
         aria-hidden
@@ -339,6 +346,7 @@ export default function Navbar() {
         </div>
       </div>
     </div>
+      </div>
     </>
   );
 }
