@@ -2,6 +2,7 @@ export type Product = {
   title: string;
   subtitle: string;
   image: string;
+  imageBg: string;
 };
 
 export type ProductCategory = {
@@ -11,11 +12,20 @@ export type ProductCategory = {
   products: Product[];
 };
 
-// The Kartu Kredit trio is the one fully specced in the design; other categories
-// reuse the same photography with their own copy for this revamp prototype.
-const EVERYDAY = "/assets/product/card-everyday.webp";
-const MASTERCARD = "/assets/product/card-mastercard.webp";
-const AMEX = "/assets/product/card-amex.webp";
+// Each card photo is split into a transparent subject cutout (`image`) and an
+// opaque background scene (`imageBg`) so the two layers can zoom in opposite
+// directions on hover (background out, subject in).
+const asset = (name: string): Pick<Product, "image" | "imageBg"> => ({
+  image: `/assets/product/${name}.webp`,
+  imageBg: `/assets/product/${name}-bg.webp`,
+});
+
+const EVERYDAY = asset("card-everyday");
+const MASTERCARD = asset("card-mastercard");
+const AMEX = asset("card-amex");
+const SIMPANAN_1 = asset("card-simpanan-1");
+const SIMPANAN_2 = asset("card-simpanan-2");
+const SIMPANAN_3 = asset("card-simpanan-3");
 
 export const PRODUCT_CATEGORIES: ProductCategory[] = [
   {
@@ -23,9 +33,9 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     label: "Simpanan",
     ctaLabel: "Lihat pilihan Simpanan lainnya",
     products: [
-      { title: "Tahapan BCA", subtitle: "Tabungan andalan untuk transaksi sehari-hari", image: EVERYDAY },
-      { title: "Tahapan Xpresi", subtitle: "Tabungan anak muda dengan kartu custom", image: MASTERCARD },
-      { title: "BCA Dollar", subtitle: "Simpanan valuta asing USD dan SGD", image: AMEX },
+      { title: "Tahapan BCA", subtitle: "Tabungan andalan untuk transaksi sehari-hari", ...SIMPANAN_1 },
+      { title: "Tahapan Xpresi", subtitle: "Tabungan anak muda dengan kartu custom", ...SIMPANAN_2 },
+      { title: "BCA Dollar", subtitle: "Simpanan valuta asing USD dan SGD", ...SIMPANAN_3 },
     ],
   },
   {
@@ -33,9 +43,9 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     label: "Kartu Kredit",
     ctaLabel: "Lihat pilihan Kartu Kredit lainnya",
     products: [
-      { title: "BCA Everyday Card", subtitle: "Tiap hari belanja, tiap hari untung", image: EVERYDAY },
-      { title: "BCA Mastercard Black", subtitle: "Experience the ultimate privilege", image: MASTERCARD },
-      { title: "BCA American Express Platinum", subtitle: "For the finest things in life", image: AMEX },
+      { title: "BCA Everyday Card", subtitle: "Tiap hari belanja, tiap hari untung", ...EVERYDAY },
+      { title: "BCA Mastercard Black", subtitle: "Experience the ultimate privilege", ...MASTERCARD },
+      { title: "BCA American Express Platinum", subtitle: "For the finest things in life", ...AMEX },
     ],
   },
   {
@@ -43,9 +53,9 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     label: "Pinjaman",
     ctaLabel: "Lihat pilihan Pinjaman lainnya",
     products: [
-      { title: "KPR BCA", subtitle: "Wujudkan rumah impian dengan bunga kompetitif", image: EVERYDAY },
-      { title: "KKB BCA", subtitle: "Kredit kendaraan bermotor proses cepat", image: MASTERCARD },
-      { title: "Kredit Tanpa Agunan", subtitle: "Dana cepat tanpa jaminan untuk kebutuhanmu", image: AMEX },
+      { title: "KPR BCA", subtitle: "Wujudkan rumah impian dengan bunga kompetitif", ...EVERYDAY },
+      { title: "KKB BCA", subtitle: "Kredit kendaraan bermotor proses cepat", ...MASTERCARD },
+      { title: "Kredit Tanpa Agunan", subtitle: "Dana cepat tanpa jaminan untuk kebutuhanmu", ...AMEX },
     ],
   },
   {
@@ -53,9 +63,9 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     label: "Investasi",
     ctaLabel: "Lihat pilihan Investasi lainnya",
     products: [
-      { title: "Reksa Dana BCA", subtitle: "Investasi mudah mulai dari Rp100 ribu", image: EVERYDAY },
-      { title: "Welma", subtitle: "Platform investasi & asuransi digital BCA", image: MASTERCARD },
-      { title: "Obligasi Negara", subtitle: "Investasi surat utang dengan imbal hasil tetap", image: AMEX },
+      { title: "Reksa Dana BCA", subtitle: "Investasi mudah mulai dari Rp100 ribu", ...EVERYDAY },
+      { title: "Welma", subtitle: "Platform investasi & asuransi digital BCA", ...MASTERCARD },
+      { title: "Obligasi Negara", subtitle: "Investasi surat utang dengan imbal hasil tetap", ...AMEX },
     ],
   },
   {
@@ -63,9 +73,9 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     label: "Asuransi",
     ctaLabel: "Lihat pilihan Asuransi lainnya",
     products: [
-      { title: "BCA Life Proteksi", subtitle: "Proteksi jiwa dengan premi terjangkau", image: EVERYDAY },
-      { title: "Asuransi Kesehatan", subtitle: "Perlindungan biaya rumah sakit lebih tenang", image: MASTERCARD },
-      { title: "Asuransi Kendaraan", subtitle: "Proteksi kendaraan dari risiko tak terduga", image: AMEX },
+      { title: "BCA Life Proteksi", subtitle: "Proteksi jiwa dengan premi terjangkau", ...EVERYDAY },
+      { title: "Asuransi Kesehatan", subtitle: "Perlindungan biaya rumah sakit lebih tenang", ...MASTERCARD },
+      { title: "Asuransi Kendaraan", subtitle: "Proteksi kendaraan dari risiko tak terduga", ...AMEX },
     ],
   },
 ];

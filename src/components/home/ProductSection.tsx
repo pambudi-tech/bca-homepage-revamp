@@ -106,10 +106,17 @@ function ProductCard({
         className="absolute inset-y-0 right-0 w-[566px] transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
         style={{ transform: active ? "translateX(0)" : "translateX(96px)" }}
       >
+        {/* Background scene — zooms 1.02x -> 1x on hover */}
+        <img
+          src={product.imageBg}
+          alt=""
+          className="absolute inset-0 size-full scale-[1.02] object-cover transition-transform duration-500 ease-out group-hover:scale-100"
+        />
+        {/* Subject cutout on top — zooms 1x -> 1.02x on hover (inverse of bg) */}
         <img
           src={product.image}
           alt=""
-          className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          className="absolute inset-0 size-full scale-100 object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
         />
       </div>
 
