@@ -2,8 +2,13 @@
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import type { KursEntry } from "@/lib/kurs";
+import { useLenis } from "@/components/SmoothScroll";
+import Confetti from "./Confetti";
 import SearchRecommendation from "./SearchRecommendation";
 import { getSearchRecommendations } from "./search-data";
+
+// Gap (px) between the viewport top and the widget once the search is focused.
+const SEARCH_TOP_GAP = 56;
 
 const PLACEHOLDERS = [
   "Buka rekening BCA",
@@ -97,18 +102,39 @@ function SearchPlaceholderCarousel({ visible }: { visible: boolean }) {
   );
 }
 
-const QUICK_ACTIONS = [
+type QuickAction = {
+  title: string;
+  subtitle: string;
+  icon: string;
+  scrollTo?: string;
+  confetti?: boolean;
+};
+
+const QUICK_ACTIONS: QuickAction[] = [
   { title: "Masuk ke BCA", subtitle: "myBCA • KlikBCA", icon: "/assets/quick-action/login.svg" },
-  { title: "Promo Terkini", subtitle: "Penawaran Terbaik", icon: "/assets/quick-action/discount-shape.svg" },
+  {
+    title: "Promo Terkini",
+    subtitle: "Penawaran Terbaik",
+    icon: "/assets/quick-action/discount-shape.svg",
+    scrollTo: "#promo",
+    confetti: true,
+  },
   { title: "Webform BCA", subtitle: "Pengajuan produk", icon: "/assets/quick-action/document.svg" },
   { title: "Lokasi BCA", subtitle: "Cabang & ATM BCA", icon: "/assets/quick-action/location.svg" },
   { title: "HaloBCA", subtitle: "1500888, Chat, Email", icon: "/assets/quick-action/message-question.svg" },
 ];
 
-export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
+export default function HeroWidget({
+  kurs,
+  onSearchActiveChange,
+}: {
+  kurs: KursEntry[];
+  onSearchActiveChange?: (active: boolean) => void;
+}) {
   const [searchValue, setSearchValue] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
+  const [hoveredAction, setHoveredAction] = useState<number | null>(null);
   const [tickerPaused, setTickerPaused] = useState(false);
   const [order, setOrder] = useState<number[]>(() => kurs.map((_, i) => i));
   const rootRef = useRef<HTMLDivElement>(null);
@@ -122,6 +148,28 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
 
   const recommendations = useMemo(() => getSearchRecommendations(searchValue), [searchValue]);
   const showRecommendation = searchFocused;
+  const lenis = useLenis();
+
+  // Focusing the search enters "search mode": smooth-scroll so the widget sits
+  // SEARCH_TOP_GAP px below the viewport top, and let the parent raise the
+  // page-dimming overlay (state lifted to HeroArea via onSearchActiveChange).
+  const focusSearch = () => {
+    setSearchFocused(true);
+    const el = rootRef.current;
+    if (!el) return;
+    if (lenis) {
+      lenis.scrollTo(el, { offset: -SEARCH_TOP_GAP, duration: 0.8 });
+    } else {
+      window.scrollTo({
+        top: window.scrollY + el.getBoundingClientRect().top - SEARCH_TOP_GAP,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  useEffect(() => {
+    onSearchActiveChange?.(searchFocused);
+  }, [searchFocused, onSearchActiveChange]);
 
   useEffect(() => {
     if (!showRecommendation) return;
@@ -219,7 +267,16 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
     <div ref={rootRef} className="relative mx-auto h-[272px] w-[1280px]">
       {/* search + quick action */}
       <div className="absolute top-0 h-[184px] w-full">
-        <div className="hero-search glass-fill relative z-0 flex h-34 w-full items-start justify-center overflow-clip rounded-t-3xl p-5">
+        <div
+          className="hero-search relative z-0 flex h-34 w-full items-start justify-center overflow-clip rounded-t-3xl p-5"
+          style={{
+            // Reactive glass fill: samples the live banner behind it (works across stacking
+            // contexts), blurs it, then lightly boosts saturation/contrast so the fill picks
+            // up whatever banner colors the content team ships.
+            backdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
+            WebkitBackdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
+          }}
+        >
           {/* Depth gradient (normal compositing) for text readability — light sheen at
               top, darker toward the quick-actions below. */}
           <div
@@ -250,7 +307,7 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
                   type="text"
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
-                  onFocus={() => setSearchFocused(true)}
+                  onFocus={focusSearch}
                   onBlur={() => setSearchFocused(false)}
                   onKeyDown={(e) => {
                     if (e.key === "Escape") e.currentTarget.blur();
@@ -287,11 +344,22 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
                   onClick={() => {
                     if (isLogin) {
                       setLoginOpen((v) => !v);
-                    } else if (loginOpen) {
-                      setLoginOpen(false);
+                      return;
+                    }
+                    if (loginOpen) setLoginOpen(false);
+                    if (action.scrollTo) {
+                      // offset 0 → land exactly at the section top so the
+                      // preceding (myBCA) section is fully out of view.
+                      if (lenis) lenis.scrollTo(action.scrollTo, { offset: 0, duration: 1 });
+                      else
+                        document
+                          .querySelector(action.scrollTo)
+                          ?.scrollIntoView({ behavior: "smooth" });
                     }
                   }}
-                  className={`flex h-20 min-w-0 items-center justify-start gap-4 overflow-hidden px-4 py-5 transition-colors duration-300 ease-in-out ${
+                  onMouseEnter={() => setHoveredAction(index)}
+                  onMouseLeave={() => setHoveredAction((h) => (h === index ? null : h))}
+                  className={`relative flex h-20 min-w-0 cursor-pointer items-center justify-start gap-4 overflow-hidden px-4 py-5 transition-colors duration-300 ease-in-out ${
                     isLogin && loginOpen ? "bg-[#e6f3ff]" : "hover:bg-[#e6f3ff]"
                   } ${index === 0 ? "rounded-l-3xl" : ""} ${
                     index === QUICK_ACTIONS.length - 1 ? "rounded-r-3xl" : ""
@@ -303,8 +371,9 @@ export default function HeroWidget({ kurs }: { kurs: KursEntry[] }) {
                     outlineOffset: "-0.5px",
                   }}
                 >
+                  {action.confetti && hoveredAction === index && <Confetti />}
                   <div
-                    className="flex items-center gap-4 transition-transform duration-300 ease-in-out"
+                    className="relative z-10 flex items-center gap-4 transition-transform duration-300 ease-in-out"
                     style={{ transform: collapsed ? "translateX(16px)" : "translateX(0px)" }}
                   >
                     <img src={action.icon} alt="" className="size-10 shrink-0" />

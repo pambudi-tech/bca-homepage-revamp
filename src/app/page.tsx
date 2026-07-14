@@ -1,5 +1,4 @@
-import HeroSection from "@/components/home/HeroSection";
-import HeroWidget from "@/components/home/HeroWidget";
+import HeroArea from "@/components/home/HeroArea";
 import Navbar from "@/components/home/Navbar";
 import ScrollCue from "@/components/home/ScrollCue";
 import ProductSection from "@/components/home/ProductSection";
@@ -17,12 +16,7 @@ export default async function Home() {
       {/* 1. KONTEN UTAMA: z-10 dan background solid untuk "menutupi" footer saat di atas */}
       <div className="relative z-10 bg-[#f4f8fc]">
         <Navbar />
-        <div className="relative z-10">
-          <HeroSection />
-          <div className="absolute left-1/2 top-[484px] w-[1280px] -translate-x-1/2">
-            <HeroWidget kurs={kurs} />
-          </div>
-        </div>
+        <HeroArea kurs={kurs} />
         {/* spacer for the hero widget that overflows the hero section (496 + 288 - 640) */}
         <div className="h-[136px]" />
         <ScrollCue />

@@ -124,10 +124,12 @@ function ProductCard({
       />
 
       <div
-        className="hero-search glass-fill absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[width] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        className="hero-search absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[width] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
         style={{
           width: active ? 280 : 184,
           backgroundColor: "rgba(0,0,0,0.3)",
+          backdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
+          WebkitBackdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
           isolation: "isolate",
         }}
       >

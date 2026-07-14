@@ -32,15 +32,6 @@ body {
   position: relative;
 }
 
-/* Reactive glass fill — samples the live content behind the element (works
-   across stacking contexts), blurs it, then lightly boosts saturation/contrast
-   so the fill picks up whatever banner colors ship. Shared by the hero widget
-   and the product cards so the recipe stays in one place. */
-.glass-fill {
-  backdrop-filter: blur(16px) saturate(1.25) brightness(1.02) contrast(1.02);
-  -webkit-backdrop-filter: blur(16px) saturate(1.25) brightness(1.02) contrast(1.02);
-}
-
 /* No `position` rule here on purpose — this is unlayered CSS, so it would beat
    Tailwind's `.absolute`/`.relative` utilities in the cascade regardless of
    source order. Callers must supply their own `relative`/`absolute` class. */
@@ -156,13 +147,13 @@ body {
       rgba(224, 246, 255, 1) 90%,
       #ffffff 100%
     );
-    animation: hero-cta-beam-travel 2.4s linear infinite;
+    animation: hero-cta-beam-travel 4s linear infinite;
     animation-play-state: paused;
   }
 
   /* Second comet starts half a lap ahead → the two sit on opposite sides. */
   .hero-cta-beam::after {
-    animation-delay: -1.2s;
+    animation-delay: -2s;
   }
 
   .hero-cta:hover .hero-cta-beam::before,

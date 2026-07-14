@@ -155,7 +155,10 @@ export default function PromoSection() {
   const now = new Date();
 
   return (
-    <section className="relative overflow-clip bg-gradient-to-b from-[#eef6fd] to-[#dcecfb] pb-24 pt-32">
+    <section
+      id="promo"
+      className="relative overflow-clip bg-gradient-to-b from-[#eef6fd] to-[#dcecfb] pb-24 pt-32"
+    >
       {/* clove pattern — left & right, bleeding off the edges */}
       <img
         src="/assets/promo/bg-clove-product-1.svg"
