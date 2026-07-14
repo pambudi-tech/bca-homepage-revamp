@@ -6,6 +6,7 @@ import MyBcaSection from "@/components/home/MyBcaSection";
 import PromoSection from "@/components/home/PromoSection";
 import NewsSection from "@/components/home/NewsSection";
 import Footer from "@/components/home/Footer";
+import BackToTop from "@/components/home/BackToTop";
 import { getKursHariIni } from "@/lib/kurs";
 
 export default async function Home() {
@@ -30,6 +31,8 @@ export default async function Home() {
       <div className="sticky bottom-0 z-0 w-full">
         <Footer />
       </div>
+
+      <BackToTop />
     </main>
   );
 }

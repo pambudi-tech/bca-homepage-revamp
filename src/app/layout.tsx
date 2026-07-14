@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
@@ -22,6 +22,10 @@ const bcaSans = localFont({
 export const metadata: Metadata = {
   title: "BCA - Senantiasa di Sisi Anda",
   description: "Prototype revamp homepage BCA.co.id",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#005CAA",
 };
 
 export default function RootLayout({
