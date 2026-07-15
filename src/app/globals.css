@@ -300,15 +300,33 @@ body {
   from { opacity: 1; transform: translateX(0); }
   to { opacity: 0; transform: translateX(40px); }
 }
-.menu-enter-fwd { animation: menu-enter-fwd 420ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-.menu-exit-fwd { animation: menu-exit-fwd 420ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-.menu-enter-back { animation: menu-enter-back 420ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-.menu-exit-back { animation: menu-exit-back 420ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.menu-enter-fwd { animation: menu-enter-fwd 500ms ease-in-out both; }
+.menu-exit-fwd { animation: menu-exit-fwd 500ms ease-in-out both; }
+.menu-enter-back { animation: menu-enter-back 500ms ease-in-out both; }
+.menu-exit-back { animation: menu-exit-back 500ms ease-in-out both; }
 
 @media (prefers-reduced-motion: reduce) {
   .menu-enter-fwd, .menu-exit-fwd, .menu-enter-back, .menu-exit-back {
     animation-duration: 1ms;
   }
+}
+
+/* Mobile kurs pager — the incoming currency card slides in from the side it's
+   travelling from (next → from the right, prev → from the left) and fades, so
+   changing currency reads as a smooth left/right swipe. */
+@keyframes kurs-in-next {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes kurs-in-prev {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.kurs-in-next { animation: kurs-in-next 400ms ease-in-out both; }
+.kurs-in-prev { animation: kurs-in-prev 400ms ease-in-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .kurs-in-next, .kurs-in-prev { animation-duration: 1ms; }
 }
 
 html.lenis, html.lenis body {

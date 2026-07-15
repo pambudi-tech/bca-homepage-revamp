@@ -27,7 +27,7 @@ export default function ScrollCue() {
   return (
     <div
       ref={ref}
-      className="pointer-events-none flex items-center justify-center gap-4 py-10 transition-opacity duration-300 ease-out"
+      className="pointer-events-none flex items-center justify-center gap-4 py-8 transition-opacity duration-300 ease-out xl:py-10"
     >
       <span className="w-40 text-right text-base font-medium text-[#5f6d7e]">Terus melangkah</span>
       <div className="flex h-9 w-6 shrink-0 items-start justify-center rounded-full border-2 border-[#9cc3e8] pt-1.5">

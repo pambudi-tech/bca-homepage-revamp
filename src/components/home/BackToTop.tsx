@@ -11,17 +11,33 @@ const SHAPE_PATH =
 export default function BackToTop() {
   const lenis = useLenis();
   const [visible, setVisible] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [atBottom, setAtBottom] = useState(false);
   const rafRef = useRef(0);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const update = () => {
       rafRef.current = 0;
-      setVisible(window.scrollY > window.innerHeight * 0.6);
-      // When the footer bottom is reached, dim the trapezoid so it recedes.
+      const y = window.scrollY;
+      setVisible(y > window.innerHeight * 0.6);
+
+      // When the footer bottom is reached, dim the trapezoid so it recedes,
+      // and force the button visible regardless of scroll direction.
       const distanceToBottom =
-        document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
-      setAtBottom(distanceToBottom <= 4);
+        document.documentElement.scrollHeight - (y + window.innerHeight);
+      const bottom = distanceToBottom <= 4;
+      setAtBottom(bottom);
+
+      // Navbar-like behavior: hide on scroll down, reveal on scroll up a bit.
+      if (bottom) {
+        setHidden(false);
+      } else if (y > lastScrollY.current + 4) {
+        setHidden(true);
+      } else if (y < lastScrollY.current - 4) {
+        setHidden(false);
+      }
+      lastScrollY.current = y;
     };
     const onScroll = () => {
       if (!rafRef.current) rafRef.current = requestAnimationFrame(update);
@@ -34,6 +50,8 @@ export default function BackToTop() {
     };
   }, []);
 
+  const shown = visible && (!hidden || atBottom);
+
   const scrollToTop = () => {
     if (lenis) lenis.scrollTo(0);
     else window.scrollTo({ top: 0, behavior: "smooth" });
@@ -45,7 +63,7 @@ export default function BackToTop() {
       onClick={scrollToTop}
       aria-label="Kembali ke atas"
       className={`group fixed bottom-0 left-1/2 z-50 h-[52px] w-[218px] -translate-x-1/2 transition-all duration-300 ease-out ${
-        visible
+        shown
           ? "pointer-events-auto translate-y-0 opacity-100"
           : "pointer-events-none translate-y-full opacity-0"
       }`}

@@ -105,7 +105,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
 
   return (
     <div
-      className={`fixed inset-0 z-[60] flex justify-center transition-opacity duration-300 ease-out xl:hidden ${
+      className={`fixed inset-0 z-[60] flex justify-center transition-opacity duration-500 ease-in-out xl:hidden ${
         open ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
       style={{

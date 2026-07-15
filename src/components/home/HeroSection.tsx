@@ -4,40 +4,42 @@ import { useEffect, useRef, useState } from "react";
 import SlideDots, { DOT_CIRCUMFERENCE } from "./SlideDots";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useLenis } from "@/components/SmoothScroll";
-import { SLIDES, SLIDES_COUNT, SLIDE_DURATION_MS, type SlideCta } from "./hero-slides";
+import { SLIDES, SLIDE_DURATION_MS, type Slide, type SlideCta } from "./hero-slides";
 
 const PARALLAX_SPEED = 0.45;
 
-function HeroCta({ label, icon, variant }: SlideCta) {
-  const isSecondary = variant === "secondary";
+/** Hero CTA — one button sized responsively. The desktop-only hover treatment
+ *  (blue fill + border beam + inverted icon) is gated behind `xl:`, so on touch
+ *  the button stays the plain white pill with an `active:scale` press. */
+function HeroCta({ label, icon }: SlideCta) {
   return (
     <div className="group/cta relative inline-flex items-start gap-3">
       <button
-        className={`hero-cta relative flex h-12 items-center justify-center gap-1 rounded-full bg-white px-6 transition-[background-color,box-shadow] duration-300 hover:bg-[#005caa] hover:shadow-[0_0_22px_-6px_rgba(125,211,252,0.75)] ${
-          isSecondary ? "border-2 border-[#005caa]" : "border border-transparent"
-        }`}
+        className="hero-cta relative flex h-10 items-center justify-center gap-0.5 rounded-full border border-transparent bg-white px-5 transition-[background-color,box-shadow,transform] duration-200 active:scale-95 xl:h-12 xl:gap-1 xl:px-6 xl:duration-300 xl:active:scale-100 xl:hover:bg-[#005caa] xl:hover:shadow-[0_0_22px_-6px_rgba(125,211,252,0.75)]"
       >
         <span aria-hidden className="hero-cta-beam" />
-        <span className="px-0.5 text-base font-semibold text-[#005caa] transition-colors duration-300 group-hover/cta:text-white">
+        <span className="px-0.5 text-sm font-semibold text-[#005caa] transition-colors duration-300 xl:text-base xl:group-hover/cta:text-white">
           {label}
         </span>
         <img
           src={icon}
           alt=""
-          className="size-5 transition-[filter] duration-300 group-hover/cta:brightness-0 group-hover/cta:invert"
+          className="size-5 transition-[filter] duration-300 xl:group-hover/cta:brightness-0 xl:group-hover/cta:invert"
         />
       </button>
     </div>
   );
 }
 
-export default function HeroSection() {
+export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
+  const count = slides.length;
   const [activeSlide, setActiveSlide] = useState(0);
   const [paused, setPaused] = useState(false);
   const [hoveringActive, setHoveringActive] = useState(false);
   const pausedRef = useRef(false);
   const progressCircleRef = useRef<SVGCircleElement>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
   const lenis = useLenis();
 
   useEffect(() => {
@@ -46,26 +48,24 @@ export default function HeroSection() {
 
   useAutoplayProgress({
     activeIndex: activeSlide,
-    count: SLIDES_COUNT,
+    count: count,
     durationMs: SLIDE_DURATION_MS,
     circumference: DOT_CIRCUMFERENCE,
     progressRef: progressCircleRef,
     pausedRef,
-    onAdvance: () => setActiveSlide((s) => (s + 1) % SLIDES_COUNT),
+    onAdvance: () => setActiveSlide((s) => (s + 1) % count),
   });
 
+  // Parallax on the banner layer — applied on every breakpoint (mobile too).
   useEffect(() => {
     if (!lenis) return;
-
     const updateParallax = () => {
       if (!parallaxRef.current) return;
       const scrollY = window.scrollY;
       parallaxRef.current.style.transform = `translate3d(0, ${scrollY * PARALLAX_SPEED}px, 0) scale(1.1)`;
     };
-
     lenis.on("scroll", updateParallax);
     updateParallax();
-
     return () => {
       lenis.off("scroll", updateParallax);
     };
@@ -73,25 +73,44 @@ export default function HeroSection() {
 
   const goPrev = () => {
     setPaused(false);
-    setActiveSlide((s) => (s - 1 + SLIDES_COUNT) % SLIDES_COUNT);
+    setActiveSlide((s) => (s - 1 + count) % count);
   };
   const goNext = () => {
     setPaused(false);
-    setActiveSlide((s) => (s + 1) % SLIDES_COUNT);
+    setActiveSlide((s) => (s + 1) % count);
   };
   const goTo = (i: number) => {
     setPaused(false);
-    setActiveSlide(i);
+    setActiveSlide(((i % count) + count) % count);
+  };
+
+  // Swipe (touch) — advances the slide on mobile; inert with a mouse.
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(dx) < 40) return;
+    goTo(activeSlide + (dx < 0 ? 1 : -1)); // swipe left → next, right → prev
   };
 
   return (
-    <div className="relative h-[620px] overflow-clip bg-[#005caa]">
+    <div
+      className="relative h-[520px] overflow-clip bg-[#005caa] xl:h-[620px]"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
+      {/* Banner is a fixed 620px anchored to the section bottom, so on the
+          shorter (520px) mobile section its top spills out above and is clipped
+          — the desktop 620px section shows it in full. */}
       <div
         ref={parallaxRef}
-        className="absolute inset-0 size-full origin-top will-change-transform"
-        style={{ transform: "translate3d(0, 0px, 0) scale(1.1)" }}
+        className="absolute inset-x-0 bottom-0 h-[620px] origin-top will-change-transform"
+        style={{ transform: "translate3d(0, 0, 0) scale(1.1)" }}
       >
-        {SLIDES.map((slide, i) => (
+        {slides.map((slide, i) => (
           <img
             key={slide.image}
             src={slide.image}
@@ -102,61 +121,74 @@ export default function HeroSection() {
         ))}
       </div>
 
+      {/* Overlay — mobile covers the full hero; desktop uses a left + top wash. */}
       <div
-        className="absolute inset-y-0 left-0 w-1/3"
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[rgba(18,20,23,0.5)] xl:hidden"
+      />
+      <div
+        aria-hidden
+        className="absolute inset-y-0 left-0 hidden w-1/3 xl:block"
         style={{
           background: "linear-gradient(to right, rgba(15,15,15,0.8) 0%, rgba(15,15,15,0) 100%)",
         }}
       />
-
-      <div className="absolute bottom-[192px] left-1/2 flex w-[1280px] -translate-x-1/2 items-end justify-between">
-        <div className="flex w-[420px] flex-col items-start gap-8">
-          <div key={activeSlide} className="flex flex-col items-start gap-8 w-full">
-            <h1 className="animate-hero-title w-full text-[36px] font-semibold leading-[48px] text-white tracking-[-0.8px]">
-              {SLIDES[activeSlide].title}
-            </h1>
-            <div className="animate-hero-cta">
-              <HeroCta {...SLIDES[activeSlide].cta} />
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-1 rounded-[40px] bg-[rgba(0,0,0,0.5)] p-1 backdrop-blur-[4px]">
-          <button
-            onClick={goPrev}
-            aria-label="Sebelumnya"
-            className="flex size-10 items-center justify-center rounded-full transition-colors hover:bg-white/20"
-          >
-            <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-6" />
-          </button>
-          <SlideDots
-            count={SLIDES_COUNT}
-            activeIndex={activeSlide}
-            paused={paused}
-            onSelect={goTo}
-            onTogglePause={() => setPaused((p) => !p)}
-            onActiveHoverChange={setHoveringActive}
-            progressRef={progressCircleRef}
-            inactiveColor="rgba(255,255,255,0.4)"
-            inactiveHoverColor="rgba(255,255,255,0.7)"
-            showPill={false}
-          />
-          <button
-            onClick={goNext}
-            aria-label="Berikutnya"
-            className="flex size-10 items-center justify-center rounded-full transition-colors hover:bg-white/20"
-          >
-            <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-6" />
-          </button>
-        </div>
-      </div>
-
       <div
-        className="absolute left-0 right-0 top-0 h-[160px]"
+        aria-hidden
+        className="absolute left-0 right-0 top-0 hidden h-[160px] xl:block"
         style={{
           background: "linear-gradient(to bottom, rgba(15,15,15,0.8) 0%, rgba(15,15,15,0) 100%)",
         }}
       />
+
+      {/* Content — column on mobile (title, then dots), row on desktop (title
+          left, dots + arrows right). */}
+      <div className="absolute inset-x-0 bottom-[168px] px-4 xl:inset-x-auto xl:left-1/2 xl:right-auto xl:bottom-[192px] xl:w-[1280px] xl:-translate-x-1/2 xl:px-0">
+        <div className="mx-auto flex max-w-[544px] flex-col items-start gap-6 xl:mx-0 xl:max-w-none xl:flex-row xl:items-end xl:justify-between xl:gap-0">
+          <div
+            key={activeSlide}
+            className="flex w-[240px] flex-col items-start gap-5 xl:w-[420px] xl:gap-8"
+          >
+            <h1 className="animate-hero-title text-[20px] font-semibold leading-[28px] tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)] xl:text-[36px] xl:leading-[48px] xl:tracking-[-0.8px] xl:[text-shadow:none]">
+              {slides[activeSlide].title}
+            </h1>
+            <div className="animate-hero-cta">
+              <HeroCta {...slides[activeSlide].cta} />
+            </div>
+          </div>
+
+          {/* Dots — bare on mobile; the pill background + prev/next arrows are
+              desktop-only decorations around the same SlideDots. */}
+          <div className="flex items-center gap-1 rounded-[40px] xl:bg-[rgba(0,0,0,0.5)] xl:p-1 xl:backdrop-blur-[4px]">
+            <button
+              onClick={goPrev}
+              aria-label="Sebelumnya"
+              className="hidden size-10 items-center justify-center rounded-full transition-colors hover:bg-white/20 xl:flex"
+            >
+              <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-6" />
+            </button>
+            <SlideDots
+              count={count}
+              activeIndex={activeSlide}
+              paused={paused}
+              onSelect={goTo}
+              onTogglePause={() => setPaused((p) => !p)}
+              onActiveHoverChange={setHoveringActive}
+              progressRef={progressCircleRef}
+              inactiveColor="rgba(255,255,255,0.4)"
+              inactiveHoverColor="rgba(255,255,255,0.7)"
+              showPill={false}
+            />
+            <button
+              onClick={goNext}
+              aria-label="Berikutnya"
+              className="hidden size-10 items-center justify-center rounded-full transition-colors hover:bg-white/20 xl:flex"
+            >
+              <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-6" />
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

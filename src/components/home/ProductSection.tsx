@@ -201,6 +201,72 @@ function ProductCard({
   );
 }
 
+/**
+ * Mobile card for the horizontally-scrollable carousel (< xl). Unlike the
+ * desktop card (which expands its *width* on select), every mobile card is a
+ * fixed 280px wide — the active one grows *taller* (328 -> 360) and reveals its
+ * subtitle + "Pelajari" CTA. No cursor-follow treatment on touch.
+ */
+function MobileProductCard({
+  product,
+  active,
+  onSelect,
+}: {
+  product: Product;
+  active: boolean;
+  onSelect: () => void;
+}) {
+  return (
+    <button
+      onClick={onSelect}
+      className="relative shrink-0 overflow-clip rounded-3xl bg-white text-left transition-[height] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+      style={{ width: 280, height: active ? 360 : 328 }}
+    >
+      {/* Background scene + subject cutout (both full-bleed, centered). */}
+      <div className="absolute inset-0">
+        <img src={product.imageBg} alt="" className="absolute inset-0 size-full object-cover" />
+        <img src={product.image} alt="" className="absolute inset-0 size-full object-cover" />
+      </div>
+
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-40"
+        style={{
+          background: active
+            ? "linear-gradient(to top, #005caa 0%, rgba(0,33,61,0) 100%)"
+            : "linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(18,20,23,0) 100%)",
+        }}
+      />
+
+      <div
+        className="hero-search absolute inset-x-2 bottom-2 flex flex-col items-start overflow-clip rounded-2xl px-4 pb-5 pt-4"
+        style={{
+          backgroundColor: "rgba(0,0,0,0.3)",
+          backdropFilter: "blur(10px) saturate(1.2)",
+          WebkitBackdropFilter: "blur(10px) saturate(1.2)",
+          isolation: "isolate",
+        }}
+      >
+        <p className="w-full text-lg font-semibold leading-[26px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+          {product.title}
+        </p>
+        <div
+          className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+          style={{ gridTemplateRows: active ? "1fr" : "0fr", opacity: active ? 1 : 0 }}
+        >
+          <div className="overflow-hidden">
+            <p className="w-full pt-1 text-sm leading-5 text-white/80">{product.subtitle}</p>
+            <div className="flex items-center gap-0.5 pt-6 text-sm font-semibold text-[#f4f8fc]">
+              Pelajari
+              <img src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </button>
+  );
+}
+
 export default function ProductSection() {
   const [activeCategory, setActiveCategory] = useState("Kartu Kredit");
   const [hoverCategory, setHoverCategory] = useState<string | null>(null);
@@ -211,6 +277,7 @@ export default function ProductSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const cloveARef = useRef<HTMLImageElement>(null);
   const cloveBRef = useRef<HTMLImageElement>(null);
+  const mobileScrollRef = useRef<HTMLDivElement>(null);
 
   const category =
     PRODUCT_CATEGORIES.find((c) => c.key === activeCategory) ?? PRODUCT_CATEGORIES[0];
@@ -272,6 +339,18 @@ export default function ProductSection() {
     setActiveIndex(0);
   };
 
+  // Keep the active card centered in the mobile carousel whenever it changes
+  // (via tap or autoplay). A no-op on desktop, where the container is
+  // `display:none` and reports zero width.
+  useEffect(() => {
+    const container = mobileScrollRef.current;
+    if (!container) return;
+    const card = container.children[activeIndex] as HTMLElement | undefined;
+    if (!card) return;
+    const target = card.offsetLeft - (container.clientWidth - card.offsetWidth) / 2;
+    container.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
+  }, [activeIndex, activeCategory]);
+
   return (
     <section
       ref={sectionRef}
@@ -292,25 +371,52 @@ export default function ProductSection() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto w-[1280px]">
+      <div className="relative z-10 mx-auto w-full max-w-[560px] px-4 xl:w-[1280px] xl:max-w-none xl:px-0">
+        {/* Heading — stacked on mobile, eyebrow-column + h2 side by side on desktop. */}
         <div
-          className={`flex gap-10 transition-all duration-700 ease-out ${
+          className={`flex flex-col transition-all duration-700 ease-out xl:flex-row xl:gap-10 ${
             entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           }`}
         >
-          <div className="flex w-[240px] shrink-0 items-center py-4">
-            <p className="text-sm font-semibold uppercase leading-[14px] tracking-[2.1px] text-[#00213d]">
+          <div className="flex items-center py-4 xl:w-[240px] xl:shrink-0">
+            <p className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-[#005caa] xl:text-sm xl:leading-[14px] xl:tracking-[2.1px] xl:text-[#00213d]">
               Produk &amp; Layanan
             </p>
           </div>
-          <h2 className="w-[560px] text-[32px] font-semibold leading-10 tracking-[-0.64px] text-[#00335e]">
+          <h2 className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-[#00335e] xl:w-[560px] xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]">
             Solusi BCA untuk Setiap Tujuan Keuangan Anda
           </h2>
         </div>
 
-        <div className="mt-16 flex gap-10">
+        {/* Category chips — mobile only; the desktop uses the vertical text list. */}
+        <div
+          className={`mt-5 flex flex-wrap gap-2 transition-all duration-700 ease-out xl:hidden ${
+            entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+          }`}
+          style={{ transitionDelay: entered ? "120ms" : "0ms" }}
+        >
+          {PRODUCT_CATEGORIES.map((cat) => {
+            const isActive = cat.key === activeCategory;
+            return (
+              <button
+                key={cat.key}
+                onClick={() => selectCategory(cat.key)}
+                className={`flex h-12 items-center justify-center rounded-xl border px-[18px] text-sm transition-colors duration-200 ${
+                  isActive
+                    ? "border-[#00b5f0] bg-[#e6f3ff] font-bold text-[#005caa]"
+                    : "border-[#e9ecef] bg-white font-semibold text-[#495057] active:bg-[#f4f8fc]"
+                }`}
+              >
+                {cat.label}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="mt-6 flex xl:mt-16 xl:gap-10">
+          {/* Desktop category list. */}
           <div
-            className={`flex w-[240px] shrink-0 flex-col items-start gap-8 py-4 text-[#005caa] transition-all duration-700 ease-out ${
+            className={`hidden shrink-0 flex-col items-start gap-8 py-4 text-[#005caa] transition-all duration-700 ease-out xl:flex xl:w-[240px] ${
               entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             }`}
             style={{ transitionDelay: entered ? "150ms" : "0ms" }}
@@ -337,11 +443,12 @@ export default function ProductSection() {
           </div>
 
           <div
-            className="w-[998px]"
+            className="w-full xl:w-[998px]"
             onMouseEnter={() => (pausedRef.current = true)}
             onMouseLeave={() => (pausedRef.current = false)}
           >
-            <div className="flex gap-4">
+            {/* Desktop accordion cards — active card expands its width. */}
+            <div className="hidden gap-4 xl:flex">
               {products.map((product, i) => (
                 <ProductCard
                   key={i}
@@ -355,15 +462,35 @@ export default function ProductSection() {
               ))}
             </div>
 
+            {/* Mobile carousel — fixed-width cards, active one grows taller and
+                reveals its subtitle + CTA. Full-bleeds within the padded column. */}
+            <div
+              ref={mobileScrollRef}
+              onTouchStart={() => (pausedRef.current = true)}
+              className={`hide-scrollbar -mx-4 flex items-center gap-4 overflow-x-auto px-4 [scrollbar-width:none] transition-opacity duration-700 ease-out xl:hidden ${
+                entered ? "opacity-100" : "opacity-0"
+              }`}
+              style={{ transitionDelay: entered ? "250ms" : "0ms" }}
+            >
+              {products.map((product, i) => (
+                <MobileProductCard
+                  key={i}
+                  product={product}
+                  active={i === activeIndex}
+                  onSelect={() => setActiveIndex(i)}
+                />
+              ))}
+            </div>
+
             <button
-              className={`mt-10 flex h-12 items-center justify-center gap-1 rounded-full border border-[#005caa] px-6 transition-colors duration-200 hover:bg-[#005caa]/5 ${
+              className={`mt-6 flex h-10 items-center justify-center gap-1 rounded-full border border-[#005caa] px-5 transition-colors duration-200 hover:bg-[#005caa]/5 xl:mt-10 xl:h-12 xl:px-6 ${
                 entered ? "opacity-100" : "opacity-0"
               }`}
               style={{
                 transition: `opacity 700ms ease-out ${entered ? "610ms" : "0ms"}, background-color 200ms`,
               }}
             >
-              <span className="text-base font-semibold text-[#005caa]">{category.ctaLabel}</span>
+              <span className="text-sm font-semibold text-[#005caa] xl:text-base">{category.ctaLabel}</span>
               <img src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5" />
             </button>
           </div>

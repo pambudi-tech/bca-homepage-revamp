@@ -149,10 +149,27 @@ export default function MobileHeroWidget({ kurs }: { kurs: KursEntry[] }) {
   const [searchValue, setSearchValue] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
   const [kursIndex, setKursIndex] = useState(0);
+  const [kursDir, setKursDir] = useState<"next" | "prev">("next");
+  const [autoTick, setAutoTick] = useState(0);
   const lenis = useLenis();
 
-  const stepKurs = (dir: 1 | -1) =>
-    setKursIndex((i) => (i + dir + kurs.length) % kurs.length);
+  // Auto-advance the currency every 5s; manual navigation resets the timer.
+  useEffect(() => {
+    if (kurs.length <= 1) return;
+    const id = setInterval(() => {
+      setKursDir("next");
+      setKursIndex((i) => (i + 1) % kurs.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [kurs.length, autoTick]);
+
+  const stepKurs = (dir: "next" | "prev") => {
+    setKursDir(dir);
+    setKursIndex((i) =>
+      dir === "next" ? (i + 1) % kurs.length : (i - 1 + kurs.length) % kurs.length
+    );
+    setAutoTick((t) => t + 1);
+  };
 
   const goToPromo = () => {
     if (lenis) lenis.scrollTo("#promo", { offset: 0, duration: 1 });
@@ -224,17 +241,19 @@ export default function MobileHeroWidget({ kurs }: { kurs: KursEntry[] }) {
       <div className="relative overflow-clip rounded-b-3xl bg-gradient-to-b from-[#00b5f0] to-[#005caa] shadow-[inset_0px_-4px_8px_0px_rgba(0,51,94,0.25)]">
         <div className="flex items-center gap-4 px-5 pb-5 pt-[92px]">
           <button
-            onClick={() => stepKurs(-1)}
+            onClick={() => stepKurs("prev")}
             aria-label="Kurs sebelumnya"
             className="flex size-10 shrink-0 items-center justify-center rounded-full bg-black/20 transition-colors active:bg-black/40"
           >
             <img src="/assets/cycle1/chevron-left.svg" alt="" className="size-6" />
           </button>
-          <div className="flex min-w-0 flex-1 items-start">
-            <KursCard entry={kurs[kursIndex]} />
+          <div className="flex min-w-0 flex-1 items-start overflow-hidden">
+            <div key={kursIndex} className={`w-full ${kursDir === "next" ? "kurs-in-next" : "kurs-in-prev"}`}>
+              <KursCard entry={kurs[kursIndex]} />
+            </div>
           </div>
           <button
-            onClick={() => stepKurs(1)}
+            onClick={() => stepKurs("next")}
             aria-label="Kurs berikutnya"
             className="flex size-10 shrink-0 items-center justify-center rounded-full bg-black/20 transition-colors active:bg-black/40"
           >
