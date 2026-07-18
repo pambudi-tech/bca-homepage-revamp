@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { MegaMenuCategory, MegaMenuLink } from "./megamenu-data";
 
 /* Icons are inlined so hover states can recolour them via `currentColor`. */
@@ -55,28 +56,46 @@ function LinkIcon({ type }: { type: MegaMenuLink["type"] }) {
   return type === "video" ? <VideoIcon /> : <DocIcon />;
 }
 
-export default function MegaMenuPanel({ category }: { category: MegaMenuCategory }) {
+/** Which motion the panel plays — see the `.mm-panel` rules in globals.css. */
+export type MegaMenuMode = "open" | "switch" | "close" | "out";
+
+export default function MegaMenuPanel({
+  category,
+  mode,
+}: {
+  category: MegaMenuCategory;
+  mode: MegaMenuMode;
+}) {
+  /* Longest stagger column: the products plus the CTA beneath them. The close
+     animation counts backwards from this to empty the panel bottom-up. */
+  const rowCount = category.products.length + 1;
+
   return (
-    <div className="w-full max-w-[1920px] overflow-hidden rounded-b-3xl bg-white">
-      <div className="mx-auto flex h-[400px] w-[1280px] items-center gap-20 py-4">
+    <div
+      data-mode={mode}
+      style={{ "--mm-n": rowCount } as CSSProperties}
+      className="mm-panel w-full max-w-[1920px] overflow-hidden rounded-b-3xl bg-white"
+    >
+      <div className="mm-content mx-auto flex h-[400px] w-[1280px] items-center gap-20 py-4">
         {/* product list + article links */}
         <div className="flex h-full gap-2">
           <div className="flex h-full w-[360px] flex-col justify-between">
             <div className="flex flex-col">
-              {category.products.map((product) => (
+              {category.products.map((product, i) => (
                 <button
                   key={product}
-                  className="group flex items-center justify-between rounded-xl px-4 pb-4 pt-3 text-left transition-colors duration-200 hover:bg-[#e6f3ff]"
+                  style={{ "--mm-i": i } as CSSProperties}
+                  className="mm-item group flex items-center justify-between rounded-xl px-4 pb-4 pt-3 text-left transition-colors duration-200 hover:bg-cyan-100"
                 >
-                  <span className="text-xl font-semibold leading-7 tracking-[-0.4px] text-[#26292c] transition-colors duration-200 group-hover:font-bold group-hover:text-[#005caa]">
+                  <span className="text-xl font-semibold leading-7 tracking-[-0.4px] text-neutral-700 transition-colors duration-200 group-hover:font-bold group-hover:text-blue-500">
                     {product}
                   </span>
-                  <ArrowRight className="size-5 shrink-0 text-[#005caa] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+                  <ArrowRight className="size-5 shrink-0 text-blue-500 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
                 </button>
               ))}
             </div>
-            <div className="p-4">
-              <button className="flex items-center gap-0.5 text-base font-semibold leading-4 text-[#005caa] transition-transform duration-200 hover:translate-x-0.5">
+            <div className="mm-item p-4" style={{ "--mm-i": category.products.length } as CSSProperties}>
+              <button className="flex items-center gap-0.5 text-base font-semibold leading-4 text-blue-500 transition-transform duration-200 hover:translate-x-0.5">
                 {category.ctaLabel}
                 <ArrowRight />
               </button>
@@ -87,12 +106,10 @@ export default function MegaMenuPanel({ category }: { category: MegaMenuCategory
             {category.links.map((link, i) => (
               <button
                 key={`${link.label}-${i}`}
-                className="group flex w-full items-center gap-3 rounded-xl px-3 pb-3 pt-2 text-left transition-colors duration-200 hover:bg-[#e6f3ff]"
+                style={{ "--mm-i": i } as CSSProperties}
+                className="mm-item group flex w-full items-center gap-3 rounded-xl px-3 pb-3 pt-2 text-left transition-colors duration-200 hover:bg-cyan-100"
               >
-                <span className="flex size-8 shrink-0 items-center justify-center text-[#26292c] transition-colors duration-200 group-hover:text-[#005caa]">
-                  <LinkIcon type={link.type} />
-                </span>
-                <span className="flex-1 text-sm font-semibold leading-5 text-[#26292c] transition-colors duration-200 group-hover:text-[#005caa]">
+                <span className="flex-1 text-sm font-semibold leading-5 text-neutral-700 transition-colors duration-200 group-hover:text-blue-500">
                   {link.label}
                 </span>
               </button>
@@ -101,8 +118,11 @@ export default function MegaMenuPanel({ category }: { category: MegaMenuCategory
         </div>
 
         {/* editorial / marketing space */}
-        <div className="group relative h-full flex-1 overflow-hidden rounded-3xl">
-          <img
+        <div
+          className="mm-item group relative h-full flex-1 overflow-hidden rounded-3xl"
+          style={{ "--mm-i": 2 } as CSSProperties}
+        >
+          <img loading="lazy" decoding="async"
             src={category.editorial.image}
             alt=""
             className="size-full object-cover"

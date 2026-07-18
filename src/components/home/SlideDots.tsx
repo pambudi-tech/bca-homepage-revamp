@@ -124,7 +124,6 @@ export default function SlideDots({
                 strokeLinecap="round"
                 strokeDasharray={DOT_CIRCUMFERENCE}
                 strokeDashoffset={DOT_CIRCUMFERENCE}
-                style={{ transition: "stroke-dashoffset 50ms linear" }}
               />
             </svg>
             {showIcon ? (

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import type { KursEntry } from "@/lib/kurs";
 import { useLenis } from "@/components/SmoothScroll";
+import { useIsLive } from "@/lib/useIsLive";
 import Confetti from "./Confetti";
 import SearchRecommendation from "./SearchRecommendation";
 import {
@@ -42,7 +43,7 @@ function slotStyle(state: SlotState): CSSProperties {
   return { transform: `translateY(${PLACEHOLDER_LINE_HEIGHT}px)`, opacity: 0 }; // waiting (below, ready to enter)
 }
 
-function SearchPlaceholderCarousel({ visible }: { visible: boolean }) {
+function SearchPlaceholderCarousel({ visible, live }: { visible: boolean; live: boolean }) {
   const [slots, setSlots] = useState<Slot[]>([
     { text: PLACEHOLDERS[0], state: "active", instant: false },
     { text: PLACEHOLDERS[1 % PLACEHOLDERS.length], state: "waiting", instant: false },
@@ -51,6 +52,7 @@ function SearchPlaceholderCarousel({ visible }: { visible: boolean }) {
   const nextIndexRef = useRef(2 % PLACEHOLDERS.length);
 
   useEffect(() => {
+    if (!live) return;
     const id = setInterval(() => {
       const activeIdx = activeSlotRef.current;
       const waitingIdx = activeIdx === 0 ? 1 : 0;
@@ -83,22 +85,20 @@ function SearchPlaceholderCarousel({ visible }: { visible: boolean }) {
       }, 700);
     }, 2500);
     return () => clearInterval(id);
-  }, []);
+  }, [live]);
 
   return (
     <div
       aria-hidden
-      className={`pointer-events-none absolute inset-0 flex items-center overflow-hidden px-6 transition-opacity duration-200 ${
-        visible ? "opacity-100" : "opacity-0"
-      }`}
+      className={`pointer-events-none absolute inset-0 flex items-center overflow-hidden px-6 transition-opacity duration-200 ${visible ? "opacity-100" : "opacity-0"
+        }`}
     >
       <div className="relative h-12 w-full overflow-hidden">
         {slots.map((slot, i) => (
           <span
             key={i}
-            className={`absolute inset-0 flex h-12 items-center whitespace-nowrap text-base font-semibold text-[#cfcfcf] ${
-              slot.instant ? "" : "transition-all duration-700 ease-in-out"
-            }`}
+            className={`absolute inset-0 flex h-12 items-center whitespace-nowrap text-base font-semibold text-neutral-500 ${slot.instant ? "" : "transition-all duration-700 ease-in-out"
+              }`}
             style={slotStyle(slot.state)}
           >
             {slot.text}
@@ -216,26 +216,13 @@ export default function HeroWidget({
   const offsetRef = useRef(0);
   const tickerPausedRef = useRef(false);
   const tickerHoveringRef = useRef(false);
-  const tickerVisibleRef = useRef(true);
+  // Gates every timer in this widget. On < xl the whole component is inside a
+  // `display:none` wrapper, so this stays false and nothing here ever ticks.
+  const live = useIsLive(rootRef);
 
   useEffect(() => {
     setOrder(kurs.map((_, i) => i));
   }, [kurs]);
-
-  // Pause the ticker animation loop while the widget is scrolled off-screen —
-  // no point compositing an invisible marquee every frame.
-  useEffect(() => {
-    const el = rootRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        tickerVisibleRef.current = entry.isIntersecting;
-      },
-      { rootMargin: "100px" }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
 
   useEffect(() => {
     tickerPausedRef.current = tickerPaused;
@@ -252,10 +239,15 @@ export default function HeroWidget({
     return () => window.removeEventListener("resize", measure);
   }, [order]);
 
+  // Marquee for the kurs rail. The loop only exists while the widget is live —
+  // previously it kept rescheduling itself at 60fps forever and merely skipped
+  // the *body* when off-screen, so a phone still woke up 60 times a second to
+  // do nothing for a widget that `xl:` had hidden outright.
   useEffect(() => {
-    let raf: number;
+    if (!live) return;
+    let raf = 0;
     const step = () => {
-      if (!tickerPausedRef.current && tickerVisibleRef.current && cardStepRef.current > 0) {
+      if (!tickerPausedRef.current && cardStepRef.current > 0) {
         // One full set = every card once. The track renders the set multiple times,
         // so wrapping the offset back by one set width is visually seamless — no
         // React re-order per card (that async reorder was the glitch source).
@@ -272,7 +264,7 @@ export default function HeroWidget({
     };
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
-  }, [kurs.length]);
+  }, [kurs.length, live]);
 
   const scrollByCard = (dir: 1 | -1) => {
     setTickerPaused(true);
@@ -345,7 +337,7 @@ export default function HeroWidget({
                   }}
                   className="relative z-10 h-7 w-full bg-transparent px-6 text-base font-semibold text-white focus:outline-none"
                 />
-                <SearchPlaceholderCarousel visible={!searchValue && !searchFocused} />
+                <SearchPlaceholderCarousel visible={!searchValue && !searchFocused} live={live} />
               </div>
               <button
                 aria-label="Cari"
@@ -391,11 +383,9 @@ export default function HeroWidget({
                   }}
                   onMouseEnter={() => setHoveredAction(index)}
                   onMouseLeave={() => setHoveredAction((h) => (h === index ? null : h))}
-                  className={`relative flex h-20 min-w-0 cursor-pointer items-center justify-start gap-4 overflow-hidden px-4 py-5 transition-colors duration-300 ease-in-out ${
-                    isLogin && loginOpen ? "bg-[#e6f3ff]" : "hover:bg-[#e6f3ff]"
-                  } ${index === 0 ? "rounded-l-3xl" : ""} ${
-                    index === QUICK_ACTIONS.length - 1 ? "rounded-r-3xl" : ""
-                  }`}
+                  className={`relative flex h-20 min-w-0 cursor-pointer items-center justify-start gap-4 overflow-hidden px-4 py-5 transition-colors duration-300 ease-in-out ${isLogin && loginOpen ? "bg-cyan-100" : "hover:bg-cyan-100"
+                    } ${index === 0 ? "rounded-l-3xl" : ""} ${index === QUICK_ACTIONS.length - 1 ? "rounded-r-3xl" : ""
+                    }`}
                   style={{
                     gridColumn: index === 0 ? 1 : index + 2,
                     gridRow: 1,
@@ -410,21 +400,18 @@ export default function HeroWidget({
                   >
                     <img src={action.icon} alt="" className="size-10 shrink-0" />
                     <div
-                      className={`flex min-w-0 flex-col items-start gap-1 overflow-hidden text-left whitespace-nowrap transition-[opacity,transform] duration-200 ease-in-out ${
-                        collapsed ? "translate-x-3 opacity-0" : "translate-x-0 opacity-100"
-                      }`}
+                      className={`flex min-w-0 flex-col items-start gap-1 overflow-hidden text-left whitespace-nowrap transition-[opacity,transform] duration-200 ease-in-out ${collapsed ? "translate-x-3 opacity-0" : "translate-x-0 opacity-100"
+                        }`}
                     >
                       <p
-                        className={`text-base font-bold ${
-                          isLogin && loginOpen ? "text-[#00213d]" : "text-[#26292c]"
-                        }`}
+                        className={`text-base font-bold ${isLogin && loginOpen ? "text-blue-800" : "text-neutral-800"
+                          }`}
                       >
                         {action.title}
                       </p>
                       <p
-                        className={`text-sm font-normal ${
-                          isLogin && loginOpen ? "text-[#00213d]" : "text-[#495057]"
-                        }`}
+                        className={`text-sm font-normal ${isLogin && loginOpen ? "text-blue-800" : "text-neutral-700"
+                          }`}
                       >
                         {action.subtitle}
                       </p>
@@ -435,28 +422,27 @@ export default function HeroWidget({
             })}
 
             <div
-              className={`flex h-20 min-w-0 items-center gap-3 overflow-hidden px-3 transition-[clip-path,opacity] duration-300 ease-in-out ${
-                loginOpen ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
-              }`}
+              className={`flex h-20 min-w-0 items-center gap-3 overflow-hidden px-3 transition-[clip-path,opacity] duration-300 ease-in-out ${loginOpen ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
+                }`}
               style={{
                 gridColumn: 2,
                 gridRow: 1,
                 clipPath: loginOpen ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)",
               }}
             >
-              <button className="flex h-16 flex-1 shrink-0 items-center justify-center gap-4 rounded-xl border border-[#e9ecef] bg-white px-4 transition-colors hover:bg-[#f7f9fa]">
+              <button className="flex h-16 flex-1 shrink-0 items-center justify-center gap-4 rounded-xl border border-neutral-300 bg-white px-4 transition-colors hover:bg-neutral-200">
                 <img src="/assets/quick-action/mybca-logo.svg" alt="" className="size-12 shrink-0" />
-                <span className="text-md font-semibold whitespace-nowrap text-[#26292c]">
+                <span className="text-md font-semibold whitespace-nowrap text-neutral-800">
                   Login ke myBCA
                 </span>
               </button>
-              <button className="flex h-16 flex-1 shrink-0 items-center justify-center gap-4 rounded-xl border border-[#e9ecef] bg-white px-4 transition-colors hover:bg-[#f7f9fa]">
+              <button className="flex h-16 flex-1 shrink-0 items-center justify-center gap-4 rounded-xl border border-neutral-300 bg-white px-4 transition-colors hover:bg-neutral-200">
                 <img
-                  src="/assets/quick-action/klikbca-logo.png"
+                  src="/assets/quick-action/klikbca-logo.webp"
                   alt=""
                   className="h-11 w-auto shrink-0 object-contain"
                 />
-                <span className="text-md font-semibold whitespace-nowrap text-[#26292c]">
+                <span className="text-md font-semibold whitespace-nowrap text-neutral-800">
                   Login ke KlikBCA
                 </span>
               </button>
@@ -486,7 +472,7 @@ export default function HeroWidget({
       >
         <div
           aria-hidden
-          className="absolute inset-0 rounded-b-3xl bg-gradient-to-b from-[#00b5f0] to-[#005caa]"
+          className="absolute inset-0 rounded-b-3xl bg-gradient-to-b from-cyan-500 to-blue-500"
         />
         <div className="absolute bottom-5 left-8 flex h-14 flex-col items-start justify-center gap-2">
           <p className="text-lg font-semibold text-white underline [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
@@ -521,14 +507,14 @@ export default function HeroWidget({
                     <p className="w-12 text-lg font-semibold text-white">{entry.code}</p>
                   </div>
                   <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-0.5 font-semibold text-[#d1eaff] opacity-90">
+                    <div className="flex items-center gap-0.5 font-semibold text-blue-300 opacity-90">
                       <span className="flex w-12 pt-[2px]">
                         <span className="text-sm uppercase tracking-[2.1px]">Beli</span>
                       </span>
                       <span className="w-24 text-right text-lg">{entry.beli}</span>
                     </div>
                     <div className="h-5 w-px bg-white/40" />
-                    <div className="flex items-center gap-0.5 font-semibold text-[#d1eaff] opacity-90">
+                    <div className="flex items-center gap-0.5 font-semibold text-blue-300 opacity-90">
                       <span className="flex w-12 pt-[2px]">
                         <span className="text-sm uppercase tracking-[2.1px]">Jual</span>
                       </span>
@@ -562,6 +548,20 @@ export default function HeroWidget({
           overflow-clip container. Positioned under the search bar via measured
           coordinates. `onMouseDown` preventDefault keeps the input focused so
           the panel stays open while the user clicks an item. */}
+      {/* Search-mode dim for the widget's own lower half. The page-wide overlay
+          in HeroArea passes *under* the widget (it sits at z-40), so the quick
+          actions and kurs bar would otherwise stay bright while everything
+          around them dims. Anchored to the same y as the dropdown, so only the
+          search panel is left untouched. */}
+      {panelPos && (
+        <div
+          aria-hidden
+          data-shown={showRecommendation}
+          className="fade-overlay absolute inset-x-0 bottom-0 z-30 rounded-b-3xl bg-black/50 backdrop-blur-[2px]"
+          style={{ top: panelPos.top + 8 }}
+        />
+      )}
+
       {showRecommendation && panelPos && (
         <div
           className="absolute z-50"

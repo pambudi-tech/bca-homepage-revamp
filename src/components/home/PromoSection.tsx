@@ -45,10 +45,10 @@ function PromoCard({ promo, now }: { promo: (typeof PROMOS)[number]; now: Date }
   const timestamp = getPromoTimestamp(promo, now, badge);
 
   return (
-    <div className="group relative h-[360px] w-[260px] shrink-0 transition-transform duration-300 ease-out will-change-transform hover:-translate-y-1.5 xl:w-[302px]">
-      <div className="absolute inset-0 flex flex-col items-start overflow-clip rounded-3xl border border-[#e9ecef] bg-white transition-colors duration-300 group-hover:border-[#00b5f0]">
+    <div data-reveal className="group relative h-[360px] w-[260px] shrink-0 transition-transform duration-300 ease-out hover:-translate-y-1.5 xl:w-[302px]">
+      <div className="absolute inset-0 flex flex-col items-start overflow-clip rounded-3xl border border-neutral-300 bg-white transition-colors duration-300 group-hover:border-cyan-500">
         <div className="relative h-40 w-full shrink-0 overflow-clip">
-          <img
+          <img loading="lazy" decoding="async"
             src={promo.cover}
             alt=""
             className="absolute inset-0 size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
@@ -70,14 +70,14 @@ function PromoCard({ promo, now }: { promo: (typeof PROMOS)[number]; now: Date }
         </div>
         <div className="relative w-full flex-1">
           <div className="absolute left-5 right-5 top-12 flex flex-col items-start gap-1.5">
-            <p className="line-clamp-2 w-full text-base font-bold leading-6 text-[#26292c] transition-colors duration-300 group-hover:text-[#005caa] xl:text-[18px] xl:leading-[1.2] xl:tracking-[-0.36px]">
+            <p className="line-clamp-2 w-full text-base font-bold leading-6 text-neutral-800 transition-colors duration-300 group-hover:text-blue-500 xl:text-[18px] xl:leading-[1.2] xl:tracking-[-0.36px]">
               {promo.title}
             </p>
-            <p className="w-full text-sm font-semibold leading-5 text-[#495057] xl:text-base">{promo.brand}</p>
+            <p className="w-full text-sm font-semibold leading-5 text-neutral-700 xl:text-base">{promo.brand}</p>
           </div>
-          <div className="absolute bottom-5 left-5 flex h-10 min-w-10 items-center gap-1 overflow-clip rounded-xl border border-[#e9ecef] bg-white p-3">
-            <img src="/assets/promo/icon-clock.svg" alt="" className="size-5 shrink-0" />
-            <span className="whitespace-nowrap text-sm font-semibold leading-5 text-[#495057]">{timestamp}</span>
+          <div className="absolute bottom-5 left-5 flex h-10 min-w-10 items-center gap-1 overflow-clip rounded-xl border border-neutral-300 bg-white p-3">
+            <img loading="lazy" decoding="async" src="/assets/promo/icon-clock.svg" alt="" className="size-5 shrink-0" />
+            <span className="whitespace-nowrap text-sm font-semibold leading-5 text-neutral-700">{timestamp}</span>
           </div>
         </div>
       </div>
@@ -91,8 +91,8 @@ function PromoCard({ promo, now }: { promo: (typeof PROMOS)[number]; now: Date }
       />
 
       {/* logo — sibling of the card so it overlaps the cover edge without being clipped */}
-      <div className="absolute left-5 top-[124px] size-[72px] overflow-clip rounded-xl border border-[#e9ecef] bg-white shadow-[0_1px_2px_0_rgba(204,204,204,0.14),0_5px_5px_0_rgba(204,204,204,0.12)]">
-        <img
+      <div className="absolute left-5 top-[124px] size-[72px] overflow-clip rounded-xl border border-neutral-300 bg-white shadow-[0_1px_2px_0_rgba(204,204,204,0.14),0_5px_5px_0_rgba(204,204,204,0.12)]">
+        <img loading="lazy" decoding="async"
           src={promo.logo}
           alt=""
           className="absolute left-1/2 top-1/2 size-14 -translate-x-1/2 -translate-y-1/2 rounded object-cover"
@@ -107,7 +107,8 @@ function PromoCard({ promo, now }: { promo: (typeof PROMOS)[number]; now: Date }
 function MorePromoCard() {
   return (
     <div
-      className="group relative h-[360px] w-[260px] shrink-0 overflow-clip rounded-3xl border border-white transition-transform duration-300 ease-out will-change-transform hover:-translate-y-1.5 xl:w-[302px]"
+      data-reveal
+      className="group relative h-[360px] w-[260px] shrink-0 overflow-clip rounded-3xl border border-white transition-transform duration-300 ease-out hover:-translate-y-1.5 xl:w-[302px]"
       style={{ backgroundImage: "linear-gradient(180deg, #00b5f0 0%, #005caa 100%)" }}
     >
       <p className="absolute left-6 top-6 w-[157px] text-xl font-semibold leading-7 tracking-[-0.4px] text-white xl:text-2xl xl:leading-[1.3] xl:tracking-[-0.48px]">
@@ -120,7 +121,7 @@ function MorePromoCard() {
 
       {/* decorative category-icon cluster (Figma "image 476"), blended into the
           gradient with Soft Light so it reads as a watermark rather than art */}
-      <img
+      <img loading="lazy" decoding="async"
         src="/assets/promo/showmore-icons.webp"
         alt=""
         aria-hidden
@@ -136,16 +137,16 @@ export default function PromoSection() {
   return (
     <section
       id="promo"
-      className="relative overflow-clip bg-gradient-to-b from-[#eef6fd] to-[#dcecfb] pb-11 pt-[124px] xl:pb-24 xl:pt-32"
+      className="relative overflow-clip bg-gradient-to-b from-blue-100 to-blue-200 py-12 xl:py-24"
     >
       {/* clove pattern — left & right, bleeding off the edges */}
-      <img
+      <img loading="lazy" decoding="async"
         src="/assets/promo/bg-clove-product-1.svg"
         alt=""
         aria-hidden
         className="pointer-events-none absolute left-[-380px] top-36 h-[896px] w-[770px] opacity-100 blur-[2px] xl:bottom-[-256px] xl:left-[-256px] xl:top-auto xl:h-auto xl:w-auto"
       />
-      <img
+      <img loading="lazy" decoding="async"
         src="/assets/promo/bg-clove-product-2.svg"
         alt=""
         aria-hidden
@@ -156,13 +157,13 @@ export default function PromoSection() {
 
       <div className="relative z-10 mx-auto w-full max-w-[560px] px-4 xl:w-[1280px] xl:max-w-none xl:px-0">
         {/* Heading — stacked on mobile, eyebrow column + h2 side by side on desktop. */}
-        <div className="relative flex flex-col xl:flex-row xl:gap-10">
+        <div data-reveal-group className="relative flex flex-col xl:flex-row xl:gap-10">
           <div className="flex items-center py-4 xl:w-60 xl:shrink-0">
-            <p className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-[#005caa] xl:text-sm xl:leading-[14px] xl:tracking-[2.1px]">
+            <p data-reveal className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px]">
               Event &amp; Program
             </p>
           </div>
-          <h2 className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-[#00335e] xl:w-[560px] xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]">
+          <h2 data-reveal="blur-up" className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:w-[560px] xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]">
             Apresiasi Terbaik untuk Menemani Setiap Momen Berharga
           </h2>
           {/* 3D percentage glass (three.js) temporarily hidden — see PercentGlass.tsx.
@@ -170,8 +171,9 @@ export default function PromoSection() {
         </div>
 
         {/* Cards — horizontally scrollable carousel on mobile (full-bleeding out
-            of the padded column), wrapping grid on desktop. */}
-        <div className="hide-scrollbar -mx-4 mt-8 flex items-start gap-4 overflow-x-auto px-4 [scrollbar-width:none] xl:mx-0 xl:mt-10 xl:flex-wrap xl:content-center xl:gap-6 xl:overflow-visible xl:px-0">
+            of the padded column), wrapping grid on desktop. Tighter 60ms
+            stagger: eight cards at the default 90ms would trickle too long. */}
+        <div data-reveal-group="60" className="hide-scrollbar -mx-4 mt-8 flex items-start gap-4 overflow-x-auto px-4 [scrollbar-width:none] xl:mx-0 xl:mt-10 xl:flex-wrap xl:content-center xl:gap-6 xl:overflow-visible xl:px-0">
           {PROMOS.map((promo) => (
             <PromoCard key={promo.id} promo={promo} now={now} />
           ))}
@@ -179,11 +181,11 @@ export default function PromoSection() {
         </div>
 
         {/* Mobile-only CTA — the desktop surfaces this via the "Show More" card. */}
-        <button className="mx-auto mt-9 flex h-10 items-center justify-center gap-0.5 rounded-full bg-[#005caa] px-5 transition-colors duration-200 active:bg-[#00457f] xl:hidden">
+        <button data-reveal className="mx-auto mt-9 flex h-10 items-center justify-center gap-0.5 rounded-full bg-blue-500 px-5 transition-colors duration-200 active:bg-[#00457f] xl:hidden">
           <span className="px-0.5 text-sm font-semibold leading-[14px] text-white">
             Lihat 200+ promo lainnya
           </span>
-          <img src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5" />
+          <img loading="lazy" decoding="async" src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5" />
         </button>
       </div>
     </section>

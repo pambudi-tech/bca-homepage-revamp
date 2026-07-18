@@ -25,12 +25,13 @@ export default function HeroArea({ kurs, banners }: { kurs: KursEntry[]; banners
       <HeroSection slides={banners} />
 
       {/* Search-focus page dimming — shared by both widget forms; each sits at
-          z-40 so it stays above the wash. */}
+          z-40 so it stays above the wash. Unmounted when idle: it covers the
+          whole viewport and carries a backdrop-filter, which the compositor
+          keeps paying for even at opacity 0. */}
       <div
         aria-hidden
-        className={`fixed inset-0 z-30 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 ${
-          searchActive ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
+        data-shown={searchActive}
+        className="fade-overlay fixed inset-0 z-30 bg-black/50 backdrop-blur-[2px]"
       />
 
       {/* Mobile / tablet widget — normal flow, pulled up 140px so the glass

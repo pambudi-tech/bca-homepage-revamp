@@ -11,6 +11,11 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   const [lenisInstance, setLenisInstance] = useState<Lenis | null>(null);
 
   useEffect(() => {
+    // Readers who ask for reduced motion get the browser's native scrolling —
+    // no Lenis instance, and therefore no rAF loop at all. Consumers already
+    // handle a null instance by falling back to `window.scrollTo`.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -22,16 +27,24 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
     setLenisInstance(lenis);
 
-    let frameId: number;
+    let frameId = 0;
     function raf(time: number) {
       lenis.raf(time);
       frameId = requestAnimationFrame(raf);
     }
-
     frameId = requestAnimationFrame(raf);
+
+    // A backgrounded tab can't be scrolled, so stop driving Lenis entirely
+    // instead of leaving a throttled loop ticking for the whole page.
+    const onVisibility = () => {
+      cancelAnimationFrame(frameId);
+      if (!document.hidden) frameId = requestAnimationFrame(raf);
+    };
+    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       cancelAnimationFrame(frameId);
+      document.removeEventListener("visibilitychange", onVisibility);
       lenis.destroy();
     };
   }, []);

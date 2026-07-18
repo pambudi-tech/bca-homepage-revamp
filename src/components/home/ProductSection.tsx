@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { PRODUCT_CATEGORIES, type Product } from "./product-data";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
+import { useIsLive } from "@/lib/useIsLive";
 
 const AUTO_ADVANCE_MS = 6000;
 const RING_RADIUS = 13;
@@ -28,32 +29,23 @@ function ProductCard({
   const cursorRef = useRef<HTMLDivElement>(null);
   const lastMouseRef = useRef({ x: -1000, y: -1000 });
 
-  const updateCursor = () => {
-    if (!active || !cardRef.current || !cursorRef.current) {
-      setIsHovered(false);
-      return;
-    }
+  // Writes the follow-cursor badge to wherever the pointer currently is,
+  // measured against the card's live box.
+  const positionCursor = () => {
+    if (!cardRef.current || !cursorRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const { x: clientX, y: clientY } = lastMouseRef.current;
-
-    const isInside =
-      clientX >= rect.left &&
-      clientX <= rect.right &&
-      clientY >= rect.top &&
-      clientY <= rect.bottom;
-
-    setIsHovered((prev) => (prev !== isInside ? isInside : prev));
-
-    if (isInside) {
-      const x = clientX - rect.left - 56;
-      const y = clientY - rect.top - 56;
-      cursorRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-    }
+    cursorRef.current.style.transform = `translate3d(${clientX - rect.left - 56}px, ${
+      clientY - rect.top - 56
+    }px, 0)`;
   };
 
   const handleCardClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     lastMouseRef.current = { x: e.clientX, y: e.clientY };
-    updateCursor();
+    positionCursor();
+    // A click means the pointer is over this card, so the badge should be up the
+    // moment it becomes active — without waiting for the next mouse move.
+    setIsHovered(true);
     onSelect();
   };
 
@@ -61,37 +53,44 @@ function ProductCard({
     lastMouseRef.current = { x: e.clientX, y: e.clientY };
   };
 
+  // The badge has to track two independent movements: the pointer, and the card
+  // itself (its flex-basis animates for 500ms on select, and it shifts on
+  // scroll) — so a per-frame re-measure is the only thing that stays glued.
+  //
+  // Crucially this runs *only while the badge is actually on screen*. It used to
+  // run unconditionally for every active card, which meant a permanent 60fps
+  // loop doing a layout-forcing getBoundingClientRect on every device — mobile
+  // included, where these cards are `display:none` and the badge can never show.
   useEffect(() => {
-    if (!active) {
-      setIsHovered(false);
-      return;
-    }
+    if (!active || !isHovered) return;
 
-    let frameId: number;
+    let frameId = 0;
     const loop = () => {
-      updateCursor();
+      positionCursor();
       frameId = requestAnimationFrame(loop);
     };
     frameId = requestAnimationFrame(loop);
 
+    // Pointer position still has to be tracked at the window level: the badge is
+    // offset from the card's origin, so we need coordinates even when the
+    // pointer is over a child element.
     const onWindowMouseMove = (e: MouseEvent) => {
       lastMouseRef.current = { x: e.clientX, y: e.clientY };
     };
-
     window.addEventListener("mousemove", onWindowMouseMove, { passive: true });
 
     return () => {
       cancelAnimationFrame(frameId);
       window.removeEventListener("mousemove", onWindowMouseMove);
     };
-  }, [active]);
+  }, [active, isHovered]);
 
   return (
     <button
       ref={cardRef}
       onClick={handleCardClick}
       onMouseMove={handleCardMouseMove}
-      onMouseEnter={() => active && setIsHovered(true)}
+      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={`group relative h-[400px] shrink-0 grow-0 overflow-clip rounded-3xl bg-white text-left ${
         active ? "cursor-none" : "cursor-pointer"
@@ -107,13 +106,13 @@ function ProductCard({
         style={{ transform: active ? "translateX(0)" : "translateX(96px)" }}
       >
         {/* Background scene — zooms 1.02x -> 1x on hover */}
-        <img
+        <img loading="lazy" decoding="async"
           src={product.imageBg}
           alt=""
           className="absolute inset-0 size-full scale-[1.02] object-cover transition-transform duration-500 ease-out group-hover:scale-100"
         />
         {/* Subject cutout on top — zooms 1x -> 1.02x on hover (inverse of bg) */}
-        <img
+        <img loading="lazy" decoding="async"
           src={product.image}
           alt=""
           className="absolute inset-0 size-full scale-100 object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
@@ -151,9 +150,9 @@ function ProductCard({
             <p className="w-full pt-2 text-base leading-6 text-white/80">
               {product.subtitle}
             </p>
-            <div className="flex items-center gap-0.5 pt-8 text-base font-semibold text-[#f4f8fc] md:hidden">
+            <div className="flex items-center gap-0.5 pt-8 text-base font-semibold text-blue-100 md:hidden">
               Pelajari
-              <img
+              <img loading="lazy" decoding="async"
                 src="/assets/cycle1/pelajari-icon.svg"
                 alt=""
                 className="size-5 transition-transform group-hover:translate-x-1"
@@ -181,7 +180,6 @@ function ProductCard({
             strokeLinecap="round"
             strokeDasharray={RING_CIRCUMFERENCE}
             strokeDashoffset={RING_CIRCUMFERENCE}
-            style={{ transition: "stroke-dashoffset 50ms linear" }}
           />
         </svg>
       </div>
@@ -224,8 +222,8 @@ function MobileProductCard({
     >
       {/* Background scene + subject cutout (both full-bleed, centered). */}
       <div className="absolute inset-0">
-        <img src={product.imageBg} alt="" className="absolute inset-0 size-full object-cover" />
-        <img src={product.image} alt="" className="absolute inset-0 size-full object-cover" />
+        <img loading="lazy" decoding="async" src={product.imageBg} alt="" className="absolute inset-0 size-full object-cover" />
+        <img loading="lazy" decoding="async" src={product.image} alt="" className="absolute inset-0 size-full object-cover" />
       </div>
 
       <div
@@ -256,9 +254,9 @@ function MobileProductCard({
         >
           <div className="overflow-hidden">
             <p className="w-full pt-1 text-sm leading-5 text-white/80">{product.subtitle}</p>
-            <div className="flex items-center gap-0.5 pt-6 text-sm font-semibold text-[#f4f8fc]">
+            <div className="flex items-center gap-0.5 pt-6 text-sm font-semibold text-blue-100">
               Pelajari
-              <img src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5" />
+              <img loading="lazy" decoding="async" src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5" />
             </div>
           </div>
         </div>
@@ -275,6 +273,8 @@ export default function ProductSection() {
   const pausedRef = useRef(false);
   const progressRef = useRef<SVGCircleElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  // Parks the autoplay timer while the section is off-screen or the tab is hidden.
+  const live = useIsLive(sectionRef);
   const cloveARef = useRef<HTMLImageElement>(null);
   const cloveBRef = useRef<HTMLImageElement>(null);
   const mobileScrollRef = useRef<HTMLDivElement>(null);
@@ -317,6 +317,8 @@ export default function ProductSection() {
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
+    // Plays once, like the page-wide ScrollReveal controller — scrolling back
+    // over the section keeps the cards where the entrance left them.
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -337,6 +339,7 @@ export default function ProductSection() {
     circumference: RING_CIRCUMFERENCE,
     progressRef,
     pausedRef,
+    live,
     onAdvance: () => setActiveIndex((i) => (i + 1) % products.length),
   });
 
@@ -401,16 +404,16 @@ export default function ProductSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative isolate bg-gradient-to-b from-[#f4f8fc] to-[#e6f3ff] pb-36 pt-8"
+      className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-20 pt-0 xl:pb-36 xl:pt-8"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-visible">
-        <img
+        <img loading="lazy" decoding="async"
           ref={cloveARef}
           src="/assets/product/bg-clove-a.svg"
           alt=""
           className="absolute left-[calc(50%-937px)] top-[-400px] h-[1614px] w-[1178px] opacity-80 will-change-transform"
         />
-        <img
+        <img loading="lazy" decoding="async"
           ref={cloveBRef}
           src="/assets/product/bg-clove-b.svg"
           alt=""
@@ -426,11 +429,11 @@ export default function ProductSection() {
           }`}
         >
           <div className="flex items-center py-4 xl:w-[240px] xl:shrink-0">
-            <p className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-[#005caa] xl:text-sm xl:leading-[14px] xl:tracking-[2.1px] xl:text-[#00213d]">
+            <p className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px] xl:text-blue-800">
               Produk &amp; Layanan
             </p>
           </div>
-          <h2 className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-[#00335e] xl:w-[560px] xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]">
+          <h2 className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:w-[560px] xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]">
             Solusi BCA untuk Setiap Tujuan Keuangan Anda
           </h2>
         </div>
@@ -450,8 +453,8 @@ export default function ProductSection() {
                 onClick={() => selectCategory(cat.key)}
                 className={`flex h-12 items-center justify-center rounded-xl border px-[18px] text-sm transition-colors duration-200 ${
                   isActive
-                    ? "border-[#00b5f0] bg-[#e6f3ff] font-bold text-[#005caa]"
-                    : "border-[#e9ecef] bg-white font-semibold text-[#495057] active:bg-[#f4f8fc]"
+                    ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500"
+                    : "border-neutral-300 bg-white font-semibold text-neutral-700 active:bg-blue-100"
                 }`}
               >
                 {cat.label}
@@ -463,7 +466,7 @@ export default function ProductSection() {
         <div className="mt-6 flex xl:mt-16 xl:gap-10">
           {/* Desktop category list. */}
           <div
-            className={`hidden shrink-0 flex-col items-start gap-8 py-4 text-[#005caa] transition-all duration-700 ease-out xl:flex xl:w-[240px] ${
+            className={`hidden shrink-0 flex-col items-start gap-8 py-4 text-blue-500 transition-all duration-700 ease-out xl:flex xl:w-[240px] ${
               entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             }`}
             style={{ transitionDelay: entered ? "150ms" : "0ms" }}
@@ -532,15 +535,32 @@ export default function ProductSection() {
             </div>
 
             <button
-              className={`mt-6 flex h-10 items-center justify-center gap-1 rounded-full border border-[#005caa] px-5 transition-colors duration-200 hover:bg-[#005caa]/5 xl:mt-10 xl:h-12 xl:px-6 ${
+              className={`mt-6 flex h-10 items-center justify-center gap-1 rounded-full border border-blue-500 px-5 transition-colors duration-200 hover:bg-blue-500/5 xl:mt-10 xl:h-12 xl:px-6 ${
                 entered ? "opacity-100" : "opacity-0"
               }`}
               style={{
                 transition: `opacity 700ms ease-out ${entered ? "610ms" : "0ms"}, background-color 200ms`,
               }}
             >
-              <span className="text-sm font-semibold text-[#005caa] xl:text-base">{category.ctaLabel}</span>
-              <img src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5" />
+              <span className="text-sm font-semibold text-blue-500 xl:text-base">{category.ctaLabel}</span>
+              {/* The asset hardcodes a near-white fill, which is right for the
+                  "Pelajari" links on photo cards but wrong here — this CTA is
+                  blue-on-white. Drawn as a mask so the shape stays one shared
+                  asset and the color comes from the same token as the label. */}
+              <span
+                aria-hidden
+                className="size-5 shrink-0 bg-blue-500"
+                style={{
+                  maskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+                  WebkitMaskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+                  maskSize: "contain",
+                  WebkitMaskSize: "contain",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskPosition: "center",
+                  WebkitMaskPosition: "center",
+                }}
+              />
             </button>
           </div>
         </div>

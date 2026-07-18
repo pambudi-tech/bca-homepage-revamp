@@ -3,7 +3,6 @@
 import {
   INFO_CATEGORY_META,
   POPULAR_SEARCHES,
-  POPULAR_TOPICS,
   bcaSearchResultUrl,
   type InfoCategory,
   type ProductIcon,
@@ -61,6 +60,72 @@ function PhoneIcon({ className }: IconProps) {
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
       <rect x="6.5" y="2.5" width="11" height="19" rx="2.5" />
       <path d="M10.5 18.5h3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function CarIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 15v-2.2a2 2 0 01.2-.9l1.9-3.8A2 2 0 016.9 7h10.2a2 2 0 011.8 1.1l1.9 3.8a2 2 0 01.2.9V15" />
+      <path d="M3 15h18v2.5a1 1 0 01-1 1h-1.5a1 1 0 01-1-1V16h-11v1.5a1 1 0 01-1 1H4a1 1 0 01-1-1z" />
+      <path d="M6.5 12.5h1.5M16 12.5h1.5" />
+    </svg>
+  );
+}
+
+function ShieldIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3l7 2.8v5.6c0 4-2.9 7.6-7 8.6-4.1-1-7-4.6-7-8.6V5.8z" />
+      <path d="M9 12l2 2 4-4" />
+    </svg>
+  );
+}
+
+function CashIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2.5" y="6" width="19" height="12" rx="2.5" />
+      <circle cx="12" cy="12" r="2.5" />
+      <path d="M6 10v4M18 10v4" />
+    </svg>
+  );
+}
+
+function QrIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round">
+      <rect x="3" y="3" width="7" height="7" rx="1.5" />
+      <rect x="14" y="3" width="7" height="7" rx="1.5" />
+      <rect x="3" y="14" width="7" height="7" rx="1.5" />
+      <path d="M14 14h3v3h-3zM18 18h3v3h-3z" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function TransferIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 8.5h14M14.5 5l3.5 3.5-3.5 3.5" />
+      <path d="M20 15.5H6M9.5 12L6 15.5 9.5 19" />
+    </svg>
+  );
+}
+
+function LocationIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 21c4-4.2 6-7.4 6-10a6 6 0 10-12 0c0 2.6 2 5.8 6 10z" />
+      <circle cx="12" cy="11" r="2.4" />
+    </svg>
+  );
+}
+
+function StarIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8-5.3-2.8-5.3 2.8 1-5.8-4.2-4.1 5.9-.9z" />
     </svg>
   );
 }
@@ -147,8 +212,16 @@ const PRODUCT_ICONS: Record<ProductIcon, (p: IconProps) => React.ReactElement> =
   wallet: WalletIcon,
   card: CardIcon,
   house: HouseIcon,
+  car: CarIcon,
   chart: ChartIcon,
   phone: PhoneIcon,
+  shield: ShieldIcon,
+  cash: CashIcon,
+  qr: QrIcon,
+  transfer: TransferIcon,
+  support: HeadphoneIcon,
+  location: LocationIcon,
+  star: StarIcon,
 };
 
 const INFO_ICONS: Record<InfoCategory, (p: IconProps) => React.ReactElement> = {
@@ -196,7 +269,7 @@ export default function SearchRecommendation({
   return (
     <div
       onMouseDown={onMouseDown}
-      className={`rounded-xl border border-[#e9ecef] bg-white shadow-[0px_10px_6px_rgba(204,204,204,0.07),0px_5px_5px_rgba(204,204,204,0.12),0px_1px_2px_rgba(204,204,204,0.14)] ${
+      className={`rounded-xl border border-neutral-300 bg-white shadow-[0px_10px_6px_rgba(204,204,204,0.07),0px_5px_5px_rgba(204,204,204,0.12),0px_1px_2px_rgba(204,204,204,0.14)] ${
         compact ? "max-h-[70dvh] overflow-y-auto overscroll-contain" : "overflow-hidden"
       }`}
     >
@@ -205,11 +278,11 @@ export default function SearchRecommendation({
           {recent.length > 0 && (
             <section className="flex flex-col gap-3">
               <div className="flex items-center justify-between">
-                <p className="text-base font-bold text-[#26292c]">Pencarian Terakhir</p>
+                <p className="text-base font-bold text-neutral-800">Pencarian Terakhir</p>
                 <button
                   type="button"
                   onClick={onClearRecent}
-                  className="text-sm font-semibold text-[#005caa] hover:underline"
+                  className="text-sm font-semibold text-blue-500 hover:underline"
                 >
                   Hapus semua
                 </button>
@@ -218,21 +291,21 @@ export default function SearchRecommendation({
                 {recent.map((term) => (
                   <span
                     key={term}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-[#e9ecef] py-1.5 pl-3.5 pr-2 transition-colors hover:border-[#005caa] hover:bg-[#f4f8fc]"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-neutral-300 py-1.5 pl-3.5 pr-2 transition-colors hover:border-blue-500 hover:bg-blue-100"
                   >
                     <button
                       type="button"
                       onClick={() => onSelectQuery(term)}
-                      className="flex items-center gap-2 text-sm font-semibold text-[#26292c]"
+                      className="flex items-center gap-2 text-sm font-semibold text-neutral-800"
                     >
-                      <ClockIcon className="size-4 text-[#8b95a1]" />
+                      <ClockIcon className="size-4 text-neutral-600" />
                       {term}
                     </button>
                     <button
                       type="button"
                       onClick={() => onRemoveRecent(term)}
                       aria-label={`Hapus ${term}`}
-                      className="flex size-4 items-center justify-center rounded-full text-[#8b95a1] hover:text-[#26292c]"
+                      className="flex size-4 items-center justify-center rounded-full text-neutral-600 hover:text-neutral-800"
                     >
                       <CloseIcon className="size-3.5" />
                     </button>
@@ -243,57 +316,32 @@ export default function SearchRecommendation({
           )}
 
           <section className="flex flex-col gap-3">
-            <p className="text-base font-bold text-[#26292c]">Pencarian Populer</p>
+            <p className="text-base font-bold text-neutral-800">Pencarian Populer</p>
             <div className="flex flex-wrap gap-2">
               {POPULAR_SEARCHES.map((term) => (
                 <button
                   key={term}
                   type="button"
                   onClick={() => onSelectQuery(term)}
-                  className="inline-flex items-center gap-2 rounded-full border border-[#e9ecef] px-3.5 py-1.5 text-sm font-semibold text-[#26292c] transition-colors hover:border-[#005caa] hover:bg-[#f4f8fc] hover:text-[#005caa]"
+                  className="inline-flex items-center rounded-full border border-neutral-300 px-3.5 py-1.5 text-sm font-semibold text-neutral-800 transition-colors hover:border-blue-500 hover:bg-blue-100 hover:text-blue-500"
                 >
-                  <SearchIcon className="size-4 text-[#8b95a1]" />
                   {term}
                 </button>
               ))}
             </div>
           </section>
-
-          <section className="flex flex-col gap-3">
-            <p className="text-base font-bold text-[#26292c]">Topik Populer</p>
-            <div className={`grid gap-2 ${compact ? "grid-cols-1" : "grid-cols-2"}`}>
-              {POPULAR_TOPICS.map((topic) => {
-                const Icon = PRODUCT_ICONS[topic.icon];
-                return (
-                  <button
-                    key={topic.id}
-                    type="button"
-                    onClick={() => onSelectQuery(topic.keyword)}
-                    className="group flex items-center gap-3 rounded-xl border border-[#e9ecef] p-3 text-left transition-colors hover:border-[#005caa] hover:bg-[#f4f8fc]"
-                  >
-                    <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#e6f3ff] text-[#005caa]">
-                      <Icon className="size-5" />
-                    </span>
-                    <span className="text-sm font-semibold text-[#26292c] group-hover:text-[#005caa]">
-                      {topic.label}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </section>
         </div>
       ) : hasResults ? (
-        <div className={`flex flex-col ${compact ? "gap-6 p-4" : "gap-8 p-6"}`}>
+        <div className={`flex flex-col ${compact ? "gap-5 p-3" : "gap-8 p-6"}`}>
           {products.length > 0 && (
             <section className="flex flex-col gap-3">
               <div className="flex items-center justify-between">
-                <p className="text-base font-bold text-[#26292c]">Produk Terkait</p>
+                <p className="text-base font-bold text-neutral-800">Produk Terkait</p>
                 <a
                   href={seeAllUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-0.5 text-sm font-semibold text-[#005caa] hover:underline"
+                  className="flex items-center gap-0.5 text-sm font-semibold text-blue-500 hover:underline"
                 >
                   Lihat Semua
                   <ArrowDiagonalIcon className="size-5" />
@@ -301,37 +349,45 @@ export default function SearchRecommendation({
               </div>
               {/* Desktop lays the cards out as three equal columns; mobile
                   stacks them and turns each into an icon-beside-text row. */}
-              <div className={`flex gap-3 ${compact ? "flex-col" : ""}`}>
+              <div className={`flex ${compact ? "flex-col gap-2" : "gap-3"}`}>
                 {products.map((product) => {
                   const Icon = PRODUCT_ICONS[product.icon];
                   return (
                     <a
                       key={product.id}
                       href={product.href}
-                      className={`group flex flex-1 rounded-xl border border-[#e9ecef] transition-colors hover:border-[#005caa] hover:bg-[#f4f8fc] ${
-                        compact ? "items-center gap-4 p-4" : "flex-col gap-4 px-4 pt-4 pb-5"
+                      className={`group flex flex-1 rounded-xl border border-neutral-300 transition-colors hover:border-cyan-500 hover:bg-cyan-100 ${
+                        compact ? "items-center gap-4 p-3" : "flex-col gap-4 px-4 pt-4 pb-5"
                       }`}
                     >
                       {product.icon === "mybca" ? (
                         <img
                           src="/assets/quick-action/mybca-logo.svg"
                           alt=""
-                          className="size-10 shrink-0"
+                          className={`shrink-0 ${compact ? "size-8" : "size-10"}`}
                         />
                       ) : (
-                        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#e6f3ff] text-[#005caa]">
-                          <Icon className="size-6" />
+                        <span
+                          className={`flex shrink-0 items-center justify-center bg-cyan-100 text-blue-500 ${
+                            compact ? "size-8 rounded-lg" : "size-10 rounded-xl"
+                          }`}
+                        >
+                          <Icon className={compact ? "size-5" : "size-6"} />
                         </span>
                       )}
-                      <div className="flex min-w-0 flex-col gap-1.5">
+                      <div className={`flex min-w-0 flex-col ${compact ? "gap-1" : "gap-1.5"}`}>
                         <p
-                          className={`text-base font-semibold text-[#26292c] ${
-                            compact ? "" : "truncate"
+                          className={`font-semibold text-neutral-800 group-hover:text-blue-500 ${
+                            compact ? "text-sm" : "truncate text-base"
                           }`}
                         >
                           {product.title}
                         </p>
-                        <p className="text-sm leading-normal text-[#495057]">
+                        <p
+                          className={`leading-normal text-neutral-700 ${
+                            compact ? "text-xs" : "text-sm"
+                          }`}
+                        >
                           {product.description}
                         </p>
                       </div>
@@ -344,7 +400,7 @@ export default function SearchRecommendation({
 
           {information.length > 0 && (
             <section className="flex flex-col gap-3">
-              <p className="text-base font-bold text-[#26292c]">Informasi Terkait</p>
+              <p className="text-base font-bold text-neutral-800">Informasi Terkait</p>
               <ul className="flex flex-col">
                 {information.map((info) => {
                   const meta = INFO_CATEGORY_META[info.category];
@@ -356,13 +412,13 @@ export default function SearchRecommendation({
                         className="group flex items-center gap-8 rounded-lg py-2 transition-colors"
                       >
                         <span className="flex min-w-0 flex-1 items-center gap-3">
-                          <span className="flex size-8 shrink-0 items-center justify-center text-[#26292c]">
+                          <span className="flex size-8 shrink-0 items-center justify-center text-neutral-800">
                             <Icon className="size-6" />
                           </span>
                           {/* Mobile has no room for the badge, so the title wraps
                               across the full row instead of truncating. */}
                           <span
-                            className={`min-w-0 flex-1 text-sm font-semibold text-[#26292c] group-hover:text-[#005caa] ${
+                            className={`min-w-0 flex-1 text-sm font-semibold text-neutral-800 group-hover:text-blue-500 ${
                               compact ? "" : "truncate"
                             }`}
                           >
@@ -387,10 +443,10 @@ export default function SearchRecommendation({
         </div>
       ) : (
         <div className="px-6 py-8 text-center">
-          <p className="text-sm font-semibold text-[#26292c]">
+          <p className="text-sm font-semibold text-neutral-800">
             Tidak ada hasil untuk &ldquo;{keyword}&rdquo;
           </p>
-          <p className="mt-1 text-sm text-[#495057]">
+          <p className="mt-1 text-sm text-neutral-700">
             Coba kata kunci lain atau lihat semua hasil di bawah.
           </p>
         </div>
@@ -400,7 +456,7 @@ export default function SearchRecommendation({
           mobile stacks them, so the divider becomes the top border of the
           second row and the help label breaks onto two lines. */}
       <div
-        className={`flex border-t border-[#e9ecef] ${
+        className={`flex border-t border-neutral-300 ${
           compact ? "flex-col" : "items-center justify-between"
         }`}
       >
@@ -409,7 +465,7 @@ export default function SearchRecommendation({
             href={seeAllUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={`flex flex-1 items-center gap-3 text-sm font-semibold text-[#005caa] transition-colors hover:bg-[#f4f8fc] ${
+            className={`flex flex-1 items-center gap-3 text-sm font-semibold text-blue-500 transition-colors hover:bg-blue-100 ${
               compact ? "p-4" : "p-5"
             }`}
           >
@@ -421,14 +477,14 @@ export default function SearchRecommendation({
           href="https://www.bca.co.id/id/bantuan/pusat-informasi"
           target="_blank"
           rel="noopener noreferrer"
-          className={`flex flex-1 items-center gap-3 transition-colors hover:bg-[#f4f8fc] ${
+          className={`flex flex-1 items-center gap-3 transition-colors hover:bg-blue-100 ${
             compact ? "p-4" : "p-5"
-          } ${isEmpty ? "" : compact ? "border-t border-[#e9ecef]" : "border-l border-[#e9ecef]"}`}
+          } ${isEmpty ? "" : compact ? "border-t border-neutral-300" : "border-l border-neutral-300"}`}
         >
-          <HeadphoneIcon className="size-6 shrink-0 text-[#26292c]" />
+          <HeadphoneIcon className="size-6 shrink-0 text-neutral-800" />
           <span className={`flex gap-1 ${compact ? "flex-col items-start" : "items-center"}`}>
-            <span className="text-sm font-semibold text-[#26292c]">Butuh bantuan?</span>
-            <span className="flex items-center gap-0.5 text-sm font-semibold text-[#005caa]">
+            <span className="text-sm font-semibold text-neutral-800">Butuh bantuan?</span>
+            <span className="flex items-center gap-0.5 text-sm font-semibold text-blue-500">
               Kunjungi Pusat Bantuan
               <ArrowDiagonalIcon className="size-5 shrink-0" />
             </span>

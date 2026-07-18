@@ -4,21 +4,21 @@ import { useEffect, useRef, useState } from "react";
 import SlideDots, { DOT_CIRCUMFERENCE } from "./SlideDots";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useLenis } from "@/components/SmoothScroll";
+import { useIsLive } from "@/lib/useIsLive";
 import { SLIDES, SLIDE_DURATION_MS, type Slide, type SlideCta } from "./hero-slides";
 
 const PARALLAX_SPEED = 0.45;
 
 /** Hero CTA — one button sized responsively. The desktop-only hover treatment
- *  (blue fill + border beam + inverted icon) is gated behind `xl:`, so on touch
- *  the button stays the plain white pill with an `active:scale` press. */
+ *  (blue fill + glow + inverted icon) is gated behind `xl:`, so on touch the
+ *  button stays the plain white pill with an `active:scale` press. */
 function HeroCta({ label, icon }: SlideCta) {
   return (
     <div className="group/cta relative inline-flex items-start gap-3">
       <button
-        className="hero-cta relative flex h-10 items-center justify-center gap-0.5 rounded-full border border-transparent bg-white px-5 transition-[background-color,box-shadow,transform] duration-200 active:scale-95 xl:h-12 xl:gap-1 xl:px-6 xl:duration-300 xl:active:scale-100 xl:hover:bg-[#005caa] xl:hover:shadow-[0_0_22px_-6px_rgba(125,211,252,0.75)]"
+        className="relative flex h-10 items-center justify-center gap-0.5 rounded-full border border-transparent bg-white px-5 transition-[background-color,box-shadow,transform] duration-200 active:scale-95 xl:h-12 xl:gap-1 xl:px-6 xl:duration-300 xl:active:scale-100 xl:hover:bg-blue-500 xl:hover:shadow-[0_0_22px_-6px_rgba(125,211,252,0.75)]"
       >
-        <span aria-hidden className="hero-cta-beam" />
-        <span className="px-0.5 text-sm font-semibold text-[#005caa] transition-colors duration-300 xl:text-base xl:group-hover/cta:text-white">
+        <span className="px-0.5 text-sm font-semibold text-blue-500 transition-colors duration-300 xl:text-base xl:group-hover/cta:text-white">
           {label}
         </span>
         <img
@@ -39,6 +39,9 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
   const pausedRef = useRef(false);
   const progressCircleRef = useRef<SVGCircleElement>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  // Parks the autoplay timer + parallax once the hero scrolls away.
+  const live = useIsLive(rootRef);
   const touchStartX = useRef<number | null>(null);
   const lenis = useLenis();
 
@@ -53,23 +56,39 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
     circumference: DOT_CIRCUMFERENCE,
     progressRef: progressCircleRef,
     pausedRef,
+    live,
     onAdvance: () => setActiveSlide((s) => (s + 1) % count),
   });
 
   // Parallax on the banner layer — applied on every breakpoint (mobile too).
+  //
+  // Gated on `live`: once the hero has scrolled away there is nothing to
+  // parallax, and the writes were the most frequent thing on the page (Lenis
+  // emits `scroll` every frame of a smooth scroll, for the entire document
+  // height). Coalescing into rAF also means a burst of events can't produce
+  // more than one style write per frame.
   useEffect(() => {
-    if (!lenis) return;
-    const updateParallax = () => {
+    if (!lenis || !live) return;
+
+    let raf = 0;
+    const write = () => {
+      raf = 0;
       if (!parallaxRef.current) return;
-      const scrollY = window.scrollY;
-      parallaxRef.current.style.transform = `translate3d(0, ${scrollY * PARALLAX_SPEED}px, 0) scale(1.1)`;
+      parallaxRef.current.style.transform = `translate3d(0, ${
+        window.scrollY * PARALLAX_SPEED
+      }px, 0) scale(1.1)`;
     };
-    lenis.on("scroll", updateParallax);
-    updateParallax();
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(write);
+    };
+
+    lenis.on("scroll", onScroll);
+    write();
     return () => {
-      lenis.off("scroll", updateParallax);
+      lenis.off("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
     };
-  }, [lenis]);
+  }, [lenis, live]);
 
   const goPrev = () => {
     setPaused(false);
@@ -98,7 +117,8 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
 
   return (
     <div
-      className="relative h-[520px] overflow-clip bg-[#005caa] xl:h-[620px]"
+      ref={rootRef}
+      className="relative h-[520px] overflow-clip bg-blue-500 xl:h-[620px]"
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
@@ -110,11 +130,18 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
         className="absolute inset-x-0 bottom-0 h-[620px] origin-top will-change-transform"
         style={{ transform: "translate3d(0, 0, 0) scale(1.1)" }}
       >
+        {/* Slide 0 is the LCP element on essentially every visit, so it's flagged
+            high-priority. The rest are stacked in the viewport at opacity 0 —
+            `loading="lazy"` does nothing for them (they're technically on
+            screen), but a low fetch priority keeps them out of the LCP image's
+            way instead of racing it for bandwidth. */}
         {slides.map((slide, i) => (
           <img
             key={slide.image}
             src={slide.image}
             alt={slide.alt}
+            fetchPriority={i === 0 ? "high" : "low"}
+            decoding={i === 0 ? "sync" : "async"}
             className="absolute inset-0 size-full object-cover transition-opacity duration-700 ease-in-out"
             style={{ opacity: i === activeSlide ? 1 : 0 }}
           />

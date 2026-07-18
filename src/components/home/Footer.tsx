@@ -9,7 +9,7 @@ const COPYRIGHT = "Copyrights © 2026 PT Bank Central Asia Tbk, All Rights Reser
 function ContactRow({ icon, label }: { icon: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
-      <img src={icon} alt="" className="size-5 shrink-0" />
+      <img loading="lazy" decoding="async" src={icon} alt="" className="size-5 shrink-0" />
       <p className="text-sm text-white">{label}</p>
     </div>
   );
@@ -41,7 +41,7 @@ export default function Footer() {
   }, [lenis]);
 
   return (
-    <footer className="relative overflow-clip bg-[#005caa] pt-12 pb-[88px] xl:pt-14 xl:pb-8">
+    <footer className="relative overflow-clip bg-blue-500 pt-12 pb-[88px] xl:pt-14 xl:pb-8">
       <div
         ref={parallaxRef}
         className="pointer-events-none absolute inset-0 z-0 overflow-visible mix-blend-multiply"
@@ -49,7 +49,7 @@ export default function Footer() {
           isolation: "isolate",
         }}
       >
-        <img
+        <img loading="lazy" decoding="async"
           src="/assets/footer/footer-clove-pattern.svg"
           alt=""
           aria-hidden
@@ -60,7 +60,7 @@ export default function Footer() {
       <div className="relative z-10 mx-auto flex w-full max-w-[420px] flex-col gap-10 px-4 xl:w-[1280px] xl:max-w-none xl:gap-16 xl:px-0">
         {/* Logo + socials — stacked & centered on mobile, split row on desktop. */}
         <div className="flex flex-col items-center gap-10 xl:flex-row xl:justify-between xl:gap-0">
-          <img
+          <img loading="lazy" decoding="async"
             src="/assets/cycle1/bca-logo.svg"
             alt="BCA"
             className="h-10 w-[127.5px] xl:h-14 xl:w-[178.5px]"

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import type { KursEntry } from "@/lib/kurs";
 import { useLenis } from "@/components/SmoothScroll";
+import { useIsLive } from "@/lib/useIsLive";
 import SearchRecommendation from "./SearchRecommendation";
 import {
   addRecentSearch,
@@ -34,7 +35,7 @@ function slotStyle(state: SlotState): CSSProperties {
   return { transform: `translateY(${LINE_H}px)`, opacity: 0 };
 }
 
-function SearchPlaceholder({ visible }: { visible: boolean }) {
+function SearchPlaceholder({ visible, live }: { visible: boolean; live: boolean }) {
   const [slots, setSlots] = useState<Slot[]>([
     { text: PLACEHOLDERS[0], state: "active", instant: false },
     { text: PLACEHOLDERS[1 % PLACEHOLDERS.length], state: "waiting", instant: false },
@@ -43,6 +44,7 @@ function SearchPlaceholder({ visible }: { visible: boolean }) {
   const nextIndexRef = useRef(2 % PLACEHOLDERS.length);
 
   useEffect(() => {
+    if (!live) return;
     const id = setInterval(() => {
       const activeIdx = activeSlotRef.current;
       const waitingIdx = activeIdx === 0 ? 1 : 0;
@@ -73,22 +75,20 @@ function SearchPlaceholder({ visible }: { visible: boolean }) {
       }, 700);
     }, 2500);
     return () => clearInterval(id);
-  }, []);
+  }, [live]);
 
   return (
     <div
       aria-hidden
-      className={`pointer-events-none absolute inset-y-0 left-6 right-14 flex items-center overflow-hidden transition-opacity duration-200 ${
-        visible ? "opacity-100" : "opacity-0"
-      }`}
+      className={`pointer-events-none absolute inset-y-0 left-6 right-14 flex items-center overflow-hidden transition-opacity duration-200 ${visible ? "opacity-100" : "opacity-0"
+        }`}
     >
       <div className="relative h-12 w-full overflow-hidden">
         {slots.map((slot, i) => (
           <span
             key={i}
-            className={`absolute inset-0 flex h-12 items-center whitespace-nowrap text-base font-semibold text-[#cfcfcf] ${
-              slot.instant ? "" : "transition-all duration-700 ease-in-out"
-            }`}
+            className={`absolute inset-0 flex h-12 items-center whitespace-nowrap text-sm font-semibold text-neutral-500 ${slot.instant ? "" : "transition-all duration-700 ease-in-out"
+              }`}
             style={slotStyle(slot.state)}
           >
             {slot.text}
@@ -119,9 +119,8 @@ const RAIL_H_OPEN = 184;
 const KURS_PT = 92;
 const KURS_PT_OPEN = KURS_PT + (RAIL_H_OPEN - RAIL_H);
 // Focusing the search scrolls the widget this far below the viewport top —
-// clear of the 56px fixed mobile nav — so the dropdown gets the rest of the
-// screen to open into.
-const SEARCH_TOP_GAP = 64;
+// so the dropdown gets the rest of the screen to open into.
+const SEARCH_TOP_GAP = 24;
 
 const QUICK_ACTIONS: QuickAction[] = [
   { title: "Masuk ke BCA", subtitle: "myBCA • KlikBCA", icon: "/assets/quick-action/login.svg" },
@@ -131,13 +130,13 @@ const QUICK_ACTIONS: QuickAction[] = [
     icon: "/assets/quick-action/discount-shape.svg",
     scrollTo: "#promo",
   },
-  { title: "Webform BCA", subtitle: "Pengajuan produk BCA", icon: "/assets/quick-action/document.svg" },
-  { title: "Lokasi BCA", subtitle: "Cabang & ATM BCA", icon: "/assets/quick-action/location.svg" },
   {
     title: "Bantuan HaloBCA",
     subtitle: "1500888 · Chat · Email",
     icon: "/assets/quick-action/message-question.svg",
   },
+  { title: "Lokasi BCA", subtitle: "Cabang & ATM BCA", icon: "/assets/quick-action/location.svg" },
+  { title: "Webform BCA", subtitle: "Pengajuan produk BCA", icon: "/assets/quick-action/document.svg" },
 ];
 
 /* ------------------------------------------------------------------ *
@@ -154,17 +153,17 @@ function KursCard({ entry }: { entry: KursEntry }) {
           then wrap (flag on top, code below) once the card gets narrow. */}
       <div className="flex min-w-0 max-w-[84px] flex-1 flex-wrap content-center items-center gap-x-3 gap-y-1">
         <img src={entry.flag} alt={entry.code} className="size-5 shrink-0" />
-        <p className="w-12 text-base font-semibold leading-6 text-white">{entry.code}</p>
+        <p className="w-12 text-sm font-semibold leading-6 text-white">{entry.code}</p>
       </div>
       {/* value block: fill but holds a 120px min, so the beli/jual pairs stack
           rather than shrinking — the title is what collapses first. */}
-      <div className="flex min-w-[120px] flex-1 flex-wrap items-center justify-end gap-2 font-semibold text-[#d1eaff] opacity-90">
+      <div className="flex min-w-[120px] flex-1 flex-wrap items-center justify-end gap-2 font-semibold text-blue-300 opacity-90">
         <div className="flex items-center gap-2">
-          <span className="w-8 text-[10px] uppercase leading-[10px] tracking-[1.5px]">Beli</span>
+          <span className="w-8 text-xs uppercase leading-[12px] tracking-[1.5px]">Beli</span>
           <span className="w-[72px] text-right text-sm leading-5">{entry.beli}</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="w-8 text-[10px] uppercase leading-[10px] tracking-[1.5px]">Jual</span>
+          <span className="w-8 text-xs uppercase leading-[12px] tracking-[1.5px]">Jual</span>
           <span className="w-[72px] text-right text-sm leading-5">{entry.jual}</span>
         </div>
       </div>
@@ -194,6 +193,9 @@ export default function MobileHeroWidget({
   const railRef = useRef<HTMLDivElement>(null);
   const railWidthRef = useRef(0);
   const rootRef = useRef<HTMLDivElement>(null);
+  // Gates this widget's timers. Above xl the whole thing lives in a
+  // `display:none` wrapper, so this stays false and nothing here ticks.
+  const live = useIsLive(rootRef);
   const searchBarRef = useRef<HTMLDivElement>(null);
   // Distance from the widget root to the bottom of the search bar. The dropdown
   // is rendered at the root (the search panel is `overflow-clip`) so it can
@@ -273,14 +275,17 @@ export default function MobileHeroWidget({
   }, []);
 
   // Auto-advance the currency every 5s; manual navigation resets the timer.
+  // Gated on `live`: above xl this whole widget sits in a `display:none`
+  // wrapper, so without this the desktop layout would still be paging currencies
+  // every 5s for a widget nobody can see.
   useEffect(() => {
-    if (kurs.length <= 1) return;
+    if (!live || kurs.length <= 1) return;
     const id = setInterval(() => {
       setKursDir("next");
       setKursIndex((i) => (i + 1) % kurs.length);
     }, 5000);
     return () => clearInterval(id);
-  }, [kurs.length, autoTick]);
+  }, [kurs.length, autoTick, live]);
 
   const stepKurs = (dir: "next" | "prev") => {
     setKursDir(dir);
@@ -342,8 +347,12 @@ export default function MobileHeroWidget({
               } as CSSProperties
             }
           >
-            {/* text-base (16px) is deliberate: iOS Safari zooms the page in
-                when a focused input's font-size is below 16px. */}
+            {/* The input is text-base (16px) on purpose: iOS Safari zooms the
+                page in when a focused input's font-size is below 16px. The
+                placeholder is a sibling overlay, not a real `placeholder`
+                attribute, so it keeps the design's 14px — Safari only measures
+                the input itself. Don't "align" the two by dropping the input to
+                text-sm; that brings the zoom back. */}
             <input
               type="text"
               value={searchValue}
@@ -359,7 +368,7 @@ export default function MobileHeroWidget({
               }}
               className="relative z-10 h-full w-full bg-transparent pl-6 pr-14 text-base font-semibold text-white focus:outline-none"
             />
-            <SearchPlaceholder visible={!searchValue && !searchFocused} />
+            <SearchPlaceholder visible={!searchValue && !searchFocused} live={live} />
             <button
               aria-label="Cari"
               onClick={() => submitSearch(searchValue)}
@@ -373,7 +382,7 @@ export default function MobileHeroWidget({
 
       {/* 2. Kurs — blue bar directly under the search panel; the top padding
              leaves room for the quick-action cards that overlap it. */}
-      <div className="relative overflow-clip rounded-b-3xl bg-gradient-to-b from-[#00b5f0] to-[#005caa] shadow-[inset_0px_-4px_8px_0px_rgba(0,51,94,0.25)]">
+      <div className="relative overflow-clip rounded-b-3xl bg-gradient-to-b from-cyan-500 to-blue-500 shadow-[inset_0px_-4px_8px_0px_rgba(0,51,94,0.25)]">
         <div
           className="flex items-center gap-4 px-5 pb-5 transition-[padding-top] duration-300 ease-in-out"
           style={{ paddingTop: loginOpen ? KURS_PT_OPEN : KURS_PT }}
@@ -407,7 +416,7 @@ export default function MobileHeroWidget({
         className="hide-scrollbar absolute inset-x-[-8px] top-[112px] z-10 overflow-x-auto overflow-y-clip transition-[height] duration-300 ease-in-out [scrollbar-width:none]"
         style={{ height: loginOpen ? RAIL_H_OPEN : RAIL_H }}
       >
-        <div className="flex h-full w-max items-start gap-3 px-5">
+        <div className="flex h-full w-max items-start gap-3 px-6">
           {QUICK_ACTIONS.map((action, index) =>
             index === 0 ? (
               /* "Masuk ke BCA" — expands in place into the login panel. Both
@@ -415,11 +424,13 @@ export default function MobileHeroWidget({
                  text never reflows while the card animates. */
               <div
                 key={action.title}
-                className={`relative h-full shrink-0 overflow-hidden rounded-xl border border-[#e9ecef] duration-300 ease-in-out ${
-                  animateLoginWidth
-                    ? "transition-[width,background-color]"
-                    : "transition-[background-color]"
-                }`}
+                /* No press-shrink here, unlike the other quick actions: this
+                   card expands in place rather than navigating, and the width
+                   animation already reads as the response to the tap. */
+                className={`relative h-full shrink-0 overflow-hidden rounded-xl border border-neutral-300 duration-300 ease-in-out ${animateLoginWidth
+                  ? "transition-[width,background-color]"
+                  : "transition-[background-color]"
+                  }`}
                 style={{
                   width: loginOpen ? loginCardWidth : LOGIN_CARD_WIDTH_COLLAPSED,
                   backgroundColor: loginOpen ? "#e6f3ff" : "#ffffff",
@@ -428,25 +439,23 @@ export default function MobileHeroWidget({
                 <button
                   onClick={toggleLogin}
                   aria-expanded={loginOpen}
-                  className={`absolute inset-y-0 left-0 flex w-40 flex-col items-start justify-center gap-2 p-4 text-left transition-opacity duration-200 ${
-                    loginOpen ? "pointer-events-none opacity-0" : "opacity-100 delay-100"
-                  }`}
+                  className={`absolute inset-y-0 left-0 flex w-40 flex-col items-start justify-center gap-2 p-[14px] text-left transition-opacity duration-200 ${loginOpen ? "pointer-events-none opacity-0" : "opacity-100 delay-100"
+                    }`}
                 >
                   <img src={action.icon} alt="" className="size-6" />
                   <div className="flex flex-col gap-0.5">
-                    <p className="whitespace-nowrap text-sm font-bold text-[#26292c]">
+                    <p className="whitespace-nowrap text-sm font-bold text-neutral-800">
                       {action.title}
                     </p>
-                    <p className="whitespace-nowrap text-xs font-normal text-[#495057]">
+                    <p className="whitespace-nowrap text-xs font-normal text-neutral-700">
                       {action.subtitle}
                     </p>
                   </div>
                 </button>
 
                 <div
-                  className={`absolute inset-y-0 left-0 flex flex-col gap-3 p-4 transition-opacity duration-200 ${
-                    loginOpen ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
-                  }`}
+                  className={`absolute inset-y-0 left-0 flex flex-col gap-3 p-[14px] transition-opacity duration-200 ${loginOpen ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
+                    }`}
                   style={{ width: loginCardWidth, height: RAIL_H_OPEN }}
                 >
                   {/* The whole header collapses the card — tapping the title
@@ -459,8 +468,8 @@ export default function MobileHeroWidget({
                   >
                     <img src={action.icon} alt="" className="size-6 shrink-0" />
                     <div className="flex min-w-0 flex-1 flex-col gap-0.5 text-left">
-                      <p className="text-sm font-bold text-[#26292c]">{action.title}</p>
-                      <p className="text-xs font-normal text-[#495057]">{action.subtitle}</p>
+                      <p className="text-sm font-bold text-neutral-800">{action.title}</p>
+                      <p className="text-xs font-normal text-neutral-700">{action.subtitle}</p>
                     </div>
                     <img
                       src="/assets/cycle1/outline-close.svg"
@@ -469,23 +478,23 @@ export default function MobileHeroWidget({
                     />
                   </button>
                   <div className="flex flex-1 items-stretch gap-[9px]">
-                    <button className="flex flex-1 flex-col items-start justify-center gap-2 rounded-xl border border-[#e9ecef] bg-white p-4 transition-colors active:bg-[#f7f9fa]">
+                    <button className="flex flex-1 flex-col items-start justify-center gap-2 rounded-xl border border-neutral-300 bg-white p-4 transition-[background-color,transform] duration-200 active:scale-95 active:bg-neutral-200">
                       <img
                         src="/assets/quick-action/mybca-logo.svg"
                         alt=""
                         className="size-10 shrink-0"
                       />
-                      <p className="whitespace-nowrap text-sm font-semibold text-[#26292c]">
+                      <p className="whitespace-nowrap text-sm font-semibold text-neutral-800">
                         Login ke myBCA
                       </p>
                     </button>
-                    <button className="flex flex-1 flex-col items-start justify-center gap-2 rounded-xl border border-[#e9ecef] bg-white p-4 transition-colors active:bg-[#f7f9fa]">
+                    <button className="flex flex-1 flex-col items-start justify-center gap-2 rounded-xl border border-neutral-300 bg-white p-4 transition-[background-color,transform] duration-200 active:scale-95 active:bg-neutral-200">
                       <img
-                        src="/assets/quick-action/klikbca-logo.png"
+                        src="/assets/quick-action/klikbca-logo.webp"
                         alt=""
                         className="h-10 w-auto shrink-0 object-contain"
                       />
-                      <p className="whitespace-nowrap text-sm font-semibold text-[#26292c]">
+                      <p className="whitespace-nowrap text-sm font-semibold text-neutral-800">
                         Login ke KlikBCA
                       </p>
                     </button>
@@ -499,14 +508,14 @@ export default function MobileHeroWidget({
                   if (loginOpen) setLoginOpen(false);
                   if (action.scrollTo) goToPromo();
                 }}
-                className="flex h-[104px] w-40 shrink-0 flex-col items-start justify-center gap-2 rounded-xl border border-[#e9ecef] bg-white p-4 text-left transition-colors active:bg-[#e6f3ff]"
+                className="flex h-[104px] w-40 shrink-0 flex-col items-start justify-center gap-2 rounded-xl border border-neutral-300 bg-white p-[14px] text-left transition-[background-color,transform] duration-200 active:scale-95 active:bg-cyan-100"
               >
                 <img src={action.icon} alt="" className="size-6" />
                 <div className="flex flex-col gap-0.5">
-                  <p className="whitespace-nowrap text-sm font-bold text-[#26292c]">
+                  <p className="whitespace-nowrap text-sm font-bold text-neutral-800">
                     {action.title}
                   </p>
-                  <p className="whitespace-nowrap text-xs font-normal text-[#495057]">
+                  <p className="whitespace-nowrap text-xs font-normal text-neutral-700">
                     {action.subtitle}
                   </p>
                 </div>
@@ -515,6 +524,20 @@ export default function MobileHeroWidget({
           )}
         </div>
       </div>
+
+      {/* 3b. Search-mode dim for the widget's own lower half. The page-wide
+             overlay in HeroArea passes *under* the widget (it sits at z-40), so
+             the kurs bar and quick-action rail would otherwise stay bright while
+             everything around them dims. This wash starts at the same y as the
+             dropdown, so only the search panel is left untouched. It matches the
+             rail's `inset-x-[-8px]` bleed rather than the widget's own width —
+             a card scrolled into that 8px overhang has to dim too. */}
+      <div
+        aria-hidden
+        data-shown={searchFocused}
+        className="fade-overlay absolute inset-x-[-8px] bottom-0 z-30 rounded-b-3xl bg-black/50 backdrop-blur-[2px]"
+        style={{ top: panelTop + 8 }}
+      />
 
       {/* 4. Search recommendation — aligned with the search bar (the panel's
              p-4 inset) and dropped 8px below it. `onMouseDown` preventDefault

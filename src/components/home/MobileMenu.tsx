@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { MEGAMENU } from "./megamenu-data";
 import { useLenis } from "@/components/SmoothScroll";
 
@@ -68,6 +68,11 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
     } else {
       lenis?.start();
     }
+    // Belt and braces: if this ever unmounts while open, scroll must not stay
+    // locked for the rest of the session.
+    return () => {
+      lenis?.start();
+    };
   }, [open, lenis]);
 
   const navigate = (to: View, dir: Dir) => {
@@ -93,15 +98,23 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
 
   const enterAnim = enterDir === "fwd" ? "menu-enter-fwd" : enterDir === "back" ? "menu-enter-back" : "";
 
+  // `fade-overlay` rather than a bare `opacity-0`: this panel is a full-viewport
+  // backdrop-filter that stays mounted for the whole session, and while it was
+  // merely transparent the compositor still evaluated that blur every frame —
+  // on a closed menu, for the entire visit. `visibility: hidden` takes it out of
+  // the paint step without giving up either fade.
   return (
     <div
-      className={`fixed inset-0 z-[60] flex justify-center transition-opacity duration-500 ease-in-out xl:hidden ${open ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
-      style={{
-        background: "linear-gradient(to bottom, rgba(0,92,170,0.5) 0%, #005caa 15%)",
-        backdropFilter: "blur(10px)",
-        WebkitBackdropFilter: "blur(10px)",
-      }}
+      data-shown={open}
+      className="fade-overlay fixed inset-0 z-[60] flex justify-center xl:hidden"
+      style={
+        {
+          "--fade-ms": "500ms",
+          background: "linear-gradient(to bottom, rgba(0,92,170,0.5) 0%, #005caa 15%)",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+        } as CSSProperties
+      }
       aria-hidden={!open}
     >
       <div className="flex h-full w-full max-w-[440px] flex-col">
@@ -113,10 +126,10 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
             {view.type !== "segment" && (
               <button
                 onClick={() => navigate({ type: "segment" }, "fwd")}
-                className="flex h-10 w-[148px] items-center justify-between rounded-full bg-[#f4f8fc] px-4 transition-transform active:scale-[0.98]"
+                className="flex h-10 w-[148px] items-center justify-between rounded-full bg-blue-100 px-4 transition-transform active:scale-[0.98]"
               >
-                <span className="text-sm font-semibold text-[#005caa]">{segment}</span>
-                <ExpandAll className="size-4 text-[#005caa]" />
+                <span className="text-sm font-semibold text-blue-500">{segment}</span>
+                <ExpandAll className="size-4 text-blue-500" />
               </button>
             )}
             <button onClick={onClose} aria-label="Tutup menu" className="flex size-10 items-center justify-center text-white transition-transform active:scale-95">

@@ -2,10 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import { MEGAMENU } from "./megamenu-data";
-import MegaMenuPanel from "./MegaMenuPanel";
+import MegaMenuPanel, { type MegaMenuMode } from "./MegaMenuPanel";
 import MobileNav from "./MobileNav";
 
 const SEGMENTS = ["Individu", "Bisnis", "Solitaire", "Prioritas"];
+
+/* How long the panel stays mounted after the pointer leaves, and how long the
+   outgoing panel lingers when switching tabs. Both mirror globals.css. */
+const MEGAMENU_CLOSE_MS = 440;
+const MEGAMENU_SWITCH_MS = 160;
 
 const LANGUAGES = [
   { code: "en", label: "English", flag: "/assets/navbar/flag-en.png" },
@@ -98,6 +103,13 @@ function SearchButton() {
 export default function Navbar() {
   const [activeSegment, setActiveSegment] = useState("Individu");
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  /* What's actually on screen. It lags behind `openMenu` so the panel can play
+     its close animation before unmounting, and so the tab we moved away from
+     can fade out behind the incoming one. */
+  const [panel, setPanel] = useState<{ key: string; mode: MegaMenuMode; seq: number } | null>(null);
+  const [outgoing, setOutgoing] = useState<string | null>(null);
+  const panelKey = useRef<string | null>(null);
+  const seq = useRef(0);
   const [scrolled, setScrolled] = useState(false);
   const [navHidden, setNavHidden] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
@@ -142,9 +154,41 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, []);
 
+  /* Drive the panel's motion mode off `openMenu`. Opening from nothing unfurls;
+     moving between tabs while open only crossfades; leaving plays the close and
+     unmounts once it finishes. Keep these in sync with globals.css. */
+  useEffect(() => {
+    if (openMenu) {
+      const prev = panelKey.current;
+      panelKey.current = openMenu;
+      seq.current += 1;
+      if (prev && prev !== openMenu) {
+        setOutgoing(prev);
+        setPanel({ key: openMenu, mode: "switch", seq: seq.current });
+      } else {
+        setPanel({ key: openMenu, mode: "open", seq: seq.current });
+      }
+      return;
+    }
+    if (!panelKey.current) return;
+    panelKey.current = null;
+    setOutgoing(null);
+    // Same seq, so the panel keeps its DOM node and animates out in place.
+    setPanel((p) => (p ? { ...p, mode: "close" } : p));
+    const t = setTimeout(() => setPanel(null), MEGAMENU_CLOSE_MS);
+    return () => clearTimeout(t);
+  }, [openMenu]);
+
+  useEffect(() => {
+    if (!outgoing) return;
+    const t = setTimeout(() => setOutgoing(null), MEGAMENU_SWITCH_MS);
+    return () => clearTimeout(t);
+  }, [outgoing]);
+
   const menuOpen = openMenu !== null;
   const solid = scrolled || menuOpen;
-  const activeCategory = MEGAMENU.find((c) => c.key === openMenu);
+  const panelCategory = panel ? MEGAMENU.find((c) => c.key === panel.key) : undefined;
+  const outgoingCategory = outgoing ? MEGAMENU.find((c) => c.key === outgoing) : undefined;
   const shouldHide = navHidden && !menuOpen && !langOpen;
 
   const scheduleClose = () => {
@@ -170,11 +214,11 @@ export default function Navbar() {
         {/* Focus overlay — dims the page behind the mega menu so the panel stands out. */}
         <div
           aria-hidden
-          className={`fixed inset-0 z-20 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 ${menuOpen ? "opacity-100" : "pointer-events-none opacity-0"
-            }`}
+          data-shown={menuOpen}
+          className="fade-overlay fixed inset-0 z-20 bg-black/50 backdrop-blur-[2px]"
         />
         <div
-          className={`fixed left-0 right-0 top-0 z-30 flex flex-col items-start transition-transform duration-300 will-change-transform ${shouldHide ? "-translate-y-full" : "translate-y-0"
+          className={`pre-nav fixed left-0 right-0 top-0 z-30 flex flex-col items-start transition-transform duration-300 ${shouldHide ? "-translate-y-full" : "translate-y-0"
             }`}
           onMouseLeave={scheduleClose}
         >
@@ -196,7 +240,7 @@ export default function Navbar() {
                         key={segment}
                         onClick={() => setActiveSegment(segment)}
                         className={`flex h-8 w-24 items-center justify-center rounded-full text-sm font-semibold text-white transition-colors duration-200 ${segment === activeSegment
-                            ? "bg-[#005caa]"
+                            ? "bg-blue-500"
                             : "opacity-80 hover:bg-white/10"
                           }`}
                       >
@@ -217,13 +261,13 @@ export default function Navbar() {
                       onMouseEnter={() => setLangHover(true)}
                       onMouseLeave={() => setLangHover(false)}
                       className={`flex cursor-pointer items-center gap-0.5 rounded-full border p-2 backdrop-blur-[4px] transition-colors ${langHover || langOpen
-                          ? "border-[#e9ecef] bg-white"
+                          ? "border-neutral-300 bg-white"
                           : "border-white/25 bg-[rgba(5,13,25,0.1)]"
                         }`}
                     >
                       <img src="/assets/cycle1/flag-id.svg" alt="" className="size-6" />
                       <span
-                        className={`flex w-8 items-center justify-center text-center text-base font-bold ${langHover || langOpen ? "text-[#121417]" : "text-white"
+                        className={`flex w-8 items-center justify-center text-center text-base font-bold ${langHover || langOpen ? "text-neutral-900" : "text-white"
                           }`}
                       >
                         ID
@@ -231,15 +275,15 @@ export default function Navbar() {
                     </button>
 
                     {langOpen && (
-                      <div className="absolute right-0 top-[calc(100%+8px)] z-40 overflow-hidden rounded-xl border border-[#e9ecef] bg-white shadow-[0px_11px_11px_0px_rgba(224,224,224,0.14),0px_24px_15px_0px_rgba(224,224,224,0.08),0px_3px_6px_0px_rgba(224,224,224,0.16)]">
+                      <div className="absolute right-0 top-[calc(100%+8px)] z-40 overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-[0px_11px_11px_0px_rgba(224,224,224,0.14),0px_24px_15px_0px_rgba(224,224,224,0.08),0px_3px_6px_0px_rgba(224,224,224,0.16)]">
                         {LANGUAGES.map((lang) => (
                           <button
                             key={lang.code}
                             onClick={() => setLangOpen(false)}
-                            className="flex w-[148px] items-center gap-2 p-4 text-left transition-colors hover:bg-[#f4f8fc]"
+                            className="flex w-[148px] items-center gap-2 p-4 text-left transition-colors hover:bg-blue-100"
                           >
                             <img src={lang.flag} alt="" className="size-6 rounded-full object-cover" />
-                            <span className="flex-1 text-base font-semibold text-[#121417]">
+                            <span className="flex-1 text-base font-semibold text-neutral-900">
                               {lang.label}
                             </span>
                           </button>
@@ -257,9 +301,9 @@ export default function Navbar() {
             >
               <div
                 className={`flex h-11 w-full items-center justify-center transition-colors duration-200 ${menuOpen
-                    ? "border border-[#e9ecef] bg-white"
+                    ? "border border-neutral-300 bg-white"
                     : scrolled
-                      ? "bg-[#121417]/75 backdrop-blur-md"
+                      ? "bg-neutral-900/75 backdrop-blur-md"
                       : ""
                   }`}
               >
@@ -269,7 +313,7 @@ export default function Navbar() {
                     return (
                       <div
                         key={tab.key}
-                        className={`flex h-11 flex-col items-start transition-colors ${isOpen ? "bg-[#e6f3ff]" : ""
+                        className={`flex h-11 flex-col items-start transition-colors ${isOpen ? "bg-cyan-100" : ""
                           }`}
                         style={tab.width ? { width: tab.width } : undefined}
                         onMouseEnter={() => {
@@ -280,9 +324,9 @@ export default function Navbar() {
                         <button className="flex min-h-0 flex-1 items-center justify-center gap-1 px-4 pt-1">
                           <span
                             className={`whitespace-nowrap text-sm leading-[14px] ${isOpen
-                                ? "font-bold text-[#005caa]"
+                                ? "font-bold text-blue-500"
                                 : menuOpen
-                                  ? "font-semibold text-[#26292c]"
+                                  ? "font-semibold text-neutral-800"
                                   : "font-semibold text-white/80"
                               }`}
                           >
@@ -304,7 +348,7 @@ export default function Navbar() {
                           )}
                         </button>
                         <div
-                          className={`h-1 w-full rounded-t-xl bg-[#005caa] transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"
+                          className={`h-1 w-full rounded-t-xl bg-blue-500 transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"
                             }`}
                         />
                       </div>
@@ -313,13 +357,26 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {activeCategory && (
+              {panel && panelCategory && (
                 <div
-                  className="flex w-full justify-center"
+                  className={`relative flex w-full justify-center ${panel.mode === "close" ? "pointer-events-none" : ""
+                    }`}
                   onMouseEnter={cancelClose}
                   onMouseLeave={scheduleClose}
                 >
-                  <MegaMenuPanel category={activeCategory} />
+                  {/* The tab we just left, stacked behind and fading out. */}
+                  {outgoingCategory && (
+                    <div className="pointer-events-none absolute inset-0 flex justify-center">
+                      <MegaMenuPanel category={outgoingCategory} mode="out" />
+                    </div>
+                  )}
+                  {/* `seq` in the key remounts on open/switch so the entrance
+                      replays; a close reuses the same key and animates in place. */}
+                  <MegaMenuPanel
+                    key={`${panel.key}-${panel.seq}`}
+                    category={panelCategory}
+                    mode={panel.mode}
+                  />
                 </div>
               )}
             </div>

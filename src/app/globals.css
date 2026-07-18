@@ -2,7 +2,47 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #26292c;
+}
+
+/* Core foundation colors — mirrors the Figma "Foundation / Colors" page
+   (BCA.co.id Design Exploration, node 1578-27737). Only the core ramps are
+   defined here: neutral, primary (blue), secondary (cyan). Semantic/state
+   colors still live inline at call sites and are not tokenized yet.
+   Keep these in sync with Figma; do not introduce off-ramp hexes. */
+@theme {
+  /* Clear Tailwind's stock ramps first. These share our token names, so
+     without this an undefined shade (blue-900, cyan-200, neutral-50, …)
+     would silently render Tailwind's blue instead of BCA's. Cleared, it
+     produces no utility at all — off-palette usage breaks visibly. */
+  --color-neutral-*: initial;
+  --color-blue-*: initial;
+  --color-cyan-*: initial;
+
+  --color-neutral-100: #ffffff;
+  --color-neutral-200: #f6f7f9;
+  --color-neutral-300: #e9ecef;
+  --color-neutral-400: #dfe0e2;
+  --color-neutral-500: #cfcfcf;
+  --color-neutral-600: #868e96;
+  --color-neutral-700: #495057;
+  --color-neutral-800: #26292c;
+  --color-neutral-900: #121417;
+
+  --color-blue-100: #f4f8fc;
+  --color-blue-200: #dbefff;
+  --color-blue-300: #d1eaff;
+  --color-blue-400: #1179d1;
+  --color-blue-500: #005caa;
+  --color-blue-600: #144e83;
+  --color-blue-700: #00335e;
+  --color-blue-800: #00213d;
+
+  --color-cyan-100: #e6f3ff;
+  --color-cyan-300: #d1f4ff;
+  --color-cyan-400: #47d1ff;
+  --color-cyan-500: #00b5f0;
+  --color-cyan-700: #0094d5;
 }
 
 @theme inline {
@@ -11,8 +51,11 @@
   --font-sans: var(--font-bca-sans);
 }
 
+/* No `scroll-behavior: smooth` here — Lenis drives smooth scrolling and
+   overrides it with `scroll-behavior: auto !important` anyway (see the
+   .lenis-smooth rules at the bottom of this file). Declaring it just meant two
+   systems fighting over the same job. */
 html {
-  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -22,14 +65,34 @@ body {
   font-family: var(--font-bca-sans), Arial, Helvetica, sans-serif;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-}
-
 .soft-light-border {
   position: relative;
+}
+
+/* Overlays that fade in and out but must cost nothing while hidden.
+   `visibility` is the part that matters: an element parked at `opacity: 0` is
+   still painted and composited, so a full-viewport `backdrop-filter` kept
+   charging us every frame for a wash nobody could see. `visibility: hidden`
+   drops it out of the paint step entirely.
+   The asymmetric delay is what preserves both transitions — visibility flips
+   in immediately so the fade-in is visible, and waits out --fade-ms on the way
+   out so the fade-out isn't cut short. Callers set `data-shown` and may
+   override --fade-ms to match their own duration. */
+.fade-overlay {
+  --fade-ms: 300ms;
+  transition: opacity var(--fade-ms) ease-in-out, visibility 0s;
+}
+
+.fade-overlay[data-shown="true"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.fade-overlay[data-shown="false"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--fade-ms) ease-in-out, visibility 0s var(--fade-ms);
 }
 
 /* Hide the horizontal scrollbar on the mobile quick-action rail while keeping
@@ -74,6 +137,54 @@ body {
   mix-blend-mode: soft-light;
 }
 
+/* Scroll-reveal entrances — driven by ScrollReveal.tsx.
+   Mark an element `data-reveal` (optionally with a variant value) and it
+   starts transparent + slightly shifted, settling when the controller stamps
+   `data-inview`. Per-element stagger arrives via --rv-delay, which the
+   controller assigns in DOM order inside each `data-reveal-group`.
+
+   Two gates around the hidden state:
+   - (scripting: enabled) — no-JS visitors and legacy browsers never get
+     content hidden behind an animation that will never run.
+   - (prefers-reduced-motion: no-preference) — reduced-motion readers see
+     everything immediately, no transition at all.
+
+   The controller strips `data-reveal` once the entrance settles, so utility
+   transitions on the same element (hover lifts, color fades) win again —
+   this rule is unlayered and would otherwise beat them for good. Keep the
+   700ms duration in sync with REVEAL_DURATION_MS in ScrollReveal.tsx. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    opacity: 0;
+    /* `transform`, not `translate` — Tailwind's translate/scale utilities use
+       the native properties, so both can live on one element and compose. */
+    transform: translateY(24px);
+    transition:
+      opacity 700ms cubic-bezier(0.16, 1, 0.3, 1) var(--rv-delay, 0ms),
+      transform 700ms cubic-bezier(0.16, 1, 0.3, 1) var(--rv-delay, 0ms),
+      filter 700ms cubic-bezier(0.16, 1, 0.3, 1) var(--rv-delay, 0ms);
+  }
+
+  /* Opacity only — for glows/backdrops where movement would look detached. */
+  [data-reveal="fade"] {
+    transform: none;
+  }
+
+  /* Headline treatment: shorter rise plus a blur that resolves into focus.
+     Text and small blocks only — `filter` on a container turns it into a
+     backdrop root, which would blank any backdrop-filter glass inside it. */
+  [data-reveal="blur-up"] {
+    transform: translateY(16px);
+    filter: blur(8px);
+  }
+
+  [data-reveal][data-inview] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
 @keyframes hero-content-in {
   from {
     opacity: 0;
@@ -92,104 +203,6 @@ body {
 .animate-hero-cta {
   animation: hero-content-in 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: 150ms;
-}
-
-/* Hero CTA border beam — two comets of light chase around the pill's rim when
-   the button is hovered. Preferred path (modern browsers): a pair of pseudo-
-   element comets ride the rounded perimeter via `offset-path`, so the beam keeps
-   a constant speed and a fading tail the whole way round — not the drifting
-   sweep a rotating conic gives on a wide pill. The `padding + mask xor` recipe
-   (same as `.soft-light-border`) clips the glow to a thin ring, and the whole
-   thing is paused + invisible until `.hero-cta:hover`, so it costs nothing at
-   rest. Fallback + reduced-motion (below): a calm static glowing ring. */
-.hero-cta-beam {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 2px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 350ms ease;
-  background: conic-gradient(
-    rgba(125, 211, 252, 0.35),
-    rgba(224, 246, 255, 0.9),
-    rgba(125, 211, 252, 0.35),
-    rgba(224, 246, 255, 0.9),
-    rgba(125, 211, 252, 0.35)
-  );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-.hero-cta:hover .hero-cta-beam {
-  opacity: 1;
-}
-
-@supports (offset-path: rect(0 auto auto 0 round 24px)) {
-  /* Drop the static ring; the travelling comets take over. */
-  .hero-cta-beam {
-    background: none;
-  }
-
-  .hero-cta-beam::before,
-  .hero-cta-beam::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 74px;
-    height: 6px;
-    border-radius: 6px;
-    /* `round 999px` clamps to the pill radius, so this tracks any button width. */
-    offset-path: rect(0 auto auto 0 round 999px);
-    offset-rotate: auto;
-    background: linear-gradient(
-      to right,
-      rgba(125, 211, 252, 0) 0%,
-      rgba(125, 211, 252, 0.5) 55%,
-      rgba(224, 246, 255, 1) 90%,
-      #ffffff 100%
-    );
-    animation: hero-cta-beam-travel 4s linear infinite;
-    animation-play-state: paused;
-  }
-
-  /* Second comet starts half a lap ahead → the two sit on opposite sides. */
-  .hero-cta-beam::after {
-    animation-delay: -2s;
-  }
-
-  .hero-cta:hover .hero-cta-beam::before,
-  .hero-cta:hover .hero-cta-beam::after {
-    animation-play-state: running;
-  }
-}
-
-@keyframes hero-cta-beam-travel {
-  to {
-    offset-distance: 100%;
-  }
-}
-
-/* Reduced motion: no chasing comet — fade in a calm, symmetric glowing ring so
-   the hover still reads as "lit up" without any perimeter travel. */
-@media (prefers-reduced-motion: reduce) {
-  .hero-cta-beam {
-    background: conic-gradient(
-      rgba(125, 211, 252, 0.35),
-      rgba(224, 246, 255, 0.9),
-      rgba(125, 211, 252, 0.35),
-      rgba(224, 246, 255, 0.9),
-      rgba(125, 211, 252, 0.35)
-    );
-  }
-  .hero-cta-beam::before,
-  .hero-cta-beam::after {
-    display: none;
-  }
 }
 
 @keyframes scroll-cue-dot {
@@ -211,6 +224,222 @@ body {
 
 .animate-scroll-cue-dot {
   animation: scroll-cue-dot 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* ---------- Intro loading page (Preloader.tsx) ----------
+   Figma "Loading Page" (BCA.co.id Design Exploration, node 1586-8385), with
+   the desktop (1512) and mobile (393) artboards as the two anchors of every
+   clamp() below. Layout lives here rather than in Tailwind utilities because
+   the fluid interpolation between those artboards is the whole point and
+   needs to stay readable.
+
+   Showing the loading page is the DEFAULT here, driven entirely by the
+   `data-phase` React state on .pre-root. Nothing mutates <html> and there is
+   no pre-paint inline script, so the server markup already renders the
+   loading state and hydration has nothing to reconcile.
+
+   The gate below is what keeps it safe: `(scripting: enabled)` means a no-JS
+   visitor never sees a curtain nothing would lift, and the reduced-motion
+   half sends those visitors straight to the page. Outside the gate .pre-root
+   stays display:none. */
+
+.pre-root {
+  /* Figma artboard interpolation: mobile 393px -> desktop 1512px. */
+  --pre-pad-x: clamp(24px, 9.95px + 3.575vw, 64px);
+  --pre-pad-t: clamp(56px, 50.38px + 1.43vw, 72px);
+  --pre-pad-b: clamp(72px, 55.14px + 4.29vw, 120px);
+  --pre-logo-w: clamp(112px, 100.63px + 6.84vw, 204px);
+  --pre-tagline: clamp(40px, 39.57px + 2.15vw, 72px);
+  --pre-pct: clamp(76px, 73.52px + 5.72vw, 160px);
+
+  /* Opened by the gated block at the end of this section. */
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  /* Nothing in here is interactive, and the element keeps covering the
+     viewport for the whole exit — without this it swallows the first wheel
+     events after the loader finishes. */
+  pointer-events: none;
+  /* The exit layers travel past the viewport edges; without this they would
+     briefly extend the scrollable area. */
+  overflow: hidden;
+}
+
+/* Fallback beneath the artwork, so a letterboxed edge on an extreme aspect
+   ratio still reads as the same gradient the SVG carries (#005caa -> #00335e). */
+.pre-shell {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, var(--color-blue-500), var(--color-blue-700));
+}
+
+.pre-bg {
+  position: absolute;
+  inset: 0;
+}
+
+.pre-bg img {
+  width: 100%;
+  height: 100%;
+  /* No object-fit: each SVG carries preserveAspectRatio="xMidYMax slice", so
+     it cover-crops itself against the bottom edge where the clove motif sits. */
+  display: block;
+}
+
+/* Full-bleed overlays: one pins the logo + tagline to the top, the other the
+   percentage to the bottom, both on the same padding box. */
+.pre-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--pre-pad-t) var(--pre-pad-x) var(--pre-pad-b);
+  pointer-events: none;
+}
+
+.pre-pct {
+  justify-content: flex-end;
+}
+
+/* bca-logo.svg is preserveAspectRatio="none" at width/height 100%, so it has
+   no intrinsic ratio to infer from — `height: auto` collapses and the mark
+   stretches. Derive it from the viewBox (114.75 / 36 = 3.1875) the same way
+   the navbar pins both dimensions. */
+.pre-logo {
+  width: var(--pre-logo-w);
+  height: calc(var(--pre-logo-w) / 3.1875);
+}
+
+.pre-tagline {
+  margin-top: 32px;
+  font-size: var(--pre-tagline);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--color-neutral-100);
+}
+
+/* The mobile artboard breaks the tagline after "Senantiasa"; the desktop one
+   sets it on a single line. Matches the .pre-bg source switch. */
+@media (min-width: 768px) {
+  .pre-br {
+    display: none;
+  }
+}
+
+.pre-count {
+  font-size: var(--pre-pct);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--color-neutral-100);
+  font-variant-numeric: tabular-nums;
+}
+
+.pre-bar {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: clamp(8px, 6.6px + 0.36vw, 12px);
+}
+
+.pre-bar-fill {
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  background: var(--color-cyan-500);
+}
+
+/* ---- exit: the whole loading page slides up as one piece ----
+   Only the shell moves; artwork, type and bar are its children and ride along
+   at the same speed. Keep the duration in sync with EXIT_MS in Preloader.tsx. */
+.pre-shell {
+  transition: transform 1200ms cubic-bezier(0.76, 0, 0.24, 1);
+  will-change: transform;
+}
+
+.pre-root[data-phase="exit"] .pre-shell {
+  transform: translate3d(0, -100%, 0);
+}
+
+/* ---- intro: the loading page assembling itself ---- */
+@keyframes pre-rise {
+  from {
+    transform: translateY(115%);
+  }
+}
+
+@keyframes pre-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+.pre-logo {
+  animation: pre-fade-up 800ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both;
+}
+
+.pre-tagline {
+  animation: pre-fade-up 800ms cubic-bezier(0.16, 1, 0.3, 1) 200ms both;
+}
+
+.pre-count {
+  animation: pre-fade-up 800ms cubic-bezier(0.16, 1, 0.3, 1) 320ms both;
+}
+
+/* ---- gate ----
+   Whether the loading page is shown at all stays pure CSS, so the server
+   markup and the hydrated markup agree and nothing has to run before paint. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .pre-root {
+    display: block;
+  }
+}
+
+/* ---- handoff to the homepage underneath ----
+   Driven by two classes the preloader puts on <html> from an effect — so
+   after hydration, which is fine because the curtain covers the frames before
+   they land, and it keeps the server markup free of them.
+
+   These were `html:has(.pre-root[data-phase="…"])` selectors, and they broke:
+   once the phase flipped, `matches()` reported the parking selector as no
+   longer applying while the computed style stayed parked, stranding the hero
+   56px down at opacity 0 — the page read as having loaded slightly scrolled.
+   Invalidating a whole document from a descendant's attribute is the fragile
+   corner of `:has()`; a plain class on the styled element is both reliable
+   and far cheaper.
+
+   `.preloading` carries the parked values and no transition — they are the
+   initial state and must not animate while hidden. `.pre-revealing` supplies
+   the transitions and is landed one frame *before* `.preloading` is dropped,
+   because a transition declared in the same style recalc as the value change
+   never runs. It is removed once the reveal settles, so .pre-nav's
+   hide-on-scroll doesn't inherit an 800ms delay for the rest of the session. */
+html.preloading {
+  overflow: hidden;
+}
+
+html.preloading .pre-nav {
+  translate: 0 -110%;
+}
+
+/* Opacity only — no offset. The hero used to start 56px low and rise into
+   place, which left a band of page background above it for the length of the
+   handoff and read as the page having loaded slightly scrolled down. The page
+   now sits at its final position from the first frame and simply fades up. */
+html.preloading .pre-stage {
+  opacity: 0;
+}
+
+/* Timed against the exit: the hero fades up while the loading page is still
+   clearing, and the navbar drops in once it is off the top. */
+html.pre-revealing .pre-stage {
+  transition: opacity 900ms cubic-bezier(0.16, 1, 0.3, 1) 200ms;
+}
+
+html.pre-revealing .pre-nav {
+  transition: translate 500ms cubic-bezier(0.16, 1, 0.3, 1) 800ms;
 }
 
 /* Promo confetti — pure CSS motion; pieces are generated in Confetti.tsx.
@@ -327,6 +556,78 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .kurs-in-next, .kurs-in-prev { animation-duration: 1ms; }
+}
+
+/* ---------- Mega menu motion (MegaMenuPanel.tsx via Navbar.tsx) ----------
+   Three modes, set as `data-mode` on the panel:
+
+   open   — the panel unfurls downwards (clip-path wipe, so the fixed 400px
+            layout never reflows), then its rows stagger in top-to-bottom.
+   switch — the menu is already open and the pointer moved to another tab. No
+            unfurl and no stagger — the outgoing panel (`data-mode="out"`,
+            stacked behind) fades out while the new one fades in.
+   close  — the reverse of open: rows fade out bottom-to-top, then the panel
+            furls back up.
+
+   Each row carries its index in `--mm-i`; the panel carries the row count in
+   `--mm-n`, which is what lets the close stagger run in reverse. */
+@keyframes mm-unfurl {
+  from { opacity: 0; clip-path: inset(0 0 100% 0 round 0 0 24px 24px); }
+  to { opacity: 1; clip-path: inset(0 0 0 0 round 0 0 24px 24px); }
+}
+@keyframes mm-furl {
+  from { opacity: 1; clip-path: inset(0 0 0 0 round 0 0 24px 24px); }
+  to { opacity: 0; clip-path: inset(0 0 100% 0 round 0 0 24px 24px); }
+}
+@keyframes mm-item-in {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes mm-item-out {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-8px); }
+}
+@keyframes mm-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes mm-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.mm-panel[data-mode="open"] {
+  animation: mm-unfurl 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.mm-panel[data-mode="open"] .mm-item {
+  animation: mm-item-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(140ms + var(--mm-i, 0) * 40ms);
+}
+
+/* Straight crossfade of the contents only — no wipe, no travel, no stagger, and
+   the white shell stays put. The panel is already open, so animating it too
+   would read as a second entrance. */
+.mm-panel[data-mode="switch"] .mm-content {
+  animation: mm-fade-in 160ms ease-out both;
+}
+.mm-panel[data-mode="out"] .mm-content {
+  animation: mm-fade-out 140ms ease-out both;
+}
+
+/* Rows clear out first; the furl waits for them (180ms) before wiping up. */
+.mm-panel[data-mode="close"] {
+  animation: mm-furl 240ms cubic-bezier(0.4, 0, 1, 1) 180ms both;
+}
+.mm-panel[data-mode="close"] .mm-item {
+  animation: mm-item-out 180ms cubic-bezier(0.4, 0, 1, 1) both;
+  animation-delay: calc((var(--mm-n, 1) - 1 - var(--mm-i, 0)) * 20ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mm-panel, .mm-panel .mm-content, .mm-panel .mm-item {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+  }
 }
 
 html.lenis, html.lenis body {

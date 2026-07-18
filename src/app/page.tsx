@@ -7,6 +7,7 @@ import PromoSection from "@/components/home/PromoSection";
 import NewsSection from "@/components/home/NewsSection";
 import Footer from "@/components/home/Footer";
 import BackToTop from "@/components/home/BackToTop";
+import ScrollReveal from "@/components/ScrollReveal";
 import { getKursHariIni } from "@/lib/kurs";
 import { getBanners } from "@/lib/banners";
 
@@ -14,11 +15,15 @@ export default async function Home() {
   const [kurs, banners] = await Promise.all([getKursHariIni(), getBanners()]);
 
   return (
-    <main className="flex flex-1 flex-col overflow-x-clip bg-[#f4f8fc]">
+    <main className="flex flex-1 flex-col overflow-x-clip bg-blue-100">
       {/* 1. KONTEN UTAMA: z-10 dan background solid untuk "menutupi" footer saat di atas */}
-      <div className="relative z-10 bg-[#f4f8fc]">
+      <div className="relative z-10 bg-blue-100">
         <Navbar />
-        <HeroArea kurs={kurs} banners={banners} />
+        {/* .pre-stage — held invisible by the intro preloader, fades up as
+            its curtain lifts (see the preloader rules in globals.css). */}
+        <div className="pre-stage">
+          <HeroArea kurs={kurs} banners={banners} />
+        </div>
         {/* spacer for the desktop hero widget that overflows the hero section
             (496 + 288 - 640). Mobile lays the widget out in normal flow. */}
         <div className="h-0 xl:h-[136px]" />
@@ -36,6 +41,9 @@ export default async function Home() {
       </div>
 
       <BackToTop />
+      {/* Orchestrates every [data-reveal] entrance below the hero — one
+          observer pair for the whole page, sections stay server components. */}
+      <ScrollReveal />
     </main>
   );
 }

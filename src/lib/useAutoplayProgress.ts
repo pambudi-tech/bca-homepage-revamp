@@ -6,9 +6,15 @@ import { useEffect, useRef, type RefObject } from "react";
 // straight to the active slide's <circle> (no per-tick re-render), and
 // advanced the slide once a full cycle completed. This centralizes that logic.
 //
-// Behaviour is intentionally 1:1 with the old inline effects: the timer resets
-// whenever `activeIndex`/`count`/`durationMs` change, freezes while
-// `pausedRef.current` is true, and calls `onAdvance` on completion.
+// The timer resets whenever `activeIndex`/`count`/`durationMs` change, freezes
+// while `pausedRef.current` is true, and calls `onAdvance` on completion.
+//
+// Driven by requestAnimationFrame rather than setInterval. Two reasons: the ring
+// now advances once per painted frame instead of in 50ms steps (so it no longer
+// needs a CSS transition to hide the stepping), and rAF is throttled by the
+// browser in background tabs, where a setInterval would happily keep ticking and
+// firing slide changes nobody is watching. `live` additionally parks it while
+// the carousel is off-screen.
 
 type Options = {
   /** Current active slide index — the timer resets whenever this changes. */
@@ -25,8 +31,8 @@ type Options = {
   pausedRef: RefObject<boolean>;
   /** Called when a cycle completes — typically advances the slide. */
   onAdvance: () => void;
-  /** Tick granularity in ms (default 50). */
-  tickMs?: number;
+  /** False parks the loop entirely (off-screen / hidden tab). Default true. */
+  live?: boolean;
 };
 
 export function useAutoplayProgress({
@@ -37,10 +43,10 @@ export function useAutoplayProgress({
   progressRef,
   pausedRef,
   onAdvance,
-  tickMs = 50,
+  live = true,
 }: Options) {
   const elapsedRef = useRef(0);
-  // Keep the latest callback without re-subscribing the interval each render.
+  // Keep the latest callback without re-subscribing the loop each render.
   const onAdvanceRef = useRef(onAdvance);
   onAdvanceRef.current = onAdvance;
 
@@ -49,15 +55,34 @@ export function useAutoplayProgress({
     if (progressRef.current) {
       progressRef.current.style.strokeDashoffset = String(circumference);
     }
-    const id = setInterval(() => {
-      if (pausedRef.current) return;
-      elapsedRef.current += tickMs;
-      const pct = Math.min(1, elapsedRef.current / durationMs);
-      if (progressRef.current) {
-        progressRef.current.style.strokeDashoffset = String(circumference * (1 - pct));
+    if (!live) return;
+
+    let raf = 0;
+    let last = performance.now();
+
+    const frame = (now: number) => {
+      // Clamped so returning to a parked tab doesn't apply one enormous delta
+      // and skip a slide the moment the page comes back.
+      const dt = Math.min(now - last, 100);
+      last = now;
+
+      if (!pausedRef.current) {
+        elapsedRef.current += dt;
+        const pct = Math.min(1, elapsedRef.current / durationMs);
+        if (progressRef.current) {
+          progressRef.current.style.strokeDashoffset = String(circumference * (1 - pct));
+        }
+        if (pct >= 1) {
+          // Reset here as well as on re-entry: with a single slide `onAdvance`
+          // leaves activeIndex alone, so this effect never re-runs to do it.
+          elapsedRef.current = 0;
+          onAdvanceRef.current();
+        }
       }
-      if (pct >= 1) onAdvanceRef.current();
-    }, tickMs);
-    return () => clearInterval(id);
-  }, [activeIndex, count, durationMs, circumference, tickMs, progressRef, pausedRef]);
+      raf = requestAnimationFrame(frame);
+    };
+
+    raf = requestAnimationFrame(frame);
+    return () => cancelAnimationFrame(raf);
+  }, [activeIndex, count, durationMs, circumference, progressRef, pausedRef, live]);
 }

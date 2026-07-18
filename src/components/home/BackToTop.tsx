@@ -83,7 +83,7 @@ export default function BackToTop() {
       {/* Label + arrow-up icon */}
       <span className="relative flex h-full items-center justify-center gap-2 pb-0.5">
         <span className="text-sm font-semibold leading-5 text-white">Kembali ke atas</span>
-        <img
+        <img loading="lazy" decoding="async"
           src="/assets/navbar/arrow-right.svg"
           alt=""
           className="size-5 -rotate-90 transition-transform duration-300 ease-out group-hover:-translate-y-0.5"

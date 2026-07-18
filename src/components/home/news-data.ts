@@ -17,19 +17,19 @@ export const HIGHLIGHT_ARTICLE: NewsArticle = {
 export const NEWS_ARTICLES: NewsArticle[] = [
   {
     title: "Makin Praktis, Buka e-Deposito USD dan SGD Bisa melalui myBCA",
-    image: "/assets/news/banner-news-2.png",
+    image: "/assets/news/banner-news-2.webp",
     date: "15 Jul 2024",
     category: "mybca",
   },
   {
     title: "Informasi Perubahan Jam Layanan Cabang",
-    image: "/assets/news/banner-news-3.png",
+    image: "/assets/news/banner-news-3.webp",
     date: "10 Jul 2024",
     category: "Informasi perbankan",
   },
   {
     title: "Informasi Ketentuan Threshold Transaksi Valas",
-    image: "/assets/news/banner-news-4.png",
+    image: "/assets/news/banner-news-4.webp",
     date: "3 Jul 2024",
     category: "keuangan",
   },
