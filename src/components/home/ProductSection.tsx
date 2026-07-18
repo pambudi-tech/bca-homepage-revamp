@@ -219,7 +219,7 @@ function MobileProductCard({
   return (
     <button
       onClick={onSelect}
-      className="relative shrink-0 overflow-clip rounded-3xl bg-white text-left transition-[height] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+      className="relative shrink-0 snap-center overflow-clip rounded-3xl bg-white text-left transition-[height] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
       style={{ width: 280, height: active ? 360 : 328 }}
     >
       {/* Background scene + subject cutout (both full-bleed, centered). */}
@@ -278,6 +278,12 @@ export default function ProductSection() {
   const cloveARef = useRef<HTMLImageElement>(null);
   const cloveBRef = useRef<HTMLImageElement>(null);
   const mobileScrollRef = useRef<HTMLDivElement>(null);
+  // Mirrors activeIndex for the scroll listener (which is bound once), and a
+  // flag so a swipe-driven index change doesn't bounce back through the
+  // centering effect below.
+  const activeIndexRef = useRef(0);
+  const skipCenterRef = useRef(false);
+  activeIndexRef.current = activeIndex;
 
   const category =
     PRODUCT_CATEGORIES.find((c) => c.key === activeCategory) ?? PRODUCT_CATEGORIES[0];
@@ -343,6 +349,10 @@ export default function ProductSection() {
   // (via tap or autoplay). A no-op on desktop, where the container is
   // `display:none` and reports zero width.
   useEffect(() => {
+    if (skipCenterRef.current) {
+      skipCenterRef.current = false;
+      return;
+    }
     const container = mobileScrollRef.current;
     if (!container) return;
     const card = container.children[activeIndex] as HTMLElement | undefined;
@@ -350,6 +360,43 @@ export default function ProductSection() {
     const target = card.offsetLeft - (container.clientWidth - card.offsetWidth) / 2;
     container.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
   }, [activeIndex, activeCategory]);
+
+  // Swiping the mobile carousel activates whichever card sits closest to the
+  // centre, so the active state follows the gesture instead of only taps.
+  useEffect(() => {
+    const container = mobileScrollRef.current;
+    if (!container) return;
+
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const centre = container.scrollLeft + container.clientWidth / 2;
+      let nearest = 0;
+      let bestDistance = Infinity;
+      for (let i = 0; i < container.children.length; i++) {
+        const card = container.children[i] as HTMLElement;
+        const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - centre);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          nearest = i;
+        }
+      }
+      if (nearest !== activeIndexRef.current) {
+        activeIndexRef.current = nearest;
+        skipCenterRef.current = true;
+        setActiveIndex(nearest);
+      }
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    container.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      container.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   return (
     <section
@@ -463,11 +510,13 @@ export default function ProductSection() {
             </div>
 
             {/* Mobile carousel — fixed-width cards, active one grows taller and
-                reveals its subtitle + CTA. Full-bleeds within the padded column. */}
+                reveals its subtitle + CTA. Full-bleeds within the padded column.
+                The track height is pinned to the tallest (active) card so the
+                CTA below never shifts while cards swap size. */}
             <div
               ref={mobileScrollRef}
               onTouchStart={() => (pausedRef.current = true)}
-              className={`hide-scrollbar -mx-4 flex items-center gap-4 overflow-x-auto px-4 [scrollbar-width:none] transition-opacity duration-700 ease-out xl:hidden ${
+              className={`hide-scrollbar -mx-4 flex h-[360px] snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4 [scrollbar-width:none] transition-opacity duration-700 ease-out xl:hidden ${
                 entered ? "opacity-100" : "opacity-0"
               }`}
               style={{ transitionDelay: entered ? "250ms" : "0ms" }}

@@ -1,0 +1,20 @@
+<!-- Mobile halo. Ellipse geometry matches the Figma mobile frame (cx/cy/rx/ry within
+     a 392-wide frame); the canvas is extended down to 401 so the blur tails off under
+     the section's blue fade instead of ending on a hard clip edge. -->
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 392 401" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="glow" clip-path="url(#clip0_mobile)">
+<g id="Ellipse 4103" filter="url(#filter0_f_mobile)">
+<ellipse cx="257.5" cy="159" rx="158.5" ry="109" fill="var(--fill-0, #00B5F0)"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_f_mobile" x="-285" y="-334" width="1085" height="986" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="128" result="effect1_foregroundBlur_mobile"/>
+</filter>
+<clipPath id="clip0_mobile">
+<rect width="392" height="401" fill="white"/>
+</clipPath>
+</defs>
+</svg>

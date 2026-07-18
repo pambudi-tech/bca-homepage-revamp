@@ -8,7 +8,6 @@ const SEGMENTS = ["Individu", "Bisnis", "Solitaire", "Prioritas"];
 
 const MENU_ITEMS = [
   ...MEGAMENU.map((c) => ({ key: c.key, label: c.label, expandable: true })),
-  { key: "Transaksi", label: "Transaksi", expandable: false },
   { key: "Promo", label: "Promo", expandable: false },
 ];
 
@@ -29,18 +28,11 @@ function ChevronLeft({ className = "size-6" }: { className?: string }) {
     </svg>
   );
 }
-function ExpandAll({ className = "size-5" }: { className?: string }) {
+function ExpandAll({ className = "size-4" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`${iconBase} ${className}`} aria-hidden>
       <path d="m8 9 4-4 4 4" />
       <path d="m8 15 4 4 4-4" />
-    </svg>
-  );
-}
-function ArrowRight({ className = "size-5" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`${iconBase} ${className}`} aria-hidden>
-      <path d="M5 12h14M13 6l6 6-6 6" />
     </svg>
   );
 }
@@ -93,8 +85,6 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
     }
     return (
       <MainView
-        segment={segment}
-        onOpenSegment={() => navigate({ type: "segment" }, "fwd")}
         onOpenDetail={(key) => navigate({ type: "detail", key }, "fwd")}
         onLeaf={onClose}
       />
@@ -105,9 +95,8 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
 
   return (
     <div
-      className={`fixed inset-0 z-[60] flex justify-center transition-opacity duration-500 ease-in-out xl:hidden ${
-        open ? "opacity-100" : "pointer-events-none opacity-0"
-      }`}
+      className={`fixed inset-0 z-[60] flex justify-center transition-opacity duration-500 ease-in-out xl:hidden ${open ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
       style={{
         background: "linear-gradient(to bottom, rgba(0,92,170,0.5) 0%, #005caa 15%)",
         backdropFilter: "blur(10px)",
@@ -117,16 +106,19 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
     >
       <div className="flex h-full w-full max-w-[440px] flex-col">
         {/* Menu nav bar */}
-        <div className="flex h-14 shrink-0 items-center justify-between px-4">
+        <div className="flex h-16 shrink-0 items-center justify-between px-4">
           <img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-8 w-[102px]" />
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-0.5 rounded-full bg-white p-1.5 pr-2">
-              <img src="/assets/cycle1/flag-id.svg" alt="" className="size-5" />
-              <span className="px-0.5 text-sm font-bold text-[#121417]">ID</span>
-            </div>
-            <button aria-label="Cari" className="flex size-10 items-center justify-center transition-transform active:scale-95">
-              <img src="/assets/cycle1/outline-search.svg" alt="" className="size-6" />
-            </button>
+          <div className="flex items-center gap-2">
+            {/* The segment picker is its own view, so the pill is hidden while it's open. */}
+            {view.type !== "segment" && (
+              <button
+                onClick={() => navigate({ type: "segment" }, "fwd")}
+                className="flex h-10 w-[148px] items-center justify-between rounded-full bg-[#f4f8fc] px-4 transition-transform active:scale-[0.98]"
+              >
+                <span className="text-sm font-semibold text-[#005caa]">{segment}</span>
+                <ExpandAll className="size-4 text-[#005caa]" />
+              </button>
+            )}
             <button onClick={onClose} aria-label="Tutup menu" className="flex size-10 items-center justify-center text-white transition-transform active:scale-95">
               <CloseIcon />
             </button>
@@ -157,7 +149,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
 
 function ViewScroller({ children }: { children: React.ReactNode }) {
   return (
-    <div className="hide-scrollbar h-full overflow-y-auto px-5 pb-8 [scrollbar-width:none]" data-lenis-prevent>
+    <div className="hide-scrollbar h-full overflow-y-auto px-4 pb-6 [scrollbar-width:none]" data-lenis-prevent>
       <div className="flex min-h-full flex-col">{children}</div>
     </div>
   );
@@ -166,25 +158,20 @@ function ViewScroller({ children }: { children: React.ReactNode }) {
 /* ------------------------------ Main view ------------------------------ */
 
 function MainView({
-  segment,
-  onOpenSegment,
   onOpenDetail,
   onLeaf,
 }: {
-  segment: string;
-  onOpenSegment: () => void;
   onOpenDetail: (key: string) => void;
   onLeaf: () => void;
 }) {
   return (
     <>
-      <div className="mt-4 flex items-center gap-3">
+      <div className="mt-6 flex items-center gap-3">
         <button
-          onClick={onOpenSegment}
-          className="flex h-10 flex-1 items-center justify-between rounded-full bg-[#f4f8fc] px-4 transition-transform active:scale-[0.98]"
+          aria-label="Cari"
+          className="flex size-10 shrink-0 items-center justify-center rounded-full border border-[rgba(186,213,255,0.25)] transition-colors active:bg-white/10"
         >
-          <span className="text-sm font-semibold text-[#005caa]">{segment}</span>
-          <ExpandAll className="size-5 text-[#005caa]" />
+          <img src="/assets/cycle1/outline-search.svg" alt="" className="size-6" />
         </button>
         <button
           onClick={onLeaf}
@@ -192,16 +179,22 @@ function MainView({
         >
           Tentang BCA
         </button>
+        <button
+          onClick={onLeaf}
+          className="flex h-10 flex-1 items-center justify-center rounded-full border border-[rgba(186,213,255,0.25)] px-5 text-sm font-semibold text-white transition-colors active:bg-white/10"
+        >
+          Karir
+        </button>
       </div>
 
-      <nav className="mt-4 flex flex-col">
+      <nav className="mt-6 flex flex-col">
         {MENU_ITEMS.map((item) => (
           <button
             key={item.key}
             onClick={() => (item.expandable ? onOpenDetail(item.key) : onLeaf())}
-            className="flex items-center justify-between border-b border-[#1179d1] py-5 text-left transition-opacity active:opacity-60"
+            className="flex items-center justify-between px-1 py-5 text-left transition-opacity active:opacity-60"
           >
-            <span className="text-base font-semibold text-white">{item.label}</span>
+            <span className="text-base font-semibold leading-6 text-white">{item.label}</span>
             {item.expandable && <ChevronRight className="size-6 text-white/90" />}
           </button>
         ))}
@@ -209,9 +202,15 @@ function MainView({
 
       <div className="flex-1" />
 
-      <button onClick={onLeaf} className="flex items-center py-5 text-base font-semibold text-white transition-opacity active:opacity-60">
-        Karir
-      </button>
+      <div className="flex h-16 items-center justify-between pl-1">
+        <span className="text-base font-semibold leading-6 text-white">Bahasa</span>
+        <button className="flex items-center gap-0.5 rounded-full border border-[rgba(186,213,255,0.25)] p-2 transition-colors active:bg-white/10">
+          <img src="/assets/cycle1/flag-id.svg" alt="" className="size-6" />
+          <span className="flex w-8 items-center justify-center px-0.5 text-base font-bold text-white">
+            ID
+          </span>
+        </button>
+      </div>
     </>
   );
 }
@@ -229,27 +228,26 @@ function SegmentView({
 }) {
   return (
     <>
-      <div className="mt-4 flex h-10 items-center">
-        <button onClick={onBack} className="flex items-center gap-2 text-white transition-opacity active:opacity-60">
+      <div className="mt-6 flex h-10 items-center px-1">
+        <button onClick={onBack} className="flex items-center gap-3 text-white transition-opacity active:opacity-60">
           <ChevronLeft className="size-6" />
-          <span className="text-lg font-semibold">Kembali</span>
+          <span className="text-lg font-semibold leading-[26px]">Kembali</span>
         </button>
       </div>
 
-      <p className="mt-12 text-center text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
+      <p className="mt-14 text-center text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
         Pilih Segmen Anda
       </p>
 
-      <div className="mt-8 flex flex-col items-center gap-8">
+      <div className="mt-12 flex flex-col items-center gap-8">
         {SEGMENTS.map((s) => {
           const selected = s === segment;
           return (
             <button
               key={s}
               onClick={() => onPick(s)}
-              className={`text-2xl font-semibold text-white transition-transform active:scale-95 ${
-                selected ? "rounded-full border border-white px-8 py-2.5" : "opacity-90"
-              }`}
+              className={`flex h-16 items-center justify-center text-2xl font-semibold leading-8 text-white transition-transform active:scale-95 ${selected ? "rounded-full border border-white px-10" : "opacity-90"
+                }`}
             >
               {s}
             </button>
@@ -273,45 +271,25 @@ function DetailView({
 }) {
   return (
     <>
-      <div className="mt-4 flex h-10 items-center">
+      <div className="mt-6 flex h-10 items-center px-1">
         <button onClick={onBack} className="flex items-center gap-3 text-white transition-opacity active:opacity-60">
           <ChevronLeft className="size-6" />
-          <span className="text-lg font-semibold">{cat.label}</span>
+          <span className="text-lg font-semibold leading-[26px]">{cat.label}</span>
         </button>
       </div>
 
-      <nav className="mt-4 flex flex-col">
-        {cat.products.map((p) => (
+      <nav className="mt-6 flex flex-col">
+        {cat.products.map((product) => (
           <button
-            key={p.title}
+            key={product}
             onClick={onLeaf}
-            className="flex items-center justify-between border-b border-[#1179d1] py-5 text-left transition-opacity active:opacity-60"
+            className="flex items-center justify-between px-1 py-5 text-left transition-opacity active:opacity-60"
           >
-            <span className="text-base font-semibold text-white">{p.title}</span>
+            <span className="text-base font-semibold leading-6 text-white">{product}</span>
             <ChevronRight className="size-5 text-white/90" />
           </button>
         ))}
       </nav>
-
-      <button onClick={onLeaf} className="mt-5 flex items-center gap-1 text-base font-semibold text-white transition-opacity active:opacity-60">
-        Lihat Semua Produk {cat.label}
-        <ArrowRight className="size-5" />
-      </button>
-
-      <div className="flex-1" />
-
-      <div className="grid grid-cols-2 gap-4">
-        {cat.tools.map((t) => (
-          <button
-            key={t.title}
-            onClick={onLeaf}
-            className="flex h-[140px] flex-col items-start justify-center gap-5 rounded-3xl border border-[#1179d1] px-4 py-5 text-left transition-colors active:bg-white/10"
-          >
-            <img src={t.icon} alt="" className="size-8 [filter:brightness(0)_invert(1)]" />
-            <span className="text-base font-semibold leading-6 text-white">{t.title}</span>
-          </button>
-        ))}
-      </div>
     </>
   );
 }

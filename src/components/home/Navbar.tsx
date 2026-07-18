@@ -17,10 +17,9 @@ const NAV_TABS = [
     key: menu.key,
     label: menu.label,
     width: menu.width,
-    expandable: true,
+    chevron: menu.chevron ?? true,
   })),
-  { key: "Transaksi", label: "Transaksi", width: undefined, expandable: false },
-  { key: "Promo", label: "Promo", width: undefined, expandable: false },
+  { key: "Promo", label: "Promo", width: undefined, chevron: false },
 ];
 
 function LinkLabel({ label, hover }: { label: string; hover: boolean }) {
@@ -31,16 +30,14 @@ function LinkLabel({ label, hover }: { label: string; hover: boolean }) {
           {label}
         </span>
         <span
-          className={`absolute inset-0 whitespace-nowrap text-sm font-semibold text-white opacity-80 transition-opacity duration-300 ${
-            hover ? "opacity-0" : "opacity-100"
-          }`}
+          className={`absolute inset-0 whitespace-nowrap text-sm font-semibold text-white opacity-80 transition-opacity duration-300 ${hover ? "opacity-0" : "opacity-100"
+            }`}
         >
           {label}
         </span>
         <span
-          className={`absolute inset-0 whitespace-nowrap text-sm font-bold text-white transition-opacity duration-300 ${
-            hover ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 whitespace-nowrap text-sm font-bold text-white transition-opacity duration-300 ${hover ? "opacity-100" : "opacity-0"
+            }`}
         >
           {label}
         </span>
@@ -55,17 +52,15 @@ function NavbarLink({ label }: { label: string }) {
     <button
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className={`flex h-10 items-center justify-center gap-0.5 rounded-full border px-4 backdrop-blur-[4px] transition-colors duration-300 ${
-        hover
+      className={`flex h-10 items-center justify-center gap-0.5 rounded-full border px-4 backdrop-blur-[4px] transition-colors duration-300 ${hover
           ? "border-white/20 bg-[rgba(18,20,23,0.5)]"
           : "border-white/25 bg-[rgba(5,13,25,0.1)]"
-      }`}
+        }`}
     >
       <LinkLabel label={label} hover={hover} />
       <span
-        className={`grid overflow-hidden transition-[grid-template-columns] duration-300 ${
-          hover ? "grid-cols-[1fr]" : "grid-cols-[0fr]"
-        }`}
+        className={`grid overflow-hidden transition-[grid-template-columns] duration-300 ${hover ? "grid-cols-[1fr]" : "grid-cols-[0fr]"
+          }`}
       >
         <span className="overflow-hidden">
           <img src="/assets/navbar/arrow-right.svg" alt="" className="size-5" />
@@ -82,17 +77,15 @@ function SearchButton() {
       aria-label="Cari"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className={`flex h-10 items-center justify-start gap-0.5 rounded-full border backdrop-blur-[4px] transition-all duration-300 ${
-        hover
+      className={`flex h-10 items-center justify-start gap-0.5 rounded-full border backdrop-blur-[4px] transition-all duration-300 ${hover
           ? "w-auto border-white/20 bg-[rgba(18,20,23,0.5)] px-4"
           : "w-10 border-white/25 bg-[rgba(5,13,25,0.1)] px-2"
-      }`}
+        }`}
     >
       <img src="/assets/cycle1/outline-search.svg" alt="" className="size-6 shrink-0" />
       <span
-        className={`grid overflow-hidden transition-[grid-template-columns] duration-300 ${
-          hover ? "grid-cols-[1fr]" : "grid-cols-[0fr]"
-        }`}
+        className={`grid overflow-hidden transition-[grid-template-columns] duration-300 ${hover ? "grid-cols-[1fr]" : "grid-cols-[0fr]"
+          }`}
       >
         <span className="overflow-hidden">
           <LinkLabel label="Cari" hover={hover} />
@@ -174,178 +167,164 @@ export default function Navbar() {
       {/* Desktop navigation — hidden on mobile/tablet. `xl:contents` keeps the
           two fixed children positioning against the viewport. */}
       <div className="hidden xl:contents">
-      {/* Focus overlay — dims the page behind the mega menu so the panel stands out. */}
-      <div
-        aria-hidden
-        className={`fixed inset-0 z-20 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 ${
-          menuOpen ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
-      />
-      <div
-        className={`fixed left-0 right-0 top-0 z-30 flex flex-col items-start transition-transform duration-300 will-change-transform ${
-          shouldHide ? "-translate-y-full" : "translate-y-0"
-        }`}
-        onMouseLeave={scheduleClose}
-      >
+        {/* Focus overlay — dims the page behind the mega menu so the panel stands out. */}
         <div
-          className={`relative flex w-full flex-col items-start transition-shadow duration-200 ${
-            solid ? "shadow-lg" : ""
-          }`}
-        >
+          aria-hidden
+          className={`fixed inset-0 z-20 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 ${menuOpen ? "opacity-100" : "pointer-events-none opacity-0"
+            }`}
+        />
         <div
-          className={`relative z-10 flex w-full items-center justify-center px-10 py-4 transition-colors duration-200 ${
-            solid ? "bg-[rgba(18,20,23,0.95)] backdrop-blur-md" : ""
-          }`}
-          onMouseEnter={closeNow}
+          className={`fixed left-0 right-0 top-0 z-30 flex flex-col items-start transition-transform duration-300 will-change-transform ${shouldHide ? "-translate-y-full" : "translate-y-0"
+            }`}
+          onMouseLeave={scheduleClose}
         >
-          <div className="flex w-full max-w-[1280px] items-center justify-between">
-            <div className="flex items-center gap-5">
-              <img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-9 w-[114.75px]" />
-              <div className="flex items-start gap-1 rounded-full border border-white/15 bg-[rgba(5,13,25,0.2)] p-1 backdrop-blur-[40px]">
-                {SEGMENTS.map((segment) => (
-                  <button
-                    key={segment}
-                    onClick={() => setActiveSegment(segment)}
-                    className={`flex h-8 w-24 items-center justify-center rounded-full text-sm font-semibold text-white transition-colors duration-200 ${
-                      segment === activeSegment
-                        ? "bg-[#005caa]"
-                        : "opacity-80 hover:bg-white/10"
-                    }`}
-                  >
-                    {segment}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <SearchButton />
-              <NavbarLink label="Tentang BCA" />
-              <NavbarLink label="Karir" />
-
-              <div ref={langRef} className="relative">
-                <button
-                  onClick={() => setLangOpen((v) => !v)}
-                  onMouseEnter={() => setLangHover(true)}
-                  onMouseLeave={() => setLangHover(false)}
-                  className={`flex cursor-pointer items-center gap-0.5 rounded-full border p-2 backdrop-blur-[4px] transition-colors ${
-                    langHover || langOpen
-                      ? "border-[#e9ecef] bg-white"
-                      : "border-white/25 bg-[rgba(5,13,25,0.1)]"
-                  }`}
-                >
-                  <img src="/assets/cycle1/flag-id.svg" alt="" className="size-6" />
-                  <span
-                    className={`flex w-8 items-center justify-center text-center text-base font-bold ${
-                      langHover || langOpen ? "text-[#121417]" : "text-white"
-                    }`}
-                  >
-                    ID
-                  </span>
-                </button>
-
-                {langOpen && (
-                  <div className="absolute right-0 top-[calc(100%+8px)] z-40 overflow-hidden rounded-xl border border-[#e9ecef] bg-white shadow-[0px_11px_11px_0px_rgba(224,224,224,0.14),0px_24px_15px_0px_rgba(224,224,224,0.08),0px_3px_6px_0px_rgba(224,224,224,0.16)]">
-                    {LANGUAGES.map((lang) => (
+          <div
+            className={`relative flex w-full flex-col items-start transition-shadow duration-200 ${solid ? "shadow-lg" : ""
+              }`}
+          >
+            <div
+              className={`relative z-10 flex w-full items-center justify-center px-10 py-4 transition-colors duration-200 ${solid ? "bg-[rgba(18,20,23,0.95)] backdrop-blur-md" : ""
+                }`}
+              onMouseEnter={closeNow}
+            >
+              <div className="flex w-full max-w-[1280px] items-center justify-between">
+                <div className="flex items-center gap-5">
+                  <img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-9 w-[114.75px]" />
+                  <div className="flex items-start gap-1 rounded-full border border-white/15 bg-[rgba(5,13,25,0.2)] p-1 backdrop-blur-[40px]">
+                    {SEGMENTS.map((segment) => (
                       <button
-                        key={lang.code}
-                        onClick={() => setLangOpen(false)}
-                        className="flex w-[148px] items-center gap-2 p-4 text-left transition-colors hover:bg-[#f4f8fc]"
+                        key={segment}
+                        onClick={() => setActiveSegment(segment)}
+                        className={`flex h-8 w-24 items-center justify-center rounded-full text-sm font-semibold text-white transition-colors duration-200 ${segment === activeSegment
+                            ? "bg-[#005caa]"
+                            : "opacity-80 hover:bg-white/10"
+                          }`}
                       >
-                        <img src={lang.flag} alt="" className="size-6 rounded-full object-cover" />
-                        <span className="flex-1 text-base font-semibold text-[#121417]">
-                          {lang.label}
-                        </span>
+                        {segment}
                       </button>
                     ))}
                   </div>
-                )}
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <SearchButton />
+                  <NavbarLink label="Tentang BCA" />
+                  <NavbarLink label="Karir" />
+
+                  <div ref={langRef} className="relative">
+                    <button
+                      onClick={() => setLangOpen((v) => !v)}
+                      onMouseEnter={() => setLangHover(true)}
+                      onMouseLeave={() => setLangHover(false)}
+                      className={`flex cursor-pointer items-center gap-0.5 rounded-full border p-2 backdrop-blur-[4px] transition-colors ${langHover || langOpen
+                          ? "border-[#e9ecef] bg-white"
+                          : "border-white/25 bg-[rgba(5,13,25,0.1)]"
+                        }`}
+                    >
+                      <img src="/assets/cycle1/flag-id.svg" alt="" className="size-6" />
+                      <span
+                        className={`flex w-8 items-center justify-center text-center text-base font-bold ${langHover || langOpen ? "text-[#121417]" : "text-white"
+                          }`}
+                      >
+                        ID
+                      </span>
+                    </button>
+
+                    {langOpen && (
+                      <div className="absolute right-0 top-[calc(100%+8px)] z-40 overflow-hidden rounded-xl border border-[#e9ecef] bg-white shadow-[0px_11px_11px_0px_rgba(224,224,224,0.14),0px_24px_15px_0px_rgba(224,224,224,0.08),0px_3px_6px_0px_rgba(224,224,224,0.16)]">
+                        {LANGUAGES.map((lang) => (
+                          <button
+                            key={lang.code}
+                            onClick={() => setLangOpen(false)}
+                            className="flex w-[148px] items-center gap-2 p-4 text-left transition-colors hover:bg-[#f4f8fc]"
+                          >
+                            <img src={lang.flag} alt="" className="size-6 rounded-full object-cover" />
+                            <span className="flex-1 text-base font-semibold text-[#121417]">
+                              {lang.label}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div
-          className={`relative flex w-full flex-col items-center ${
-            menuOpen ? "bg-white" : ""
-          }`}
-          onMouseEnter={cancelClose}
-        >
-          <div
-            className={`flex h-11 w-full items-center justify-center transition-colors duration-200 ${
-              menuOpen
-                ? "border border-[#e9ecef] bg-white"
-                : scrolled
-                  ? "bg-[#121417]/75 backdrop-blur-md"
-                  : ""
-            }`}
-          >
-            <div className="flex h-11 w-[1280px] items-center gap-1">
-              {NAV_TABS.map((tab) => {
-                const isOpen = openMenu === tab.key;
-                return (
-                  <div
-                    key={tab.key}
-                    className={`flex h-11 flex-col items-start transition-colors ${
-                      isOpen ? "bg-[#e6f3ff]" : ""
-                    }`}
-                    style={tab.width ? { width: tab.width } : undefined}
-                    onMouseEnter={() => {
-                      cancelClose();
-                      setOpenMenu(tab.key);
-                    }}
-                  >
-                    <button className="flex min-h-0 flex-1 items-center justify-center gap-1 px-4 pt-1">
-                      <span
-                        className={`whitespace-nowrap text-sm leading-[14px] ${
-                          isOpen
-                            ? "font-bold text-[#005caa]"
-                            : menuOpen
-                              ? "font-semibold text-[#26292c]"
-                              : "font-semibold text-white/80"
-                        }`}
-                      >
-                        {tab.label}
-                      </span>
-                      {tab.expandable && (
-                        <img
-                          src={
-                            isOpen
-                              ? "/assets/navbar/chevron-down-blue.svg"
-                              : menuOpen
-                                ? "/assets/navbar/chevron-down-dark.svg"
-                                : "/assets/navbar/chevron-down-white.svg"
-                          }
-                          alt=""
-                          className={`size-5 transition-transform duration-200 ${
-                            isOpen ? "rotate-180" : menuOpen ? "" : "opacity-80"
-                          }`}
-                        />
-                      )}
-                    </button>
-                    <div
-                      className={`h-1 w-full rounded-t-xl bg-[#005caa] transition-opacity duration-200 ${
-                        isOpen ? "opacity-100" : "opacity-0"
-                      }`}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {activeCategory && (
             <div
-              className="flex w-full justify-center bg-white shadow-2xl"
+              className="relative flex w-full flex-col items-center"
               onMouseEnter={cancelClose}
-              onMouseLeave={scheduleClose}
             >
-              <MegaMenuPanel category={activeCategory} />
+              <div
+                className={`flex h-11 w-full items-center justify-center transition-colors duration-200 ${menuOpen
+                    ? "border border-[#e9ecef] bg-white"
+                    : scrolled
+                      ? "bg-[#121417]/75 backdrop-blur-md"
+                      : ""
+                  }`}
+              >
+                <div className="flex h-11 w-[1280px] items-center gap-1">
+                  {NAV_TABS.map((tab) => {
+                    const isOpen = openMenu === tab.key;
+                    return (
+                      <div
+                        key={tab.key}
+                        className={`flex h-11 flex-col items-start transition-colors ${isOpen ? "bg-[#e6f3ff]" : ""
+                          }`}
+                        style={tab.width ? { width: tab.width } : undefined}
+                        onMouseEnter={() => {
+                          cancelClose();
+                          setOpenMenu(tab.key);
+                        }}
+                      >
+                        <button className="flex min-h-0 flex-1 items-center justify-center gap-1 px-4 pt-1">
+                          <span
+                            className={`whitespace-nowrap text-sm leading-[14px] ${isOpen
+                                ? "font-bold text-[#005caa]"
+                                : menuOpen
+                                  ? "font-semibold text-[#26292c]"
+                                  : "font-semibold text-white/80"
+                              }`}
+                          >
+                            {tab.label}
+                          </span>
+                          {tab.chevron && (
+                            <img
+                              src={
+                                isOpen
+                                  ? "/assets/navbar/chevron-down-blue.svg"
+                                  : menuOpen
+                                    ? "/assets/navbar/chevron-down-dark.svg"
+                                    : "/assets/navbar/chevron-down-white.svg"
+                              }
+                              alt=""
+                              className={`size-5 transition-transform duration-200 ${isOpen ? "rotate-180" : menuOpen ? "" : "opacity-80"
+                                }`}
+                            />
+                          )}
+                        </button>
+                        <div
+                          className={`h-1 w-full rounded-t-xl bg-[#005caa] transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"
+                            }`}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {activeCategory && (
+                <div
+                  className="flex w-full justify-center"
+                  onMouseEnter={cancelClose}
+                  onMouseLeave={scheduleClose}
+                >
+                  <MegaMenuPanel category={activeCategory} />
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
-      </div>
-    </div>
       </div>
     </>
   );

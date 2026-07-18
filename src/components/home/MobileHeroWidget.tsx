@@ -1,8 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import type { KursEntry } from "@/lib/kurs";
 import { useLenis } from "@/components/SmoothScroll";
+import SearchRecommendation from "./SearchRecommendation";
+import {
+  addRecentSearch,
+  bcaSearchResultUrl,
+  clearRecentSearches,
+  getRecentSearches,
+  getSearchRecommendations,
+  removeRecentSearch,
+} from "./search-data";
 
 /* ------------------------------------------------------------------ *
  * Animated search placeholder (compact 14px variant of the desktop one)
@@ -96,6 +105,24 @@ function SearchPlaceholder({ visible }: { visible: boolean }) {
 
 type QuickAction = { title: string; subtitle: string; icon: string; scrollTo?: string };
 
+// The rail bleeds 8px past the widget on both sides and pads px-5, so the
+// opened login card fills the rail minus 40px. Measured rather than expressed
+// as calc(): a `calc(min(...))` end value doesn't interpolate, so the width
+// transition would snap instead of animate.
+const RAIL_PADDING_X = 40;
+const LOGIN_CARD_WIDTH_COLLAPSED = 160;
+// Collapsed rail 104px; opened login card is 32 (padding) + 40 (header) +
+// 12 (gap) + 100 (login tiles) = 184px, i.e. 80px taller.
+const RAIL_H = 104;
+const RAIL_H_OPEN = 184;
+// Kurs top padding clears the rail and leaves the same 16px gap in both states.
+const KURS_PT = 92;
+const KURS_PT_OPEN = KURS_PT + (RAIL_H_OPEN - RAIL_H);
+// Focusing the search scrolls the widget this far below the viewport top —
+// clear of the 56px fixed mobile nav — so the dropdown gets the rest of the
+// screen to open into.
+const SEARCH_TOP_GAP = 64;
+
 const QUICK_ACTIONS: QuickAction[] = [
   { title: "Masuk ke BCA", subtitle: "myBCA • KlikBCA", icon: "/assets/quick-action/login.svg" },
   {
@@ -145,13 +172,105 @@ function KursCard({ entry }: { entry: KursEntry }) {
   );
 }
 
-export default function MobileHeroWidget({ kurs }: { kurs: KursEntry[] }) {
+export default function MobileHeroWidget({
+  kurs,
+  onSearchActiveChange,
+}: {
+  kurs: KursEntry[];
+  onSearchActiveChange?: (active: boolean) => void;
+}) {
   const [searchValue, setSearchValue] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
+  const [recent, setRecent] = useState<string[]>([]);
   const [kursIndex, setKursIndex] = useState(0);
   const [kursDir, setKursDir] = useState<"next" | "prev">("next");
   const [autoTick, setAutoTick] = useState(0);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [loginCardWidth, setLoginCardWidth] = useState(LOGIN_CARD_WIDTH_COLLAPSED);
+  // Suppressed while a resize retargets the width: the opened card's contents
+  // are laid out at the new width immediately, so animating the box toward it
+  // would clip them for the duration of the transition.
+  const [animateLoginWidth, setAnimateLoginWidth] = useState(true);
+  const railRef = useRef<HTMLDivElement>(null);
+  const railWidthRef = useRef(0);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const searchBarRef = useRef<HTMLDivElement>(null);
+  // Distance from the widget root to the bottom of the search bar. The dropdown
+  // is rendered at the root (the search panel is `overflow-clip`) so it can
+  // spill over the quick actions and kurs bar.
+  const [panelTop, setPanelTop] = useState(0);
   const lenis = useLenis();
+
+  const recommendations = useMemo(() => getSearchRecommendations(searchValue), [searchValue]);
+
+  useEffect(() => {
+    onSearchActiveChange?.(searchFocused);
+  }, [searchFocused, onSearchActiveChange]);
+
+  useEffect(() => {
+    setRecent(getRecentSearches());
+  }, []);
+
+  useEffect(() => {
+    if (!searchFocused) return;
+    const measure = () => {
+      if (!searchBarRef.current || !rootRef.current) return;
+      const sb = searchBarRef.current.getBoundingClientRect();
+      const root = rootRef.current.getBoundingClientRect();
+      setPanelTop(sb.bottom - root.top);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [searchFocused]);
+
+  // Focusing enters "search mode": scroll the widget up so the dropdown has the
+  // screen below it, and let HeroArea raise the page-dimming overlay.
+  const focusSearch = () => {
+    setSearchFocused(true);
+    const el = rootRef.current;
+    if (!el) return;
+    if (lenis) {
+      lenis.scrollTo(el, { offset: -SEARCH_TOP_GAP, duration: 0.8 });
+    } else {
+      window.scrollTo({
+        top: window.scrollY + el.getBoundingClientRect().top - SEARCH_TOP_GAP,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const selectQuery = (term: string) => setSearchValue(term);
+  const removeRecent = (term: string) => setRecent((r) => removeRecentSearch(r, term));
+  const clearRecent = () => setRecent(clearRecentSearches());
+
+  const submitSearch = (term: string) => {
+    const t = term.trim();
+    if (!t) return;
+    setRecent((r) => addRecentSearch(r, t));
+    window.open(bcaSearchResultUrl(t), "_blank", "noopener,noreferrer");
+  };
+
+  // The opened card spans the rail, so its width has to follow the viewport.
+  useEffect(() => {
+    const el = railRef.current;
+    if (!el) return;
+    const measure = () => {
+      const width = el.clientWidth;
+      // The observer also fires on the open/close height change — ignore those.
+      if (width === railWidthRef.current) return;
+      const first = railWidthRef.current === 0;
+      railWidthRef.current = width;
+      setLoginCardWidth(width - RAIL_PADDING_X);
+      if (first) return;
+      setAnimateLoginWidth(false);
+      requestAnimationFrame(() => requestAnimationFrame(() => setAnimateLoginWidth(true)));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   // Auto-advance the currency every 5s; manual navigation resets the timer.
   useEffect(() => {
@@ -171,6 +290,14 @@ export default function MobileHeroWidget({ kurs }: { kurs: KursEntry[] }) {
     setAutoTick((t) => t + 1);
   };
 
+  // Opening scrolls the rail back to the start so the (now much wider) login
+  // card is fully in view rather than half-scrolled off.
+  const toggleLogin = () => {
+    const next = !loginOpen;
+    setLoginOpen(next);
+    if (next) railRef.current?.scrollTo({ left: 0, behavior: "smooth" });
+  };
+
   const goToPromo = () => {
     if (lenis) lenis.scrollTo("#promo", { offset: 0, duration: 1 });
     else document.querySelector("#promo")?.scrollIntoView({ behavior: "smooth" });
@@ -180,7 +307,7 @@ export default function MobileHeroWidget({ kurs }: { kurs: KursEntry[] }) {
     // The search panel (h-140) and the kurs bar are stacked flush; the
     // quick-action rail is absolutely positioned so it straddles the seam,
     // overlapping the panel's empty lower half and the top of the kurs bar.
-    <div className="relative">
+    <div ref={rootRef} className="relative">
       {/* 1. Search panel — same glass treatment as the desktop hero search:
              `.hero-search` gradient top-border + reactive backdrop blur. */}
       <div
@@ -203,6 +330,7 @@ export default function MobileHeroWidget({ kurs }: { kurs: KursEntry[] }) {
             Ada yang bisa kami bantu?
           </p>
           <div
+            ref={searchBarRef}
             className="soft-light-border relative h-12 w-full rounded-[50px]"
             style={
               {
@@ -218,16 +346,21 @@ export default function MobileHeroWidget({ kurs }: { kurs: KursEntry[] }) {
               type="text"
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              onFocus={() => setSearchFocused(true)}
+              onFocus={focusSearch}
               onBlur={() => setSearchFocused(false)}
               onKeyDown={(e) => {
                 if (e.key === "Escape") e.currentTarget.blur();
+                if (e.key === "Enter") {
+                  submitSearch(searchValue);
+                  e.currentTarget.blur();
+                }
               }}
               className="relative z-10 h-full w-full bg-transparent pl-6 pr-14 text-sm font-semibold text-white focus:outline-none"
             />
             <SearchPlaceholder visible={!searchValue && !searchFocused} />
             <button
               aria-label="Cari"
+              onClick={() => submitSearch(searchValue)}
               className="absolute right-2 top-1/2 z-10 flex size-9 -translate-y-1/2 items-center justify-center rounded-full bg-white transition-transform active:scale-95"
             >
               <img src="/assets/cycle1/outline-search-1.svg" alt="" className="size-[22px]" />
@@ -239,7 +372,10 @@ export default function MobileHeroWidget({ kurs }: { kurs: KursEntry[] }) {
       {/* 2. Kurs — blue bar directly under the search panel; the top padding
              leaves room for the quick-action cards that overlap it. */}
       <div className="relative overflow-clip rounded-b-3xl bg-gradient-to-b from-[#00b5f0] to-[#005caa] shadow-[inset_0px_-4px_8px_0px_rgba(0,51,94,0.25)]">
-        <div className="flex items-center gap-4 px-5 pb-5 pt-[92px]">
+        <div
+          className="flex items-center gap-4 px-5 pb-5 transition-[padding-top] duration-300 ease-in-out"
+          style={{ paddingTop: loginOpen ? KURS_PT_OPEN : KURS_PT }}
+        >
           <button
             onClick={() => stepKurs("prev")}
             aria-label="Kurs sebelumnya"
@@ -264,25 +400,138 @@ export default function MobileHeroWidget({ kurs }: { kurs: KursEntry[] }) {
 
       {/* 3. Quick actions — separate cards straddling the seam, scroll to reveal
              the rest. `-inset-x-2` bleeds the rail to the screen edges. */}
-      <div className="hide-scrollbar absolute inset-x-[-8px] top-[112px] z-10 h-[104px] overflow-x-auto overflow-y-clip [scrollbar-width:none]">
-        <div className="flex h-full w-max items-center gap-3 px-5">
-          {QUICK_ACTIONS.map((action) => (
-            <button
-              key={action.title}
-              onClick={action.scrollTo ? goToPromo : undefined}
-              className="flex w-40 shrink-0 flex-col items-start justify-center gap-2 rounded-xl border border-[#e9ecef] bg-white p-4 text-left transition-colors active:bg-[#e6f3ff]"
-            >
-              <img src={action.icon} alt="" className="size-6" />
-              <div className="flex flex-col gap-0.5">
-                <p className="whitespace-nowrap text-sm font-bold text-[#26292c]">{action.title}</p>
-                <p className="whitespace-nowrap text-xs font-normal text-[#495057]">
-                  {action.subtitle}
-                </p>
+      <div
+        ref={railRef}
+        className="hide-scrollbar absolute inset-x-[-8px] top-[112px] z-10 overflow-x-auto overflow-y-clip transition-[height] duration-300 ease-in-out [scrollbar-width:none]"
+        style={{ height: loginOpen ? RAIL_H_OPEN : RAIL_H }}
+      >
+        <div className="flex h-full w-max items-start gap-3 px-5">
+          {QUICK_ACTIONS.map((action, index) =>
+            index === 0 ? (
+              /* "Masuk ke BCA" — expands in place into the login panel. Both
+                 states are absolutely stacked at their own fixed width so the
+                 text never reflows while the card animates. */
+              <div
+                key={action.title}
+                className={`relative h-full shrink-0 overflow-hidden rounded-xl border border-[#e9ecef] duration-300 ease-in-out ${
+                  animateLoginWidth
+                    ? "transition-[width,background-color]"
+                    : "transition-[background-color]"
+                }`}
+                style={{
+                  width: loginOpen ? loginCardWidth : LOGIN_CARD_WIDTH_COLLAPSED,
+                  backgroundColor: loginOpen ? "#e6f3ff" : "#ffffff",
+                }}
+              >
+                <button
+                  onClick={toggleLogin}
+                  aria-expanded={loginOpen}
+                  className={`absolute inset-y-0 left-0 flex w-40 flex-col items-start justify-center gap-2 p-4 text-left transition-opacity duration-200 ${
+                    loginOpen ? "pointer-events-none opacity-0" : "opacity-100 delay-100"
+                  }`}
+                >
+                  <img src={action.icon} alt="" className="size-6" />
+                  <div className="flex flex-col gap-0.5">
+                    <p className="whitespace-nowrap text-sm font-bold text-[#26292c]">
+                      {action.title}
+                    </p>
+                    <p className="whitespace-nowrap text-xs font-normal text-[#495057]">
+                      {action.subtitle}
+                    </p>
+                  </div>
+                </button>
+
+                <div
+                  className={`absolute inset-y-0 left-0 flex flex-col gap-3 p-4 transition-opacity duration-200 ${
+                    loginOpen ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
+                  }`}
+                  style={{ width: loginCardWidth, height: RAIL_H_OPEN }}
+                >
+                  {/* The whole header collapses the card — tapping the title
+                      again is the same gesture as tapping the X. */}
+                  <button
+                    onClick={toggleLogin}
+                    aria-expanded={loginOpen}
+                    aria-label="Tutup Masuk ke BCA"
+                    className="flex shrink-0 items-center gap-4"
+                  >
+                    <img src={action.icon} alt="" className="size-6 shrink-0" />
+                    <div className="flex min-w-0 flex-1 flex-col gap-0.5 text-left">
+                      <p className="text-sm font-bold text-[#26292c]">{action.title}</p>
+                      <p className="text-xs font-normal text-[#495057]">{action.subtitle}</p>
+                    </div>
+                    <img
+                      src="/assets/cycle1/outline-close.svg"
+                      alt=""
+                      className="size-5 shrink-0"
+                    />
+                  </button>
+                  <div className="flex flex-1 items-stretch gap-[9px]">
+                    <button className="flex flex-1 flex-col items-start justify-center gap-2 rounded-xl border border-[#e9ecef] bg-white p-4 transition-colors active:bg-[#f7f9fa]">
+                      <img
+                        src="/assets/quick-action/mybca-logo.svg"
+                        alt=""
+                        className="size-10 shrink-0"
+                      />
+                      <p className="whitespace-nowrap text-sm font-semibold text-[#26292c]">
+                        Login ke myBCA
+                      </p>
+                    </button>
+                    <button className="flex flex-1 flex-col items-start justify-center gap-2 rounded-xl border border-[#e9ecef] bg-white p-4 transition-colors active:bg-[#f7f9fa]">
+                      <img
+                        src="/assets/quick-action/klikbca-logo.png"
+                        alt=""
+                        className="h-10 w-auto shrink-0 object-contain"
+                      />
+                      <p className="whitespace-nowrap text-sm font-semibold text-[#26292c]">
+                        Login ke KlikBCA
+                      </p>
+                    </button>
+                  </div>
+                </div>
               </div>
-            </button>
-          ))}
+            ) : (
+              <button
+                key={action.title}
+                onClick={() => {
+                  if (loginOpen) setLoginOpen(false);
+                  if (action.scrollTo) goToPromo();
+                }}
+                className="flex h-[104px] w-40 shrink-0 flex-col items-start justify-center gap-2 rounded-xl border border-[#e9ecef] bg-white p-4 text-left transition-colors active:bg-[#e6f3ff]"
+              >
+                <img src={action.icon} alt="" className="size-6" />
+                <div className="flex flex-col gap-0.5">
+                  <p className="whitespace-nowrap text-sm font-bold text-[#26292c]">
+                    {action.title}
+                  </p>
+                  <p className="whitespace-nowrap text-xs font-normal text-[#495057]">
+                    {action.subtitle}
+                  </p>
+                </div>
+              </button>
+            )
+          )}
         </div>
       </div>
+
+      {/* 4. Search recommendation — aligned with the search bar (the panel's
+             p-4 inset) and dropped 8px below it. `onMouseDown` preventDefault
+             keeps the input focused so tapping an item doesn't close the panel
+             before the tap lands. */}
+      {searchFocused && (
+        <div className="absolute inset-x-4 z-50" style={{ top: panelTop + 8 }}>
+          <SearchRecommendation
+            compact
+            recommendations={recommendations}
+            keyword={searchValue}
+            recent={recent}
+            onSelectQuery={selectQuery}
+            onRemoveRecent={removeRecent}
+            onClearRecent={clearRecent}
+            onMouseDown={(e) => e.preventDefault()}
+          />
+        </div>
+      )}
     </div>
   );
 }

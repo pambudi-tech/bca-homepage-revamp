@@ -24,20 +24,23 @@ export default function HeroArea({ kurs, banners }: { kurs: KursEntry[]; banners
     <div className="relative z-10">
       <HeroSection slides={banners} />
 
+      {/* Search-focus page dimming — shared by both widget forms; each sits at
+          z-40 so it stays above the wash. */}
+      <div
+        aria-hidden
+        className={`fixed inset-0 z-30 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 ${
+          searchActive ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      />
+
       {/* Mobile / tablet widget — normal flow, pulled up 140px so the glass
           search panel overlaps the banner's lower 140px. */}
       <div className="relative z-40 mx-auto -mt-[140px] max-w-[560px] px-2 xl:hidden">
-        <MobileHeroWidget kurs={kurs} />
+        <MobileHeroWidget kurs={kurs} onSearchActiveChange={setSearchActive} />
       </div>
 
-      {/* Desktop widget + search-focus overlay. */}
+      {/* Desktop widget. */}
       <div className="hidden xl:block">
-        <div
-          aria-hidden
-          className={`fixed inset-0 z-30 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 ${
-            searchActive ? "opacity-100" : "pointer-events-none opacity-0"
-          }`}
-        />
         <div className="absolute left-1/2 top-[484px] z-40 w-[1280px] -translate-x-1/2">
           <HeroWidget kurs={kurs} onSearchActiveChange={setSearchActive} />
         </div>

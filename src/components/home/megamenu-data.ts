@@ -1,13 +1,3 @@
-export type MegaMenuProduct = {
-  title: string;
-  description: string;
-};
-
-export type MegaMenuTool = {
-  icon: string;
-  title: string;
-};
-
 export type MegaMenuLink = {
   label: string;
   type?: "article" | "video";
@@ -16,18 +6,17 @@ export type MegaMenuLink = {
 export type MegaMenuCategory = {
   key: string;
   label: string;
-  width: number;
-  promo: {
+  /** Fixed sub-nav tab width from the design; omit to size to content. */
+  width?: number;
+  /** Transaksi renders without a chevron in the design even though it opens a panel. */
+  chevron?: boolean;
+  products: string[];
+  ctaLabel: string;
+  links: MegaMenuLink[];
+  editorial: {
     title: string;
-    description: string;
-    cta: string;
     image: string;
   };
-  listTitle: string;
-  products: MegaMenuProduct[];
-  ctaLabel: string;
-  tools: MegaMenuTool[];
-  links: MegaMenuLink[];
 };
 
 export const MEGAMENU: MegaMenuCategory[] = [
@@ -35,167 +24,154 @@ export const MEGAMENU: MegaMenuCategory[] = [
     key: "Simpanan",
     label: "Simpanan",
     width: 126,
-    promo: {
-      title: "Temukan Simpanan yang Tepat",
-      description: "Bandingkan jenis tabungan dan giro BCA sesuai kebutuhanmu.",
-      cta: "Mulai Bandingkan",
-      image: "/assets/navbar/kk-card-image.webp",
-    },
-    listTitle: "SIMPANAN PILIHAN",
     products: [
-      { title: "Tahapan BCA", description: "Tabungan andalan untuk transaksi sehari-hari" },
-      { title: "Tahapan Xpresi", description: "Tabungan anak muda dengan desain kartu custom" },
-      { title: "Tahapan Gold", description: "Limit transaksi lebih besar untuk kebutuhanmu" },
-      { title: "BCA Dollar", description: "Simpanan valuta asing USD dan SGD" },
+      "Tahapan",
+      "Tahapan Xpresi",
+      "Tahapan Berjangka",
+      "Deposito Berjangka",
+      "Lihat Semua Simpanan",
     ],
-    ctaLabel: "Lihat Semua Pilihan Simpanan",
-    tools: [
-      { icon: "/assets/navbar/icon-calc.svg", title: "Hitung Potensi Simpanan Anda" },
-      { icon: "/assets/navbar/icon-doc-blue.svg", title: "Buka Rekening Secara Online" },
-    ],
+    ctaLabel: "Bandingkan Antar Simpanan",
     links: [
-      { label: "Cara buka rekening via myBCA", type: "video" },
-      { label: "Simulasi bunga tabungan" },
-      { label: "Syarat pembukaan rekening" },
-      { label: "Biaya administrasi tabungan" },
+      { label: "Cara top up & transfer antar rekening", type: "video" },
+      { label: "Perbedaan Tahapan, Tapres, dan Deposito" },
+      { label: "Berapa saldo minimum dan biaya admin tiap produk simpanan?" },
+      { label: "Syarat & dokumen pembukaan rekening BCA" },
     ],
+    editorial: {
+      title: "Buka Rekening, Dapatkan Cashback QRIS Hingga Rp100.000",
+      image: "/assets/navbar/mm-simpanan.webp",
+    },
   },
   {
     key: "Kartu Kredit",
     label: "Kartu Kredit",
     width: 142,
-    promo: {
-      title: "Bandingkan Kartu Kredit BCA",
-      description:
-        "Pilih hingga 3 kartu dan lihat perbandingan benefit, biaya, dan limit secara berdampingan.",
-      cta: "Mulai Bandingkan",
-      image: "/assets/navbar/kk-card-image.webp",
-    },
-    listTitle: "KARTU KREDIT PILIHAN",
     products: [
-      { title: "BCA Everyday Card", description: "Kartu andalan untuk setiap kesempatan, dari belanja harian hingga tagihan rutin" },
-      { title: "BCA Visa Batman", description: "Cashback harian & reward yang bisa ditukar untuk hiburan favoritmu" },
-      { title: "BCA Mastercard Black", description: "Lounge, concierge & privilege eksklusif untuk gaya hidup premium" },
-      { title: "BCA tiket.com Mastercard", description: "Extra poin tiap transaksi untuk hotel, penerbangan & perjalananmu" },
+      "BCA Everyday Card",
+      "BCA Visa Batman",
+      "BCA Mastercard Black",
+      "Reward BCA",
+      "Lihat Semua Kartu Kredit",
     ],
-    ctaLabel: "Lihat Semua Pilihan Kartu Kredit",
-    tools: [
-      { icon: "/assets/navbar/icon-calc.svg", title: "Simulasi Cicilan Kartu Kredit" },
-      { icon: "/assets/navbar/kk-reward-image.webp", title: "Cek Reward BCA" },
-    ],
+    ctaLabel: "Bandingkan Antar Kartu Kredit",
     links: [
       { label: "Cara ajukan kartu kredit via website", type: "video" },
       { label: "Kartu kredit mana yang cocok untuk saya?" },
       { label: "Syarat pengajuan kartu kredit BCA" },
       { label: "Cara bayar tagihan kartu kredit BCA" },
     ],
+    editorial: {
+      title:
+        "Apply Kartu Kredit Sekarang, Gratis Iuran Tahunan Seumur Hidup & Welcome Bonus Rp500.000",
+      image: "/assets/navbar/mm-kartu-kredit.webp",
+    },
   },
   {
     key: "Pinjaman",
     label: "Pinjaman",
     width: 121,
-    promo: {
-      title: "Wujudkan Rencanamu",
-      description: "Simulasikan cicilan KPR, KKB, atau kredit tanpa agunan bersama BCA.",
-      cta: "Mulai Simulasi",
-      image: "/assets/navbar/kk-card-image.webp",
-    },
-    listTitle: "PINJAMAN PILIHAN",
     products: [
-      { title: "KPR BCA", description: "Wujudkan rumah impian dengan bunga kompetitif" },
-      { title: "KKB BCA", description: "Kredit kendaraan bermotor proses cepat" },
-      { title: "Kredit Tanpa Agunan", description: "Dana cepat tanpa jaminan untuk kebutuhanmu" },
+      "Paylater BCA",
+      "Kredit Pemilikan Rumah",
+      "Kredit Kendaraan Bermotor",
+      "BCA Personal Loan",
+      "Lihat Semua Pinjaman",
     ],
-    ctaLabel: "Lihat Semua Pilihan Pinjaman",
-    tools: [
-      { icon: "/assets/navbar/icon-calc.svg", title: "Simulasi Cicilan Pinjaman" },
-      { icon: "/assets/navbar/icon-doc-blue.svg", title: "Ajukan Pinjaman Online" },
-    ],
+    ctaLabel: "Hitung Estimasi Cicilan",
     links: [
-      { label: "Simulasi cicilan KPR" },
-      { label: "Syarat pengajuan KKB" },
-      { label: "Cara pengajuan pinjaman online", type: "video" },
+      { label: "Proses pengajuan dari awal hingga cair", type: "video" },
+      { label: "Cara mengajukan KPR online lewat myBCA" },
+      { label: "Syarat & dokumen pengajuan pinjaman di BCA" },
+      { label: "Berapa maksimal pinjaman yang bisa saya ajukan?" },
     ],
+    editorial: {
+      title: "Bunga KPR Spesial 2,99% di Tahun Pertama",
+      image: "/assets/navbar/mm-pinjaman.webp",
+    },
   },
   {
     key: "e-Banking",
     label: "e-Banking",
     width: 128,
-    promo: {
-      title: "Transaksi Digital Tanpa Batas",
-      description: "Kelola keuanganmu kapan saja lewat myBCA dan KlikBCA.",
-      cta: "Unduh myBCA",
-      image: "/assets/navbar/kk-card-image.webp",
-    },
-    listTitle: "LAYANAN E-BANKING",
-    products: [
-      { title: "myBCA", description: "Aplikasi perbankan digital untuk semua kebutuhanmu" },
-      { title: "KlikBCA", description: "Internet banking untuk transaksi lebih leluasa" },
-      { title: "BCA mobile", description: "Transaksi perbankan dalam genggaman" },
-    ],
-    ctaLabel: "Lihat Semua Layanan e-Banking",
-    tools: [
-      { icon: "/assets/navbar/icon-youtube.svg", title: "Tutorial Aktivasi myBCA" },
-      { icon: "/assets/navbar/icon-doc-blue.svg", title: "Atasi Kendala Login" },
-    ],
+    products: ["myBCA", "KlikBCA", "Sakuku", "e-Branch", "Lihat Semua e-Banking"],
+    ctaLabel: "Bandingkan Antar e-Banking",
     links: [
-      { label: "Cara aktivasi myBCA", type: "video" },
-      { label: "Daftar KlikBCA Individu" },
-      { label: "Atasi kendala login e-Banking" },
+      { label: "Proses pengajuan dari awal hingga cair", type: "video" },
+      { label: "Cara mengajukan KPR online lewat myBCA" },
+      { label: "Syarat & dokumen pengajuan pinjaman di BCA" },
+      { label: "Berapa maksimal pinjaman yang bisa saya ajukan?" },
     ],
+    editorial: {
+      title:
+        "Belanja Pakai QRIS di myBCA Banking, Dapatkan Diskon Hingga 50% di Merchant Pilihan",
+      image: "/assets/navbar/mm-ebanking.webp",
+    },
   },
   {
     key: "Investasi",
     label: "Investasi",
     width: 120,
-    promo: {
-      title: "Mulai Investasi Sekarang",
-      description: "Reksa dana, obligasi, hingga saham dalam satu aplikasi BCA.",
-      cta: "Mulai Investasi",
-      image: "/assets/navbar/kk-card-image.webp",
-    },
-    listTitle: "INVESTASI PILIHAN",
     products: [
-      { title: "Reksa Dana BCA", description: "Investasi mudah mulai dari Rp100 ribu" },
-      { title: "Welma", description: "Platform investasi & asuransi digital BCA" },
-      { title: "Obligasi Negara", description: "Investasi surat utang dengan imbal hasil tetap" },
+      "Reksa Dana",
+      "Obligasi",
+      "Surat Berharga Negara",
+      "Rekening Dana Nasabah",
+      "Lihat Semua Investasi",
     ],
-    ctaLabel: "Lihat Semua Pilihan Investasi",
-    tools: [
-      { icon: "/assets/navbar/icon-calc.svg", title: "Simulasi Imbal Hasil Investasi" },
-      { icon: "/assets/navbar/icon-doc-blue.svg", title: "Mulai Investasi Reksa Dana" },
-    ],
+    ctaLabel: "Hitung Potensi Investasi",
     links: [
-      { label: "Cara mulai investasi reksa dana", type: "video" },
-      { label: "Panduan investasi untuk pemula" },
-      { label: "Simulasi imbal hasil investasi" },
+      { label: "Panduan memilih produk investasi sesuai profil risiko", type: "video" },
+      { label: "Cara beli Reksa Dana lewat myBCA" },
+      { label: "Apa perbedaan Reksa Dana, Obligasi, dan SBN?" },
+      { label: "Berapa minimal investasi di BCA?" },
     ],
+    editorial: {
+      title:
+        "Beli SBN dan Obligasi Sekarang, Nikmati Imbal Hasil Spesial Lebih Tinggi dari Deposito",
+      image: "/assets/navbar/mm-investasi.webp",
+    },
   },
   {
     key: "Asuransi",
     label: "Asuransi",
     width: 117,
-    promo: {
-      title: "Lindungi yang Berharga",
-      description: "Asuransi jiwa, kesehatan, dan proteksi aset dari BCA Life.",
-      cta: "Cari Proteksi",
-      image: "/assets/navbar/kk-card-image.webp",
-    },
-    listTitle: "ASURANSI PILIHAN",
     products: [
-      { title: "BCA Life Info Proteksi", description: "Proteksi jiwa dengan premi terjangkau" },
-      { title: "Asuransi Kesehatan", description: "Perlindungan biaya rumah sakit lebih tenang" },
-      { title: "Asuransi Kendaraan", description: "Proteksi kendaraan dari risiko tak terduga" },
+      "Asuransi Jiwa",
+      "Asuransi Kesehatan",
+      "Asuransi Properti",
+      "Asuransi Kendaraan",
+      "Lihat Semua Asuransi",
     ],
-    ctaLabel: "Lihat Semua Pilihan Asuransi",
-    tools: [
-      { icon: "/assets/navbar/icon-calc.svg", title: "Hitung Premi Asuransi" },
-      { icon: "/assets/navbar/icon-doc-blue.svg", title: "Ajukan Klaim Online" },
-    ],
+    ctaLabel: "Hitung Estimasi Premi Asuransi",
     links: [
-      { label: "Cara klaim asuransi BCA Life", type: "video" },
-      { label: "Pilih proteksi sesuai kebutuhan" },
-      { label: "Simulasi premi asuransi" },
+      { label: "Apa perbedaan asuransi jiwa dan asuransi kesehatan?", type: "video" },
+      { label: "Memilih asuransi yang tepat untuk keluargamu" },
+      { label: "Apa perbedaan asuransi jiwa dan asuransi kesehatan?" },
     ],
+    editorial: {
+      title: "Dapatkan Diskon Premi 20% untuk Pendaftaran Tahun Pertama",
+      image: "/assets/navbar/mm-asuransi.webp",
+    },
+  },
+  {
+    key: "Transaksi",
+    label: "Transaksi",
+    chevron: false,
+    products: ["Flazz", "Firecash", "Remittence", "Lihat Semua Transaksi"],
+    ctaLabel: "Hitung Estimasi Premi Asuransi",
+    links: [
+      { label: "Cara Praktis Top-Up Flazz Langsung dari myBCA", type: "video" },
+      { label: "Panduan Lengkap Kirim Uang ke Luar Negeri" },
+      {
+        label:
+          "Syarat dan Cara Mencairkan Dana Firecash di Kantor Cabang Terdekat Tanpa Potongan",
+      },
+    ],
+    editorial: {
+      title:
+        "Kirim Uang ke Luar Negeri Bebas Biaya Telex & Dapatkan Nilai Tukar Kurs Paling Spesial",
+      image: "/assets/navbar/mm-simpanan.webp",
+    },
   },
 ];

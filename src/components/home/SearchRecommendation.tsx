@@ -169,6 +169,13 @@ type Props = {
   onClearRecent: () => void;
   /** Keeps the input focused when interacting with the panel. */
   onMouseDown?: (e: React.MouseEvent) => void;
+  /**
+   * Mobile layout: product cards stack as icon-beside-text rows, info rows drop
+   * their category badge and wrap, and the two footer links stack. Also caps the
+   * panel height so a long result list scrolls inside the card instead of
+   * running off a short phone viewport.
+   */
+  compact?: boolean;
 };
 
 export default function SearchRecommendation({
@@ -179,6 +186,7 @@ export default function SearchRecommendation({
   onRemoveRecent,
   onClearRecent,
   onMouseDown,
+  compact = false,
 }: Props) {
   const { products, information } = recommendations;
   const isEmpty = keyword.trim() === "";
@@ -188,10 +196,12 @@ export default function SearchRecommendation({
   return (
     <div
       onMouseDown={onMouseDown}
-      className="overflow-hidden rounded-xl border border-[#e9ecef] bg-white shadow-[0px_10px_6px_rgba(204,204,204,0.07),0px_5px_5px_rgba(204,204,204,0.12),0px_1px_2px_rgba(204,204,204,0.14)]"
+      className={`rounded-xl border border-[#e9ecef] bg-white shadow-[0px_10px_6px_rgba(204,204,204,0.07),0px_5px_5px_rgba(204,204,204,0.12),0px_1px_2px_rgba(204,204,204,0.14)] ${
+        compact ? "max-h-[70dvh] overflow-y-auto overscroll-contain" : "overflow-hidden"
+      }`}
     >
       {isEmpty ? (
-        <div className="flex flex-col gap-6 p-6">
+        <div className={`flex flex-col gap-6 ${compact ? "p-4" : "p-6"}`}>
           {recent.length > 0 && (
             <section className="flex flex-col gap-3">
               <div className="flex items-center justify-between">
@@ -251,7 +261,7 @@ export default function SearchRecommendation({
 
           <section className="flex flex-col gap-3">
             <p className="text-base font-bold text-[#26292c]">Topik Populer</p>
-            <div className="grid grid-cols-2 gap-2">
+            <div className={`grid gap-2 ${compact ? "grid-cols-1" : "grid-cols-2"}`}>
               {POPULAR_TOPICS.map((topic) => {
                 const Icon = PRODUCT_ICONS[topic.icon];
                 return (
@@ -274,7 +284,7 @@ export default function SearchRecommendation({
           </section>
         </div>
       ) : hasResults ? (
-        <div className="flex flex-col gap-8 p-6">
+        <div className={`flex flex-col ${compact ? "gap-6 p-4" : "gap-8 p-6"}`}>
           {products.length > 0 && (
             <section className="flex flex-col gap-3">
               <div className="flex items-center justify-between">
@@ -289,24 +299,36 @@ export default function SearchRecommendation({
                   <ArrowDiagonalIcon className="size-5" />
                 </a>
               </div>
-              <div className="flex gap-3">
+              {/* Desktop lays the cards out as three equal columns; mobile
+                  stacks them and turns each into an icon-beside-text row. */}
+              <div className={`flex gap-3 ${compact ? "flex-col" : ""}`}>
                 {products.map((product) => {
                   const Icon = PRODUCT_ICONS[product.icon];
                   return (
                     <a
                       key={product.id}
                       href={product.href}
-                      className="group flex flex-1 flex-col gap-4 rounded-xl border border-[#e9ecef] px-4 pt-4 pb-5 transition-colors hover:border-[#005caa] hover:bg-[#f4f8fc]"
+                      className={`group flex flex-1 rounded-xl border border-[#e9ecef] transition-colors hover:border-[#005caa] hover:bg-[#f4f8fc] ${
+                        compact ? "items-center gap-4 p-4" : "flex-col gap-4 px-4 pt-4 pb-5"
+                      }`}
                     >
                       {product.icon === "mybca" ? (
-                        <img src="/assets/quick-action/mybca-logo.svg" alt="" className="size-10" />
+                        <img
+                          src="/assets/quick-action/mybca-logo.svg"
+                          alt=""
+                          className="size-10 shrink-0"
+                        />
                       ) : (
-                        <span className="flex size-10 items-center justify-center rounded-xl bg-[#e6f3ff] text-[#005caa]">
+                        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#e6f3ff] text-[#005caa]">
                           <Icon className="size-6" />
                         </span>
                       )}
-                      <div className="flex flex-col gap-1.5">
-                        <p className="truncate text-base font-semibold text-[#26292c]">
+                      <div className="flex min-w-0 flex-col gap-1.5">
+                        <p
+                          className={`text-base font-semibold text-[#26292c] ${
+                            compact ? "" : "truncate"
+                          }`}
+                        >
                           {product.title}
                         </p>
                         <p className="text-sm leading-normal text-[#495057]">
@@ -337,16 +359,24 @@ export default function SearchRecommendation({
                           <span className="flex size-8 shrink-0 items-center justify-center text-[#26292c]">
                             <Icon className="size-6" />
                           </span>
-                          <span className="min-w-0 flex-1 truncate text-sm font-semibold text-[#26292c] group-hover:text-[#005caa]">
+                          {/* Mobile has no room for the badge, so the title wraps
+                              across the full row instead of truncating. */}
+                          <span
+                            className={`min-w-0 flex-1 text-sm font-semibold text-[#26292c] group-hover:text-[#005caa] ${
+                              compact ? "" : "truncate"
+                            }`}
+                          >
                             {info.title}
                           </span>
                         </span>
-                        <span
-                          className="flex h-6 shrink-0 items-center rounded-lg px-3 text-sm font-semibold"
-                          style={{ backgroundColor: meta.bg, color: meta.text }}
-                        >
-                          {meta.label}
-                        </span>
+                        {!compact && (
+                          <span
+                            className="flex h-6 shrink-0 items-center rounded-lg px-3 text-sm font-semibold"
+                            style={{ backgroundColor: meta.bg, color: meta.text }}
+                          >
+                            {meta.label}
+                          </span>
+                        )}
                       </a>
                     </li>
                   );
@@ -366,15 +396,24 @@ export default function SearchRecommendation({
         </div>
       )}
 
-      <div className="flex items-center justify-between border-t border-[#e9ecef]">
+      {/* Desktop puts the two links side by side split by a vertical rule;
+          mobile stacks them, so the divider becomes the top border of the
+          second row and the help label breaks onto two lines. */}
+      <div
+        className={`flex border-t border-[#e9ecef] ${
+          compact ? "flex-col" : "items-center justify-between"
+        }`}
+      >
         {!isEmpty && (
           <a
             href={seeAllUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-1 items-center gap-3 p-5 text-sm font-semibold text-[#005caa] transition-colors hover:bg-[#f4f8fc]"
+            className={`flex flex-1 items-center gap-3 text-sm font-semibold text-[#005caa] transition-colors hover:bg-[#f4f8fc] ${
+              compact ? "p-4" : "p-5"
+            }`}
           >
-            <SearchIcon className="size-6" />
+            <SearchIcon className="size-6 shrink-0" />
             Lihat semua hasil
           </a>
         )}
@@ -382,16 +421,16 @@ export default function SearchRecommendation({
           href="https://www.bca.co.id/id/bantuan/pusat-informasi"
           target="_blank"
           rel="noopener noreferrer"
-          className={`flex flex-1 items-center gap-3 p-5 transition-colors hover:bg-[#f4f8fc] ${
-            isEmpty ? "" : "border-l border-[#e9ecef]"
-          }`}
+          className={`flex flex-1 items-center gap-3 transition-colors hover:bg-[#f4f8fc] ${
+            compact ? "p-4" : "p-5"
+          } ${isEmpty ? "" : compact ? "border-t border-[#e9ecef]" : "border-l border-[#e9ecef]"}`}
         >
-          <HeadphoneIcon className="size-6 text-[#26292c]" />
-          <span className="flex items-center gap-1">
+          <HeadphoneIcon className="size-6 shrink-0 text-[#26292c]" />
+          <span className={`flex gap-1 ${compact ? "flex-col items-start" : "items-center"}`}>
             <span className="text-sm font-semibold text-[#26292c]">Butuh bantuan?</span>
             <span className="flex items-center gap-0.5 text-sm font-semibold text-[#005caa]">
               Kunjungi Pusat Bantuan
-              <ArrowDiagonalIcon className="size-5" />
+              <ArrowDiagonalIcon className="size-5 shrink-0" />
             </span>
           </span>
         </a>

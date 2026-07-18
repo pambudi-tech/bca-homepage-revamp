@@ -40,47 +40,70 @@ export default function MyBcaSection() {
         </div>
       </div>
 
-      {/* ===== Mobile (< xl): phone-woman on top, glass card overlapping below. ===== */}
-      <div className="relative overflow-clip bg-[#005caa] xl:hidden">
-        {/* Image stage — office backdrop + glow behind the phone-woman cutout. */}
-        <div className="relative mx-auto max-w-[440px]">
-          {/* Blue-tinted office backdrop, confined to the upper image area. */}
-          <div aria-hidden className="absolute inset-x-0 top-0 h-[280px] overflow-clip">
+      {/* ===== Mobile (< xl): phone-woman on top, glass card overlapping below.
+           Geometry follows the 392-wide Figma frame: the blue backdrop starts 20px
+           down so the phone-woman breaks out into the section above it, the office
+           photo runs 401px tall behind everything, and the glass card is flush with
+           the section bottom, overlapping the stage by 69px (17.6% of the width). ===== */}
+      <div className="relative overflow-clip xl:hidden">
+        {/* Full-bleed backdrop: solid blue from y=20 down, office photo on top of it. */}
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 top-5 bg-[#005caa]">
+          <div className="absolute inset-x-0 top-0 h-[401px] overflow-clip">
             <img src="/assets/mybca/bg.webp" alt="" className="size-full object-cover" />
             <div className="absolute inset-0 bg-[#005caa] mix-blend-multiply" />
           </div>
 
-          {/* Radial glow halo behind the phone. */}
+          {/* Radial glow halo, sitting slightly right of centre behind the woman. */}
           <img
-            src="/assets/mybca/glow.svg"
+            src="/assets/mybca/glow-mobile.svg"
             alt=""
-            aria-hidden
-            className="absolute left-1/2 top-2 h-[240px] w-[360px] max-w-full -translate-x-1/2"
+            className="absolute inset-x-0 top-0 h-[401px] w-full"
           />
 
-          {/* Phone + woman cutout. */}
-          <img
-            src="/assets/mybca/phone-woman.webp"
-            alt="Aplikasi myBCA di genggaman"
-            className="relative z-10 mx-auto block w-[92%] max-w-[360px]"
-          />
+          {/* Dissolves the office photo into solid blue before its hard bottom edge. */}
+          <div className="absolute inset-x-0 top-[285px] h-[116px] bg-gradient-to-b from-[rgba(0,92,170,0)] to-[#005caa]" />
         </div>
 
-        {/* Glass card — pulled up to overlap the phone-woman's lower edge. */}
-        <div className="relative z-20 mx-auto -mt-[76px] max-w-[440px] px-3">
-          <div className="flex min-h-[320px] flex-col items-center justify-between gap-6 rounded-t-3xl border-2 border-white/15 bg-gradient-to-b from-[rgba(18,20,23,0.1)] to-[rgba(18,20,23,0.6)] px-6 pb-8 pt-8 text-center shadow-[-8px_0px_16px_0px_rgba(0,0,0,0.25)] backdrop-blur-[14px]">
-            <div className="flex flex-col items-center gap-4">
-              <p className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-white">
-                Semua Kebutuhan Perbankan dalam Satu Genggaman
-              </p>
-              <p className="max-w-[256px] text-sm leading-5 text-[#d1eaff] opacity-80">
-                Dari cek saldo sampai bayar tagihan, semua selesai dalam hitungan detik lewat myBCA.
-              </p>
+        <div className="relative mx-auto w-full max-w-[440px]">
+          {/* Stage keeps the Figma 392x412 ratio so the overlap below scales with it. */}
+          <div className="relative aspect-[392/412]">
+            <img
+              src="/assets/mybca/phone-woman.webp"
+              alt="Aplikasi myBCA di genggaman"
+              className="absolute left-[51.02%] top-0 w-[91.84%] -translate-x-1/2"
+            />
+          </div>
+
+          {/* Glass card — pulled up to overlap the phone-woman's lower edge. */}
+          <div className="relative -mt-[17.6%] px-2.5">
+            {/* Fill + outline reuse the product-card glass treatment: flat black 30%
+                over a saturating backdrop filter, with `hero-search` painting the 2px
+                top-lit gradient outline. */}
+            <div
+              className="hero-search relative flex min-h-[320px] flex-col items-center justify-between overflow-clip rounded-t-3xl px-6 py-8 text-center shadow-[-8px_0px_16px_0px_rgba(0,0,0,0.25)]"
+              style={{
+                backgroundColor: "rgba(0,0,0,0.3)",
+                backdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
+                WebkitBackdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
+                isolation: "isolate",
+              }}
+            >
+              {/* Capped at the Figma text width so the heading keeps its 3-line wrap
+                  and the card's justify-between rhythm holds above 392px. */}
+              <div className="flex w-full max-w-80 flex-col items-center gap-4">
+                <p className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-white">
+                  Semua Kebutuhan Perbankan dalam Satu Genggaman
+                </p>
+                <p className="w-64 max-w-full text-sm leading-5 text-[#d1eaff] opacity-80">
+                  Dari cek saldo sampai bayar tagihan, semua selesai dalam hitungan detik lewat
+                  myBCA.
+                </p>
+              </div>
+              <button className="flex h-10 items-center justify-center gap-1 rounded-full bg-[#005caa] px-5 text-white transition-transform active:scale-95">
+                <img src="/assets/mybca/icon-download.svg" alt="" className="size-5" />
+                <span className="text-sm font-semibold leading-[14px]">Download myBCA</span>
+              </button>
             </div>
-            <button className="flex h-10 items-center justify-center gap-1 rounded-full bg-[#005caa] px-5 text-white transition-transform active:scale-95">
-              <img src="/assets/mybca/icon-download.svg" alt="" className="size-5" />
-              <span className="text-sm font-semibold">Download myBCA</span>
-            </button>
           </div>
         </div>
       </div>

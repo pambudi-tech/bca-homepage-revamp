@@ -1,6 +1,6 @@
 import { PROMOS, getPromoBadge, getPromoTimestamp, type PromoBadgeKey } from "./promo-data";
 import Confetti from "./Confetti";
-import PercentGlass from "./PercentGlass";
+// import PercentGlass from "./PercentGlass"; // temporarily hidden
 
 const RIBBON_STYLE: Record<Exclude<PromoBadgeKey, "default">, { from: string; to: string; shadow: string; text: string }> = {
   mostLiked: { from: "#00b5f0", to: "#00a5db", shadow: "#01759a", text: "#ffffff" },
@@ -45,7 +45,7 @@ function PromoCard({ promo, now }: { promo: (typeof PROMOS)[number]; now: Date }
   const timestamp = getPromoTimestamp(promo, now, badge);
 
   return (
-    <div className="group relative h-[360px] w-[302px] shrink-0 transition-transform duration-300 ease-out will-change-transform hover:-translate-y-1.5">
+    <div className="group relative h-[360px] w-[260px] shrink-0 transition-transform duration-300 ease-out will-change-transform hover:-translate-y-1.5 xl:w-[302px]">
       <div className="absolute inset-0 flex flex-col items-start overflow-clip rounded-3xl border border-[#e9ecef] bg-white transition-colors duration-300 group-hover:border-[#00b5f0]">
         <div className="relative h-40 w-full shrink-0 overflow-clip">
           <img
@@ -70,10 +70,10 @@ function PromoCard({ promo, now }: { promo: (typeof PROMOS)[number]; now: Date }
         </div>
         <div className="relative w-full flex-1">
           <div className="absolute left-5 right-5 top-12 flex flex-col items-start gap-1.5">
-            <p className="line-clamp-2 w-full text-[18px] font-bold leading-[1.2] tracking-[-0.36px] text-[#26292c] transition-colors duration-300 group-hover:text-[#005caa]">
+            <p className="line-clamp-2 w-full text-base font-bold leading-6 text-[#26292c] transition-colors duration-300 group-hover:text-[#005caa] xl:text-[18px] xl:leading-[1.2] xl:tracking-[-0.36px]">
               {promo.title}
             </p>
-            <p className="w-full text-base font-semibold text-[#495057]">{promo.brand}</p>
+            <p className="w-full text-sm font-semibold leading-5 text-[#495057] xl:text-base">{promo.brand}</p>
           </div>
           <div className="absolute bottom-5 left-5 flex h-10 min-w-10 items-center gap-1 overflow-clip rounded-xl border border-[#e9ecef] bg-white p-3">
             <img src="/assets/promo/icon-clock.svg" alt="" className="size-5 shrink-0" />
@@ -104,21 +104,13 @@ function PromoCard({ promo, now }: { promo: (typeof PROMOS)[number]; now: Date }
   );
 }
 
-function ShowMoreIcon({ className, children }: { className: string; children: React.ReactNode }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={`absolute size-16 ${className}`} stroke="#ffffff" strokeOpacity="0.32" strokeWidth="1.4">
-      {children}
-    </svg>
-  );
-}
-
 function MorePromoCard() {
   return (
     <div
-      className="group relative h-[360px] w-[302px] shrink-0 overflow-clip rounded-3xl border border-white transition-transform duration-300 ease-out will-change-transform hover:-translate-y-1.5"
+      className="group relative h-[360px] w-[260px] shrink-0 overflow-clip rounded-3xl border border-white transition-transform duration-300 ease-out will-change-transform hover:-translate-y-1.5 xl:w-[302px]"
       style={{ backgroundImage: "linear-gradient(180deg, #00b5f0 0%, #005caa 100%)" }}
     >
-      <p className="absolute left-6 top-6 w-[157px] text-2xl font-semibold leading-[1.3] tracking-[-0.48px] text-white">
+      <p className="absolute left-6 top-6 w-[157px] text-xl font-semibold leading-7 tracking-[-0.4px] text-white xl:text-2xl xl:leading-[1.3] xl:tracking-[-0.48px]">
         Lihat 200+ Promo Lainnya
       </p>
       {/* diagonal (external) arrow */}
@@ -126,27 +118,14 @@ function MorePromoCard() {
         <path d="M8 16 16 8M16 8H9M16 8V15" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
 
-      {/* decorative category icons */}
-      <ShowMoreIcon className="left-[54px] top-[88px]">
-        <path d="M12 3l2.1 1.2 2.4-.3 1 2.2 2 1.4-.6 2.4.6 2.4-2 1.4-1 2.2-2.4-.3L12 21l-2.1-1.2-2.4.3-1-2.2-2-1.4.6-2.4L4.5 12l2-1.4 1-2.2 2.4.3L12 3z" strokeLinejoin="round" />
-        <path d="M9.5 14.5l5-5M10 10h.01M14 14h.01" strokeLinecap="round" />
-      </ShowMoreIcon>
-      <ShowMoreIcon className="left-[122px] top-[176px]">
-        <path d="M7 4h10l-1 6a4 4 0 01-4 3 4 4 0 01-4-3L7 4zM12 13v5M9 21h6" strokeLinecap="round" strokeLinejoin="round" />
-      </ShowMoreIcon>
-      <ShowMoreIcon className="left-[216px] top-[176px]">
-        <path d="M10.5 3.2c.4-.6 1.4-.6 1.8 0l.9 3.4 6.5 4c.6.4.7 1.2.2 1.7l-1 .9-4.5-1 .3 5 1.6 1.2c.5.4.3 1.2-.3 1.4l-2.2.5-1.5-4.4-1.5 4.4-2.2-.5c-.6-.2-.8-1-.3-1.4L9.8 18l.3-5-4.5 1-1-.9c-.5-.5-.4-1.3.2-1.7l6.5-4 .7-3.5z" strokeLinejoin="round" />
-      </ShowMoreIcon>
-      <ShowMoreIcon className="left-[28px] top-[264px]">
-        <path d="M3 8a2 2 0 012-2h14a2 2 0 012 2 2 2 0 000 4 2 2 0 00-2 2H5a2 2 0 01-2-2 2 2 0 000-4z" strokeLinejoin="round" />
-        <path d="M10.5 9.5l1.5-1 1.5 1-.6 1.7 1.4 1.1h-1.8L12 15l-.5-1.7H9.7l1.4-1.1-.6-1.7z" strokeLinejoin="round" />
-      </ShowMoreIcon>
-      <ShowMoreIcon className="left-[122px] top-[264px]">
-        <path d="M4 20l8-8M12 4v3M18 8v3M9 5l1.5 1.5M19 15l1.5 1.5M14 4l-1 2 2-1-1 2M8 14l6-6 2 2-6 6-2-2z" strokeLinecap="round" strokeLinejoin="round" />
-      </ShowMoreIcon>
-      <ShowMoreIcon className="left-[216px] top-[264px]">
-        <path d="M4 17h16M5 17a7 7 0 0114 0M12 6V4.5M11 4.5h2" strokeLinecap="round" strokeLinejoin="round" />
-      </ShowMoreIcon>
+      {/* decorative category-icon cluster (Figma "image 476"), blended into the
+          gradient with Soft Light so it reads as a watermark rather than art */}
+      <img
+        src="/assets/promo/showmore-icons.webp"
+        alt=""
+        aria-hidden
+        className="absolute left-6 right-6 top-[126px] h-[202px] object-cover mix-blend-soft-light xl:top-[86px] xl:h-[242px]"
+      />
     </div>
   );
 }
@@ -157,48 +136,55 @@ export default function PromoSection() {
   return (
     <section
       id="promo"
-      className="relative overflow-clip bg-gradient-to-b from-[#eef6fd] to-[#dcecfb] pb-24 pt-32"
+      className="relative overflow-clip bg-gradient-to-b from-[#eef6fd] to-[#dcecfb] pb-11 pt-[124px] xl:pb-24 xl:pt-32"
     >
       {/* clove pattern — left & right, bleeding off the edges */}
       <img
         src="/assets/promo/bg-clove-product-1.svg"
         alt=""
         aria-hidden
-        className="pointer-events-none absolute left-[-256px] bottom-[-256px] h-auto w-auto opacity-100 blur-[2px]"
+        className="pointer-events-none absolute left-[-380px] top-36 h-[896px] w-[770px] opacity-100 blur-[2px] xl:bottom-[-256px] xl:left-[-256px] xl:top-auto xl:h-auto xl:w-auto"
       />
       <img
         src="/assets/promo/bg-clove-product-2.svg"
         alt=""
         aria-hidden
-        className="pointer-events-none absolute right-[-720px] bottom-[-720px] h-auto w-auto opacity-60 blur-[2px]"
+        className="pointer-events-none absolute bottom-[-368px] right-[-380px] h-[896px] w-[770px] opacity-60 blur-[2px] xl:bottom-[-720px] xl:right-[-720px] xl:h-auto xl:w-auto"
       />
       {/* confetti — top of the section (pure JS + CSS, see Confetti.tsx) */}
       <Confetti />
 
-      <div className="relative z-10 mx-auto w-[1280px]">
-        <div className="relative flex gap-10">
-          <div className="flex w-60 shrink-0 items-center py-4">
-            <p className="text-sm font-semibold uppercase leading-[14px] tracking-[2.1px] text-[#005caa]">
+      <div className="relative z-10 mx-auto w-full max-w-[560px] px-4 xl:w-[1280px] xl:max-w-none xl:px-0">
+        {/* Heading — stacked on mobile, eyebrow column + h2 side by side on desktop. */}
+        <div className="relative flex flex-col xl:flex-row xl:gap-10">
+          <div className="flex items-center py-4 xl:w-60 xl:shrink-0">
+            <p className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-[#005caa] xl:text-sm xl:leading-[14px] xl:tracking-[2.1px]">
               Event &amp; Program
             </p>
           </div>
-          <h2 className="w-[560px] text-[32px] font-semibold leading-10 tracking-[-0.64px] text-[#00335e]">
+          <h2 className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-[#00335e] xl:w-[560px] xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]">
             Apresiasi Terbaik untuk Menemani Setiap Momen Berharga
           </h2>
-          {/* 3D percentage glass (three.js), floating to the right of the title.
-              Falls back to /assets/promo/percentage-glass.webp when WebGL is
-              unavailable or reduced-motion is requested. */}
-          <PercentGlass />
+          {/* 3D percentage glass (three.js) temporarily hidden — see PercentGlass.tsx.
+          <PercentGlass /> */}
         </div>
 
-        
-
-        <div className="mt-10 flex flex-wrap content-center items-start gap-6">
+        {/* Cards — horizontally scrollable carousel on mobile (full-bleeding out
+            of the padded column), wrapping grid on desktop. */}
+        <div className="hide-scrollbar -mx-4 mt-8 flex items-start gap-4 overflow-x-auto px-4 [scrollbar-width:none] xl:mx-0 xl:mt-10 xl:flex-wrap xl:content-center xl:gap-6 xl:overflow-visible xl:px-0">
           {PROMOS.map((promo) => (
             <PromoCard key={promo.id} promo={promo} now={now} />
           ))}
           <MorePromoCard />
         </div>
+
+        {/* Mobile-only CTA — the desktop surfaces this via the "Show More" card. */}
+        <button className="mx-auto mt-9 flex h-10 items-center justify-center gap-0.5 rounded-full bg-[#005caa] px-5 transition-colors duration-200 active:bg-[#00457f] xl:hidden">
+          <span className="px-0.5 text-sm font-semibold leading-[14px] text-white">
+            Lihat 200+ promo lainnya
+          </span>
+          <img src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5" />
+        </button>
       </div>
     </section>
   );

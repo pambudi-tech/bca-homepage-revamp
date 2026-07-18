@@ -33,12 +33,6 @@ export default function MobileNav({
 
       <div className="flex items-center gap-3">
         <button
-          aria-label="Cari"
-          className="flex size-10 items-center justify-center rounded-full bg-[rgba(18,20,23,0.5)] backdrop-blur-[4px] transition-transform active:scale-95"
-        >
-          <img src="/assets/cycle1/outline-search.svg" alt="" className="size-6" />
-        </button>
-        <button
           onClick={() => setMenuOpen((v) => !v)}
           aria-label={menuOpen ? "Tutup menu" : "Buka menu"}
           aria-expanded={menuOpen}
