@@ -86,7 +86,7 @@ function SearchPlaceholder({ visible }: { visible: boolean }) {
         {slots.map((slot, i) => (
           <span
             key={i}
-            className={`absolute inset-0 flex h-12 items-center whitespace-nowrap text-sm font-semibold text-[#cfcfcf] ${
+            className={`absolute inset-0 flex h-12 items-center whitespace-nowrap text-base font-semibold text-[#cfcfcf] ${
               slot.instant ? "" : "transition-all duration-700 ease-in-out"
             }`}
             style={slotStyle(slot.state)}
@@ -342,6 +342,8 @@ export default function MobileHeroWidget({
               } as CSSProperties
             }
           >
+            {/* text-base (16px) is deliberate: iOS Safari zooms the page in
+                when a focused input's font-size is below 16px. */}
             <input
               type="text"
               value={searchValue}
@@ -355,7 +357,7 @@ export default function MobileHeroWidget({
                   e.currentTarget.blur();
                 }
               }}
-              className="relative z-10 h-full w-full bg-transparent pl-6 pr-14 text-sm font-semibold text-white focus:outline-none"
+              className="relative z-10 h-full w-full bg-transparent pl-6 pr-14 text-base font-semibold text-white focus:outline-none"
             />
             <SearchPlaceholder visible={!searchValue && !searchFocused} />
             <button
