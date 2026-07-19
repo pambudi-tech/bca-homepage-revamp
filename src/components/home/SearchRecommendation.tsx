@@ -130,38 +130,6 @@ function StarIcon({ className }: IconProps) {
   );
 }
 
-function CategoryIcon({ className }: IconProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <rect x="3" y="3" width="7.5" height="7.5" rx="2" />
-      <rect x="13.5" y="3" width="7.5" height="7.5" rx="2" />
-      <rect x="3" y="13.5" width="7.5" height="7.5" rx="2" />
-      <rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2" />
-    </svg>
-  );
-}
-
-function DocumentIcon({ className }: IconProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M5.5 4.5a2 2 0 012-2h6l5 5v10a2 2 0 01-2 2h-9a2 2 0 01-2-2z" />
-      <path d="M13 2.5V7a1 1 0 001 1h4.5" />
-      <path d="M9 13h6M9 16.5h4" />
-    </svg>
-  );
-}
-
-function DiscountIcon({ className }: IconProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 9.5a2.5 2.5 0 012.5-2.5l3-.02a3 3 0 002.1-.86l2.1-2.1a2.5 2.5 0 013.54 0l.02.02a3 3 0 002.12.88H21v.5a3 3 0 00.88 2.12l.02.02a2.5 2.5 0 010 3.54l-2.1 2.1a3 3 0 00-.86 2.1L19 20.5" transform="scale(0.82) translate(2.4 -0.5)" />
-      <circle cx="9" cy="9" r="1.4" />
-      <circle cx="15" cy="15" r="1.4" />
-      <path d="M15 9l-6 6" />
-    </svg>
-  );
-}
-
 function SearchIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -224,11 +192,6 @@ const PRODUCT_ICONS: Record<ProductIcon, (p: IconProps) => React.ReactElement> =
   star: StarIcon,
 };
 
-const INFO_ICONS: Record<InfoCategory, (p: IconProps) => React.ReactElement> = {
-  "produk-layanan": CategoryIcon,
-  artikel: DocumentIcon,
-  promo: DiscountIcon,
-};
 
 /* ------------------------------------------------------------------------- */
 
@@ -336,7 +299,7 @@ export default function SearchRecommendation({
           {products.length > 0 && (
             <section className="flex flex-col gap-3">
               <div className="flex items-center justify-between">
-                <p className="text-base font-bold text-neutral-800">Produk Terkait</p>
+                <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>Produk Terkait</p>
                 <a
                   href={seeAllUrl}
                   target="_blank"
@@ -348,16 +311,25 @@ export default function SearchRecommendation({
                 </a>
               </div>
               {/* Desktop lays the cards out as three equal columns; mobile
-                  stacks them and turns each into an icon-beside-text row. */}
-              <div className={`flex ${compact ? "flex-col gap-2" : "gap-3"}`}>
+                  scrolls them horizontally as fixed 200px cards, bleeding to
+                  the panel edges so the overflow reads as a carousel. */}
+              <div
+                className={`flex ${
+                  compact
+                    ? "hide-scrollbar -mx-3 gap-2 overflow-x-auto px-3 [scrollbar-width:none]"
+                    : "gap-3"
+                }`}
+              >
                 {products.map((product) => {
                   const Icon = PRODUCT_ICONS[product.icon];
                   return (
                     <a
                       key={product.id}
                       href={product.href}
-                      className={`group flex flex-1 rounded-xl border border-neutral-300 transition-colors hover:border-cyan-500 hover:bg-cyan-100 ${
-                        compact ? "items-center gap-4 p-3" : "flex-col gap-4 px-4 pt-4 pb-5"
+                      className={`group flex rounded-xl border border-neutral-300 transition-colors hover:border-cyan-500 hover:bg-cyan-100 ${
+                        compact
+                          ? "w-[200px] shrink-0 flex-col gap-3 p-3"
+                          : "flex-1 flex-col gap-4 px-4 pt-4 pb-5"
                       }`}
                     >
                       {product.icon === "mybca" ? (
@@ -400,30 +372,24 @@ export default function SearchRecommendation({
 
           {information.length > 0 && (
             <section className="flex flex-col gap-3">
-              <p className="text-base font-bold text-neutral-800">Informasi Terkait</p>
+              <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>Informasi Terkait</p>
               <ul className="flex flex-col">
-                {information.map((info) => {
+                {information.slice(0, 3).map((info) => {
                   const meta = INFO_CATEGORY_META[info.category];
-                  const Icon = INFO_ICONS[info.category];
                   return (
                     <li key={info.id}>
                       <a
                         href={info.href}
-                        className="group flex items-center gap-8 rounded-lg py-2 transition-colors"
+                        className="group flex items-center gap-8 rounded-xl px-3 py-3 transition-colors duration-200 hover:bg-cyan-100"
                       >
-                        <span className="flex min-w-0 flex-1 items-center gap-3">
-                          <span className="flex size-8 shrink-0 items-center justify-center text-neutral-800">
-                            <Icon className="size-6" />
-                          </span>
-                          {/* Mobile has no room for the badge, so the title wraps
-                              across the full row instead of truncating. */}
-                          <span
-                            className={`min-w-0 flex-1 text-sm font-semibold text-neutral-800 group-hover:text-blue-500 ${
-                              compact ? "" : "truncate"
-                            }`}
-                          >
-                            {info.title}
-                          </span>
+                        {/* Mobile has no room for the badge, so the title wraps
+                            across the full row instead of truncating. */}
+                        <span
+                          className={`min-w-0 flex-1 text-sm font-semibold text-neutral-800 transition-colors duration-200 group-hover:text-blue-500 ${
+                            compact ? "" : "truncate"
+                          }`}
+                        >
+                          {info.title}
                         </span>
                         {!compact && (
                           <span

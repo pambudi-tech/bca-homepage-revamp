@@ -62,10 +62,10 @@ export default function BackToTop() {
       type="button"
       onClick={scrollToTop}
       aria-label="Kembali ke atas"
-      className={`group fixed bottom-0 left-1/2 z-50 h-[52px] w-[218px] -translate-x-1/2 transition-all duration-300 ease-out ${
+      className={`group fixed bottom-3 left-1/2 z-50 h-11 w-auto px-5 -translate-x-1/2 transition-all duration-300 ease-out md:bottom-0 md:h-[52px] md:w-[218px] md:px-0 ${
         shown
           ? "pointer-events-auto translate-y-0 opacity-100"
-          : "pointer-events-none translate-y-full opacity-0"
+          : "pointer-events-none translate-y-[150%] opacity-0 md:translate-y-full"
       }`}
     >
       {/* Custom SVG-shaped background: #000000 60% + backdrop blur md, clipped
@@ -73,15 +73,14 @@ export default function BackToTop() {
           once the footer bottom is reached. */}
       <span
         aria-hidden
-        className="absolute inset-0 backdrop-blur-md transition-colors duration-300 ease-out"
+        className="absolute inset-0 rounded-full backdrop-blur-md transition-colors duration-300 ease-out md:rounded-none md:[clip-path:url(#back-to-top-shape)]"
         style={{
-          clipPath: "url(#back-to-top-shape)",
           backgroundColor: atBottom ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.6)",
         }}
       />
 
       {/* Label + arrow-up icon */}
-      <span className="relative flex h-full items-center justify-center gap-2 pb-0.5">
+      <span className="relative flex h-full items-center justify-center gap-2 whitespace-nowrap md:pb-0.5">
         <span className="text-sm font-semibold leading-5 text-white">Kembali ke atas</span>
         <img loading="lazy" decoding="async"
           src="/assets/navbar/arrow-right.svg"

@@ -10,9 +10,14 @@ import BackToTop from "@/components/home/BackToTop";
 import ScrollReveal from "@/components/ScrollReveal";
 import { getKursHariIni } from "@/lib/kurs";
 import { getBanners } from "@/lib/banners";
+import { getProductCategories } from "@/lib/products";
 
 export default async function Home() {
-  const [kurs, banners] = await Promise.all([getKursHariIni(), getBanners()]);
+  const [kurs, banners, produk] = await Promise.all([
+    getKursHariIni(),
+    getBanners(),
+    getProductCategories(),
+  ]);
 
   return (
     <main className="flex flex-1 flex-col overflow-x-clip bg-blue-100">
@@ -28,7 +33,7 @@ export default async function Home() {
             (496 + 288 - 640). Mobile lays the widget out in normal flow. */}
         <div className="h-0 xl:h-[136px]" />
         <ScrollCue />
-        <ProductSection />
+        <ProductSection categories={produk.categories} defaultKey={produk.defaultKey} />
         <MyBcaSection />
         <PromoSection />
         <NewsSection />

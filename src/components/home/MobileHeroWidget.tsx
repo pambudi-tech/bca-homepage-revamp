@@ -318,8 +318,8 @@ export default function MobileHeroWidget({
       <div
         className="hero-search relative flex h-[140px] items-start justify-center overflow-clip rounded-t-3xl p-4"
         style={{
-          backdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
-          WebkitBackdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
+          backdropFilter: "blur(16px) saturate(1.25)",
+          WebkitBackdropFilter: "blur(16px) saturate(1.25)",
         }}
       >
         <div
@@ -340,8 +340,8 @@ export default function MobileHeroWidget({
             style={
               {
                 background: "rgba(0,0,0,0.5)",
-                backdropFilter: "blur(12px) saturate(1.25) contrast(1.02)",
-                WebkitBackdropFilter: "blur(12px) saturate(1.25) contrast(1.02)",
+                backdropFilter: "blur(12px) saturate(1.25)",
+                WebkitBackdropFilter: "blur(12px) saturate(1.25)",
                 "--slb-thickness": "1px",
                 "--slb-gradient": "rgba(255,255,255,0.15)",
               } as CSSProperties

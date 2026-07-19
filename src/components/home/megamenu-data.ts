@@ -97,10 +97,10 @@ export const MEGAMENU: MegaMenuCategory[] = [
     products: ["myBCA", "KlikBCA", "Sakuku", "e-Branch", "Lihat Semua e-Banking"],
     ctaLabel: "Bandingkan Antar e-Banking",
     links: [
-      { label: "Proses pengajuan dari awal hingga cair", type: "video" },
-      { label: "Cara mengajukan KPR online lewat myBCA" },
-      { label: "Syarat & dokumen pengajuan pinjaman di BCA" },
-      { label: "Berapa maksimal pinjaman yang bisa saya ajukan?" },
+      { label: "Cara aktivasi myBCA untuk pengguna baru", type: "video" },
+      { label: "Cara top up Flazz lewat myBCA" },
+      { label: "Fitur-fitur unggulan myBCA" },
+      { label: "Apa perbedaan myBCA dan KlikBCA?" },
     ],
     editorial: {
       title:

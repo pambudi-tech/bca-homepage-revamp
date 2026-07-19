@@ -90,8 +90,8 @@ export default function MyBcaSection() {
               className="hero-search relative flex min-h-[320px] flex-col items-center justify-between overflow-clip rounded-t-3xl px-6 py-8 text-center shadow-[-8px_0px_16px_0px_rgba(0,0,0,0.25)]"
               style={{
                 backgroundColor: "rgba(0,0,0,0.3)",
-                backdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
-                WebkitBackdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
+                backdropFilter: "blur(16px) saturate(1.25)",
+                WebkitBackdropFilter: "blur(16px) saturate(1.25)",
                 isolation: "isolate",
               }}
             >

@@ -2,7 +2,6 @@ export type Product = {
   title: string;
   subtitle: string;
   image: string;
-  imageBg: string;
 };
 
 export type ProductCategory = {
@@ -12,12 +11,8 @@ export type ProductCategory = {
   products: Product[];
 };
 
-// Each card photo is split into a transparent subject cutout (`image`) and an
-// opaque background scene (`imageBg`) so the two layers can zoom in opposite
-// directions on hover (background out, subject in).
-const asset = (name: string): Pick<Product, "image" | "imageBg"> => ({
+const asset = (name: string): Pick<Product, "image"> => ({
   image: `/assets/product/${name}.webp`,
-  imageBg: `/assets/product/${name}-bg.webp`,
 });
 
 const EVERYDAY = asset("card-everyday");

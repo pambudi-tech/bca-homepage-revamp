@@ -227,14 +227,14 @@ export default function Navbar() {
               }`}
           >
             <div
-              className={`relative z-10 flex w-full items-center justify-center px-10 py-4 transition-colors duration-200 ${solid ? "bg-[rgba(18,20,23,0.95)] backdrop-blur-md" : ""
+              className={`relative z-10 flex w-full items-center justify-center px-10 py-4 transition-colors duration-200 ${solid ? "bg-[rgba(18,20,23,0.95)]" : ""
                 }`}
               onMouseEnter={closeNow}
             >
               <div className="flex w-full max-w-[1280px] items-center justify-between">
                 <div className="flex items-center gap-5">
                   <img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-9 w-[114.75px]" />
-                  <div className="flex items-start gap-1 rounded-full border border-white/15 bg-[rgba(5,13,25,0.2)] p-1 backdrop-blur-[40px]">
+                  <div className="flex items-start gap-1 rounded-full border border-white/15 bg-[rgba(5,13,25,0.2)] p-1 backdrop-blur-[12px]">
                     {SEGMENTS.map((segment) => (
                       <button
                         key={segment}
@@ -303,7 +303,7 @@ export default function Navbar() {
                 className={`flex h-11 w-full items-center justify-center transition-colors duration-200 ${menuOpen
                     ? "border border-neutral-300 bg-white"
                     : scrolled
-                      ? "bg-neutral-900/75 backdrop-blur-md"
+                      ? "bg-neutral-900/90"
                       : ""
                   }`}
               >

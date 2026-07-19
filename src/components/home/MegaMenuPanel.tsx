@@ -87,7 +87,7 @@ export default function MegaMenuPanel({
                   style={{ "--mm-i": i } as CSSProperties}
                   className="mm-item group flex items-center justify-between rounded-xl px-4 pb-4 pt-3 text-left transition-colors duration-200 hover:bg-cyan-100"
                 >
-                  <span className="text-xl font-semibold leading-7 tracking-[-0.4px] text-neutral-700 transition-colors duration-200 group-hover:font-bold group-hover:text-blue-500">
+                  <span className="text-xl font-semibold leading-7 tracking-[-0.4px] text-neutral-800 transition-colors duration-200 group-hover:font-bold group-hover:text-blue-500">
                     {product}
                   </span>
                   <ArrowRight className="size-5 shrink-0 text-blue-500 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />

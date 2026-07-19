@@ -292,8 +292,8 @@ export default function HeroWidget({
             // Reactive glass fill: samples the live banner behind it (works across stacking
             // contexts), blurs it, then lightly boosts saturation/contrast so the fill picks
             // up whatever banner colors the content team ships.
-            backdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
-            WebkitBackdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
+            backdropFilter: "blur(16px) saturate(1.25)",
+            WebkitBackdropFilter: "blur(16px) saturate(1.25)",
           }}
         >
           {/* Depth gradient (normal compositing) for text readability — light sheen at
@@ -316,8 +316,8 @@ export default function HeroWidget({
               className="soft-light-border relative flex flex-1 items-center gap-2 rounded-[50px] p-2"
               style={{
                 background: "rgba(0,0,0,0.5)",
-                backdropFilter: "blur(12px) saturate(1.25) contrast(1.02)",
-                WebkitBackdropFilter: "blur(12px) saturate(1.25) contrast(1.02)",
+                backdropFilter: "blur(12px) saturate(1.25)",
+                WebkitBackdropFilter: "blur(12px) saturate(1.25)",
                 ...softLightBorderVars("1px", "rgba(255,255,255,0.15)"),
               }}
             >

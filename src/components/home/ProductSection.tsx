@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { PRODUCT_CATEGORIES, type Product } from "./product-data";
+import { PRODUCT_CATEGORIES, type Product, type ProductCategory } from "./product-data";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useIsLive } from "@/lib/useIsLive";
 
@@ -9,20 +9,102 @@ const AUTO_ADVANCE_MS = 6000;
 const RING_RADIUS = 13;
 const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 
+/**
+ * Category swaps animate the card *contents* only — the cards themselves keep
+ * their current size/position, so the accordion layout never jumps.
+ *
+ * The photos swap as two stacked layers: the incoming set is mounted underneath
+ * and already in place, and the outgoing set slides off the top of it, picking
+ * up a motion blur as it goes. Nothing is ever faded and no gap opens, so the
+ * card's own background is never seen. The two layers travel at different
+ * speeds — the outgoing clears a full card width while the incoming only drifts
+ * in from a fraction of it — which is what gives the swipe its parallax.
+ *
+ * Both legs are CSS animations rather than transitions: a transition into an
+ * off-side start value needs a paint in between to latch it, and
+ * requestAnimationFrame is throttled to a standstill whenever the tab isn't
+ * painting, which would strand the photos mid-slide.
+ */
+const SWAP_MS = 640;
+/** Per-card offset, so the three cards swipe as a staggered wave. */
+const SWAP_STAGGER_MS = 70;
+/** Copy is a single block (it drives the panel's height), so it dips out and
+ *  back rather than cross-fading; the text itself is swapped at the trough. */
+const COPY_SWAP_MS = 200;
+
+/**
+ * `alt` alternates per swap so consecutive swaps land on a different animation
+ * name and therefore restart rather than being ignored as unchanged.
+ */
+function swapStyles(swapping: boolean, dir: number, stagger: number, alt: boolean) {
+  // No swap in flight: leave the cards to their entrance/hover choreography.
+  if (!swapping) return { incoming: {}, outgoing: {}, copy: {} };
+  const suffix = alt ? "a" : "b";
+  return {
+    incoming: {
+      "--photo-from": `${dir * 28}%`,
+      animation: `product-photo-in-${suffix} ${SWAP_MS}ms cubic-bezier(0.65,0,0.35,1) ${stagger}ms both`,
+    } as React.CSSProperties,
+    outgoing: {
+      "--photo-to": `${-dir * 100}%`,
+      animation: `product-photo-out-${suffix} ${SWAP_MS}ms cubic-bezier(0.65,0,0.35,1) ${stagger}ms both`,
+    } as React.CSSProperties,
+    copy: {
+      animation: `product-copy-swap-${suffix} ${SWAP_MS}ms ease-in-out ${stagger}ms both`,
+    } as React.CSSProperties,
+  };
+}
+
+/**
+ * One product's photo, full-bleed. `hoverZoom` is the desktop card's slow push
+ * in on hover; the mobile card has no hover state to drive it.
+ */
+function PhotoLayer({
+  product,
+  style,
+  hoverZoom = false,
+}: {
+  product: Product;
+  style: React.CSSProperties;
+  hoverZoom?: boolean;
+}) {
+  return (
+    <div className="absolute inset-0" style={style}>
+      <img loading="lazy" decoding="async"
+        src={product.image}
+        alt=""
+        className={`absolute inset-0 size-full object-cover ${
+          hoverZoom
+            ? "scale-100 transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+            : ""
+        }`}
+      />
+    </div>
+  );
+}
+
 function ProductCard({
   product,
+  outgoing,
+  copy,
   active,
   onSelect,
   progressRef,
   entered,
   enterDelayMs,
+  swap,
 }: {
   product: Product;
+  /** The photos being swiped away, drawn over `product` for the swap only. */
+  outgoing: Product | null;
+  /** Title/subtitle, which lag the photos by half the swap. */
+  copy: Product;
   active: boolean;
   onSelect: () => void;
   progressRef: React.Ref<SVGCircleElement> | undefined;
   entered: boolean;
   enterDelayMs: number;
+  swap: ReturnType<typeof swapStyles>;
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLButtonElement>(null);
@@ -105,18 +187,12 @@ function ProductCard({
         className="absolute inset-y-0 right-0 w-[566px] transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
         style={{ transform: active ? "translateX(0)" : "translateX(96px)" }}
       >
-        {/* Background scene — zooms 1.02x -> 1x on hover */}
-        <img loading="lazy" decoding="async"
-          src={product.imageBg}
-          alt=""
-          className="absolute inset-0 size-full scale-[1.02] object-cover transition-transform duration-500 ease-out group-hover:scale-100"
-        />
-        {/* Subject cutout on top — zooms 1x -> 1.02x on hover (inverse of bg) */}
-        <img loading="lazy" decoding="async"
-          src={product.image}
-          alt=""
-          className="absolute inset-0 size-full scale-100 object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
-        />
+        {/* Each layer carries the category-swap slide, so it composes with the
+            active/inactive shift on the wrapper above and the hover zooms
+            inside. The outgoing set sits on top and clears the card, revealing
+            the incoming set that is already in place beneath it. */}
+        <PhotoLayer product={product} style={swap.incoming} hoverZoom />
+        {outgoing && <PhotoLayer product={outgoing} style={swap.outgoing} />}
       </div>
 
       <div
@@ -134,13 +210,14 @@ function ProductCard({
         style={{
           width: active ? 280 : 184,
           backgroundColor: "rgba(0,0,0,0.3)",
-          backdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
-          WebkitBackdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
+          backdropFilter: "blur(16px) saturate(1.25)",
+          WebkitBackdropFilter: "blur(16px) saturate(1.25)",
           isolation: "isolate",
         }}
       >
+        <div className="w-full" style={swap.copy}>
         <p className="w-full text-xl font-semibold leading-7 tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
-          {product.title}
+          {copy.title}
         </p>
         <div
           className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
@@ -148,7 +225,7 @@ function ProductCard({
         >
           <div className="overflow-hidden">
             <p className="w-full pt-2 text-base leading-6 text-white/80">
-              {product.subtitle}
+              {copy.subtitle}
             </p>
             <div className="flex items-center gap-0.5 pt-8 text-base font-semibold text-blue-100 md:hidden">
               Pelajari
@@ -159,6 +236,7 @@ function ProductCard({
               />
             </div>
           </div>
+        </div>
         </div>
       </div>
 
@@ -186,12 +264,17 @@ function ProductCard({
 
       <div
         ref={cursorRef}
-        className={`pointer-events-none absolute left-0 top-0 z-30 flex size-28 items-center justify-center rounded-full border border-white/25 bg-white/[0.01] text-sm font-semibold text-white shadow-lg backdrop-blur-md transition-opacity duration-200 ${
-          active && isHovered ? "opacity-100" : "opacity-0"
-        }`}
+        // `fade-overlay` (not a bare `opacity-0`) is what keeps this cheap: an
+        // element parked at opacity 0 is still painted and composited, so the
+        // backdrop-filter below was re-blurring a 112px disc every frame, on
+        // every card, while invisible. `visibility: hidden` drops it out of
+        // paint entirely. See the .fade-overlay note in globals.css.
+        className="fade-overlay pointer-events-none absolute left-0 top-0 z-30 flex size-28 items-center justify-center rounded-full border border-white/25 bg-white/[0.01] text-sm font-semibold text-white shadow-lg backdrop-blur-md"
+        data-shown={active && isHovered ? "true" : "false"}
         style={{
+          "--fade-ms": "200ms",
           isolation: "isolate",
-        }}
+        } as React.CSSProperties}
       >
         Pelajari
       </div>
@@ -207,12 +290,18 @@ function ProductCard({
  */
 function MobileProductCard({
   product,
+  outgoing,
+  copy,
   active,
   onSelect,
+  swap,
 }: {
   product: Product;
+  outgoing: Product | null;
+  copy: Product;
   active: boolean;
   onSelect: () => void;
+  swap: ReturnType<typeof swapStyles>;
 }) {
   return (
     <button
@@ -220,11 +309,8 @@ function MobileProductCard({
       className="relative shrink-0 snap-center overflow-clip rounded-3xl bg-white text-left transition-[height] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
       style={{ width: 280, height: active ? 360 : 328 }}
     >
-      {/* Background scene + subject cutout (both full-bleed, centered). */}
-      <div className="absolute inset-0">
-        <img loading="lazy" decoding="async" src={product.imageBg} alt="" className="absolute inset-0 size-full object-cover" />
-        <img loading="lazy" decoding="async" src={product.image} alt="" className="absolute inset-0 size-full object-cover" />
-      </div>
+      <PhotoLayer product={product} style={swap.incoming} />
+      {outgoing && <PhotoLayer product={outgoing} style={swap.outgoing} />}
 
       <div
         aria-hidden
@@ -245,28 +331,50 @@ function MobileProductCard({
           isolation: "isolate",
         }}
       >
+        <div className="w-full" style={swap.copy}>
         <p className="w-full text-lg font-semibold leading-[26px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
-          {product.title}
+          {copy.title}
         </p>
         <div
           className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
           style={{ gridTemplateRows: active ? "1fr" : "0fr", opacity: active ? 1 : 0 }}
         >
           <div className="overflow-hidden">
-            <p className="w-full pt-1 text-sm leading-5 text-white/80">{product.subtitle}</p>
+            <p className="w-full pt-1 text-sm leading-5 text-white/80">{copy.subtitle}</p>
             <div className="flex items-center gap-0.5 pt-6 text-sm font-semibold text-blue-100">
               Pelajari
               <img loading="lazy" decoding="async" src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5" />
             </div>
           </div>
         </div>
+        </div>
       </div>
     </button>
   );
 }
 
-export default function ProductSection() {
-  const [activeCategory, setActiveCategory] = useState("Kartu Kredit");
+/**
+ * `categories` and `defaultKey` come from Supabase via `getProductCategories()`
+ * on the server; the bundled defaults keep the section working if this is ever
+ * rendered without them.
+ */
+export default function ProductSection({
+  categories = PRODUCT_CATEGORIES,
+  defaultKey = "Kartu Kredit",
+}: {
+  categories?: ProductCategory[];
+  defaultKey?: string;
+} = {}) {
+  const [activeCategory, setActiveCategory] = useState(defaultKey);
+  // The photos being swiped away. Present only for the length of a swap; the
+  // incoming set renders from `activeCategory` underneath from the first frame.
+  const [outgoingCategory, setOutgoingCategory] = useState<string | null>(null);
+  // The copy lags to the trough of its own dip, so the words change while
+  // they're invisible rather than mid-slide.
+  const [copyCategory, setCopyCategory] = useState(defaultKey);
+  const [swapDir, setSwapDir] = useState(1);
+  // Flips every swap so the animations get a fresh name and replay.
+  const [swapAlt, setSwapAlt] = useState(false);
   const [hoverCategory, setHoverCategory] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [entered, setEntered] = useState(false);
@@ -285,9 +393,13 @@ export default function ProductSection() {
   const skipCenterRef = useRef(false);
   activeIndexRef.current = activeIndex;
 
-  const category =
-    PRODUCT_CATEGORIES.find((c) => c.key === activeCategory) ?? PRODUCT_CATEGORIES[0];
+  const categoryOf = (key: string) =>
+    categories.find((c) => c.key === key) ?? categories[0];
+  const category = categoryOf(activeCategory);
   const products = category.products;
+  const outgoingProducts = outgoingCategory ? categoryOf(outgoingCategory).products : null;
+  const copyProducts = categoryOf(copyCategory).products;
+  const swapping = outgoingCategory !== null;
 
   useEffect(() => {
     let raf = 0;
@@ -343,10 +455,34 @@ export default function ProductSection() {
     onAdvance: () => setActiveIndex((i) => (i + 1) % products.length),
   });
 
+  // Starts a swap: the old photos are kept around to slide away over the new
+  // ones. The direction follows the category list order, so moving down the
+  // list swipes left and moving up swipes right.
   const selectCategory = (key: string) => {
+    if (key === activeCategory) return;
+    const from = categories.findIndex((c) => c.key === activeCategory);
+    const to = categories.findIndex((c) => c.key === key);
+    setSwapDir(to > from ? 1 : -1);
+    setOutgoingCategory(activeCategory);
+    setSwapAlt((a) => !a);
     setActiveCategory(key);
     setActiveIndex(0);
   };
+
+  // Retire the outgoing layer once it has cleared, and change the words at the
+  // point where the copy's dip bottoms out.
+  useEffect(() => {
+    if (!swapping) return;
+    const copyTimer = setTimeout(() => setCopyCategory(activeCategory), COPY_SWAP_MS);
+    const endTimer = setTimeout(
+      () => setOutgoingCategory(null),
+      SWAP_MS + SWAP_STAGGER_MS * 2
+    );
+    return () => {
+      clearTimeout(copyTimer);
+      clearTimeout(endTimer);
+    };
+  }, [swapping, activeCategory]);
 
   // Keep the active card centered in the mobile carousel whenever it changes
   // (via tap or autoplay). A no-op on desktop, where the container is
@@ -445,7 +581,7 @@ export default function ProductSection() {
           }`}
           style={{ transitionDelay: entered ? "120ms" : "0ms" }}
         >
-          {PRODUCT_CATEGORIES.map((cat) => {
+          {categories.map((cat) => {
             const isActive = cat.key === activeCategory;
             return (
               <button
@@ -471,7 +607,7 @@ export default function ProductSection() {
             }`}
             style={{ transitionDelay: entered ? "150ms" : "0ms" }}
           >
-            {PRODUCT_CATEGORIES.map((cat) => {
+            {categories.map((cat) => {
               const isActive = cat.key === activeCategory;
               const dim = !isActive && hoverCategory !== cat.key;
               return (
@@ -503,11 +639,14 @@ export default function ProductSection() {
                 <ProductCard
                   key={i}
                   product={product}
+                  outgoing={outgoingProducts?.[i] ?? null}
+                  copy={copyProducts[i]}
                   active={i === activeIndex}
                   onSelect={() => setActiveIndex(i)}
                   progressRef={i === activeIndex ? progressRef : undefined}
                   entered={entered}
                   enterDelayMs={250 + i * 120}
+                  swap={swapStyles(swapping, swapDir, i * SWAP_STAGGER_MS, swapAlt)}
                 />
               ))}
             </div>
@@ -528,8 +667,11 @@ export default function ProductSection() {
                 <MobileProductCard
                   key={i}
                   product={product}
+                  outgoing={outgoingProducts?.[i] ?? null}
+                  copy={copyProducts[i]}
                   active={i === activeIndex}
                   onSelect={() => setActiveIndex(i)}
+                  swap={swapStyles(swapping, swapDir, i * SWAP_STAGGER_MS, swapAlt)}
                 />
               ))}
             </div>

@@ -56,8 +56,8 @@ function HighlightArticle() {
         className="hero-search absolute inset-x-2 bottom-2 flex flex-col items-start gap-6 overflow-clip rounded-[10px] px-5 pb-6 pt-5"
         style={{
           backgroundColor: "rgba(0,0,0,0.3)",
-          backdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
-          WebkitBackdropFilter: "blur(16px) saturate(1.25) brightness(1.02) contrast(1.02)",
+          backdropFilter: "blur(16px) saturate(1.25)",
+          WebkitBackdropFilter: "blur(16px) saturate(1.25)",
           isolation: "isolate",
         }}
       >
