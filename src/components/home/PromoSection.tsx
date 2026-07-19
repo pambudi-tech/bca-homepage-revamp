@@ -1,9 +1,13 @@
-import { PROMOS, getPromoBadge, getPromoTimestamp, type PromoBadgeKey } from "./promo-data";
+"use client";
+
+import { getPromoBadge, getPromoTimestamp, type Promo, type PromoBadgeKey } from "./promo-data";
 import Confetti from "./Confetti";
+import LayoutSwitcher from "./LayoutSwitcher";
+import { useLayoutVariant } from "@/lib/useLayoutVariant";
 // import PercentGlass from "./PercentGlass"; // temporarily hidden
 
 const RIBBON_STYLE: Record<Exclude<PromoBadgeKey, "default">, { from: string; to: string; shadow: string; text: string }> = {
-  mostLiked: { from: "#00b5f0", to: "#00a5db", shadow: "#01759a", text: "#ffffff" },
+  popular: { from: "#00b5f0", to: "#00a5db", shadow: "#01759a", text: "#ffffff" },
   new: { from: "#fe924d", to: "#fe6706", shadow: "#b24906", text: "#ffffff" },
   almostEnd: { from: "#ffd31c", to: "#ffba00", shadow: "#b28301", text: "#4c3801" },
   upcoming: { from: "#9531a5", to: "#70257c", shadow: "#501b58", text: "#ffffff" },
@@ -13,6 +17,10 @@ const RIBBON_STYLE: Record<Exclude<PromoBadgeKey, "default">, { from: string; to
 // Elevated shadow used on hover (Figma "Shadows/Default", scaled up).
 const CARD_SHADOW =
   "0 1px 2px 0 rgba(204,204,204,0.14), 0 5px 5px 0 rgba(204,204,204,0.12), 0 10px 6px 0 rgba(204,204,204,0.10), 0 18px 20px -8px rgba(0,92,170,0.18)";
+
+/** Layout variants offered by this section's LayoutSwitcher. */
+const PROMO_VARIANTS = ["grid"] as const;
+type PromoVariant = (typeof PROMO_VARIANTS)[number];
 
 function PromoRibbon({ badgeKey, label }: { badgeKey: Exclude<PromoBadgeKey, "default">; label: string }) {
   const style = RIBBON_STYLE[badgeKey];
@@ -40,7 +48,7 @@ function PromoRibbon({ badgeKey, label }: { badgeKey: Exclude<PromoBadgeKey, "de
   );
 }
 
-function PromoCard({ promo, now }: { promo: (typeof PROMOS)[number]; now: Date }) {
+function PromoCard({ promo, now }: { promo: Promo; now: Date }) {
   const badge = getPromoBadge(promo, now);
   const timestamp = getPromoTimestamp(promo, now, badge);
 
@@ -131,14 +139,25 @@ function MorePromoCard() {
   );
 }
 
-export default function PromoSection() {
-  const now = new Date();
+export default function PromoSection({ promos, now }: { promos: Promo[]; now: Date }) {
+  const [variant, setVariant] = useLayoutVariant<PromoVariant>("promo", "grid", PROMO_VARIANTS);
 
   return (
     <section
       id="promo"
       className="relative overflow-clip bg-gradient-to-b from-blue-100 to-blue-200 py-12 xl:py-24"
     >
+      {/* prototype-only: lets the client flip this section's layout live.
+          Only one variant so far — add entries here as alternatives land. */}
+      <LayoutSwitcher
+        label="Layout Promo"
+        value={variant}
+        onChange={setVariant}
+        options={[
+          { value: "grid", name: "Grid Flow", description: "Kartu berjajar rapi dan wrap ke baris berikutnya." },
+        ]}
+      />
+
       {/* clove pattern — left & right, bleeding off the edges */}
       <img loading="lazy" decoding="async"
         src="/assets/promo/bg-clove-product-1.svg"
@@ -174,7 +193,7 @@ export default function PromoSection() {
             of the padded column), wrapping grid on desktop. Tighter 60ms
             stagger: eight cards at the default 90ms would trickle too long. */}
         <div data-reveal-group="60" className="hide-scrollbar -mx-4 mt-8 flex items-start gap-4 overflow-x-auto px-4 [scrollbar-width:none] xl:mx-0 xl:mt-10 xl:flex-wrap xl:content-center xl:gap-6 xl:overflow-visible xl:px-0">
-          {PROMOS.map((promo) => (
+          {promos.map((promo) => (
             <PromoCard key={promo.id} promo={promo} now={now} />
           ))}
           <MorePromoCard />

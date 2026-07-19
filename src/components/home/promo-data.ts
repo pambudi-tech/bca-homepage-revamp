@@ -8,14 +8,27 @@ export type Promo = {
   brand: string;
   cover: string;
   logo: string;
-  /** Days relative to "now" (fractional allowed for sub-day windows). */
-  startOffsetDays: number;
-  endOffsetDays: number;
-  /** From CMS/analytics: redemption frequency or other popularity signal. */
-  isMostLiked?: boolean;
+  /** Absolute period, as stored in Supabase (`start_at` / `end_at`). */
+  startAt: Date;
+  endAt: Date;
+  /**
+   * Redemption count from analytics. A promo counts as popular once this
+   * crosses POPULAR_REDEEM_THRESHOLD — see getPromoBadge.
+   */
+  redeemCount?: number;
 };
 
-export const PROMOS: Promo[] = [
+/**
+ * Bundled fallback. Kept as offsets relative to "now" rather than fixed dates
+ * so the demo keeps showing one of every badge state no matter when it runs —
+ * the Supabase rows use real timestamps instead (see `resolveFallbackPromos`).
+ */
+type PromoSeed = Omit<Promo, "startAt" | "endAt"> & {
+  startOffsetDays: number;
+  endOffsetDays: number;
+};
+
+export const PROMO_SEEDS: PromoSeed[] = [
   {
     id: "cashback-mybca",
     title: "Cashback hingga Rp100 Ribu",
@@ -24,7 +37,7 @@ export const PROMOS: Promo[] = [
     logo: "/assets/promo/card1-logo.png",
     startOffsetDays: -60,
     endOffsetDays: 330,
-    isMostLiked: true,
+    redeemCount: 4_820,
   },
   {
     id: "diskon-ebiga",
@@ -82,7 +95,14 @@ export const PROMOS: Promo[] = [
   },
 ];
 
-export type PromoBadgeKey = "expired" | "upcoming" | "almostEnd" | "mostLiked" | "new" | "default";
+export type PromoBadgeKey = "expired" | "upcoming" | "almostEnd" | "popular" | "new" | "default";
+
+/**
+ * Redemptions needed before a promo is labelled "Populer". A threshold rather
+ * than a hand-set flag so the badge follows real demand and drops off on its
+ * own when a promo stops moving.
+ */
+export const POPULAR_REDEEM_THRESHOLD = 1_000;
 
 export type PromoBadge = {
   key: PromoBadgeKey;
@@ -92,34 +112,41 @@ export type PromoBadge = {
 const MS_HOUR = 3_600_000;
 const MS_DAY = 24 * MS_HOUR;
 
-function resolvePeriod(promo: Promo, now: Date) {
-  const start = new Date(now.getTime() + promo.startOffsetDays * MS_DAY);
-  const end = new Date(now.getTime() + promo.endOffsetDays * MS_DAY);
-  return { start, end };
+/** Turn the bundled seeds into real periods anchored on `now`. */
+export function resolveFallbackPromos(now: Date): Promo[] {
+  return PROMO_SEEDS.map(({ startOffsetDays, endOffsetDays, ...promo }) => ({
+    ...promo,
+    startAt: new Date(now.getTime() + startOffsetDays * MS_DAY),
+    endAt: new Date(now.getTime() + endOffsetDays * MS_DAY),
+  }));
+}
+
+function resolvePeriod(promo: Promo) {
+  return { start: promo.startAt, end: promo.endAt };
 }
 
 /**
  * Badge priority (highest first): a promo that's already over always shows
  * "Kadaluarsa" regardless of how popular it is; an about-to-start or
- * about-to-end promo takes precedence over the "most liked" flag so users
- * see the more time-sensitive signal first.
+ * about-to-end promo takes precedence over the popularity badge so users see
+ * the more time-sensitive signal first.
  */
 export function getPromoBadge(promo: Promo, now: Date): PromoBadge {
-  const { start, end } = resolvePeriod(promo, now);
+  const { start, end } = resolvePeriod(promo);
   const nowMs = now.getTime();
 
   if (nowMs > end.getTime()) return { key: "expired", label: "Kadaluarsa" };
 
   const toStart = start.getTime() - nowMs;
-  if (toStart > 0 && toStart <= 2 * MS_DAY) return { key: "upcoming", label: "Segera Hadir" };
+  if (toStart > 0 && toStart <= 3 * MS_DAY) return { key: "upcoming", label: "Segera Hadir" };
 
   const toEnd = end.getTime() - nowMs;
   if (toEnd > 0 && toEnd < MS_DAY) return { key: "almostEnd", label: "Segera Berakhir!" };
 
-  if (promo.isMostLiked) return { key: "mostLiked", label: "Paling Disukai" };
+  if ((promo.redeemCount ?? 0) >= POPULAR_REDEEM_THRESHOLD) return { key: "popular", label: "Populer" };
 
   const sinceStart = nowMs - start.getTime();
-  if (sinceStart >= 0 && sinceStart <= 2 * MS_DAY) return { key: "new", label: "Promo Baru" };
+  if (sinceStart >= 0 && sinceStart <= 3 * MS_DAY) return { key: "new", label: "Promo Baru" };
 
   return { key: "default", label: null };
 }
@@ -133,7 +160,7 @@ function formatDateID(date: Date) {
 }
 
 export function getPromoTimestamp(promo: Promo, now: Date, badge: PromoBadge) {
-  const { start, end } = resolvePeriod(promo, now);
+  const { start, end } = resolvePeriod(promo);
 
   if (badge.key === "expired") return "Promo Berakhir";
 

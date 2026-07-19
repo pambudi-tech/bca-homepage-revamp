@@ -25,8 +25,12 @@ type Options = {
   durationMs: number;
   /** Circumference (2πr) of the progress ring, for strokeDashoffset. */
   circumference: number;
-  /** Ref to the active slide's progress <circle>. */
-  progressRef: RefObject<SVGCircleElement | null>;
+  /**
+   * Ref to the active slide's progress <circle>. Accepts an array when the same
+   * cycle drives more than one ring (e.g. the desktop and mobile cards, only one
+   * of which is visible at a given breakpoint).
+   */
+  progressRef: RefObject<SVGCircleElement | null> | RefObject<SVGCircleElement | null>[];
   /** Ref that freezes the timer while true (hover / manual pause). */
   pausedRef: RefObject<boolean>;
   /** Called when a cycle completes — typically advances the slide. */
@@ -50,11 +54,19 @@ export function useAutoplayProgress({
   const onAdvanceRef = useRef(onAdvance);
   onAdvanceRef.current = onAdvance;
 
+  const write = (offset: number) => {
+    const refs = Array.isArray(progressRef) ? progressRef : [progressRef];
+    for (const ref of refs) {
+      if (ref.current) ref.current.style.strokeDashoffset = String(offset);
+    }
+  };
+  // Kept in a ref so the loop below doesn't re-subscribe on every render.
+  const writeRef = useRef(write);
+  writeRef.current = write;
+
   useEffect(() => {
     elapsedRef.current = 0;
-    if (progressRef.current) {
-      progressRef.current.style.strokeDashoffset = String(circumference);
-    }
+    writeRef.current(circumference);
     if (!live) return;
 
     let raf = 0;
@@ -69,9 +81,7 @@ export function useAutoplayProgress({
       if (!pausedRef.current) {
         elapsedRef.current += dt;
         const pct = Math.min(1, elapsedRef.current / durationMs);
-        if (progressRef.current) {
-          progressRef.current.style.strokeDashoffset = String(circumference * (1 - pct));
-        }
+        writeRef.current(circumference * (1 - pct));
         if (pct >= 1) {
           // Reset here as well as on re-entry: with a single slide `onAdvance`
           // leaves activeIndex alone, so this effect never re-runs to do it.

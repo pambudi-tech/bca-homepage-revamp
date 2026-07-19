@@ -32,7 +32,7 @@ export default function MyBcaSection() {
               <p className="w-full text-[28px] font-semibold leading-10 tracking-[-0.64px]">
                 Semua Kebutuhan Perbankan dalam Satu Genggaman
               </p>
-              <p className="w-full text-lg leading-[26px] opacity-80">
+              <p className="w-full text-base leading-6 opacity-80">
                 Dari cek saldo sampai bayar tagihan, semua selesai dalam hitungan detik lewat myBCA.
               </p>
             </div>
@@ -71,11 +71,12 @@ export default function MyBcaSection() {
         <div className="relative mx-auto w-full max-w-[440px]">
           {/* Stage keeps the Figma 392x412 ratio so the overlap below scales with it. */}
           <div className="relative aspect-[392/412]">
+            {/* Bottom edge dissolves into the blue backdrop instead of cutting off. */}
             <img loading="lazy" decoding="async"
               data-reveal
               src="/assets/mybca/phone-woman-mobile.webp"
               alt="Aplikasi myBCA di genggaman"
-              className="absolute left-[51.02%] top-0 w-[91.84%] -translate-x-1/2"
+              className="absolute left-[51.02%] top-0 w-[91.84%] -translate-x-1/2 mask-b-from-60% mask-b-to-96%"
             />
           </div>
 

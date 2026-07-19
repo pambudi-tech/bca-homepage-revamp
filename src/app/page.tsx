@@ -7,16 +7,24 @@ import PromoSection from "@/components/home/PromoSection";
 import NewsSection from "@/components/home/NewsSection";
 import Footer from "@/components/home/Footer";
 import BackToTop from "@/components/home/BackToTop";
+import CookieBanner from "@/components/home/CookieBanner";
 import ScrollReveal from "@/components/ScrollReveal";
 import { getKursHariIni } from "@/lib/kurs";
 import { getBanners } from "@/lib/banners";
 import { getProductCategories } from "@/lib/products";
+import { getPromos } from "@/lib/promos";
+import { getNewsCategories } from "@/lib/news";
 
 export default async function Home() {
-  const [kurs, banners, produk] = await Promise.all([
+  // One `now` for the whole render so promo badges and their countdown text
+  // can't disagree by a few milliseconds.
+  const now = new Date();
+  const [kurs, banners, produk, promos, news] = await Promise.all([
     getKursHariIni(),
     getBanners(),
     getProductCategories(),
+    getPromos(now),
+    getNewsCategories(),
   ]);
 
   return (
@@ -35,8 +43,8 @@ export default async function Home() {
         <ScrollCue />
         <ProductSection categories={produk.categories} defaultKey={produk.defaultKey} />
         <MyBcaSection />
-        <PromoSection />
-        <NewsSection />
+        <PromoSection promos={promos} now={now} />
+        <NewsSection categories={news} />
       </div>
 
       {/* 2. FOOTER: desktop pakai sticky reveal (z-0 di layer belakang);
@@ -46,6 +54,7 @@ export default async function Home() {
       </div>
 
       <BackToTop />
+      <CookieBanner />
       {/* Orchestrates every [data-reveal] entrance below the hero — one
           observer pair for the whole page, sections stay server components. */}
       <ScrollReveal />

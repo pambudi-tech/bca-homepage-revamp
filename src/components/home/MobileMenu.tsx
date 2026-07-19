@@ -186,18 +186,22 @@ function MainView({
         >
           <img src="/assets/cycle1/outline-search.svg" alt="" className="size-6" />
         </button>
-        <button
-          onClick={onLeaf}
+        <a
+          href="https://www.bca.co.id/id/tentang-bca"
+          target="_blank"
+          rel="noopener noreferrer"
           className="flex h-10 flex-1 items-center justify-center rounded-full border border-[rgba(186,213,255,0.25)] px-5 text-sm font-semibold text-white transition-colors active:bg-white/10"
         >
           Tentang BCA
-        </button>
-        <button
-          onClick={onLeaf}
+        </a>
+        <a
+          href="https://karir.bca.co.id/"
+          target="_blank"
+          rel="noopener noreferrer"
           className="flex h-10 flex-1 items-center justify-center rounded-full border border-[rgba(186,213,255,0.25)] px-5 text-sm font-semibold text-white transition-colors active:bg-white/10"
         >
           Karir
-        </button>
+        </a>
       </div>
 
       <nav className="mt-6 flex flex-col">

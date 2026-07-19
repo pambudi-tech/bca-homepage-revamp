@@ -20,6 +20,16 @@ Yang dibuat:
 | `product_categories` | Simpanan, Kartu Kredit, Pinjaman, Investasi, Asuransi       |
 | `products`           | 3 kartu per kategori (judul, subjudul, gambar)              |
 
+Yang dibuat:
+
+| Tabel    | Isi                                                          |
+| -------- | ------------------------------------------------------------ |
+| `brands` | Pemilik promo — nama + logo. Satu brand bisa punya banyak promo |
+| `promos` | Kartu promo — judul, cover, periode, `brand_id`               |
+
+Logo ada di `brands`, bukan di `promos`: ganti logo sekali, semua promo brand
+itu ikut. `cover` tetap per promo.
+
 Kolom yang perlu diketahui:
 
 - `sort_order` — urutan tampil. Kategori mengatur urutan daftar di kiri (desktop)
@@ -77,3 +87,82 @@ deploy.
 > Catatan: kartu memakai `<img>` biasa, bukan `next/image`, jadi tidak ada
 > `remotePatterns` yang perlu didaftarkan di `next.config.ts`. Kalau nanti
 > pindah ke `next/image`, domain Supabase harus ditambahkan di sana.
+
+---
+
+# Supabase — Promo
+
+Section Promo memakai pola yang sama: dibaca dari tabel `promos` (dengan brand
+di-embed dari tabel `brands`) lewat REST API
+Supabase di server component, dan jatuh balik ke `PROMO_SEEDS` di
+`src/components/home/promo-data.ts` kalau Supabase mati atau env belum diisi.
+
+## Langkah 1 — buat tabel dan isi datanya
+
+1. Dashboard Supabase → **SQL Editor** → **New query**.
+2. Tempel seluruh isi [`promo-section.sql`](./promo-section.sql), lalu **Run**.
+
+Yang dibuat:
+
+| Tabel    | Isi                                                          |
+| -------- | ------------------------------------------------------------ |
+| `brands` | Pemilik promo — nama + logo. Satu brand bisa punya banyak promo |
+| `promos` | Kartu promo — judul, cover, periode, `brand_id`               |
+
+Logo ada di `brands`, bukan di `promos`: ganti logo sekali, semua promo brand
+itu ikut. `cover` tetap per promo.
+
+Kolom yang perlu diketahui:
+
+- `start_at` / `end_at` — periode promo (`timestamptz`). **Badge di kartu
+  dihitung dari dua kolom ini**, bukan diisi manual:
+
+  | Kondisi                          | Badge             |
+  | -------------------------------- | ----------------- |
+  | `end_at` sudah lewat             | Kadaluarsa        |
+  | `start_at` < 3 hari lagi         | Segera Hadir      |
+  | `end_at` < 24 jam lagi           | Segera Berakhir!  |
+  | `redeem_count` ≥ 1000            | Populer           |
+  | `start_at` baru lewat ≤ 3 hari   | Promo Baru        |
+  | selain itu                       | tanpa badge       |
+
+  Urutan di tabel itu juga urutan prioritasnya — promo yang sudah berakhir
+  selalu "Kadaluarsa" walaupun `redeem_count`-nya tinggi.
+- `redeem_count` — jumlah redeem dari analytics. Ambangnya diatur lewat
+  `POPULAR_REDEEM_THRESHOLD` di `src/components/home/promo-data.ts` (default
+  1000), bukan di database — jadi menaikkan/menurunkan standar "Populer" cukup
+  ubah satu angka, tanpa menyentuh data.
+- `sort_order` — urutan kartu di carousel.
+- `is_active` — set `false` untuk menyembunyikan tanpa menghapus.
+
+Seed memakai tanggal relatif terhadap saat query dijalankan, supaya semua jenis
+badge langsung kelihatan. Sesudah itu edit periodenya lewat **Table Editor**.
+
+RLS menyala dengan policy **read-only untuk publik**, sama seperti tabel produk.
+
+## Langkah 2 — cek halaman
+
+`npm run dev`, buka homepage. Untuk memastikan datanya dari database, ubah satu
+judul di **Table Editor → promos**, lalu restart dev server (data di-cache 5
+menit lewat `revalidate: 300` di `src/lib/promos.ts`).
+
+## Langkah 3 — pindahkan gambar ke Storage
+
+1. Dashboard → **Storage** → **New bucket**, name `promo-images`,
+   **Public bucket: ON**.
+2. Unggah semua file dari `public/assets/promo/` yang dipakai kartu:
+   `card1-cover.webp` … `card7-cover.webp` dan `card1-logo.png` … `card7-logo.png`.
+3. Jalankan **dua** blok `UPDATE` di bagian bawah `promo-section.sql` (masih
+   dikomentari) setelah `<PROJECT_REF>` diganti — satu untuk `promos.cover`,
+   satu untuk `brands.logo`.
+
+### Menambah promo baru
+
+1. Kalau brand-nya belum ada: **Table Editor → brands**, tambah baris dengan
+   `id` slug (mis. `starbucks`), `name`, dan `logo`.
+2. **Table Editor → promos**, tambah baris dengan `id` slug unik (mis.
+   `diskon-starbucks`), `brand_id` menunjuk ke brand tadi, `cover`,
+   `start_at`/`end_at`, dan `sort_order` sesuai posisi yang diinginkan.
+
+Tidak perlu deploy. Brand yang masih dipakai promo tidak bisa dihapus
+(`on delete restrict`) — hapus promonya dulu.

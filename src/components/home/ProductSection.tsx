@@ -1,9 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { PRODUCT_CATEGORIES, type Product, type ProductCategory } from "./product-data";
+import LayoutSwitcher from "./LayoutSwitcher";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useIsLive } from "@/lib/useIsLive";
+import { useLayoutVariant } from "@/lib/useLayoutVariant";
+
+/** Layout variants offered by this section's LayoutSwitcher. */
+const PRODUCT_VARIANTS = ["accordion"] as const;
+type ProductVariant = (typeof PRODUCT_VARIANTS)[number];
 
 const AUTO_ADVANCE_MS = 6000;
 const RING_RADIUS = 13;
@@ -295,6 +301,7 @@ function MobileProductCard({
   active,
   onSelect,
   swap,
+  progressRef,
 }: {
   product: Product;
   outgoing: Product | null;
@@ -302,6 +309,7 @@ function MobileProductCard({
   active: boolean;
   onSelect: () => void;
   swap: ReturnType<typeof swapStyles>;
+  progressRef: React.Ref<SVGCircleElement> | undefined;
 }) {
   return (
     <button
@@ -309,8 +317,40 @@ function MobileProductCard({
       className="relative shrink-0 snap-center overflow-clip rounded-3xl bg-white text-left transition-[height] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
       style={{ width: 280, height: active ? 360 : 328 }}
     >
-      <PhotoLayer product={product} style={swap.incoming} />
-      {outgoing && <PhotoLayer product={outgoing} style={swap.outgoing} />}
+      {/* Same idea as the desktop card: the photo frame is wider than the card
+          and anchored to its right edge, so the card acts as a window and the
+          88px that spill past the left edge get clipped — the photo reads as
+          shifted left rather than squeezed. */}
+      <div className="absolute inset-y-0 right-0 w-[368px]">
+        <PhotoLayer product={product} style={swap.incoming} />
+        {outgoing && <PhotoLayer product={outgoing} style={swap.outgoing} />}
+      </div>
+
+      {/* Autoplay ring — top-left on mobile so it clears the bottom copy panel. */}
+      <div
+        className={`absolute left-4 top-4 z-20 transition-opacity duration-300 ${
+          active ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <svg viewBox="0 0 32 32" className="size-8 -rotate-90">
+          {/* Backing disc: card photos are often light at the top, where a plain
+              white ring would otherwise disappear. */}
+          <circle cx="16" cy="16" r="16" fill="rgba(0,0,0,0.28)" />
+          <circle cx="16" cy="16" r={RING_RADIUS} fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" />
+          <circle
+            ref={progressRef}
+            cx="16"
+            cy="16"
+            r={RING_RADIUS}
+            fill="none"
+            stroke="white"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeDasharray={RING_CIRCUMFERENCE}
+            strokeDashoffset={RING_CIRCUMFERENCE}
+          />
+        </svg>
+      </div>
 
       <div
         aria-hidden
@@ -365,6 +405,7 @@ export default function ProductSection({
   categories?: ProductCategory[];
   defaultKey?: string;
 } = {}) {
+  const [variant, setVariant] = useLayoutVariant<ProductVariant>("product", "accordion", PRODUCT_VARIANTS);
   const [activeCategory, setActiveCategory] = useState(defaultKey);
   // The photos being swiped away. Present only for the length of a swap; the
   // incoming set renders from `activeCategory` underneath from the first frame.
@@ -380,6 +421,10 @@ export default function ProductSection({
   const [entered, setEntered] = useState(false);
   const pausedRef = useRef(false);
   const progressRef = useRef<SVGCircleElement>(null);
+  // Separate node for the mobile carousel's ring — both are driven by the same
+  // autoplay cycle, and only one of the two is visible per breakpoint.
+  const mobileProgressRef = useRef<SVGCircleElement>(null);
+  const progressRefs = useMemo(() => [progressRef, mobileProgressRef], []);
   const sectionRef = useRef<HTMLElement>(null);
   // Parks the autoplay timer while the section is off-screen or the tab is hidden.
   const live = useIsLive(sectionRef);
@@ -449,7 +494,9 @@ export default function ProductSection({
     count: products.length,
     durationMs: AUTO_ADVANCE_MS,
     circumference: RING_CIRCUMFERENCE,
-    progressRef,
+    // Stable array identity: it feeds the hook's effect deps, so a fresh literal
+    // each render would restart the timer on every render.
+    progressRef: progressRefs,
     pausedRef,
     live,
     onAdvance: () => setActiveIndex((i) => (i + 1) % products.length),
@@ -542,6 +589,21 @@ export default function ProductSection({
       ref={sectionRef}
       className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-20 pt-0 xl:pb-36 xl:pt-8"
     >
+      {/* prototype-only: lets the client flip this section's layout live.
+          Only one variant so far — add entries here as alternatives land. */}
+      <LayoutSwitcher
+        label="Layout Produk"
+        value={variant}
+        onChange={setVariant}
+        options={[
+          {
+            value: "accordion",
+            name: "Accordion Cards",
+            description: "Kartu aktif melebar, dengan daftar kategori di kolom kiri.",
+          },
+        ]}
+      />
+
       <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-visible">
         <img loading="lazy" decoding="async"
           ref={cloveARef}
@@ -672,6 +734,7 @@ export default function ProductSection({
                   active={i === activeIndex}
                   onSelect={() => setActiveIndex(i)}
                   swap={swapStyles(swapping, swapDir, i * SWAP_STAGGER_MS, swapAlt)}
+                  progressRef={i === activeIndex ? mobileProgressRef : undefined}
                 />
               ))}
             </div>

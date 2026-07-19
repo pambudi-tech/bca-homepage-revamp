@@ -51,10 +51,13 @@ function LinkLabel({ label, hover }: { label: string; hover: boolean }) {
   );
 }
 
-function NavbarLink({ label }: { label: string }) {
+function NavbarLink({ label, href }: { label: string; href: string }) {
   const [hover, setHover] = useState(false);
   return (
-    <button
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       className={`flex h-10 items-center justify-center gap-0.5 rounded-full border px-4 backdrop-blur-[4px] transition-colors duration-300 ${hover
@@ -71,7 +74,7 @@ function NavbarLink({ label }: { label: string }) {
           <img src="/assets/navbar/arrow-right.svg" alt="" className="size-5" />
         </span>
       </span>
-    </button>
+    </a>
   );
 }
 
@@ -252,8 +255,8 @@ export default function Navbar() {
 
                 <div className="flex items-center gap-3">
                   <SearchButton />
-                  <NavbarLink label="Tentang BCA" />
-                  <NavbarLink label="Karir" />
+                  <NavbarLink label="Tentang BCA" href="https://www.bca.co.id/id/tentang-bca" />
+                  <NavbarLink label="Karir" href="https://karir.bca.co.id/" />
 
                   <div ref={langRef} className="relative">
                     <button

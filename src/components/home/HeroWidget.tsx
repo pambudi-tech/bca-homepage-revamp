@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type ElementType } from "react";
 import type { KursEntry } from "@/lib/kurs";
 import { useLenis } from "@/components/SmoothScroll";
 import { useIsLive } from "@/lib/useIsLive";
@@ -115,6 +115,7 @@ type QuickAction = {
   icon: string;
   scrollTo?: string;
   confetti?: boolean;
+  href?: string;
 };
 
 const QUICK_ACTIONS: QuickAction[] = [
@@ -126,9 +127,19 @@ const QUICK_ACTIONS: QuickAction[] = [
     scrollTo: "#promo",
     confetti: true,
   },
-  { title: "Webform BCA", subtitle: "Pengajuan produk", icon: "/assets/quick-action/document.svg" },
-  { title: "Lokasi BCA", subtitle: "Cabang & ATM BCA", icon: "/assets/quick-action/location.svg" },
   { title: "HaloBCA", subtitle: "1500888, Chat, Email", icon: "/assets/quick-action/message-question.svg" },
+  {
+    title: "Lokasi BCA",
+    subtitle: "Cabang & ATM BCA",
+    icon: "/assets/quick-action/location.svg",
+    href: "https://www.bca.co.id/id/lokasi-bca",
+  },
+  {
+    title: "Webform BCA",
+    subtitle: "Pengajuan produk",
+    icon: "/assets/quick-action/document.svg",
+    href: "https://www.bca.co.id/id/Forms/webform-bca",
+  },
 ];
 
 export default function HeroWidget({
@@ -362,9 +373,14 @@ export default function HeroWidget({
             {QUICK_ACTIONS.map((action, index) => {
               const isLogin = index === 0;
               const collapsed = loginOpen && !isLogin;
+              // Real links get an <a> so middle-click / open-in-new-tab work.
+              const Tag: ElementType = action.href ? "a" : "button";
               return (
-                <button
+                <Tag
                   key={action.title}
+                  {...(action.href
+                    ? { href: action.href, target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
                   onClick={() => {
                     if (isLogin) {
                       setLoginOpen((v) => !v);
@@ -417,7 +433,7 @@ export default function HeroWidget({
                       </p>
                     </div>
                   </div>
-                </button>
+                </Tag>
               );
             })}
 
@@ -430,13 +446,23 @@ export default function HeroWidget({
                 clipPath: loginOpen ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)",
               }}
             >
-              <button className="flex h-16 flex-1 shrink-0 items-center justify-center gap-4 rounded-xl border border-neutral-300 bg-white px-4 transition-colors hover:bg-neutral-200">
+              <a
+                href="https://mybca.bca.co.id/auth/login"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-16 flex-1 shrink-0 items-center justify-center gap-4 rounded-xl border border-neutral-300 bg-white px-4 transition-colors hover:bg-neutral-200"
+              >
                 <img src="/assets/quick-action/mybca-logo.svg" alt="" className="size-12 shrink-0" />
                 <span className="text-md font-semibold whitespace-nowrap text-neutral-800">
                   Login ke myBCA
                 </span>
-              </button>
-              <button className="flex h-16 flex-1 shrink-0 items-center justify-center gap-4 rounded-xl border border-neutral-300 bg-white px-4 transition-colors hover:bg-neutral-200">
+              </a>
+              <a
+                href="https://ibank.klikbca.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-16 flex-1 shrink-0 items-center justify-center gap-4 rounded-xl border border-neutral-300 bg-white px-4 transition-colors hover:bg-neutral-200"
+              >
                 <img
                   src="/assets/quick-action/klikbca-logo.webp"
                   alt=""
@@ -445,7 +471,7 @@ export default function HeroWidget({
                 <span className="text-md font-semibold whitespace-nowrap text-neutral-800">
                   Login ke KlikBCA
                 </span>
-              </button>
+              </a>
               <button
                 onClick={() => setLoginOpen(false)}
                 aria-label="Tutup"

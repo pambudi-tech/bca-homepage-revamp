@@ -1,6 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 import type { KursEntry } from "@/lib/kurs";
 import { useLenis } from "@/components/SmoothScroll";
 import { useIsLive } from "@/lib/useIsLive";
@@ -103,21 +111,28 @@ function SearchPlaceholder({ visible, live }: { visible: boolean; live: boolean 
  * Quick actions
  * ------------------------------------------------------------------ */
 
-type QuickAction = { title: string; subtitle: string; icon: string; scrollTo?: string };
+type QuickAction = {
+  title: string;
+  subtitle: string;
+  icon: string;
+  scrollTo?: string;
+  href?: string;
+};
 
-// The rail bleeds 8px past the widget on both sides and pads px-5, so the
-// opened login card fills the rail minus 40px. Measured rather than expressed
-// as calc(): a `calc(min(...))` end value doesn't interpolate, so the width
-// transition would snap instead of animate.
-const RAIL_PADDING_X = 40;
+// The rail pads px-6, so the opened login card has to give up 24px on each
+// side to sit evenly within it. Measured rather than expressed as calc(): a
+// `calc(min(...))` end value doesn't interpolate, so the width transition would
+// snap instead of animate.
+const RAIL_PADDING_X = 48;
 const LOGIN_CARD_WIDTH_COLLAPSED = 160;
-// Collapsed rail 104px; opened login card is 32 (padding) + 40 (header) +
-// 12 (gap) + 100 (login tiles) = 184px, i.e. 80px taller.
+// Collapsed rail 104px; opened login card is 28 (padding) + 40 (header) +
+// 12 (gap) + 100 (login tiles) = 180px. That's only the starting guess — the
+// tile labels wrap on narrow screens, so the real open height is measured and
+// the rail and the kurs bar below it follow it.
 const RAIL_H = 104;
-const RAIL_H_OPEN = 184;
+const RAIL_H_OPEN = 180;
 // Kurs top padding clears the rail and leaves the same 16px gap in both states.
 const KURS_PT = 92;
-const KURS_PT_OPEN = KURS_PT + (RAIL_H_OPEN - RAIL_H);
 // Focusing the search scrolls the widget this far below the viewport top —
 // so the dropdown gets the rest of the screen to open into.
 const SEARCH_TOP_GAP = 24;
@@ -135,9 +150,52 @@ const QUICK_ACTIONS: QuickAction[] = [
     subtitle: "1500888 · Chat · Email",
     icon: "/assets/quick-action/message-question.svg",
   },
-  { title: "Lokasi BCA", subtitle: "Cabang & ATM BCA", icon: "/assets/quick-action/location.svg" },
-  { title: "Webform BCA", subtitle: "Pengajuan produk BCA", icon: "/assets/quick-action/document.svg" },
+  {
+    title: "Lokasi BCA",
+    subtitle: "Cabang & ATM BCA",
+    icon: "/assets/quick-action/location.svg",
+    href: "https://www.bca.co.id/id/lokasi-bca",
+  },
+  {
+    title: "Webform BCA",
+    subtitle: "Pengajuan produk BCA",
+    icon: "/assets/quick-action/document.svg",
+    href: "https://www.bca.co.id/id/Forms/webform-bca",
+  },
 ];
+
+/* A quick-action card. Renders as <a> when the action points at a real URL so
+   long-press / open-in-new-tab work; otherwise it's a plain button. */
+function QuickActionCard({
+  action,
+  onClick,
+  children,
+}: {
+  action: QuickAction;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  const className =
+    "flex h-[104px] w-40 shrink-0 flex-col items-start justify-center gap-2 rounded-xl border border-neutral-300 bg-white p-[14px] text-left transition-[background-color,transform] duration-200 active:scale-95 active:bg-cyan-100";
+  if (action.href) {
+    return (
+      <a
+        href={action.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={onClick}
+        className={className}
+      >
+        {children}
+      </a>
+    );
+  }
+  return (
+    <button onClick={onClick} className={className}>
+      {children}
+    </button>
+  );
+}
 
 /* ------------------------------------------------------------------ *
  * Kurs card (mobile) — mirrors the Figma `usd` node. The title (flag +
@@ -190,6 +248,10 @@ export default function MobileHeroWidget({
   // are laid out at the new width immediately, so animating the box toward it
   // would clip them for the duration of the transition.
   const [animateLoginWidth, setAnimateLoginWidth] = useState(true);
+  // The opened panel's real height: the tile labels wrap once the card gets
+  // narrow, and the rail and kurs bar have to grow with them.
+  const [loginPanelH, setLoginPanelH] = useState(RAIL_H_OPEN);
+  const loginPanelRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
   const railWidthRef = useRef(0);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -197,6 +259,7 @@ export default function MobileHeroWidget({
   // `display:none` wrapper, so this stays false and nothing here ticks.
   const live = useIsLive(rootRef);
   const searchBarRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   // Distance from the widget root to the bottom of the search bar. The dropdown
   // is rendered at the root (the search panel is `overflow-clip`) so it can
   // spill over the quick actions and kurs bar.
@@ -242,6 +305,21 @@ export default function MobileHeroWidget({
     }
   };
 
+  // Search mode outlives the input's focus: dismissing the iOS keyboard with
+  // "Done" blurs the field, and closing the panel there would yank the results
+  // away mid-read. Only a tap outside the bar and the dropdown (or Escape)
+  // leaves search mode.
+  useEffect(() => {
+    if (!searchFocused) return;
+    const onPointerDown = (e: PointerEvent) => {
+      const t = e.target as Node;
+      if (searchBarRef.current?.contains(t) || dropdownRef.current?.contains(t)) return;
+      setSearchFocused(false);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [searchFocused]);
+
   const selectQuery = (term: string) => setSearchValue(term);
   const removeRecent = (term: string) => setRecent((r) => removeRecentSearch(r, term));
   const clearRecent = () => setRecent(clearRecentSearches());
@@ -273,6 +351,17 @@ export default function MobileHeroWidget({
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+
+  // Width is the only thing that changes how the tile labels wrap, so the
+  // panel's natural height is re-measured whenever the card is retargeted.
+  // Layout effect, so the rail and kurs bar are sized in the same frame the
+  // panel reflows — measuring later would show one frame of the old height.
+  useLayoutEffect(() => {
+    const el = loginPanelRef.current;
+    if (!el) return;
+    const h = el.offsetHeight;
+    if (h > 0) setLoginPanelH(h);
+  }, [loginCardWidth]);
 
   // Auto-advance the currency every 5s; manual navigation resets the timer.
   // Gated on `live`: above xl this whole widget sits in a `display:none`
@@ -358,9 +447,11 @@ export default function MobileHeroWidget({
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               onFocus={focusSearch}
-              onBlur={() => setSearchFocused(false)}
               onKeyDown={(e) => {
-                if (e.key === "Escape") e.currentTarget.blur();
+                if (e.key === "Escape") {
+                  setSearchFocused(false);
+                  e.currentTarget.blur();
+                }
                 if (e.key === "Enter") {
                   submitSearch(searchValue);
                   e.currentTarget.blur();
@@ -385,7 +476,7 @@ export default function MobileHeroWidget({
       <div className="relative overflow-clip rounded-b-3xl bg-gradient-to-b from-cyan-500 to-blue-500 shadow-[inset_0px_-4px_8px_0px_rgba(0,51,94,0.25)]">
         <div
           className="flex items-center gap-4 px-5 pb-5 transition-[padding-top] duration-300 ease-in-out"
-          style={{ paddingTop: loginOpen ? KURS_PT_OPEN : KURS_PT }}
+          style={{ paddingTop: loginOpen ? KURS_PT + (loginPanelH - RAIL_H) : KURS_PT }}
         >
           <button
             onClick={() => stepKurs("prev")}
@@ -414,7 +505,7 @@ export default function MobileHeroWidget({
       <div
         ref={railRef}
         className="hide-scrollbar absolute inset-x-[-8px] top-[112px] z-10 overflow-x-auto overflow-y-clip transition-[height] duration-300 ease-in-out [scrollbar-width:none]"
-        style={{ height: loginOpen ? RAIL_H_OPEN : RAIL_H }}
+        style={{ height: loginOpen ? loginPanelH : RAIL_H }}
       >
         <div className="flex h-full w-max items-start gap-3 px-6">
           {QUICK_ACTIONS.map((action, index) =>
@@ -454,9 +545,13 @@ export default function MobileHeroWidget({
                 </button>
 
                 <div
-                  className={`absolute inset-y-0 left-0 flex flex-col gap-3 p-[14px] transition-opacity duration-200 ${loginOpen ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
+                  ref={loginPanelRef}
+                  /* `top-0` rather than `inset-y-0`: the panel sizes to its own
+                     content so its height can be measured, and the rail follows
+                     that instead of the other way round. */
+                  className={`absolute left-0 top-0 flex flex-col gap-3 p-[14px] transition-opacity duration-200 ${loginOpen ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
                     }`}
-                  style={{ width: loginCardWidth, height: RAIL_H_OPEN }}
+                  style={{ width: loginCardWidth }}
                 >
                   {/* The whole header collapses the card — tapping the title
                       again is the same gesture as tapping the X. */}
@@ -477,38 +572,52 @@ export default function MobileHeroWidget({
                       className="size-5 shrink-0"
                     />
                   </button>
-                  <div className="flex flex-1 items-stretch gap-[9px]">
-                    <button className="flex flex-1 flex-col items-start justify-center gap-2 rounded-xl border border-neutral-300 bg-white p-4 transition-[background-color,transform] duration-200 active:scale-95 active:bg-neutral-200">
+                  <div className="flex items-stretch gap-[9px]">
+                    {/* `min-w-0` is what lets these actually fill: flex items
+                        default to min-width:auto, so without it the nowrap
+                        label became a floor and the pair stopped shrinking on
+                        narrow screens. */}
+                    <a
+                      href="https://mybca.bca.co.id/auth/login"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex min-w-0 flex-1 flex-col items-start justify-start gap-2 rounded-xl border border-neutral-300 bg-white p-[14px] transition-[background-color,transform] duration-200 active:scale-95 active:bg-neutral-200"
+                    >
                       <img
                         src="/assets/quick-action/mybca-logo.svg"
                         alt=""
                         className="size-10 shrink-0"
                       />
-                      <p className="whitespace-nowrap text-sm font-semibold text-neutral-800">
+                      <p className="w-full text-left text-sm font-semibold text-neutral-800">
                         Login ke myBCA
                       </p>
-                    </button>
-                    <button className="flex flex-1 flex-col items-start justify-center gap-2 rounded-xl border border-neutral-300 bg-white p-4 transition-[background-color,transform] duration-200 active:scale-95 active:bg-neutral-200">
+                    </a>
+                    <a
+                      href="https://ibank.klikbca.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex min-w-0 flex-1 flex-col items-start justify-start gap-2 rounded-xl border border-neutral-300 bg-white p-[14px] transition-[background-color,transform] duration-200 active:scale-95 active:bg-neutral-200"
+                    >
                       <img
                         src="/assets/quick-action/klikbca-logo.webp"
                         alt=""
                         className="h-10 w-auto shrink-0 object-contain"
                       />
-                      <p className="whitespace-nowrap text-sm font-semibold text-neutral-800">
+                      <p className="w-full text-left text-sm font-semibold text-neutral-800">
                         Login ke KlikBCA
                       </p>
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
             ) : (
-              <button
+              <QuickActionCard
                 key={action.title}
+                action={action}
                 onClick={() => {
                   if (loginOpen) setLoginOpen(false);
                   if (action.scrollTo) goToPromo();
                 }}
-                className="flex h-[104px] w-40 shrink-0 flex-col items-start justify-center gap-2 rounded-xl border border-neutral-300 bg-white p-[14px] text-left transition-[background-color,transform] duration-200 active:scale-95 active:bg-cyan-100"
               >
                 <img src={action.icon} alt="" className="size-6" />
                 <div className="flex flex-col gap-0.5">
@@ -519,7 +628,7 @@ export default function MobileHeroWidget({
                     {action.subtitle}
                   </p>
                 </div>
-              </button>
+              </QuickActionCard>
             )
           )}
         </div>
@@ -544,7 +653,7 @@ export default function MobileHeroWidget({
              keeps the input focused so tapping an item doesn't close the panel
              before the tap lands. */}
       {searchFocused && (
-        <div className="absolute inset-x-4 z-50" style={{ top: panelTop + 8 }}>
+        <div ref={dropdownRef} className="absolute inset-x-4 z-50" style={{ top: panelTop + 8 }}>
           <SearchRecommendation
             compact
             recommendations={recommendations}
