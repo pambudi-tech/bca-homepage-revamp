@@ -3,7 +3,76 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { MOBILE_MENU_EVENT } from "./MobileNav";
-import { PRELOADER_DONE_EVENT } from "@/components/Preloader";
+import { PRELOADER_DONE_EVENT, hasPreloaderFinished } from "@/components/Preloader";
+
+// Google's published test key — always renders and always validates, but is
+// explicitly not for production traffic. Real deployments must set
+// NEXT_PUBLIC_RECAPTCHA_SITE_KEY (see .env.local).
+const RECAPTCHA_TEST_KEY = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || RECAPTCHA_TEST_KEY;
+const RECAPTCHA_SCRIPT_ID = "recaptcha-api-script";
+
+type RecaptchaRenderOptions = {
+  sitekey: string;
+  callback: (token: string) => void;
+  "expired-callback"?: () => void;
+};
+
+declare global {
+  interface Window {
+    grecaptcha?: {
+      render: (container: HTMLElement, options: RecaptchaRenderOptions) => number;
+      reset: (widgetId?: number) => void;
+    };
+    onRecaptchaApiLoad?: () => void;
+  }
+}
+
+/** Renders the actual Google reCAPTCHA v2 checkbox widget into `containerRef`.
+    Kept as a hook rather than inline JSX because the widget is imperative —
+    `grecaptcha.render()` mutates a DOM node directly, it isn't declarative
+    React output. */
+function useRecaptcha(containerRef: React.RefObject<HTMLDivElement | null>, active: boolean) {
+  const [token, setToken] = useState<string | null>(null);
+  const widgetId = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!active) return;
+    let cancelled = false;
+
+    const renderWidget = () => {
+      if (cancelled || !containerRef.current || widgetId.current !== null || !window.grecaptcha) return;
+      widgetId.current = window.grecaptcha.render(containerRef.current, {
+        sitekey: RECAPTCHA_SITE_KEY,
+        callback: (t) => setToken(t),
+        "expired-callback": () => setToken(null),
+      });
+    };
+
+    if (window.grecaptcha) {
+      renderWidget();
+    } else {
+      window.onRecaptchaApiLoad = renderWidget;
+      if (!document.getElementById(RECAPTCHA_SCRIPT_ID)) {
+        const script = document.createElement("script");
+        script.id = RECAPTCHA_SCRIPT_ID;
+        script.src = "https://www.google.com/recaptcha/api.js?onload=onRecaptchaApiLoad&render=explicit";
+        script.async = true;
+        script.defer = true;
+        document.body.appendChild(script);
+      }
+    }
+
+    return () => {
+      cancelled = true;
+      widgetId.current = null;
+      setToken(null);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- containerRef is a ref, stable by contract
+  }, [active]);
+
+  return token;
+}
 
 /** Inline, not <img> — the icon has to inherit the button's text color so the
     fill can swap along with the label on hover/open. */
@@ -14,6 +83,26 @@ function HelpIcon({ className }: { className?: string }) {
         d="M12.002 2.2998C13.9905 2.2999 15.8975 3.09007 17.3037 4.49609C18.71 5.90239 19.5 7.81002 19.5 9.79883V10.4326C20.231 10.6902 20.8648 11.1682 21.3125 11.8008C21.7603 12.4334 22.0002 13.1898 22 13.9648C21.9982 14.6614 21.8025 15.3441 21.4346 15.9355C21.0666 16.5269 20.5409 17.0039 19.917 17.3135V17.7119C19.9169 19.6739 18.3748 21.0448 16.168 21.0449H14.6865C14.5031 21.3626 14.2197 21.6107 13.8809 21.751C13.5419 21.8914 13.1658 21.9163 12.8115 21.8213C12.4572 21.7264 12.1442 21.5166 11.9209 21.2256C11.6977 20.9346 11.5762 20.5776 11.5762 20.2109C11.5763 19.8443 11.6978 19.4881 11.9209 19.1973C12.1441 18.9063 12.4573 18.6966 12.8115 18.6016C13.1658 18.5067 13.5419 18.5315 13.8809 18.6719C14.2197 18.8123 14.5032 19.0603 14.6865 19.3779H16.168C17.1751 19.3778 18.2509 18.9398 18.251 17.7119V17.2383C18.1216 17.123 18.0171 16.982 17.9453 16.8242C17.8736 16.6665 17.8359 16.4954 17.834 16.3223V9.79883C17.834 9.0329 17.6828 8.27403 17.3896 7.56641C17.0966 6.85906 16.6673 6.21623 16.126 5.6748C15.5844 5.13322 14.941 4.70326 14.2334 4.41016C13.5259 4.11716 12.7677 3.96685 12.002 3.9668C11.2361 3.9668 10.4771 4.11705 9.76953 4.41016C9.06199 4.70323 8.41948 5.1333 7.87793 5.6748C7.33644 6.21629 6.90638 6.85894 6.61328 7.56641C6.32017 8.27403 6.16895 9.0329 6.16895 9.79883V16.3223C6.16967 16.5225 6.12279 16.7203 6.03125 16.8984C5.93966 17.0765 5.8059 17.2298 5.64258 17.3457C5.47939 17.4615 5.29095 17.5368 5.09277 17.5645C4.89436 17.5922 4.69181 17.5716 4.50293 17.5049C3.77114 17.2468 3.13772 16.7682 2.68945 16.1348C2.24118 15.5014 2 14.7446 2 13.9688C2.00005 13.1929 2.24122 12.4361 2.68945 11.8027C3.13771 11.1696 3.77124 10.6905 4.50293 10.4326V9.79883C4.50293 7.81002 5.29293 5.90239 6.69922 4.49609C8.10551 3.08989 10.0133 2.2998 12.002 2.2998Z"
         fill="currentColor"
       />
+    </svg>
+  );
+}
+
+/** Same mark as MobileMenu.tsx's CloseIcon — reused here so the open ↔ close
+    affordance on this button reads the same way it does on the mobile menu
+    burger. */
+function CloseIcon({ className = "size-6" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      className={className}
+    >
+      <path d="M6 6l12 12M18 6 6 18" />
     </svg>
   );
 }
@@ -114,9 +203,11 @@ export default function HaloBcaChat() {
   const [dragging, setDragging] = useState(false);
   const dragStartY = useRef<number | null>(null);
   const [values, setValues] = useState<Values>(EMPTY);
-  const [robot, setRobot] = useState(false);
   const [errors, setErrors] = useState<Partial<Values>>({});
+  const [captchaTouched, setCaptchaTouched] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const recaptchaRef = useRef<HTMLDivElement>(null);
   const products = t.raw("products") as string[];
   // The mobile burger menu (MobileMenu.tsx) is a full-viewport overlay at
   // z-[60], but this button sits at z-[70] so it can float over page content —
@@ -135,7 +226,12 @@ export default function HaloBcaChat() {
     const reveal = () => {
       id = setTimeout(() => setReady(true), 400);
     };
-    if (document.querySelector(".pre-root")) {
+    // `hasPreloaderFinished()` covers the race where the done event already
+    // fired (and won't fire again) before this component mounted — e.g.
+    // mounting during the ~1.35s exit transition, while `.pre-root` is still
+    // in the DOM. Without this check the button was stuck permanently
+    // invisible/unclickable whenever that timing lined up.
+    if (document.querySelector(".pre-root") && !hasPreloaderFinished()) {
       window.addEventListener(PRELOADER_DONE_EVENT, reveal, { once: true });
       return () => {
         window.removeEventListener(PRELOADER_DONE_EVENT, reveal);
@@ -144,16 +240,6 @@ export default function HaloBcaChat() {
     }
     reveal();
     return () => clearTimeout(id);
-  }, []);
-
-  useEffect(() => {
-    const onMenuToggle = (e: Event) => {
-      const isOpen = (e as CustomEvent<boolean>).detail;
-      setMobileMenuOpen(isOpen);
-      if (isOpen) close({ instant: true });
-    };
-    window.addEventListener(MOBILE_MENU_EVENT, onMenuToggle);
-    return () => window.removeEventListener(MOBILE_MENU_EVENT, onMenuToggle);
   }, []);
 
   // `instant` skips the exit animation — used when the drag itself already
@@ -165,6 +251,16 @@ export default function HaloBcaChat() {
       return false;
     });
   };
+
+  useEffect(() => {
+    const onMenuToggle = (e: Event) => {
+      const isOpen = (e as CustomEvent<boolean>).detail;
+      setMobileMenuOpen(isOpen);
+      if (isOpen) close({ instant: true });
+    };
+    window.addEventListener(MOBILE_MENU_EVENT, onMenuToggle);
+    return () => window.removeEventListener(MOBILE_MENU_EVENT, onMenuToggle);
+  }, []);
 
   const DISMISS_PX = 96;
 
@@ -197,7 +293,13 @@ export default function HaloBcaChat() {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
     const onDown = (e: PointerEvent) => {
-      if (!panelRef.current?.contains(e.target as Node)) close();
+      const target = e.target as Node;
+      // The button has its own onClick toggle — without this check, a click
+      // anywhere on it besides the icon fired this "outside" close on
+      // pointerdown, then the button's onClick immediately reopened it,
+      // so only clicks that happened to land elsewhere ever stuck.
+      if (panelRef.current?.contains(target) || buttonRef.current?.contains(target)) return;
+      close();
     };
     document.addEventListener("keydown", onKey);
     document.addEventListener("pointerdown", onDown);
@@ -206,6 +308,11 @@ export default function HaloBcaChat() {
       document.removeEventListener("pointerdown", onDown);
     };
   }, [open]);
+
+  // Only mounts/renders the widget while the panel is actually in the DOM —
+  // `open || closing` keeps it alive through the exit animation, same as the
+  // panel's own condition below.
+  const captchaToken = useRecaptcha(recaptchaRef, open || closing);
 
   const set = (key: keyof Values) => (e: { target: { value: string } }) => {
     setValues((v) => ({ ...v, [key]: e.target.value }));
@@ -220,17 +327,24 @@ export default function HaloBcaChat() {
     if (!/^[0-9+\-\s]{8,}$/.test(values.telepon)) next.telepon = t("errors.phone");
     if (!values.produk) next.produk = t("errors.required");
     setErrors(next);
-    // Prototype only — no chat backend wired yet.
+    setCaptchaTouched(true);
+    if (Object.values(next).some(Boolean) || !captchaToken) return;
+    // Prototype only — no chat backend wired yet. `captchaToken` is the
+    // g-recaptcha-response value a real submit would forward server-side for
+    // verification against Google's siteverify endpoint.
   };
 
   if (mobileMenuOpen) return null;
 
   return (
-    <div
-      className={`fixed right-4 bottom-4 z-[70] transition-all duration-500 ease-out sm:right-8 sm:bottom-8 ${
-        ready ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
-      }`}
-    >
+    // No `transform` utility on this wrapper — it's `position: fixed` and so
+    // is the panel below it. A transform here (even an identity translate-y-0)
+    // would make this div the containing block for that `fixed` descendant
+    // instead of the viewport, shrinking the panel to this div's own
+    // button-sized box. The reveal transform lives on the button itself
+    // instead, a few lines down.
+    <div className={`fixed right-4 bottom-4 z-[70] transition-opacity duration-500 ease-out xl:right-8 xl:bottom-8 ${ready ? "opacity-100" : "pointer-events-none opacity-0"}`}>
+
       {open || closing ? (
         <>
           {/* Scrim for the mobile bottom sheet only — the desktop popover
@@ -239,7 +353,7 @@ export default function HaloBcaChat() {
           <div
             aria-hidden
             data-state={closing ? "closing" : "open"}
-            className="halobca-scrim fixed inset-0 z-[65] bg-neutral-900/40 sm:hidden"
+            className="halobca-scrim fixed inset-0 z-[65] bg-neutral-900/40 xl:hidden"
           />
           <div
             ref={panelRef}
@@ -250,12 +364,23 @@ export default function HaloBcaChat() {
             // the class no longer matches while `dragging`'s inline transform
             // wins) so the two transforms never fight over the same frame.
             data-state={closing ? "closing" : dragging ? undefined : "open"}
+            // Lenis (SmoothScroll.tsx) hijacks wheel/touch scrolling on the
+            // whole document — without this attribute it swallows the
+            // events here too, so the mouse sits over a visibly-overflowing
+            // panel that never actually scrolls. Same fix MobileMenu.tsx uses.
+            data-lenis-prevent
             style={
               dragY > 0
                 ? { transform: `translateY(${dragY}px)`, transition: dragging ? "none" : "transform 200ms ease-out" }
                 : undefined
             }
-            className="halobca-panel fixed inset-x-0 bottom-0 z-[70] max-h-[85vh] w-full overflow-y-auto rounded-t-2xl bg-neutral-100 p-6 pb-[calc(24px+env(safe-area-inset-bottom))] shadow-[0_-8px_32px_rgba(0,0,0,0.16)] sm:absolute sm:inset-x-auto sm:right-0 sm:bottom-[calc(100%+16px)] sm:max-h-[min(70vh,640px)] sm:w-[min(calc(100vw-2.5rem),400px)] sm:rounded-2xl sm:pb-6 sm:shadow-[0_16px_48px_rgba(0,0,0,0.16)]"
+            // Desktop cap is `100vh - 96px` (the button's own 32px offset +
+            // ~48px height + the 16px gap above it) for the bottom side, and
+            // another flat 32px for the top so the panel never presses flush
+            // against the top edge on short viewports — a fixed 70vh clipped
+            // the form on ordinary laptop screens instead. overflow-y-auto
+            // stays as a safety net once even that shrunk height isn't enough.
+            className="halobca-panel fixed inset-x-0 bottom-0 z-[70] mx-auto max-h-[calc(100vh-32px)] w-full max-w-[560px] overflow-y-auto rounded-t-2xl bg-neutral-100 p-6 pb-[calc(24px+env(safe-area-inset-bottom))] shadow-[0_-8px_32px_rgba(0,0,0,0.16)] xl:absolute xl:inset-x-auto xl:right-0 xl:bottom-[calc(100%+16px)] xl:mx-0 xl:max-h-[calc(100vh-128px)] xl:w-[min(calc(100vw-2.5rem),400px)] xl:max-w-none xl:rounded-2xl xl:pb-6 xl:shadow-[0_16px_48px_rgba(0,0,0,0.16)]"
           >
             {/* Grab handle — mobile bottom-sheet affordance, hidden on desktop.
                 `touch-none` stops the page from scrolling while dragging. */}
@@ -264,11 +389,11 @@ export default function HaloBcaChat() {
               onPointerMove={onHandlePointerMove}
               onPointerUp={endDrag}
               onPointerCancel={endDrag}
-              className="-mt-2 touch-none pt-2 sm:hidden"
+              className="-mt-2 touch-none pt-2 xl:hidden"
             >
               <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-neutral-300" />
             </div>
-            <h2 className="text-lg leading-6 font-bold text-neutral-900">{t("title")}</h2>
+            <h2 className="text-lg leading-6 font-bold tracking-[-0.02em] text-neutral-900">{t("title")}</h2>
           <p className="mt-2 text-sm leading-5 text-neutral-600">{t("subtitle")}</p>
 
           <form onSubmit={submit} className="mt-6 flex flex-col gap-4">
@@ -277,24 +402,24 @@ export default function HaloBcaChat() {
             <Field label={t("fields.telepon")} type="tel" inputMode="tel" placeholder={t("fields.teleponPlaceholder")} value={values.telepon} onChange={set("telepon")} error={errors.telepon} />
             <Field as="select" label={t("fields.produk")} placeholder={t("fields.produkPlaceholder")} options={products} value={values.produk} onChange={set("produk")} error={errors.produk} />
 
-            {/* Placeholder for the real reCAPTCHA widget — no site key yet, so
-                this is a plain checkbox standing in for the challenge. */}
-            <label className="flex items-center gap-3 rounded-xl border border-neutral-300 bg-neutral-200 px-4 py-3">
-              <input
-                type="checkbox"
-                checked={robot}
-                onChange={(e) => setRobot(e.target.checked)}
-                className="size-6 accent-blue-500"
-              />
-              <span className="text-sm text-neutral-700">{t("captcha")}</span>
-            </label>
+            {/* Real Google reCAPTCHA v2 checkbox — grecaptcha.render() mounts
+                its iframe into this div directly (see useRecaptcha above),
+                it isn't React-rendered content. */}
+            <div className="flex justify-center overflow-hidden">
+              <div ref={recaptchaRef} />
+            </div>
+            {captchaTouched && !captchaToken ? (
+              <p className="-mt-2 text-center text-xs leading-[18px] text-red-500">{t("errors.captcha")}</p>
+            ) : null}
 
             <a href="#" className="text-center text-sm text-blue-500 underline">
               {t("terms")}
             </a>
             <button
               type="submit"
-              className="h-12 rounded-full bg-blue-500 text-sm font-bold text-neutral-100 transition-colors hover:bg-blue-600"
+              // Matches the product section's CTA button (ProductSection.tsx)
+              // — same height, radius, and hover/active blue steps.
+              className="flex h-12 items-center justify-center rounded-full bg-blue-500 text-base font-semibold text-neutral-100 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f]"
             >
               {t("submit")}
             </button>
@@ -304,17 +429,20 @@ export default function HaloBcaChat() {
       ) : null}
 
       <button
+        ref={buttonRef}
         type="button"
         onClick={() => (open ? close() : setOpen(true))}
         aria-expanded={open}
         // Open keeps the hover treatment: `data-open` drives the same swap so
         // the button reads as active even when the pointer moves away.
         data-open={open}
-        aria-label={t("label")}
-        className="flex items-center gap-2 rounded-full border border-neutral-300 bg-neutral-100 p-3.5 text-blue-500 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-colors hover:bg-blue-500 hover:text-neutral-100 data-[open=true]:bg-blue-500 data-[open=true]:text-neutral-100 sm:px-5 sm:py-3"
+        aria-label={open ? t("close") : t("label")}
+        className={`flex items-center gap-2 rounded-full border border-neutral-300 bg-neutral-100 p-3.5 text-blue-500 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-[background-color,color,transform] duration-500 ease-out hover:bg-blue-500 hover:text-neutral-100 data-[open=true]:bg-blue-500 data-[open=true]:text-neutral-100 xl:px-5 xl:py-3 ${ready ? "translate-y-0" : "translate-y-4"}`}
       >
-        <HelpIcon className="size-6" />
-        <span className="hidden text-sm font-bold sm:inline">{t("label")}</span>
+        {/* Swaps to the mobile-menu's X once open — same icon, same
+            second-click-to-close affordance. */}
+        {open ? <CloseIcon className="size-6" /> : <HelpIcon className="size-6" />}
+        <span className="hidden text-sm font-bold xl:inline">{t("label")}</span>
       </button>
     </div>
   );

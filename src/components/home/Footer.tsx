@@ -82,7 +82,7 @@ export default function Footer() {
           src="/assets/footer/footer-clove-pattern.svg"
           alt=""
           aria-hidden
-          className="absolute left-1/2 bottom-[-548px] h-[1879px] w-[2568px] max-w-none -translate-x-[calc(50%+300px)]"
+          className="absolute left-1/2 bottom-[-528px] h-[1879px] w-[2568px] max-w-none -translate-x-[calc(50%+300px)]"
         />
       </div>
 

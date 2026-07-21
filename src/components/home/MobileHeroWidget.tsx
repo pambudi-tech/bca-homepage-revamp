@@ -135,15 +135,15 @@ const LOGIN_CARD_WIDTH_COLLAPSED = 160;
 // 12 (gap) + 100 (login tiles) = 180px. That's only the starting guess — the
 // tile labels wrap on narrow screens, so the real open height is measured and
 // the rail and the kurs bar below it follow it.
-const RAIL_H = 104;
+const RAIL_H = 106;
 // Initial phase shows only the Login Cepat card, hugging its content: 14
-// (padding) + 38 (icon/text row) + 14 (padding) = 66px.
-const RAIL_H_INITIAL_COLLAPSED = 66;
-const RAIL_H_OPEN = 180;
+// (padding) + 38 (icon/text row) + 16 (padding) = 68px.
+const RAIL_H_INITIAL_COLLAPSED = 70;
+const RAIL_H_OPEN = 182;
 // Kurs top padding clears the rail and leaves the same 16px gap in both
 // states — derived from the collapsed rail height (see the geometry note by
 // the padding-top style below), so it moves with `collapsedRailH`.
-const kursPtFor = (collapsedRailH: number) => collapsedRailH - 12;
+const kursPtFor = (collapsedRailH: number) => collapsedRailH - 8;
 // Focusing the search scrolls the widget this far below the viewport top —
 // so the dropdown gets the rest of the screen to open into.
 const SEARCH_TOP_GAP = 24;
@@ -189,7 +189,7 @@ function QuickActionCard({
   children: ReactNode;
 }) {
   const className =
-    "flex h-[104px] w-40 shrink-0 flex-col items-start justify-center gap-2 rounded-xl border border-neutral-300 bg-white p-[14px] text-left transition-[background-color,transform] duration-200 active:scale-95 active:bg-cyan-100";
+    "flex h-[106px] w-40 shrink-0 flex-col items-start justify-center gap-2 rounded-xl border border-neutral-300 bg-white p-[14px] text-left transition-[background-color,transform] duration-200 active:scale-95 active:bg-cyan-100";
   if (action.href) {
     return (
       <a
@@ -423,7 +423,7 @@ export default function MobileHeroWidget({
   };
 
   return (
-    // The search panel (h-140) and the kurs bar are stacked flush; the
+    // The search panel (h-144) and the kurs bar are stacked flush; the
     // quick-action rail is absolutely positioned so it straddles the seam,
     // overlapping the panel's empty lower half and the top of the kurs bar.
     <div ref={rootRef} className="relative">
@@ -458,7 +458,7 @@ export default function MobileHeroWidget({
       {/* 1. Search panel — same glass treatment as the desktop hero search:
              `.hero-search` gradient top-border + reactive backdrop blur. */}
       <div
-        className="hero-search relative flex h-[140px] items-start justify-center overflow-clip rounded-t-3xl p-4"
+        className="hero-search relative flex h-[144px] items-start justify-center overflow-clip rounded-t-3xl p-4"
         style={{
           backdropFilter: "blur(16px) saturate(1.25)",
           WebkitBackdropFilter: "blur(16px) saturate(1.25)",
@@ -528,7 +528,7 @@ export default function MobileHeroWidget({
              leaves room for the quick-action cards that overlap it. */}
       <div className="relative overflow-clip rounded-b-3xl bg-gradient-to-b from-cyan-500 to-blue-500 shadow-[inset_0px_-4px_8px_0px_rgba(0,51,94,0.25)]">
         <div
-          className="flex items-center gap-4 px-5 pb-5 transition-[padding-top] duration-300 ease-in-out"
+          className="flex items-center gap-4 px-4 pb-4 transition-[padding-top] duration-300 ease-in-out"
           style={{
             paddingTop: loginOpen
               ? kursPtFor(collapsedRailH) + (loginPanelH - collapsedRailH)
@@ -561,7 +561,7 @@ export default function MobileHeroWidget({
              the rest. `-inset-x-2` bleeds the rail to the screen edges. */}
       <div
         ref={railRef}
-        className="hide-scrollbar absolute inset-x-[-8px] top-[112px] z-10 overflow-x-auto overflow-y-clip transition-[height] duration-300 ease-in-out [scrollbar-width:none]"
+        className="hide-scrollbar absolute inset-x-[-8px] top-[120px] z-10 overflow-x-auto overflow-y-clip transition-[height] duration-300 ease-in-out [scrollbar-width:none]"
         style={{ height: loginOpen ? loginPanelH : collapsedRailH }}
       >
         <div className="flex h-full w-max items-start gap-3 px-6">
@@ -607,8 +607,8 @@ export default function MobileHeroWidget({
                       className="flex w-full items-center gap-4 text-left"
                     >
                       <img src={action.icon} alt="" className="size-6 shrink-0" />
-                      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-                        <p className="whitespace-nowrap text-sm font-bold text-neutral-800">
+                      <div className="flex min-w-0 flex-1 flex-col gap-1">
+                        <p className="whitespace-nowrap text-base leading-[19px] font-bold text-neutral-800">
                           {action.title}
                         </p>
                         <p className="whitespace-nowrap text-xs font-normal text-neutral-700">
@@ -650,8 +650,8 @@ export default function MobileHeroWidget({
                         }`}
                     >
                       <img src={action.icon} alt="" className="size-6" />
-                      <div className="flex flex-col gap-0.5">
-                        <p className="whitespace-nowrap text-sm font-bold text-neutral-800">
+                      <div className="flex flex-col gap-1">
+                        <p className="whitespace-nowrap text-base leading-[19px] font-bold text-neutral-800">
                           {action.title}
                         </p>
                         <p className="whitespace-nowrap text-xs font-normal text-neutral-700">
@@ -679,8 +679,8 @@ export default function MobileHeroWidget({
                         className="flex shrink-0 items-center gap-4"
                       >
                         <img src={action.icon} alt="" className="size-6 shrink-0" />
-                        <div className="flex min-w-0 flex-1 flex-col gap-0.5 text-left">
-                          <p className="text-sm font-bold text-neutral-800">{action.title}</p>
+                        <div className="flex min-w-0 flex-1 flex-col gap-1 text-left">
+                          <p className="text-base leading-[19px] font-bold text-neutral-800">{action.title}</p>
                           <p className="text-xs font-normal text-neutral-700">{action.subtitle}</p>
                         </div>
                         <img
@@ -724,8 +724,8 @@ export default function MobileHeroWidget({
                 }}
               >
                 <img src={action.icon} alt="" className="size-6" />
-                <div className="flex flex-col gap-0.5">
-                  <p className="whitespace-nowrap text-sm font-bold text-neutral-800">
+                <div className="flex flex-col gap-1">
+                  <p className="whitespace-nowrap text-base leading-[19px] font-bold text-neutral-800">
                     {action.title}
                   </p>
                   <p className="whitespace-nowrap text-xs font-normal text-neutral-700">

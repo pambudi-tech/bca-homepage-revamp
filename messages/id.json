@@ -415,13 +415,14 @@
       "myBCA / KlikBCA",
       "Lainnya"
     ],
-    "captcha": "Saya bukan robot",
     "terms": "Syarat dan Ketentuan Halo BCA Chat",
     "submit": "Mulai Percakapan",
     "errors": {
       "required": "Wajib diisi",
       "email": "Format email tidak valid",
-      "phone": "Nomor telepon tidak valid"
-    }
+      "phone": "Nomor telepon tidak valid",
+      "captcha": "Verifikasi \"saya bukan robot\" wajib diselesaikan"
+    },
+    "close": "Tutup HaloBCA"
   }
 }

@@ -29,6 +29,14 @@ import { useLenis } from "@/components/SmoothScroll";
 
 export const PRELOADER_DONE_EVENT = "bca:preloader-done";
 
+// The event above fires exactly once and is gone — a listener attached after
+// that (e.g. a client component that mounts during the ~1.35s exit window,
+// while `.pre-root` is still in the DOM) would wait for an event that already
+// happened and never comes again. This flag lets latecomers check "did it
+// already fire?" instead of only being able to subscribe to "will it fire?".
+let preloaderHasFinished = false;
+export const hasPreloaderFinished = () => preloaderHasFinished;
+
 /** Shortest time the loading page stays up, so a cached revisit doesn't blink. */
 const MIN_VISIBLE_MS = 700;
 /** Ceiling on real loading. One hung request must not trap the visitor. */
@@ -159,6 +167,7 @@ export default function Preloader() {
       // cascading render. One extra frame of an element the gate already
       // keeps at display:none costs nothing.
       const teardown = window.setTimeout(() => {
+        preloaderHasFinished = true;
         window.dispatchEvent(new Event(PRELOADER_DONE_EVENT));
         setPhase("done");
       }, 0);
@@ -248,7 +257,8 @@ export default function Preloader() {
       timers.push(
         window.setTimeout(() => {
           setPhase("exit");
-          window.dispatchEvent(new Event(PRELOADER_DONE_EVENT));
+          preloaderHasFinished = true;
+        window.dispatchEvent(new Event(PRELOADER_DONE_EVENT));
 
           // Two steps on purpose. `.pre-revealing` only adds transitions, so
           // this frame changes no values; dropping `.preloading` on the next

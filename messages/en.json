@@ -415,13 +415,14 @@
       "myBCA / KlikBCA",
       "Other"
     ],
-    "captcha": "I'm not a robot",
     "terms": "Halo BCA Chat Terms and Conditions",
     "submit": "Start Conversation",
     "errors": {
       "required": "This field is required",
       "email": "Invalid email format",
-      "phone": "Invalid phone number"
-    }
+      "phone": "Invalid phone number",
+      "captcha": "Please complete the \"I'm not a robot\" verification"
+    },
+    "close": "Close HaloBCA"
   }
 }

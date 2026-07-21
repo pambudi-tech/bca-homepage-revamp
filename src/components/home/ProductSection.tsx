@@ -1003,7 +1003,7 @@ export default function ProductSection({
   defaultKey?: string;
 } = {}) {
   const t = useTranslations("product");
-  const [variant, setVariant] = useLayoutVariant<ProductVariant>("product", "accordion", PRODUCT_VARIANTS);
+  const [variant, setVariant] = useLayoutVariant<ProductVariant>("product", "curved", PRODUCT_VARIANTS);
   const [activeCategory, setActiveCategory] = useState(defaultKey);
   // The photos being swiped away. Present only for the length of a swap; the
   // incoming set renders from `activeCategory` underneath from the first frame.
@@ -1206,7 +1206,7 @@ export default function ProductSection({
             className="absolute inset-0 size-full opacity-80 will-change-transform"
           />
         </div>
-        <div className="absolute left-[calc(50%+667px)] top-[-96px] h-[1668px] w-[1218px] origin-top-left scale-[0.8] sm:scale-100">
+        <div className="absolute left-[calc(50%+107px)] top-[104px] h-[1668px] w-[1218px] origin-top-left scale-[0.8] sm:left-[calc(50%+667px)] sm:top-[-96px] sm:scale-100">
           <img loading="lazy" decoding="async"
             ref={cloveBRef}
             src="/assets/product/bg-clove-b.svg"

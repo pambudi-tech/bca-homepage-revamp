@@ -415,13 +415,14 @@
       "myBCA / KlikBCA",
       "其他"
     ],
-    "captcha": "我不是机器人",
     "terms": "Halo BCA Chat 条款与条件",
     "submit": "开始对话",
     "errors": {
       "required": "此项为必填",
       "email": "电子邮箱格式无效",
-      "phone": "电话号码无效"
-    }
+      "phone": "电话号码无效",
+      "captcha": "请完成\"我不是机器人\"验证"
+    },
+    "close": "关闭 HaloBCA"
   }
 }

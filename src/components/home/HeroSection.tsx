@@ -172,7 +172,7 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
 
       {/* Content — column on mobile (title, then dots), row on desktop (title
           left, dots + arrows right). */}
-      <div className="absolute inset-x-0 bottom-[168px] px-4 xl:inset-x-auto xl:left-1/2 xl:right-auto xl:bottom-[192px] xl:w-[1280px] xl:-translate-x-1/2 xl:px-0">
+      <div className="absolute inset-x-0 bottom-[172px] px-4 xl:inset-x-auto xl:left-1/2 xl:right-auto xl:bottom-[192px] xl:w-[1280px] xl:-translate-x-1/2 xl:px-0">
         <div className="mx-auto flex max-w-[544px] flex-col items-start gap-6 xl:mx-0 xl:max-w-none xl:flex-row xl:items-end xl:justify-between xl:gap-0">
           <div
             key={activeSlide}

@@ -62,6 +62,11 @@
    systems fighting over the same job. */
 html {
   -webkit-overflow-scrolling: touch;
+  /* Reserves the scrollbar's gutter permanently so the preloader's
+     `overflow: hidden` (below) never toggles the viewport width — without
+     this, desktop briefly loses/regains its scrollbar across the loading
+     handoff and the whole page visibly shifts sideways. */
+  scrollbar-gutter: stable;
 }
 
 body {

@@ -9,10 +9,10 @@ import LayoutSwitcher from "./LayoutSwitcher";
 import { useLayoutVariant } from "@/lib/useLayoutVariant";
 // import PercentGlass from "./PercentGlass"; // temporarily hidden
 
-const RIBBON_STYLE: Record<Exclude<PromoBadgeKey, "default">, { from: string; to: string; shadow: string; text: string }> = {
-  popular: { from: "#fe924d", to: "#fe6706", shadow: "#b24906", text: "#ffffff" },
-  almostEnd: { from: "#ffd31c", to: "#ffba00", shadow: "#b28301", text: "#4c3801" },
-  expired: { from: "#cd1923", to: "#9f141b", shadow: "#850e14", text: "#ffffff" },
+const RIBBON_STYLE: Record<Exclude<PromoBadgeKey, "default">, { from: string; to: string; shadow: string; text: string; border: string }> = {
+  popular: { from: "#fe924d", to: "#fe6706", shadow: "#b24906", text: "#ffffff", border: "#b24906" },
+  almostEnd: { from: "#ffd31c", to: "#ffba00", shadow: "#b28301", text: "#4c3801", border: "rgba(0,0,0,0.3)" },
+  expired: { from: "#cd1923", to: "#9f141b", shadow: "#850e14", text: "#ffffff", border: "rgba(0,0,0,0.3)" },
 };
 
 // Elevated shadow used on hover (Figma "Shadows/Default", scaled up).
@@ -38,7 +38,7 @@ function PromoRibbon({ badgeKey, label }: { badgeKey: Exclude<PromoBadgeKey, "de
         className="relative flex h-9 shrink-0 items-center justify-end overflow-clip rounded-bl-3xl rounded-br-[4px] rounded-tr-lg border-b-2 px-6 pb-3.5 pt-3"
         style={{
           backgroundImage: `linear-gradient(to bottom, ${style.from}, ${style.to})`,
-          borderColor: "rgba(0,0,0,0.3)",
+          borderColor: style.border,
         }}
       >
         <p className="whitespace-nowrap text-sm font-semibold leading-5" style={{ color: style.text }}>
@@ -82,7 +82,7 @@ function PromoCard({ promo, now, reveal = true }: { promo: Promo; now: Date; rev
           </svg>
         </div>
         <div className="relative w-full flex-1">
-          <div className="absolute left-5 right-5 top-12 flex flex-col items-start gap-3">
+          <div className="absolute left-5 right-5 top-12 flex flex-col items-start gap-2">
             <p className="line-clamp-2 w-full text-base font-semibold leading-6 tracking-normal text-neutral-800 transition-colors duration-300 group-hover:font-bold group-hover:text-blue-500 xl:text-[18px] xl:leading-[1.2]">
               {promo.title}
             </p>
@@ -120,9 +120,12 @@ function PromoCard({ promo, now, reveal = true }: { promo: Promo; now: Date; rev
 function MorePromoCard({ reveal = true }: { reveal?: boolean }) {
   const t = useTranslations("promo");
   return (
-    <div
+    <a
+      href="https://promo.bca.co.id/"
+      target="_blank"
+      rel="noopener noreferrer"
       {...(reveal ? { "data-reveal": "" } : {})}
-      className="group relative h-[360px] w-[280px] shrink-0 overflow-clip rounded-3xl border border-white transition-transform duration-300 ease-out hover:-translate-y-1.5 xl:w-[302px]"
+      className="group relative block h-[360px] w-[280px] shrink-0 overflow-clip rounded-3xl border border-white transition-transform duration-300 ease-out hover:-translate-y-1.5 xl:w-[302px]"
       style={{ backgroundImage: "linear-gradient(180deg, #005caa 0%, #00b5f0 100%)" }}
     >
       <p className="absolute left-6 top-6 w-[157px] text-xl font-semibold leading-7 tracking-[-0.4px] text-white xl:text-2xl xl:leading-[1.3] xl:tracking-[-0.48px]">
@@ -141,7 +144,7 @@ function MorePromoCard({ reveal = true }: { reveal?: boolean }) {
         aria-hidden
         className="absolute left-6 right-6 top-[126px] h-[202px] object-cover mix-blend-soft-light xl:top-[86px] xl:h-[242px]"
       />
-    </div>
+    </a>
   );
 }
 
@@ -258,7 +261,9 @@ function PromoLeftColumn() {
         {t("heading")}
       </h2>
       <a
-        href="#"
+        href="https://promo.bca.co.id/"
+        target="_blank"
+        rel="noopener noreferrer"
         className="group/cta flex h-12 items-center justify-center gap-1 whitespace-nowrap rounded-full bg-blue-500 px-7 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f]"
       >
         <span className="px-0.5 text-base font-semibold leading-5 text-white">
@@ -466,7 +471,13 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
 
         {/* Mobile-only CTA — the desktop surfaces this via the "Show More" card.
             Styled to match the product section's mobile CTA. */}
-        <button data-reveal className="mx-auto mt-9 flex h-12 items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f] xl:hidden">
+        <a
+          href="https://promo.bca.co.id/"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-reveal
+          className="mx-auto mt-9 flex h-12 w-fit items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f] xl:hidden"
+        >
           <span className="text-base font-semibold text-neutral-100">
             Lihat 200+ promo lainnya
           </span>
@@ -486,7 +497,7 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
               WebkitMaskPosition: "center",
             }}
           />
-        </button>
+        </a>
       </div>
     </section>
   );
