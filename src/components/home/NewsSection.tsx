@@ -1,14 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { NEWS_LIST_SIZE, type NewsArticle, type NewsCategory } from "./news-data";
-import LayoutSwitcher from "./LayoutSwitcher";
 import { useLenis } from "@/components/SmoothScroll";
-import { useLayoutVariant } from "@/lib/useLayoutVariant";
-
-/** Layout variants offered by this section's LayoutSwitcher. */
-const NEWS_VARIANTS = ["highlight"] as const;
-type NewsVariant = (typeof NEWS_VARIANTS)[number];
 
 function AdditionalInfo({ date, category, muted = false }: { date: string; category: string; muted?: boolean }) {
   const textClass = muted ? "text-neutral-600" : "text-white";
@@ -114,7 +109,7 @@ function ArticleItem({ article }: { article: NewsArticle }) {
 }
 
 export default function NewsSection({ categories }: { categories: NewsCategory[] }) {
-  const [variant, setVariant] = useLayoutVariant<NewsVariant>("news", "highlight", NEWS_VARIANTS);
+  const t = useTranslations("news");
   const [activeKey, setActiveKey] = useState(categories[0].key);
   const active = categories.find((c) => c.key === activeKey) ?? categories[0];
 
@@ -125,10 +120,19 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
   useEffect(() => {
     if (!lenis) return;
 
+    // `scrollHeight` forces a layout reflow, so it's cached here and only
+    // refreshed on resize — reading it on every Lenis scroll tick was
+    // jamming the main thread the smooth-scroll rAF loop depends on.
+    let docHeight = document.documentElement.scrollHeight;
+    const measure = () => {
+      docHeight = document.documentElement.scrollHeight;
+    };
+    measure();
+    window.addEventListener("resize", measure);
+
     const handleScroll = () => {
       if (!parallaxRef.current) return;
       const scrollBottom = window.innerHeight + window.scrollY;
-      const docHeight = document.documentElement.scrollHeight;
       const distanceToBottom = Math.max(0, docHeight - scrollBottom);
 
       parallaxRef.current.style.transform = `translate3d(0, ${distanceToBottom * PARALLAX_SPEED}px, 0)`;
@@ -139,26 +143,12 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
 
     return () => {
       lenis.off("scroll", handleScroll);
+      window.removeEventListener("resize", measure);
     };
   }, [lenis]);
 
   return (
     <section className="relative overflow-clip bg-blue-100 py-10 xl:py-24">
-      {/* prototype-only: lets the client flip this section's layout live.
-          Only one variant so far — add entries here as alternatives land. */}
-      <LayoutSwitcher
-        label="Layout Berita"
-        value={variant}
-        onChange={setVariant}
-        options={[
-          {
-            value: "highlight",
-            name: "Highlight + Daftar",
-            description: "Satu artikel sorotan besar, sisanya sebagai daftar ringkas di sampingnya.",
-          },
-        ]}
-      />
-
       <div
         ref={parallaxRef}
         className="pointer-events-none absolute inset-0 z-0 overflow-visible"
@@ -176,11 +166,11 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
         <div data-reveal-group className="flex flex-col xl:flex-row xl:gap-10">
           <div className="flex items-center py-4 xl:w-60 xl:shrink-0">
             <p data-reveal className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px]">
-              Kabar &amp; Wawasan
+              {t("eyebrow")}
             </p>
           </div>
           <h2 data-reveal="blur-up" className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:w-[560px] xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]">
-            Update Seputar BCA
+            {t("heading")}
           </h2>
         </div>
 
@@ -217,7 +207,7 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
               rel="noopener noreferrer"
               className="flex items-center gap-0.5 text-base font-semibold text-blue-500 transition-transform hover:translate-x-0.5"
             >
-              Lihat Lebih Banyak
+              {t("seeMore")}
               <img loading="lazy" decoding="async" src="/assets/navbar/icon-arrow-blue.svg" alt="" className="size-5" />
             </a>
           </div>

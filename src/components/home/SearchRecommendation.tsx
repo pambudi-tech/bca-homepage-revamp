@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import {
   INFO_CATEGORY_META,
   POPULAR_SEARCHES,
@@ -224,6 +225,7 @@ export default function SearchRecommendation({
   onMouseDown,
   compact = false,
 }: Props) {
+  const t = useTranslations("search");
   const { products, information } = recommendations;
   const isEmpty = keyword.trim() === "";
   const hasResults = products.length > 0 || information.length > 0;
@@ -237,17 +239,17 @@ export default function SearchRecommendation({
       }`}
     >
       {isEmpty ? (
-        <div className={`flex flex-col gap-6 ${compact ? "p-4" : "p-6"}`}>
+        <div className={`flex flex-col gap-6 ${compact ? "p-3.5" : "p-6"}`}>
           {recent.length > 0 && (
             <section className="flex flex-col gap-3">
               <div className="flex items-center justify-between">
-                <p className="text-base font-bold text-neutral-800">Pencarian Terakhir</p>
+                <p className="text-base font-bold text-neutral-800">{t("recentSearches")}</p>
                 <button
                   type="button"
                   onClick={onClearRecent}
                   className="text-sm font-semibold text-blue-500 hover:underline"
                 >
-                  Hapus semua
+                  {t("clearAll")}
                 </button>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -267,7 +269,7 @@ export default function SearchRecommendation({
                     <button
                       type="button"
                       onClick={() => onRemoveRecent(term)}
-                      aria-label={`Hapus ${term}`}
+                      aria-label={t("removeTerm", { term })}
                       className="flex size-4 items-center justify-center rounded-full text-neutral-600 hover:text-neutral-800"
                     >
                       <CloseIcon className="size-3.5" />
@@ -279,7 +281,7 @@ export default function SearchRecommendation({
           )}
 
           <section className="flex flex-col gap-3">
-            <p className="text-base font-bold text-neutral-800">Pencarian Populer</p>
+            <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{t("popularSearches")}</p>
             <div className="flex flex-wrap gap-2">
               {POPULAR_SEARCHES.map((term) => (
                 <button
@@ -299,14 +301,14 @@ export default function SearchRecommendation({
           {products.length > 0 && (
             <section className="flex flex-col gap-3">
               <div className="flex items-center justify-between">
-                <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>Produk Terkait</p>
+                <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{t("relatedProducts")}</p>
                 <a
                   href={seeAllUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-0.5 text-sm font-semibold text-blue-500 hover:underline"
                 >
-                  Lihat Semua
+                  {t("viewAll")}
                   <ArrowDiagonalIcon className="size-5" />
                 </a>
               </div>
@@ -372,7 +374,7 @@ export default function SearchRecommendation({
 
           {information.length > 0 && (
             <section className="flex flex-col gap-3">
-              <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>Informasi Terkait</p>
+              <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{t("relatedInfo")}</p>
               <ul className="flex flex-col">
                 {information.slice(0, 3).map((info) => {
                   const meta = INFO_CATEGORY_META[info.category];
@@ -410,10 +412,10 @@ export default function SearchRecommendation({
       ) : (
         <div className="px-6 py-8 text-center">
           <p className="text-sm font-semibold text-neutral-800">
-            Tidak ada hasil untuk &ldquo;{keyword}&rdquo;
+            {t("noResultsFor", { keyword })}
           </p>
           <p className="mt-1 text-sm text-neutral-700">
-            Coba kata kunci lain atau lihat semua hasil di bawah.
+            {t("noResultsHint")}
           </p>
         </div>
       )}
@@ -426,36 +428,38 @@ export default function SearchRecommendation({
           compact ? "flex-col" : "items-center justify-between"
         }`}
       >
-        {!isEmpty && (
+        {!isEmpty && hasResults && (
           <a
             href={seeAllUrl}
             target="_blank"
             rel="noopener noreferrer"
             className={`flex flex-1 items-center gap-3 text-sm font-semibold text-blue-500 transition-colors hover:bg-blue-100 ${
-              compact ? "p-4" : "p-5"
+              compact ? "p-3.5" : "p-5"
             }`}
           >
             <SearchIcon className="size-6 shrink-0" />
-            Lihat semua hasil
+            {t("viewAllResults")}
           </a>
         )}
-        <a
-          href="https://www.bca.co.id/id/bantuan/pusat-informasi"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`flex flex-1 items-center gap-3 transition-colors hover:bg-blue-100 ${
-            compact ? "p-4" : "p-5"
-          } ${isEmpty ? "" : compact ? "border-t border-neutral-300" : "border-l border-neutral-300"}`}
-        >
-          <HeadphoneIcon className="size-6 shrink-0 text-neutral-800" />
-          <span className={`flex gap-1 ${compact ? "flex-col items-start" : "items-center"}`}>
-            <span className="text-sm font-semibold text-neutral-800">Butuh bantuan?</span>
-            <span className="flex items-center gap-0.5 text-sm font-semibold text-blue-500">
-              Kunjungi Pusat Bantuan
-              <ArrowDiagonalIcon className="size-5 shrink-0" />
+        {(isEmpty || !hasResults) && (
+          <a
+            href="https://www.bca.co.id/id/bantuan/pusat-informasi"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`flex flex-1 items-center gap-3 transition-colors hover:bg-blue-100 ${
+              compact ? "p-3.5" : "p-5"
+            }`}
+          >
+            <HeadphoneIcon className="size-6 shrink-0 text-neutral-800" />
+            <span className={`flex gap-1 ${compact ? "flex-col items-start" : "items-center"}`}>
+              <span className="text-sm font-semibold text-neutral-800">{t("needHelp")}</span>
+              <span className="flex items-center gap-0.5 text-sm font-semibold text-blue-500">
+                {t("visitHelpCenter")}
+                <ArrowDiagonalIcon className="size-5 shrink-0" />
+              </span>
             </span>
-          </span>
-        </a>
+          </a>
+        )}
       </div>
     </div>
   );

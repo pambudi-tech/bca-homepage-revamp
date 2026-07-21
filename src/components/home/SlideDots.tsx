@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type CSSProperties, type Ref } from "react";
+import { useTranslations } from "next-intl";
 
 // Shared with any parent running the autoplay timer — the ring radius/circumference
 // must match what the parent uses to compute strokeDashoffset.
@@ -62,6 +63,7 @@ export default function SlideDots({
   showPill = true,
   onActiveHoverChange,
 }: SlideDotsProps) {
+  const t = useTranslations("slideDots");
   const [hoveringActive, setHoveringActive] = useState(false);
   const showPauseIcon = !paused && hoveringActive;
   const showIcon = showPauseIcon || paused;
@@ -99,7 +101,7 @@ export default function SlideDots({
         return (
           <button
             key={i}
-            aria-label={paused ? "Lanjutkan carousel" : "Jeda carousel"}
+            aria-label={paused ? t("play") : t("pause")}
             onClick={onTogglePause}
             onMouseEnter={() => {
               setHoveringActive(true);

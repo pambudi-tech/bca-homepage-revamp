@@ -1,0 +1,425 @@
+{
+  "metadata": {
+    "title": "BCA - Always By Your Side",
+    "description": "Prototype revamp of the BCA.co.id homepage"
+  },
+  "login": {
+    "heading": "Preview password",
+    "passwordPlaceholder": "Password",
+    "wrongPassword": "Wrong password, try again.",
+    "submit": "Enter"
+  },
+  "languages": {
+    "id": "Indonesia",
+    "en": "English",
+    "zh": "简体中文"
+  },
+  "hero": {
+    "searchPrompt": "What can we help you with?",
+    "placeholders": [
+      "Open a BCA account",
+      "Activate BCA Paylater",
+      "Apply for a credit card",
+      "Install myBCA"
+    ],
+    "quickActions": {
+      "login": {
+        "title": "Log in to BCA",
+        "subtitle": "myBCA • KlikBCA"
+      },
+      "promo": {
+        "title": "Latest Promos",
+        "subtitle": "Best Offers"
+      },
+      "halobca": {
+        "title": "HaloBCA",
+        "subtitle": "1500888, Chat, Email"
+      },
+      "location": {
+        "title": "BCA Locations",
+        "subtitle": "Branches & ATMs"
+      },
+      "webform": {
+        "title": "BCA Webform",
+        "subtitle": "Product application"
+      }
+    },
+    "loginCepat": {
+      "title": "Quick Login",
+      "subtitle": "Access BCA services"
+    },
+    "loginMybca": "Log in to myBCA",
+    "loginKlikbca": "Log in to KlikBCA",
+    "closeLogin": "Close",
+    "kursToday": "Today's Exchange Rate",
+    "beli": "Buy",
+    "jual": "Sell",
+    "kursPrev": "Previous rate",
+    "kursNext": "Next rate",
+    "kursDisclaimer": "Rates may change during the transaction process.",
+    "prevSlide": "Previous",
+    "nextSlide": "Next"
+  },
+  "search": {
+    "recentSearches": "Recent Searches",
+    "clearAll": "Clear all",
+    "removeTerm": "Remove {term}",
+    "popularSearches": "Popular Searches",
+    "relatedProducts": "Related Products",
+    "viewAll": "View All",
+    "relatedInfo": "Related Information",
+    "noResultsFor": "No results for “{keyword}”",
+    "noResultsHint": "Try a different keyword or view all results below.",
+    "viewAllResults": "View all results",
+    "needHelp": "Need help?",
+    "visitHelpCenter": "Visit Help Center"
+  },
+  "scrollCue": {
+    "keepGoing": "Keep exploring",
+    "exploreBca": "the world of BCA"
+  },
+  "backToTop": {
+    "label": "Back to top"
+  },
+  "slideDots": {
+    "play": "Resume carousel",
+    "pause": "Pause carousel"
+  },
+  "common": {
+    "learnMore": "Learn more"
+  },
+  "preloader": {
+    "tagline": [
+      "Always",
+      "by Your Side"
+    ]
+  },
+  "product": {
+    "eyebrow": "Products & Services",
+    "heading": "BCA Solutions for Every Financial Goal"
+  },
+  "promo": {
+    "eyebrow": "Events & Programs",
+    "heading": "The Best Rewards for Every Precious Moment",
+    "viewMore": "View 200+ More Promos",
+    "prevSlide": "Previous event",
+    "nextSlide": "Next event"
+  },
+  "nav": {
+    "segments": {
+      "Individu": "Individual",
+      "Bisnis": "Business",
+      "Solitaire": "Solitaire",
+      "Prioritas": "Priority"
+    },
+    "promo": "Promo",
+    "tentangBca": "About BCA",
+    "karir": "Careers",
+    "search": "Search"
+  },
+  "mobileMenu": {
+    "tutupMenu": "Close menu",
+    "bukaMenu": "Open menu",
+    "bahasa": "Language",
+    "pilihSegmen": "Choose Your Segment",
+    "kembali": "Back"
+  },
+  "cookieBanner": {
+    "ariaLabel": "Cookie notice",
+    "heading": "We use cookies",
+    "description": "Cookies help us keep the site secure, remember your preferences, and show you more relevant content. You can change these choices at any time.",
+    "learnMore": "Read our Cookie Policy",
+    "settingsHeading": "Cookie Settings",
+    "acceptAll": "Accept All",
+    "savePrefs": "Save Choices",
+    "rejectAll": "Reject All",
+    "settings": "Manage Preferences",
+    "categories": {
+      "essential": {
+        "label": "Essential",
+        "desc": "Keeps your login session, security, and basic site functions running. Cannot be turned off."
+      },
+      "functional": {
+        "label": "Functional",
+        "desc": "Remembers your preferences, such as language and the last exchange rate viewed."
+      },
+      "analytics": {
+        "label": "Analytics",
+        "desc": "Helps us understand which pages are used most often."
+      },
+      "marketing": {
+        "label": "Marketing",
+        "desc": "Tailors the BCA promos and ads you see on other sites."
+      }
+    }
+  },
+  "footer": {
+    "kantorPusat": "Head Office",
+    "alamat": "Menara BCA, Grand Indonesia,\nJl. MH Thamrin No. 1\nJakarta 10310",
+    "copyright": "Copyrights © 2026 PT Bank Central Asia Tbk, All Rights Reserved",
+    "ojkLine": "BCA is licensed and supervised by the Financial Services Authority (OJK) & Bank Indonesia",
+    "lpsLinePrefix": "BCA participates in the LPS deposit insurance program. The maximum deposit value guaranteed by LPS per customer per bank is Rp2 billion. To check the LPS Guarantee Interest Rate, click",
+    "lpsLinkLabel": "here",
+    "linkColumns": {
+      "Tentang BCA": {
+        "heading": "About BCA",
+        "links": [
+          "Company Profile",
+          "Careers at BCA",
+          "News & Press Releases",
+          "Awards"
+        ]
+      },
+      "Layanan": {
+        "heading": "Services",
+        "links": [
+          "Branch & ATM Locations",
+          "Help Center",
+          "Promo",
+          "Simulations & Calculators"
+        ]
+      },
+      "Produk": {
+        "heading": "Products",
+        "links": [
+          "myBCA",
+          "Credit Card",
+          "Loans",
+          "Business Credit"
+        ]
+      }
+    },
+    "bottomLinks": [
+      "SBDK",
+      "BCA Locations",
+      "Help Center",
+      "Privacy Policy",
+      "Terms & Conditions"
+    ]
+  },
+  "mybca": {
+    "heading": "All Your Banking Needs in the Palm of Your Hand",
+    "description": "From checking your balance to paying bills, everything's done in seconds with myBCA.",
+    "downloadDesktop": "Download Now",
+    "downloadMobile": "Download myBCA"
+  },
+  "news": {
+    "eyebrow": "News & Insights",
+    "heading": "Latest BCA Updates",
+    "seeMore": "See More"
+  },
+  "megamenu": {
+    "Simpanan": {
+      "label": "Savings",
+      "products": [
+        "Tahapan",
+        "Tahapan Xpresi",
+        "Tahapan Berjangka",
+        "Time Deposit",
+        "View All Savings"
+      ],
+      "ctaLabel": "Compare Savings Products",
+      "links": [
+        {
+          "label": "How to top up & transfer between accounts",
+          "type": "video"
+        },
+        {
+          "label": "Difference between Tahapan, Tapres, and Time Deposit"
+        },
+        {
+          "label": "What's the minimum balance and admin fee for each savings product?"
+        },
+        {
+          "label": "Requirements & documents to open a BCA account"
+        }
+      ],
+      "editorialTitle": "Open an Account, Get QRIS Cashback up to Rp100,000"
+    },
+    "Kartu Kredit": {
+      "label": "Credit Card",
+      "products": [
+        "BCA Everyday Card",
+        "BCA Visa Batman",
+        "BCA Mastercard Black",
+        "Reward BCA",
+        "View All Credit Cards"
+      ],
+      "ctaLabel": "Compare Credit Cards",
+      "links": [
+        {
+          "label": "How to apply for a credit card via website",
+          "type": "video"
+        },
+        {
+          "label": "Which credit card suits me best?"
+        },
+        {
+          "label": "Requirements to apply for a BCA credit card"
+        },
+        {
+          "label": "How to pay your BCA credit card bill"
+        }
+      ],
+      "editorialTitle": "Apply for a Credit Card Now, Free Lifetime Annual Fee & Welcome Bonus Rp500,000"
+    },
+    "Pinjaman": {
+      "label": "Loans",
+      "products": [
+        "Paylater BCA",
+        "Home Loan (KPR)",
+        "Vehicle Loan (KKB)",
+        "BCA Personal Loan",
+        "View All Loans"
+      ],
+      "ctaLabel": "Calculate Estimated Installments",
+      "links": [
+        {
+          "label": "The application process from start to disbursement",
+          "type": "video"
+        },
+        {
+          "label": "How to apply for a home loan online via myBCA"
+        },
+        {
+          "label": "Requirements & documents to apply for a BCA loan"
+        },
+        {
+          "label": "What's the maximum loan amount I can apply for?"
+        }
+      ],
+      "editorialTitle": "Special 2.99% Home Loan Rate in the First Year"
+    },
+    "e-Banking": {
+      "label": "e-Banking",
+      "products": [
+        "myBCA",
+        "KlikBCA",
+        "Sakuku",
+        "e-Branch",
+        "View All e-Banking"
+      ],
+      "ctaLabel": "Compare e-Banking Options",
+      "links": [
+        {
+          "label": "How to activate myBCA for new users",
+          "type": "video"
+        },
+        {
+          "label": "How to top up Flazz via myBCA"
+        },
+        {
+          "label": "myBCA's standout features"
+        },
+        {
+          "label": "What's the difference between myBCA and KlikBCA?"
+        }
+      ],
+      "editorialTitle": "Pay with QRIS on myBCA, Get up to 50% Off at Selected Merchants"
+    },
+    "Investasi": {
+      "label": "Investments",
+      "products": [
+        "Mutual Funds",
+        "Bonds",
+        "Government Securities",
+        "Customer Fund Account",
+        "View All Investments"
+      ],
+      "ctaLabel": "Calculate Investment Potential",
+      "links": [
+        {
+          "label": "A guide to choosing investments that match your risk profile",
+          "type": "video"
+        },
+        {
+          "label": "How to buy Mutual Funds via myBCA"
+        },
+        {
+          "label": "What's the difference between Mutual Funds, Bonds, and Government Securities?"
+        },
+        {
+          "label": "What's the minimum investment amount at BCA?"
+        }
+      ],
+      "editorialTitle": "Buy Government Bonds Now, Enjoy Special Returns Higher Than a Time Deposit"
+    },
+    "Asuransi": {
+      "label": "Insurance",
+      "products": [
+        "Life Insurance",
+        "Health Insurance",
+        "Property Insurance",
+        "Vehicle Insurance",
+        "View All Insurance"
+      ],
+      "ctaLabel": "Calculate Estimated Premium",
+      "links": [
+        {
+          "label": "What's the difference between life and health insurance?",
+          "type": "video"
+        },
+        {
+          "label": "Choosing the right insurance for your family"
+        },
+        {
+          "label": "What's the difference between life and health insurance?"
+        }
+      ],
+      "editorialTitle": "Get 20% Off Your Premium for First-Year Enrollment"
+    },
+    "Transaksi": {
+      "label": "Transactions",
+      "products": [
+        "Flazz",
+        "Firecash",
+        "Remittance",
+        "View All Transactions"
+      ],
+      "ctaLabel": "Calculate Estimated Premium",
+      "links": [
+        {
+          "label": "The easy way to top up Flazz directly from myBCA",
+          "type": "video"
+        },
+        {
+          "label": "Complete guide to sending money abroad"
+        },
+        {
+          "label": "Requirements and how to cash out Firecash funds at your nearest branch, no deductions"
+        }
+      ],
+      "editorialTitle": "Send Money Abroad Free of Telex Fees & Get the Most Special Exchange Rate"
+    }
+  },
+  "halobca": {
+    "label": "HaloBCA",
+    "title": "Welcome to Halo BCA Chat",
+    "subtitle": "Please enter your details so we can connect with you.",
+    "fields": {
+      "nama": "Name",
+      "namaPlaceholder": "Full name",
+      "email": "Email",
+      "emailPlaceholder": "name@email.com",
+      "telepon": "Phone",
+      "teleponPlaceholder": "08xxxxxxxxxx",
+      "produk": "Product / Service",
+      "produkPlaceholder": "Select a product or service"
+    },
+    "products": [
+      "Savings",
+      "Credit Card",
+      "Loans",
+      "myBCA / KlikBCA",
+      "Other"
+    ],
+    "captcha": "I'm not a robot",
+    "terms": "Halo BCA Chat Terms and Conditions",
+    "submit": "Start Conversation",
+    "errors": {
+      "required": "This field is required",
+      "email": "Invalid email format",
+      "phone": "Invalid phone number"
+    }
+  }
+}

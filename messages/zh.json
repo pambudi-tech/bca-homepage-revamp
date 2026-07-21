@@ -1,0 +1,425 @@
+{
+  "metadata": {
+    "title": "BCA - 始终在您身边",
+    "description": "BCA.co.id 主页改版原型"
+  },
+  "login": {
+    "heading": "预览密码",
+    "passwordPlaceholder": "密码",
+    "wrongPassword": "密码错误，请重试。",
+    "submit": "进入"
+  },
+  "languages": {
+    "id": "Indonesia",
+    "en": "English",
+    "zh": "简体中文"
+  },
+  "hero": {
+    "searchPrompt": "有什么可以帮您？",
+    "placeholders": [
+      "开设BCA账户",
+      "激活BCA Paylater",
+      "申请信用卡",
+      "安装 myBCA"
+    ],
+    "quickActions": {
+      "login": {
+        "title": "登录BCA",
+        "subtitle": "myBCA • KlikBCA"
+      },
+      "promo": {
+        "title": "最新优惠",
+        "subtitle": "超值优惠"
+      },
+      "halobca": {
+        "title": "HaloBCA",
+        "subtitle": "1500888，聊天，邮件"
+      },
+      "location": {
+        "title": "BCA网点",
+        "subtitle": "分行与ATM"
+      },
+      "webform": {
+        "title": "BCA在线表单",
+        "subtitle": "产品申请"
+      }
+    },
+    "loginCepat": {
+      "title": "快速登录",
+      "subtitle": "进入 BCA 服务"
+    },
+    "loginMybca": "登录 myBCA",
+    "loginKlikbca": "登录 KlikBCA",
+    "closeLogin": "关闭",
+    "kursToday": "今日汇率",
+    "beli": "买入",
+    "jual": "卖出",
+    "kursPrev": "上一个汇率",
+    "kursNext": "下一个汇率",
+    "kursDisclaimer": "汇率可能在交易过程中发生变化。",
+    "prevSlide": "上一张",
+    "nextSlide": "下一张"
+  },
+  "search": {
+    "recentSearches": "最近搜索",
+    "clearAll": "清除全部",
+    "removeTerm": "删除 {term}",
+    "popularSearches": "热门搜索",
+    "relatedProducts": "相关产品",
+    "viewAll": "查看全部",
+    "relatedInfo": "相关信息",
+    "noResultsFor": "未找到“{keyword}”的结果",
+    "noResultsHint": "请尝试其他关键词，或查看下方全部结果。",
+    "viewAllResults": "查看全部结果",
+    "needHelp": "需要帮助？",
+    "visitHelpCenter": "访问帮助中心"
+  },
+  "scrollCue": {
+    "keepGoing": "继续探索",
+    "exploreBca": "BCA的世界"
+  },
+  "backToTop": {
+    "label": "返回顶部"
+  },
+  "slideDots": {
+    "play": "继续轮播",
+    "pause": "暂停轮播"
+  },
+  "common": {
+    "learnMore": "了解更多"
+  },
+  "preloader": {
+    "tagline": [
+      "始终",
+      "在您身边"
+    ]
+  },
+  "product": {
+    "eyebrow": "产品与服务",
+    "heading": "为您的每一个财务目标提供BCA解决方案"
+  },
+  "promo": {
+    "eyebrow": "活动与项目",
+    "heading": "最好的回馈，伴您度过每一个珍贵时刻",
+    "viewMore": "查看200+更多优惠",
+    "prevSlide": "上一个活动",
+    "nextSlide": "下一个活动"
+  },
+  "nav": {
+    "segments": {
+      "Individu": "个人",
+      "Bisnis": "企业",
+      "Solitaire": "尊尚",
+      "Prioritas": "优先"
+    },
+    "promo": "优惠",
+    "tentangBca": "关于BCA",
+    "karir": "招聘",
+    "search": "搜索"
+  },
+  "mobileMenu": {
+    "tutupMenu": "关闭菜单",
+    "bukaMenu": "打开菜单",
+    "bahasa": "语言",
+    "pilihSegmen": "选择您的客户类型",
+    "kembali": "返回"
+  },
+  "cookieBanner": {
+    "ariaLabel": "Cookie 提示",
+    "heading": "我们使用 Cookie",
+    "description": "Cookie 帮助我们保障网站安全、记住您的偏好，并提供更相关的内容。您可以随时更改此选择。",
+    "learnMore": "查看 Cookie 政策",
+    "settingsHeading": "Cookie 设置",
+    "acceptAll": "接受全部",
+    "savePrefs": "保存选择",
+    "rejectAll": "拒绝全部",
+    "settings": "管理偏好设置",
+    "categories": {
+      "essential": {
+        "label": "必要",
+        "desc": "维持登录会话、安全性及网站基本功能，无法关闭。"
+      },
+      "functional": {
+        "label": "功能性",
+        "desc": "记住您的偏好设置，例如语言和最近查看的汇率。"
+      },
+      "analytics": {
+        "label": "分析",
+        "desc": "帮助我们了解哪些页面被最常使用。"
+      },
+      "marketing": {
+        "label": "营销",
+        "desc": "定制您在其他网站上看到的 BCA 优惠和广告。"
+      }
+    }
+  },
+  "footer": {
+    "kantorPusat": "总部",
+    "alamat": "Menara BCA, Grand Indonesia,\nJl. MH Thamrin No. 1\nJakarta 10310",
+    "copyright": "版权所有 © 2026 PT Bank Central Asia Tbk，保留所有权利",
+    "ojkLine": "BCA 受印度尼西亚金融服务管理局（OJK）与印度尼西亚银行监管",
+    "lpsLinePrefix": "BCA 是 LPS 存款保险计划的参与者。每位客户每家银行受 LPS 担保的最高存款金额为20亿印尼盾。如需查询 LPS 担保利率，请点击",
+    "lpsLinkLabel": "这里",
+    "linkColumns": {
+      "Tentang BCA": {
+        "heading": "关于BCA",
+        "links": [
+          "公司简介",
+          "BCA招聘",
+          "新闻与新闻稿",
+          "奖项荣誉"
+        ]
+      },
+      "Layanan": {
+        "heading": "服务",
+        "links": [
+          "分行与ATM位置",
+          "帮助中心",
+          "优惠",
+          "模拟计算器"
+        ]
+      },
+      "Produk": {
+        "heading": "产品",
+        "links": [
+          "myBCA",
+          "信用卡",
+          "贷款",
+          "企业信贷"
+        ]
+      }
+    },
+    "bottomLinks": [
+      "SBDK",
+      "BCA网点",
+      "帮助中心",
+      "隐私政策",
+      "条款与条件"
+    ]
+  },
+  "mybca": {
+    "heading": "所有银行业务需求，尽在掌握",
+    "description": "从查询余额到缴费，通过 myBCA 几秒钟即可完成。",
+    "downloadDesktop": "立即下载",
+    "downloadMobile": "下载 myBCA"
+  },
+  "news": {
+    "eyebrow": "新闻与洞察",
+    "heading": "BCA 最新动态",
+    "seeMore": "查看更多"
+  },
+  "megamenu": {
+    "Simpanan": {
+      "label": "储蓄",
+      "products": [
+        "Tahapan",
+        "Tahapan Xpresi",
+        "Tahapan Berjangka",
+        "定期存款",
+        "查看全部储蓄产品"
+      ],
+      "ctaLabel": "比较储蓄产品",
+      "links": [
+        {
+          "label": "如何在账户间充值和转账",
+          "type": "video"
+        },
+        {
+          "label": "Tahapan、Tapres 与定期存款的区别"
+        },
+        {
+          "label": "各储蓄产品的最低余额和管理费是多少？"
+        },
+        {
+          "label": "开设BCA账户所需的条件与文件"
+        }
+      ],
+      "editorialTitle": "开户即可获得高达10万印尼盾的QRIS返现"
+    },
+    "Kartu Kredit": {
+      "label": "信用卡",
+      "products": [
+        "BCA Everyday Card",
+        "BCA Visa Batman",
+        "BCA Mastercard Black",
+        "Reward BCA",
+        "查看全部信用卡"
+      ],
+      "ctaLabel": "比较信用卡",
+      "links": [
+        {
+          "label": "如何通过网站申请信用卡",
+          "type": "video"
+        },
+        {
+          "label": "哪种信用卡最适合我？"
+        },
+        {
+          "label": "申请BCA信用卡的条件"
+        },
+        {
+          "label": "如何偿还BCA信用卡账单"
+        }
+      ],
+      "editorialTitle": "立即申请信用卡，终身免年费并享50万印尼盾欢迎奖励"
+    },
+    "Pinjaman": {
+      "label": "贷款",
+      "products": [
+        "Paylater BCA",
+        "住房贷款（KPR）",
+        "车辆贷款（KKB）",
+        "BCA个人贷款",
+        "查看全部贷款"
+      ],
+      "ctaLabel": "计算预估分期还款",
+      "links": [
+        {
+          "label": "从申请到放款的完整流程",
+          "type": "video"
+        },
+        {
+          "label": "如何通过myBCA在线申请住房贷款"
+        },
+        {
+          "label": "申请BCA贷款所需的条件与文件"
+        },
+        {
+          "label": "我最多可以申请多少贷款额度？"
+        }
+      ],
+      "editorialTitle": "首年住房贷款特惠利率2.99%"
+    },
+    "e-Banking": {
+      "label": "网上银行",
+      "products": [
+        "myBCA",
+        "KlikBCA",
+        "Sakuku",
+        "e-Branch",
+        "查看全部网上银行服务"
+      ],
+      "ctaLabel": "比较网上银行服务",
+      "links": [
+        {
+          "label": "新用户如何激活myBCA",
+          "type": "video"
+        },
+        {
+          "label": "如何通过myBCA为Flazz充值"
+        },
+        {
+          "label": "myBCA的特色功能"
+        },
+        {
+          "label": "myBCA与KlikBCA有什么区别？"
+        }
+      ],
+      "editorialTitle": "在myBCA使用QRIS消费，指定商户享最高50%折扣"
+    },
+    "Investasi": {
+      "label": "投资",
+      "products": [
+        "共同基金",
+        "债券",
+        "政府证券",
+        "客户资金账户",
+        "查看全部投资产品"
+      ],
+      "ctaLabel": "计算投资潜力",
+      "links": [
+        {
+          "label": "根据风险偏好选择投资产品指南",
+          "type": "video"
+        },
+        {
+          "label": "如何通过myBCA购买共同基金"
+        },
+        {
+          "label": "共同基金、债券与政府证券有什么区别？"
+        },
+        {
+          "label": "在BCA的最低投资金额是多少？"
+        }
+      ],
+      "editorialTitle": "现在购买政府债券，享受高于定期存款的特别收益"
+    },
+    "Asuransi": {
+      "label": "保险",
+      "products": [
+        "人寿保险",
+        "健康保险",
+        "财产保险",
+        "车辆保险",
+        "查看全部保险产品"
+      ],
+      "ctaLabel": "计算预估保费",
+      "links": [
+        {
+          "label": "人寿保险与健康保险有什么区别？",
+          "type": "video"
+        },
+        {
+          "label": "为家人选择合适的保险"
+        },
+        {
+          "label": "人寿保险与健康保险有什么区别？"
+        }
+      ],
+      "editorialTitle": "首年投保享保费20%折扣"
+    },
+    "Transaksi": {
+      "label": "交易",
+      "products": [
+        "Flazz",
+        "Firecash",
+        "汇款",
+        "查看全部交易服务"
+      ],
+      "ctaLabel": "计算预估保费",
+      "links": [
+        {
+          "label": "通过myBCA直接为Flazz充值的便捷方式",
+          "type": "video"
+        },
+        {
+          "label": "海外汇款完整指南"
+        },
+        {
+          "label": "在附近分行提取Firecash资金且无手续费的条件与方法"
+        }
+      ],
+      "editorialTitle": "海外汇款免电汇费，享最优惠汇率"
+    }
+  },
+  "halobca": {
+    "label": "HaloBCA",
+    "title": "欢迎使用 Halo BCA Chat",
+    "subtitle": "请填写您的资料，以便我们与您联系。",
+    "fields": {
+      "nama": "姓名",
+      "namaPlaceholder": "全名",
+      "email": "电子邮箱",
+      "emailPlaceholder": "name@email.com",
+      "telepon": "电话",
+      "teleponPlaceholder": "08xxxxxxxxxx",
+      "produk": "产品 / 服务",
+      "produkPlaceholder": "请选择产品或服务"
+    },
+    "products": [
+      "储蓄",
+      "信用卡",
+      "贷款",
+      "myBCA / KlikBCA",
+      "其他"
+    ],
+    "captcha": "我不是机器人",
+    "terms": "Halo BCA Chat 条款与条件",
+    "submit": "开始对话",
+    "errors": {
+      "required": "此项为必填",
+      "email": "电子邮箱格式无效",
+      "phone": "电话号码无效"
+    }
+  }
+}

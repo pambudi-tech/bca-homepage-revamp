@@ -1,10 +1,18 @@
-export default function MyBcaSection() {
+import { getTranslations } from "next-intl/server";
+import { getAverageColor, rgbToCss } from "@/lib/image-color";
+
+export default async function MyBcaSection() {
+  const t = await getTranslations("mybca");
+  const backdropColor = await getAverageColor("/assets/mybca/bg.webp");
+  const backdropCss = rgbToCss(backdropColor);
+  const backdropFadeCss = rgbToCss(backdropColor, 0);
+
   return (
     <section className="relative">
       {/* ===== Desktop (>= xl): card left, phone-woman right, side by side.
-           Entrance staggers back-to-front: glow fades, then the phone-woman
-           rises, then the glass card settles last (auto 90ms steps). ===== */}
-      <div data-reveal-group className="relative hidden h-[360px] bg-[#6a6a6a] xl:block">
+           Entrance staggers back-to-front: phone-woman rises, then the glass
+           card settles last (auto 90ms steps). ===== */}
+      <div data-reveal-group className="relative hidden h-[360px] xl:block">
         <div className="absolute inset-0 overflow-clip">
           <img loading="lazy" decoding="async"
             src="/assets/mybca/bg.webp"
@@ -15,12 +23,6 @@ export default function MyBcaSection() {
 
         <div className="absolute left-1/2 top-[-76px] h-[470px] w-[1080px] -translate-x-1/2">
           <img loading="lazy" decoding="async"
-            data-reveal="fade"
-            src="/assets/mybca/glow.svg"
-            alt=""
-            className="absolute left-[514px] top-[76px] h-[360px] w-[782px]"
-          />
-          <img loading="lazy" decoding="async"
             data-reveal
             src="/assets/mybca/phone-woman.webp"
             alt=""
@@ -29,66 +31,72 @@ export default function MyBcaSection() {
 
           <div data-reveal className="absolute left-0 top-[108px] flex h-[328px] w-[480px] flex-col items-start justify-between rounded-t-3xl border-2 border-white/15 bg-gradient-to-b from-[rgba(18,20,23,0.25)] to-[rgba(18,20,23,0.5)] px-8 pb-10 pt-6 shadow-[-8px_0px_16px_0px_rgba(0,0,0,0.25)] backdrop-blur-[14px]">
             <div className="flex w-full flex-col items-start gap-4 text-white">
-              <p className="w-full text-[28px] font-semibold leading-10 tracking-[-0.64px]">
-                Semua Kebutuhan Perbankan dalam Satu Genggaman
+              <p className="w-full text-[28px] font-semibold leading-10 tracking-[-0.64px] [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+                {t("heading")}
               </p>
-              <p className="w-full text-base leading-6 opacity-80">
-                Dari cek saldo sampai bayar tagihan, semua selesai dalam hitungan detik lewat myBCA.
+              <p className="w-full text-base leading-6 text-neutral-500 opacity-80">
+                {t("description")}
               </p>
             </div>
             <button className="flex h-12 items-center justify-center gap-1 rounded-full bg-blue-500 px-6 text-white">
               <img loading="lazy" decoding="async" src="/assets/mybca/icon-download.svg" alt="" className="size-5" />
-              <span className="text-base font-semibold">Download Sekarang</span>
+              <span className="text-base font-semibold">{t("downloadDesktop")}</span>
             </button>
           </div>
         </div>
       </div>
 
       {/* ===== Mobile (< xl): phone-woman on top, glass card overlapping below.
-           Geometry follows the 392-wide Figma frame: the blue backdrop starts 20px
-           down so the phone-woman breaks out into the section above it, the office
-           photo runs 401px tall behind everything, and the glass card is flush with
-           the section bottom, overlapping the stage by 69px (17.6% of the width). ===== */}
-      <div data-reveal-group className="relative overflow-clip xl:hidden">
-        {/* Full-bleed backdrop: solid blue from y=20 down, office photo on top of it. */}
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 top-5 bg-blue-500">
-          <div className="absolute inset-x-0 top-0 h-[401px] overflow-clip">
-            <img loading="lazy" decoding="async" src="/assets/mybca/bg.webp" alt="" className="size-full object-cover" />
-            <div className="absolute inset-0 bg-blue-500 mix-blend-multiply" />
+           Same trick as desktop: the group itself has no overflow-clip, so the subject
+           is free to overflow above the section. Only the backdrop (photo + matched
+           fill) is clipped, flush to the section edge — seamless with whatever's above. ===== */}
+      <div data-reveal-group className="relative xl:hidden">
+        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-clip">
+          {/* Fixed clip window — the photo inside is taller and shifted up, but always
+              gets cut off at this box's edges, so raising it never bleeds past the backdrop. */}
+          <div className="absolute inset-x-0 top-12 h-[480px] overflow-clip">
+            <img loading="lazy" decoding="async"
+              src="/assets/mybca/bg.webp"
+              alt=""
+              className="absolute inset-x-0 top-[-80px] h-[560px] w-full object-cover"
+            />
           </div>
 
-          {/* Radial glow halo, sitting slightly right of centre behind the woman. */}
-          <img loading="lazy" decoding="async"
-            src="/assets/mybca/glow-mobile.svg"
-            alt=""
-            className="absolute inset-x-0 top-0 h-[401px] w-full"
+          {/* Dissolves the photo's bottom edge into the matched fill below it. */}
+          <div
+            className="absolute inset-x-0 top-[412px] h-[116px]"
+            style={{ backgroundImage: `linear-gradient(to bottom, ${backdropFadeCss}, ${backdropCss})` }}
           />
 
-          {/* Dissolves the office photo into solid blue before its hard bottom edge. */}
-          <div className="absolute inset-x-0 top-[285px] h-[116px] bg-gradient-to-b from-[rgba(0,92,170,0)] to-blue-500" />
+          {/* Matched fill for everything below the photo. */}
+          <div className="absolute inset-x-0 top-[528px] bottom-0" style={{ backgroundColor: backdropCss }} />
         </div>
 
         <div className="relative mx-auto w-full max-w-[440px]">
-          {/* Stage keeps the Figma 392x412 ratio so the overlap below scales with it. */}
-          <div className="relative aspect-[392/412]">
-            {/* Bottom edge dissolves into the blue backdrop instead of cutting off. */}
-            <img loading="lazy" decoding="async"
-              data-reveal
-              src="/assets/mybca/phone-woman-mobile.webp"
-              alt="Aplikasi myBCA di genggaman"
-              className="absolute left-[51.02%] top-0 w-[91.84%] -translate-x-1/2 mask-b-from-60% mask-b-to-96%"
-            />
+          {/* Stage keeps the Figma 392x412 ratio so the overlap below scales with it.
+              Lifted above the backdrop so the subject pokes into the section above,
+              unclipped — mirrors the desktop phone-woman's negative top offset. */}
+          <div className="relative -mt-14 aspect-[392/412]">
+            {/* Clipped at the card's top edge (17.6% overlap) so the subject never shows behind the glass. */}
+            <div className="absolute inset-0 bottom-[17.6%] overflow-clip">
+              <img loading="lazy" decoding="async"
+                data-reveal
+                src="/assets/mybca/phone-woman-mobile.webp"
+                alt="Aplikasi myBCA di genggaman"
+                className="absolute left-[51.02%] top-0 w-[91.84%] -translate-x-1/2"
+              />
+            </div>
           </div>
 
           {/* Glass card — pulled up to overlap the phone-woman's lower edge.
               data-reveal sits on this wrapper (not the .hero-search card) so
               the entrance never touches the backdrop-filter element. */}
-          <div data-reveal className="relative -mt-[17.6%] px-2.5">
+          <div data-reveal className="relative -mt-[calc(17.6%+8px)] px-2.5">
             {/* Fill + outline reuse the product-card glass treatment: flat black 30%
                 over a saturating backdrop filter, with `hero-search` painting the 2px
                 top-lit gradient outline. */}
             <div
-              className="hero-search relative flex min-h-[320px] flex-col items-center justify-between overflow-clip rounded-t-3xl px-6 py-8 text-center shadow-[-8px_0px_16px_0px_rgba(0,0,0,0.25)]"
+              className="hero-search relative flex flex-col items-center gap-8 overflow-clip rounded-t-3xl px-6 py-8 text-center shadow-[-8px_0px_16px_0px_rgba(0,0,0,0.25)]"
               style={{
                 backgroundColor: "rgba(0,0,0,0.3)",
                 backdropFilter: "blur(16px) saturate(1.25)",
@@ -96,20 +104,18 @@ export default function MyBcaSection() {
                 isolation: "isolate",
               }}
             >
-              {/* Capped at the Figma text width so the heading keeps its 3-line wrap
-                  and the card's justify-between rhythm holds above 392px. */}
+              {/* Capped at the Figma text width so the heading keeps its 3-line wrap. */}
               <div className="flex w-full max-w-80 flex-col items-center gap-4">
-                <p className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-white">
-                  Semua Kebutuhan Perbankan dalam Satu Genggaman
+                <p className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+                  {t("heading")}
                 </p>
-                <p className="w-64 max-w-full text-sm leading-5 text-blue-300 opacity-80">
-                  Dari cek saldo sampai bayar tagihan, semua selesai dalam hitungan detik lewat
-                  myBCA.
+                <p className="w-64 max-w-full text-sm leading-5 text-neutral-500 opacity-80">
+                  {t("description")}
                 </p>
               </div>
               <button className="flex h-10 items-center justify-center gap-1 rounded-full bg-blue-500 px-5 text-white transition-transform active:scale-95">
                 <img loading="lazy" decoding="async" src="/assets/mybca/icon-download.svg" alt="" className="size-5" />
-                <span className="text-sm font-semibold leading-[14px]">Download myBCA</span>
+                <span className="text-sm font-semibold leading-[14px]">{t("downloadMobile")}</span>
               </button>
             </div>
           </div>

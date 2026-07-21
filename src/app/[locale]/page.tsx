@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import HeroArea from "@/components/home/HeroArea";
 import Navbar from "@/components/home/Navbar";
 import ScrollCue from "@/components/home/ScrollCue";
@@ -8,20 +9,29 @@ import NewsSection from "@/components/home/NewsSection";
 import Footer from "@/components/home/Footer";
 import BackToTop from "@/components/home/BackToTop";
 import CookieBanner from "@/components/home/CookieBanner";
+import HaloBcaChat from "@/components/home/HaloBcaChat";
 import ScrollReveal from "@/components/ScrollReveal";
 import { getKursHariIni } from "@/lib/kurs";
 import { getBanners } from "@/lib/banners";
 import { getProductCategories } from "@/lib/products";
 import { getPromos } from "@/lib/promos";
 import { getNewsCategories } from "@/lib/news";
+import type { AppLocale } from "@/i18n/routing";
 
-export default async function Home() {
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   // One `now` for the whole render so promo badges and their countdown text
   // can't disagree by a few milliseconds.
   const now = new Date();
   const [kurs, banners, produk, promos, news] = await Promise.all([
     getKursHariIni(),
-    getBanners(),
+    getBanners(locale as AppLocale),
     getProductCategories(),
     getPromos(now),
     getNewsCategories(),
@@ -55,6 +65,7 @@ export default async function Home() {
 
       <BackToTop />
       <CookieBanner />
+      <HaloBcaChat />
       {/* Orchestrates every [data-reveal] entrance below the hero — one
           observer pair for the whole page, sections stay server components. */}
       <ScrollReveal />

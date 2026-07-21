@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 const STORAGE_KEY = "bca-cookie-consent";
 
@@ -15,28 +16,7 @@ type Prefs = {
 const ALL_OFF: Prefs = { functional: false, analytics: false, marketing: false };
 const ALL_ON: Prefs = { functional: true, analytics: true, marketing: true };
 
-const CATEGORIES: { key: keyof Prefs | "essential"; label: string; desc: string }[] = [
-  {
-    key: "essential",
-    label: "Wajib",
-    desc: "Menjaga sesi login, keamanan, dan fungsi dasar situs. Tidak dapat dinonaktifkan.",
-  },
-  {
-    key: "functional",
-    label: "Fungsional",
-    desc: "Mengingat preferensi Anda, seperti bahasa dan kurs yang terakhir dilihat.",
-  },
-  {
-    key: "analytics",
-    label: "Analitik",
-    desc: "Membantu kami memahami halaman mana yang paling sering digunakan.",
-  },
-  {
-    key: "marketing",
-    label: "Pemasaran",
-    desc: "Menyesuaikan promo dan iklan BCA yang Anda lihat di situs lain.",
-  },
-];
+const CATEGORY_KEYS: (keyof Prefs | "essential")[] = ["essential", "functional", "analytics", "marketing"];
 
 function hasDecided(): boolean {
   try {
@@ -49,6 +29,11 @@ function hasDecided(): boolean {
 }
 
 export default function CookieBanner() {
+  const t = useTranslations("cookieBanner");
+  const categories = CATEGORY_KEYS.map((key) => ({
+    key,
+    ...(t.raw(`categories.${key}`) as { label: string; desc: string }),
+  }));
   // `mounted` gates the whole thing so the server never renders a banner that
   // a returning visitor would see flash before localStorage says "sudah".
   const [mounted, setMounted] = useState(false);
@@ -79,14 +64,14 @@ export default function CookieBanner() {
 
   const toggle = (key: keyof Prefs) => setPrefs((p) => ({ ...p, [key]: !p[key] }));
 
-  const primaryLabel = settingsOpen ? "Simpan Pilihan" : "Terima Semua";
+  const primaryLabel = settingsOpen ? t("savePrefs") : t("acceptAll");
   const onPrimary = () => save(settingsOpen ? prefs : ALL_ON);
 
   return (
     <aside
       role="dialog"
       aria-live="polite"
-      aria-label="Pemberitahuan cookie"
+      aria-label={t("ariaLabel")}
       className={`fixed inset-x-0 bottom-0 z-[60] transition-all duration-300 ease-out sm:inset-x-auto sm:bottom-6 sm:left-6 sm:w-[calc(100%-3rem)] sm:max-w-[420px] ${
         shown
           ? "pointer-events-auto translate-y-0 opacity-100"
@@ -102,11 +87,11 @@ export default function CookieBanner() {
         {settingsOpen ? (
           <div>
             <h2 className="text-base font-bold leading-6 text-neutral-800">
-              Pengaturan Cookie
+              {t("settingsHeading")}
             </h2>
             {/* Caps the list on short screens so the buttons stay reachable. */}
             <div className="mt-3 max-h-[45vh] space-y-3 overflow-y-auto pr-1">
-              {CATEGORIES.map((cat) => {
+              {categories.map((cat) => {
                 const locked = cat.key === "essential";
                 const on = locked || prefs[cat.key as keyof Prefs];
                 return (
@@ -149,11 +134,10 @@ export default function CookieBanner() {
             </span>
             <div>
               <h2 className="text-base font-bold leading-6 text-neutral-800">
-                Kami menggunakan cookie
+                {t("heading")}
               </h2>
               <p className="mt-1.5 text-sm leading-5 text-neutral-700">
-                Cookie membantu kami menjaga keamanan situs, mengingat preferensi Anda, dan
-                menyajikan konten yang lebih relevan. Anda dapat mengubah pilihan ini kapan saja.
+                {t("description")}
               </p>
               <a
                 href="https://www.bca.co.id/id/Syarat-dan-Ketentuan/SK-cookies"
@@ -161,7 +145,7 @@ export default function CookieBanner() {
                 rel="noopener noreferrer"
                 className="mt-2 inline-block text-sm font-semibold text-blue-500 underline underline-offset-2 transition-colors hover:text-blue-400"
               >
-                Pelajari Kebijakan Cookie
+                {t("learnMore")}
               </a>
             </div>
           </div>
@@ -177,7 +161,7 @@ export default function CookieBanner() {
             onClick={() => (settingsOpen ? save(ALL_OFF) : setSettingsOpen(true))}
             className="flex h-12 flex-1 items-center justify-center whitespace-nowrap rounded-full border border-neutral-400 bg-neutral-100 px-4 text-base font-semibold text-neutral-700 transition-[border-color,color,transform] duration-200 active:scale-95 sm:px-6 sm:text-sm sm:active:scale-100 sm:hover:border-neutral-600 sm:hover:text-neutral-800"
           >
-            {settingsOpen ? "Tolak Semua" : "Atur Preferensi"}
+            {settingsOpen ? t("rejectAll") : t("settings")}
           </button>
           <button
             type="button"

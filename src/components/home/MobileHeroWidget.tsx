@@ -9,9 +9,13 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
+import { useTranslations } from "next-intl";
 import type { KursEntry } from "@/lib/kurs";
 import { useLenis } from "@/components/SmoothScroll";
 import { useIsLive } from "@/lib/useIsLive";
+import { useLayoutVariant } from "@/lib/useLayoutVariant";
+import { HERO_VARIANTS, LOGIN_DESTINATIONS, type HeroVariant } from "./hero-variant";
+import LayoutSwitcher from "./LayoutSwitcher";
 import SearchRecommendation from "./SearchRecommendation";
 import {
   addRecentSearch,
@@ -26,12 +30,6 @@ import {
  * Animated search placeholder (compact 14px variant of the desktop one)
  * ------------------------------------------------------------------ */
 
-const PLACEHOLDERS = [
-  "Buka rekening BCA",
-  "Aktivasi Paylater BCA",
-  "Pengajuan Kartu Kredit",
-  "Install myBCA",
-];
 const LINE_H = 48; // matches the h-12 slot height
 
 type SlotState = "active" | "exiting" | "waiting";
@@ -43,13 +41,21 @@ function slotStyle(state: SlotState): CSSProperties {
   return { transform: `translateY(${LINE_H}px)`, opacity: 0 };
 }
 
-function SearchPlaceholder({ visible, live }: { visible: boolean; live: boolean }) {
+function SearchPlaceholder({
+  placeholders,
+  visible,
+  live,
+}: {
+  placeholders: string[];
+  visible: boolean;
+  live: boolean;
+}) {
   const [slots, setSlots] = useState<Slot[]>([
-    { text: PLACEHOLDERS[0], state: "active", instant: false },
-    { text: PLACEHOLDERS[1 % PLACEHOLDERS.length], state: "waiting", instant: false },
+    { text: placeholders[0], state: "active", instant: false },
+    { text: placeholders[1 % placeholders.length], state: "waiting", instant: false },
   ]);
   const activeSlotRef = useRef(0);
-  const nextIndexRef = useRef(2 % PLACEHOLDERS.length);
+  const nextIndexRef = useRef(2 % placeholders.length);
 
   useEffect(() => {
     if (!live) return;
@@ -64,7 +70,7 @@ function SearchPlaceholder({ visible, live }: { visible: boolean; live: boolean 
       });
       activeSlotRef.current = waitingIdx;
       setTimeout(() => {
-        const text = PLACEHOLDERS[nextIndexRef.current % PLACEHOLDERS.length];
+        const text = placeholders[nextIndexRef.current % placeholders.length];
         nextIndexRef.current += 1;
         setSlots((prev) => {
           const next = [...prev];
@@ -83,7 +89,7 @@ function SearchPlaceholder({ visible, live }: { visible: boolean; live: boolean 
       }, 700);
     }, 2500);
     return () => clearInterval(id);
-  }, [live]);
+  }, [live, placeholders]);
 
   return (
     <div
@@ -130,39 +136,46 @@ const LOGIN_CARD_WIDTH_COLLAPSED = 160;
 // tile labels wrap on narrow screens, so the real open height is measured and
 // the rail and the kurs bar below it follow it.
 const RAIL_H = 104;
+// Initial phase shows only the Login Cepat card, hugging its content: 14
+// (padding) + 38 (icon/text row) + 14 (padding) = 66px.
+const RAIL_H_INITIAL_COLLAPSED = 66;
 const RAIL_H_OPEN = 180;
-// Kurs top padding clears the rail and leaves the same 16px gap in both states.
-const KURS_PT = 92;
+// Kurs top padding clears the rail and leaves the same 16px gap in both
+// states — derived from the collapsed rail height (see the geometry note by
+// the padding-top style below), so it moves with `collapsedRailH`.
+const kursPtFor = (collapsedRailH: number) => collapsedRailH - 12;
 // Focusing the search scrolls the widget this far below the viewport top —
 // so the dropdown gets the rest of the screen to open into.
 const SEARCH_TOP_GAP = 24;
 
-const QUICK_ACTIONS: QuickAction[] = [
-  { title: "Masuk ke BCA", subtitle: "myBCA • KlikBCA", icon: "/assets/quick-action/login.svg" },
-  {
-    title: "Promo Terkini",
-    subtitle: "Penawaran Terbaik",
-    icon: "/assets/quick-action/discount-shape.svg",
-    scrollTo: "#promo",
-  },
-  {
-    title: "Bantuan HaloBCA",
-    subtitle: "1500888 · Chat · Email",
-    icon: "/assets/quick-action/message-question.svg",
-  },
-  {
-    title: "Lokasi BCA",
-    subtitle: "Cabang & ATM BCA",
-    icon: "/assets/quick-action/location.svg",
-    href: "https://www.bca.co.id/id/lokasi-bca",
-  },
-  {
-    title: "Webform BCA",
-    subtitle: "Pengajuan produk BCA",
-    icon: "/assets/quick-action/document.svg",
-    href: "https://www.bca.co.id/id/Forms/webform-bca",
-  },
-];
+function useQuickActions(t: (key: string) => string): QuickAction[] {
+  return [
+    { title: t("loginCepat.title"), subtitle: t("loginCepat.subtitle"), icon: "/assets/quick-action/login.svg" },
+    {
+      title: t("quickActions.promo.title"),
+      subtitle: t("quickActions.promo.subtitle"),
+      icon: "/assets/quick-action/discount-shape.svg",
+      scrollTo: "#promo",
+    },
+    {
+      title: t("quickActions.halobca.title"),
+      subtitle: t("quickActions.halobca.subtitle"),
+      icon: "/assets/quick-action/message-question.svg",
+    },
+    {
+      title: t("quickActions.location.title"),
+      subtitle: t("quickActions.location.subtitle"),
+      icon: "/assets/quick-action/location.svg",
+      href: "https://www.bca.co.id/id/lokasi-bca",
+    },
+    {
+      title: t("quickActions.webform.title"),
+      subtitle: t("quickActions.webform.subtitle"),
+      icon: "/assets/quick-action/document.svg",
+      href: "https://www.bca.co.id/id/Forms/webform-bca",
+    },
+  ];
+}
 
 /* A quick-action card. Renders as <a> when the action points at a real URL so
    long-press / open-in-new-tab work; otherwise it's a plain button. */
@@ -204,7 +217,7 @@ function QuickActionCard({
  * with the title, and everything relaxes onto one row on wider screens.
  * ------------------------------------------------------------------ */
 
-function KursCard({ entry }: { entry: KursEntry }) {
+function KursCard({ entry, beliLabel, jualLabel }: { entry: KursEntry; beliLabel: string; jualLabel: string }) {
   return (
     <div className="flex w-full max-w-[360px] items-center justify-between gap-2 rounded-xl border border-[#017CBD] bg-black/10 px-5 py-2.5">
       {/* title: fill but caps at 84px, so it yields room first — flag + code
@@ -217,11 +230,11 @@ function KursCard({ entry }: { entry: KursEntry }) {
           rather than shrinking — the title is what collapses first. */}
       <div className="flex min-w-[120px] flex-1 flex-wrap items-center justify-end gap-2 font-semibold text-blue-300 opacity-90">
         <div className="flex items-center gap-2">
-          <span className="w-8 text-xs uppercase leading-[12px] tracking-[1.5px]">Beli</span>
+          <span className="w-8 text-center text-[10px] uppercase leading-[12px] tracking-[1.5px]">{beliLabel}</span>
           <span className="w-[72px] text-right text-sm leading-5">{entry.beli}</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="w-8 text-xs uppercase leading-[12px] tracking-[1.5px]">Jual</span>
+          <span className="w-8 text-center text-[10px] uppercase leading-[12px] tracking-[1.5px]">{jualLabel}</span>
           <span className="w-[72px] text-right text-sm leading-5">{entry.jual}</span>
         </div>
       </div>
@@ -236,6 +249,17 @@ export default function MobileHeroWidget({
   kurs: KursEntry[];
   onSearchActiveChange?: (active: boolean) => void;
 }) {
+  const t = useTranslations("hero");
+  const tNav = useTranslations("nav");
+  const placeholders = t.raw("placeholders") as string[];
+  const ALL_QUICK_ACTIONS = useQuickActions(t);
+  // Shared localStorage key with the desktop widget's own switcher, so
+  // flipping either one is reflected on the other after a refresh.
+  const [variant, setVariant] = useLayoutVariant<HeroVariant>("hero", "final", HERO_VARIANTS);
+  // Initial phase only ever shows the Login Cepat card — no promo / HaloBCA /
+  // location / webform alongside it.
+  const QUICK_ACTIONS = variant === "initial" ? ALL_QUICK_ACTIONS.slice(0, 1) : ALL_QUICK_ACTIONS;
+  const collapsedRailH = variant === "initial" ? RAIL_H_INITIAL_COLLAPSED : RAIL_H;
   const [searchValue, setSearchValue] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
   const [recent, setRecent] = useState<string[]>([]);
@@ -352,16 +376,17 @@ export default function MobileHeroWidget({
     return () => ro.disconnect();
   }, []);
 
-  // Width is the only thing that changes how the tile labels wrap, so the
-  // panel's natural height is re-measured whenever the card is retargeted.
-  // Layout effect, so the rail and kurs bar are sized in the same frame the
-  // panel reflows — measuring later would show one frame of the old height.
+  // Width (tile wrapping) and variant (2 cards vs. the initial phase's 2x2
+  // grid) are what change the panel's natural height, so both re-trigger the
+  // measurement. Layout effect, so the rail and kurs bar are sized in the
+  // same frame the panel reflows — measuring later would show one frame of
+  // the old height.
   useLayoutEffect(() => {
     const el = loginPanelRef.current;
     if (!el) return;
     const h = el.offsetHeight;
     if (h > 0) setLoginPanelH(h);
-  }, [loginCardWidth]);
+  }, [loginCardWidth, variant]);
 
   // Auto-advance the currency every 5s; manual navigation resets the timer.
   // Gated on `live`: above xl this whole widget sits in a `display:none`
@@ -402,6 +427,34 @@ export default function MobileHeroWidget({
     // quick-action rail is absolutely positioned so it straddles the seam,
     // overlapping the panel's empty lower half and the top of the kurs bar.
     <div ref={rootRef} className="relative">
+      {/* prototype-only: flips the Login Cepat panel between the two design
+          phases. Floated 24px above the widget (button height 36px + 24px
+          gap = -60px) rather than on top of the search panel, and dimmed to
+          50% until touched so it doesn't compete with the hero content. Its
+          popover hangs from the right edge so it stays on-screen on a narrow
+          phone. */}
+      <LayoutSwitcher
+        label="Quick Action"
+        value={variant}
+        onChange={setVariant}
+        positionClassName="right-3 -top-[60px]"
+        visibilityClassName="block xl:hidden"
+        menuAlign="right"
+        dimWhenIdle
+        options={[
+          {
+            value: "final",
+            name: "Final Phase",
+            description: "Aksi cepat: login, promo, HaloBCA, lokasi, & webform.",
+          },
+          {
+            value: "initial",
+            name: "Initial Phase",
+            description: "Login Cepat — empat tujuan login langsung ke myBCA & KlikBCA.",
+          },
+        ]}
+      />
+
       {/* 1. Search panel — same glass treatment as the desktop hero search:
              `.hero-search` gradient top-border + reactive backdrop blur. */}
       <div
@@ -420,8 +473,8 @@ export default function MobileHeroWidget({
           }}
         />
         <div className="relative flex w-full flex-col items-center gap-3">
-          <p className="px-2 text-sm font-semibold text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
-            Ada yang bisa kami bantu?
+          <p className="px-2 text-[16px] font-semibold text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+            {t("searchPrompt")}
           </p>
           <div
             ref={searchBarRef}
@@ -459,9 +512,9 @@ export default function MobileHeroWidget({
               }}
               className="relative z-10 h-full w-full bg-transparent pl-6 pr-14 text-base font-semibold text-white focus:outline-none"
             />
-            <SearchPlaceholder visible={!searchValue && !searchFocused} live={live} />
+            <SearchPlaceholder placeholders={placeholders} visible={!searchValue && !searchFocused} live={live} />
             <button
-              aria-label="Cari"
+              aria-label={tNav("search")}
               onClick={() => submitSearch(searchValue)}
               className="absolute right-2 top-1/2 z-10 flex size-9 -translate-y-1/2 items-center justify-center rounded-full bg-white transition-transform active:scale-95"
             >
@@ -476,23 +529,27 @@ export default function MobileHeroWidget({
       <div className="relative overflow-clip rounded-b-3xl bg-gradient-to-b from-cyan-500 to-blue-500 shadow-[inset_0px_-4px_8px_0px_rgba(0,51,94,0.25)]">
         <div
           className="flex items-center gap-4 px-5 pb-5 transition-[padding-top] duration-300 ease-in-out"
-          style={{ paddingTop: loginOpen ? KURS_PT + (loginPanelH - RAIL_H) : KURS_PT }}
+          style={{
+            paddingTop: loginOpen
+              ? kursPtFor(collapsedRailH) + (loginPanelH - collapsedRailH)
+              : kursPtFor(collapsedRailH),
+          }}
         >
           <button
             onClick={() => stepKurs("prev")}
-            aria-label="Kurs sebelumnya"
+            aria-label={t("kursPrev")}
             className="flex size-10 shrink-0 items-center justify-center rounded-full bg-black/20 transition-colors active:bg-black/40"
           >
             <img src="/assets/cycle1/chevron-left.svg" alt="" className="size-6" />
           </button>
           <div className="flex min-w-0 flex-1 items-start overflow-hidden">
             <div key={kursIndex} className={`w-full ${kursDir === "next" ? "kurs-in-next" : "kurs-in-prev"}`}>
-              <KursCard entry={kurs[kursIndex]} />
+              <KursCard entry={kurs[kursIndex]} beliLabel={t("beli")} jualLabel={t("jual")} />
             </div>
           </div>
           <button
             onClick={() => stepKurs("next")}
-            aria-label="Kurs berikutnya"
+            aria-label={t("kursNext")}
             className="flex size-10 shrink-0 items-center justify-center rounded-full bg-black/20 transition-colors active:bg-black/40"
           >
             <img src="/assets/cycle1/chevron-right.svg" alt="" className="size-6" />
@@ -505,7 +562,7 @@ export default function MobileHeroWidget({
       <div
         ref={railRef}
         className="hide-scrollbar absolute inset-x-[-8px] top-[112px] z-10 overflow-x-auto overflow-y-clip transition-[height] duration-300 ease-in-out [scrollbar-width:none]"
-        style={{ height: loginOpen ? loginPanelH : RAIL_H }}
+        style={{ height: loginOpen ? loginPanelH : collapsedRailH }}
       >
         <div className="flex h-full w-max items-start gap-3 px-6">
           {QUICK_ACTIONS.map((action, index) =>
@@ -523,92 +580,139 @@ export default function MobileHeroWidget({
                   : "transition-[background-color]"
                   }`}
                 style={{
-                  width: loginOpen ? loginCardWidth : LOGIN_CARD_WIDTH_COLLAPSED,
+                  // Initial phase's collapsed state is already full-width (a
+                  // horizontal bar with a trailing arrow) rather than a small
+                  // tile, so it doesn't need the width transition final phase
+                  // does when opening.
+                  width: variant === "initial" || loginOpen ? loginCardWidth : LOGIN_CARD_WIDTH_COLLAPSED,
                   backgroundColor: loginOpen ? "#e6f3ff" : "#ffffff",
                 }}
               >
-                <button
-                  onClick={toggleLogin}
-                  aria-expanded={loginOpen}
-                  className={`absolute inset-y-0 left-0 flex w-40 flex-col items-start justify-center gap-2 p-[14px] text-left transition-opacity duration-200 ${loginOpen ? "pointer-events-none opacity-0" : "opacity-100 delay-100"
-                    }`}
-                >
-                  <img src={action.icon} alt="" className="size-6" />
-                  <div className="flex flex-col gap-0.5">
-                    <p className="whitespace-nowrap text-sm font-bold text-neutral-800">
-                      {action.title}
-                    </p>
-                    <p className="whitespace-nowrap text-xs font-normal text-neutral-700">
-                      {action.subtitle}
-                    </p>
-                  </div>
-                </button>
-
-                <div
-                  ref={loginPanelRef}
-                  /* `top-0` rather than `inset-y-0`: the panel sizes to its own
-                     content so its height can be measured, and the rail follows
-                     that instead of the other way round. */
-                  className={`absolute left-0 top-0 flex flex-col gap-3 p-[14px] transition-opacity duration-200 ${loginOpen ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
-                    }`}
-                  style={{ width: loginCardWidth }}
-                >
-                  {/* The whole header collapses the card — tapping the title
-                      again is the same gesture as tapping the X. */}
-                  <button
-                    onClick={toggleLogin}
-                    aria-expanded={loginOpen}
-                    aria-label="Tutup Masuk ke BCA"
-                    className="flex shrink-0 items-center gap-4"
+                {variant === "initial" ? (
+                  /* Initial phase: the header (icon, title, subtitle) sits at
+                     the exact same spot whether the card is collapsed or
+                     open, so it's rendered once and never fades — only the
+                     trailing icon swaps and the grid unfolds below it. That's
+                     what makes the tap read as an in-place expand rather than
+                     a crossfade between two overlapping cards. */
+                  <div
+                    ref={loginPanelRef}
+                    className="absolute left-0 top-0 flex flex-col gap-3 p-[14px]"
+                    style={{ width: loginCardWidth }}
                   >
-                    <img src={action.icon} alt="" className="size-6 shrink-0" />
-                    <div className="flex min-w-0 flex-1 flex-col gap-0.5 text-left">
-                      <p className="text-sm font-bold text-neutral-800">{action.title}</p>
-                      <p className="text-xs font-normal text-neutral-700">{action.subtitle}</p>
+                    <button
+                      onClick={toggleLogin}
+                      aria-expanded={loginOpen}
+                      aria-label={loginOpen ? t("closeLogin") : undefined}
+                      className="flex w-full items-center gap-4 text-left"
+                    >
+                      <img src={action.icon} alt="" className="size-6 shrink-0" />
+                      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                        <p className="whitespace-nowrap text-sm font-bold text-neutral-800">
+                          {action.title}
+                        </p>
+                        <p className="whitespace-nowrap text-xs font-normal text-neutral-700">
+                          {action.subtitle}
+                        </p>
+                      </div>
+                      <img
+                        src={loginOpen ? "/assets/cycle1/outline-close.svg" : "/assets/quick-action/arrow-right.svg"}
+                        alt=""
+                        className="size-5 shrink-0"
+                      />
+                    </button>
+                    <div
+                      className={`grid grid-cols-2 gap-[9px] transition-opacity duration-200 ${loginOpen ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
+                        }`}
+                    >
+                      {LOGIN_DESTINATIONS.map((dest) => (
+                        <a
+                          key={dest.label}
+                          href={dest.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex min-w-0 flex-col items-start justify-start gap-2 rounded-xl border border-neutral-300 bg-white p-[14px] transition-[background-color,transform] duration-200 active:scale-95 active:bg-neutral-200"
+                        >
+                          <img src={dest.icon} alt="" className={`${dest.iconClass} shrink-0 object-contain`} />
+                          <p className="w-full text-left text-sm font-semibold text-neutral-800">
+                            {dest.label}
+                          </p>
+                        </a>
+                      ))}
                     </div>
-                    <img
-                      src="/assets/cycle1/outline-close.svg"
-                      alt=""
-                      className="size-5 shrink-0"
-                    />
-                  </button>
-                  <div className="flex items-stretch gap-[9px]">
-                    {/* `min-w-0` is what lets these actually fill: flex items
-                        default to min-width:auto, so without it the nowrap
-                        label became a floor and the pair stopped shrinking on
-                        narrow screens. */}
-                    <a
-                      href="https://mybca.bca.co.id/auth/login"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex min-w-0 flex-1 flex-col items-start justify-start gap-2 rounded-xl border border-neutral-300 bg-white p-[14px] transition-[background-color,transform] duration-200 active:scale-95 active:bg-neutral-200"
-                    >
-                      <img
-                        src="/assets/quick-action/mybca-logo.svg"
-                        alt=""
-                        className="size-10 shrink-0"
-                      />
-                      <p className="w-full text-left text-sm font-semibold text-neutral-800">
-                        Login ke myBCA
-                      </p>
-                    </a>
-                    <a
-                      href="https://ibank.klikbca.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex min-w-0 flex-1 flex-col items-start justify-start gap-2 rounded-xl border border-neutral-300 bg-white p-[14px] transition-[background-color,transform] duration-200 active:scale-95 active:bg-neutral-200"
-                    >
-                      <img
-                        src="/assets/quick-action/klikbca-logo.webp"
-                        alt=""
-                        className="h-10 w-auto shrink-0 object-contain"
-                      />
-                      <p className="w-full text-left text-sm font-semibold text-neutral-800">
-                        Login ke KlikBCA
-                      </p>
-                    </a>
                   </div>
-                </div>
+                ) : (
+                  <>
+                    <button
+                      onClick={toggleLogin}
+                      aria-expanded={loginOpen}
+                      className={`absolute inset-y-0 left-0 flex w-40 flex-col items-start justify-center gap-2 p-[14px] text-left transition-opacity duration-200 ${loginOpen ? "pointer-events-none opacity-0" : "opacity-100 delay-100"
+                        }`}
+                    >
+                      <img src={action.icon} alt="" className="size-6" />
+                      <div className="flex flex-col gap-0.5">
+                        <p className="whitespace-nowrap text-sm font-bold text-neutral-800">
+                          {action.title}
+                        </p>
+                        <p className="whitespace-nowrap text-xs font-normal text-neutral-700">
+                          {action.subtitle}
+                        </p>
+                      </div>
+                    </button>
+
+                    <div
+                      ref={loginPanelRef}
+                      /* `top-0` rather than `inset-y-0`: the panel sizes to
+                         its own content so its height can be measured, and
+                         the rail follows that instead of the other way
+                         round. */
+                      className={`absolute left-0 top-0 flex flex-col gap-3 p-[14px] transition-opacity duration-200 ${loginOpen ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
+                        }`}
+                      style={{ width: loginCardWidth }}
+                    >
+                      {/* The whole header collapses the card — tapping the
+                          title again is the same gesture as tapping the X. */}
+                      <button
+                        onClick={toggleLogin}
+                        aria-expanded={loginOpen}
+                        aria-label={t("closeLogin")}
+                        className="flex shrink-0 items-center gap-4"
+                      >
+                        <img src={action.icon} alt="" className="size-6 shrink-0" />
+                        <div className="flex min-w-0 flex-1 flex-col gap-0.5 text-left">
+                          <p className="text-sm font-bold text-neutral-800">{action.title}</p>
+                          <p className="text-xs font-normal text-neutral-700">{action.subtitle}</p>
+                        </div>
+                        <img
+                          src="/assets/cycle1/outline-close.svg"
+                          alt=""
+                          className="size-5 shrink-0"
+                        />
+                      </button>
+                      {/* Final phase: myBCA + KlikBCA only, side by side.
+                          `min-w-0` is what lets these actually fill: flex
+                          items default to min-width:auto, so without it the
+                          nowrap label became a floor and the pair stopped
+                          shrinking on narrow screens. */}
+                      <div className="flex items-stretch gap-[9px]">
+                        {[LOGIN_DESTINATIONS[0], LOGIN_DESTINATIONS[2]].map((dest) => (
+                          <a
+                            key={dest.label}
+                            href={dest.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex min-w-0 flex-1 flex-col items-start justify-start gap-2 rounded-xl border border-neutral-300 bg-white p-[14px] transition-[background-color,transform] duration-200 active:scale-95 active:bg-neutral-200"
+                          >
+                            <img src={dest.icon} alt="" className={`${dest.iconClass} shrink-0 object-contain`} />
+                            <p className="w-full text-left text-sm font-semibold text-neutral-800">
+                              {dest.label}
+                            </p>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             ) : (
               <QuickActionCard

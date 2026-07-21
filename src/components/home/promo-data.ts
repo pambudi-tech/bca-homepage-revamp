@@ -95,7 +95,7 @@ export const PROMO_SEEDS: PromoSeed[] = [
   },
 ];
 
-export type PromoBadgeKey = "expired" | "upcoming" | "almostEnd" | "popular" | "new" | "default";
+export type PromoBadgeKey = "expired" | "almostEnd" | "popular" | "default";
 
 /**
  * Redemptions needed before a promo is labelled "Populer". A threshold rather
@@ -137,16 +137,10 @@ export function getPromoBadge(promo: Promo, now: Date): PromoBadge {
 
   if (nowMs > end.getTime()) return { key: "expired", label: "Kadaluarsa" };
 
-  const toStart = start.getTime() - nowMs;
-  if (toStart > 0 && toStart <= 3 * MS_DAY) return { key: "upcoming", label: "Segera Hadir" };
-
   const toEnd = end.getTime() - nowMs;
   if (toEnd > 0 && toEnd < MS_DAY) return { key: "almostEnd", label: "Segera Berakhir!" };
 
   if ((promo.redeemCount ?? 0) >= POPULAR_REDEEM_THRESHOLD) return { key: "popular", label: "Populer" };
-
-  const sinceStart = nowMs - start.getTime();
-  if (sinceStart >= 0 && sinceStart <= 3 * MS_DAY) return { key: "new", label: "Promo Baru" };
 
   return { key: "default", label: null };
 }
@@ -160,20 +154,13 @@ function formatDateID(date: Date) {
 }
 
 export function getPromoTimestamp(promo: Promo, now: Date, badge: PromoBadge) {
-  const { start, end } = resolvePeriod(promo);
+  const { end } = resolvePeriod(promo);
 
   if (badge.key === "expired") return "Promo Berakhir";
 
   if (badge.key === "almostEnd") {
     const hours = Math.max(1, Math.round((end.getTime() - now.getTime()) / MS_HOUR));
     return `Berakhir dalam ${hours} jam`;
-  }
-
-  if (badge.key === "upcoming") {
-    const days = Math.ceil((start.getTime() - now.getTime()) / MS_DAY);
-    if (days <= 0) return "Mulai hari ini";
-    if (days === 1) return "Mulai besok";
-    return `${days} hari lagi`;
   }
 
   return `Hingga ${formatDateID(end)}`;

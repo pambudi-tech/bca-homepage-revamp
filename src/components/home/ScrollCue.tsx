@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 
 export default function ScrollCue() {
+  const t = useTranslations("scrollCue");
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,11 +31,11 @@ export default function ScrollCue() {
       ref={ref}
       className="pointer-events-none flex items-center justify-center gap-4 py-8 transition-opacity duration-300 ease-out xl:py-10"
     >
-      <span className="w-40 text-right text-sm font-normal text-neutral-700 xl:text-base">Terus melangkah</span>
+      <span className="w-40 text-right text-sm font-normal text-neutral-700 xl:text-base">{t("keepGoing")}</span>
       <div className="flex h-9 w-6 shrink-0 items-start justify-center rounded-full border-2 border-[#9cc3e8] pt-1.5">
         <span className="animate-scroll-cue-dot size-2 rounded-full bg-cyan-500" />
       </div>
-      <span className="w-40 text-left text-sm font-normal text-neutral-700 xl:text-base">jelajahi dunia BCA</span>
+      <span className="w-40 text-left text-sm font-normal text-neutral-700 xl:text-base">{t("exploreBca")}</span>
     </div>
   );
 }

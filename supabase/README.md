@@ -37,10 +37,33 @@ Kolom yang perlu diketahui:
 - `is_default` — kategori yang terbuka saat halaman pertama dimuat. Hanya boleh
   satu baris `true`; sudah dijaga unique index.
 - `is_active` — set `false` untuk menyembunyikan tanpa menghapus.
+- `is_featured` — produk yang tampil di layout **Accordion** (dan carousel
+  mobile), yang hanya punya 3 slot. Lihat bagian di bawah.
 
 RLS menyala dengan policy **read-only untuk publik**. Tidak ada policy tulis,
 jadi anon key yang ada di browser tidak bisa mengubah apa pun — perubahan hanya
 lewat dashboard.
+
+### Memilih 3 produk untuk layout Accordion
+
+Satu kategori boleh punya berapa pun produk. Layout **Curved Carousel** memutar
+semuanya; layout **Accordion** hanya punya ruang untuk 3 kartu. Kolom
+`is_featured` yang memilih ketiganya — jadi menambah produk baru tidak otomatis
+merusak layout accordion.
+
+1. SQL Editor → New query → tempel [`product-featured.sql`](./product-featured.sql) → **Run**.
+   File itu menambah kolomnya dan langsung menandai 3 produk dengan `sort_order`
+   terkecil di tiap kategori, jadi tampilan tidak berubah setelah dijalankan.
+2. Ganti pilihan lewat **Table Editor → products**: centang/hapus centang
+   `is_featured`.
+
+Batas 3 per kategori ditegakkan lewat trigger di database — mencentang yang
+keempat akan ditolak dengan pesan yang menyebut kategorinya. Hapus centang salah
+satu dulu. Ini disengaja: tanpa penjaga itu, kartu keempat akan tersimpan rapi
+tapi tidak pernah muncul di mana pun.
+
+> Kalau `product-featured.sql` belum dijalankan, halaman tetap normal — query
+> otomatis mengulang tanpa kolom itu, dan accordion memakai 3 produk pertama.
 
 ## Langkah 2 — cek halaman
 

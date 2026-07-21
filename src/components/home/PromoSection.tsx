@@ -1,16 +1,17 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { getPromoBadge, getPromoTimestamp, type Promo, type PromoBadgeKey } from "./promo-data";
 import Confetti from "./Confetti";
+import EventSlider from "./EventSlider";
 import LayoutSwitcher from "./LayoutSwitcher";
 import { useLayoutVariant } from "@/lib/useLayoutVariant";
 // import PercentGlass from "./PercentGlass"; // temporarily hidden
 
 const RIBBON_STYLE: Record<Exclude<PromoBadgeKey, "default">, { from: string; to: string; shadow: string; text: string }> = {
-  popular: { from: "#00b5f0", to: "#00a5db", shadow: "#01759a", text: "#ffffff" },
-  new: { from: "#fe924d", to: "#fe6706", shadow: "#b24906", text: "#ffffff" },
+  popular: { from: "#fe924d", to: "#fe6706", shadow: "#b24906", text: "#ffffff" },
   almostEnd: { from: "#ffd31c", to: "#ffba00", shadow: "#b28301", text: "#4c3801" },
-  upcoming: { from: "#9531a5", to: "#70257c", shadow: "#501b58", text: "#ffffff" },
   expired: { from: "#cd1923", to: "#9f141b", shadow: "#850e14", text: "#ffffff" },
 };
 
@@ -19,7 +20,7 @@ const CARD_SHADOW =
   "0 1px 2px 0 rgba(204,204,204,0.14), 0 5px 5px 0 rgba(204,204,204,0.12), 0 10px 6px 0 rgba(204,204,204,0.10), 0 18px 20px -8px rgba(0,92,170,0.18)";
 
 /** Layout variants offered by this section's LayoutSwitcher. */
-const PROMO_VARIANTS = ["grid"] as const;
+const PROMO_VARIANTS = ["grid", "strip"] as const;
 type PromoVariant = (typeof PROMO_VARIANTS)[number];
 
 function PromoRibbon({ badgeKey, label }: { badgeKey: Exclude<PromoBadgeKey, "default">; label: string }) {
@@ -48,12 +49,12 @@ function PromoRibbon({ badgeKey, label }: { badgeKey: Exclude<PromoBadgeKey, "de
   );
 }
 
-function PromoCard({ promo, now }: { promo: Promo; now: Date }) {
+function PromoCard({ promo, now, reveal = true }: { promo: Promo; now: Date; reveal?: boolean }) {
   const badge = getPromoBadge(promo, now);
   const timestamp = getPromoTimestamp(promo, now, badge);
 
   return (
-    <div data-reveal className="group relative h-[360px] w-[260px] shrink-0 transition-transform duration-300 ease-out hover:-translate-y-1.5 xl:w-[302px]">
+    <div {...(reveal ? { "data-reveal": "" } : {})} className="group relative h-[360px] w-[260px] shrink-0 transition-transform duration-300 ease-out hover:-translate-y-1.5 xl:w-[302px]">
       <div className="absolute inset-0 flex flex-col items-start overflow-clip rounded-3xl border border-neutral-300 bg-white transition-colors duration-300 group-hover:border-cyan-500">
         <div className="relative h-40 w-full shrink-0 overflow-clip">
           <img loading="lazy" decoding="async"
@@ -77,13 +78,13 @@ function PromoCard({ promo, now }: { promo: Promo; now: Date }) {
           </svg>
         </div>
         <div className="relative w-full flex-1">
-          <div className="absolute left-5 right-5 top-12 flex flex-col items-start gap-1.5">
-            <p className="line-clamp-2 w-full text-base font-bold leading-6 text-neutral-800 transition-colors duration-300 group-hover:text-blue-500 xl:text-[18px] xl:leading-[1.2] xl:tracking-[-0.36px]">
+          <div className="absolute left-5 right-5 top-12 flex flex-col items-start gap-3">
+            <p className="line-clamp-2 w-full text-base font-semibold leading-6 text-neutral-800 transition-colors duration-300 group-hover:text-blue-500 xl:text-[18px] xl:leading-[1.2] xl:tracking-[-0.36px]">
               {promo.title}
             </p>
-            <p className="w-full text-sm font-semibold leading-5 text-neutral-700 xl:text-base">{promo.brand}</p>
+            <p className="w-full text-sm font-semibold leading-5 text-neutral-600 xl:text-base">{promo.brand}</p>
           </div>
-          <div className="absolute bottom-5 left-5 flex h-10 min-w-10 items-center gap-1 overflow-clip rounded-xl border border-neutral-300 bg-white p-3">
+          <div className="absolute bottom-5 left-5 flex items-center gap-1">
             <img loading="lazy" decoding="async" src="/assets/promo/icon-clock.svg" alt="" className="size-5 shrink-0" />
             <span className="whitespace-nowrap text-sm font-semibold leading-5 text-neutral-700">{timestamp}</span>
           </div>
@@ -112,15 +113,16 @@ function PromoCard({ promo, now }: { promo: Promo; now: Date }) {
   );
 }
 
-function MorePromoCard() {
+function MorePromoCard({ reveal = true }: { reveal?: boolean }) {
+  const t = useTranslations("promo");
   return (
     <div
-      data-reveal
+      {...(reveal ? { "data-reveal": "" } : {})}
       className="group relative h-[360px] w-[260px] shrink-0 overflow-clip rounded-3xl border border-white transition-transform duration-300 ease-out hover:-translate-y-1.5 xl:w-[302px]"
-      style={{ backgroundImage: "linear-gradient(180deg, #00b5f0 0%, #005caa 100%)" }}
+      style={{ backgroundImage: "linear-gradient(180deg, #005caa 0%, #00b5f0 100%)" }}
     >
       <p className="absolute left-6 top-6 w-[157px] text-xl font-semibold leading-7 tracking-[-0.4px] text-white xl:text-2xl xl:leading-[1.3] xl:tracking-[-0.48px]">
-        Lihat 200+ Promo Lainnya
+        {t("viewMore")}
       </p>
       {/* diagonal (external) arrow */}
       <svg viewBox="0 0 24 24" fill="none" className="absolute right-[19px] top-6 size-8 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
@@ -139,65 +141,220 @@ function MorePromoCard() {
   );
 }
 
+/**
+ * Left column of the side-by-side "strip" layout: eyebrow, headline, and the
+ * "Lihat 200+" CTA that replaces the grid's MorePromoCard.
+ */
+function PromoLeftColumn() {
+  const t = useTranslations("promo");
+  return (
+    <div className="flex w-[560px] shrink-0 flex-col items-start gap-6">
+      <p className="text-sm font-semibold uppercase leading-[14px] tracking-[2.1px] text-blue-500">
+        {t("eyebrow")}
+      </p>
+      <h2 className="text-[32px] font-semibold leading-10 tracking-[-0.64px] text-blue-700">
+        {t("heading")}
+      </h2>
+      <a
+        href="#"
+        className="group/cta flex h-12 items-center justify-center gap-1 whitespace-nowrap rounded-full bg-blue-500 px-7 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f]"
+      >
+        <span className="px-0.5 text-base font-semibold leading-5 text-white">
+          {t("viewMore")}
+        </span>
+        <img loading="lazy" decoding="async" src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5 transition-transform duration-200 group-hover/cta:translate-x-0.5" />
+      </a>
+    </div>
+  );
+}
+
+/** Steady drift of each film strip, px per second. */
+const STRIP_SPEED = 32;
+/** Vertical breathing room below every card in a strip, px. */
+const STRIP_GAP = 24;
+/** Height of the strips' viewing window, px. */
+const STRIP_WINDOW = 800;
+
+/**
+ * Desktop-only "strip" variant: headline + CTA on the left and two vertical
+ * film strips on the right, one drifting up and one drifting down. Each
+ * strip holds the promo set twice, so wrapping the
+ * shared offset at one set-height loops seamlessly; the down strip renders
+ * the set rotated by half so the columns never mirror each other. Hovering
+ * anywhere over the strips eases both to a stop.
+ */
+function FilmStripLayout({ promos, now }: { promos: Promo[]; now: Date }) {
+  const upRef = useRef<HTMLDivElement>(null);
+  const downRef = useRef<HTMLDivElement>(null);
+  const pausedRef = useRef(false);
+  const speedRef = useRef(0);
+  const offsetRef = useRef(0);
+
+  // Same seven promos in both columns, but the down strip starts half a set
+  // later so identical cards don't ride side by side.
+  const half = Math.ceil(promos.length / 2);
+  const downPromos = [...promos.slice(half), ...promos.slice(0, half)];
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    let last = performance.now();
+    const tick = (t: number) => {
+      const dt = Math.min((t - last) / 1000, 0.1);
+      last = t;
+      // Ease toward the target speed so hover pause/resume glides.
+      const target = pausedRef.current ? 0 : STRIP_SPEED;
+      speedRef.current += (target - speedRef.current) * Math.min(dt * 5, 1);
+      const up = upRef.current;
+      const down = downRef.current;
+      if (up && down) {
+        // One full set = half the duplicated track; wrapping there is seamless
+        // because the second copy is pixel-identical to the first.
+        const set = up.scrollHeight / 2;
+        if (set > 0) {
+          offsetRef.current = (offsetRef.current + speedRef.current * dt) % set;
+          up.style.transform = `translateY(${-offsetRef.current}px)`;
+          down.style.transform = `translateY(${offsetRef.current - set}px)`;
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  const renderTrack = (list: Promo[], ref: React.RefObject<HTMLDivElement | null>) => (
+    <div className="w-[302px]">
+      <div ref={ref}>
+        {/* The set twice over; fixed per-card padding (not flex gap) keeps the
+            repeat period exactly setHeight, so the wrap point never jumps. */}
+        {[...list, ...list].map((promo, i) => (
+          <div key={`${promo.id}-${i}`} style={{ paddingBottom: STRIP_GAP }}>
+            <PromoCard promo={promo} now={now} reveal={false} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    /* No top margin: with the section's xl padding zeroed for this variant,
+       the window is meant to kiss the section's top and bottom edges. */
+    <div className="hidden items-center gap-10 xl:flex">
+      <PromoLeftColumn />
+
+      {/* The strips' window — edges feathered with a mask so cards dissolve
+          in and out instead of guillotining at the boundary. */}
+      <div
+        className="ml-auto flex gap-6 overflow-hidden px-2"
+        style={{
+          height: STRIP_WINDOW,
+          maskImage: "linear-gradient(to bottom, transparent, black 12%, black 88%, transparent)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent, black 12%, black 88%, transparent)",
+        }}
+        onMouseEnter={() => (pausedRef.current = true)}
+        onMouseLeave={() => (pausedRef.current = false)}
+      >
+        {renderTrack(promos, upRef)}
+        {renderTrack(downPromos, downRef)}
+      </div>
+    </div>
+  );
+}
+
 export default function PromoSection({ promos, now }: { promos: Promo[]; now: Date }) {
-  const [variant, setVariant] = useLayoutVariant<PromoVariant>("promo", "grid", PROMO_VARIANTS);
+  const t = useTranslations("promo");
+  const [variant, selectVariant] = useLayoutVariant<PromoVariant>("promo", "grid", PROMO_VARIANTS);
+  // ScrollReveal scans the DOM once on mount, so any variant subtree that
+  // (re)mounts after a live switch must not emit `data-reveal` — it would
+  // never be observed and would sit at opacity 0 forever.
+  const [switched, setSwitched] = useState(false);
+  const setVariant = (next: PromoVariant) => {
+    setSwitched(true);
+    selectVariant(next);
+  };
 
   return (
     <section
       id="promo"
-      className="relative overflow-clip bg-gradient-to-b from-blue-100 to-blue-200 py-12 xl:py-24"
+      className={`relative overflow-clip bg-gradient-to-b from-blue-100 to-blue-200 py-12 ${
+        // The film strip is meant to run edge to edge, so it drops the desktop
+        // padding and lets its 800px window set the section height itself.
+        variant === "strip" ? "xl:py-0" : "xl:py-24"
+      }`}
     >
-      {/* prototype-only: lets the client flip this section's layout live.
-          Only one variant so far — add entries here as alternatives land. */}
+      {/* prototype-only: lets the client flip this section's layout live. */}
       <LayoutSwitcher
         label="Layout Promo"
         value={variant}
         onChange={setVariant}
         options={[
           { value: "grid", name: "Grid Flow", description: "Kartu berjajar rapi dan wrap ke baris berikutnya." },
+          { value: "strip", name: "Film Strip", description: "Dua kolom kartu berjalan berlawanan arah; hover untuk pause." },
         ]}
       />
 
-      {/* clove pattern — left & right, bleeding off the edges */}
+      {/* clove pattern — left & right, bleeding off the edges. Same position/size
+          as desktop at every breakpoint; mobile just scales it down 0.8x from
+          its anchor corner (max-w-none guards against the img preflight's
+          max-width:100%, which would otherwise clamp the explicit width). */}
       <img loading="lazy" decoding="async"
         src="/assets/promo/bg-clove-product-1.svg"
         alt=""
         aria-hidden
-        className="pointer-events-none absolute left-[-380px] top-36 h-[896px] w-[770px] opacity-100 blur-[2px] xl:bottom-[-256px] xl:left-[-256px] xl:top-auto xl:h-auto xl:w-auto"
+        className="pointer-events-none absolute left-[-380px] top-36 h-[896px] w-[770px] max-w-none origin-top-left scale-[0.8] opacity-100 blur-[2px] sm:scale-100 xl:bottom-[-256px] xl:left-[-256px] xl:top-auto xl:h-auto xl:w-auto"
       />
       <img loading="lazy" decoding="async"
         src="/assets/promo/bg-clove-product-2.svg"
         alt=""
         aria-hidden
-        className="pointer-events-none absolute bottom-[-368px] right-[-380px] h-[896px] w-[770px] opacity-60 blur-[2px] xl:bottom-[-720px] xl:right-[-720px] xl:h-auto xl:w-auto"
+        className="pointer-events-none absolute bottom-[-368px] right-[-380px] h-[896px] w-[770px] max-w-none origin-bottom-right scale-[0.8] opacity-60 blur-[2px] sm:scale-100 xl:bottom-[-720px] xl:right-[-720px] xl:h-auto xl:w-auto"
       />
       {/* confetti — top of the section (pure JS + CSS, see Confetti.tsx) */}
       <Confetti />
 
       <div className="relative z-10 mx-auto w-full max-w-[560px] px-4 xl:w-[1280px] xl:max-w-none xl:px-0">
-        {/* Heading — stacked on mobile, eyebrow column + h2 side by side on desktop. */}
-        <div data-reveal-group className="relative flex flex-col xl:flex-row xl:gap-10">
+        {/* Heading — stacked on mobile, eyebrow column + h2 side by side on
+            desktop. The strip variant renders its own headline in its left
+            column, so this row bows out at xl there (class change only — the
+            nodes stay mounted for ScrollReveal). */}
+        <div data-reveal-group className={`relative flex flex-col xl:flex-row xl:gap-10 ${variant !== "grid" ? "xl:hidden" : ""}`}>
           <div className="flex items-center py-4 xl:w-60 xl:shrink-0">
             <p data-reveal className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px]">
-              Event &amp; Program
+              {t("eyebrow")}
             </p>
           </div>
           <h2 data-reveal="blur-up" className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:w-[560px] xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]">
-            Apresiasi Terbaik untuk Menemani Setiap Momen Berharga
+            {t("heading")}
           </h2>
           {/* 3D percentage glass (three.js) temporarily hidden — see PercentGlass.tsx.
           <PercentGlass /> */}
         </div>
 
-        {/* Cards — horizontally scrollable carousel on mobile (full-bleeding out
-            of the padded column), wrapping grid on desktop. Tighter 60ms
-            stagger: eight cards at the default 90ms would trickle too long. */}
-        <div data-reveal-group="60" className="hide-scrollbar -mx-4 mt-8 flex items-start gap-4 overflow-x-auto px-4 [scrollbar-width:none] xl:mx-0 xl:mt-10 xl:flex-wrap xl:content-center xl:gap-6 xl:overflow-visible xl:px-0">
-          {promos.map((promo) => (
-            <PromoCard key={promo.id} promo={promo} now={now} />
-          ))}
-          <MorePromoCard />
+        {/* Event slider — center-mode "peek" carousel, sits above the promo
+            cards for every layout variant. */}
+        <div data-reveal className="mt-8 xl:mt-10">
+          <EventSlider />
         </div>
+
+        {/* Cards — horizontally scrollable carousel on mobile (full-bleeding out
+            of the padded column); on desktop either a wrapping grid or the arc
+            wheel, per the switcher. The mobile strip is shared by both variants
+            (the arc needs xl-width to breathe). Tighter 60ms stagger: eight
+            cards at the default 90ms would trickle too long. */}
+        <div
+          {...(switched ? {} : { "data-reveal-group": "60" })}
+          className={`hide-scrollbar -mx-4 mt-8 flex items-start gap-4 overflow-x-auto px-4 [scrollbar-width:none] xl:mx-0 xl:mt-10 xl:px-0 ${
+            variant !== "grid" ? "xl:hidden" : "xl:flex-wrap xl:content-center xl:gap-6 xl:overflow-visible"
+          }`}
+        >
+          {promos.map((promo) => (
+            <PromoCard key={promo.id} promo={promo} now={now} reveal={!switched} />
+          ))}
+          <MorePromoCard reveal={!switched} />
+        </div>
+
+        {variant === "strip" && <FilmStripLayout promos={promos} now={now} />}
 
         {/* Mobile-only CTA — the desktop surfaces this via the "Show More" card. */}
         <button data-reveal className="mx-auto mt-9 flex h-10 items-center justify-center gap-0.5 rounded-full bg-blue-500 px-5 transition-colors duration-200 active:bg-[#00457f] xl:hidden">

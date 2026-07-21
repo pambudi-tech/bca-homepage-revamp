@@ -1,0 +1,425 @@
+{
+  "metadata": {
+    "title": "BCA - Senantiasa di Sisi Anda",
+    "description": "Prototype revamp homepage BCA.co.id"
+  },
+  "login": {
+    "heading": "Preview password",
+    "passwordPlaceholder": "Password",
+    "wrongPassword": "Password salah, coba lagi.",
+    "submit": "Masuk"
+  },
+  "languages": {
+    "id": "Indonesia",
+    "en": "English",
+    "zh": "简体中文"
+  },
+  "hero": {
+    "searchPrompt": "Ada yang bisa kami bantu?",
+    "placeholders": [
+      "Buka rekening BCA",
+      "Aktivasi Paylater BCA",
+      "Pengajuan Kartu Kredit",
+      "Install myBCA"
+    ],
+    "quickActions": {
+      "login": {
+        "title": "Masuk ke BCA",
+        "subtitle": "myBCA • KlikBCA"
+      },
+      "promo": {
+        "title": "Promo Terkini",
+        "subtitle": "Penawaran Terbaik"
+      },
+      "halobca": {
+        "title": "HaloBCA",
+        "subtitle": "1500888, Chat, Email"
+      },
+      "location": {
+        "title": "Lokasi BCA",
+        "subtitle": "Cabang & ATM BCA"
+      },
+      "webform": {
+        "title": "Pengajuan Produk",
+        "subtitle": "Webform BCA"
+      }
+    },
+    "loginCepat": {
+      "title": "Login Cepat",
+      "subtitle": "Masuk ke layanan BCA"
+    },
+    "loginMybca": "Login ke myBCA",
+    "loginKlikbca": "Login ke KlikBCA",
+    "closeLogin": "Tutup",
+    "kursToday": "Kurs Hari Ini",
+    "beli": "Beli",
+    "jual": "Jual",
+    "kursPrev": "Kurs sebelumnya",
+    "kursNext": "Kurs berikutnya",
+    "kursDisclaimer": "Kurs dapat berubah selama proses transaksi.",
+    "prevSlide": "Sebelumnya",
+    "nextSlide": "Berikutnya"
+  },
+  "search": {
+    "recentSearches": "Pencarian Terakhir",
+    "clearAll": "Hapus semua",
+    "removeTerm": "Hapus {term}",
+    "popularSearches": "Pencarian Populer",
+    "relatedProducts": "Produk Terkait",
+    "viewAll": "Lihat Semua",
+    "relatedInfo": "Informasi Terkait",
+    "noResultsFor": "Tidak ada hasil untuk “{keyword}”",
+    "noResultsHint": "Coba kata kunci lain atau lihat semua hasil di bawah.",
+    "viewAllResults": "Lihat semua hasil",
+    "needHelp": "Butuh bantuan?",
+    "visitHelpCenter": "Kunjungi Pusat Bantuan"
+  },
+  "scrollCue": {
+    "keepGoing": "Terus melangkah",
+    "exploreBca": "jelajahi dunia BCA"
+  },
+  "backToTop": {
+    "label": "Kembali ke atas"
+  },
+  "slideDots": {
+    "play": "Lanjutkan carousel",
+    "pause": "Jeda carousel"
+  },
+  "common": {
+    "learnMore": "Pelajari"
+  },
+  "preloader": {
+    "tagline": [
+      "Senantiasa",
+      "di Sisi Anda"
+    ]
+  },
+  "product": {
+    "eyebrow": "Produk & Layanan",
+    "heading": "Solusi BCA untuk Setiap Tujuan Keuangan Anda"
+  },
+  "promo": {
+    "eyebrow": "Event & Program",
+    "heading": "Apresiasi Terbaik untuk Menemani Setiap Momen Berharga",
+    "viewMore": "Lihat 200+ Promo Lainnya",
+    "prevSlide": "Event sebelumnya",
+    "nextSlide": "Event berikutnya"
+  },
+  "nav": {
+    "segments": {
+      "Individu": "Individu",
+      "Bisnis": "Bisnis",
+      "Solitaire": "Solitaire",
+      "Prioritas": "Prioritas"
+    },
+    "promo": "Promo",
+    "tentangBca": "Tentang BCA",
+    "karir": "Karir",
+    "search": "Cari"
+  },
+  "mobileMenu": {
+    "tutupMenu": "Tutup menu",
+    "bukaMenu": "Buka menu",
+    "bahasa": "Bahasa",
+    "pilihSegmen": "Pilih Segmen Anda",
+    "kembali": "Kembali"
+  },
+  "cookieBanner": {
+    "ariaLabel": "Pemberitahuan cookie",
+    "heading": "Kami menggunakan cookie",
+    "description": "Cookie membantu kami menjaga keamanan situs, mengingat preferensi Anda, dan menyajikan konten yang lebih relevan. Anda dapat mengubah pilihan ini kapan saja.",
+    "learnMore": "Pelajari Kebijakan Cookie",
+    "settingsHeading": "Pengaturan Cookie",
+    "acceptAll": "Terima Semua",
+    "savePrefs": "Simpan Pilihan",
+    "rejectAll": "Tolak Semua",
+    "settings": "Atur Preferensi",
+    "categories": {
+      "essential": {
+        "label": "Wajib",
+        "desc": "Menjaga sesi login, keamanan, dan fungsi dasar situs. Tidak dapat dinonaktifkan."
+      },
+      "functional": {
+        "label": "Fungsional",
+        "desc": "Mengingat preferensi Anda, seperti bahasa dan kurs yang terakhir dilihat."
+      },
+      "analytics": {
+        "label": "Analitik",
+        "desc": "Membantu kami memahami halaman mana yang paling sering digunakan."
+      },
+      "marketing": {
+        "label": "Pemasaran",
+        "desc": "Menyesuaikan promo dan iklan BCA yang Anda lihat di situs lain."
+      }
+    }
+  },
+  "footer": {
+    "kantorPusat": "Kantor Pusat",
+    "alamat": "Menara BCA, Grand Indonesia,\nJl. MH Thamrin No. 1\nJakarta 10310",
+    "copyright": "Copyrights © 2026 PT Bank Central Asia Tbk, All Rights Reserved",
+    "ojkLine": "BCA berizin dan diawasi oleh Otoritas Jasa Keuangan & Bank Indonesia",
+    "lpsLinePrefix": "BCA merupakan peserta penjaminan LPS. Maksimum nilai simpanan yang dijamin LPS per Nasabah per Bank adalah Rp2 miliar. Untuk cek Tingkat Bunga Penjaminan LPS, klik",
+    "lpsLinkLabel": "di sini",
+    "linkColumns": {
+      "Tentang BCA": {
+        "heading": "Tentang BCA",
+        "links": [
+          "Profil Perusahaan",
+          "Karir di BCA",
+          "Berita & Siaran Pers",
+          "Penghargaan"
+        ]
+      },
+      "Layanan": {
+        "heading": "Layanan",
+        "links": [
+          "Lokasi Cabang & ATM",
+          "Pusat Bantuan",
+          "Promo",
+          "Simulasi & Kalkulator"
+        ]
+      },
+      "Produk": {
+        "heading": "Produk",
+        "links": [
+          "myBCA",
+          "Kartu Kredit",
+          "Pinjaman",
+          "Kredit Usaha"
+        ]
+      }
+    },
+    "bottomLinks": [
+      "SBDK",
+      "Lokasi BCA",
+      "Pusat Bantuan",
+      "Kebijakan Privasi",
+      "Syarat & Ketentuan"
+    ]
+  },
+  "mybca": {
+    "heading": "Semua Kebutuhan Perbankan dalam Satu Genggaman",
+    "description": "Dari cek saldo sampai bayar tagihan, semua selesai dalam hitungan detik lewat myBCA.",
+    "downloadDesktop": "Download Sekarang",
+    "downloadMobile": "Download myBCA"
+  },
+  "news": {
+    "eyebrow": "Kabar & Wawasan",
+    "heading": "Update Seputar BCA",
+    "seeMore": "Lihat Lebih Banyak"
+  },
+  "megamenu": {
+    "Simpanan": {
+      "label": "Simpanan",
+      "products": [
+        "Tahapan",
+        "Tahapan Xpresi",
+        "Tahapan Berjangka",
+        "Deposito Berjangka",
+        "Lihat Semua Simpanan"
+      ],
+      "ctaLabel": "Bandingkan Antar Simpanan",
+      "links": [
+        {
+          "label": "Cara top up & transfer antar rekening",
+          "type": "video"
+        },
+        {
+          "label": "Perbedaan Tahapan, Tapres, dan Deposito"
+        },
+        {
+          "label": "Berapa saldo minimum dan biaya admin tiap produk simpanan?"
+        },
+        {
+          "label": "Syarat & dokumen pembukaan rekening BCA"
+        }
+      ],
+      "editorialTitle": "Buka Rekening, Dapatkan Cashback QRIS Hingga Rp100.000"
+    },
+    "Kartu Kredit": {
+      "label": "Kartu Kredit",
+      "products": [
+        "BCA Everyday Card",
+        "BCA Visa Batman",
+        "BCA Mastercard Black",
+        "Reward BCA",
+        "Lihat Semua Kartu Kredit"
+      ],
+      "ctaLabel": "Bandingkan Antar Kartu Kredit",
+      "links": [
+        {
+          "label": "Cara ajukan kartu kredit via website",
+          "type": "video"
+        },
+        {
+          "label": "Kartu kredit mana yang cocok untuk saya?"
+        },
+        {
+          "label": "Syarat pengajuan kartu kredit BCA"
+        },
+        {
+          "label": "Cara bayar tagihan kartu kredit BCA"
+        }
+      ],
+      "editorialTitle": "Apply Kartu Kredit Sekarang, Gratis Iuran Tahunan Seumur Hidup & Welcome Bonus Rp500.000"
+    },
+    "Pinjaman": {
+      "label": "Pinjaman",
+      "products": [
+        "Paylater BCA",
+        "Kredit Pemilikan Rumah",
+        "Kredit Kendaraan Bermotor",
+        "BCA Personal Loan",
+        "Lihat Semua Pinjaman"
+      ],
+      "ctaLabel": "Hitung Estimasi Cicilan",
+      "links": [
+        {
+          "label": "Proses pengajuan dari awal hingga cair",
+          "type": "video"
+        },
+        {
+          "label": "Cara mengajukan KPR online lewat myBCA"
+        },
+        {
+          "label": "Syarat & dokumen pengajuan pinjaman di BCA"
+        },
+        {
+          "label": "Berapa maksimal pinjaman yang bisa saya ajukan?"
+        }
+      ],
+      "editorialTitle": "Bunga KPR Spesial 2,99% di Tahun Pertama"
+    },
+    "e-Banking": {
+      "label": "e-Banking",
+      "products": [
+        "myBCA",
+        "KlikBCA",
+        "Sakuku",
+        "e-Branch",
+        "Lihat Semua e-Banking"
+      ],
+      "ctaLabel": "Bandingkan Antar e-Banking",
+      "links": [
+        {
+          "label": "Cara aktivasi myBCA untuk pengguna baru",
+          "type": "video"
+        },
+        {
+          "label": "Cara top up Flazz lewat myBCA"
+        },
+        {
+          "label": "Fitur-fitur unggulan myBCA"
+        },
+        {
+          "label": "Apa perbedaan myBCA dan KlikBCA?"
+        }
+      ],
+      "editorialTitle": "Belanja Pakai QRIS di myBCA Banking, Dapatkan Diskon Hingga 50% di Merchant Pilihan"
+    },
+    "Investasi": {
+      "label": "Investasi",
+      "products": [
+        "Reksa Dana",
+        "Obligasi",
+        "Surat Berharga Negara",
+        "Rekening Dana Nasabah",
+        "Lihat Semua Investasi"
+      ],
+      "ctaLabel": "Hitung Potensi Investasi",
+      "links": [
+        {
+          "label": "Panduan memilih produk investasi sesuai profil risiko",
+          "type": "video"
+        },
+        {
+          "label": "Cara beli Reksa Dana lewat myBCA"
+        },
+        {
+          "label": "Apa perbedaan Reksa Dana, Obligasi, dan SBN?"
+        },
+        {
+          "label": "Berapa minimal investasi di BCA?"
+        }
+      ],
+      "editorialTitle": "Beli SBN dan Obligasi Sekarang, Nikmati Imbal Hasil Spesial Lebih Tinggi dari Deposito"
+    },
+    "Asuransi": {
+      "label": "Asuransi",
+      "products": [
+        "Asuransi Jiwa",
+        "Asuransi Kesehatan",
+        "Asuransi Properti",
+        "Asuransi Kendaraan",
+        "Lihat Semua Asuransi"
+      ],
+      "ctaLabel": "Hitung Estimasi Premi Asuransi",
+      "links": [
+        {
+          "label": "Apa perbedaan asuransi jiwa dan asuransi kesehatan?",
+          "type": "video"
+        },
+        {
+          "label": "Memilih asuransi yang tepat untuk keluargamu"
+        },
+        {
+          "label": "Apa perbedaan asuransi jiwa dan asuransi kesehatan?"
+        }
+      ],
+      "editorialTitle": "Dapatkan Diskon Premi 20% untuk Pendaftaran Tahun Pertama"
+    },
+    "Transaksi": {
+      "label": "Transaksi",
+      "products": [
+        "Flazz",
+        "Firecash",
+        "Remittence",
+        "Lihat Semua Transaksi"
+      ],
+      "ctaLabel": "Hitung Estimasi Premi Asuransi",
+      "links": [
+        {
+          "label": "Cara Praktis Top-Up Flazz Langsung dari myBCA",
+          "type": "video"
+        },
+        {
+          "label": "Panduan Lengkap Kirim Uang ke Luar Negeri"
+        },
+        {
+          "label": "Syarat dan Cara Mencairkan Dana Firecash di Kantor Cabang Terdekat Tanpa Potongan"
+        }
+      ],
+      "editorialTitle": "Kirim Uang ke Luar Negeri Bebas Biaya Telex & Dapatkan Nilai Tukar Kurs Paling Spesial"
+    }
+  },
+  "halobca": {
+    "label": "HaloBCA",
+    "title": "Selamat Datang di Halo BCA Chat",
+    "subtitle": "Silakan masukkan data diri Anda agar dapat terhubung dengan kami.",
+    "fields": {
+      "nama": "Nama",
+      "namaPlaceholder": "Nama lengkap",
+      "email": "Email",
+      "emailPlaceholder": "nama@email.com",
+      "telepon": "Telepon",
+      "teleponPlaceholder": "08xxxxxxxxxx",
+      "produk": "Produk / Layanan",
+      "produkPlaceholder": "Pilih produk atau layanan"
+    },
+    "products": [
+      "Tabungan",
+      "Kartu Kredit",
+      "Pinjaman",
+      "myBCA / KlikBCA",
+      "Lainnya"
+    ],
+    "captcha": "Saya bukan robot",
+    "terms": "Syarat dan Ketentuan Halo BCA Chat",
+    "submit": "Mulai Percakapan",
+    "errors": {
+      "required": "Wajib diisi",
+      "email": "Format email tidak valid",
+      "phone": "Nomor telepon tidak valid"
+    }
+  }
+}

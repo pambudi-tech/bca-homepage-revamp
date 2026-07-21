@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import MobileMenu from "./MobileMenu";
 
 /**
@@ -16,6 +17,7 @@ export default function MobileNav({
   scrolled: boolean;
   hidden: boolean;
 }) {
+  const t = useTranslations("mobileMenu");
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -34,7 +36,7 @@ export default function MobileNav({
       <div className="flex items-center gap-3">
         <button
           onClick={() => setMenuOpen((v) => !v)}
-          aria-label={menuOpen ? "Tutup menu" : "Buka menu"}
+          aria-label={menuOpen ? t("tutupMenu") : t("bukaMenu")}
           aria-expanded={menuOpen}
           className="flex size-10 items-center justify-center rounded-full bg-[rgba(18,20,23,0.5)] backdrop-blur-[4px] transition-transform active:scale-95"
         >

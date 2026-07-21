@@ -1,24 +1,5 @@
-export type FooterLinkColumn = {
-  heading: string;
-  links: string[];
-};
-
-export const FOOTER_LINK_COLUMNS: FooterLinkColumn[] = [
-  {
-    heading: "Tentang BCA",
-    links: ["Profil Perusahaan", "Karir di BCA", "Berita & Siaran Pers", "Penghargaan"],
-  },
-  {
-    heading: "Layanan",
-    links: ["Lokasi Cabang & ATM", "Pusat Bantuan", "Promo", "Simulasi & Kalkulator"],
-  },
-  {
-    heading: "Produk",
-    links: ["myBCA", "Kartu Kredit", "Pinjaman", "Kredit Usaha"],
-  },
-];
-
-export const FOOTER_BOTTOM_LINKS = ["SBDK", "Lokasi BCA", "Pusat Bantuan", "Kebijakan Privasi", "Syarat & Ketentuan"];
+/** Keys into the `footer.linkColumns` translation namespace, in display order. */
+export const FOOTER_LINK_COLUMN_KEYS = ["Tentang BCA", "Layanan", "Produk"] as const;
 
 export type SocialLink = {
   label: string;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useLenis } from "@/components/SmoothScroll";
 
 // Custom shape from Figma (node 1470:6337) — a 218×52 trapezoid with rounded
@@ -9,6 +10,7 @@ const SHAPE_PATH =
   "M24.9713 11.4217C29.3392 4.32372 37.0768 0 45.4111 0H172.589C180.923 0 188.661 4.32372 193.029 11.4217L218 52H0L24.9713 11.4217Z";
 
 export default function BackToTop() {
+  const t = useTranslations("backToTop");
   const lenis = useLenis();
   const [visible, setVisible] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -17,6 +19,16 @@ export default function BackToTop() {
   const lastScrollY = useRef(0);
 
   useEffect(() => {
+    // `scrollHeight` forces a layout reflow, so it's cached here and only
+    // refreshed on resize — reading it on every scroll frame was jamming the
+    // main thread the Lenis smooth-scroll rAF loop depends on.
+    let docHeight = document.documentElement.scrollHeight;
+    const measure = () => {
+      docHeight = document.documentElement.scrollHeight;
+    };
+    measure();
+    window.addEventListener("resize", measure);
+
     const update = () => {
       rafRef.current = 0;
       const y = window.scrollY;
@@ -24,8 +36,7 @@ export default function BackToTop() {
 
       // When the footer bottom is reached, dim the trapezoid so it recedes,
       // and force the button visible regardless of scroll direction.
-      const distanceToBottom =
-        document.documentElement.scrollHeight - (y + window.innerHeight);
+      const distanceToBottom = docHeight - (y + window.innerHeight);
       const bottom = distanceToBottom <= 4;
       setAtBottom(bottom);
 
@@ -46,6 +57,7 @@ export default function BackToTop() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", measure);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
@@ -61,7 +73,7 @@ export default function BackToTop() {
     <button
       type="button"
       onClick={scrollToTop}
-      aria-label="Kembali ke atas"
+      aria-label={t("label")}
       className={`group fixed bottom-3 left-1/2 z-50 h-11 w-auto px-5 -translate-x-1/2 transition-all duration-300 ease-out md:bottom-0 md:h-[52px] md:w-[218px] md:px-0 ${
         shown
           ? "pointer-events-auto translate-y-0 opacity-100"
@@ -81,7 +93,7 @@ export default function BackToTop() {
 
       {/* Label + arrow-up icon */}
       <span className="relative flex h-full items-center justify-center gap-2 whitespace-nowrap md:pb-0.5">
-        <span className="text-sm font-semibold leading-5 text-white">Kembali ke atas</span>
+        <span className="text-sm font-semibold leading-5 text-white">{t("label")}</span>
         <img loading="lazy" decoding="async"
           src="/assets/navbar/arrow-right.svg"
           alt=""

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import SlideDots, { DOT_CIRCUMFERENCE } from "./SlideDots";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useLenis } from "@/components/SmoothScroll";
@@ -32,6 +33,7 @@ function HeroCta({ label, icon }: SlideCta) {
 }
 
 export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
+  const t = useTranslations("hero");
   const count = slides.length;
   const [activeSlide, setActiveSlide] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -176,7 +178,7 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
             key={activeSlide}
             className="flex w-[240px] flex-col items-start gap-5 xl:w-[420px] xl:gap-8"
           >
-            <h1 className="animate-hero-title text-[20px] font-semibold leading-[28px] tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)] xl:text-[36px] xl:leading-[48px] xl:tracking-[-0.8px] xl:[text-shadow:none]">
+            <h1 className="animate-hero-title text-[24px] font-semibold leading-[32px] tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)] xl:text-[36px] xl:leading-[48px] xl:tracking-[-0.8px] xl:[text-shadow:none]">
               {slides[activeSlide].title}
             </h1>
             <div className="animate-hero-cta">
@@ -189,7 +191,7 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
           <div className="flex items-center gap-1 rounded-[40px] xl:bg-[rgba(0,0,0,0.5)] xl:p-1 xl:backdrop-blur-[4px]">
             <button
               onClick={goPrev}
-              aria-label="Sebelumnya"
+              aria-label={t("prevSlide")}
               className="hidden size-10 items-center justify-center rounded-full transition-colors hover:bg-white/20 xl:flex"
             >
               <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-6" />
@@ -208,7 +210,7 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
             />
             <button
               onClick={goNext}
-              aria-label="Berikutnya"
+              aria-label={t("nextSlide")}
               className="hidden size-10 items-center justify-center rounded-full transition-colors hover:bg-white/20 xl:flex"
             >
               <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-6" />

@@ -13,17 +13,37 @@ export type LayoutOption<T extends string> = {
  * Click the icon → a popover lists the layout variants available for that
  * section, so the client can flip between them live during a walkthrough.
  * The host section must be `position: relative`.
+ *
+ * Desktop-only by default (`visibilityClassName`) — most host sections only
+ * offer desktop treatments, and on a phone the control would sit on top of
+ * already-tight content. A section with an actual mobile-layout pair (e.g.
+ * the hero widget) overrides it to render below `xl` instead.
  */
 export default function LayoutSwitcher<T extends string>({
   label,
   options,
   value,
   onChange,
+  positionClassName = "left-6 top-6",
+  visibilityClassName = "hidden xl:block",
+  menuAlign = "left",
+  dimWhenIdle = false,
 }: {
   label: string;
   options: LayoutOption<T>[];
   value: T;
   onChange: (next: T) => void;
+  /** Overrides the default top-left anchor (e.g. to float the control above a
+   *  section whose corner is occupied). */
+  positionClassName?: string;
+  /** Overrides the default "desktop only" gate. */
+  visibilityClassName?: string;
+  /** Which edge the popover hangs from — "right" keeps it on-screen when the
+   *  button itself is pinned near the right edge (e.g. on mobile). */
+  menuAlign?: "left" | "right";
+  /** Fades the button to 50% opacity until hovered/focused/opened, so it
+   *  doesn't compete with the content it floats over. */
+  dimWhenIdle?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -45,13 +65,14 @@ export default function LayoutSwitcher<T extends string>({
   }, [open]);
 
   return (
-    <div ref={rootRef} className="absolute left-4 top-4 z-40 xl:left-6 xl:top-6">
+    <div ref={rootRef} className={`absolute z-40 ${visibilityClassName} ${positionClassName}`}>
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
         title={`Layout: ${label}`}
         aria-expanded={open}
-        className="flex size-9 items-center justify-center rounded-full border border-black/10 bg-white/85 text-neutral-600 shadow-[0_2px_8px_rgba(0,0,0,0.12)] backdrop-blur transition-colors duration-200 hover:bg-white hover:text-blue-500"
+        className={`flex size-9 items-center justify-center rounded-full border border-black/10 bg-white/85 text-neutral-600 shadow-[0_2px_8px_rgba(0,0,0,0.12)] backdrop-blur transition-[background-color,color,opacity] duration-200 hover:bg-white hover:text-blue-500 ${dimWhenIdle && !open ? "opacity-25 hover:opacity-100 focus-visible:opacity-100" : "opacity-100"
+          }`}
       >
         {/* layout-grid icon */}
         <svg viewBox="0 0 20 20" fill="none" className="size-[18px]">
@@ -63,7 +84,10 @@ export default function LayoutSwitcher<T extends string>({
       </button>
 
       {open && (
-        <div className="absolute left-0 top-11 w-72 rounded-2xl border border-black/10 bg-white p-2 shadow-[0_12px_32px_rgba(0,0,0,0.16)]">
+        <div
+          className={`absolute top-11 w-72 max-w-[min(18rem,calc(100vw-32px))] rounded-2xl border border-black/10 bg-white p-2 shadow-[0_12px_32px_rgba(0,0,0,0.16)] ${menuAlign === "right" ? "right-0" : "left-0"
+            }`}
+        >
           <p className="px-3 pb-1.5 pt-2 text-[11px] font-semibold uppercase leading-3 tracking-[1.4px] text-neutral-400">
             {label}
           </p>

@@ -1,31 +1,24 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { MEGAMENU } from "./megamenu-data";
+import { useLocale, useTranslations } from "next-intl";
+import { useMegaMenu } from "./use-megamenu";
+import { useRouter, usePathname } from "@/i18n/navigation";
+import { routing, type AppLocale } from "@/i18n/routing";
 import MegaMenuPanel, { type MegaMenuMode } from "./MegaMenuPanel";
 import MobileNav from "./MobileNav";
-
-const SEGMENTS = ["Individu", "Bisnis", "Solitaire", "Prioritas"];
+import { PRELOADER_DONE_EVENT } from "@/components/Preloader";
 
 /* How long the panel stays mounted after the pointer leaves, and how long the
    outgoing panel lingers when switching tabs. Both mirror globals.css. */
 const MEGAMENU_CLOSE_MS = 440;
 const MEGAMENU_SWITCH_MS = 160;
 
-const LANGUAGES = [
-  { code: "en", label: "English", flag: "/assets/navbar/flag-en.png" },
-  { code: "zh", label: "简体中文", flag: "/assets/navbar/flag-zh.png" },
-];
-
-const NAV_TABS = [
-  ...MEGAMENU.map((menu) => ({
-    key: menu.key,
-    label: menu.label,
-    width: menu.width,
-    chevron: menu.chevron ?? true,
-  })),
-  { key: "Promo", label: "Promo", width: undefined, chevron: false },
-];
+const LOCALE_META: Record<AppLocale, { flag: string }> = {
+  id: { flag: "/assets/cycle1/flag-id.svg" },
+  en: { flag: "/assets/navbar/flag-en.png" },
+  zh: { flag: "/assets/navbar/flag-zh.png" },
+};
 
 function LinkLabel({ label, hover }: { label: string; hover: boolean }) {
   return (
@@ -60,7 +53,7 @@ function NavbarLink({ label, href }: { label: string; href: string }) {
       rel="noopener noreferrer"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className={`flex h-10 items-center justify-center gap-0.5 rounded-full border px-4 backdrop-blur-[4px] transition-colors duration-300 ${hover
+      className={`flex h-10 items-center justify-center gap-0.5 rounded-full border px-4 backdrop-blur-[12px] transition-colors duration-300 ${hover
           ? "border-white/20 bg-[rgba(18,20,23,0.5)]"
           : "border-white/25 bg-[rgba(5,13,25,0.1)]"
         }`}
@@ -78,11 +71,11 @@ function NavbarLink({ label, href }: { label: string; href: string }) {
   );
 }
 
-function SearchButton() {
+function SearchButton({ label }: { label: string }) {
   const [hover, setHover] = useState(false);
   return (
     <button
-      aria-label="Cari"
+      aria-label={label}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       className={`flex h-10 items-center justify-start gap-0.5 rounded-full border backdrop-blur-[4px] transition-all duration-300 ${hover
@@ -96,7 +89,7 @@ function SearchButton() {
           }`}
       >
         <span className="overflow-hidden">
-          <LinkLabel label="Cari" hover={hover} />
+          <LinkLabel label={label} hover={hover} />
         </span>
       </span>
     </button>
@@ -104,6 +97,28 @@ function SearchButton() {
 }
 
 export default function Navbar() {
+  const locale = useLocale() as AppLocale;
+  const router = useRouter();
+  const pathname = usePathname();
+  const tNav = useTranslations("nav");
+  const tLang = useTranslations("languages");
+  const MEGAMENU = useMegaMenu();
+  const SEGMENTS = Object.keys(tNav.raw("segments")) as string[];
+  const NAV_TABS = [
+    ...MEGAMENU.map((menu) => ({
+      key: menu.key,
+      label: menu.label,
+      width: menu.width,
+      chevron: menu.chevron ?? true,
+    })),
+    { key: "Promo", label: tNav("promo"), width: undefined, chevron: false },
+  ];
+  const otherLocales = routing.locales.filter((l) => l !== locale);
+
+  const switchLocale = (nextLocale: AppLocale) => {
+    router.replace(pathname, { locale: nextLocale });
+  };
+
   const [activeSegment, setActiveSegment] = useState("Individu");
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   /* What's actually on screen. It lags behind `openMenu` so the panel can play
@@ -156,6 +171,52 @@ export default function Navbar() {
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, []);
+
+  // The dropdown's other-locale flags only mount into the DOM once it's
+  // opened (see `{langOpen && ...}` below), so the preloader never sees
+  // them and they'd otherwise fetch — and visibly flash in — right as the
+  // visitor opens the switcher. Warm the browser's cache for them here
+  // instead: a background Image() request that's never attached to the
+  // page, kicked off once the preloader's critical-path wait is over so it
+  // never competes with first paint, and only for the flags that aren't
+  // already loaded (the active locale's is already in the trigger button).
+  useEffect(() => {
+    const fetchOtherFlags = () => {
+      for (const code of routing.locales) {
+        if (code === locale) continue;
+        new Image().src = LOCALE_META[code as AppLocale].flag;
+      }
+    };
+    let idleHandle: number | ReturnType<typeof setTimeout> | undefined;
+    const warm = () => {
+      idleHandle =
+        "requestIdleCallback" in window
+          ? requestIdleCallback(fetchOtherFlags)
+          : setTimeout(fetchOtherFlags, 200);
+    };
+    const cancelWarm = () => {
+      if (idleHandle === undefined) return;
+      if ("cancelIdleCallback" in window && typeof idleHandle === "number") {
+        cancelIdleCallback(idleHandle);
+      } else {
+        clearTimeout(idleHandle as ReturnType<typeof setTimeout>);
+      }
+    };
+
+    // Preloader hasn't fired its done event yet if `.pre-root` is still
+    // mounted — wait for that so this never competes with the critical-path
+    // load. Otherwise (reduced motion, or mounted after the fact) just warm
+    // immediately.
+    if (document.querySelector(".pre-root")) {
+      window.addEventListener(PRELOADER_DONE_EVENT, warm, { once: true });
+      return () => {
+        window.removeEventListener(PRELOADER_DONE_EVENT, warm);
+        cancelWarm();
+      };
+    }
+    warm();
+    return cancelWarm;
+  }, [locale]);
 
   /* Drive the panel's motion mode off `openMenu`. Opening from nothing unfurls;
      moving between tabs while open only crossfades; leaving plays the close and
@@ -237,26 +298,28 @@ export default function Navbar() {
               <div className="flex w-full max-w-[1280px] items-center justify-between">
                 <div className="flex items-center gap-5">
                   <img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-9 w-[114.75px]" />
-                  <div className="flex items-start gap-1 rounded-full border border-white/15 bg-[rgba(5,13,25,0.2)] p-1 backdrop-blur-[12px]">
-                    {SEGMENTS.map((segment) => (
-                      <button
-                        key={segment}
-                        onClick={() => setActiveSegment(segment)}
-                        className={`flex h-8 w-24 items-center justify-center rounded-full text-sm font-semibold text-white transition-colors duration-200 ${segment === activeSegment
-                            ? "bg-blue-500"
-                            : "opacity-80 hover:bg-white/10"
-                          }`}
-                      >
-                        {segment}
-                      </button>
-                    ))}
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-start gap-1 rounded-full border border-white/15 bg-[rgba(5,13,25,0.2)] p-1 backdrop-blur-[12px]">
+                      {SEGMENTS.map((segment) => (
+                        <button
+                          key={segment}
+                          onClick={() => setActiveSegment(segment)}
+                          className={`flex h-8 w-24 items-center justify-center rounded-full text-sm font-semibold text-white transition-colors duration-200 ${segment === activeSegment
+                              ? "bg-blue-500"
+                              : "opacity-80 hover:bg-white/10"
+                            }`}
+                        >
+                          {tNav(`segments.${segment}`)}
+                        </button>
+                      ))}
+                    </div>
+                    <NavbarLink label={tNav("tentangBca")} href="https://www.bca.co.id/id/tentang-bca" />
+                    <NavbarLink label={tNav("karir")} href="https://karir.bca.co.id/" />
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <SearchButton />
-                  <NavbarLink label="Tentang BCA" href="https://www.bca.co.id/id/tentang-bca" />
-                  <NavbarLink label="Karir" href="https://karir.bca.co.id/" />
+                  <SearchButton label={tNav("search")} />
 
                   <div ref={langRef} className="relative">
                     <button
@@ -268,26 +331,29 @@ export default function Navbar() {
                           : "border-white/25 bg-[rgba(5,13,25,0.1)]"
                         }`}
                     >
-                      <img src="/assets/cycle1/flag-id.svg" alt="" className="size-6" />
+                      <img src={LOCALE_META[locale].flag} alt="" className="size-6" />
                       <span
                         className={`flex w-8 items-center justify-center text-center text-base font-bold ${langHover || langOpen ? "text-neutral-900" : "text-white"
                           }`}
                       >
-                        ID
+                        {locale.toUpperCase()}
                       </span>
                     </button>
 
                     {langOpen && (
                       <div className="absolute right-0 top-[calc(100%+8px)] z-40 overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-[0px_11px_11px_0px_rgba(224,224,224,0.14),0px_24px_15px_0px_rgba(224,224,224,0.08),0px_3px_6px_0px_rgba(224,224,224,0.16)]">
-                        {LANGUAGES.map((lang) => (
+                        {otherLocales.map((code) => (
                           <button
-                            key={lang.code}
-                            onClick={() => setLangOpen(false)}
+                            key={code}
+                            onClick={() => {
+                              setLangOpen(false);
+                              switchLocale(code);
+                            }}
                             className="flex w-[148px] items-center gap-2 p-4 text-left transition-colors hover:bg-blue-100"
                           >
-                            <img src={lang.flag} alt="" className="size-6 rounded-full object-cover" />
+                            <img src={LOCALE_META[code].flag} alt="" className="size-6 rounded-full object-cover" />
                             <span className="flex-1 text-base font-semibold text-neutral-900">
-                              {lang.label}
+                              {tLang(code)}
                             </span>
                           </button>
                         ))}
@@ -318,7 +384,6 @@ export default function Navbar() {
                         key={tab.key}
                         className={`flex h-11 flex-col items-start transition-colors ${isOpen ? "bg-cyan-100" : ""
                           }`}
-                        style={tab.width ? { width: tab.width } : undefined}
                         onMouseEnter={() => {
                           cancelClose();
                           setOpenMenu(tab.key);

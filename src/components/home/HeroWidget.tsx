@@ -1,10 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ElementType } from "react";
+import { useTranslations } from "next-intl";
 import type { KursEntry } from "@/lib/kurs";
 import { useLenis } from "@/components/SmoothScroll";
 import { useIsLive } from "@/lib/useIsLive";
+import { useLayoutVariant } from "@/lib/useLayoutVariant";
 import Confetti from "./Confetti";
+import { HERO_VARIANTS, LOGIN_DESTINATIONS, type HeroVariant } from "./hero-variant";
+import LayoutSwitcher from "./LayoutSwitcher";
 import SearchRecommendation from "./SearchRecommendation";
 import {
   addRecentSearch,
@@ -17,13 +21,6 @@ import {
 
 // Gap (px) between the viewport top and the widget once the search is focused.
 const SEARCH_TOP_GAP = 56;
-
-const PLACEHOLDERS = [
-  "Buka rekening BCA",
-  "Aktivasi Paylater BCA",
-  "Pengajuan Kartu Kredit",
-  "Install myBCA",
-];
 
 const PLACEHOLDER_LINE_HEIGHT = 48;
 
@@ -43,13 +40,21 @@ function slotStyle(state: SlotState): CSSProperties {
   return { transform: `translateY(${PLACEHOLDER_LINE_HEIGHT}px)`, opacity: 0 }; // waiting (below, ready to enter)
 }
 
-function SearchPlaceholderCarousel({ visible, live }: { visible: boolean; live: boolean }) {
+function SearchPlaceholderCarousel({
+  placeholders,
+  visible,
+  live,
+}: {
+  placeholders: string[];
+  visible: boolean;
+  live: boolean;
+}) {
   const [slots, setSlots] = useState<Slot[]>([
-    { text: PLACEHOLDERS[0], state: "active", instant: false },
-    { text: PLACEHOLDERS[1 % PLACEHOLDERS.length], state: "waiting", instant: false },
+    { text: placeholders[0], state: "active", instant: false },
+    { text: placeholders[1 % placeholders.length], state: "waiting", instant: false },
   ]);
   const activeSlotRef = useRef(0);
-  const nextIndexRef = useRef(2 % PLACEHOLDERS.length);
+  const nextIndexRef = useRef(2 % placeholders.length);
 
   useEffect(() => {
     if (!live) return;
@@ -66,7 +71,7 @@ function SearchPlaceholderCarousel({ visible, live }: { visible: boolean; live: 
       activeSlotRef.current = waitingIdx;
 
       setTimeout(() => {
-        const text = PLACEHOLDERS[nextIndexRef.current % PLACEHOLDERS.length];
+        const text = placeholders[nextIndexRef.current % placeholders.length];
         nextIndexRef.current += 1;
         setSlots((prev) => {
           const next = [...prev];
@@ -85,7 +90,7 @@ function SearchPlaceholderCarousel({ visible, live }: { visible: boolean; live: 
       }, 700);
     }, 2500);
     return () => clearInterval(id);
-  }, [live]);
+  }, [live, placeholders]);
 
   return (
     <div
@@ -109,6 +114,28 @@ function SearchPlaceholderCarousel({ visible, live }: { visible: boolean; live: 
   );
 }
 
+/**
+ * The quick-action rail has two design phases, flipped live from the in-page
+ * LayoutSwitcher:
+ *   - "final"   : the shipped rail (login toggle + promo / HaloBCA / …).
+ *   - "initial" : the earlier "Login Cepat" exploration — a fixed label plus
+ *                 four always-visible login destinations.
+ * `HERO_VARIANTS` / `LOGIN_DESTINATIONS` live in ./hero-variant so the mobile
+ * widget's own switcher + Login Cepat panel can share the same data.
+ */
+
+/** Arrow-up-right glyph shown at the trailing edge of each initial-phase card. */
+function ExternalArrow() {
+  return (
+    <img
+      src="/assets/quick-action/arrow-diagonal.svg"
+      alt=""
+      aria-hidden
+      className="size-5 shrink-0"
+    />
+  );
+}
+
 type QuickAction = {
   title: string;
   subtitle: string;
@@ -118,29 +145,31 @@ type QuickAction = {
   href?: string;
 };
 
-const QUICK_ACTIONS: QuickAction[] = [
-  { title: "Masuk ke BCA", subtitle: "myBCA • KlikBCA", icon: "/assets/quick-action/login.svg" },
-  {
-    title: "Promo Terkini",
-    subtitle: "Penawaran Terbaik",
-    icon: "/assets/quick-action/discount-shape.svg",
-    scrollTo: "#promo",
-    confetti: true,
-  },
-  { title: "HaloBCA", subtitle: "1500888, Chat, Email", icon: "/assets/quick-action/message-question.svg" },
-  {
-    title: "Lokasi BCA",
-    subtitle: "Cabang & ATM BCA",
-    icon: "/assets/quick-action/location.svg",
-    href: "https://www.bca.co.id/id/lokasi-bca",
-  },
-  {
-    title: "Webform BCA",
-    subtitle: "Pengajuan produk",
-    icon: "/assets/quick-action/document.svg",
-    href: "https://www.bca.co.id/id/Forms/webform-bca",
-  },
-];
+function useQuickActions(t: (key: string) => string): QuickAction[] {
+  return [
+    { title: t("loginCepat.title"), subtitle: t("loginCepat.subtitle"), icon: "/assets/quick-action/login.svg" },
+    {
+      title: t("quickActions.promo.title"),
+      subtitle: t("quickActions.promo.subtitle"),
+      icon: "/assets/quick-action/discount-shape.svg",
+      scrollTo: "#promo",
+      confetti: true,
+    },
+    { title: t("quickActions.halobca.title"), subtitle: t("quickActions.halobca.subtitle"), icon: "/assets/quick-action/message-question.svg" },
+    {
+      title: t("quickActions.location.title"),
+      subtitle: t("quickActions.location.subtitle"),
+      icon: "/assets/quick-action/location.svg",
+      href: "https://www.bca.co.id/id/lokasi-bca",
+    },
+    {
+      title: t("quickActions.webform.title"),
+      subtitle: t("quickActions.webform.subtitle"),
+      icon: "/assets/quick-action/document.svg",
+      href: "https://www.bca.co.id/id/Forms/webform-bca",
+    },
+  ];
+}
 
 export default function HeroWidget({
   kurs,
@@ -149,6 +178,11 @@ export default function HeroWidget({
   kurs: KursEntry[];
   onSearchActiveChange?: (active: boolean) => void;
 }) {
+  const t = useTranslations("hero");
+  const tNav = useTranslations("nav");
+  const placeholders = t.raw("placeholders") as string[];
+  const QUICK_ACTIONS = useQuickActions(t);
+  const [variant, setVariant] = useLayoutVariant<HeroVariant>("hero", "final", HERO_VARIANTS);
   const [searchValue, setSearchValue] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
@@ -295,6 +329,29 @@ export default function HeroWidget({
 
   return (
     <div ref={rootRef} className="relative mx-auto h-[272px] w-[1280px]">
+      {/* prototype-only: flips the quick-action rail between the two design
+          phases. Pinned beside the widget, 24px from the viewport's left edge
+          (the widget is a centered 1280px block, so left = 24 − (100vw−1280)/2
+          measured from the widget's own left edge). */}
+      <LayoutSwitcher
+        label="Quick Action"
+        value={variant}
+        onChange={setVariant}
+        positionClassName="top-[96px] left-[calc(664px-50vw)]"
+        options={[
+          {
+            value: "final",
+            name: "Final Phase",
+            description: "Aksi cepat: login, promo, HaloBCA, lokasi, & webform.",
+          },
+          {
+            value: "initial",
+            name: "Initial Phase",
+            description: "Login Cepat — empat tujuan login langsung ke myBCA & KlikBCA.",
+          },
+        ]}
+      />
+
       {/* search + quick action */}
       <div className="absolute top-0 h-[184px] w-full">
         <div
@@ -319,7 +376,7 @@ export default function HeroWidget({
           <div className="relative flex flex-1 items-center justify-center gap-6">
             <div className="flex items-center justify-center px-2">
               <p className="whitespace-nowrap text-lg font-semibold text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
-                Ada yang bisa kami bantu?
+                {t("searchPrompt")}
               </p>
             </div>
             <div
@@ -348,10 +405,10 @@ export default function HeroWidget({
                   }}
                   className="relative z-10 h-7 w-full bg-transparent px-6 text-base font-semibold text-white focus:outline-none"
                 />
-                <SearchPlaceholderCarousel visible={!searchValue && !searchFocused} live={live} />
+                <SearchPlaceholderCarousel placeholders={placeholders} visible={!searchValue && !searchFocused} live={live} />
               </div>
               <button
-                aria-label="Cari"
+                aria-label={tNav("search")}
                 onClick={() => submitSearch(searchValue)}
                 className="relative z-10 flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white transition-transform hover:scale-105"
               >
@@ -362,6 +419,43 @@ export default function HeroWidget({
         </div>
 
         <div className="absolute top-[96px] z-20 flex w-full flex-col items-start px-5">
+          {variant === "initial" ? (
+            <div
+              className="flex w-full items-center gap-8 rounded-3xl p-2"
+              style={{
+                background: "#ffffff",
+                backdropFilter: "blur(6px)",
+                WebkitBackdropFilter: "blur(6px)",
+              }}
+            >
+              <div className="flex shrink-0 items-center gap-4 px-2">
+                <img src="/assets/quick-action/login.svg" alt="" className="size-10 shrink-0" />
+                <div className="flex flex-col items-start gap-1 whitespace-nowrap">
+                  <p className="text-base font-bold text-neutral-800">{t("loginCepat.title")}</p>
+                  <p className="text-sm font-normal text-neutral-700">{t("loginCepat.subtitle")}</p>
+                </div>
+              </div>
+              <div className="flex min-w-0 flex-1 items-center gap-2">
+                {LOGIN_DESTINATIONS.map((dest) => (
+                  <a
+                    key={dest.label}
+                    href={dest.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group/login flex h-16 min-w-0 flex-1 items-center justify-center gap-4 rounded-2xl border border-neutral-300 bg-white px-4 transition-colors duration-200 hover:border-blue-300 hover:bg-cyan-100"
+                  >
+                    <span className="flex size-10 shrink-0 items-center justify-center">
+                      <img src={dest.icon} alt="" className={`${dest.iconClass} object-contain`} />
+                    </span>
+                    <span className="text-sm font-semibold whitespace-nowrap text-neutral-800">
+                      {dest.label}
+                    </span>
+                    <ExternalArrow />
+                  </a>
+                ))}
+              </div>
+            </div>
+          ) : (
           <div
             className="grid w-full items-stretch overflow-clip rounded-3xl bg-white transition-[grid-template-columns] duration-300 ease-in-out"
             style={{
@@ -446,41 +540,33 @@ export default function HeroWidget({
                 clipPath: loginOpen ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)",
               }}
             >
-              <a
-                href="https://mybca.bca.co.id/auth/login"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-16 flex-1 shrink-0 items-center justify-center gap-4 rounded-xl border border-neutral-300 bg-white px-4 transition-colors hover:bg-neutral-200"
-              >
-                <img src="/assets/quick-action/mybca-logo.svg" alt="" className="size-12 shrink-0" />
-                <span className="text-md font-semibold whitespace-nowrap text-neutral-800">
-                  Login ke myBCA
-                </span>
-              </a>
-              <a
-                href="https://ibank.klikbca.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-16 flex-1 shrink-0 items-center justify-center gap-4 rounded-xl border border-neutral-300 bg-white px-4 transition-colors hover:bg-neutral-200"
-              >
-                <img
-                  src="/assets/quick-action/klikbca-logo.webp"
-                  alt=""
-                  className="h-11 w-auto shrink-0 object-contain"
-                />
-                <span className="text-md font-semibold whitespace-nowrap text-neutral-800">
-                  Login ke KlikBCA
-                </span>
-              </a>
+              {[LOGIN_DESTINATIONS[0], LOGIN_DESTINATIONS[2]].map((dest) => (
+                <a
+                  key={dest.label}
+                  href={dest.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-16 min-w-0 flex-1 items-center justify-center gap-4 rounded-2xl border border-neutral-300 bg-white px-4 transition-colors duration-200 hover:border-blue-300 hover:bg-cyan-100"
+                >
+                  <span className="flex size-10 shrink-0 items-center justify-center">
+                    <img src={dest.icon} alt="" className={`${dest.iconClass} object-contain`} />
+                  </span>
+                  <span className="text-sm font-semibold whitespace-nowrap text-neutral-800">
+                    {dest.label}
+                  </span>
+                  <ExternalArrow />
+                </a>
+              ))}
               <button
                 onClick={() => setLoginOpen(false)}
-                aria-label="Tutup"
+                aria-label={t("closeLogin")}
                 className="flex size-10 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-black/5"
               >
                 <img src="/assets/cycle1/outline-close.svg" alt="" className="size-6" />
               </button>
             </div>
           </div>
+          )}
         </div>
       </div>
 
@@ -500,14 +586,14 @@ export default function HeroWidget({
           aria-hidden
           className="absolute inset-0 rounded-b-3xl bg-gradient-to-b from-cyan-500 to-blue-500"
         />
-        <div className="absolute bottom-5 left-8 flex h-14 flex-col items-start justify-center gap-2">
-          <p className="text-lg font-semibold text-white underline [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
-            Kurs Hari Ini
+        <div className="absolute bottom-5 left-8 flex h-14 w-[120px] flex-col items-start justify-center gap-2">
+          <p className="w-[120px] text-base font-semibold text-white underline [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+            {t("kursToday")}
           </p>
         </div>
 
         <div
-          className="absolute bottom-5 left-[249px] right-5 h-14 overflow-hidden"
+          className="absolute bottom-4 left-[249px] right-[240px] h-14 overflow-hidden"
           style={{
             WebkitMaskImage:
               "linear-gradient(to right, transparent 0%, black 40px, black calc(100% - 40px), transparent 100%)",
@@ -517,7 +603,7 @@ export default function HeroWidget({
         >
           <div
             ref={trackRef}
-            className="flex h-14 gap-4"
+            className="flex h-12 gap-4"
             style={{ transform: "translateX(0px)" }}
           >
             {[...order, ...order, ...order].map((idx, i) => {
@@ -526,25 +612,25 @@ export default function HeroWidget({
                 <div
                   key={`${entry.code}-${i}`}
                   ref={i === 0 ? firstCardRef : undefined}
-                  className="flex h-14 shrink-0 items-center gap-4 rounded-xl border border-[#017CBD] bg-black/10 p-4"
+                  className="flex h-12 shrink-0 items-center gap-4 rounded-xl border border-[#017CBD] bg-black/10 p-4"
                 >
                   <div className="flex items-center gap-3">
                     <img src={entry.flag} alt={entry.code} className="size-6" />
-                    <p className="w-12 text-lg font-semibold text-white">{entry.code}</p>
+                    <p className="w-12 text-base font-semibold text-white">{entry.code}</p>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-0.5 font-semibold text-blue-300 opacity-90">
                       <span className="flex w-12 pt-[2px]">
-                        <span className="text-sm uppercase tracking-[2.1px]">Beli</span>
+                        <span className="text-xs uppercase tracking-[2.1px]">{t("beli")}</span>
                       </span>
-                      <span className="w-24 text-right text-lg">{entry.beli}</span>
+                      <span className="w-20 text-right text-base">{entry.beli}</span>
                     </div>
                     <div className="h-5 w-px bg-white/40" />
                     <div className="flex items-center gap-0.5 font-semibold text-blue-300 opacity-90">
                       <span className="flex w-12 pt-[2px]">
-                        <span className="text-sm uppercase tracking-[2.1px]">Jual</span>
+                        <span className="text-xs uppercase tracking-[2.1px]">{t("jual")}</span>
                       </span>
-                      <span className="w-24 text-right text-lg">{entry.jual}</span>
+                      <span className="w-20 text-right text-base">{entry.jual}</span>
                     </div>
                   </div>
                 </div>
@@ -555,18 +641,22 @@ export default function HeroWidget({
 
         <button
           onClick={() => scrollByCard(-1)}
-          aria-label="Kurs sebelumnya"
+          aria-label={t("kursPrev")}
           className="absolute bottom-7 right-[1047px] flex size-10 items-center justify-center rounded-full bg-black/20 transition-colors hover:bg-black/40"
         >
           <img src="/assets/cycle1/chevron-left.svg" alt="" className="size-6" />
         </button>
         <button
           onClick={() => scrollByCard(1)}
-          aria-label="Kurs berikutnya"
-          className="absolute bottom-7 right-5 flex size-10 items-center justify-center rounded-full bg-black/20 backdrop-blur-md transition-colors hover:bg-black/40"
+          aria-label={t("kursNext")}
+          className="absolute bottom-7 right-[200px] flex size-10 items-center justify-center rounded-full bg-black/20 backdrop-blur-md transition-colors hover:bg-black/40"
         >
           <img src="/assets/cycle1/chevron-right.svg" alt="" className="size-6" />
         </button>
+
+        <p className="absolute bottom-7 right-5 flex h-10 w-40 items-center text-xs font-normal text-neutral-100/50">
+          {t("kursDisclaimer")}
+        </p>
       </div>
 
       {/* search recommendation — rendered at the widget root so it can overlay

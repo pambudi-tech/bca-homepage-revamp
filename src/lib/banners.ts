@@ -1,6 +1,9 @@
 import { SLIDES, type Slide } from "@/components/home/hero-slides";
+import type { AppLocale } from "@/i18n/routing";
 
 // A shape matching the columns we select from the Supabase `banners` table.
+// `_en`/`_zh` are optional translations (see `supabase/banner-i18n.sql`) —
+// null until a row has been translated.
 type BannerRow = {
   image: string;
   alt: string;
@@ -8,6 +11,12 @@ type BannerRow = {
   cta_label: string;
   cta_icon: string;
   cta_href: string | null;
+  title_en: string | null;
+  title_zh: string | null;
+  alt_en: string | null;
+  alt_zh: string | null;
+  cta_label_en: string | null;
+  cta_label_zh: string | null;
 };
 
 /**
@@ -18,14 +27,14 @@ type BannerRow = {
  * Falls back to the bundled SLIDES whenever Supabase isn't configured or the
  * request fails, so the hero never renders empty.
  */
-export async function getBanners(): Promise<Slide[]> {
+export async function getBanners(locale: AppLocale): Promise<Slide[]> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) return SLIDES;
 
   try {
     const res = await fetch(
-      `${url}/rest/v1/banners?select=image,alt,title,cta_label,cta_icon,cta_href&is_active=eq.true&order=sort_order.asc`,
+      `${url}/rest/v1/banners?select=image,alt,title,cta_label,cta_icon,cta_href,title_en,title_zh,alt_en,alt_zh,cta_label_en,cta_label_zh&is_active=eq.true&order=sort_order.asc`,
       {
         headers: { apikey: key, Authorization: `Bearer ${key}` },
         // Re-fetch at most every 5 minutes; edits in Supabase show up after that.
@@ -39,9 +48,15 @@ export async function getBanners(): Promise<Slide[]> {
 
     return rows.map((r) => ({
       image: r.image,
-      alt: r.alt,
-      title: r.title,
-      cta: { label: r.cta_label, icon: r.cta_icon, variant: "primary" as const },
+      alt: (locale === "en" ? r.alt_en : locale === "zh" ? r.alt_zh : null) ?? r.alt,
+      title: (locale === "en" ? r.title_en : locale === "zh" ? r.title_zh : null) ?? r.title,
+      cta: {
+        label:
+          (locale === "en" ? r.cta_label_en : locale === "zh" ? r.cta_label_zh : null) ??
+          r.cta_label,
+        icon: r.cta_icon,
+        variant: "primary" as const,
+      },
     }));
   } catch {
     return SLIDES;

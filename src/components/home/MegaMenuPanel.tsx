@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { useTranslations } from "next-intl";
 import type { MegaMenuCategory, MegaMenuLink } from "./megamenu-data";
 
 /* Icons are inlined so hover states can recolour them via `currentColor`. */
@@ -66,6 +67,7 @@ export default function MegaMenuPanel({
   category: MegaMenuCategory;
   mode: MegaMenuMode;
 }) {
+  const t = useTranslations("common");
   /* Longest stagger column: the products plus the CTA beneath them. The close
      animation counts backwards from this to empty the panel bottom-up. */
   const rowCount = category.products.length + 1;
@@ -136,7 +138,7 @@ export default function MegaMenuPanel({
             <span className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out group-hover:grid-rows-[1fr]">
               <span className="overflow-hidden">
                 <span className="mt-8 flex h-5 items-center gap-0.5 text-sm font-semibold leading-[14px] text-white">
-                  Pelajari
+                  {t("learnMore")}
                   <ArrowRight />
                 </span>
               </span>

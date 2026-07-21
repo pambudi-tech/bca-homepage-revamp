@@ -1,15 +1,19 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties } from "react";
-import { MEGAMENU } from "./megamenu-data";
+import { createPortal } from "react-dom";
+import { useLocale, useTranslations } from "next-intl";
+import { useMegaMenu } from "./use-megamenu";
+import { useRouter, usePathname } from "@/i18n/navigation";
+import { routing, type AppLocale } from "@/i18n/routing";
+import type { MegaMenuCategory } from "./megamenu-data";
 import { useLenis } from "@/components/SmoothScroll";
 
-const SEGMENTS = ["Individu", "Bisnis", "Solitaire", "Prioritas"];
-
-const MENU_ITEMS = [
-  ...MEGAMENU.map((c) => ({ key: c.key, label: c.label, expandable: true })),
-  { key: "Promo", label: "Promo", expandable: false },
-];
+const LOCALE_META: Record<AppLocale, { flag: string }> = {
+  id: { flag: "/assets/cycle1/flag-id.svg" },
+  en: { flag: "/assets/navbar/flag-en.png" },
+  zh: { flag: "/assets/navbar/flag-zh.png" },
+};
 
 /* ------------------------------ icons ------------------------------ */
 
@@ -51,11 +55,33 @@ type Dir = "fwd" | "back";
 const viewKey = (v: View) => (v.type === "detail" ? `detail:${v.key}` : v.type);
 
 export default function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const locale = useLocale() as AppLocale;
+  const router = useRouter();
+  const pathname = usePathname();
+  const tNav = useTranslations("nav");
+  const tMobile = useTranslations("mobileMenu");
+  const tLang = useTranslations("languages");
+  const MEGAMENU = useMegaMenu();
+  const SEGMENTS = Object.keys(tNav.raw("segments")) as string[];
+  const MENU_ITEMS = [
+    ...MEGAMENU.map((c) => ({ key: c.key, label: c.label, expandable: true })),
+    { key: "Promo", label: tNav("promo"), expandable: false },
+  ];
+  const otherLocales = routing.locales.filter((l) => l !== locale);
+  const switchLocale = (nextLocale: AppLocale) => {
+    router.replace(pathname, { locale: nextLocale });
+  };
+
   const [segment, setSegment] = useState("Individu");
   const [view, setView] = useState<View>({ type: "main" });
   const [enterDir, setEnterDir] = useState<Dir | null>(null);
   const [exiting, setExiting] = useState<{ view: View; dir: Dir } | null>(null);
+  const [mounted, setMounted] = useState(false);
   const lenis = useLenis();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Reset to the root view each time the menu opens, and lock page scroll while
   // it's open (the menu keeps its own internal scroll via `data-lenis-prevent`).
@@ -82,7 +108,17 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
   };
 
   const renderView = (v: View) => {
-    if (v.type === "segment") return <SegmentView segment={segment} onPick={(s) => { setSegment(s); navigate({ type: "main" }, "back"); }} onBack={() => navigate({ type: "main" }, "back")} />;
+    if (v.type === "segment")
+      return (
+        <SegmentView
+          segments={SEGMENTS}
+          segment={segment}
+          tNav={tNav}
+          tMobile={tMobile}
+          onPick={(s) => { setSegment(s); navigate({ type: "main" }, "back"); }}
+          onBack={() => navigate({ type: "main" }, "back")}
+        />
+      );
     if (v.type === "detail") {
       const cat = MEGAMENU.find((c) => c.key === v.key);
       if (!cat) return null;
@@ -90,6 +126,13 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
     }
     return (
       <MainView
+        menuItems={MENU_ITEMS}
+        tNav={tNav}
+        tMobile={tMobile}
+        tLang={tLang}
+        locale={locale}
+        otherLocales={otherLocales}
+        onSwitchLocale={switchLocale}
         onOpenDetail={(key) => navigate({ type: "detail", key }, "fwd")}
         onLeaf={onClose}
       />
@@ -103,7 +146,14 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
   // merely transparent the compositor still evaluated that blur every frame —
   // on a closed menu, for the entire visit. `visibility: hidden` takes it out of
   // the paint step without giving up either fade.
-  return (
+  //
+  // Portaled to `document.body`: the page wraps its main content in a
+  // `relative z-10` stacking context (so it can layer above the footer), which
+  // caps every z-index inside it — including this overlay's `z-60` — below
+  // siblings like `BackToTop` (`z-50`) that live outside that wrapper. The
+  // portal escapes that context so the menu's z-index compares at the root.
+  if (!mounted) return null;
+  return createPortal(
     <div
       data-shown={open}
       className="fade-overlay fixed inset-0 z-[60] flex justify-center xl:hidden"
@@ -128,11 +178,11 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
                 onClick={() => navigate({ type: "segment" }, "fwd")}
                 className="flex h-10 w-[148px] items-center justify-between rounded-full bg-blue-100 px-4 transition-transform active:scale-[0.98]"
               >
-                <span className="text-sm font-semibold text-blue-500">{segment}</span>
+                <span className="text-sm font-semibold text-blue-500">{tNav(`segments.${segment}`)}</span>
                 <ExpandAll className="size-4 text-blue-500" />
               </button>
             )}
-            <button onClick={onClose} aria-label="Tutup menu" className="flex size-10 items-center justify-center text-white transition-transform active:scale-95">
+            <button onClick={onClose} aria-label={tMobile("tutupMenu")} className="flex size-10 items-center justify-center text-white transition-transform active:scale-95">
               <CloseIcon />
             </button>
           </div>
@@ -156,7 +206,8 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
@@ -171,17 +222,33 @@ function ViewScroller({ children }: { children: React.ReactNode }) {
 /* ------------------------------ Main view ------------------------------ */
 
 function MainView({
+  menuItems,
+  tNav,
+  tMobile,
+  tLang,
+  locale,
+  otherLocales,
+  onSwitchLocale,
   onOpenDetail,
   onLeaf,
 }: {
+  menuItems: { key: string; label: string; expandable: boolean }[];
+  tNav: (key: string) => string;
+  tMobile: (key: string) => string;
+  tLang: (key: string) => string;
+  locale: AppLocale;
+  otherLocales: AppLocale[];
+  onSwitchLocale: (locale: AppLocale) => void;
   onOpenDetail: (key: string) => void;
   onLeaf: () => void;
 }) {
+  const [langOpen, setLangOpen] = useState(false);
+
   return (
     <>
       <div className="mt-6 flex items-center gap-3">
         <button
-          aria-label="Cari"
+          aria-label={tNav("search")}
           className="flex size-10 shrink-0 items-center justify-center rounded-full border border-[rgba(186,213,255,0.25)] transition-colors active:bg-white/10"
         >
           <img src="/assets/cycle1/outline-search.svg" alt="" className="size-6" />
@@ -192,7 +259,7 @@ function MainView({
           rel="noopener noreferrer"
           className="flex h-10 flex-1 items-center justify-center rounded-full border border-[rgba(186,213,255,0.25)] px-5 text-sm font-semibold text-white transition-colors active:bg-white/10"
         >
-          Tentang BCA
+          {tNav("tentangBca")}
         </a>
         <a
           href="https://karir.bca.co.id/"
@@ -200,12 +267,12 @@ function MainView({
           rel="noopener noreferrer"
           className="flex h-10 flex-1 items-center justify-center rounded-full border border-[rgba(186,213,255,0.25)] px-5 text-sm font-semibold text-white transition-colors active:bg-white/10"
         >
-          Karir
+          {tNav("karir")}
         </a>
       </div>
 
       <nav className="mt-6 flex flex-col">
-        {MENU_ITEMS.map((item) => (
+        {menuItems.map((item) => (
           <button
             key={item.key}
             onClick={() => (item.expandable ? onOpenDetail(item.key) : onLeaf())}
@@ -219,14 +286,35 @@ function MainView({
 
       <div className="flex-1" />
 
-      <div className="flex h-16 items-center justify-between pl-1">
-        <span className="text-base font-semibold leading-6 text-white">Bahasa</span>
-        <button className="flex items-center gap-0.5 rounded-full border border-[rgba(186,213,255,0.25)] p-2 transition-colors active:bg-white/10">
-          <img src="/assets/cycle1/flag-id.svg" alt="" className="size-6" />
+      <div className="relative flex h-16 items-center justify-between pl-1">
+        <span className="text-base font-semibold leading-6 text-white">{tMobile("bahasa")}</span>
+        <button
+          onClick={() => setLangOpen((v) => !v)}
+          className="flex items-center gap-0.5 rounded-full border border-[rgba(186,213,255,0.25)] p-2 transition-colors active:bg-white/10"
+        >
+          <img src={LOCALE_META[locale].flag} alt="" className="size-6" />
           <span className="flex w-8 items-center justify-center px-0.5 text-base font-bold text-white">
-            ID
+            {locale.toUpperCase()}
           </span>
         </button>
+
+        {langOpen && (
+          <div className="absolute bottom-[calc(100%+8px)] right-0 z-10 overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-[0px_11px_11px_0px_rgba(224,224,224,0.14)]">
+            {otherLocales.map((code) => (
+              <button
+                key={code}
+                onClick={() => {
+                  setLangOpen(false);
+                  onSwitchLocale(code);
+                }}
+                className="flex w-[148px] items-center gap-2 p-4 text-left transition-colors hover:bg-blue-100"
+              >
+                <img src={LOCALE_META[code].flag} alt="" className="size-6 rounded-full object-cover" />
+                <span className="flex-1 text-base font-semibold text-neutral-900">{tLang(code)}</span>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
@@ -236,10 +324,16 @@ function MainView({
 
 function SegmentView({
   segment,
+  segments,
+  tNav,
+  tMobile,
   onPick,
   onBack,
 }: {
   segment: string;
+  segments: string[];
+  tNav: (key: string) => string;
+  tMobile: (key: string) => string;
   onPick: (s: string) => void;
   onBack: () => void;
 }) {
@@ -248,16 +342,16 @@ function SegmentView({
       <div className="mt-6 flex h-10 items-center px-1">
         <button onClick={onBack} className="flex items-center gap-3 text-white transition-opacity active:opacity-60">
           <ChevronLeft className="size-6" />
-          <span className="text-lg font-semibold leading-[26px]">Kembali</span>
+          <span className="text-lg font-semibold leading-[26px]">{tMobile("kembali")}</span>
         </button>
       </div>
 
       <p className="mt-14 text-center text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
-        Pilih Segmen Anda
+        {tMobile("pilihSegmen")}
       </p>
 
       <div className="mt-12 flex flex-col items-center gap-8">
-        {SEGMENTS.map((s) => {
+        {segments.map((s) => {
           const selected = s === segment;
           return (
             <button
@@ -266,7 +360,7 @@ function SegmentView({
               className={`flex h-16 items-center justify-center text-2xl font-semibold leading-8 text-white transition-transform active:scale-95 ${selected ? "rounded-full border border-white px-10" : "opacity-90"
                 }`}
             >
-              {s}
+              {tNav(`segments.${s}`)}
             </button>
           );
         })}
@@ -282,7 +376,7 @@ function DetailView({
   onBack,
   onLeaf,
 }: {
-  cat: (typeof MEGAMENU)[number];
+  cat: MegaMenuCategory;
   onBack: () => void;
   onLeaf: () => void;
 }) {

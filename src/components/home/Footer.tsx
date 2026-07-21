@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { FOOTER_BOTTOM_LINKS, FOOTER_LINK_COLUMNS, SOCIAL_LINKS } from "./footer-data";
+import { useTranslations } from "next-intl";
+import { FOOTER_LINK_COLUMN_KEYS, SOCIAL_LINKS } from "./footer-data";
 import { useLenis } from "@/components/SmoothScroll";
-
-const COPYRIGHT = "Copyrights © 2026 PT Bank Central Asia Tbk, All Rights Reserved";
 
 function ContactRow({ icon, label }: { icon: string; label: string }) {
   return (
@@ -16,17 +15,33 @@ function ContactRow({ icon, label }: { icon: string; label: string }) {
 }
 
 export default function Footer() {
+  const t = useTranslations("footer");
   const parallaxRef = useRef<HTMLDivElement>(null);
   const lenis = useLenis();
   const PARALLAX_SPEED = 1.3;
+  const copyright = t("copyright");
+  const bottomLinks = t.raw("bottomLinks") as string[];
+  const linkColumns = FOOTER_LINK_COLUMN_KEYS.map((key) => {
+    const column = t.raw(`linkColumns.${key}`) as { heading: string; links: string[] };
+    return { key, ...column };
+  });
 
   useEffect(() => {
     if (!lenis) return;
 
+    // `scrollHeight` forces a layout reflow, so it's cached here and only
+    // refreshed on resize — reading it on every Lenis scroll tick was
+    // jamming the main thread the smooth-scroll rAF loop depends on.
+    let docHeight = document.documentElement.scrollHeight;
+    const measure = () => {
+      docHeight = document.documentElement.scrollHeight;
+    };
+    measure();
+    window.addEventListener("resize", measure);
+
     const handleScroll = () => {
       if (!parallaxRef.current) return;
       const scrollBottom = window.innerHeight + window.scrollY;
-      const docHeight = document.documentElement.scrollHeight;
       const distanceToBottom = Math.max(0, docHeight - scrollBottom);
 
       parallaxRef.current.style.transform = `translateY(${distanceToBottom * PARALLAX_SPEED}px)`;
@@ -37,6 +52,7 @@ export default function Footer() {
 
     return () => {
       lenis.off("scroll", handleScroll);
+      window.removeEventListener("resize", measure);
     };
   }, [lenis]);
 
@@ -78,14 +94,10 @@ export default function Footer() {
           <div className="flex flex-col items-center gap-6 xl:items-start xl:gap-8">
             <div className="flex flex-col items-center gap-2 xl:items-start">
               <p className="w-[222px] text-center text-base font-semibold text-white xl:text-left">
-                Kantor Pusat
+                {t("kantorPusat")}
               </p>
-              <p className="w-[222px] text-center text-sm leading-5 text-white/70 xl:text-left">
-                Menara BCA, Grand Indonesia,
-                <br />
-                Jl. MH Thamrin No. 1
-                <br />
-                Jakarta 10310
+              <p className="w-[222px] whitespace-pre-line text-center text-sm leading-5 text-white/70 xl:text-left">
+                {t("alamat")}
               </p>
             </div>
             <div className="flex flex-col items-center gap-4 xl:items-start xl:gap-3">
@@ -97,9 +109,9 @@ export default function Footer() {
 
           {/* Wraps 2-up (Produk drops centered onto a 2nd row) on mobile; inline on desktop. */}
           <div className="flex flex-wrap justify-center gap-10 text-center text-white xl:flex-nowrap xl:justify-start xl:gap-8 xl:text-left">
-            {FOOTER_LINK_COLUMNS.map((column) => (
+            {linkColumns.map((column) => (
               <div
-                key={column.heading}
+                key={column.key}
                 className="flex w-[120px] flex-col items-center gap-6 xl:w-[200px] xl:items-start xl:gap-10"
               >
                 <p className="text-xs font-semibold uppercase tracking-[1.8px]">{column.heading}</p>
@@ -124,7 +136,7 @@ export default function Footer() {
         <div className="flex flex-col items-center gap-6 xl:flex-row xl:items-start xl:justify-between xl:gap-0">
           <div className="flex w-full flex-col items-center gap-6 xl:w-auto xl:items-start">
             <div className="flex flex-wrap items-center justify-center gap-6 xl:flex-nowrap xl:justify-start">
-              {FOOTER_BOTTOM_LINKS.map((link) => (
+              {bottomLinks.map((link) => (
                 <button
                   key={link}
                   className="whitespace-nowrap text-sm font-semibold text-white transition-colors hover:text-white/80"
@@ -135,31 +147,28 @@ export default function Footer() {
             </div>
             {/* Desktop copyright — lives under the links; mobile shows its own copy last. */}
             <p className="hidden w-[445px] text-xs leading-[18px] text-white/60 xl:block">
-              {COPYRIGHT}
+              {copyright}
             </p>
           </div>
 
           <div className="flex w-full flex-col items-center gap-3 px-6 text-center text-xs text-white/60 xl:w-[545px] xl:items-end xl:px-0 xl:text-right">
-            <p className="leading-tight xl:whitespace-nowrap">
-              BCA berizin dan diawasi oleh Otoritas Jasa Keuangan &amp; Bank Indonesia
-            </p>
+            <p className="leading-tight xl:whitespace-nowrap">{t("ojkLine")}</p>
             <p className="leading-[1.5]">
-              BCA merupakan peserta penjaminan LPS. Maksimum nilai simpanan yang dijamin LPS per Nasabah per Bank
-              adalah Rp2 miliar. Untuk cek Tingkat Bunga Penjaminan LPS, klik{" "}
+              {t("lpsLinePrefix")}{" "}
               <a
                 href="https://apps.lps.go.id/BankPesertaLPSRate"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline"
               >
-                di sini
+                {t("lpsLinkLabel")}
               </a>
             </p>
           </div>
 
           {/* Mobile copyright — last line, centered. Hidden on desktop. */}
           <p className="w-[280px] text-center text-xs leading-[18px] text-white/60 xl:hidden">
-            {COPYRIGHT}
+            {copyright}
           </p>
         </div>
       </div>

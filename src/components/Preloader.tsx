@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useLenis } from "@/components/SmoothScroll";
 
 /**
@@ -9,12 +10,12 @@ import { useLenis } from "@/components/SmoothScroll";
  * in the `.pre-*` block in globals.css: the fluid clamps between the two Figma
  * artboards read far better as annotated CSS than as arbitrary Tailwind values.
  *
- * The percentage is NOT decorative. It reports real completion of the page's
- * own subresources — every eager `<img>` in the document, the BCA Sans faces,
- * and the window `load` event — so the curtain only lifts once the homepage
- * behind it is genuinely painted and ready to interact with. The only timing
- * knobs are a short floor (so a warm cache doesn't flash) and a stall ceiling
- * (so one dead request can't strand the visitor).
+ * The progress bar is NOT decorative. It reports real completion of the
+ * page's own subresources — every eager `<img>` in the document, the BCA
+ * Sans faces, and the window `load` event — so the curtain only lifts once
+ * the homepage behind it is genuinely painted and ready to interact with.
+ * The only timing knobs are a short floor (so a warm cache doesn't flash)
+ * and a stall ceiling (so one dead request can't strand the visitor).
  *
  * There is no pre-paint inline script and nothing mutates <html>: the loading
  * state is the CSS *default*, so the server-rendered markup already shows it
@@ -49,7 +50,7 @@ const CATCHUP = 3.4;
 /** Floor on the climb rate (fraction/sec). Exponential catch-up alone is
  *  asymptotic, so the last few percent crawl; this closes them at a steady
  *  pace. It can never overshoot the real figure — see the clamp at the call
- *  site — so the number stays honest, it just stops dawdling. */
+ *  site — so the bar stays honest, it just stops dawdling. */
 const MIN_RATE = 0.5;
 
 /** Relative weights, so fonts and full page load aren't drowned out by a
@@ -60,11 +61,79 @@ const LOAD_WEIGHT = 3;
 
 type Phase = "loading" | "exit" | "done";
 
+/** Per-word tagline reveal timing. Longer words rise a little slower — a
+ *  fixed duration would make "by"/"di" and "Always"/"Senantiasa" feel
+ *  identical, and "Always"/"Senantiasa" alone should read as unhurried
+ *  next to the short connector words around it. */
+const WORD_BASE_MS = 360;
+const WORD_PER_CHAR_MS = 22;
+const WORD_MIN_MS = 320;
+const WORD_MAX_MS = 620;
+/** Fraction of a word's own duration that elapses before the next word
+ *  starts rising. Below 1 so words overlap into a cascade rather than
+ *  strictly waiting for one to finish before the next begins — still reads
+ *  as "one after another", just without a dead beat between each. */
+const WORD_STAGGER = 0.55;
+/** Delay before the first word starts, so the tagline doesn't rise before
+ *  the logo above it has begun its own entrance. */
+const WORD_START_DELAY_MS = 160;
+
+type WordTiming = { word: string; durationMs: number; delayMs: number };
+
+function buildWordTimings(words: string[], startDelayMs: number): WordTiming[] {
+  let delay = startDelayMs;
+  return words.map((word) => {
+    const durationMs = Math.min(
+      WORD_MAX_MS,
+      Math.max(WORD_MIN_MS, WORD_BASE_MS + word.length * WORD_PER_CHAR_MS)
+    );
+    const timing: WordTiming = { word, durationMs, delayMs: delay };
+    delay += durationMs * WORD_STAGGER;
+    return timing;
+  });
+}
+
+/** Interleaves plain space text nodes between word spans so the words read
+ *  as a normal sentence — the clip wrappers are inline-block, which would
+ *  otherwise collapse the whitespace between them. */
+function withSpaces(nodes: React.ReactNode[]): React.ReactNode[] {
+  return nodes.flatMap((node, i) => (i === 0 ? [node] : [" ", node]));
+}
+
+function TaglineWords({ timings }: { timings: WordTiming[] }) {
+  return (
+    <>
+      {withSpaces(
+        timings.map((t, i) => (
+          <span className="pre-word-clip" key={i}>
+            <span
+              className="pre-word-inner"
+              style={{ animationDuration: `${t.durationMs}ms`, animationDelay: `${t.delayMs}ms` }}
+            >
+              {t.word}
+            </span>
+          </span>
+        ))
+      )}
+    </>
+  );
+}
+
 export default function Preloader() {
+  const t = useTranslations("preloader");
+  const [tagline1, tagline2] = t.raw("tagline") as [string, string];
   const [phase, setPhase] = useState<Phase>("loading");
-  const counterRef = useRef<HTMLSpanElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const lenis = useLenis();
+
+  // Word timings are pure functions of the translated strings, so they're
+  // stable across re-renders without needing a memo — recomputing them is
+  // cheaper than the dependency check would be.
+  const words1 = tagline1.split(" ");
+  const words2 = tagline2.split(" ");
+  const allTimings = buildWordTimings([...words1, ...words2], WORD_START_DELAY_MS);
+  const timings1 = allTimings.slice(0, words1.length);
+  const timings2 = allTimings.slice(words1.length);
 
   // Park Lenis while the loading page is up. The cleanup restarts it as soon
   // as the phase leaves "loading" — scrolling during the exit is fine, the
@@ -215,15 +284,11 @@ export default function Preloader() {
         Math.max(remaining * (1 - Math.exp(-CATCHUP * dt)), MIN_RATE * dt)
       );
 
-      // 100 is reserved for "actually done" — the eased value would otherwise
+      // 1 is reserved for "actually done" — the eased value would otherwise
       // round up to it while requests are still in flight.
       const settled = target >= 1 && now - start >= MIN_VISIBLE_MS;
       if (settled && shown > 0.995) shown = 1;
-      const pct = shown >= 1 ? 100 : Math.min(99, Math.floor(shown * 100));
 
-      if (counterRef.current) {
-        counterRef.current.textContent = String(pct).padStart(2, "0");
-      }
       if (barRef.current) {
         barRef.current.style.transform = `scaleX(${shown})`;
       }
@@ -269,15 +334,11 @@ export default function Preloader() {
         <div className="pre-layer pre-head" aria-hidden="true">
           <img src="/assets/cycle1/bca-logo.svg" alt="" className="pre-logo" />
           <p className="pre-tagline">
+            <TaglineWords timings={timings1} />
             {/* Hidden above the mobile artboard's breakpoint, where the Figma
                 desktop frame sets the tagline on a single line. */}
-            Senantiasa<br className="pre-br" /> di Sisi Anda
-          </p>
-        </div>
-
-        <div className="pre-layer pre-pct" aria-hidden="true">
-          <p className="pre-count">
-            <span ref={counterRef}>00</span>%
+            <br className="pre-br" />{" "}
+            <TaglineWords timings={timings2} />
           </p>
         </div>
 

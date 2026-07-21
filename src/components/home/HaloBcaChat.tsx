@@ -1,0 +1,231 @@
+"use client";
+
+import { useEffect, useId, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
+
+/** Inline, not <img> — the icon has to inherit the button's text color so the
+    fill can swap along with the label on hover/open. */
+function HelpIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden className={className}>
+      <path
+        d="M12.002 2.2998C13.9905 2.2999 15.8975 3.09007 17.3037 4.49609C18.71 5.90239 19.5 7.81002 19.5 9.79883V10.4326C20.231 10.6902 20.8648 11.1682 21.3125 11.8008C21.7603 12.4334 22.0002 13.1898 22 13.9648C21.9982 14.6614 21.8025 15.3441 21.4346 15.9355C21.0666 16.5269 20.5409 17.0039 19.917 17.3135V17.7119C19.9169 19.6739 18.3748 21.0448 16.168 21.0449H14.6865C14.5031 21.3626 14.2197 21.6107 13.8809 21.751C13.5419 21.8914 13.1658 21.9163 12.8115 21.8213C12.4572 21.7264 12.1442 21.5166 11.9209 21.2256C11.6977 20.9346 11.5762 20.5776 11.5762 20.2109C11.5763 19.8443 11.6978 19.4881 11.9209 19.1973C12.1441 18.9063 12.4573 18.6966 12.8115 18.6016C13.1658 18.5067 13.5419 18.5315 13.8809 18.6719C14.2197 18.8123 14.5032 19.0603 14.6865 19.3779H16.168C17.1751 19.3778 18.2509 18.9398 18.251 17.7119V17.2383C18.1216 17.123 18.0171 16.982 17.9453 16.8242C17.8736 16.6665 17.8359 16.4954 17.834 16.3223V9.79883C17.834 9.0329 17.6828 8.27403 17.3896 7.56641C17.0966 6.85906 16.6673 6.21623 16.126 5.6748C15.5844 5.13322 14.941 4.70326 14.2334 4.41016C13.5259 4.11716 12.7677 3.96685 12.002 3.9668C11.2361 3.9668 10.4771 4.11705 9.76953 4.41016C9.06199 4.70323 8.41948 5.1333 7.87793 5.6748C7.33644 6.21629 6.90638 6.85894 6.61328 7.56641C6.32017 8.27403 6.16895 9.0329 6.16895 9.79883V16.3223C6.16967 16.5225 6.12279 16.7203 6.03125 16.8984C5.93966 17.0765 5.8059 17.2298 5.64258 17.3457C5.47939 17.4615 5.29095 17.5368 5.09277 17.5645C4.89436 17.5922 4.69181 17.5716 4.50293 17.5049C3.77114 17.2468 3.13772 16.7682 2.68945 16.1348C2.24118 15.5014 2 14.7446 2 13.9688C2.00005 13.1929 2.24122 12.4361 2.68945 11.8027C3.13771 11.1696 3.77124 10.6905 4.50293 10.4326V9.79883C4.50293 7.81002 5.29293 5.90239 6.69922 4.49609C8.10551 3.08989 10.0133 2.2998 12.002 2.2998Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+/** Text input per Figma "Text Input States" (node 1651:7098): 48px tall,
+    neutral-200 fill, neutral-300 border that turns cyan-400 on focus and
+    red-500 on error, with the error message beneath. Kept local to this
+    component for now — promote to src/components/ui once a second caller
+    needs it. */
+function Field({
+  label,
+  error,
+  as = "input",
+  options,
+  ...props
+}: {
+  label: string;
+  error?: string;
+  as?: "input" | "select";
+  options?: string[];
+} & React.InputHTMLAttributes<HTMLInputElement>) {
+  const id = useId();
+  const errorId = `${id}-error`;
+  const box = [
+    "h-12 w-full rounded-xl border bg-neutral-200 px-3.5 text-sm leading-5 text-neutral-700",
+    "outline-none transition-colors placeholder:text-neutral-600",
+    "disabled:text-neutral-500",
+    error ? "border-red-500" : "border-neutral-300 focus:border-cyan-400",
+  ].join(" ");
+
+  return (
+    <div className="flex w-full flex-col gap-2">
+      <label htmlFor={id} className="text-sm leading-5 font-bold text-neutral-800">
+        {label}
+      </label>
+      {as === "select" ? (
+        // `appearance-none` + our own chevron so the control matches the Figma
+        // field in every browser instead of showing the OS default caret.
+        <div className="relative w-full">
+          <select
+            id={id}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? errorId : undefined}
+            className={`${box} appearance-none pr-10 ${props.value ? "" : "text-neutral-600"}`}
+            {...(props as React.SelectHTMLAttributes<HTMLSelectElement>)}
+          >
+            <option value="">{props.placeholder}</option>
+            {options?.map((o) => (
+              <option key={o} value={o} className="text-neutral-700">
+                {o}
+              </option>
+            ))}
+          </select>
+          <svg
+            viewBox="0 0 12 8"
+            aria-hidden
+            className="pointer-events-none absolute top-1/2 right-3.5 w-3 -translate-y-1/2 text-neutral-600"
+          >
+            <path d="M1 1.5 6 6.5l5-5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+      ) : (
+        <input
+          id={id}
+          aria-invalid={Boolean(error)}
+          aria-describedby={error ? errorId : undefined}
+          className={box}
+          {...props}
+        />
+      )}
+      {error ? (
+        <p id={errorId} className="text-xs leading-[18px] text-red-500">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+type Values = { nama: string; email: string; telepon: string; produk: string };
+const EMPTY: Values = { nama: "", email: "", telepon: "", produk: "" };
+
+// Matches the `halobca-out` animation duration in globals.css — the panel
+// stays mounted for this long after closing starts so the rise-down exit
+// can play instead of the panel just vanishing.
+const CLOSE_MS = 240;
+
+export default function HaloBcaChat() {
+  const t = useTranslations("halobca");
+  // `open` mounts the panel; `closing` swaps it to the exit animation and is
+  // cleared (unmounting the panel) once CLOSE_MS elapses.
+  const [open, setOpen] = useState(false);
+  const [closing, setClosing] = useState(false);
+  const [values, setValues] = useState<Values>(EMPTY);
+  const [robot, setRobot] = useState(false);
+  const [errors, setErrors] = useState<Partial<Values>>({});
+  const panelRef = useRef<HTMLDivElement>(null);
+  const products = t.raw("products") as string[];
+
+  const close = () => {
+    setOpen((wasOpen) => {
+      if (wasOpen) setClosing(true);
+      return false;
+    });
+  };
+
+  useEffect(() => {
+    if (!closing) return;
+    const id = setTimeout(() => setClosing(false), CLOSE_MS);
+    return () => clearTimeout(id);
+  }, [closing]);
+
+  // Esc closes; a click anywhere outside the panel (and outside the button,
+  // which toggles on its own) closes too.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
+    const onDown = (e: PointerEvent) => {
+      if (!panelRef.current?.contains(e.target as Node)) close();
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onDown);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onDown);
+    };
+  }, [open]);
+
+  const set = (key: keyof Values) => (e: { target: { value: string } }) => {
+    setValues((v) => ({ ...v, [key]: e.target.value }));
+    setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
+  };
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const next: Partial<Values> = {};
+    if (!values.nama.trim()) next.nama = t("errors.required");
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(values.email)) next.email = t("errors.email");
+    if (!/^[0-9+\-\s]{8,}$/.test(values.telepon)) next.telepon = t("errors.phone");
+    if (!values.produk) next.produk = t("errors.required");
+    setErrors(next);
+    // Prototype only — no chat backend wired yet.
+  };
+
+  return (
+    <div className="fixed right-4 bottom-4 z-[70] sm:right-8 sm:bottom-8">
+      {open || closing ? (
+        <>
+          {/* Scrim for the mobile bottom sheet only — the desktop popover
+              floats free and relies on the outside-pointerdown listener
+              instead. */}
+          <div
+            aria-hidden
+            data-state={closing ? "closing" : "open"}
+            className="halobca-scrim fixed inset-0 z-[65] bg-neutral-900/40 sm:hidden"
+          />
+          <div
+            ref={panelRef}
+            role="dialog"
+            aria-modal="false"
+            aria-label={t("title")}
+            data-state={closing ? "closing" : "open"}
+            className="halobca-panel fixed inset-x-0 bottom-0 z-[70] max-h-[85vh] w-full overflow-y-auto rounded-t-2xl bg-neutral-100 p-6 pb-[calc(24px+env(safe-area-inset-bottom))] shadow-[0_-8px_32px_rgba(0,0,0,0.16)] sm:absolute sm:inset-x-auto sm:right-0 sm:bottom-[calc(100%+16px)] sm:max-h-[min(70vh,640px)] sm:w-[min(calc(100vw-2.5rem),400px)] sm:rounded-2xl sm:pb-6 sm:shadow-[0_16px_48px_rgba(0,0,0,0.16)]"
+          >
+            {/* Grab handle — mobile bottom-sheet affordance, hidden on desktop. */}
+            <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-neutral-300 sm:hidden" />
+            <h2 className="text-lg leading-6 font-bold text-neutral-900">{t("title")}</h2>
+          <p className="mt-2 text-sm leading-5 text-neutral-600">{t("subtitle")}</p>
+
+          <form onSubmit={submit} className="mt-6 flex flex-col gap-4">
+            <Field label={t("fields.nama")} placeholder={t("fields.namaPlaceholder")} value={values.nama} onChange={set("nama")} error={errors.nama} />
+            <Field label={t("fields.email")} type="email" placeholder={t("fields.emailPlaceholder")} value={values.email} onChange={set("email")} error={errors.email} />
+            <Field label={t("fields.telepon")} type="tel" inputMode="tel" placeholder={t("fields.teleponPlaceholder")} value={values.telepon} onChange={set("telepon")} error={errors.telepon} />
+            <Field as="select" label={t("fields.produk")} placeholder={t("fields.produkPlaceholder")} options={products} value={values.produk} onChange={set("produk")} error={errors.produk} />
+
+            {/* Placeholder for the real reCAPTCHA widget — no site key yet, so
+                this is a plain checkbox standing in for the challenge. */}
+            <label className="flex items-center gap-3 rounded-xl border border-neutral-300 bg-neutral-200 px-4 py-3">
+              <input
+                type="checkbox"
+                checked={robot}
+                onChange={(e) => setRobot(e.target.checked)}
+                className="size-6 accent-blue-500"
+              />
+              <span className="text-sm text-neutral-700">{t("captcha")}</span>
+            </label>
+
+            <a href="#" className="text-center text-sm text-blue-500 underline">
+              {t("terms")}
+            </a>
+            <button
+              type="submit"
+              className="h-12 rounded-full bg-blue-500 text-sm font-bold text-neutral-100 transition-colors hover:bg-blue-600"
+            >
+              {t("submit")}
+            </button>
+          </form>
+          </div>
+        </>
+      ) : null}
+
+      <button
+        type="button"
+        onClick={() => (open ? close() : setOpen(true))}
+        aria-expanded={open}
+        // Open keeps the hover treatment: `data-open` drives the same swap so
+        // the button reads as active even when the pointer moves away.
+        data-open={open}
+        aria-label={t("label")}
+        className="flex items-center gap-2 rounded-full border border-neutral-300 bg-neutral-100 p-3.5 text-blue-500 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-colors hover:bg-blue-500 hover:text-neutral-100 data-[open=true]:bg-blue-500 data-[open=true]:text-neutral-100 sm:px-5 sm:py-3"
+      >
+        <HelpIcon className="size-6" />
+        <span className="hidden text-sm font-bold sm:inline">{t("label")}</span>
+      </button>
+    </div>
+  );
+}

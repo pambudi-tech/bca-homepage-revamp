@@ -1,14 +1,20 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { PRODUCT_CATEGORIES, type Product, type ProductCategory } from "./product-data";
+import { useTranslations } from "next-intl";
+import {
+  PRODUCT_CATEGORIES,
+  SAMPLE_CATEGORY_PHOTOS,
+  type Product,
+  type ProductCategory,
+} from "./product-data";
 import LayoutSwitcher from "./LayoutSwitcher";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useIsLive } from "@/lib/useIsLive";
 import { useLayoutVariant } from "@/lib/useLayoutVariant";
 
 /** Layout variants offered by this section's LayoutSwitcher. */
-const PRODUCT_VARIANTS = ["accordion"] as const;
+const PRODUCT_VARIANTS = ["accordion", "curved"] as const;
 type ProductVariant = (typeof PRODUCT_VARIANTS)[number];
 
 const AUTO_ADVANCE_MS = 6000;
@@ -37,6 +43,25 @@ const SWAP_STAGGER_MS = 70;
 /** Copy is a single block (it drives the panel's height), so it dips out and
  *  back rather than cross-fading; the text itself is swapped at the trough. */
 const COPY_SWAP_MS = 200;
+
+/**
+ * True at the `xl` breakpoint (1280px+), where the desktop layouts render.
+ * SSR-safe: starts false so server and first client render agree, then matches
+ * after mount. The accordion uses it to know whether it's showing the category
+ * cards (desktop) or the product carousel (mobile) — the two drive autoplay
+ * differently, and CSS `display:none` alone can't tell the timer which is live.
+ */
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1280px)");
+    const sync = () => setIsDesktop(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+  return isDesktop;
+}
 
 /**
  * `alt` alternates per swap so consecutive swaps land on a different animation
@@ -112,6 +137,7 @@ function ProductCard({
   enterDelayMs: number;
   swap: ReturnType<typeof swapStyles>;
 }) {
+  const t = useTranslations("common");
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLButtonElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -184,7 +210,10 @@ function ProductCard({
         active ? "cursor-none" : "cursor-pointer"
       }`}
       style={{
-        flexBasis: active ? 566 : 200,
+        // Six category cards share the 1280px row now (was three product
+        // cards): 440 + 5×150 + 5×16 gap = 1270, leaving a hair of slack so a
+        // sub-pixel rounding never wraps the row.
+        flexBasis: active ? 440 : 150,
         clipPath: entered ? "inset(0 0 0 0)" : "inset(0 100% 0 0)",
         transition: `flex-basis 500ms cubic-bezier(0.4,0,0.2,1), clip-path 700ms cubic-bezier(0.16,1,0.3,1) ${enterDelayMs}ms`,
       }}
@@ -214,7 +243,9 @@ function ProductCard({
       <div
         className="hero-search absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[width] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
         style={{
-          width: active ? 280 : 184,
+          // Collapsed cards are only 150px wide now, so the resting panel is
+          // narrower than the old 3-card layout's 184.
+          width: active ? 280 : 134,
           backgroundColor: "rgba(0,0,0,0.3)",
           backdropFilter: "blur(16px) saturate(1.25)",
           WebkitBackdropFilter: "blur(16px) saturate(1.25)",
@@ -234,7 +265,7 @@ function ProductCard({
               {copy.subtitle}
             </p>
             <div className="flex items-center gap-0.5 pt-8 text-base font-semibold text-blue-100 md:hidden">
-              Pelajari
+              {t("learnMore")}
               <img loading="lazy" decoding="async"
                 src="/assets/cycle1/pelajari-icon.svg"
                 alt=""
@@ -282,7 +313,7 @@ function ProductCard({
           isolation: "isolate",
         } as React.CSSProperties}
       >
-        Pelajari
+        {t("learnMore")}
       </div>
     </button>
   );
@@ -311,6 +342,7 @@ function MobileProductCard({
   swap: ReturnType<typeof swapStyles>;
   progressRef: React.Ref<SVGCircleElement> | undefined;
 }) {
+  const t = useTranslations("common");
   return (
     <button
       onClick={onSelect}
@@ -382,7 +414,7 @@ function MobileProductCard({
           <div className="overflow-hidden">
             <p className="w-full pt-1 text-sm leading-5 text-white/80">{copy.subtitle}</p>
             <div className="flex items-center gap-0.5 pt-6 text-sm font-semibold text-blue-100">
-              Pelajari
+              {t("learnMore")}
               <img loading="lazy" decoding="async" src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5" />
             </div>
           </div>
@@ -390,6 +422,360 @@ function MobileProductCard({
         </div>
       </div>
     </button>
+  );
+}
+
+/**
+ * Curved-carousel geometry — one entry per slot away from the centre, mirrored
+ * for the left side and interpolated for fractional positions while dragging.
+ * `x` is the horizontal travel, `r` the rotateY (positive turns the outer edge
+ * away, so the row reads as the inside of a cylinder), `s` the scale and `o`
+ * the opacity. Slot 3 is the parking spot just past the visible arc.
+ */
+const CURVE_SLOTS = [
+  { x: 0, r: 0, s: 1, o: 1 },
+  { x: 441, r: 38, s: 0.76, o: 1 },
+  { x: 648, r: 46, s: 0.64, o: 1 },
+  { x: 815, r: 52, s: 0.56, o: 0 },
+];
+const CURVE_MAX_SLOT = CURVE_SLOTS.length - 1;
+/** Drag distance that equals one card step — slot 1's travel. */
+const CURVE_STEP_PX = CURVE_SLOTS[1].x;
+
+function curveAt(p: number) {
+  const a = Math.min(Math.abs(p), CURVE_MAX_SLOT);
+  const i = Math.min(Math.floor(a), CURVE_MAX_SLOT - 1);
+  const t = a - i;
+  const lo = CURVE_SLOTS[i];
+  const hi = CURVE_SLOTS[i + 1];
+  const sign = p < 0 ? -1 : 1;
+  return {
+    x: sign * (lo.x + (hi.x - lo.x) * t),
+    r: sign * (lo.r + (hi.r - lo.r) * t),
+    s: lo.s + (hi.s - lo.s) * t,
+    o: lo.o + (hi.o - lo.o) * t,
+  };
+}
+
+/** Signed shortest ring distance, in (-len/2, len/2]. */
+function wrapHalf(v: number, len: number) {
+  let w = v % len;
+  if (w > len / 2) w -= len;
+  else if (w <= -len / 2) w += len;
+  return w;
+}
+
+/**
+ * Card on the curved track. Same face as the expanded desktop accordion card —
+ * full-bleed photo, glass copy panel, follow-cursor "Pelajari" badge — but at a
+ * fixed 566x400: the curve's translate/rotate/scale arrives via `style` from
+ * the track, and only the centred card shows the subtitle, the blue gradient
+ * and the autoplay ring.
+ */
+function CurvedProductCard({
+  product,
+  outgoing,
+  copy,
+  active,
+  hidden,
+  onSelect,
+  progressRef,
+  swap,
+  style,
+}: {
+  product: Product;
+  outgoing: Product | null;
+  copy: Product;
+  active: boolean;
+  /** Parked past the visible arc — skip it for pointer and tab order. */
+  hidden: boolean;
+  onSelect: () => void;
+  progressRef: React.Ref<SVGCircleElement> | undefined;
+  swap: ReturnType<typeof swapStyles>;
+  style: React.CSSProperties;
+}) {
+  const t = useTranslations("common");
+  const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef<HTMLButtonElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const lastMouseRef = useRef({ x: -1000, y: -1000 });
+
+  const positionCursor = () => {
+    if (!cardRef.current || !cursorRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const { x: clientX, y: clientY } = lastMouseRef.current;
+    cursorRef.current.style.transform = `translate3d(${clientX - rect.left - 56}px, ${
+      clientY - rect.top - 56
+    }px, 0)`;
+  };
+
+  const handleCardClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    lastMouseRef.current = { x: e.clientX, y: e.clientY };
+    positionCursor();
+    setIsHovered(true);
+    onSelect();
+  };
+
+  // Same per-frame badge tracking as the accordion card — the card moves under
+  // the pointer (curve transitions, scroll), so it re-measures while shown.
+  useEffect(() => {
+    if (!active || !isHovered) return;
+
+    let frameId = 0;
+    const loop = () => {
+      positionCursor();
+      frameId = requestAnimationFrame(loop);
+    };
+    frameId = requestAnimationFrame(loop);
+
+    const onWindowMouseMove = (e: MouseEvent) => {
+      lastMouseRef.current = { x: e.clientX, y: e.clientY };
+    };
+    window.addEventListener("mousemove", onWindowMouseMove, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener("mousemove", onWindowMouseMove);
+    };
+  }, [active, isHovered]);
+
+  return (
+    <button
+      ref={cardRef}
+      onClick={handleCardClick}
+      onMouseMove={(e) => (lastMouseRef.current = { x: e.clientX, y: e.clientY })}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      tabIndex={hidden ? -1 : 0}
+      aria-hidden={hidden}
+      className={`group absolute left-1/2 top-1/2 h-[400px] w-[566px] overflow-clip rounded-3xl bg-white text-left ${
+        active ? "cursor-none" : "cursor-pointer"
+      }`}
+      style={style}
+    >
+      <div className="absolute inset-0">
+        <PhotoLayer product={product} style={swap.incoming} hoverZoom={active} />
+        {outgoing && <PhotoLayer product={outgoing} style={swap.outgoing} />}
+      </div>
+
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-60 transition-[height] duration-300 ease-out group-hover:h-72"
+        style={{
+          background: active
+            ? "linear-gradient(to top, #005caa 0%, rgba(0,181,240,0) 100%)"
+            : "linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(18,20,23,0) 100%)",
+        }}
+      />
+
+      <div
+        className="hero-search absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[width] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        style={{
+          width: active ? 280 : 184,
+          backgroundColor: "rgba(0,0,0,0.3)",
+          backdropFilter: "blur(16px) saturate(1.25)",
+          WebkitBackdropFilter: "blur(16px) saturate(1.25)",
+          isolation: "isolate",
+        }}
+      >
+        <div className="w-full" style={swap.copy}>
+          <p className="w-full text-xl font-semibold leading-7 tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+            {copy.title}
+          </p>
+          <div
+            className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+            style={{ gridTemplateRows: active ? "1fr" : "0fr", opacity: active ? 1 : 0 }}
+          >
+            <div className="overflow-hidden">
+              <p className="w-full pt-2 text-base leading-6 text-white/80">{copy.subtitle}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className={`absolute bottom-6 right-6 transition-opacity duration-300 ${
+          active ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <svg viewBox="0 0 32 32" className="size-8 -rotate-90">
+          <circle cx="16" cy="16" r={RING_RADIUS} fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
+          <circle
+            ref={progressRef}
+            cx="16"
+            cy="16"
+            r={RING_RADIUS}
+            fill="none"
+            stroke="white"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeDasharray={RING_CIRCUMFERENCE}
+            strokeDashoffset={RING_CIRCUMFERENCE}
+          />
+        </svg>
+      </div>
+
+      <div
+        ref={cursorRef}
+        className="fade-overlay pointer-events-none absolute left-0 top-0 z-30 flex size-28 items-center justify-center rounded-full border border-white/25 bg-white/[0.01] text-sm font-semibold text-white shadow-lg backdrop-blur-md"
+        data-shown={active && isHovered ? "true" : "false"}
+        style={{
+          "--fade-ms": "200ms",
+          isolation: "isolate",
+        } as React.CSSProperties}
+      >
+        {t("learnMore")}
+      </div>
+    </button>
+  );
+}
+
+/**
+ * Desktop-only curved track: every product sits on a ring, five cards visible
+ * at a time (centre + two shrinking, inward-turned cards per side), looping
+ * infinitely. Autoplay is the section's shared cycle — this only maps
+ * `activeIndex` onto ring positions; dragging or clicking a side card feeds
+ * back through `onSelect`.
+ */
+function CurvedCarousel({
+  products,
+  outgoingProducts,
+  copyProducts,
+  activeIndex,
+  onSelect,
+  progressRef,
+  entered,
+  swapping,
+  swapDir,
+  swapAlt,
+}: {
+  products: Product[];
+  outgoingProducts: Product[] | null;
+  copyProducts: Product[];
+  activeIndex: number;
+  onSelect: (index: number) => void;
+  progressRef: React.RefObject<SVGCircleElement | null>;
+  entered: boolean;
+  swapping: boolean;
+  swapDir: number;
+  swapAlt: boolean;
+}) {
+  const n = products.length;
+  // The track is a ring: with fewer products than visible slots the products
+  // repeat, so the wrap always happens outside the visible arc (where cards
+  // sit at opacity 0) and never as an on-screen jump.
+  const copies = Math.max(1, Math.ceil(7 / n));
+  const ringLen = n * copies;
+
+  // `activeIndex` wraps modulo n, so the ring accumulates the shortest signed
+  // step instead — advancing 8 -> 0 keeps travelling forward rather than
+  // spinning the whole ring back. Adjusted during render (the sanctioned
+  // derived-state pattern) so the move and the index land in the same commit.
+  const [ring, setRing] = useState({ activeIndex, n, pos: activeIndex });
+  if (ring.activeIndex !== activeIndex || ring.n !== n) {
+    let pos = activeIndex;
+    if (ring.n === n) {
+      let d = (activeIndex - ring.activeIndex) % n;
+      if (d > n / 2) d -= n;
+      else if (d < -n / 2) d += n;
+      pos = ring.pos + d;
+    }
+    setRing({ activeIndex, n, pos });
+  }
+  const ringPos = ring.pos;
+
+  // Drag-to-rotate. Capture starts only after a small threshold so plain
+  // clicks still reach the cards; once captured, pointer events retarget to
+  // the track and the click never fires — which is exactly the suppression a
+  // drag needs.
+  const [dragDx, setDragDx] = useState<number | null>(null);
+  const pointerRef = useRef<{ id: number; startX: number; captured: boolean } | null>(null);
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    pointerRef.current = { id: e.pointerId, startX: e.clientX, captured: false };
+  };
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const p = pointerRef.current;
+    if (!p || e.pointerId !== p.id) return;
+    const dx = e.clientX - p.startX;
+    if (!p.captured) {
+      if (Math.abs(dx) < 6) return;
+      p.captured = true;
+      e.currentTarget.setPointerCapture(p.id);
+    }
+    setDragDx(dx);
+  };
+  const endDrag = (e: React.PointerEvent<HTMLDivElement>) => {
+    const p = pointerRef.current;
+    if (!p || e.pointerId !== p.id) return;
+    pointerRef.current = null;
+    if (!p.captured) return;
+    const dx = e.clientX - p.startX;
+    // Clamped inside the half-ring so the accumulated step above always reads
+    // the drag's own direction.
+    const maxStep = Math.max(1, Math.floor(n / 2));
+    const steps = Math.max(-maxStep, Math.min(maxStep, Math.round(-dx / CURVE_STEP_PX)));
+    setDragDx(null);
+    if (steps) onSelect((((activeIndex + steps) % n) + n) % n);
+  };
+
+  const dragFrac = (dragDx ?? 0) / CURVE_STEP_PX;
+
+  return (
+    <div
+      className={`relative hidden h-[400px] w-full select-none overflow-hidden transition-opacity duration-700 ease-out xl:block ${
+        entered ? "opacity-100" : "opacity-0"
+      }`}
+      style={{
+        perspective: "1400px",
+        transitionDelay: entered ? "250ms" : "0ms",
+        cursor: dragDx !== null ? "grabbing" : undefined,
+        // Fade the outermost cards into the background at both edges. A mask
+        // (not an overlay) so it works over the section's gradient.
+        maskImage:
+          "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
+        WebkitMaskImage:
+          "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
+      }}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={endDrag}
+      onPointerCancel={endDrag}
+      onDragStart={(e) => e.preventDefault()}
+    >
+      {Array.from({ length: ringLen }, (_, j) => {
+        const pIdx = j % n;
+        const offset = wrapHalf(j - ringPos, ringLen);
+        const p = offset + dragFrac;
+        const c = curveAt(p);
+        const hidden = Math.abs(p) > 2.5;
+        const isActive = offset === 0;
+        return (
+          <CurvedProductCard
+            key={j}
+            product={products[pIdx]}
+            outgoing={outgoingProducts?.[pIdx % outgoingProducts.length] ?? null}
+            copy={copyProducts[pIdx] ?? products[pIdx]}
+            active={isActive}
+            hidden={hidden}
+            onSelect={() => onSelect(pIdx)}
+            progressRef={isActive ? progressRef : undefined}
+            swap={swapStyles(swapping, swapDir, Math.min(Math.abs(offset), 2) * SWAP_STAGGER_MS, swapAlt)}
+            style={{
+              transform: `translate(-50%, -50%) translateX(${c.x}px) rotateY(${c.r}deg) scale(${c.s})`,
+              zIndex: 30 - Math.round(Math.abs(p) * 10),
+              opacity: c.o,
+              transition:
+                dragDx !== null
+                  ? "none"
+                  : "transform 600ms cubic-bezier(0.4,0,0.2,1), opacity 300ms ease",
+              pointerEvents: hidden ? "none" : undefined,
+            }}
+          />
+        );
+      })}
+    </div>
   );
 }
 
@@ -405,6 +791,7 @@ export default function ProductSection({
   categories?: ProductCategory[];
   defaultKey?: string;
 } = {}) {
+  const t = useTranslations("product");
   const [variant, setVariant] = useLayoutVariant<ProductVariant>("product", "accordion", PRODUCT_VARIANTS);
   const [activeCategory, setActiveCategory] = useState(defaultKey);
   // The photos being swiped away. Present only for the length of a swap; the
@@ -440,11 +827,32 @@ export default function ProductSection({
 
   const categoryOf = (key: string) =>
     categories.find((c) => c.key === key) ?? categories[0];
+
+  // Curved carousel and the mobile carousel both show every product in the
+  // category — only the desktop accordion is slot-limited, below.
+  const productsOf = (cat: ProductCategory) => cat.products;
+
   const category = categoryOf(activeCategory);
-  const products = category.products;
-  const outgoingProducts = outgoingCategory ? categoryOf(outgoingCategory).products : null;
-  const copyProducts = categoryOf(copyCategory).products;
+  const products = productsOf(category);
+  const outgoingProducts = outgoingCategory ? productsOf(categoryOf(outgoingCategory)) : null;
+  const copyProducts = productsOf(categoryOf(copyCategory));
   const swapping = outgoingCategory !== null;
+
+  // The desktop accordion now shows the *categories* themselves — one card per
+  // category (Simpanan, Kartu Kredit, …) — rather than the products inside the
+  // active one. Each card is shaped like a Product so it can reuse ProductCard's
+  // photo / hover / expand treatment; the photo falls back to a bundled sample
+  // while Supabase's category `image` column is still empty.
+  const isDesktop = useIsDesktop();
+  const categoryCards: Product[] = categories.map((c, i) => ({
+    title: c.label,
+    subtitle: c.description ?? "",
+    image: c.image || SAMPLE_CATEGORY_PHOTOS[i % SAMPLE_CATEGORY_PHOTOS.length],
+  }));
+  const activeCategoryIndex = Math.max(0, categories.findIndex((c) => c.key === activeCategory));
+  // Desktop accordion autoplay steps through categories; every other view
+  // (curved, mobile) steps through the active category's products.
+  const cyclingCategories = variant === "accordion" && isDesktop;
 
   useEffect(() => {
     let raf = 0;
@@ -489,9 +897,17 @@ export default function ProductSection({
     return () => io.disconnect();
   }, []);
 
+  // Switching from curved (up to 9 cards) back to accordion (3) can leave the
+  // active index past the end of the shorter list, which would show no active
+  // card at all. Nothing crashes in the meantime — the index simply matches
+  // nothing — so an effect is soon enough.
+  useEffect(() => {
+    if (activeIndex >= products.length) setActiveIndex(0);
+  }, [activeIndex, products.length]);
+
   useAutoplayProgress({
-    activeIndex,
-    count: products.length,
+    activeIndex: cyclingCategories ? activeCategoryIndex : activeIndex,
+    count: cyclingCategories ? categories.length : products.length,
     durationMs: AUTO_ADVANCE_MS,
     circumference: RING_CIRCUMFERENCE,
     // Stable array identity: it feeds the hook's effect deps, so a fresh literal
@@ -499,7 +915,15 @@ export default function ProductSection({
     progressRef: progressRefs,
     pausedRef,
     live,
-    onAdvance: () => setActiveIndex((i) => (i + 1) % products.length),
+    onAdvance: () => {
+      if (cyclingCategories) {
+        const next = (activeCategoryIndex + 1) % categories.length;
+        setActiveCategory(categories[next].key);
+        setActiveIndex(0);
+      } else {
+        setActiveIndex((i) => (i + 1) % products.length);
+      }
+    },
   });
 
   // Starts a swap: the old photos are kept around to slide away over the new
@@ -512,6 +936,15 @@ export default function ProductSection({
     setSwapDir(to > from ? 1 : -1);
     setOutgoingCategory(activeCategory);
     setSwapAlt((a) => !a);
+    setActiveCategory(key);
+    setActiveIndex(0);
+  };
+
+  // The accordion's category cards don't run the photo swap — each card owns its
+  // own photo and simply expands/collapses — so selecting one just moves the
+  // active category without touching the swap machinery above.
+  const selectCategoryCard = (key: string) => {
+    if (key === activeCategory) return;
     setActiveCategory(key);
     setActiveIndex(0);
   };
@@ -589,8 +1022,7 @@ export default function ProductSection({
       ref={sectionRef}
       className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-20 pt-0 xl:pb-36 xl:pt-8"
     >
-      {/* prototype-only: lets the client flip this section's layout live.
-          Only one variant so far — add entries here as alternatives land. */}
+      {/* prototype-only: lets the client flip this section's layout live. */}
       <LayoutSwitcher
         label="Layout Produk"
         value={variant}
@@ -599,24 +1031,38 @@ export default function ProductSection({
           {
             value: "accordion",
             name: "Accordion Cards",
-            description: "Kartu aktif melebar, dengan daftar kategori di kolom kiri.",
+            description: "Enam kartu kategori berjajar; kartu aktif melebar.",
+          },
+          {
+            value: "curved",
+            name: "Curved Carousel",
+            description:
+              "Kartu berjajar melengkung dan berputar tanpa ujung; kategori berbaris di atas.",
           },
         ]}
       />
 
       <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-visible">
-        <img loading="lazy" decoding="async"
-          ref={cloveARef}
-          src="/assets/product/bg-clove-a.svg"
-          alt=""
-          className="absolute left-[calc(50%-937px)] top-[-400px] h-[1614px] w-[1178px] opacity-80 will-change-transform"
-        />
-        <img loading="lazy" decoding="async"
-          ref={cloveBRef}
-          src="/assets/product/bg-clove-b.svg"
-          alt=""
-          className="absolute left-[calc(50%+667px)] top-[-96px] h-[1668px] w-[1218px] opacity-80 will-change-transform"
-        />
+        {/* wrapper carries the desktop position/size and a mobile-only 0.8x
+            scale from its top-left anchor; the img inside keeps filling it at
+            100% so the scroll-driven translate3d (set via ref, below) isn't
+            clobbered by a CSS scale on the same transform property. */}
+        <div className="absolute left-[calc(50%-937px)] top-[-400px] h-[1614px] w-[1178px] origin-top-left scale-[0.8] sm:scale-100">
+          <img loading="lazy" decoding="async"
+            ref={cloveARef}
+            src="/assets/product/bg-clove-a.svg"
+            alt=""
+            className="absolute inset-0 size-full opacity-80 will-change-transform"
+          />
+        </div>
+        <div className="absolute left-[calc(50%+667px)] top-[-96px] h-[1668px] w-[1218px] origin-top-left scale-[0.8] sm:scale-100">
+          <img loading="lazy" decoding="async"
+            ref={cloveBRef}
+            src="/assets/product/bg-clove-b.svg"
+            alt=""
+            className="absolute inset-0 size-full opacity-80 will-change-transform"
+          />
+        </div>
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[560px] px-4 xl:w-[1280px] xl:max-w-none xl:px-0">
@@ -628,11 +1074,11 @@ export default function ProductSection({
         >
           <div className="flex items-center py-4 xl:w-[240px] xl:shrink-0">
             <p className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px] xl:text-blue-800">
-              Produk &amp; Layanan
+              {t("eyebrow")}
             </p>
           </div>
           <h2 className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:w-[560px] xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]">
-            Solusi BCA untuk Setiap Tujuan Keuangan Anda
+            {t("heading")}
           </h2>
         </div>
 
@@ -661,57 +1107,82 @@ export default function ProductSection({
           })}
         </div>
 
-        <div className="mt-6 flex xl:mt-16 xl:gap-10">
-          {/* Desktop category list. */}
-          <div
-            className={`hidden shrink-0 flex-col items-start gap-8 py-4 text-blue-500 transition-all duration-700 ease-out xl:flex xl:w-[240px] ${
-              entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            }`}
-            style={{ transitionDelay: entered ? "150ms" : "0ms" }}
-          >
-            {categories.map((cat) => {
-              const isActive = cat.key === activeCategory;
-              const dim = !isActive && hoverCategory !== cat.key;
-              return (
-                <button
-                  key={cat.key}
-                  onClick={() => selectCategory(cat.key)}
-                  onMouseEnter={() => setHoverCategory(cat.key)}
-                  onMouseLeave={() => setHoverCategory(null)}
-                  className={`text-left tracking-[-0.48px] transition-all duration-200 ${
-                    isActive
-                      ? "text-[32px] font-bold leading-10 tracking-[-0.64px]"
-                      : "text-2xl font-semibold leading-8"
-                  } ${dim ? "opacity-50" : "opacity-100"}`}
-                >
-                  {cat.label}
-                </button>
-              );
-            })}
-          </div>
+        <div className={`mt-6 xl:mt-16 ${variant === "curved" ? "flex flex-col" : ""}`}>
+          {/* Desktop category row — curved layout only. The accordion now shows
+              the categories *as* its cards, so its old left-hand list is gone. */}
+          {variant === "curved" && (
+            <div
+              className={`hidden flex-wrap items-baseline gap-x-10 gap-y-2 pb-10 text-blue-500 transition-all duration-700 ease-out xl:flex ${
+                entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+              }`}
+              style={{ transitionDelay: entered ? "150ms" : "0ms" }}
+            >
+              {categories.map((cat) => {
+                const isActive = cat.key === activeCategory;
+                const dim = !isActive && hoverCategory !== cat.key;
+                // The row is `flex-wrap`, so changing a label's font-size on
+                // activation would reflow the whole row (every other label can
+                // shift or re-wrap). Instead every label is laid out at the
+                // active (largest) size and shrunk visually with a layout-inert
+                // `transform: scale`, scaled from the center so growth doesn't
+                // read as a horizontal shift.
+                return (
+                  <button
+                    key={cat.key}
+                    onClick={() => selectCategory(cat.key)}
+                    onMouseEnter={() => setHoverCategory(cat.key)}
+                    onMouseLeave={() => setHoverCategory(null)}
+                    className={`origin-center text-left text-[32px] leading-10 tracking-[-0.64px] transition-all duration-200 ${
+                      isActive ? "font-bold" : "font-semibold"
+                    } ${dim ? "opacity-50" : "opacity-100"}`}
+                    style={{ transform: `scale(${isActive ? 1 : 0.75})` }}
+                  >
+                    {cat.label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
 
           <div
-            className="w-full xl:w-[998px]"
+            className="w-full"
             onMouseEnter={() => (pausedRef.current = true)}
             onMouseLeave={() => (pausedRef.current = false)}
           >
-            {/* Desktop accordion cards — active card expands its width. */}
-            <div className="hidden gap-4 xl:flex">
-              {products.map((product, i) => (
-                <ProductCard
-                  key={i}
-                  product={product}
-                  outgoing={outgoingProducts?.[i] ?? null}
-                  copy={copyProducts[i]}
-                  active={i === activeIndex}
-                  onSelect={() => setActiveIndex(i)}
-                  progressRef={i === activeIndex ? progressRef : undefined}
-                  entered={entered}
-                  enterDelayMs={250 + i * 120}
-                  swap={swapStyles(swapping, swapDir, i * SWAP_STAGGER_MS, swapAlt)}
-                />
-              ))}
-            </div>
+            {variant === "curved" ? (
+              <CurvedCarousel
+                products={products}
+                outgoingProducts={outgoingProducts}
+                copyProducts={copyProducts}
+                activeIndex={activeIndex}
+                onSelect={setActiveIndex}
+                progressRef={progressRef}
+                entered={entered}
+                swapping={swapping}
+                swapDir={swapDir}
+                swapAlt={swapAlt}
+              />
+            ) : (
+              /* Desktop accordion — one card per category; the active card
+                 expands. Six cards span the full 1280px row. No photo swap: each
+                 card owns its own photo and just expands/collapses. */
+              <div className="hidden gap-4 xl:flex">
+                {categoryCards.map((card, i) => (
+                  <ProductCard
+                    key={categories[i].key}
+                    product={card}
+                    outgoing={null}
+                    copy={card}
+                    active={i === activeCategoryIndex}
+                    onSelect={() => selectCategoryCard(categories[i].key)}
+                    progressRef={i === activeCategoryIndex ? progressRef : undefined}
+                    entered={entered}
+                    enterDelayMs={250 + i * 80}
+                    swap={swapStyles(false, 1, 0, false)}
+                  />
+                ))}
+              </div>
+            )}
 
             {/* Mobile carousel — fixed-width cards, active one grows taller and
                 reveals its subtitle + CTA. Full-bleeds within the padded column.
@@ -730,7 +1201,7 @@ export default function ProductSection({
                   key={i}
                   product={product}
                   outgoing={outgoingProducts?.[i] ?? null}
-                  copy={copyProducts[i]}
+                  copy={copyProducts[i] ?? product}
                   active={i === activeIndex}
                   onSelect={() => setActiveIndex(i)}
                   swap={swapStyles(swapping, swapDir, i * SWAP_STAGGER_MS, swapAlt)}
@@ -739,10 +1210,13 @@ export default function ProductSection({
               ))}
             </div>
 
+            {/* Accordion cards are categories now, each already its own link, so
+                the desktop accordion drops this "Lihat pilihan …" CTA. It stays
+                on the curved layout and on mobile (both still list products). */}
             <button
               className={`mt-6 flex h-10 items-center justify-center gap-1 rounded-full border border-blue-500 px-5 transition-colors duration-200 hover:bg-blue-500/5 xl:mt-10 xl:h-12 xl:px-6 ${
-                entered ? "opacity-100" : "opacity-0"
-              }`}
+                variant === "curved" ? "xl:mx-auto" : "xl:hidden"
+              } ${entered ? "opacity-100" : "opacity-0"}`}
               style={{
                 transition: `opacity 700ms ease-out ${entered ? "610ms" : "0ms"}, background-color 200ms`,
               }}
