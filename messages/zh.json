@@ -96,7 +96,9 @@
   },
   "product": {
     "eyebrow": "产品与服务",
-    "heading": "为您的每一个财务目标提供BCA解决方案"
+    "heading": "为您的每一个财务目标提供BCA解决方案",
+    "ctaHint": "为您找到合适的{category}",
+    "ctaLabel": "立即开始"
   },
   "promo": {
     "eyebrow": "活动与项目",

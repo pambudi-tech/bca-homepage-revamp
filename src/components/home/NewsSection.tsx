@@ -47,7 +47,7 @@ function HighlightArticle({ article }: { article: NewsArticle }) {
       href={article.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative block h-[380px] w-full shrink-0 overflow-clip rounded-xl text-left shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)] xl:h-[464px] xl:w-[492px]">
+      className="group relative block h-[320px] w-full shrink-0 overflow-clip rounded-xl text-left shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)] xl:h-[464px] xl:w-[492px]">
       <img loading="lazy" decoding="async"
         src={article.image}
         alt=""
@@ -228,6 +228,32 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
             </div>
           </div>
         </div>
+
+        {/* Mobile-only CTA — desktop surfaces this via the sidebar's "seeMore"
+            link. Styled to match the promo section's mobile CTA. */}
+        <a
+          data-reveal
+          href={`https://www.bca.co.id/id/informasi/${active.key}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mx-auto mt-9 flex h-12 w-fit items-center justify-center gap-1 rounded-full border border-blue-500 bg-neutral-100 px-6 transition-colors duration-200 xl:hidden"
+        >
+          <span className="text-base font-semibold text-blue-500">{t("seeMore")}</span>
+          <span
+            aria-hidden
+            className="size-5 shrink-0 bg-blue-500"
+            style={{
+              maskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+              WebkitMaskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+              maskSize: "contain",
+              WebkitMaskSize: "contain",
+              maskRepeat: "no-repeat",
+              WebkitMaskRepeat: "no-repeat",
+              maskPosition: "center",
+              WebkitMaskPosition: "center",
+            }}
+          />
+        </a>
       </div>
     </section>
   );

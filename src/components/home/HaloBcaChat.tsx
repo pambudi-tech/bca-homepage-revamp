@@ -2,6 +2,8 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { MOBILE_MENU_EVENT } from "./MobileNav";
+import { PRELOADER_DONE_EVENT } from "@/components/Preloader";
 
 /** Inline, not <img> — the icon has to inherit the button's text color so the
     fill can swap along with the label on hover/open. */
@@ -105,17 +107,82 @@ export default function HaloBcaChat() {
   // cleared (unmounting the panel) once CLOSE_MS elapses.
   const [open, setOpen] = useState(false);
   const [closing, setClosing] = useState(false);
+  // Mobile bottom-sheet drag-to-dismiss: `dragY` is the live finger offset in
+  // px (0 = resting position), `dragging` suppresses the snap-back transition
+  // while the pointer is down so the sheet tracks the finger 1:1.
+  const [dragY, setDragY] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const dragStartY = useRef<number | null>(null);
   const [values, setValues] = useState<Values>(EMPTY);
   const [robot, setRobot] = useState(false);
   const [errors, setErrors] = useState<Partial<Values>>({});
   const panelRef = useRef<HTMLDivElement>(null);
   const products = t.raw("products") as string[];
+  // The mobile burger menu (MobileMenu.tsx) is a full-viewport overlay at
+  // z-[60], but this button sits at z-[70] so it can float over page content —
+  // that same z-index otherwise leaves it floating over the menu too.
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // Kept off-screen until the preloader curtain starts lifting, then fades up —
+  // otherwise the button flashes in over the loading page on slow loads.
+  const [ready, setReady] = useState(false);
 
-  const close = () => {
+  useEffect(() => {
+    // The done event fires the instant the curtain *starts* sliding away, not
+    // once it's gone — revealing immediately would show the button fading in
+    // while the curtain is still exiting. This delay lines it up with the
+    // curtain actually clearing (matches CookieBanner's own post-event wait).
+    let id: ReturnType<typeof setTimeout>;
+    const reveal = () => {
+      id = setTimeout(() => setReady(true), 400);
+    };
+    if (document.querySelector(".pre-root")) {
+      window.addEventListener(PRELOADER_DONE_EVENT, reveal, { once: true });
+      return () => {
+        window.removeEventListener(PRELOADER_DONE_EVENT, reveal);
+        clearTimeout(id);
+      };
+    }
+    reveal();
+    return () => clearTimeout(id);
+  }, []);
+
+  useEffect(() => {
+    const onMenuToggle = (e: Event) => {
+      const isOpen = (e as CustomEvent<boolean>).detail;
+      setMobileMenuOpen(isOpen);
+      if (isOpen) close({ instant: true });
+    };
+    window.addEventListener(MOBILE_MENU_EVENT, onMenuToggle);
+    return () => window.removeEventListener(MOBILE_MENU_EVENT, onMenuToggle);
+  }, []);
+
+  // `instant` skips the exit animation — used when the drag itself already
+  // carried the sheet most of the way off-screen, so replaying the rise-down
+  // keyframe from translateY(0) would read as a backwards jump.
+  const close = (opts?: { instant?: boolean }) => {
     setOpen((wasOpen) => {
-      if (wasOpen) setClosing(true);
+      if (wasOpen && !opts?.instant) setClosing(true);
       return false;
     });
+  };
+
+  const DISMISS_PX = 96;
+
+  const onHandlePointerDown = (e: React.PointerEvent) => {
+    dragStartY.current = e.clientY;
+    setDragging(true);
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  const onHandlePointerMove = (e: React.PointerEvent) => {
+    if (dragStartY.current === null) return;
+    setDragY(Math.max(0, e.clientY - dragStartY.current));
+  };
+  const endDrag = () => {
+    if (dragStartY.current === null) return;
+    dragStartY.current = null;
+    setDragging(false);
+    if (dragY > DISMISS_PX) close({ instant: true });
+    setDragY(0);
   };
 
   useEffect(() => {
@@ -156,8 +223,14 @@ export default function HaloBcaChat() {
     // Prototype only — no chat backend wired yet.
   };
 
+  if (mobileMenuOpen) return null;
+
   return (
-    <div className="fixed right-4 bottom-4 z-[70] sm:right-8 sm:bottom-8">
+    <div
+      className={`fixed right-4 bottom-4 z-[70] transition-all duration-500 ease-out sm:right-8 sm:bottom-8 ${
+        ready ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
+      }`}
+    >
       {open || closing ? (
         <>
           {/* Scrim for the mobile bottom sheet only — the desktop popover
@@ -173,11 +246,28 @@ export default function HaloBcaChat() {
             role="dialog"
             aria-modal="false"
             aria-label={t("title")}
-            data-state={closing ? "closing" : "open"}
+            // Dragging swaps off the CSS keyframe (data-state stays "open" but
+            // the class no longer matches while `dragging`'s inline transform
+            // wins) so the two transforms never fight over the same frame.
+            data-state={closing ? "closing" : dragging ? undefined : "open"}
+            style={
+              dragY > 0
+                ? { transform: `translateY(${dragY}px)`, transition: dragging ? "none" : "transform 200ms ease-out" }
+                : undefined
+            }
             className="halobca-panel fixed inset-x-0 bottom-0 z-[70] max-h-[85vh] w-full overflow-y-auto rounded-t-2xl bg-neutral-100 p-6 pb-[calc(24px+env(safe-area-inset-bottom))] shadow-[0_-8px_32px_rgba(0,0,0,0.16)] sm:absolute sm:inset-x-auto sm:right-0 sm:bottom-[calc(100%+16px)] sm:max-h-[min(70vh,640px)] sm:w-[min(calc(100vw-2.5rem),400px)] sm:rounded-2xl sm:pb-6 sm:shadow-[0_16px_48px_rgba(0,0,0,0.16)]"
           >
-            {/* Grab handle — mobile bottom-sheet affordance, hidden on desktop. */}
-            <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-neutral-300 sm:hidden" />
+            {/* Grab handle — mobile bottom-sheet affordance, hidden on desktop.
+                `touch-none` stops the page from scrolling while dragging. */}
+            <div
+              onPointerDown={onHandlePointerDown}
+              onPointerMove={onHandlePointerMove}
+              onPointerUp={endDrag}
+              onPointerCancel={endDrag}
+              className="-mt-2 touch-none pt-2 sm:hidden"
+            >
+              <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-neutral-300" />
+            </div>
             <h2 className="text-lg leading-6 font-bold text-neutral-900">{t("title")}</h2>
           <p className="mt-2 text-sm leading-5 text-neutral-600">{t("subtitle")}</p>
 

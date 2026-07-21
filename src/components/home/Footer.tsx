@@ -2,13 +2,26 @@
 
 import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
-import { FOOTER_LINK_COLUMN_KEYS, SOCIAL_LINKS } from "./footer-data";
+import {
+  ALL_SOCIAL_MEDIA_LINK,
+  BOTTOM_LINK_HREFS,
+  FOOTER_LINK_COLUMN_KEYS,
+  SOCIAL_LINKS,
+} from "./footer-data";
 import { useLenis } from "@/components/SmoothScroll";
 
-function ContactRow({ icon, label }: { icon: string; label: string }) {
+function ContactRow({
+  icon,
+  label,
+  iconSizeClassName = "size-5",
+}: {
+  icon: string;
+  label: string;
+  iconSizeClassName?: string;
+}) {
   return (
     <div className="flex items-center gap-3">
-      <img loading="lazy" decoding="async" src={icon} alt="" className="size-5 shrink-0" />
+      <img loading="lazy" decoding="async" src={icon} alt="" className={`${iconSizeClassName} shrink-0`} />
       <p className="text-sm text-white">{label}</p>
     </div>
   );
@@ -84,8 +97,24 @@ export default function Footer() {
           {/* 2×2 grid on mobile (aligned columns), inline row on desktop. */}
           <div className="grid w-fit grid-cols-2 gap-x-8 gap-y-4 xl:flex xl:w-auto xl:items-start xl:gap-8">
             {SOCIAL_LINKS.map((social) => (
-              <ContactRow key={social.label} icon={social.icon} label={social.label} />
+              <a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-opacity hover:opacity-80"
+              >
+                <ContactRow icon={social.icon} label={social.label} />
+              </a>
             ))}
+            <a
+              href={ALL_SOCIAL_MEDIA_LINK.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="col-span-2 text-center text-sm text-white underline transition-colors hover:text-white/80 xl:col-span-1 xl:flex xl:items-center xl:text-left"
+            >
+              {ALL_SOCIAL_MEDIA_LINK.label}
+            </a>
           </div>
         </div>
 
@@ -100,26 +129,26 @@ export default function Footer() {
                 {t("alamat")}
               </p>
             </div>
-            <div className="flex flex-col items-center gap-4 xl:items-start xl:gap-3">
-              <ContactRow icon="/assets/footer/outline-phone.svg" label="Halo BCA 1500998" />
-              <ContactRow icon="/assets/footer/outline-envelope.svg" label="halobca@bca.co.id" />
-              <ContactRow icon="/assets/footer/outline-whatsapp.svg" label="62 811-1500-998" />
+            <div className="flex flex-col items-center gap-4 xl:items-start">
+              <ContactRow icon="/assets/footer/outline-phone.svg" label="Halo BCA 1500998" iconSizeClassName="size-6" />
+              <ContactRow icon="/assets/footer/outline-envelope.svg" label="halobca@bca.co.id" iconSizeClassName="size-6" />
+              <ContactRow icon="/assets/footer/outline-whatsapp.svg" label="62 811-1500-998" iconSizeClassName="size-6" />
             </div>
           </div>
 
           {/* Wraps 2-up (Produk drops centered onto a 2nd row) on mobile; inline on desktop. */}
-          <div className="flex flex-wrap justify-center gap-10 text-center text-white xl:flex-nowrap xl:justify-start xl:gap-8 xl:text-left">
+          <div className="flex flex-wrap justify-center gap-10 text-center text-white xl:flex-nowrap xl:justify-end xl:gap-8 xl:text-right">
             {linkColumns.map((column) => (
               <div
                 key={column.key}
-                className="flex w-[120px] flex-col items-center gap-6 xl:w-[200px] xl:items-start xl:gap-10"
+                className="flex w-[120px] flex-col items-center gap-6 xl:w-[200px] xl:items-end xl:gap-10"
               >
                 <p className="text-xs font-semibold uppercase tracking-[1.8px]">{column.heading}</p>
-                <div className="flex flex-col items-center gap-4 xl:items-start xl:gap-6">
+                <div className="flex flex-col items-center gap-4 xl:items-end xl:gap-6">
                   {column.links.map((link) => (
                     <button
                       key={link}
-                      className="text-center text-sm text-white/70 transition-colors hover:text-white xl:text-left"
+                      className="text-center text-sm text-white/70 transition-colors hover:text-white xl:text-right"
                     >
                       {link}
                     </button>
@@ -136,14 +165,30 @@ export default function Footer() {
         <div className="flex flex-col items-center gap-6 xl:flex-row xl:items-start xl:justify-between xl:gap-0">
           <div className="flex w-full flex-col items-center gap-6 xl:w-auto xl:items-start">
             <div className="flex flex-wrap items-center justify-center gap-6 xl:flex-nowrap xl:justify-start">
-              {bottomLinks.map((link) => (
-                <button
-                  key={link}
-                  className="whitespace-nowrap text-sm font-semibold text-white transition-colors hover:text-white/80"
-                >
-                  {link}
-                </button>
-              ))}
+              {bottomLinks.map((link, index) => {
+                const href = BOTTOM_LINK_HREFS[index];
+                if (href) {
+                  return (
+                    <a
+                      key={link}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="whitespace-nowrap text-sm font-semibold text-white transition-colors hover:text-white/80"
+                    >
+                      {link}
+                    </a>
+                  );
+                }
+                return (
+                  <button
+                    key={link}
+                    className="whitespace-nowrap text-sm font-semibold text-white transition-colors hover:text-white/80"
+                  >
+                    {link}
+                  </button>
+                );
+              })}
             </div>
             {/* Desktop copyright — lives under the links; mobile shows its own copy last. */}
             <p className="hidden w-[445px] text-xs leading-[18px] text-white/60 xl:block">

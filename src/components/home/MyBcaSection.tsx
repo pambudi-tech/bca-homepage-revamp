@@ -113,9 +113,9 @@ export default async function MyBcaSection() {
                   {t("description")}
                 </p>
               </div>
-              <button className="flex h-10 items-center justify-center gap-1 rounded-full bg-blue-500 px-5 text-white transition-transform active:scale-95">
+              <button className="flex h-12 items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f]">
                 <img loading="lazy" decoding="async" src="/assets/mybca/icon-download.svg" alt="" className="size-5" />
-                <span className="text-sm font-semibold leading-[14px]">{t("downloadMobile")}</span>
+                <span className="text-base font-semibold text-neutral-100">{t("downloadMobile")}</span>
               </button>
             </div>
           </div>

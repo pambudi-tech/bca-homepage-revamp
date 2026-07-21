@@ -96,7 +96,9 @@
   },
   "product": {
     "eyebrow": "Produk & Layanan",
-    "heading": "Solusi BCA untuk Setiap Tujuan Keuangan Anda"
+    "heading": "Solusi BCA untuk Setiap Tujuan Keuangan Anda",
+    "ctaHint": "Temukan {category} yang tepat untuk Anda",
+    "ctaLabel": "Mulai Sekarang"
   },
   "promo": {
     "eyebrow": "Event & Program",

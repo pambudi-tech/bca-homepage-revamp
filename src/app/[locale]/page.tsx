@@ -32,7 +32,7 @@ export default async function Home({
   const [kurs, banners, produk, promos, news] = await Promise.all([
     getKursHariIni(),
     getBanners(locale as AppLocale),
-    getProductCategories(),
+    getProductCategories(locale as AppLocale),
     getPromos(now),
     getNewsCategories(),
   ]);

@@ -130,6 +130,10 @@ export default function EventSlider() {
     touchStartX.current = e.touches[0].clientX;
   };
   const onTouchEnd = (e: React.TouchEvent) => {
+    // Touch devices fire a synthetic mouseenter (but no matching mouseleave)
+    // after a tap/swipe on the active card, which would otherwise leave
+    // hoveringActive stuck true and pause the autoplay forever.
+    setHoveringActive(false);
     if (touchStartX.current === null) return;
     const dx = e.changedTouches[0].clientX - touchStartX.current;
     touchStartX.current = null;
@@ -157,7 +161,7 @@ export default function EventSlider() {
         <div
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
-          className="relative -mx-4 h-[156px] [--gap:12px] [--idle-w:324px] [--pad:24px] xl:mx-auto xl:h-[400px] xl:w-[1280px] xl:[--gap:40px] xl:[--idle-w:1126px] xl:[--pad:0px]"
+          className="relative -mx-4 h-[180px] [--gap:12px] [--idle-w:324px] [--pad:24px] xl:mx-auto xl:h-[400px] xl:w-[1280px] xl:[--gap:40px] xl:[--idle-w:1126px] xl:[--pad:0px]"
         >
           {slots.map(({ delta, step: slotStep, slide }) => {
             const isActive = delta === 0;
@@ -177,7 +181,7 @@ export default function EventSlider() {
                 }
                 className={`absolute top-1/2 -translate-y-1/2 overflow-clip rounded-xl transition-[left,width,height,opacity] duration-500 ease-out xl:rounded-3xl ${
                   isActive
-                    ? `h-[156px] opacity-100 xl:h-[400px] ${hoveringActive ? "cursor-none" : "cursor-pointer"}`
+                    ? `h-[180px] opacity-100 xl:h-[400px] ${hoveringActive ? "cursor-none" : "cursor-pointer"}`
                     : `h-[140px] w-[324px] border border-white opacity-80 xl:h-[352px] xl:w-[1126px] ${hidden ? "opacity-0" : ""}`
                 }`}
                 style={isActive ? { left: activeLeft, width: activeWidth } : { left: idleLeft(delta) }}

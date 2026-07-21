@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   PRODUCT_CATEGORIES,
@@ -43,6 +43,10 @@ const SWAP_STAGGER_MS = 70;
 /** Copy is a single block (it drives the panel's height), so it dips out and
  *  back rather than cross-fading; the text itself is swapped at the trough. */
 const COPY_SWAP_MS = 200;
+/** Copies of the opposite end rendered on each side of the mobile carousel's
+ *  card list, so swiping past the last (or before the first) card keeps
+ *  sliding into more cards. See MobileProductCarousel. */
+const MOBILE_LOOP_CLONES = 2;
 
 /**
  * True at the `xl` breakpoint (1280px+), where the desktop layouts render.
@@ -422,6 +426,213 @@ function MobileProductCard({
         </div>
       </div>
     </button>
+  );
+}
+
+/**
+ * Mobile carousel (< xl) — native scroll-snap, made endless by padding the
+ * real cards with `MOBILE_LOOP_CLONES` copies of the opposite end. Swiping
+ * past either end therefore keeps sliding into more cards, and once the
+ * scroll settles on one of those copies the position is silently hopped onto
+ * its twin among the real cards.
+ *
+ * Every copy of the active product is marked active, not just the real one.
+ * Copies sit a whole set apart — far off-screen — so only ever one is
+ * visible, and the hop consequently lands on a card that has *already* grown
+ * to its active height. That is what keeps the seam between the last and
+ * first card indistinguishable from any other swipe: nothing resizes at the
+ * moment of the jump, because the incoming card is the same shape as the one
+ * it replaces, pixel for pixel.
+ *
+ * Cards are a fixed width and only ever change height, so the extra active
+ * copies can't shift the track's horizontal geometry either.
+ */
+function MobileProductCarousel({
+  products,
+  outgoingProducts,
+  copyProducts,
+  activeIndex,
+  onSelect,
+  swapping,
+  swapDir,
+  swapAlt,
+  progressRef,
+  entered,
+  pausedRef,
+}: {
+  products: Product[];
+  outgoingProducts: Product[] | null;
+  copyProducts: Product[];
+  activeIndex: number;
+  onSelect: (index: number) => void;
+  swapping: boolean;
+  swapDir: number;
+  swapAlt: boolean;
+  progressRef: React.Ref<SVGCircleElement>;
+  entered: boolean;
+  pausedRef: React.RefObject<boolean>;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const n = products.length;
+  // Clamped so a category with fewer products than the clone count still
+  // renders a well-formed track.
+  const clones = Math.min(MOBILE_LOOP_CLONES, n);
+
+  // Rendered copies, in DOM order: `clones` from the tail, the real set, then
+  // `clones` from the head. Slot `clones + i` is therefore the real card for
+  // product `i`, which makes `clones` the offset between the two indexes.
+  const slots = useMemo(() => {
+    if (n === 0) return [];
+    return Array.from({ length: n + clones * 2 }, (_, slot) => ({
+      real: ((slot - clones) % n + n) % n,
+    }));
+  }, [n, clones]);
+  const realOf = (slot: number) => ((slot - clones) % n + n) % n;
+
+  // Which rendered copy the viewport is sitting on. Only the DOM node owning
+  // the progress ring cares, but it also anchors every scroll target below so
+  // that wrapping never scrolls the long way back around the track.
+  const [activeSlot, setActiveSlot] = useState(clones);
+  const activeSlotRef = useRef(clones);
+  const moveTo = (slot: number) => {
+    activeSlotRef.current = slot;
+    setActiveSlot(slot);
+  };
+  // Latest callback, so the scroll listener below can stay subscribed.
+  const onSelectRef = useRef(onSelect);
+  onSelectRef.current = onSelect;
+
+  /** The rendered copy of product `real` that sits closest to `from`. */
+  const nearestCopy = (real: number, from: number) => {
+    let best = clones + real;
+    for (const candidate of [best - n, best + n]) {
+      if (candidate < 0 || candidate >= slots.length) continue;
+      if (Math.abs(candidate - from) < Math.abs(best - from)) best = candidate;
+    }
+    return best;
+  };
+
+  const centreOn = (slot: number, behavior: ScrollBehavior) => {
+    const container = scrollRef.current;
+    const card = container?.children[slot] as HTMLElement | undefined;
+    if (!container || !card) return;
+    const left = card.offsetLeft - (container.clientWidth - card.offsetWidth) / 2;
+    container.scrollTo({ left: Math.max(0, left), behavior });
+  };
+
+  // Park on the first real card the moment a card list mounts or the category
+  // swaps it out. Without this the track would start at scroll 0 — sitting on
+  // the leading clones rather than the real set.
+  useLayoutEffect(() => {
+    if (slots.length === 0) return;
+    // A category swap resets the index, but it lands in a later render than
+    // the new card list, so clamp rather than trusting it here.
+    const slot = clones + Math.min(activeIndex, n - 1);
+    moveTo(slot);
+    centreOn(slot, "instant");
+    // Only re-runs when the rendered card list itself changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slots]);
+
+  // Follow index changes that came from outside the carousel — autoplay, or a
+  // tap on some other control. Swipe-driven changes are already on-screen, so
+  // they no-op here rather than fighting the gesture.
+  useEffect(() => {
+    if (slots.length === 0 || realOf(activeSlotRef.current) === activeIndex) return;
+    const slot = nearestCopy(activeIndex, activeSlotRef.current);
+    moveTo(slot);
+    centreOn(slot, "smooth");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeIndex]);
+
+  // Swiping activates whichever card sits closest to the centre, so the active
+  // state follows the gesture instead of only taps; settling on a clone then
+  // hops onto its twin.
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container || n === 0) return;
+
+    let raf = 0;
+    let settle: ReturnType<typeof setTimeout> | undefined;
+
+    const update = () => {
+      raf = 0;
+      const centre = container.scrollLeft + container.clientWidth / 2;
+      let nearest = 0;
+      let best = Infinity;
+      for (let slot = 0; slot < container.children.length; slot++) {
+        const card = container.children[slot] as HTMLElement;
+        const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - centre);
+        if (distance < best) {
+          best = distance;
+          nearest = slot;
+        }
+      }
+      if (nearest !== activeSlotRef.current) {
+        const before = realOf(activeSlotRef.current);
+        moveTo(nearest);
+        const real = realOf(nearest);
+        if (real !== before) onSelectRef.current(real);
+      }
+
+      clearTimeout(settle);
+      const twin = clones + realOf(nearest);
+      if (twin === nearest) return;
+      settle = setTimeout(() => {
+        const from = container.children[nearest] as HTMLElement | undefined;
+        const to = container.children[twin] as HTMLElement | undefined;
+        if (!from || !to) return;
+        // Scroll-snap would otherwise animate a correction of its own on top
+        // of this write, which is what used to show up as a hitch right at
+        // the seam. Off for the jump, back on the next frame.
+        container.style.scrollSnapType = "none";
+        container.scrollLeft += to.offsetLeft - from.offsetLeft;
+        moveTo(twin);
+        requestAnimationFrame(() => {
+          container.style.scrollSnapType = "";
+        });
+      }, 80);
+    };
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    container.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      container.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+      clearTimeout(settle);
+    };
+    // Deliberately independent of activeIndex/onSelect (both read through a
+    // ref): re-subscribing mid-gesture would clear the pending hop above,
+    // stranding the carousel on a clone.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [n, clones]);
+
+  return (
+    <div
+      ref={scrollRef}
+      onTouchStart={() => (pausedRef.current = true)}
+      onTouchEnd={() => (pausedRef.current = false)}
+      className={`hide-scrollbar -mx-4 flex h-[360px] snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4 [scrollbar-width:none] transition-opacity duration-700 ease-out xl:hidden ${
+        entered ? "opacity-100" : "opacity-0"
+      }`}
+      style={{ transitionDelay: entered ? "250ms" : "0ms" }}
+    >
+      {slots.map(({ real }, slot) => (
+        <MobileProductCard
+          key={slot}
+          product={products[real]}
+          outgoing={outgoingProducts?.[real] ?? null}
+          copy={copyProducts[real] ?? products[real]}
+          active={real === activeIndex}
+          onSelect={() => onSelect(real)}
+          swap={swapStyles(swapping, swapDir, real * SWAP_STAGGER_MS, swapAlt)}
+          // Exactly one node may own the ring — the copy actually on screen.
+          progressRef={slot === activeSlot ? progressRef : undefined}
+        />
+      ))}
+    </div>
   );
 }
 
@@ -817,13 +1028,6 @@ export default function ProductSection({
   const live = useIsLive(sectionRef);
   const cloveARef = useRef<HTMLImageElement>(null);
   const cloveBRef = useRef<HTMLImageElement>(null);
-  const mobileScrollRef = useRef<HTMLDivElement>(null);
-  // Mirrors activeIndex for the scroll listener (which is bound once), and a
-  // flag so a swipe-driven index change doesn't bounce back through the
-  // centering effect below.
-  const activeIndexRef = useRef(0);
-  const skipCenterRef = useRef(false);
-  activeIndexRef.current = activeIndex;
 
   const categoryOf = (key: string) =>
     categories.find((c) => c.key === key) ?? categories[0];
@@ -964,63 +1168,10 @@ export default function ProductSection({
     };
   }, [swapping, activeCategory]);
 
-  // Keep the active card centered in the mobile carousel whenever it changes
-  // (via tap or autoplay). A no-op on desktop, where the container is
-  // `display:none` and reports zero width.
-  useEffect(() => {
-    if (skipCenterRef.current) {
-      skipCenterRef.current = false;
-      return;
-    }
-    const container = mobileScrollRef.current;
-    if (!container) return;
-    const card = container.children[activeIndex] as HTMLElement | undefined;
-    if (!card) return;
-    const target = card.offsetLeft - (container.clientWidth - card.offsetWidth) / 2;
-    container.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
-  }, [activeIndex, activeCategory]);
-
-  // Swiping the mobile carousel activates whichever card sits closest to the
-  // centre, so the active state follows the gesture instead of only taps.
-  useEffect(() => {
-    const container = mobileScrollRef.current;
-    if (!container) return;
-
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const centre = container.scrollLeft + container.clientWidth / 2;
-      let nearest = 0;
-      let bestDistance = Infinity;
-      for (let i = 0; i < container.children.length; i++) {
-        const card = container.children[i] as HTMLElement;
-        const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - centre);
-        if (distance < bestDistance) {
-          bestDistance = distance;
-          nearest = i;
-        }
-      }
-      if (nearest !== activeIndexRef.current) {
-        activeIndexRef.current = nearest;
-        skipCenterRef.current = true;
-        setActiveIndex(nearest);
-      }
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-
-    container.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      container.removeEventListener("scroll", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
-
   return (
     <section
       ref={sectionRef}
-      className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-20 pt-0 xl:pb-36 xl:pt-8"
+      className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-[120px] pt-0 xl:pb-36 xl:pt-8"
     >
       {/* prototype-only: lets the client flip this section's layout live. */}
       <LayoutSwitcher
@@ -1188,59 +1339,56 @@ export default function ProductSection({
                 reveals its subtitle + CTA. Full-bleeds within the padded column.
                 The track height is pinned to the tallest (active) card so the
                 CTA below never shifts while cards swap size. */}
-            <div
-              ref={mobileScrollRef}
-              onTouchStart={() => (pausedRef.current = true)}
-              className={`hide-scrollbar -mx-4 flex h-[360px] snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4 [scrollbar-width:none] transition-opacity duration-700 ease-out xl:hidden ${
-                entered ? "opacity-100" : "opacity-0"
-              }`}
-              style={{ transitionDelay: entered ? "250ms" : "0ms" }}
-            >
-              {products.map((product, i) => (
-                <MobileProductCard
-                  key={i}
-                  product={product}
-                  outgoing={outgoingProducts?.[i] ?? null}
-                  copy={copyProducts[i] ?? product}
-                  active={i === activeIndex}
-                  onSelect={() => setActiveIndex(i)}
-                  swap={swapStyles(swapping, swapDir, i * SWAP_STAGGER_MS, swapAlt)}
-                  progressRef={i === activeIndex ? mobileProgressRef : undefined}
-                />
-              ))}
-            </div>
+            <MobileProductCarousel
+              products={products}
+              outgoingProducts={outgoingProducts}
+              copyProducts={copyProducts}
+              activeIndex={activeIndex}
+              onSelect={setActiveIndex}
+              swapping={swapping}
+              swapDir={swapDir}
+              swapAlt={swapAlt}
+              progressRef={mobileProgressRef}
+              entered={entered}
+              pausedRef={pausedRef}
+            />
 
             {/* Accordion cards are categories now, each already its own link, so
-                the desktop accordion drops this "Lihat pilihan …" CTA. It stays
-                on the curved layout and on mobile (both still list products). */}
-            <button
-              className={`mt-6 flex h-10 items-center justify-center gap-1 rounded-full border border-blue-500 px-5 transition-colors duration-200 hover:bg-blue-500/5 xl:mt-10 xl:h-12 xl:px-6 ${
-                variant === "curved" ? "xl:mx-auto" : "xl:hidden"
+                the desktop accordion drops this hint + CTA. It stays on the
+                curved layout and on mobile (both still list products). */}
+            <div
+              className={`mt-6 flex flex-col items-center gap-4 xl:mt-10 ${
+                variant === "curved" ? "" : "xl:hidden"
               } ${entered ? "opacity-100" : "opacity-0"}`}
               style={{
-                transition: `opacity 700ms ease-out ${entered ? "610ms" : "0ms"}, background-color 200ms`,
+                transition: `opacity 700ms ease-out ${entered ? "610ms" : "0ms"}`,
               }}
             >
-              <span className="text-sm font-semibold text-blue-500 xl:text-base">{category.ctaLabel}</span>
-              {/* The asset hardcodes a near-white fill, which is right for the
-                  "Pelajari" links on photo cards but wrong here — this CTA is
-                  blue-on-white. Drawn as a mask so the shape stays one shared
-                  asset and the color comes from the same token as the label. */}
-              <span
-                aria-hidden
-                className="size-5 shrink-0 bg-blue-500"
-                style={{
-                  maskImage: "url(/assets/cycle1/pelajari-icon.svg)",
-                  WebkitMaskImage: "url(/assets/cycle1/pelajari-icon.svg)",
-                  maskSize: "contain",
-                  WebkitMaskSize: "contain",
-                  maskRepeat: "no-repeat",
-                  WebkitMaskRepeat: "no-repeat",
-                  maskPosition: "center",
-                  WebkitMaskPosition: "center",
-                }}
-              />
-            </button>
+              <p className="text-center text-base font-semibold text-blue-700 xl:text-xl">
+                {t("ctaHint", { category: category.label })}
+              </p>
+              <button
+                className="flex h-12 items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f]"
+              >
+                <span className="text-base font-semibold text-neutral-100">{t("ctaLabel")}</span>
+                {/* Drawn as a mask so the shape stays one shared asset and the
+                    color comes from the same token as the label. */}
+                <span
+                  aria-hidden
+                  className="size-5 shrink-0 bg-neutral-100"
+                  style={{
+                    maskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+                    WebkitMaskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+                    maskSize: "contain",
+                    WebkitMaskSize: "contain",
+                    maskRepeat: "no-repeat",
+                    WebkitMaskRepeat: "no-repeat",
+                    maskPosition: "center",
+                    WebkitMaskPosition: "center",
+                  }}
+                />
+              </button>
+            </div>
           </div>
         </div>
       </div>

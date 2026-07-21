@@ -13,7 +13,6 @@ export type Product = {
 export type ProductCategory = {
   key: string;
   label: string;
-  ctaLabel: string;
   /**
    * Foto & deskripsi kategori — dipakai kartu di layout Accordion, yang kini
    * menampilkan kategori (bukan produk). Opsional karena kolomnya baru; kalau
@@ -63,7 +62,6 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   {
     key: "Simpanan",
     label: "Simpanan",
-    ctaLabel: "Lihat pilihan Simpanan lainnya",
     image: SAMPLE_CATEGORY_PHOTOS[0],
     description: "Tabungan & deposito untuk setiap kebutuhan",
     products: withFeaturedDefaults([
@@ -81,61 +79,87 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   {
     key: "Kartu Kredit",
     label: "Kartu Kredit",
-    ctaLabel: "Lihat pilihan Kartu Kredit lainnya",
     image: SAMPLE_CATEGORY_PHOTOS[1],
     description: "Kartu untuk gaya hidup dan setiap transaksi",
     products: withFeaturedDefaults([
       { title: "BCA Everyday Card", subtitle: "Tiap hari belanja, tiap hari untung", ...EVERYDAY },
       { title: "BCA Mastercard Black", subtitle: "Experience the ultimate privilege", ...MASTERCARD },
       { title: "BCA American Express Platinum", subtitle: "For the finest things in life", ...AMEX },
+      { title: "BCA Card Platinum", subtitle: "Kartu istimewa untuk pribadi istimewa", ...EVERYDAY },
+      { title: "BCA Singapore Airlines KrisFlyer Visa Signature", subtitle: "Faster way to earn KrisFlyer miles", ...MASTERCARD },
+      { title: "BCA Singapore Airlines KrisFlyer Visa Infinite", subtitle: "Faster way to earn KrisFlyer miles", ...AMEX },
+      { title: "BCA Singapore Airlines PPS Club Visa Infinite", subtitle: "Faster way to earn KrisFlyer miles", ...EVERYDAY },
+      { title: "BCA Visa Batman", subtitle: "My Card My Superhero", ...MASTERCARD },
+      { title: "BCA Visa Black", subtitle: "Experience the ultimate privilege", ...AMEX },
+      { title: "BCA Blibli Mastercard", subtitle: "Belanja online lebih untung bersama Blibli", ...EVERYDAY },
+      { title: "BCA tiket.com Mastercard", subtitle: "Belanja Every Day, Bikin Hemat Holiday", ...MASTERCARD },
+      { title: "BCA Mastercard Globe", subtitle: "My Card My Lifestyle Partner", ...AMEX },
+      { title: "BCA Mastercard World", subtitle: "Kartu kredit premium untuk gaya hidup global", ...EVERYDAY },
+      { title: "BCA JCB Black", subtitle: "Style specially for you", ...MASTERCARD },
+      { title: "BCA UnionPay", subtitle: "Let's Live It Up!", ...AMEX },
     ]),
   },
   {
     key: "Pinjaman",
     label: "Pinjaman",
-    ctaLabel: "Lihat pilihan Pinjaman lainnya",
     image: SAMPLE_CATEGORY_PHOTOS[2],
     description: "Solusi pembiayaan rumah, kendaraan, dan usaha",
     products: withFeaturedDefaults([
-      { title: "KPR BCA", subtitle: "Wujudkan rumah impian dengan bunga kompetitif", ...EVERYDAY },
-      { title: "KKB BCA", subtitle: "Kredit kendaraan bermotor proses cepat", ...MASTERCARD },
-      { title: "Kredit Tanpa Agunan", subtitle: "Dana cepat tanpa jaminan untuk kebutuhanmu", ...AMEX },
+      { title: "Kredit Pemilikan Rumah", subtitle: "Makin mudah mendapatkan rumah idaman", ...EVERYDAY },
+      { title: "Kredit Kendaraan Bermotor", subtitle: "Kenyamanan untuk mewujudkan kendaraan idaman", ...MASTERCARD },
+      { title: "Pinjaman Kredit Tanpa Agunan Personal", subtitle: "Pinjaman untuk segala kebutuhan", ...AMEX },
+      { title: "Kredit Sepeda Motor (KSM)", subtitle: "Kenyamanan untuk mewujudkan sepeda motor idaman", ...EVERYDAY },
+      { title: "Secured Personal Loan", subtitle: "Fasilitas kredit dengan jaminan produk investasi", ...MASTERCARD },
     ]),
   },
   {
     key: "e-Banking",
     label: "e-Banking",
-    ctaLabel: "Lihat pilihan e-Banking lainnya",
     image: SAMPLE_CATEGORY_PHOTOS[3],
     description: "Perbankan digital dalam satu genggaman",
     products: withFeaturedDefaults([
-      { title: "myBCA", subtitle: "Super app perbankan digital dalam satu aplikasi", ...SIMPANAN_1 },
-      { title: "BCA mobile", subtitle: "Transaksi praktis langsung dari ponsel", ...SIMPANAN_2 },
-      { title: "KlikBCA", subtitle: "Internet banking untuk kebutuhan harian", ...SIMPANAN_3 },
+      { title: "myBCA", subtitle: "#NyamannyaDunia myBCA untuk nyamannya transaksi hingga investasi", ...SIMPANAN_1 },
+      { title: "BCA mobile", subtitle: "Semua transaksi perbankan #DibikinSimpel", ...SIMPANAN_2 },
+      { title: "KlikBCA", subtitle: "Layanan perbankan aman dan nyaman", ...SIMPANAN_3 },
+      { title: "CS Digital", subtitle: "Solusi praktis ganti kartu", ...SIMPANAN_1 },
+      { title: "eBranch", subtitle: "Reservasi di cabang jadi lebih nyaman", ...SIMPANAN_2 },
+      { title: "Investasi Digital BCA", subtitle: "Investasi aman dan terkurasi mulai dari Rp10 ribu", ...SIMPANAN_3 },
+      { title: "OneKlik", subtitle: "Transaksi online makin simpel dengan satu klik", ...SIMPANAN_1 },
+      { title: "Persetujuan Digital", subtitle: "Verifikasi diri aman, mudah & cepat", ...SIMPANAN_2 },
+      { title: "QRIS", subtitle: "Scan QR untuk cara bayar praktis", ...SIMPANAN_3 },
+      { title: "Setor Tarik Tunai Mitra ATM BCA", subtitle: "Setor dan tarik tunai lewat aplikasi mitra di ATM BCA", ...SIMPANAN_1 },
+      { title: "Virtual Account BCA", subtitle: "Pembayaran Lebih Mudah dengan Virtual Account BCA", ...SIMPANAN_2 },
+      { title: "ATM BCA", subtitle: "Layanan unggulan dengan jaringan luas", ...SIMPANAN_3 },
+      { title: "BCA by Phone", subtitle: "Layanan perbankan menyapa ramah di telinga", ...SIMPANAN_1 },
     ]),
   },
   {
     key: "Investasi",
     label: "Investasi",
-    ctaLabel: "Lihat pilihan Investasi lainnya",
     image: SAMPLE_CATEGORY_PHOTOS[4],
     description: "Kembangkan dana lewat beragam instrumen",
     products: withFeaturedDefaults([
-      { title: "Reksa Dana BCA", subtitle: "Investasi mudah mulai dari Rp100 ribu", ...EVERYDAY },
-      { title: "Welma", subtitle: "Platform investasi & asuransi digital BCA", ...MASTERCARD },
-      { title: "Obligasi Negara", subtitle: "Investasi surat utang dengan imbal hasil tetap", ...AMEX },
+      { title: "Reksa Dana", subtitle: "Investasi terjangkau untuk rencana masa depanmu", ...EVERYDAY },
+      { title: "Obligasi", subtitle: "Berbagai macam pilihan obligasi dari BCA", ...MASTERCARD },
+      { title: "Rekening Dana Nasabah (RDN)", subtitle: "Rekening dana untuk transaksi investasi lebih aman", ...AMEX },
+      { title: "Rekening Dana Lender (RDL) BCA", subtitle: "Fasilitas rekening untuk transaksi pendanaan P2P lending", ...EVERYDAY },
     ]),
   },
   {
     key: "Asuransi",
     label: "Asuransi",
-    ctaLabel: "Lihat pilihan Asuransi lainnya",
     image: SAMPLE_CATEGORY_PHOTOS[5],
     description: "Proteksi menyeluruh untuk Anda dan keluarga",
     products: withFeaturedDefaults([
-      { title: "BCA Life Proteksi", subtitle: "Proteksi jiwa dengan premi terjangkau", ...EVERYDAY },
+      { title: "Asuransi Jiwa", subtitle: "Proteksi jiwa dengan premi terjangkau", ...EVERYDAY },
       { title: "Asuransi Kesehatan", subtitle: "Perlindungan biaya rumah sakit lebih tenang", ...MASTERCARD },
       { title: "Asuransi Kendaraan", subtitle: "Proteksi kendaraan dari risiko tak terduga", ...AMEX },
+      { title: "Asuransi Harta Benda", subtitle: "Proteksi untuk rumah dan aset berharga Anda", ...EVERYDAY },
+      { title: "Asuransi Kecelakaan Diri", subtitle: "Perlindungan finansial akibat risiko kecelakaan", ...MASTERCARD },
+      { title: "Asuransi Pendidikan", subtitle: "Persiapkan masa depan pendidikan anak lebih terjamin", ...AMEX },
+      { title: "Asuransi Pensiun & Anuitas", subtitle: "Rencanakan masa pensiun dengan penghasilan tetap", ...EVERYDAY },
+      { title: "Asuransi Perjalanan", subtitle: "Perlindungan menyeluruh selama perjalanan Anda", ...MASTERCARD },
+      { title: "Asuransi Warisan", subtitle: "Wariskan perlindungan finansial untuk keluarga tercinta", ...AMEX },
     ]),
   },
 ];

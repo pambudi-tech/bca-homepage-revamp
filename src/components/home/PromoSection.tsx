@@ -54,7 +54,11 @@ function PromoCard({ promo, now, reveal = true }: { promo: Promo; now: Date; rev
   const timestamp = getPromoTimestamp(promo, now, badge);
 
   return (
-    <div {...(reveal ? { "data-reveal": "" } : {})} className="group relative h-[360px] w-[260px] shrink-0 transition-transform duration-300 ease-out hover:-translate-y-1.5 xl:w-[302px]">
+    <a
+      href="#"
+      {...(reveal ? { "data-reveal": "" } : {})}
+      className="group relative block h-[360px] w-[280px] shrink-0 cursor-pointer transition-transform duration-300 ease-out hover:-translate-y-1.5 xl:w-[302px]"
+    >
       <div className="absolute inset-0 flex flex-col items-start overflow-clip rounded-3xl border border-neutral-300 bg-white transition-colors duration-300 group-hover:border-cyan-500">
         <div className="relative h-40 w-full shrink-0 overflow-clip">
           <img loading="lazy" decoding="async"
@@ -79,12 +83,12 @@ function PromoCard({ promo, now, reveal = true }: { promo: Promo; now: Date; rev
         </div>
         <div className="relative w-full flex-1">
           <div className="absolute left-5 right-5 top-12 flex flex-col items-start gap-3">
-            <p className="line-clamp-2 w-full text-base font-semibold leading-6 text-neutral-800 transition-colors duration-300 group-hover:text-blue-500 xl:text-[18px] xl:leading-[1.2] xl:tracking-[-0.36px]">
+            <p className="line-clamp-2 w-full text-base font-semibold leading-6 tracking-normal text-neutral-800 transition-colors duration-300 group-hover:font-bold group-hover:text-blue-500 xl:text-[18px] xl:leading-[1.2]">
               {promo.title}
             </p>
             <p className="w-full text-sm font-semibold leading-5 text-neutral-600 xl:text-base">{promo.brand}</p>
           </div>
-          <div className="absolute bottom-5 left-5 flex items-center gap-1">
+          <div className="absolute bottom-5 left-5 flex items-center gap-2">
             <img loading="lazy" decoding="async" src="/assets/promo/icon-clock.svg" alt="" className="size-5 shrink-0" />
             <span className="whitespace-nowrap text-sm font-semibold leading-5 text-neutral-700">{timestamp}</span>
           </div>
@@ -109,7 +113,7 @@ function PromoCard({ promo, now, reveal = true }: { promo: Promo; now: Date; rev
       </div>
 
       {badge.key !== "default" && <PromoRibbon badgeKey={badge.key} label={badge.label!} />}
-    </div>
+    </a>
   );
 }
 
@@ -118,7 +122,7 @@ function MorePromoCard({ reveal = true }: { reveal?: boolean }) {
   return (
     <div
       {...(reveal ? { "data-reveal": "" } : {})}
-      className="group relative h-[360px] w-[260px] shrink-0 overflow-clip rounded-3xl border border-white transition-transform duration-300 ease-out hover:-translate-y-1.5 xl:w-[302px]"
+      className="group relative h-[360px] w-[280px] shrink-0 overflow-clip rounded-3xl border border-white transition-transform duration-300 ease-out hover:-translate-y-1.5 xl:w-[302px]"
       style={{ backgroundImage: "linear-gradient(180deg, #005caa 0%, #00b5f0 100%)" }}
     >
       <p className="absolute left-6 top-6 w-[157px] text-xl font-semibold leading-7 tracking-[-0.4px] text-white xl:text-2xl xl:leading-[1.3] xl:tracking-[-0.48px]">
@@ -137,6 +141,104 @@ function MorePromoCard({ reveal = true }: { reveal?: boolean }) {
         aria-hidden
         className="absolute left-6 right-6 top-[126px] h-[202px] object-cover mix-blend-soft-light xl:top-[86px] xl:h-[242px]"
       />
+    </div>
+  );
+}
+
+/** Horizontal gap between the mobile carousel's cards, px. */
+const MOBILE_GAP = 16;
+
+/**
+ * Mobile-only promo carousel — a centre-snapping swipe row that never runs out
+ * of cards. Same trick the product carousel uses: the set is rendered three
+ * times and the viewport rides the middle copy, so landing on an outer copy
+ * can be answered by hopping to its twin one set away. Every copy is
+ * pixel-identical, so the hop is invisible; the row just keeps going in both
+ * directions.
+ *
+ * The hop waits until the gesture has come to rest. Correcting mid-fling is
+ * what used to read as a glitch a few cards in — the write would land in the
+ * middle of the browser's own momentum and snap animation.
+ *
+ * Gaps are per-card margin (not flex `gap`, and not padding, which would sit
+ * inside the snap area and throw the centring off) so the card's border box —
+ * what snapping actually measures — is exactly the card.
+ */
+function MobilePromoCarousel({ promos, now }: { promos: Promo[]; now: Date }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const n = promos.length;
+
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container || n === 0) return;
+
+    const cardAt = (slot: number) => container.children[slot] as HTMLElement | undefined;
+
+    // Park on the middle copy's first card, so there is a whole set of runway
+    // in either direction before the first hop is ever needed.
+    const start = cardAt(n);
+    if (start) {
+      container.scrollLeft = start.offsetLeft - (container.clientWidth - start.offsetWidth) / 2;
+    }
+
+    let raf = 0;
+    let settle: ReturnType<typeof setTimeout> | undefined;
+
+    const update = () => {
+      raf = 0;
+      const centre = container.scrollLeft + container.clientWidth / 2;
+      let nearest = 0;
+      let best = Infinity;
+      for (let slot = 0; slot < container.children.length; slot++) {
+        const card = cardAt(slot)!;
+        const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - centre);
+        if (distance < best) {
+          best = distance;
+          nearest = slot;
+        }
+      }
+
+      clearTimeout(settle);
+      const twin = n + (nearest % n);
+      if (twin === nearest) return;
+      settle = setTimeout(() => {
+        const from = cardAt(nearest);
+        const to = cardAt(twin);
+        if (!from || !to) return;
+        // Scroll-snap would animate a correction of its own on top of this
+        // write, which is what shows up as a hitch right at the seam. Off for
+        // the jump, back on the next frame.
+        container.style.scrollSnapType = "none";
+        container.scrollLeft += to.offsetLeft - from.offsetLeft;
+        requestAnimationFrame(() => {
+          container.style.scrollSnapType = "";
+        });
+      }, 80);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    container.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      container.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+      clearTimeout(settle);
+    };
+  }, [n]);
+
+  if (n === 0) return null;
+
+  return (
+    <div
+      ref={scrollRef}
+      className="hide-scrollbar -mx-4 flex snap-x snap-mandatory items-start overflow-x-auto px-4 [scrollbar-width:none]"
+    >
+      {[...promos, ...promos, ...promos].map((promo, i) => (
+        <div key={`${promo.id}-${i}`} className="snap-center" style={{ marginRight: MOBILE_GAP }}>
+          <PromoCard promo={promo} now={now} reveal={false} />
+        </div>
+      ))}
     </div>
   );
 }
@@ -337,15 +439,21 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
           <EventSlider />
         </div>
 
-        {/* Cards — horizontally scrollable carousel on mobile (full-bleeding out
-            of the padded column); on desktop either a wrapping grid or the arc
-            wheel, per the switcher. The mobile strip is shared by both variants
-            (the arc needs xl-width to breathe). Tighter 60ms stagger: eight
+        {/* Cards, mobile — endlessly looping swipe row (full-bleeding out of the
+            padded column), shared by both variants since neither desktop layout
+            fits below xl. No "show more" card here: the CTA button below the
+            row already carries it. */}
+        <div {...(switched ? {} : { "data-reveal": "" })} className="mt-8 xl:hidden">
+          <MobilePromoCarousel promos={promos} now={now} />
+        </div>
+
+        {/* Cards, desktop — wrapping grid, only for the "grid" variant (the film
+            strip renders its own tracks below). Tighter 60ms stagger: eight
             cards at the default 90ms would trickle too long. */}
         <div
           {...(switched ? {} : { "data-reveal-group": "60" })}
-          className={`hide-scrollbar -mx-4 mt-8 flex items-start gap-4 overflow-x-auto px-4 [scrollbar-width:none] xl:mx-0 xl:mt-10 xl:px-0 ${
-            variant !== "grid" ? "xl:hidden" : "xl:flex-wrap xl:content-center xl:gap-6 xl:overflow-visible"
+          className={`mt-10 hidden items-start content-center gap-6 ${
+            variant === "grid" ? "xl:flex xl:flex-wrap" : ""
           }`}
         >
           {promos.map((promo) => (
@@ -356,12 +464,28 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
 
         {variant === "strip" && <FilmStripLayout promos={promos} now={now} />}
 
-        {/* Mobile-only CTA — the desktop surfaces this via the "Show More" card. */}
-        <button data-reveal className="mx-auto mt-9 flex h-10 items-center justify-center gap-0.5 rounded-full bg-blue-500 px-5 transition-colors duration-200 active:bg-[#00457f] xl:hidden">
-          <span className="px-0.5 text-sm font-semibold leading-[14px] text-white">
+        {/* Mobile-only CTA — the desktop surfaces this via the "Show More" card.
+            Styled to match the product section's mobile CTA. */}
+        <button data-reveal className="mx-auto mt-9 flex h-12 items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f] xl:hidden">
+          <span className="text-base font-semibold text-neutral-100">
             Lihat 200+ promo lainnya
           </span>
-          <img loading="lazy" decoding="async" src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5" />
+          {/* Drawn as a mask so the shape stays one shared asset and the color
+              comes from the same token as the label. */}
+          <span
+            aria-hidden
+            className="size-5 shrink-0 bg-neutral-100"
+            style={{
+              maskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+              WebkitMaskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+              maskSize: "contain",
+              WebkitMaskSize: "contain",
+              maskRepeat: "no-repeat",
+              WebkitMaskRepeat: "no-repeat",
+              maskPosition: "center",
+              WebkitMaskPosition: "center",
+            }}
+          />
         </button>
       </div>
     </section>

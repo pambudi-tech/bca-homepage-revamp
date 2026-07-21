@@ -27,8 +27,8 @@ comment on column public.product_categories.description is
 -- menjalankan ulang file ini tidak menimpa foto yang sudah diatur lewat Table
 -- Editor. Kategori 'e-Banking' ikut di-seed kalau belum ada.
 
-insert into public.product_categories (key, label, cta_label, sort_order, is_default) values
-  ('e-Banking', 'e-Banking', 'Lihat pilihan e-Banking lainnya', 4, false)
+insert into public.product_categories (key, label, sort_order, is_default) values
+  ('e-Banking', 'e-Banking', 4, false)
 on conflict (key) do nothing;
 
 update public.product_categories c
