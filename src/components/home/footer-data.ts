@@ -1,5 +1,5 @@
 /** Keys into the `footer.linkColumns` translation namespace, in display order. */
-export const FOOTER_LINK_COLUMN_KEYS = ["Tentang BCA", "Layanan", "Produk"] as const;
+export const FOOTER_LINK_COLUMN_KEYS = ["Tentang BCA", "Layanan", "Wawasan"] as const;
 
 export type SocialLink = {
   label: string;
@@ -22,8 +22,6 @@ export const ALL_SOCIAL_MEDIA_LINK = {
 /** Hrefs for `footer.bottomLinks`, aligned by index (same order in every locale). `null` = no link yet. */
 export const BOTTOM_LINK_HREFS: (string | null)[] = [
   "https://www.bca.co.id/id/informasi/Suku-Bunga-Dasar-Kredit",
-  "https://www.bca.co.id/id/lokasi-bca",
-  null,
   "https://www.bca.co.id/id/informasi/Kebijakan",
   "https://www.bca.co.id/id/Syarat-dan-Ketentuan",
 ];

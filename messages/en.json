@@ -122,7 +122,9 @@
     "promo": "Promo",
     "tentangBca": "About BCA",
     "karir": "Careers",
-    "search": "Search"
+    "search": "Search",
+    "lokasiBca": "BCA Location",
+    "webformBca": "BCA Webform"
   },
   "mobileMenu": {
     "tutupMenu": "Close menu",
@@ -169,12 +171,11 @@
     "lpsLinkLabel": "here",
     "linkColumns": {
       "Tentang BCA": {
-        "heading": "About BCA",
+        "heading": "Company",
         "links": [
-          "Company Profile",
-          "Careers at BCA",
-          "News & Press Releases",
-          "Awards"
+          "About BCA",
+          "Careers",
+          "Interest Rate Info"
         ]
       },
       "Layanan": {
@@ -182,24 +183,22 @@
         "links": [
           "Branch & ATM Locations",
           "Help Center",
-          "Promo",
+          "Events & Programs",
           "Simulations & Calculators"
         ]
       },
-      "Produk": {
-        "heading": "Products",
+      "Wawasan": {
+        "heading": "Insights",
         "links": [
-          "myBCA",
-          "Credit Card",
-          "Loans",
-          "Business Credit"
+          "News & Feature",
+          "EdukaTips",
+          "#AwasModus",
+          "See More"
         ]
       }
     },
     "bottomLinks": [
       "SBDK",
-      "BCA Locations",
-      "Help Center",
       "Privacy Policy",
       "Terms & Conditions"
     ]

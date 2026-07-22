@@ -122,7 +122,9 @@
     "promo": "Promo",
     "tentangBca": "Tentang BCA",
     "karir": "Karir",
-    "search": "Cari"
+    "search": "Cari",
+    "lokasiBca": "Lokasi BCA",
+    "webformBca": "Webform BCA"
   },
   "mobileMenu": {
     "tutupMenu": "Tutup menu",
@@ -169,12 +171,11 @@
     "lpsLinkLabel": "di sini",
     "linkColumns": {
       "Tentang BCA": {
-        "heading": "Tentang BCA",
+        "heading": "Perusahaan",
         "links": [
-          "Profil Perusahaan",
-          "Karir di BCA",
-          "Berita & Siaran Pers",
-          "Penghargaan"
+          "Tentang BCA",
+          "Karir",
+          "Info Suku Bunga"
         ]
       },
       "Layanan": {
@@ -182,24 +183,22 @@
         "links": [
           "Lokasi Cabang & ATM",
           "Pusat Bantuan",
-          "Promo",
+          "Event & Program",
           "Simulasi & Kalkulator"
         ]
       },
-      "Produk": {
-        "heading": "Produk",
+      "Wawasan": {
+        "heading": "Wawasan",
         "links": [
-          "myBCA",
-          "Kartu Kredit",
-          "Pinjaman",
-          "Kredit Usaha"
+          "News & Feature",
+          "EdukaTips",
+          "#AwasModus",
+          "Lihat Lebih Banyak"
         ]
       }
     },
     "bottomLinks": [
       "SBDK",
-      "Lokasi BCA",
-      "Pusat Bantuan",
       "Kebijakan Privasi",
       "Syarat & Ketentuan"
     ]

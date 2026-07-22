@@ -12,7 +12,6 @@ import { useLayoutVariant } from "@/lib/useLayoutVariant";
 const RIBBON_STYLE: Record<Exclude<PromoBadgeKey, "default">, { from: string; to: string; shadow: string; text: string; border: string }> = {
   popular: { from: "#fe924d", to: "#fe6706", shadow: "#b24906", text: "#ffffff", border: "#b24906" },
   almostEnd: { from: "#ffd31c", to: "#ffba00", shadow: "#b28301", text: "#4c3801", border: "rgba(0,0,0,0.3)" },
-  expired: { from: "#cd1923", to: "#9f141b", shadow: "#850e14", text: "#ffffff", border: "rgba(0,0,0,0.3)" },
 };
 
 // Elevated shadow used on hover (Figma "Shadows/Default", scaled up).

@@ -216,6 +216,26 @@ export default function HaloBcaChat() {
   // Kept off-screen until the preloader curtain starts lifting, then fades up —
   // otherwise the button flashes in over the loading page on slow loads.
   const [ready, setReady] = useState(false);
+  // Hides the floating button once the user scrolls past the News section
+  // (and back into the footer) — the footer itself is always in the DOM
+  // below the fold, so observing it directly would keep the button hidden
+  // from the very first render.
+  const [pastNews, setPastNews] = useState(false);
+
+  useEffect(() => {
+    const newsSection = document.getElementById("news-section");
+    if (!newsSection) return;
+    // threshold: 0 fires exactly when the section's edges cross the
+    // viewport — i.e. the instant its bottom scrolls above the top (going
+    // down) or back below it (scrolling up), which is exactly the "have we
+    // scrolled past it" boundary we want.
+    const observer = new IntersectionObserver(
+      ([entry]) => setPastNews(!entry.isIntersecting && entry.boundingClientRect.bottom < 0),
+      { threshold: 0 }
+    );
+    observer.observe(newsSection);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     // The done event fires the instant the curtain *starts* sliding away, not
@@ -336,6 +356,8 @@ export default function HaloBcaChat() {
 
   if (mobileMenuOpen) return null;
 
+  const hidden = pastNews && !open && !closing;
+
   return (
     // No `transform` utility on this wrapper — it's `position: fixed` and so
     // is the panel below it. A transform here (even an identity translate-y-0)
@@ -343,7 +365,7 @@ export default function HaloBcaChat() {
     // instead of the viewport, shrinking the panel to this div's own
     // button-sized box. The reveal transform lives on the button itself
     // instead, a few lines down.
-    <div className={`fixed right-4 bottom-4 z-[70] transition-opacity duration-500 ease-out xl:right-8 xl:bottom-8 ${ready ? "opacity-100" : "pointer-events-none opacity-0"}`}>
+    <div className={`fixed right-4 bottom-4 z-[70] transition-opacity duration-500 ease-out xl:right-8 xl:bottom-8 ${ready && !hidden ? "opacity-100" : "pointer-events-none opacity-0"}`}>
 
       {open || closing ? (
         <>

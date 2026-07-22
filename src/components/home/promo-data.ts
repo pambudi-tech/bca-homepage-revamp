@@ -95,7 +95,7 @@ export const PROMO_SEEDS: PromoSeed[] = [
   },
 ];
 
-export type PromoBadgeKey = "expired" | "almostEnd" | "popular" | "default";
+export type PromoBadgeKey = "almostEnd" | "popular" | "default";
 
 /**
  * Redemptions needed before a promo is labelled "Populer". A threshold rather
@@ -126,18 +126,15 @@ function resolvePeriod(promo: Promo) {
 }
 
 /**
- * Badge priority (highest first): a promo that's already over always shows
- * "Kadaluarsa" regardless of how popular it is; an about-to-start or
- * about-to-end promo takes precedence over the popularity badge so users see
- * the more time-sensitive signal first.
+ * Badge priority (highest first): an about-to-end promo takes precedence over
+ * the popularity badge so users see the more time-sensitive signal first. A
+ * promo that's already over gets no ribbon at all (see getPromoTimestamp for
+ * its "Promo Berakhir" timestamp instead).
  */
 export function getPromoBadge(promo: Promo, now: Date): PromoBadge {
-  const { start, end } = resolvePeriod(promo);
-  const nowMs = now.getTime();
+  const { end } = resolvePeriod(promo);
+  const toEnd = end.getTime() - now.getTime();
 
-  if (nowMs > end.getTime()) return { key: "expired", label: "Kadaluarsa" };
-
-  const toEnd = end.getTime() - nowMs;
   if (toEnd > 0 && toEnd < MS_DAY) return { key: "almostEnd", label: "Segera Berakhir!" };
 
   if ((promo.redeemCount ?? 0) >= POPULAR_REDEEM_THRESHOLD) return { key: "popular", label: "Populer" };
@@ -156,10 +153,12 @@ function formatDateID(date: Date) {
 export function getPromoTimestamp(promo: Promo, now: Date, badge: PromoBadge) {
   const { end } = resolvePeriod(promo);
 
-  if (badge.key === "expired") return "Promo Berakhir";
+  if (now.getTime() > end.getTime()) return "Promo Berakhir";
 
   if (badge.key === "almostEnd") {
-    const hours = Math.max(1, Math.round((end.getTime() - now.getTime()) / MS_HOUR));
+    // Ceil (not round) so a few minutes left still reads as "1 jam" rather than
+    // "0 jam", and cap at 23 so it never contradicts the < 24h badge window above.
+    const hours = Math.min(23, Math.max(1, Math.ceil((end.getTime() - now.getTime()) / MS_HOUR)));
     return `Berakhir dalam ${hours} jam`;
   }
 

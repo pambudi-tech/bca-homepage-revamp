@@ -255,7 +255,7 @@ export default function MobileHeroWidget({
   const ALL_QUICK_ACTIONS = useQuickActions(t);
   // Shared localStorage key with the desktop widget's own switcher, so
   // flipping either one is reflected on the other after a refresh.
-  const [variant, setVariant] = useLayoutVariant<HeroVariant>("hero", "final", HERO_VARIANTS);
+  const [variant, setVariant] = useLayoutVariant<HeroVariant>("hero", "initial", HERO_VARIANTS);
   // Initial phase only ever shows the Login Cepat card — no promo / HaloBCA /
   // location / webform alongside it.
   const QUICK_ACTIONS = variant === "initial" ? ALL_QUICK_ACTIONS.slice(0, 1) : ALL_QUICK_ACTIONS;

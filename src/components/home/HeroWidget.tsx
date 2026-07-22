@@ -182,7 +182,7 @@ export default function HeroWidget({
   const tNav = useTranslations("nav");
   const placeholders = t.raw("placeholders") as string[];
   const QUICK_ACTIONS = useQuickActions(t);
-  const [variant, setVariant] = useLayoutVariant<HeroVariant>("hero", "final", HERO_VARIANTS);
+  const [variant, setVariant] = useLayoutVariant<HeroVariant>("hero", "initial", HERO_VARIANTS);
   const [searchValue, setSearchValue] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);

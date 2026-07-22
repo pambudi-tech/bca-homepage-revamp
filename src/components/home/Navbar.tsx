@@ -28,7 +28,7 @@ function LinkLabel({ label, hover }: { label: string; hover: boolean }) {
           {label}
         </span>
         <span
-          className={`absolute inset-0 whitespace-nowrap text-sm font-semibold text-white opacity-80 transition-opacity duration-300 ${hover ? "opacity-0" : "opacity-100"
+          className={`absolute inset-0 whitespace-nowrap text-sm font-semibold text-white transition-opacity duration-300 ${hover ? "opacity-0" : "opacity-80"
             }`}
         >
           {label}
@@ -84,6 +84,45 @@ function SearchButton({ label }: { label: string }) {
         }`}
     >
       <img src="/assets/cycle1/outline-search.svg" alt="" className="size-6 shrink-0" />
+      <span
+        className={`grid overflow-hidden transition-[grid-template-columns] duration-300 ${hover ? "grid-cols-[1fr]" : "grid-cols-[0fr]"
+          }`}
+      >
+        <span className="overflow-hidden">
+          <LinkLabel label={label} hover={hover} />
+        </span>
+      </span>
+    </button>
+  );
+}
+
+function LocationButton({ label }: { label: string }) {
+  const [hover, setHover] = useState(false);
+  return (
+    <button
+      aria-label={label}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      className={`flex h-10 items-center rounded-full border backdrop-blur-[4px] transition-all duration-300 ${hover
+          ? "w-auto justify-start gap-0.5 border-white/20 bg-[rgba(18,20,23,0.5)] px-4"
+          : "w-10 justify-center border-white/25 bg-[rgba(5,13,25,0.1)] px-2"
+        }`}
+    >
+      <svg
+        aria-hidden
+        viewBox="0 0 32 32"
+        fill="none"
+        className="size-6 shrink-0 text-neutral-100 opacity-80"
+      >
+        <path
+          d="M15.9999 18.8927C13.1598 18.8927 10.8398 16.586 10.8398 13.7327C10.8398 10.8793 13.1598 8.58594 15.9999 8.58594C18.8399 8.58594 21.1599 10.8926 21.1599 13.746C21.1599 16.5993 18.8399 18.8927 15.9999 18.8927ZM15.9999 10.5859C14.2665 10.5859 12.8398 11.9993 12.8398 13.746C12.8398 15.4927 14.2532 16.906 15.9999 16.906C17.7465 16.906 19.1599 15.4927 19.1599 13.746C19.1599 11.9993 17.7332 10.5859 15.9999 10.5859Z"
+          fill="currentColor"
+        />
+        <path
+          d="M15.9997 30.3467C14.0264 30.3467 12.0397 29.6001 10.4931 28.1201C6.55975 24.3334 2.21308 18.2934 3.85308 11.1067C5.33308 4.58675 11.0264 1.66675 15.9997 1.66675C15.9997 1.66675 15.9997 1.66675 16.013 1.66675C20.9864 1.66675 26.6797 4.58675 28.1597 11.1201C29.7864 18.3067 25.4397 24.3334 21.5064 28.1201C19.9597 29.6001 17.973 30.3467 15.9997 30.3467ZM15.9997 3.66675C12.1197 3.66675 7.13308 5.73341 5.81308 11.5467C4.37308 17.8267 8.31975 23.2401 11.8931 26.6667C14.1997 28.8934 17.813 28.8934 20.1197 26.6667C23.6797 23.2401 27.6264 17.8267 26.213 11.5467C24.8797 5.73341 19.8797 3.66675 15.9997 3.66675Z"
+          fill="currentColor"
+        />
+      </svg>
       <span
         className={`grid overflow-hidden transition-[grid-template-columns] duration-300 ${hover ? "grid-cols-[1fr]" : "grid-cols-[0fr]"
           }`}
@@ -320,13 +359,14 @@ export default function Navbar() {
 
                 <div className="flex items-center gap-3">
                   <SearchButton label={tNav("search")} />
+                  <LocationButton label={tNav("lokasiBca")} />
 
                   <div ref={langRef} className="relative">
                     <button
                       onClick={() => setLangOpen((v) => !v)}
                       onMouseEnter={() => setLangHover(true)}
                       onMouseLeave={() => setLangHover(false)}
-                      className={`flex cursor-pointer items-center gap-0.5 rounded-full border p-2 backdrop-blur-[4px] transition-colors ${langHover || langOpen
+                      className={`flex h-10 cursor-pointer items-center gap-0.5 rounded-full border px-2 backdrop-blur-[4px] transition-colors ${langHover || langOpen
                           ? "border-neutral-300 bg-white"
                           : "border-white/25 bg-[rgba(5,13,25,0.1)]"
                         }`}
@@ -376,52 +416,72 @@ export default function Navbar() {
                       : ""
                   }`}
               >
-                <div className="flex h-11 w-[1280px] items-center gap-1">
-                  {NAV_TABS.map((tab) => {
-                    const isOpen = openMenu === tab.key;
-                    return (
-                      <div
-                        key={tab.key}
-                        className={`flex h-11 flex-col items-start transition-colors ${isOpen ? "bg-cyan-100" : ""
-                          }`}
-                        onMouseEnter={() => {
-                          cancelClose();
-                          setOpenMenu(tab.key);
-                        }}
-                      >
-                        <button className="flex min-h-0 flex-1 items-center justify-center gap-1 px-4 pt-1">
-                          <span
-                            className={`whitespace-nowrap text-sm leading-[14px] ${isOpen
-                                ? "font-bold text-blue-500"
-                                : menuOpen
-                                  ? "font-semibold text-neutral-800"
-                                  : "font-semibold text-white/80"
-                              }`}
-                          >
-                            {tab.label}
-                          </span>
-                          {tab.chevron && (
-                            <img
-                              src={
-                                isOpen
-                                  ? "/assets/navbar/chevron-down-blue.svg"
-                                  : menuOpen
-                                    ? "/assets/navbar/chevron-down-dark.svg"
-                                    : "/assets/navbar/chevron-down-white.svg"
-                              }
-                              alt=""
-                              className={`size-5 transition-transform duration-200 ${isOpen ? "rotate-180" : menuOpen ? "" : "opacity-80"
-                                }`}
-                            />
-                          )}
-                        </button>
+                <div className="flex h-11 w-[1280px] items-center justify-between gap-1">
+                  <div className="flex h-11 items-center gap-1">
+                    {NAV_TABS.map((tab) => {
+                      const isOpen = openMenu === tab.key;
+                      return (
                         <div
-                          className={`h-1 w-full rounded-t-xl bg-blue-500 transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"
+                          key={tab.key}
+                          className={`flex h-11 flex-col items-start transition-colors ${isOpen ? "bg-cyan-100" : ""
                             }`}
+                          onMouseEnter={() => {
+                            cancelClose();
+                            setOpenMenu(tab.key);
+                          }}
+                        >
+                          <button className="flex min-h-0 flex-1 items-center justify-center gap-1 px-4 pt-1">
+                            <span
+                              className={`whitespace-nowrap text-sm leading-[14px] ${isOpen
+                                  ? "font-bold text-blue-500"
+                                  : menuOpen
+                                    ? "font-semibold text-neutral-800"
+                                    : "font-semibold text-white/80"
+                                }`}
+                            >
+                              {tab.label}
+                            </span>
+                            {tab.chevron && (
+                              <img
+                                src={
+                                  isOpen
+                                    ? "/assets/navbar/chevron-down-blue.svg"
+                                    : menuOpen
+                                      ? "/assets/navbar/chevron-down-dark.svg"
+                                      : "/assets/navbar/chevron-down-white.svg"
+                                }
+                                alt=""
+                                className={`size-5 transition-transform duration-200 ${isOpen ? "rotate-180" : menuOpen ? "" : "opacity-80"
+                                  }`}
+                              />
+                            )}
+                          </button>
+                          <div
+                            className={`h-1 w-full rounded-t-xl bg-blue-500 transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"
+                              }`}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <a
+                    href="https://www.bca.co.id/id/Forms/webform-bca"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`group flex items-center gap-1 whitespace-nowrap px-4 text-sm font-semibold ${menuOpen ? "text-neutral-800" : "text-white/80"
+                      }`}
+                  >
+                    {tNav("webformBca")}
+                    <span className="grid grid-cols-[0fr] overflow-hidden transition-[grid-template-columns] duration-300 group-hover:grid-cols-[1fr]">
+                      <span className="overflow-hidden">
+                        <img
+                          src="/assets/navbar/arrow-right.svg"
+                          alt=""
+                          className={`size-4 ${menuOpen ? "brightness-0" : ""}`}
                         />
-                      </div>
-                    );
-                  })}
+                      </span>
+                    </span>
+                  </a>
                 </div>
               </div>
 

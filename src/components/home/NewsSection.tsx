@@ -148,7 +148,7 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
   }, [lenis]);
 
   return (
-    <section className="relative overflow-clip bg-blue-100 py-10 xl:py-24">
+    <section id="news-section" className="relative overflow-clip bg-blue-100 py-10 xl:py-24">
       <div
         ref={parallaxRef}
         className="pointer-events-none absolute inset-0 z-0 overflow-visible"

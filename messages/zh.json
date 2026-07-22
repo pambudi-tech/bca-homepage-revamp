@@ -122,7 +122,9 @@
     "promo": "优惠",
     "tentangBca": "关于BCA",
     "karir": "招聘",
-    "search": "搜索"
+    "search": "搜索",
+    "lokasiBca": "BCA网点位置",
+    "webformBca": "BCA网络表单"
   },
   "mobileMenu": {
     "tutupMenu": "关闭菜单",
@@ -169,12 +171,11 @@
     "lpsLinkLabel": "这里",
     "linkColumns": {
       "Tentang BCA": {
-        "heading": "关于BCA",
+        "heading": "企业",
         "links": [
-          "公司简介",
-          "BCA招聘",
-          "新闻与新闻稿",
-          "奖项荣誉"
+          "关于BCA",
+          "招聘信息",
+          "利率信息"
         ]
       },
       "Layanan": {
@@ -182,24 +183,22 @@
         "links": [
           "分行与ATM位置",
           "帮助中心",
-          "优惠",
+          "活动与项目",
           "模拟计算器"
         ]
       },
-      "Produk": {
-        "heading": "产品",
+      "Wawasan": {
+        "heading": "资讯",
         "links": [
-          "myBCA",
-          "信用卡",
-          "贷款",
-          "企业信贷"
+          "新闻与专题",
+          "理财小贴士",
+          "#诈骗预警",
+          "查看更多"
         ]
       }
     },
     "bottomLinks": [
       "SBDK",
-      "BCA网点",
-      "帮助中心",
       "隐私政策",
       "条款与条件"
     ]
