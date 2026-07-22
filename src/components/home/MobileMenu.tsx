@@ -80,6 +80,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
   const lenis = useLenis();
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- gates the createPortal below, which needs document.body and is unavailable during server render
     setMounted(true);
   }, []);
 

@@ -52,7 +52,6 @@ export function useAutoplayProgress({
   const elapsedRef = useRef(0);
   // Keep the latest callback without re-subscribing the loop each render.
   const onAdvanceRef = useRef(onAdvance);
-  onAdvanceRef.current = onAdvance;
 
   const write = (offset: number) => {
     const refs = Array.isArray(progressRef) ? progressRef : [progressRef];
@@ -62,7 +61,14 @@ export function useAutoplayProgress({
   };
   // Kept in a ref so the loop below doesn't re-subscribe on every render.
   const writeRef = useRef(write);
-  writeRef.current = write;
+
+  // Refreshed after each commit rather than during render: assigning a ref
+  // mid-render is not safe if React discards and replays the render, and the
+  // rAF loop below only ever reads these between frames.
+  useEffect(() => {
+    onAdvanceRef.current = onAdvance;
+    writeRef.current = write;
+  });
 
   useEffect(() => {
     elapsedRef.current = 0;

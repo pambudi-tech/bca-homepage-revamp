@@ -25,6 +25,9 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       touchMultiplier: 2,
     });
 
+    // Publishes the Lenis instance, which is only constructed here (after the
+    // matchMedia check above), not derivable during render.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- see comment above
     setLenisInstance(lenis);
 
     let frameId = 0;

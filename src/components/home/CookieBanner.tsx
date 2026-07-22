@@ -44,6 +44,7 @@ export default function CookieBanner() {
 
   useEffect(() => {
     if (hasDecided()) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- gated on localStorage via hasDecided(), unavailable during server render
     setMounted(true);
     // Wait for the preloader curtain to start lifting before this fades in —
     // otherwise it flashes in underneath the curtain on slower loads. The

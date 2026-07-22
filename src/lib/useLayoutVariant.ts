@@ -24,9 +24,8 @@ export function useLayoutVariant<T extends string>(section: string, fallback: T,
     // was renamed or dropped), which would leave the switcher with nothing
     // selected — fall back to the default unless it's still on the menu.
     const stored = window.localStorage.getItem(STORAGE_PREFIX + section) as T | null;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reads localStorage, unavailable during server render
     if (stored && allowed.includes(stored)) setVariant(stored);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- `allowed` is an
-    // inline literal at every call site; depending on it would re-run forever.
   }, [section]);
 
   const select = useCallback(

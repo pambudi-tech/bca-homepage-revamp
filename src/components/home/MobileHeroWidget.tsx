@@ -297,6 +297,7 @@ export default function MobileHeroWidget({
   }, [searchFocused, onSearchActiveChange]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reads localStorage, unavailable during server render
     setRecent(getRecentSearches());
   }, []);
 

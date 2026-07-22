@@ -226,6 +226,7 @@ export default function HeroWidget({
 
   // Recent searches live in localStorage; load the stored copy on mount.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reads localStorage, unavailable during server render
     setRecent(getRecentSearches());
   }, []);
 

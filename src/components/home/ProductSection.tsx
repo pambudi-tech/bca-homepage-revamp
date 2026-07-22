@@ -500,7 +500,11 @@ function MobileProductCarousel({
   };
   // Latest callback, so the scroll listener below can stay subscribed.
   const onSelectRef = useRef(onSelect);
-  onSelectRef.current = onSelect;
+  // Refreshed after each commit rather than during render: assigning a ref
+  // mid-render is not safe if React discards and replays the render.
+  useEffect(() => {
+    onSelectRef.current = onSelect;
+  });
 
   /** The rendered copy of product `real` that sits closest to `from`. */
   const nearestCopy = (real: number, from: number) => {
@@ -528,6 +532,10 @@ function MobileProductCarousel({
     // A category swap resets the index, but it lands in a later render than
     // the new card list, so clamp rather than trusting it here.
     const slot = clones + Math.min(activeIndex, n - 1);
+    // Keeps `activeSlot` in sync with the scroll position centreOn() below
+    // sets, which itself depends on measured layout (offsetLeft/clientWidth)
+    // only available once the DOM has committed.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- see comment above
     moveTo(slot);
     centreOn(slot, "instant");
     // Only re-runs when the rendered card list itself changes.
