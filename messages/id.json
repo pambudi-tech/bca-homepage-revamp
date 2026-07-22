@@ -107,6 +107,11 @@
     "prevSlide": "Event sebelumnya",
     "nextSlide": "Event berikutnya"
   },
+  "soliprio": {
+    "title": "Layanan Prestisius dan Personal, Hanya untuk Anda.",
+    "solitaire": "Akses BCA Solitaire",
+    "prioritas": "Akses BCA Prioritas"
+  },
   "nav": {
     "segments": {
       "Individu": "Individu",

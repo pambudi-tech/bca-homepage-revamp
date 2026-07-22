@@ -111,6 +111,203 @@ body {
   display: none;
 }
 
+/* Soliprio's dark vignette. In Figma it's a solid #0F0F0F circle sitting under
+   a very wide Gaussian layer blur (r=840/sigma=160 on desktop, r=360/sigma=40 on
+   mobile), which is what softens the photo into the headline side of the band.
+   Reproduced as a radial gradient rather than `filter: blur()`: a blur that wide
+   forces the browser to rasterise a ~2600px surface on every repaint, and a PNG
+   would be a large download that bands once it's scaled. The stops sample the
+   Gaussian CDF every 0.5 sigma, so the falloff tracks the design to under 1%.
+   Callers set --glow-r / --glow-s and size the element to 2 * (r + 3 * sigma). */
+.soliprio-glow {
+  background: radial-gradient(
+    circle,
+    rgba(15, 15, 15, 1) calc(var(--glow-r) - var(--glow-s) * 3),
+    rgba(15, 15, 15, 0.994) calc(var(--glow-r) - var(--glow-s) * 2.5),
+    rgba(15, 15, 15, 0.977) calc(var(--glow-r) - var(--glow-s) * 2),
+    rgba(15, 15, 15, 0.933) calc(var(--glow-r) - var(--glow-s) * 1.5),
+    rgba(15, 15, 15, 0.841) calc(var(--glow-r) - var(--glow-s)),
+    rgba(15, 15, 15, 0.691) calc(var(--glow-r) - var(--glow-s) * 0.5),
+    rgba(15, 15, 15, 0.5) var(--glow-r),
+    rgba(15, 15, 15, 0.309) calc(var(--glow-r) + var(--glow-s) * 0.5),
+    rgba(15, 15, 15, 0.159) calc(var(--glow-r) + var(--glow-s)),
+    rgba(15, 15, 15, 0.067) calc(var(--glow-r) + var(--glow-s) * 1.5),
+    rgba(15, 15, 15, 0.023) calc(var(--glow-r) + var(--glow-s) * 2),
+    rgba(15, 15, 15, 0.006) calc(var(--glow-r) + var(--glow-s) * 2.5),
+    rgba(15, 15, 15, 0) calc(var(--glow-r) + var(--glow-s) * 3)
+  );
+}
+
+/* Soliprio's desktop cards: tilt toward the cursor with a sheen tracking it.
+   SoliprioCard.tsx only writes the four custom properties below — all the
+   painting stays in CSS, so a pointermove costs one style recalc and no JS
+   layout work. `--lift` rides in the same transform rather than a Tailwind
+   `translate` utility so the card rises along its own tilted normal. */
+/* The Solitaire photo, stacked over the default Prioritas one and cross-faded
+   in when its card is the one in focus. Two different signals drive the same
+   layer: desktop asks whether the card that owns it is hovered, mobile is told
+   outright by the carousel which card it has settled on. */
+.soliprio-photo-swap {
+  opacity: 0;
+  transition: opacity 500ms ease-out;
+}
+
+.soliprio-band:has(a[data-swaps-photo]:hover) .soliprio-photo-swap,
+[data-swap-shown="true"] .soliprio-photo-swap {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .soliprio-photo-swap {
+    transition-duration: 0ms;
+  }
+}
+
+/* Perspective lives on the (untilted) anchor rather than as a `perspective()`
+   inside the card's own transform. Same vanishing point, since the card fills
+   the anchor exactly, but keeping it on the container is the more usual shape
+   and leaves the card's own transform to describe nothing but the tilt. */
+.soliprio-stage {
+  perspective: 700px;
+}
+
+.soliprio-card {
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 50%;
+  --lift: 0px;
+  transform: rotateX(var(--rx)) rotateY(var(--ry))
+    translate3d(0, var(--lift), 0);
+  /* Long enough to glide back on leave; the hover rule below shortens it so
+     the card still tracks the cursor closely while it's being pointed at. */
+  transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Both states key off the anchor rather than `.soliprio-card` itself. For
+   `:focus-visible` that is the only option — the tilt sits on a plain inner
+   <div> (see SoliprioCard.tsx) and only the focusable <a> can match it. For
+   `:hover` it is about stability: hit-testing a transformed element uses its
+   *rotated* geometry, so near the edges the pointer can sit inside the card's
+   flat layout box but outside the tilted one, which would flicker the lift,
+   sheen and beam off. The <a> never tilts, so its box is exact. */
+a:hover > .soliprio-card,
+a:focus-visible > .soliprio-card {
+  --lift: -6px;
+  transition-duration: 150ms;
+}
+
+/* Masked with the card art's own alpha channel, so the sheen stops at the
+   rounded silhouette instead of squaring off over its transparent corners —
+   no need to hardcode a radius that only lives inside the .webp. */
+.soliprio-glare {
+  background: radial-gradient(
+    circle at var(--mx) var(--my),
+    rgba(255, 255, 255, 0.32),
+    rgba(255, 255, 255, 0.1) 32%,
+    rgba(255, 255, 255, 0) 62%
+  );
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+}
+
+a:hover > .soliprio-card .soliprio-glare,
+a:focus-visible > .soliprio-card .soliprio-glare {
+  opacity: 1;
+}
+
+/* Readers who ask for less motion keep the sheen but lose the tilt and lift —
+   the card then only cross-fades, which is what the JS also falls back to. */
+@media (prefers-reduced-motion: reduce) {
+  .soliprio-card,
+  a:hover > .soliprio-card,
+  a:focus-visible > .soliprio-card {
+    transform: none;
+  }
+}
+
+/* Registered so the conic gradient's start angle can actually be animated —
+   an unregistered custom property is just a string and would step, not sweep. */
+@property --beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes soliprio-beam-spin {
+  to {
+    --beam-angle: 360deg;
+  }
+}
+
+/* A light travelling around the card's edge, marking it as interactive before
+   anyone points at it. `--beam` (the card's own dominant hue, brightened) and
+   `--beam-radius` (its artwork's corner radius) are set per card by
+   SoliprioSection; `padding` sets the beam's thickness. */
+.soliprio-beam {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--beam-radius, 8px);
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--beam-angle),
+    transparent 0%,
+    var(--beam) 5%,
+    #fff 8%,
+    var(--beam) 11%,
+    transparent 18%
+  );
+  /* Same padding-box XOR trick as .hero-search::before: paint the gradient
+     only in the padding ring, so the card art underneath stays untouched. */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  /* drop-shadow rather than box-shadow — it follows the masked arc's alpha,
+     so only the lit segment blooms instead of the whole rectangle. Three of
+     them stack into a proper bloom: each pass blurs the previous result, so
+     the arc keeps a hot core while the halo spills well past the card edge
+     and lights the dark band around it. Keep all three in both states —
+     `filter` only interpolates between lists of matching length. */
+  filter: drop-shadow(0 0 2px var(--beam)) drop-shadow(0 0 7px var(--beam))
+    drop-shadow(0 0 16px var(--beam));
+  opacity: 0.8;
+  transition: opacity 300ms ease-out, filter 300ms ease-out;
+  animation: soliprio-beam-spin 4.5s linear infinite;
+  animation-delay: var(--beam-delay, 0s);
+  /* Parked until the card is actually on screen — SoliprioCard flips
+     `data-beam-live` from an IntersectionObserver. This animates a conic
+     gradient (a paint property) through three stacked blur passes, so left
+     running it would repaint every frame for the life of the page no matter
+     how far off-screen the section is. */
+  animation-play-state: paused;
+}
+
+[data-beam-live] .soliprio-beam {
+  animation-play-state: running;
+}
+
+a:hover > .soliprio-card .soliprio-beam,
+a:focus-visible > .soliprio-card .soliprio-beam {
+  opacity: 1;
+  filter: drop-shadow(0 0 3px var(--beam)) drop-shadow(0 0 11px var(--beam))
+    drop-shadow(0 0 26px var(--beam));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .soliprio-beam {
+    animation: none;
+  }
+}
+
 /* No `position` rule here on purpose — this is unlayered CSS, so it would beat
    Tailwind's `.absolute`/`.relative` utilities in the cascade regardless of
    source order. Callers must supply their own `relative`/`absolute` class. */

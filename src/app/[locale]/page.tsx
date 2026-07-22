@@ -5,6 +5,7 @@ import ScrollCue from "@/components/home/ScrollCue";
 import ProductSection from "@/components/home/ProductSection";
 import MyBcaSection from "@/components/home/MyBcaSection";
 import PromoSection from "@/components/home/PromoSection";
+import SoliprioSection from "@/components/home/SoliprioSection";
 import NewsSection from "@/components/home/NewsSection";
 import Footer from "@/components/home/Footer";
 import BackToTop from "@/components/home/BackToTop";
@@ -54,6 +55,7 @@ export default async function Home({
         <ProductSection categories={produk.categories} defaultKey={produk.defaultKey} />
         <MyBcaSection />
         <PromoSection promos={promos} now={now} />
+        <SoliprioSection />
         <NewsSection categories={news} />
       </div>
 

@@ -409,13 +409,13 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
         src="/assets/promo/bg-clove-product-1.svg"
         alt=""
         aria-hidden
-        className="pointer-events-none absolute left-[-380px] top-36 h-[896px] w-[770px] max-w-none origin-top-left scale-[0.8] opacity-100 blur-[2px] sm:scale-100 xl:bottom-[-256px] xl:left-[-256px] xl:top-auto xl:h-auto xl:w-auto"
+        className="pointer-events-none absolute left-[-380px] top-36 h-[896px] w-[770px] max-w-none origin-top-left scale-[0.8] opacity-100 sm:scale-100 xl:bottom-[-256px] xl:left-[-256px] xl:top-auto xl:h-[1634px] xl:w-[1344px]"
       />
       <img loading="lazy" decoding="async"
         src="/assets/promo/bg-clove-product-2.svg"
         alt=""
         aria-hidden
-        className="pointer-events-none absolute bottom-[-368px] right-[-380px] h-[896px] w-[770px] max-w-none origin-bottom-right scale-[0.8] opacity-60 blur-[2px] sm:scale-100 xl:bottom-[-720px] xl:right-[-720px] xl:h-auto xl:w-auto"
+        className="pointer-events-none absolute bottom-[-368px] right-[-380px] h-[896px] w-[770px] max-w-none origin-bottom-right scale-[0.8] opacity-60 sm:scale-100 xl:bottom-[-720px] xl:right-[-720px] xl:h-[1634px] xl:w-[1344px]"
       />
       {/* confetti — top of the section (pure JS + CSS, see Confetti.tsx) */}
       <Confetti />

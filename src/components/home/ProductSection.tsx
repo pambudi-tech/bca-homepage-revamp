@@ -1171,7 +1171,7 @@ export default function ProductSection({
   return (
     <section
       ref={sectionRef}
-      className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-[120px] pt-0 xl:pb-36 xl:pt-8"
+      className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-[120px] pt-0 xl:pb-36 xl:pt-0"
     >
       {/* prototype-only: lets the client flip this section's layout live. */}
       <LayoutSwitcher
@@ -1217,18 +1217,30 @@ export default function ProductSection({
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[560px] px-4 xl:w-[1280px] xl:max-w-none xl:px-0">
-        {/* Heading — stacked on mobile, eyebrow-column + h2 side by side on desktop. */}
+        {/* Heading — stacked on mobile. On desktop the curved layout stacks it
+            too (vertical alignment, centered on the page); the accordion keeps
+            the eyebrow-column + h2 side-by-side row. */}
         <div
-          className={`flex flex-col transition-all duration-700 ease-out xl:flex-row xl:gap-10 ${
-            entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-          }`}
+          className={`flex flex-col transition-all duration-700 ease-out ${
+            variant === "curved"
+              ? "xl:items-center xl:gap-5 xl:text-center"
+              : "xl:flex-row xl:gap-10"
+          } ${entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
         >
-          <div className="flex items-center py-4 xl:w-[240px] xl:shrink-0">
+          <div
+            className={`flex items-center py-4 xl:shrink-0 ${
+              variant === "curved" ? "" : "xl:w-[240px]"
+            }`}
+          >
             <p className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px] xl:text-blue-800">
               {t("eyebrow")}
             </p>
           </div>
-          <h2 className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:w-[560px] xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]">
+          <h2
+            className={`text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px] ${
+              variant === "curved" ? "" : "xl:w-[560px]"
+            }`}
+          >
             {t("heading")}
           </h2>
         </div>
@@ -1258,12 +1270,12 @@ export default function ProductSection({
           })}
         </div>
 
-        <div className={`mt-6 xl:mt-16 ${variant === "curved" ? "flex flex-col" : ""}`}>
+        <div className={`mt-6 xl:mt-12 ${variant === "curved" ? "flex flex-col" : ""}`}>
           {/* Desktop category row — curved layout only. The accordion now shows
               the categories *as* its cards, so its old left-hand list is gone. */}
           {variant === "curved" && (
             <div
-              className={`hidden flex-wrap items-baseline gap-x-10 gap-y-2 pb-10 text-blue-500 transition-all duration-700 ease-out xl:flex ${
+              className={`hidden flex-wrap items-baseline justify-center gap-x-10 gap-y-2 pb-10 text-center text-blue-500 transition-all duration-700 ease-out xl:flex ${
                 entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
               }`}
               style={{ transitionDelay: entered ? "150ms" : "0ms" }}
@@ -1357,7 +1369,7 @@ export default function ProductSection({
                 the desktop accordion drops this hint + CTA. It stays on the
                 curved layout and on mobile (both still list products). */}
             <div
-              className={`mt-6 flex flex-col items-center gap-4 xl:mt-10 ${
+              className={`mt-6 flex flex-col items-center gap-5 xl:mt-12 ${
                 variant === "curved" ? "" : "xl:hidden"
               } ${entered ? "opacity-100" : "opacity-0"}`}
               style={{
