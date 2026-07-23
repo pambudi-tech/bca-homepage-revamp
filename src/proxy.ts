@@ -36,6 +36,13 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Route handlers have no locale segment to route to — next-intl would rewrite
+  // /api/… to /id/api/… and the handler would never be reached. They stay
+  // behind the preview password above; only locale routing is skipped.
+  if (pathname.startsWith("/api/")) {
+    return NextResponse.next();
+  }
+
   return intlMiddleware(request);
 }
 

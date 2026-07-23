@@ -214,6 +214,53 @@
     "heading": "Update Seputar BCA",
     "seeMore": "Lihat Lebih Banyak"
   },
+  "lokasi": {
+    "eyebrow": "Lokasi BCA",
+    "heading": "ATM & Cabang BCA Terdekat dari Anda",
+    "description": "Bagikan lokasi Anda atau cari nama area, lalu lihat tiga lokasi BCA terdekat lengkap dengan rutenya.",
+    "useMyLocation": "Gunakan lokasi saya",
+    "yourLocationPrefix": "Lokasi Anda:",
+    "locatingDetail": "Menentukan lokasi…",
+    "locatedAreaUnknown": "Terdeteksi, di luar area cakupan",
+    "stopUsingLocation": "Berhenti pakai lokasi ini",
+    "locating": "Mencari lokasi Anda…",
+    "searchLabel": "Cari area atau kota",
+    "searchPlaceholder": "Atau cari area, mis. Kelapa Gading",
+    "yourLocation": "Lokasi Anda",
+    "defaultPlace": "Jakarta Pusat",
+    "nearestFrom": "Terdekat dari {place}",
+    "permissionDenied": "Akses lokasi ditolak. Anda masih bisa mencari berdasarkan nama area di kolom pencarian.",
+    "permissionBlocked": "Akses lokasi diblokir oleh browser Anda. Buka pengaturan situs lewat ikon kunci/info di address bar, izinkan Lokasi, lalu klik \"Gunakan lokasi saya\" lagi — tidak perlu memuat ulang halaman.",
+    "positionUnavailable": "Lokasi Anda belum terdeteksi. Coba lagi, atau cari berdasarkan nama area.",
+    "noResults": "Belum ada lokasi BCA di sekitar sini. Coba area lain atau ubah filternya.",
+    "route": "Rute",
+    "routeLabel": "Buka rute ke {name} di Google Maps",
+    "seeAll": "Lihat semua lokasi BCA",
+    "filters": {
+      "all": "Semua",
+      "cabang": "Cabang",
+      "atm": "ATM"
+    },
+    "type": {
+      "cabang": "Cabang",
+      "atm": "ATM"
+    },
+    "map": {
+      "region": "Peta lokasi ATM dan cabang BCA",
+      "zoomIn": "Perbesar peta",
+      "zoomOut": "Perkecil peta",
+      "ctrlZoom": "Tekan ctrl + scroll untuk memperbesar peta",
+      "cmdZoom": "Tekan ⌘ + scroll untuk memperbesar peta",
+      "twoFingers": "Gunakan dua jari untuk menggeser peta",
+      "unavailable": "Peta tidak dapat ditampilkan di peramban ini. Daftar lokasi di samping tetap bisa digunakan."
+    },
+    "primer": {
+      "title": "Izinkan lokasi Anda?",
+      "body": "Kami akan meminta browser Anda membagikan lokasi, supaya bisa menampilkan ATM & cabang BCA terdekat. Anda tetap bisa mencari lewat kolom di bawah tanpa ini.",
+      "allow": "Izinkan",
+      "notNow": "Nanti Saja"
+    }
+  },
   "megamenu": {
     "Simpanan": {
       "label": "Simpanan",

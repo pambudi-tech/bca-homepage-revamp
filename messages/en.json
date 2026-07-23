@@ -214,6 +214,53 @@
     "heading": "Latest BCA Updates",
     "seeMore": "See More"
   },
+  "lokasi": {
+    "eyebrow": "BCA Locations",
+    "heading": "BCA Branches & ATMs Nearest to You",
+    "description": "Share your location or search for an area, then see the three closest BCA locations with directions.",
+    "useMyLocation": "Use my location",
+    "yourLocationPrefix": "Your location:",
+    "locatingDetail": "Finding your area…",
+    "locatedAreaUnknown": "Detected, outside our coverage area",
+    "stopUsingLocation": "Stop using this location",
+    "locating": "Finding your location…",
+    "searchLabel": "Search for an area or city",
+    "searchPlaceholder": "Or search an area, e.g. Kelapa Gading",
+    "yourLocation": "Your location",
+    "defaultPlace": "Central Jakarta",
+    "nearestFrom": "Nearest to {place}",
+    "permissionDenied": "Location access was denied. You can still search by area name in the field above.",
+    "permissionBlocked": "Location access is blocked in your browser. Open the site settings from the lock/info icon in the address bar, allow Location, then click \"Use my location\" again — no reload needed.",
+    "positionUnavailable": "We could not detect your location. Try again, or search by area name.",
+    "noResults": "No BCA locations around here yet. Try another area or change the filter.",
+    "route": "Directions",
+    "routeLabel": "Open directions to {name} in Google Maps",
+    "seeAll": "See all BCA locations",
+    "filters": {
+      "all": "All",
+      "cabang": "Branch",
+      "atm": "ATM"
+    },
+    "type": {
+      "cabang": "Branch",
+      "atm": "ATM"
+    },
+    "map": {
+      "region": "Map of BCA branches and ATMs",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "ctrlZoom": "Use ctrl + scroll to zoom the map",
+      "cmdZoom": "Use ⌘ + scroll to zoom the map",
+      "twoFingers": "Use two fingers to move the map",
+      "unavailable": "The map cannot be displayed in this browser. The list of locations still works."
+    },
+    "primer": {
+      "title": "Allow your location?",
+      "body": "We'll ask your browser to share your location, so we can show the nearest BCA branches & ATMs. You can still search by area below without this.",
+      "allow": "Allow",
+      "notNow": "Not Now"
+    }
+  },
   "megamenu": {
     "Simpanan": {
       "label": "Savings",
