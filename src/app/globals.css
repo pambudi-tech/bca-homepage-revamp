@@ -992,9 +992,16 @@ html.lenis, html.lenis body {
   -webkit-mask-image: url(/assets/lokasi/icon-located.svg);
 }
 
+/* A dedicated copy of the navbar's search glyph, not a shared reference to
+   `/assets/cycle1/outline-search.svg` — that file carries its own
+   `opacity="0.8"`, harmless for the plain `<img>` uses elsewhere (Navbar.tsx,
+   MobileMenu.tsx) but not here: used as a CSS mask, that opacity dilutes
+   *this* mask's own alpha, so any `bg-*` colour painted through it — like the
+   peer-focus blue-500 below — rendered ~20% lighter than the utility actually
+   asked for. */
 .bca-search-icon {
-  mask-image: url(/assets/cycle1/outline-search.svg);
-  -webkit-mask-image: url(/assets/cycle1/outline-search.svg);
+  mask-image: url(/assets/lokasi/icon-search.svg);
+  -webkit-mask-image: url(/assets/lokasi/icon-search.svg);
 }
 
 /* While the browser is resolving a fix. Opacity rather than a spin: the mark is
@@ -1015,18 +1022,18 @@ html.lenis, html.lenis body {
    pulse there would claim a precision the centroid doesn't have. */
 .bca-origin {
   position: relative;
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
 }
 
-/* `inset: 6px` on a 24px box → a 12px dot, border included (border-box, per
+/* `inset: 8px` on a 32px box → a 16px dot, border included (border-box, per
    Tailwind's preflight reset) — this is the number to change if the dot needs
    to grow or shrink again; `.bca-origin`'s own size should move with it,
    proportionally, so the pulse ring (which fills the whole box) still reads
    as centred on the dot rather than oddly padded around it. */
 .bca-origin-dot {
   position: absolute;
-  inset: 6px;
+  inset: 8px;
   border-radius: 9999px;
   background: var(--color-blue-500);
   border: 2px solid var(--color-neutral-100);
@@ -1035,26 +1042,35 @@ html.lenis, html.lenis body {
 
 /* "Posisi Anda" — sits above the dot, visible only alongside the pulse (see
    `.bca-origin-user` below): a picked place is a centroid, not a live fix, and
-   labelling it "your position" would overclaim the same way the pulse would. */
+   labelling it "your position" would overclaim the same way the pulse would.
+   The font-family is set explicitly, not inherited from `body`: MapLibre's
+   own stylesheet puts `font: 12px/20px "Helvetica Neue", Arial, ...` directly
+   on `.maplibregl-map` (an ancestor of every marker, this pill included),
+   which otherwise wins over the page's BCA Sans through plain inheritance. */
 .bca-origin-pill {
   display: none;
   position: absolute;
-  bottom: calc(100% + 6px);
+  bottom: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
+  align-items: center;
+  height: 32px;
   white-space: nowrap;
-  padding: 3px 9px;
+  padding: 0 12px;
   border-radius: 9999px;
   background: rgba(18, 20, 23, 0.85);
   color: var(--color-neutral-100);
-  font-size: 11px;
+  font-family: var(--font-bca-sans), Arial, Helvetica, sans-serif;
+  font-size: 16px;
   font-weight: 700;
   line-height: 1.4;
   box-shadow: 0 2px 6px rgba(18, 20, 23, 0.3);
 }
 
+/* `flex` (not `block`) so the fixed 32px height actually centres the text
+   vertically instead of just clipping/overflowing it. */
 .bca-origin-user .bca-origin-pill {
-  display: block;
+  display: flex;
 }
 
 .bca-origin-pulse {

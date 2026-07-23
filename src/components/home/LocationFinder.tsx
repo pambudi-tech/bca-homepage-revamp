@@ -451,7 +451,13 @@ export default function LocationFinder({ initial }: Props) {
           put a single tall panel on a phone-width screen the way there is
           once the map has a whole 1280px-wide section to share. ================= */}
       <div className="absolute inset-0 xl:hidden">
-        <div className="absolute inset-0">
+        {/* `z-0`, not the bare default: MapLibre's cooperative-gesture hint
+            (the "use two fingers…" overlay) paints itself at z-index 99999
+            *inside* this div. Without an explicit z-index here, this wrapper
+            never becomes a stacking context of its own, so that 99999 escapes
+            all the way up past the panels below (z-10) instead of staying
+            capped under them. */}
+        <div className="absolute inset-0 z-0">
           {isDesktop === false ? map : <div className="size-full animate-pulse bg-blue-100" />}
         </div>
 
@@ -474,7 +480,12 @@ export default function LocationFinder({ initial }: Props) {
             phone-width `inset-x-4` alone would. */}
         <div
           data-reveal
-          className="absolute left-1/2 top-4 z-10 w-[calc(100%-32px)] max-w-[560px] -translate-x-1/2 overflow-clip rounded-2xl border border-neutral-300 bg-white shadow-[0px_8px_24px_0px_rgba(18,20,23,0.16)]"
+          // `overflow-visible`, not `-clip`: the search combobox's suggestion
+          // list (see Controls below) is an absolutely-positioned child that
+          // drops below this panel's own bottom edge — clipping here cut that
+          // dropdown off instead of letting it float over the map like the
+          // rest of this floating composition.
+          className="absolute left-1/2 top-4 z-10 w-[calc(100%-32px)] max-w-[560px] -translate-x-1/2 overflow-visible rounded-2xl border border-neutral-300 bg-white shadow-[0px_8px_24px_0px_rgba(18,20,23,0.16)]"
         >
           {/* -2% kerning: 20px font-size × -0.02 = -0.4px. */}
           <h2 className="px-5 pt-5 text-xl font-semibold leading-7 tracking-[-0.4px] text-blue-800">
@@ -535,11 +546,17 @@ export default function LocationFinder({ initial }: Props) {
             has to be real, height-contributing, normal-flow content, not
             something removed from the flow like they are). The panel hugs
             its own content (only ever three cards) instead of being
-            stretched to some fixed height with a scrollbar nothing needs. */}
-        <div className="xl:relative xl:z-10 xl:mx-auto xl:flex xl:w-[1280px] xl:flex-col xl:items-start xl:py-16">
+            stretched to some fixed height with a scrollbar nothing needs.
+            `pointer-events-none` here, `pointer-events-auto` back on the
+            panel below — this column is `w-[1280px]` (the full grid) but the
+            visible panel only fills the left 452px of it; without this, the
+            empty ~828px to its right was still an invisible box sitting at
+            `z-10` over the map, silently eating every drag and wheel-zoom
+            meant for it. */}
+        <div className="xl:relative xl:z-10 xl:mx-auto xl:flex xl:w-[1280px] xl:flex-col xl:items-start xl:py-16 xl:pointer-events-none">
           <div
             data-reveal
-            className="xl:flex xl:w-[452px] xl:flex-col xl:overflow-clip xl:rounded-2xl xl:border xl:border-neutral-300 xl:bg-white xl:shadow-[0px_16px_48px_0px_rgba(18,20,23,0.28)]"
+            className="xl:pointer-events-auto xl:flex xl:w-[452px] xl:flex-col xl:overflow-clip xl:rounded-2xl xl:border xl:border-neutral-300 xl:bg-white xl:shadow-[0px_16px_48px_0px_rgba(18,20,23,0.28)]"
           >
             {/* -2% kerning: 24px font-size × -0.02 = -0.48px. */}
             <h2 className="xl:px-6 xl:pt-6 xl:text-2xl xl:font-semibold xl:leading-8 xl:tracking-[-0.48px] xl:text-blue-800">
@@ -786,14 +803,21 @@ function Controls({
             onFocus={() => setOpen(true)}
             onBlur={() => window.setTimeout(() => setOpen(false), 120)}
             onKeyDown={onKeyDown}
-            // No `outline-none`: the border/background change reads as focus
-            // for a pointer user, but a keyboard user needs the ring, and
-            // every other control in this section keeps the browser default.
-            className="h-12 w-full rounded-xl border border-neutral-300 bg-neutral-200 pl-11 pr-4 text-base text-neutral-800 transition-colors placeholder:text-neutral-600 focus:border-blue-400 focus:bg-white"
+            // `focus:outline-none` here, on purpose, unlike this section's
+            // other controls: text inputs are the one element type where
+            // browsers (Safari and Chrome both) draw their native focus ring
+            // on *any* focus, not just `:focus-visible` keyboard focus — so a
+            // mouse click was showing that ring's default blue laid directly
+            // over our cyan-500 border, reading as a colour neither one of
+            // them. `focus-visible:` reinstates a ring for keyboard focus
+            // specifically, in the same cyan so the two never disagree.
+            // `peer` lets the icon below (a sibling, not a descendant) react
+            // to this input's own focus state via `peer-focus:`.
+            className="peer h-12 w-full rounded-xl border border-neutral-300 bg-neutral-200 pl-12 pr-4 text-base text-neutral-800 transition-colors placeholder:text-neutral-600 focus:border-cyan-500 focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500"
           />
           <span
             aria-hidden
-            className="bca-search-icon pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 bg-neutral-600"
+            className="bca-search-icon pointer-events-none absolute left-4 top-1/2 size-6 -translate-y-1/2 bg-neutral-700 transition-colors peer-focus:bg-blue-500"
           />
 
           {open && suggestions.length > 0 && (
@@ -817,8 +841,8 @@ function Controls({
                     className={`flex w-full items-baseline gap-2 px-4 py-2.5 text-left transition-colors ${index === activeIndex ? "bg-blue-100" : "bg-white"
                       }`}
                   >
-                    <span className="text-sm font-semibold text-neutral-800">{place.label}</span>
-                    <span className="truncate text-xs text-neutral-600">{place.sub}</span>
+                    <span className="text-base font-semibold text-neutral-800">{place.label}</span>
+                    <span className="truncate text-sm text-neutral-600">{place.sub}</span>
                   </button>
                 </li>
               ))}
@@ -852,7 +876,7 @@ function Controls({
               type="button"
               onClick={() => setFilter(key)}
               aria-pressed={active}
-              className="flex h-12 flex-col items-center"
+              className="flex h-12 cursor-pointer flex-col items-center"
             >
               <span
                 className={`flex flex-1 items-center justify-center gap-1.5 px-3 text-md ${active ? "font-bold text-blue-500" : "font-semibold text-neutral-700"
@@ -912,7 +936,10 @@ function ResultsList({ originLabel, data, pending, locale, selectedId, setSelect
             location={location}
             locale={locale}
             selected={location.id === selectedId}
-            onSelect={() => setSelectedId(location.id)}
+            // Clicking the already-selected card deselects it, rather than
+            // leaving no way back to "nothing selected" short of picking a
+            // different card first.
+            onSelect={() => setSelectedId(selectedId === location.id ? null : location.id)}
           />
         ))}
         {!data.results.length && (
@@ -1025,7 +1052,10 @@ function ResultsSlider({
             location={location}
             locale={locale}
             selected={location.id === selectedId}
-            onSelect={() => setSelectedId(location.id)}
+            // Clicking the already-selected card deselects it, rather than
+            // leaving no way back to "nothing selected" short of picking a
+            // different card first.
+            onSelect={() => setSelectedId(selectedId === location.id ? null : location.id)}
           />
         ))}
         {!data.results.length && (
@@ -1077,7 +1107,14 @@ function ResultCard({
   return (
     <li
       data-selected={selected}
-      className="flex items-stretch rounded-xl border border-neutral-300 bg-neutral-100 transition-colors hover:border-cyan-500 hover:bg-blue-100 data-[selected=true]:border-cyan-500 data-[selected=true]:bg-blue-100"
+      // `[&:hover]:`, not the plain `hover:` variant: Tailwind wraps `hover:`
+      // in `@media (hover: hover)` so a tap doesn't leave touch devices stuck
+      // in a hover state — but that same guard reports `hover: none` under a
+      // browser's responsive-design/touch-emulation mode even at a desktop
+      // viewport width, which was silently swallowing this state exactly
+      // there. The arbitrary variant compiles to a plain `:hover` selector,
+      // so a real mouse still gets it and a touch tap still can't stick it.
+      className="flex items-stretch rounded-xl border border-neutral-300 bg-neutral-100 transition-colors [&:hover]:bg-blue-100 data-[selected=true]:border-cyan-500 data-[selected=true]:bg-blue-100"
     >
       <button
         type="button"
@@ -1097,7 +1134,10 @@ function ResultCard({
         <span className="flex min-w-0 flex-1 flex-col gap-1">
           <span className="flex items-center gap-2">
             <span
-              className={`rounded px-1.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.5px] ${isBranch ? "bg-blue-200 text-blue-700" : "bg-cyan-300 text-blue-700"
+              // Per the Figma "Badge Style" spec (node 1704-6230): 12px
+              // SemiBold, 20px tall pill, sentence case (no uppercase/tracking
+              // — "Cabang" reads as "Cabang", not "CABANG").
+              className={`flex h-5 items-center justify-center rounded-md px-1.5 text-xs font-semibold ${isBranch ? "bg-blue-300 text-blue-600" : "bg-cyan-300 text-cyan-700"
                 }`}
             >
               {typeLabel}
@@ -1166,7 +1206,8 @@ function ResultCardCompact({
       // looked like a stray translucent layer rather than a clear "selected".
       // `snap-start` is `scroll-snap-align`, paired with `snap-x snap-mandatory`
       // on the parent `<ul>` (see ResultsSlider) for the swipe-to-settle feel.
-      className="flex w-[220px] shrink-0 snap-start flex-col overflow-clip rounded-xl border border-neutral-300 bg-white transition-colors hover:border-cyan-500 data-[selected=true]:border-cyan-500"
+      // `[&:hover]:`, not `hover:` — same reasoning as ResultCard above.
+      className="flex w-[220px] shrink-0 snap-start flex-col overflow-clip rounded-xl border border-neutral-300 bg-white transition-colors [&:hover]:bg-blue-100 data-[selected=true]:border-cyan-500"
     >
       <button
         type="button"
@@ -1189,7 +1230,10 @@ function ResultCardCompact({
               {rank}
             </span>
             <span
-              className={`rounded px-1.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.5px] ${isBranch ? "bg-blue-200 text-blue-700" : "bg-cyan-300 text-blue-700"
+              // Per the Figma "Badge Style" spec (node 1704-6230): 12px
+              // SemiBold, 20px tall pill, sentence case (no uppercase/tracking
+              // — "Cabang" reads as "Cabang", not "CABANG").
+              className={`flex h-5 items-center justify-center rounded-md px-1.5 text-xs font-semibold ${isBranch ? "bg-blue-300 text-blue-600" : "bg-cyan-300 text-cyan-700"
                 }`}
             >
               {typeLabel}

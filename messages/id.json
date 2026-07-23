@@ -224,7 +224,7 @@
     "searchLabel": "Cari area atau kota",
     "searchPlaceholder": "Atau cari area, mis. Kelapa Gading",
     "yourLocation": "Lokasi Anda",
-    "defaultPlace": "Jakarta Pusat",
+    "defaultPlace": "Menara BCA",
     "nearestFrom": "Terdekat dari {place}",
     "permissionDenied": "Akses lokasi ditolak. Anda masih bisa mencari berdasarkan nama area di kolom pencarian.",
     "permissionBlocked": "Akses lokasi diblokir oleh browser Anda. Buka pengaturan situs lewat ikon kunci/info di address bar, izinkan Lokasi, lalu klik \"Gunakan lokasi saya\" lagi — tidak perlu memuat ulang halaman.",

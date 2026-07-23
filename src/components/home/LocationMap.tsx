@@ -36,6 +36,37 @@ function fitPadding() {
   return { top: 64, bottom: 64, left: PANEL_RESERVE_PX, right: 64 };
 }
 
+/** Frames the origin together with all three results, so no card points at a
+ *  pin that is off-screen. `maxZoom` stops a single very close result from
+ *  zooming into the rooftops. Shared by the "data + camera follow the origin"
+ *  effect and the "selection" effect below — the latter uses it to bring the
+ *  camera back out when a card is deselected, rather than leaving it zoomed
+ *  into whichever pin was picked last with nothing selected to justify it. */
+function fitToOriginAndResults(
+  map: MapLibreMap,
+  origin: { lat: number; lng: number },
+  results: NearbyLocation[],
+  duration: number,
+) {
+  if (results.length) {
+    const lats = [origin.lat, ...results.map((r) => r.lat)];
+    const lngs = [origin.lng, ...results.map((r) => r.lng)];
+    map.fitBounds(
+      [
+        [Math.min(...lngs), Math.min(...lats)],
+        [Math.max(...lngs), Math.max(...lats)],
+      ],
+      { padding: fitPadding(), maxZoom: 16, duration },
+    );
+  } else {
+    // `easeTo`'s `padding` shifts the given `center` toward the padded side
+    // rather than resizing a bounding box, which is exactly what's needed
+    // here too: with nothing to fit, centring on the origin outright would
+    // still put it straight under the floating panel on desktop.
+    map.easeTo({ center: [origin.lng, origin.lat], zoom: 13, padding: fitPadding(), duration });
+  }
+}
+
 export type MapLabels = {
   /** Accessible name for the map container. */
   region: string;
@@ -138,6 +169,17 @@ export default function LocationMap({
   useEffect(() => {
     onSelectRef.current = onSelect;
   }, [onSelect]);
+
+  // `origin`/`results` through a ref for the same reason `onSelect` is above,
+  // but for a different failure mode: the selection effect below only wants
+  // these values to read the *current* framing when a card is deselected, not
+  // to re-run every time either one changes — that's the "data + camera
+  // follow the origin" effect's job already, and adding them as reactive deps
+  // here would fire a second, competing `fitBounds` on every origin change.
+  const latestRef = useRef({ origin, results });
+  useEffect(() => {
+    latestRef.current = { origin, results };
+  }, [origin, results]);
 
   /* ---- create the map once ---- */
   useEffect(() => {
@@ -354,10 +396,6 @@ export default function LocationMap({
       element.setAttribute("aria-label", labels.yourLocation);
     }
 
-    // Frame the origin together with all three results, so no card points at a
-    // pin that is off-screen. `maxZoom` stops a single very close result from
-    // zooming into the rooftops.
-    //
     // The first fit is instant. It runs the moment the style finishes loading,
     // when the map has only just appeared — animating there would read as the
     // map drifting on arrival rather than as a response to anything. Every fit
@@ -366,42 +404,45 @@ export default function LocationMap({
     const duration = reduceMotion || !hasFittedRef.current ? 0 : 900;
     hasFittedRef.current = true;
 
-    if (results.length) {
-      const lats = [origin.lat, ...results.map((r) => r.lat)];
-      const lngs = [origin.lng, ...results.map((r) => r.lng)];
-      map.fitBounds(
-        [
-          [Math.min(...lngs), Math.min(...lats)],
-          [Math.max(...lngs), Math.max(...lats)],
-        ],
-        { padding: fitPadding(), maxZoom: 16, duration },
-      );
-    } else {
-      // `easeTo`'s `padding` shifts the given `center` toward the padded side
-      // rather than resizing a bounding box, which is exactly what's needed
-      // here too: with nothing to fit, centring on the origin outright would
-      // still put it straight under the floating panel on desktop.
-      map.easeTo({ center: [origin.lng, origin.lat], zoom: 13, padding: fitPadding(), duration });
-    }
+    fitToOriginAndResults(map, origin, results, duration);
   }, [origin, originIsUser, pins, results, ready, labels.yourLocation]);
 
   /* ---- selection ---- */
+  // Tracks whether the *previous* render had a selection, so the effect below
+  // can tell "just deselected" (was something, now null — pull the camera
+  // back out) apart from "never selected" (null from the start, e.g. on
+  // mount — nothing to pull back out of; the other effect already framed the
+  // overview once on its own).
+  const wasSelectedRef = useRef(false);
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !ready) return;
 
     map.setFilter("pins-selected", ["==", ["get", "id"], selectedId ?? ""]);
 
-    const selected = pins.find((p) => p.id === selectedId);
-    if (!selected) return;
-
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    map.easeTo({
-      center: [selected.lng, selected.lat],
-      zoom: Math.max(map.getZoom(), 15),
-      padding: fitPadding(),
-      duration: reduceMotion ? 0 : 600,
-    });
+    const duration = reduceMotion ? 0 : 600;
+
+    const selected = pins.find((p) => p.id === selectedId);
+    if (selected) {
+      wasSelectedRef.current = true;
+      map.easeTo({
+        center: [selected.lng, selected.lat],
+        zoom: Math.max(map.getZoom(), 15),
+        padding: fitPadding(),
+        duration,
+      });
+      return;
+    }
+
+    if (wasSelectedRef.current) {
+      wasSelectedRef.current = false;
+      // Deselecting a card (clicking it again) has nothing left to zoom into —
+      // pull the camera back out to the same framing it opened with, rather
+      // than leaving it parked on whichever pin was picked last.
+      const { origin, results } = latestRef.current;
+      fitToOriginAndResults(map, origin, results, duration);
+    }
   }, [selectedId, pins, ready]);
 
   /* Giving up swaps the container out of the DOM, which React does on its own —

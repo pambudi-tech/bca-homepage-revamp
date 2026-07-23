@@ -64,9 +64,11 @@ export const PIN_COUNT = 60;
  */
 export const MAX_RADIUS_METERS = 50_000;
 
-/** Bundaran HI. The section renders around this before the visitor shares a
- *  location or picks a place, so it is never an empty map with an empty list. */
-export const DEFAULT_ORIGIN = { lat: -6.1944, lng: 106.8229, label: "Jakarta Pusat" };
+/** Menara BCA (Grand Indonesia, Jl. M.H. Thamrin No. 1) — BCA's own head
+ *  office, and a fitting default: the section renders around this before the
+ *  visitor shares a location or picks a place, so it is never an empty map
+ *  with an empty list. */
+export const DEFAULT_ORIGIN = { lat: -6.19528, lng: 106.82292, label: "Menara BCA" };
 
 /** Metres between two coordinates (haversine). Straight-line, not driving
  *  distance — the cards label it as such. */

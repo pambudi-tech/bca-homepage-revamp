@@ -224,7 +224,7 @@
     "searchLabel": "Search for an area or city",
     "searchPlaceholder": "Or search an area, e.g. Kelapa Gading",
     "yourLocation": "Your location",
-    "defaultPlace": "Central Jakarta",
+    "defaultPlace": "BCA Tower",
     "nearestFrom": "Nearest to {place}",
     "permissionDenied": "Location access was denied. You can still search by area name in the field above.",
     "permissionBlocked": "Location access is blocked in your browser. Open the site settings from the lock/info icon in the address bar, allow Location, then click \"Use my location\" again — no reload needed.",

@@ -224,7 +224,7 @@
     "searchLabel": "搜索区域或城市",
     "searchPlaceholder": "或搜索区域，例如 Kelapa Gading",
     "yourLocation": "您的位置",
-    "defaultPlace": "中雅加达",
+    "defaultPlace": "BCA大厦",
     "nearestFrom": "距离{place}最近",
     "permissionDenied": "位置权限已被拒绝。您仍可在上方输入区域名称进行搜索。",
     "permissionBlocked": "您的浏览器已阻止位置访问。请点击地址栏中的锁形/信息图标打开网站设置，允许位置权限，然后再次点击\"使用我的位置\"——无需刷新页面。",
