@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import { useLocale, useTranslations } from "next-intl";
 import {
@@ -495,6 +496,7 @@ export default function LocationFinder({ initial }: Props) {
             idBase={mobileIdBase}
             inputRef={mobileInputRef}
             divider={false}
+            usePortal
             {...controlsShared}
           />
         </div>
@@ -604,6 +606,15 @@ type ControlsProps = {
    *  rounded bottom edge. Defaults to shown, since desktop is the more common
    *  case to reach for this component without thinking about the prop. */
   divider?: boolean;
+  /** Mobile's geo-primer popover must be a bottom sheet pinned to the
+   *  viewport, but its button sits inside the top panel's `-translate-x-1/2`
+   *  centering trick — a transform, which makes that panel a new containing
+   *  block for `position: fixed` descendants and traps the sheet inside it
+   *  instead of the screen. Portaling to `document.body` escapes that.
+   *  Desktop's popover is a small anchored card that deliberately relies on
+   *  its button's `relative` ancestor for `xl:absolute` positioning, so it
+   *  stays inline. */
+  usePortal?: boolean;
 };
 
 /** The button/search/filter block — one component so the mobile and desktop
@@ -638,6 +649,7 @@ function Controls({
   filter,
   setFilter,
   divider = true,
+  usePortal = false,
 }: ControlsProps) {
   const t = useTranslations("lokasi");
   const listboxId = `${idBase}-listbox`;
@@ -730,47 +742,53 @@ function Controls({
                 (HaloBcaChat.tsx). Desktop: anchored card under the button,
                 no scrim — same reasoning as that panel: this is a section-
                 level choice, not one that needs to dim the whole page. */}
-            {primerMounted && (
-              <>
-                <div
-                  aria-hidden
-                  data-state={primerOpen ? "open" : "closing"}
-                  onClick={closePrimer}
-                  className="geo-primer-scrim fixed inset-0 z-[65] bg-neutral-900/40 xl:hidden"
-                />
-                <div
-                  role="dialog"
-                  aria-modal="false"
-                  aria-labelledby={`${idBase}-primer-title`}
-                  data-state={primerOpen ? "open" : "closing"}
-                  className="geo-primer-panel fixed inset-x-0 bottom-0 z-[70] mx-auto w-full max-w-[560px] rounded-t-2xl bg-neutral-100 p-6 pb-[calc(24px+env(safe-area-inset-bottom))] shadow-[0_-8px_32px_rgba(0,0,0,0.16)] xl:absolute xl:inset-x-auto xl:bottom-auto xl:left-0 xl:top-[calc(100%+8px)] xl:mx-0 xl:w-[340px] xl:max-w-none xl:rounded-2xl xl:p-5 xl:shadow-[0_16px_48px_rgba(0,0,0,0.16)]"
-                >
-                  <p
-                    id={`${idBase}-primer-title`}
-                    className="text-base font-bold leading-6 text-neutral-800"
-                  >
-                    {t("primer.title")}
-                  </p>
-                  <p className="mt-1.5 text-sm leading-5 text-neutral-700">{t("primer.body")}</p>
-                  <div className="mt-5 flex gap-2.5">
-                    <button
-                      type="button"
+            {primerMounted &&
+              (() => {
+                const primer = (
+                  <>
+                    <div
+                      aria-hidden
+                      data-state={primerOpen ? "open" : "closing"}
                       onClick={closePrimer}
-                      className="flex h-11 flex-1 items-center justify-center whitespace-nowrap rounded-full border border-neutral-400 bg-neutral-100 text-sm font-semibold text-neutral-700 transition-colors hover:border-neutral-600 hover:text-neutral-800"
+                      className="geo-primer-scrim fixed inset-0 z-[65] bg-neutral-900/40 xl:hidden"
+                    />
+                    <div
+                      role="dialog"
+                      aria-modal="false"
+                      aria-labelledby={`${idBase}-primer-title`}
+                      data-state={primerOpen ? "open" : "closing"}
+                      className="geo-primer-panel fixed inset-x-0 bottom-0 z-[70] mx-auto w-full max-w-[560px] rounded-t-2xl bg-neutral-100 p-6 pb-[calc(24px+env(safe-area-inset-bottom))] shadow-[0_-8px_32px_rgba(0,0,0,0.16)] xl:absolute xl:inset-x-auto xl:bottom-auto xl:left-0 xl:top-[calc(100%+8px)] xl:mx-0 xl:w-[340px] xl:max-w-none xl:rounded-2xl xl:p-5 xl:shadow-[0_16px_48px_rgba(0,0,0,0.16)]"
                     >
-                      {t("primer.notNow")}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={primerAllow}
-                      className="flex h-11 flex-1 items-center justify-center whitespace-nowrap rounded-full bg-blue-500 text-sm font-semibold text-neutral-100 transition-colors hover:bg-blue-600"
-                    >
-                      {t("primer.allow")}
-                    </button>
-                  </div>
-                </div>
-              </>
-            )}
+                      <p
+                        id={`${idBase}-primer-title`}
+                        className="text-base font-bold leading-6 text-neutral-800"
+                      >
+                        {t("primer.title")}
+                      </p>
+                      <p className="mt-1.5 text-sm leading-5 text-neutral-700">
+                        {t("primer.body")}
+                      </p>
+                      <div className="mt-5 flex gap-2.5">
+                        <button
+                          type="button"
+                          onClick={closePrimer}
+                          className="flex h-11 flex-1 items-center justify-center whitespace-nowrap rounded-full border border-neutral-400 bg-neutral-100 text-sm font-semibold text-neutral-700 transition-colors hover:border-neutral-600 hover:text-neutral-800"
+                        >
+                          {t("primer.notNow")}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={primerAllow}
+                          className="flex h-11 flex-1 items-center justify-center whitespace-nowrap rounded-full bg-blue-500 text-sm font-semibold text-neutral-100 transition-colors hover:bg-blue-600"
+                        >
+                          {t("primer.allow")}
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                );
+                return usePortal ? createPortal(primer, document.body) : primer;
+              })()}
           </div>
         )}
 
