@@ -154,7 +154,22 @@ export default function SoliprioMobile({
         // force-stretched to match its *tallest* sibling on the cross axis —
         // silently cancelling the collapsed card's own height and leaving
         // exactly the dead space underneath it this was meant to remove.
-        className="hide-scrollbar absolute inset-x-0 top-[344px] flex items-start gap-6 overflow-x-auto px-[calc(50%-99px)] [scrollbar-width:none]"
+        // `overscroll-none` is the actual bounce fix, and it is a touch-only
+        // bug: with just two cards the rail's scroll range is barely wider
+        // than the viewport, so nearly every swipe ends at a scroll edge —
+        // where iOS applies its elastic rubber-band and chains the leftover
+        // momentum onto the page. Desktop DevTools' mobile emulation drives
+        // the scroller with wheel/drag events and never rubber-bands, which
+        // is why this only ever reproduced on a real phone. ProductSection's
+        // carousel never showed it because its clone-padded loop means the
+        // scroller has no reachable end to bounce against.
+        //
+        // `overflow-y-hidden` is spelled out because `overflow-x: auto` alone
+        // computes `overflow-y` to `auto` as well, quietly making the rail a
+        // *vertical* scroller too — enough that an off-axis thumb swipe drags
+        // it a few px down and springs back. Visually identical either way
+        // (an `auto` y-axis already clips here), it just removes the axis.
+        className="hide-scrollbar absolute inset-x-0 top-[344px] flex snap-x snap-mandatory items-start gap-6 overflow-x-auto overflow-y-hidden overscroll-none px-[calc(50%-99px)] [scrollbar-width:none]"
         style={{
           maskImage:
             "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
@@ -173,10 +188,7 @@ export default function SoliprioMobile({
               // is already how you'd bring a card into focus, same as
               // ProductSection's carousel), the link itself waits for a
               // second, deliberate tap once it's the one in focus. Active
-              // card: default navigation goes through untouched. Free
-              // scroll now (no CSS scroll-snap — it kept fighting real
-              // touch/momentum scrolling and bouncing), so this is the only
-              // thing that still brings a card to centre.
+              // card: default navigation goes through untouched.
               onClick={(e) => {
                 if (isActive) return;
                 e.preventDefault();
@@ -195,10 +207,16 @@ export default function SoliprioMobile({
               // `beam`/`beamRadius` props to source that from.
               {...(isActive ? { "data-beam-live": "" } : {})}
               style={{
+                scrollSnapStop: "always",
                 "--beam": BEAM_COLORS[card.key] ?? "var(--color-cyan-500)",
                 "--beam-radius": "12px",
               } as React.CSSProperties}
-              className="w-[220px] shrink-0"
+              // Snap target, and deliberately the *untransformed* box: the
+              // scale-on-active lives on the child div below, because the
+              // snap spec folds an element's transform into its snap area —
+              // scaling the snapped box itself would keep moving the target
+              // the browser is snapping to mid-animation.
+              className="w-[220px] shrink-0 snap-center"
             >
               <div
                 style={{ transform: isActive ? "scale(1)" : "scale(0.9)" }}
