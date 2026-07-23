@@ -1015,17 +1015,46 @@ html.lenis, html.lenis body {
    pulse there would claim a precision the centroid doesn't have. */
 .bca-origin {
   position: relative;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
 }
 
+/* `inset: 6px` on a 24px box → a 12px dot, border included (border-box, per
+   Tailwind's preflight reset) — this is the number to change if the dot needs
+   to grow or shrink again; `.bca-origin`'s own size should move with it,
+   proportionally, so the pulse ring (which fills the whole box) still reads
+   as centred on the dot rather than oddly padded around it. */
 .bca-origin-dot {
   position: absolute;
-  inset: 5px;
+  inset: 6px;
   border-radius: 9999px;
   background: var(--color-blue-500);
   border: 2px solid var(--color-neutral-100);
   box-shadow: 0 1px 4px rgba(18, 20, 23, 0.35);
+}
+
+/* "Posisi Anda" — sits above the dot, visible only alongside the pulse (see
+   `.bca-origin-user` below): a picked place is a centroid, not a live fix, and
+   labelling it "your position" would overclaim the same way the pulse would. */
+.bca-origin-pill {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  background: rgba(18, 20, 23, 0.85);
+  color: var(--color-neutral-100);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+  box-shadow: 0 2px 6px rgba(18, 20, 23, 0.3);
+}
+
+.bca-origin-user .bca-origin-pill {
+  display: block;
 }
 
 .bca-origin-pulse {

@@ -1,4 +1,3 @@
-import { getTranslations } from "next-intl/server";
 import { findNearby } from "@/lib/locations";
 import { DEFAULT_ORIGIN } from "./location-data";
 import LocationFinder from "./LocationFinder";
@@ -13,42 +12,36 @@ import LocationFinder from "./LocationFinder";
  *
  * The nearest three around a default origin are resolved here on the server, so
  * the section is populated in the very first HTML — no spinner, no round trip,
- * and something useful even if the visitor never shares a location. The client
- * half takes over from there (see LocationFinder).
+ * and something useful even if the visitor never shares a location.
+ *
+ * Everything past that — including the heading — lives inside LocationFinder,
+ * which is also where mobile and desktop genuinely diverge: both are now a
+ * full-bleed map with floating panels on top (hero-style), just arranged
+ * differently — top/bottom panels on a phone-width screen, a single panel
+ * beside white overlay text once there's room to sit next to the map instead
+ * of on top of it. Splitting the heading out here would mean this server
+ * component and that client component fighting over the same
+ * `relative`/`absolute` positioning context; keeping it together lets one
+ * component own its own layout at every breakpoint.
+ *
+ * Mobile's fixed height exists because its two floating panels (top and
+ * bottom, see LocationFinder.tsx) are both `absolute` — the section has to
+ * hand them a box to be absolute *within*, since nothing about a phone-width
+ * top/bottom split has a single piece of content to size around.
+ *
+ * Desktop drops the fixed height (`xl:h-auto`) instead: with only the one
+ * floating panel, the map is meant to hug its content — panel height plus the
+ * 64px top/bottom padding around it — rather than an arbitrary fixed figure
+ * that would either crop the panel or leave dead map above/below it. See the
+ * desktop half of LocationFinder.tsx for how the panel drives that height
+ * from normal document flow while the map still overlays it via `absolute`.
  */
 export default async function LocationSection() {
-  const t = await getTranslations("lokasi");
   const initial = findNearby(DEFAULT_ORIGIN.lat, DEFAULT_ORIGIN.lng);
 
   return (
-    <section id="lokasi" className="relative bg-white py-10 xl:py-24">
-      <div className="mx-auto w-full max-w-[560px] px-4 xl:w-[1280px] xl:max-w-none xl:px-0">
-        {/* Same heading rhythm as the news section: eyebrow column on the left,
-            headline beside it on desktop, stacked on mobile. */}
-        <div data-reveal-group className="flex flex-col xl:flex-row xl:gap-10">
-          <div className="flex items-center py-4 xl:w-60 xl:shrink-0">
-            <p
-              data-reveal
-              className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px]"
-            >
-              {t("eyebrow")}
-            </p>
-          </div>
-          <div className="flex flex-col gap-3 xl:w-[720px]">
-            <h2
-              data-reveal="blur-up"
-              className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]"
-            >
-              {t("heading")}
-            </h2>
-            <p data-reveal className="text-sm leading-5 text-neutral-700 xl:text-base xl:leading-6">
-              {t("description")}
-            </p>
-          </div>
-        </div>
-
-        <LocationFinder initial={initial} />
-      </div>
+    <section id="lokasi" className="relative h-[880px] overflow-clip bg-blue-100 xl:h-auto">
+      <LocationFinder initial={initial} />
     </section>
   );
 }

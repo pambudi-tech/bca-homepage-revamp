@@ -215,11 +215,8 @@
     "seeMore": "See More"
   },
   "lokasi": {
-    "eyebrow": "BCA Locations",
-    "heading": "BCA Branches & ATMs Nearest to You",
-    "description": "Share your location or search for an area, then see the three closest BCA locations with directions.",
+    "heading": "BCA Locations Near You",
     "useMyLocation": "Use my location",
-    "yourLocationPrefix": "Your location:",
     "locatingDetail": "Finding your area…",
     "locatedAreaUnknown": "Detected, outside our coverage area",
     "stopUsingLocation": "Stop using this location",
@@ -252,7 +249,9 @@
       "ctrlZoom": "Use ctrl + scroll to zoom the map",
       "cmdZoom": "Use ⌘ + scroll to zoom the map",
       "twoFingers": "Use two fingers to move the map",
-      "unavailable": "The map cannot be displayed in this browser. The list of locations still works."
+      "unavailable": "The map cannot be displayed in this browser. The list of locations still works.",
+      "attribution": "Map attribution",
+      "yourPosition": "Your position"
     },
     "primer": {
       "title": "Allow your location?",

@@ -215,11 +215,8 @@
     "seeMore": "Lihat Lebih Banyak"
   },
   "lokasi": {
-    "eyebrow": "Lokasi BCA",
-    "heading": "ATM & Cabang BCA Terdekat dari Anda",
-    "description": "Bagikan lokasi Anda atau cari nama area, lalu lihat tiga lokasi BCA terdekat lengkap dengan rutenya.",
+    "heading": "Lokasi BCA di Sekitar Anda",
     "useMyLocation": "Gunakan lokasi saya",
-    "yourLocationPrefix": "Lokasi Anda:",
     "locatingDetail": "Menentukan lokasi…",
     "locatedAreaUnknown": "Terdeteksi, di luar area cakupan",
     "stopUsingLocation": "Berhenti pakai lokasi ini",
@@ -252,7 +249,9 @@
       "ctrlZoom": "Tekan ctrl + scroll untuk memperbesar peta",
       "cmdZoom": "Tekan ⌘ + scroll untuk memperbesar peta",
       "twoFingers": "Gunakan dua jari untuk menggeser peta",
-      "unavailable": "Peta tidak dapat ditampilkan di peramban ini. Daftar lokasi di samping tetap bisa digunakan."
+      "unavailable": "Peta tidak dapat ditampilkan di peramban ini. Daftar lokasi di samping tetap bisa digunakan.",
+      "attribution": "Atribusi peta",
+      "yourPosition": "Posisi Anda"
     },
     "primer": {
       "title": "Izinkan lokasi Anda?",

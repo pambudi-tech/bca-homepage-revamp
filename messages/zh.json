@@ -215,11 +215,8 @@
     "seeMore": "查看更多"
   },
   "lokasi": {
-    "eyebrow": "BCA 网点",
-    "heading": "离您最近的 BCA 分行与 ATM",
-    "description": "共享您的位置或搜索区域名称，即可查看最近的三个 BCA 网点及路线。",
+    "heading": "您附近的 BCA 网点",
     "useMyLocation": "使用我的位置",
-    "yourLocationPrefix": "您的位置：",
     "locatingDetail": "正在确定区域…",
     "locatedAreaUnknown": "已检测到，但超出覆盖范围",
     "stopUsingLocation": "停止使用此位置",
@@ -252,7 +249,9 @@
       "ctrlZoom": "按住 ctrl 并滚动以缩放地图",
       "cmdZoom": "按住 ⌘ 并滚动以缩放地图",
       "twoFingers": "使用双指移动地图",
-      "unavailable": "此浏览器无法显示地图。旁边的网点列表仍可正常使用。"
+      "unavailable": "此浏览器无法显示地图。旁边的网点列表仍可正常使用。",
+      "attribution": "地图归属信息",
+      "yourPosition": "您的位置"
     },
     "primer": {
       "title": "允许使用您的位置吗？",

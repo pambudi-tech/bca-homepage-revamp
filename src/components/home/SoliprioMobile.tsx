@@ -173,8 +173,9 @@ export default function SoliprioMobile({
                   behavior: "smooth",
                 });
               }}
-              className={`flex w-[198px] shrink-0 snap-center flex-col items-center rounded-xl bg-gradient-to-b from-white/12 to-white/4 px-1 pt-1 backdrop-blur-[4px] transition-[padding-bottom] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-                isActive ? "pb-3" : "pb-1"
+              style={{ scrollSnapStop: "always" }}
+              className={`flex shrink-0 snap-center flex-col items-center rounded-xl bg-gradient-to-b from-white/12 to-white/4 px-1 pt-1 backdrop-blur-[4px] transition-[width,padding-bottom] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+                isActive ? "w-[220px] pb-3" : "w-[198px] pb-1"
               }`}
             >
               <img
@@ -182,7 +183,7 @@ export default function SoliprioMobile({
                 decoding="async"
                 src={card.src}
                 alt=""
-                className="h-[120px] w-[190px] object-cover"
+                className="aspect-[19/12] w-full object-cover"
               />
               {/* Same collapse as ProductSection's mobile subtitle: a 0fr/1fr
                   grid row, not `height`/`display`, so the transition can
