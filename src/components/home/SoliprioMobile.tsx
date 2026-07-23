@@ -154,7 +154,7 @@ export default function SoliprioMobile({
         // force-stretched to match its *tallest* sibling on the cross axis —
         // silently cancelling the collapsed card's own height and leaving
         // exactly the dead space underneath it this was meant to remove.
-        className="hide-scrollbar absolute inset-x-0 top-[344px] flex snap-x snap-mandatory items-start gap-6 overflow-x-auto px-[calc(50%-99px)] [scrollbar-width:none]"
+        className="hide-scrollbar absolute inset-x-0 top-[344px] flex items-start gap-6 overflow-x-auto px-[calc(50%-99px)] [scrollbar-width:none]"
         style={{
           maskImage:
             "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
@@ -173,7 +173,10 @@ export default function SoliprioMobile({
               // is already how you'd bring a card into focus, same as
               // ProductSection's carousel), the link itself waits for a
               // second, deliberate tap once it's the one in focus. Active
-              // card: default navigation goes through untouched.
+              // card: default navigation goes through untouched. Free
+              // scroll now (no CSS scroll-snap — it kept fighting real
+              // touch/momentum scrolling and bouncing), so this is the only
+              // thing that still brings a card to centre.
               onClick={(e) => {
                 if (isActive) return;
                 e.preventDefault();
@@ -192,21 +195,10 @@ export default function SoliprioMobile({
               // `beam`/`beamRadius` props to source that from.
               {...(isActive ? { "data-beam-live": "" } : {})}
               style={{
-                scrollSnapStop: "always",
                 "--beam": BEAM_COLORS[card.key] ?? "var(--color-cyan-500)",
                 "--beam-radius": "12px",
               } as React.CSSProperties}
-              // No transform/transition on the anchor itself: this is the
-              // `snap-center` box, and the CSS Scroll Snap spec folds an
-              // element's *transform* into its snap area — so animating a
-              // scale here (as this used to) kept moving the very target the
-              // browser was trying to snap to mid-gesture. iOS Safari's
-              // touch/momentum snapping recalculates live and fought it,
-              // which read as a bounce; desktop DevTools' mouse-driven
-              // emulation never drives a real momentum/snap pass, so it
-              // never showed the bug. The scale now lives one level down, on
-              // a plain child div the snap machinery never looks at.
-              className="w-[220px] shrink-0 snap-center"
+              className="w-[220px] shrink-0"
             >
               <div
                 style={{ transform: isActive ? "scale(1)" : "scale(0.9)" }}
