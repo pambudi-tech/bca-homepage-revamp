@@ -96,11 +96,29 @@ function SearchButton({ label }: { label: string }) {
   );
 }
 
-function LocationButton({ label }: { label: string }) {
+/** Pin glyph shared by the desktop `LocationButton` and the mobile navbar's
+ *  icon-only equivalent — both scroll to the same `#lokasi` section. */
+export function LocationIcon({ className = "size-6 shrink-0 text-neutral-100 opacity-80" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 32 32" fill="none" className={className}>
+      <path
+        d="M15.9999 18.8927C13.1598 18.8927 10.8398 16.586 10.8398 13.7327C10.8398 10.8793 13.1598 8.58594 15.9999 8.58594C18.8399 8.58594 21.1599 10.8926 21.1599 13.746C21.1599 16.5993 18.8399 18.8927 15.9999 18.8927ZM15.9999 10.5859C14.2665 10.5859 12.8398 11.9993 12.8398 13.746C12.8398 15.4927 14.2532 16.906 15.9999 16.906C17.7465 16.906 19.1599 15.4927 19.1599 13.746C19.1599 11.9993 17.7332 10.5859 15.9999 10.5859Z"
+        fill="currentColor"
+      />
+      <path
+        d="M15.9997 30.3467C14.0264 30.3467 12.0397 29.6001 10.4931 28.1201C6.55975 24.3334 2.21308 18.2934 3.85308 11.1067C5.33308 4.58675 11.0264 1.66675 15.9997 1.66675C15.9997 1.66675 15.9997 1.66675 16.013 1.66675C20.9864 1.66675 26.6797 4.58675 28.1597 11.1201C29.7864 18.3067 25.4397 24.3334 21.5064 28.1201C19.9597 29.6001 17.973 30.3467 15.9997 30.3467ZM15.9997 3.66675C12.1197 3.66675 7.13308 5.73341 5.81308 11.5467C4.37308 17.8267 8.31975 23.2401 11.8931 26.6667C14.1997 28.8934 17.813 28.8934 20.1197 26.6667C23.6797 23.2401 27.6264 17.8267 26.213 11.5467C24.8797 5.73341 19.8797 3.66675 15.9997 3.66675Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function LocationButton({ label, onClick }: { label: string; onClick: () => void }) {
   const [hover, setHover] = useState(false);
   return (
     <button
       aria-label={label}
+      onClick={onClick}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       className={`flex h-10 items-center rounded-full border backdrop-blur-[4px] transition-all duration-300 ${hover
@@ -108,21 +126,7 @@ function LocationButton({ label }: { label: string }) {
           : "w-10 justify-center border-white/25 bg-[rgba(5,13,25,0.1)] px-2"
         }`}
     >
-      <svg
-        aria-hidden
-        viewBox="0 0 32 32"
-        fill="none"
-        className="size-6 shrink-0 text-neutral-100 opacity-80"
-      >
-        <path
-          d="M15.9999 18.8927C13.1598 18.8927 10.8398 16.586 10.8398 13.7327C10.8398 10.8793 13.1598 8.58594 15.9999 8.58594C18.8399 8.58594 21.1599 10.8926 21.1599 13.746C21.1599 16.5993 18.8399 18.8927 15.9999 18.8927ZM15.9999 10.5859C14.2665 10.5859 12.8398 11.9993 12.8398 13.746C12.8398 15.4927 14.2532 16.906 15.9999 16.906C17.7465 16.906 19.1599 15.4927 19.1599 13.746C19.1599 11.9993 17.7332 10.5859 15.9999 10.5859Z"
-          fill="currentColor"
-        />
-        <path
-          d="M15.9997 30.3467C14.0264 30.3467 12.0397 29.6001 10.4931 28.1201C6.55975 24.3334 2.21308 18.2934 3.85308 11.1067C5.33308 4.58675 11.0264 1.66675 15.9997 1.66675C15.9997 1.66675 15.9997 1.66675 16.013 1.66675C20.9864 1.66675 26.6797 4.58675 28.1597 11.1201C29.7864 18.3067 25.4397 24.3334 21.5064 28.1201C19.9597 29.6001 17.973 30.3467 15.9997 30.3467ZM15.9997 3.66675C12.1197 3.66675 7.13308 5.73341 5.81308 11.5467C4.37308 17.8267 8.31975 23.2401 11.8931 26.6667C14.1997 28.8934 17.813 28.8934 20.1197 26.6667C23.6797 23.2401 27.6264 17.8267 26.213 11.5467C24.8797 5.73341 19.8797 3.66675 15.9997 3.66675Z"
-          fill="currentColor"
-        />
-      </svg>
+      <LocationIcon />
       <span
         className={`grid overflow-hidden transition-[grid-template-columns] duration-300 ${hover ? "grid-cols-[1fr]" : "grid-cols-[0fr]"
           }`}
@@ -174,6 +178,10 @@ export default function Navbar() {
   const langRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastScrollY = useRef(0);
+
+  const scrollToLocation = () => {
+    document.getElementById("lokasi")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     let raf = 0;
@@ -359,7 +367,7 @@ export default function Navbar() {
 
                 <div className="flex items-center gap-3">
                   <SearchButton label={tNav("search")} />
-                  <LocationButton label={tNav("lokasiBca")} />
+                  <LocationButton label={tNav("lokasiBca")} onClick={scrollToLocation} />
 
                   <div ref={langRef} className="relative">
                     <button

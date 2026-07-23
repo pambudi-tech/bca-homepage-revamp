@@ -19,6 +19,17 @@ import { Glow, Logos } from "./soliprio-parts";
  */
 const DRIFT = 12;
 
+/**
+ * Border-beam color per card — Solitaire is BCA's private-banking tier (blue),
+ * Prioritas the wealth tier above it (gold). Fixed, unlike the desktop cards'
+ * `getBeamColor`-sampled hue: the mobile carousel has no per-card artwork
+ * sample piped in, and these two are brand-specific enough to hardcode.
+ */
+const BEAM_COLORS: Record<string, string> = {
+  solitaire: "#3B82F6",
+  prioritas: "#D4AF37",
+};
+
 export type SoliprioMobileCard = {
   key: string;
   src: string;
@@ -173,11 +184,32 @@ export default function SoliprioMobile({
                   behavior: "smooth",
                 });
               }}
-              style={{ scrollSnapStop: "always" }}
-              className={`flex shrink-0 snap-center flex-col items-center rounded-xl bg-gradient-to-b from-white/12 to-white/4 px-1 pt-1 backdrop-blur-[4px] transition-[width,padding-bottom] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-                isActive ? "w-[220px] pb-3" : "w-[198px] pb-1"
+              // Same border beam as the desktop cards (`.soliprio-beam` in
+              // globals.css), just re-lit here on whichever card is active
+              // instead of on hover — there's no pointer to hover with on
+              // mobile. One fixed brand color rather than each card's own
+              // dominant hue: the mobile card carries no `beam`/`beamRadius`
+              // props to source that from.
+              {...(isActive ? { "data-beam-live": "" } : {})}
+              style={{
+                scrollSnapStop: "always",
+                // Fixed box width at every state — the scroll rail's snap
+                // targets are computed from this box's real layout geometry,
+                // and animating `width` here used to shift it mid-transition
+                // (growing the active card also pushes every later sibling's
+                // offsetLeft), which made the browser's snap correction fight
+                // the card's own resize and read as a bounce. Scaling instead
+                // is purely visual — the box stays 220px in layout the whole
+                // time, so the snap point never moves under the gesture.
+                transform: isActive ? "scale(1)" : "scale(0.9)",
+                "--beam": BEAM_COLORS[card.key] ?? "var(--color-cyan-500)",
+                "--beam-radius": "12px",
+              } as React.CSSProperties}
+              className={`relative flex w-[220px] shrink-0 snap-center flex-col items-center rounded-xl bg-gradient-to-b from-white/12 to-white/4 px-1 pt-1 backdrop-blur-[4px] transition-[transform,padding-bottom] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+                isActive ? "pb-3" : "pb-1"
               }`}
             >
+              <span aria-hidden className="soliprio-beam pointer-events-none" />
               <img
                 loading="lazy"
                 decoding="async"

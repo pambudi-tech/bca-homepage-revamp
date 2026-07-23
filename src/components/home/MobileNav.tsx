@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import MobileMenu from "./MobileMenu";
+import { LocationIcon } from "./Navbar";
 
 // Broadcast so unrelated fixed-position UI (HaloBcaChat's floating button)
 // can hide itself while the mobile menu overlay covers the viewport, without
@@ -23,7 +24,12 @@ export default function MobileNav({
   hidden: boolean;
 }) {
   const t = useTranslations("mobileMenu");
+  const tNav = useTranslations("nav");
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const scrollToLocation = () => {
+    document.getElementById("lokasi")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent<boolean>(MOBILE_MENU_EVENT, { detail: menuOpen }));
@@ -43,6 +49,13 @@ export default function MobileNav({
       />
 
       <div className="flex items-center gap-3">
+        <button
+          onClick={scrollToLocation}
+          aria-label={tNav("lokasiBca")}
+          className="flex size-10 items-center justify-center rounded-full bg-[rgba(18,20,23,0.5)] backdrop-blur-[4px] transition-transform active:scale-95"
+        >
+          <LocationIcon className="size-6 text-neutral-100" />
+        </button>
         <button
           onClick={() => setMenuOpen((v) => !v)}
           aria-label={menuOpen ? t("tutupMenu") : t("bukaMenu")}
