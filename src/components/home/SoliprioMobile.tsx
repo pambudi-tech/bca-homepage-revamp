@@ -187,63 +187,70 @@ export default function SoliprioMobile({
               // Same border beam as the desktop cards (`.soliprio-beam` in
               // globals.css), just re-lit here on whichever card is active
               // instead of on hover — there's no pointer to hover with on
-              // mobile. One fixed brand color rather than each card's own
-              // dominant hue: the mobile card carries no `beam`/`beamRadius`
-              // props to source that from.
+              // mobile. Per-card brand color (see BEAM_COLORS) rather than
+              // each card's own dominant hue: the mobile card carries no
+              // `beam`/`beamRadius` props to source that from.
               {...(isActive ? { "data-beam-live": "" } : {})}
               style={{
                 scrollSnapStop: "always",
-                // Fixed box width at every state — the scroll rail's snap
-                // targets are computed from this box's real layout geometry,
-                // and animating `width` here used to shift it mid-transition
-                // (growing the active card also pushes every later sibling's
-                // offsetLeft), which made the browser's snap correction fight
-                // the card's own resize and read as a bounce. Scaling instead
-                // is purely visual — the box stays 220px in layout the whole
-                // time, so the snap point never moves under the gesture.
-                transform: isActive ? "scale(1)" : "scale(0.9)",
                 "--beam": BEAM_COLORS[card.key] ?? "var(--color-cyan-500)",
                 "--beam-radius": "12px",
               } as React.CSSProperties}
-              className={`relative flex w-[220px] shrink-0 snap-center flex-col items-center rounded-xl bg-gradient-to-b from-white/12 to-white/4 px-1 pt-1 backdrop-blur-[4px] transition-[transform,padding-bottom] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-                isActive ? "pb-3" : "pb-1"
-              }`}
+              // No transform/transition on the anchor itself: this is the
+              // `snap-center` box, and the CSS Scroll Snap spec folds an
+              // element's *transform* into its snap area — so animating a
+              // scale here (as this used to) kept moving the very target the
+              // browser was trying to snap to mid-gesture. iOS Safari's
+              // touch/momentum snapping recalculates live and fought it,
+              // which read as a bounce; desktop DevTools' mouse-driven
+              // emulation never drives a real momentum/snap pass, so it
+              // never showed the bug. The scale now lives one level down, on
+              // a plain child div the snap machinery never looks at.
+              className="w-[220px] shrink-0 snap-center"
             >
-              <span aria-hidden className="soliprio-beam pointer-events-none" />
-              <img
-                loading="lazy"
-                decoding="async"
-                src={card.src}
-                alt=""
-                className="aspect-[19/12] w-full object-cover"
-              />
-              {/* Same collapse as ProductSection's mobile subtitle: a 0fr/1fr
-                  grid row, not `height`/`display`, so the transition can
-                  animate to an intrinsic height without knowing it up front,
-                  and the card visibly grows/shrinks around it rather than the
-                  label just appearing. The 8px gap to the image lives on the
-                  span's own `pt-2` instead of the parent's flex `gap` — a
-                  flex gap stays reserved even for a zero-height row, which
-                  would leave a dangling gap on the collapsed card.
-
-                  `pb-3`/`pb-1` on the anchor above collapses in step with this
-                  row (not left fixed): the row alone hitting 0fr still leaves
-                  behind whatever bottom padding the chrome itself reserves, so
-                  the inactive card would keep a dead strip under the image
-                  instead of actually hugging it. `pb-1` still gives the image
-                  a matching 4px on both edges rather than sitting flush. */}
               <div
-                className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
-                style={{
-                  gridTemplateRows: isActive ? "1fr" : "0fr",
-                  opacity: isActive ? 1 : 0,
-                }}
+                style={{ transform: isActive ? "scale(1)" : "scale(0.9)" }}
+                className={`relative flex flex-col items-center rounded-xl bg-gradient-to-b from-white/12 to-white/4 px-1 pt-1 backdrop-blur-[4px] transition-[transform,padding-bottom] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+                  isActive ? "pb-3" : "pb-1"
+                }`}
               >
-                <div className="overflow-hidden">
-                  <span className="flex items-center justify-center gap-1 whitespace-nowrap pt-2 text-sm font-semibold leading-5 text-white">
-                    {card.label}
-                    <ArrowRight />
-                  </span>
+                <span aria-hidden className="soliprio-beam soliprio-beam--mobile pointer-events-none" />
+                <img
+                  loading="lazy"
+                  decoding="async"
+                  src={card.src}
+                  alt=""
+                  className="aspect-[19/12] w-full object-cover"
+                />
+                {/* Same collapse as ProductSection's mobile subtitle: a 0fr/1fr
+                    grid row, not `height`/`display`, so the transition can
+                    animate to an intrinsic height without knowing it up front,
+                    and the card visibly grows/shrinks around it rather than the
+                    label just appearing. The 8px gap to the image lives on the
+                    span's own `pt-2` instead of the parent's flex `gap` — a
+                    flex gap stays reserved even for a zero-height row, which
+                    would leave a dangling gap on the collapsed card.
+
+                    `pb-3`/`pb-1` above collapses in step with this row (not
+                    left fixed): the row alone hitting 0fr still leaves behind
+                    whatever bottom padding the chrome itself reserves, so the
+                    inactive card would keep a dead strip under the image
+                    instead of actually hugging it. `pb-1` still gives the
+                    image a matching 4px on both edges rather than sitting
+                    flush. */}
+                <div
+                  className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                  style={{
+                    gridTemplateRows: isActive ? "1fr" : "0fr",
+                    opacity: isActive ? 1 : 0,
+                  }}
+                >
+                  <div className="overflow-hidden">
+                    <span className="flex items-center justify-center gap-1 whitespace-nowrap pt-2 text-sm font-semibold leading-5 text-white">
+                      {card.label}
+                      <ArrowRight />
+                    </span>
+                  </div>
                 </div>
               </div>
             </a>

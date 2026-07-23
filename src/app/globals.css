@@ -308,6 +308,19 @@ a:focus-visible > .soliprio-card .soliprio-beam {
   }
 }
 
+/* Mobile carousel cards get no hover, so `.soliprio-beam`'s default 0.8
+   opacity (meant to keep a faint sliver visible while paused, off-screen, on
+   desktop) would otherwise leave every inactive card showing a static ring
+   fragment. Hidden entirely here instead — only the active card, marked
+   `data-beam-live` by SoliprioMobile, shows the beam at all. */
+.soliprio-beam--mobile {
+  opacity: 0;
+}
+
+[data-beam-live] .soliprio-beam--mobile {
+  opacity: 0.8;
+}
+
 /* No `position` rule here on purpose — this is unlayered CSS, so it would beat
    Tailwind's `.absolute`/`.relative` utilities in the cascade regardless of
    source order. Callers must supply their own `relative`/`absolute` class. */
