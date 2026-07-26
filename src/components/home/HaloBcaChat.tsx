@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { MOBILE_MENU_EVENT } from "./MobileNav";
-import { PRELOADER_DONE_EVENT, hasPreloaderFinished } from "@/components/Preloader";
+import { onPreloaderDone } from "@/components/Preloader";
 
 // Google's published test key — always renders and always validates, but is
 // explicitly not for production traffic. Real deployments must set
@@ -243,23 +243,13 @@ export default function HaloBcaChat() {
     // while the curtain is still exiting. This delay lines it up with the
     // curtain actually clearing (matches CookieBanner's own post-event wait).
     let id: ReturnType<typeof setTimeout>;
-    const reveal = () => {
+    const stop = onPreloaderDone(() => {
       id = setTimeout(() => setReady(true), 400);
+    });
+    return () => {
+      stop();
+      clearTimeout(id);
     };
-    // `hasPreloaderFinished()` covers the race where the done event already
-    // fired (and won't fire again) before this component mounted — e.g.
-    // mounting during the ~1.35s exit transition, while `.pre-root` is still
-    // in the DOM. Without this check the button was stuck permanently
-    // invisible/unclickable whenever that timing lined up.
-    if (document.querySelector(".pre-root") && !hasPreloaderFinished()) {
-      window.addEventListener(PRELOADER_DONE_EVENT, reveal, { once: true });
-      return () => {
-        window.removeEventListener(PRELOADER_DONE_EVENT, reveal);
-        clearTimeout(id);
-      };
-    }
-    reveal();
-    return () => clearTimeout(id);
   }, []);
 
   // `instant` skips the exit animation — used when the drag itself already
