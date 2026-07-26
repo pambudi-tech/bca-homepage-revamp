@@ -37,6 +37,26 @@ export const PRELOADER_DONE_EVENT = "bca:preloader-done";
 let preloaderHasFinished = false;
 export const hasPreloaderFinished = () => preloaderHasFinished;
 
+/**
+ * Runs `callback` once the intro preloader has finished — immediately if it
+ * already has. Returns an unsubscribe function suitable for returning straight
+ * from a `useEffect`.
+ *
+ * Prefer this over subscribing to PRELOADER_DONE_EVENT by hand. The event is
+ * one-shot and fires at the *start* of the exit animation, while `.pre-root`
+ * stays mounted for another ~1.35s, so "is .pre-root in the DOM?" is not a
+ * usable test for "will the event still fire?" — a component mounting inside
+ * that window would wait forever.
+ */
+export function onPreloaderDone(callback: () => void): () => void {
+  if (!document.querySelector(".pre-root") || preloaderHasFinished) {
+    callback();
+    return () => {};
+  }
+  window.addEventListener(PRELOADER_DONE_EVENT, callback, { once: true });
+  return () => window.removeEventListener(PRELOADER_DONE_EVENT, callback);
+}
+
 /** Shortest time the loading page stays up, so a cached revisit doesn't blink. */
 const MIN_VISIBLE_MS = 700;
 /** Ceiling on real loading. One hung request must not trap the visitor. */
