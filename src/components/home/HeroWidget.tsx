@@ -58,6 +58,10 @@ function SearchPlaceholderCarousel({
 
   useEffect(() => {
     if (!live) return;
+    let swapTimer: ReturnType<typeof setTimeout> | undefined;
+    let rafOuter = 0;
+    let rafInner = 0;
+
     const id = setInterval(() => {
       const activeIdx = activeSlotRef.current;
       const waitingIdx = activeIdx === 0 ? 1 : 0;
@@ -70,7 +74,7 @@ function SearchPlaceholderCarousel({
       });
       activeSlotRef.current = waitingIdx;
 
-      setTimeout(() => {
+      swapTimer = setTimeout(() => {
         const text = placeholders[nextIndexRef.current % placeholders.length];
         nextIndexRef.current += 1;
         setSlots((prev) => {
@@ -78,8 +82,8 @@ function SearchPlaceholderCarousel({
           next[activeIdx] = { text, state: "waiting", instant: true };
           return next;
         });
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
+        rafOuter = requestAnimationFrame(() => {
+          rafInner = requestAnimationFrame(() => {
             setSlots((prev) => {
               const next = [...prev];
               next[activeIdx] = { ...next[activeIdx], instant: false };
@@ -89,7 +93,13 @@ function SearchPlaceholderCarousel({
         });
       }, 700);
     }, 2500);
-    return () => clearInterval(id);
+
+    return () => {
+      clearInterval(id);
+      clearTimeout(swapTimer);
+      cancelAnimationFrame(rafOuter);
+      cancelAnimationFrame(rafInner);
+    };
   }, [live, placeholders]);
 
   return (
