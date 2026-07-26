@@ -72,7 +72,26 @@
     "noResultsHint": "请尝试其他关键词，或查看下方全部结果。",
     "viewAllResults": "查看全部结果",
     "needHelp": "需要帮助？",
-    "visitHelpCenter": "访问帮助中心"
+    "visitHelpCenter": "访问帮助中心",
+    "categories": {
+      "produk-layanan": "产品与服务",
+      "artikel": "文章",
+      "promo": "促销"
+    },
+    "popular": {
+      "openAccount": "开户",
+      "exchangeRate": "今日汇率",
+      "creditCardPromo": "信用卡促销",
+      "mortgage": "BCA 房贷",
+      "activateMybca": "激活 myBCA",
+      "atmLocation": "ATM 位置"
+    },
+    "topics": {
+      "topic-rekening": "开户与储蓄",
+      "topic-kartu": "信用卡与 Paylater",
+      "topic-kredit": "房贷与车贷",
+      "topic-investasi": "投资与共同基金"
+    }
   },
   "scrollCue": {
     "keepGoing": "继续探索",
@@ -105,7 +124,16 @@
     "heading": "最好的回馈，伴您度过每一个珍贵时刻",
     "viewMore": "查看200+更多优惠",
     "prevSlide": "上一个活动",
-    "nextSlide": "下一个活动"
+    "nextSlide": "下一个活动",
+    "badge": {
+      "almostEnd": "即将结束！",
+      "popular": "热门"
+    },
+    "timestamp": {
+      "expired": "活动已结束",
+      "hoursLeft": "{hours}小时后结束",
+      "until": "截止至{date}"
+    }
   },
   "soliprio": {
     "title": "尊崇专属的礼遇，只为您而设。",
