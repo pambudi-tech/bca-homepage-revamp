@@ -1114,6 +1114,7 @@ export default function ProductSection({
   // card at all. Nothing crashes in the meantime — the index simply matches
   // nothing — so an effect is soon enough.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- KNOWN cascading render: clamps `activeIndex` when `products.length` shrinks. Deferred rather than fixed here because changing render timing needs visual verification this repo has no tests for. See plans/008.
     if (activeIndex >= products.length) setActiveIndex(0);
   }, [activeIndex, products.length]);
 

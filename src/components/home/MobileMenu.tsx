@@ -88,6 +88,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
   // it's open (the menu keeps its own internal scroll via `data-lenis-prevent`).
   useEffect(() => {
     if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- KNOWN cascading render: resets view state when the menu opens. Bundled in the same effect as the `lenis?.stop()` call below, which is a real side effect on an external instance and legitimately belongs in an effect. Deferred rather than fixed here because changing render timing needs visual verification this repo has no tests for. See plans/008.
       setView({ type: "main" });
       setEnterDir(null);
       setExiting(null);

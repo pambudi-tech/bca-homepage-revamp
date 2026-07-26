@@ -266,7 +266,11 @@ export default function HeroWidget({
   // `display:none` wrapper, so this stays false and nothing here ever ticks.
   const live = useIsLive(rootRef);
 
+  // Resets the ticker's rotation back to sequential order whenever the kurs
+  // list itself changes — `order` is otherwise mutated in place by
+  // scrollByCard, so it can't just be derived from `kurs` every render.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- KNOWN cascading render: re-derives `order` from the `kurs` prop; a no-op safety net in practice, since `kurs` never changes identity after mount. Deferred rather than fixed here because changing render timing needs visual verification this repo has no tests for. See plans/008.
     setOrder(kurs.map((_, i) => i));
   }, [kurs]);
 
