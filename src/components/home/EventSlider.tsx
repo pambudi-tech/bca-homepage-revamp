@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import SlideDots, { DOT_CIRCUMFERENCE } from "./SlideDots";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
+import { useIsLive } from "@/lib/useIsLive";
 
 type EventSlide = { id: string; image: string; alt: string };
 
@@ -64,6 +65,8 @@ export default function EventSlider() {
   const activeCardRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
   const lastMouseRef = useRef({ x: -1000, y: -1000 });
+  const rootRef = useRef<HTMLDivElement>(null);
+  const live = useIsLive(rootRef);
 
   const activeIndex = mod(step, count);
 
@@ -105,6 +108,7 @@ export default function EventSlider() {
     circumference: DOT_CIRCUMFERENCE,
     progressRef: progressCircleRef,
     pausedRef,
+    live,
     onAdvance: () => setStep((s) => s + 1),
   });
 
@@ -152,7 +156,7 @@ export default function EventSlider() {
   }));
 
   return (
-    <div className="relative">
+    <div className="relative" ref={rootRef}>
       {/* Full-bleed to the viewport at xl (not just the 1280px section column)
           so the 1126px idle banners have room to peek beside the 1280px
           active one, matching the Figma canvas. Mobile bleeds only to the
