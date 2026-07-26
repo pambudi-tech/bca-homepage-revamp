@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { useLenis } from "@/components/SmoothScroll";
+import { useLenis, useScrollLock } from "@/components/SmoothScroll";
 
 /**
  * Intro loading page — Figma "Loading Page" (BCA.co.id Design Exploration,
@@ -163,19 +163,16 @@ export default function Preloader() {
   const timings1 = allTimings.slice(0, words1.length);
   const timings2 = allTimings.slice(words1.length);
 
-  // Park Lenis while the loading page is up. The cleanup restarts it as soon
-  // as the phase leaves "loading" — scrolling during the exit is fine, the
-  // homepage is already there underneath.
+  // Park Lenis while the loading page is up — scrolling during the exit is
+  // fine, the homepage is already there underneath.
+  useScrollLock(phase === "loading");
+
+  // The document sat at `overflow: hidden` for the whole hold, so the scroll
+  // limit Lenis cached is the clamped one. Without this it stops short of the
+  // real page height and scrolling feels stuck once the lock lifts.
   useEffect(() => {
-    if (!lenis || phase !== "loading") return;
-    lenis.stop();
-    return () => {
-      lenis.start();
-      // The document sat at `overflow: hidden` for the whole hold, so the
-      // scroll limit Lenis cached is the clamped one. Without this it stops
-      // short of the real page height and scrolling feels stuck.
-      lenis.resize();
-    };
+    if (!lenis || phase === "loading") return;
+    lenis.resize();
   }, [lenis, phase]);
 
   useEffect(() => {

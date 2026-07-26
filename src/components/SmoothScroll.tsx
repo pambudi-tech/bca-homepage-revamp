@@ -7,6 +7,28 @@ const LenisContext = createContext<Lenis | null>(null);
 
 export const useLenis = () => useContext(LenisContext);
 
+let lockCount = 0;
+
+/**
+ * Ref-counted page-scroll lock. Lenis has no notion of nested locks, so a bare
+ * `lenis.start()` from one component silently cancels another component's
+ * `stop()` — the preloader's lock used to be undone by the mobile menu's
+ * effect on first mount. Acquire while you need scrolling frozen; the last
+ * release is the only one that restarts Lenis.
+ */
+export function useScrollLock(locked: boolean) {
+  const lenis = useLenis();
+  useEffect(() => {
+    if (!lenis || !locked) return;
+    lockCount += 1;
+    lenis.stop();
+    return () => {
+      lockCount -= 1;
+      if (lockCount === 0) lenis.start();
+    };
+  }, [lenis, locked]);
+}
+
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   const [lenisInstance, setLenisInstance] = useState<Lenis | null>(null);
 
