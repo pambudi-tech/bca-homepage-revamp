@@ -37,21 +37,33 @@ export async function getKursHariIni(): Promise<KursEntry[]> {
     const res = await fetch("https://open.er-api.com/v6/latest/USD", {
       next: { revalidate: 3600 },
     });
-    if (res.ok) {
-      const data = await res.json();
-      const idrPerUsd = data.rates?.IDR;
-      if (idrPerUsd) {
+    if (!res.ok) {
+      console.error(`[kurs] exchange-rate API returned ${res.status}, using bundled fallback`);
+    } else {
+      const data: unknown = await res.json();
+      const rates =
+        data && typeof data === "object" && "rates" in data && typeof data.rates === "object"
+          ? (data.rates as Record<string, unknown>)
+          : null;
+      const idrPerUsd = rates?.IDR;
+      if (!rates || !Number.isFinite(idrPerUsd)) {
+        console.error("[kurs] unexpected response shape, using bundled fallback");
+      } else {
         midRates = Object.fromEntries(
           CURRENCIES.map(({ code }) => {
             const rateCode = RATE_CODE_OVERRIDE[code] ?? code;
-            const unitPerUsd = data.rates?.[rateCode];
-            const mid = unitPerUsd ? idrPerUsd / unitPerUsd : FALLBACK_MID[code];
+            const unitPerUsd = rates[rateCode];
+            const mid =
+              Number.isFinite(unitPerUsd) && (unitPerUsd as number) !== 0
+                ? (idrPerUsd as number) / (unitPerUsd as number)
+                : FALLBACK_MID[code];
             return [code, mid];
           })
         );
       }
     }
-  } catch {
+  } catch (err) {
+    console.error("[kurs] exchange-rate fetch failed, using bundled fallback:", err);
     midRates = { ...FALLBACK_MID };
   }
 

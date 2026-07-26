@@ -41,10 +41,21 @@ export async function getBanners(locale: AppLocale): Promise<Slide[]> {
         next: { revalidate: 300 },
       }
     );
-    if (!res.ok) return SLIDES;
+    if (!res.ok) {
+      console.error(`[banners] Supabase returned ${res.status}, using bundled fallback`);
+      return SLIDES;
+    }
 
-    const rows: BannerRow[] = await res.json();
-    if (!rows.length) return SLIDES;
+    const data: unknown = await res.json();
+    if (!Array.isArray(data)) {
+      console.error("[banners] unexpected response shape, using bundled fallback");
+      return SLIDES;
+    }
+    const rows = data as BannerRow[];
+    if (!rows.length) {
+      console.error("[banners] no active rows, using bundled fallback");
+      return SLIDES;
+    }
 
     return rows.map((r) => ({
       image: r.image,
@@ -58,7 +69,8 @@ export async function getBanners(locale: AppLocale): Promise<Slide[]> {
         variant: "primary" as const,
       },
     }));
-  } catch {
+  } catch (err) {
+    console.error("[banners] Supabase fetch failed, using bundled fallback:", err);
     return SLIDES;
   }
 }

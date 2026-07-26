@@ -64,9 +64,17 @@ export async function getNewsCategories(): Promise<NewsCategory[]> {
       // Re-fetch at most every 5 minutes; edits in Supabase show up after that.
       next: { revalidate: 300 },
     });
-    if (!res.ok) return NEWS_CATEGORY_SEEDS;
+    if (!res.ok) {
+      console.error(`[news] Supabase returned ${res.status}, using bundled fallback`);
+      return NEWS_CATEGORY_SEEDS;
+    }
 
-    const rows: ChannelRow[] = await res.json();
+    const data: unknown = await res.json();
+    if (!Array.isArray(data)) {
+      console.error("[news] unexpected response shape, using bundled fallback");
+      return NEWS_CATEGORY_SEEDS;
+    }
+    const rows = data as ChannelRow[];
 
     // A channel with no articles would render an empty tab, so drop it here
     // rather than letting it reach the section.
@@ -90,8 +98,13 @@ export async function getNewsCategories(): Promise<NewsCategory[]> {
         };
       });
 
-    return categories.length ? categories : NEWS_CATEGORY_SEEDS;
-  } catch {
+    if (!categories.length) {
+      console.error("[news] no usable rows after filtering, using bundled fallback");
+      return NEWS_CATEGORY_SEEDS;
+    }
+    return categories;
+  } catch (err) {
+    console.error("[news] Supabase fetch failed, using bundled fallback:", err);
     return NEWS_CATEGORY_SEEDS;
   }
 }

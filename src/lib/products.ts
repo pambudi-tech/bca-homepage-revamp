@@ -108,9 +108,17 @@ export async function getProductCategories(locale: AppLocale): Promise<ProductSe
     if (!res.ok) res = await request(CAT_NO_I18N, PROD_NO_I18N);
     if (!res.ok) res = await request(CAT_BASE, PROD_FULL);
     if (!res.ok) res = await request(CAT_BASE, PROD_BASE);
-    if (!res.ok) return fallback();
+    if (!res.ok) {
+      console.error(`[products] Supabase returned ${res.status} on every fallback query, using bundled fallback`);
+      return fallback();
+    }
 
-    const rows: CategoryRow[] = await res.json();
+    const data: unknown = await res.json();
+    if (!Array.isArray(data)) {
+      console.error("[products] unexpected response shape, using bundled fallback");
+      return fallback();
+    }
+    const rows = data as CategoryRow[];
 
     // A category with no cards would render an empty row, so drop it here
     // rather than letting it reach the carousel.
@@ -130,14 +138,18 @@ export async function getProductCategories(locale: AppLocale): Promise<ProductSe
           featured: p.is_featured,
         })),
       }));
-    if (!categories.length) return fallback();
+    if (!categories.length) {
+      console.error("[products] no usable rows after filtering, using bundled fallback");
+      return fallback();
+    }
 
     const flagged = rows.find((r) => r.is_default && r.products?.length);
     return {
       categories,
       defaultKey: flagged?.key ?? categories[0].key,
     };
-  } catch {
+  } catch (err) {
+    console.error("[products] Supabase fetch failed, using bundled fallback:", err);
     return fallback();
   }
 }

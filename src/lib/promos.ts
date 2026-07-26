@@ -40,9 +40,17 @@ export async function getPromos(now: Date): Promise<Promo[]> {
       // Re-fetch at most every 5 minutes; edits in Supabase show up after that.
       next: { revalidate: 300 },
     });
-    if (!res.ok) return resolveFallbackPromos(now);
+    if (!res.ok) {
+      console.error(`[promos] Supabase returned ${res.status}, using bundled fallback`);
+      return resolveFallbackPromos(now);
+    }
 
-    const rows: PromoRow[] = await res.json();
+    const data: unknown = await res.json();
+    if (!Array.isArray(data)) {
+      console.error("[promos] unexpected response shape, using bundled fallback");
+      return resolveFallbackPromos(now);
+    }
+    const rows = data as PromoRow[];
     // A promo without its brand would render a card with no logo and no brand
     // line, so drop it here rather than letting it reach the carousel.
     const promos = rows
@@ -57,10 +65,14 @@ export async function getPromos(now: Date): Promise<Promo[]> {
         endAt: new Date(r.end_at),
         redeemCount: r.redeem_count,
       }));
-    if (!promos.length) return resolveFallbackPromos(now);
+    if (!promos.length) {
+      console.error("[promos] no usable rows after filtering, using bundled fallback");
+      return resolveFallbackPromos(now);
+    }
 
     return promos;
-  } catch {
+  } catch (err) {
+    console.error("[promos] Supabase fetch failed, using bundled fallback:", err);
     return resolveFallbackPromos(now);
   }
 }
