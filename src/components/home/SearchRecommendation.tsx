@@ -5,7 +5,6 @@ import {
   INFO_CATEGORY_META,
   POPULAR_SEARCHES,
   bcaSearchResultUrl,
-  type InfoCategory,
   type ProductIcon,
   type SearchRecommendations,
 } from "./search-data";
