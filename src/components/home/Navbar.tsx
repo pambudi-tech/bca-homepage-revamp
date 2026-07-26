@@ -7,7 +7,7 @@ import { useRouter, usePathname } from "@/i18n/navigation";
 import { routing, type AppLocale } from "@/i18n/routing";
 import MegaMenuPanel, { type MegaMenuMode } from "./MegaMenuPanel";
 import MobileNav from "./MobileNav";
-import { PRELOADER_DONE_EVENT } from "@/components/Preloader";
+import { onPreloaderDone } from "@/components/Preloader";
 
 /* How long the panel stays mounted after the pointer leaves, and how long the
    outgoing panel lingers when switching tabs. Both mirror globals.css. */
@@ -242,19 +242,13 @@ export default function Navbar() {
       }
     };
 
-    // Preloader hasn't fired its done event yet if `.pre-root` is still
-    // mounted — wait for that so this never competes with the critical-path
-    // load. Otherwise (reduced motion, or mounted after the fact) just warm
-    // immediately.
-    if (document.querySelector(".pre-root")) {
-      window.addEventListener(PRELOADER_DONE_EVENT, warm, { once: true });
-      return () => {
-        window.removeEventListener(PRELOADER_DONE_EVENT, warm);
-        cancelWarm();
-      };
-    }
-    warm();
-    return cancelWarm;
+    // Waits for the preloader so this never competes with the critical-path
+    // load — or warms immediately if it already finished or never ran.
+    const stop = onPreloaderDone(warm);
+    return () => {
+      stop();
+      cancelWarm();
+    };
   }, [locale]);
 
   /* Drive the panel's motion mode off `openMenu`. Opening from nothing unfurls;
