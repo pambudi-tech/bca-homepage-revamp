@@ -142,13 +142,13 @@ export function getPromoBadge(promo: Promo, now: Date): PromoBadge {
   return { key: "default", label: null };
 }
 
-const MONTHS_ID = [
-  "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des",
-];
-
-function formatDateID(date: Date) {
-  return `${date.getDate()} ${MONTHS_ID[date.getMonth()]} ${date.getFullYear()}`;
-}
+/** "Hingga 15 Jul 2026" — always in WIB, so the server and the browser agree. */
+const PROMO_DATE_FORMAT = new Intl.DateTimeFormat("id-ID", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  timeZone: "Asia/Jakarta",
+});
 
 export function getPromoTimestamp(promo: Promo, now: Date, badge: PromoBadge) {
   const { end } = resolvePeriod(promo);
@@ -162,5 +162,5 @@ export function getPromoTimestamp(promo: Promo, now: Date, badge: PromoBadge) {
     return `Berakhir dalam ${hours} jam`;
   }
 
-  return `Hingga ${formatDateID(end)}`;
+  return `Hingga ${PROMO_DATE_FORMAT.format(end)}`;
 }
