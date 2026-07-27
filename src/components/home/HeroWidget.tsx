@@ -408,6 +408,7 @@ export default function HeroWidget({
               <div className="relative flex h-10 min-w-0 flex-1 items-center">
                 <input
                   type="text"
+                  aria-label={tNav("search")}
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   onFocus={focusSearch}

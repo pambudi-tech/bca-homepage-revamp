@@ -518,6 +518,7 @@ export default function MobileHeroWidget({
                 text-sm; that brings the zoom back. */}
             <input
               type="text"
+              aria-label={tNav("search")}
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               onFocus={focusSearch}
