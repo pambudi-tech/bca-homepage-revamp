@@ -238,9 +238,51 @@ a:focus-visible > .soliprio-card .soliprio-glare {
   initial-value: 0deg;
 }
 
+/* How far the comet's two tapers have grown outward from their resting
+   width — rotates the gradient's `from` origin backward and stretches the
+   trailing taper forward below, so both edges push outward together from the
+   same fixed white flash without ever taking a stop outside 0%..100% (conic-
+   gradient stops past that range don't wrap into a second lap, they just
+   extend the nearest edge flat — see the comment on `.soliprio-beam`'s
+   background). A bare <number> rather than <percentage>: calc() can't
+   multiply two dimensioned values together (a percentage times an angle is
+   invalid and drops the whole declaration, which is why the beam vanished
+   entirely at one point), so this stays unitless and gets multiplied out to
+   `deg` or `%` at each use site below instead. Registered for the same
+   reason as --beam-angle: an unregistered custom property can't be animated,
+   it can only step. 41 closes the ring exactly: the resting taper already
+   spans 0%..18%, so growing each edge outward by (100 − 18) / 2 rotates the
+   leading edge a full 41% backward and stretches the trailing edge's 18% by
+   another 41% on top of the 41% shift it already inherits from the rotation
+   — landing both open ends on the same physical angle. */
+@property --beam-grow {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
 @keyframes soliprio-beam-spin {
   to {
     --beam-angle: 360deg;
+  }
+}
+
+/* Driven by `animation`, not `transition`: Tailwind auto-generates a
+   `@layer properties { * { --beam-grow: 0 } }` reset for every custom
+   property it finds registered via @property (its cross-browser fallback for
+   @property support). That reset is a normal-priority *layered* declaration,
+   so per the cascade it should lose to this unlayered rule — but transitions
+   only ever fire off a value change that has already made it through the
+   cascade, and something about that reset short-circuits it, so the
+   transition never starts (confirmed: it just sits at 0 forever). A CSS
+   animation isn't subject to that step — like --beam-angle's own spin above,
+   it drives the property directly — so the grow effect uses one too. */
+@keyframes soliprio-beam-grow-in {
+  from {
+    --beam-grow: 0;
+  }
+  to {
+    --beam-grow: 41;
   }
 }
 
@@ -253,13 +295,38 @@ a:focus-visible > .soliprio-card .soliprio-glare {
   inset: 0;
   border-radius: var(--beam-radius, 8px);
   padding: 1.5px;
+  /* `from` rotates backward by the growth amount instead of pushing any stop
+     negative — conic-gradient stops outside 0%..100% don't wrap into a second
+     lap, they just extend the nearest edge stop flat, so a negative leading
+     stop would have quietly lost its taper instead of growing one. Rotating
+     the origin keeps every stop inside 0%..100% while still reading as the
+     leading edge sweeping backward: the white flash and trailing taper both
+     shift forward by --beam-grow to stay put at their original absolute
+     angle, and the trailing taper grows an *extra* --beam-grow on top of
+     that shift, so at the 41% max the two open ends land on the exact same
+     point (0% and 100%, the same angle) and the ring reads as fully closed.
+
+     The two `--beam` stops below are written as a blend between their
+     resting position and the trailing/leading edge position, driven by
+     --beam-hard (0 at rest, 1 on hover) — a 5-7% wide taper is the right look
+     for the resting, spinning comet, but the same alpha ramp on a *growing*
+     tip reads as the edge itself being lower-opacity rather than solid, so
+     hovering collapses both ramps to an instant cut instead. This is one
+     background declaration rather than a second one in the hover rule below:
+     the build's CSS minifier was silently dropping a same-property
+     `background` re-declared on a more specific selector, so the hover rule
+     only ever flips the --beam-hard/--beam-grow inputs that feed this one. */
   background: conic-gradient(
-    from var(--beam-angle),
+    from calc(var(--beam-angle) - var(--beam-grow) * 3.6deg),
     transparent 0%,
-    var(--beam) 5%,
-    #fff 8%,
-    var(--beam) 11%,
-    transparent 18%
+    var(--beam) calc(5% * (1 - var(--beam-hard, 0))),
+    #fff calc(8% + var(--beam-grow) * 1%),
+    var(--beam)
+      calc(
+        11% + var(--beam-grow) * 1% +
+          (7% + var(--beam-grow) * 1%) * var(--beam-hard, 0)
+      ),
+    transparent calc(18% + var(--beam-grow) * 2%)
   );
   /* Same padding-box XOR trick as .hero-search::before: paint the gradient
      only in the padding ring, so the card art underneath stays untouched. */
@@ -295,9 +362,24 @@ a:focus-visible > .soliprio-card .soliprio-glare {
   animation-play-state: running;
 }
 
+/* On hover the spin freezes (`animation-play-state: paused` snapshots
+   --beam-angle wherever it was) and a second animation grows both tapers
+   outward from the fixed white flash — leading edge sweeping backward,
+   trailing edge sweeping forward — until they meet on the far side and close
+   the ring, instead of jumping straight to a full static border. `forwards`
+   holds it closed for as long as the hover persists; leaving drops the
+   animation entirely and --beam-grow falls back through the cascade to its
+   registered 0% default. */
 a:hover > .soliprio-card .soliprio-beam,
 a:focus-visible > .soliprio-card .soliprio-beam {
   opacity: 1;
+  /* Collapses the taper to a hard cut — see the --beam-hard comment on
+     `.soliprio-beam`'s background above. */
+  --beam-hard: 1;
+  animation: soliprio-beam-spin 4.5s linear infinite,
+    soliprio-beam-grow-in 500ms ease-out forwards;
+  animation-delay: var(--beam-delay, 0s), 0s;
+  animation-play-state: paused, running;
   filter: drop-shadow(0 0 3px var(--beam)) drop-shadow(0 0 11px var(--beam))
     drop-shadow(0 0 26px var(--beam));
 }

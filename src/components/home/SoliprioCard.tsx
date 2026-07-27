@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 /** Peak rotation at the card's corners, in degrees. */
 const MAX_TILT = 14;
@@ -22,12 +22,15 @@ export function ArrowRight() {
  * it. The handlers only write custom properties — `.soliprio-card` in
  * globals.css owns the actual transform and gradient — so a pointermove never
  * touches layout. The card rect is cached on enter for the same reason.
+ *
+ * The wrapper chrome (fill, border beam, label row) mirrors the mobile
+ * carousel card's own frame in SoliprioMobile.tsx, so the label reads at rest
+ * instead of only surfacing on hover.
  */
 export default function SoliprioCard({
   src,
   label,
   beam,
-  beamRadius,
   beamDelay = "0s",
   swapsPhoto = false,
 }: {
@@ -35,9 +38,6 @@ export default function SoliprioCard({
   label: string;
   /** Brightened dominant hue of `src`, resolved server-side. */
   beam: string;
-  /** The artwork's own corner radius at display size, so the ring sits on
-   *  the card's edge instead of cutting across its rounded corners. */
-  beamRadius: string;
   beamDelay?: string;
   /** Marks this card as owning the band's alternate backdrop. Hovering it
    *  cross-fades the photo — done with `:has()` in CSS rather than lifted
@@ -51,43 +51,6 @@ export default function SoliprioCard({
   // the element itself beats one inherited from the anchor.
   const cardRef = useRef<HTMLDivElement>(null);
   const rect = useRef<DOMRect | null>(null);
-  const cursorRef = useRef<HTMLSpanElement>(null);
-  const lastMouseRef = useRef({ x: -1000, y: -1000 });
-  const [isHovered, setIsHovered] = useState(false);
-
-  // Writes the follow-cursor pill to wherever the pointer currently is.
-  //
-  // Measured against the outer <a>, which deliberately carries no transform of
-  // its own, so its rect is the card's flat layout box. That makes the result
-  // a *local* coordinate inside the tilted element the pill lives in — the
-  // browser then puts it through the same rotation as the artwork, so the pill
-  // lies on the card's surface and tilts with it rather than floating flat on
-  // top. Measuring the tilted element instead would feed the rotation in twice.
-  //
-  // Centring is left to the `translate` CSS property (the `-translate-x/y-1/2`
-  // utilities below) rather than a pixel offset baked in here — a pill's width
-  // varies with its label, unlike ProductSection's fixed-diameter circle, so a
-  // percentage centre is the only one correct for both cards.
-  const positionCursor = () => {
-    if (!ref.current || !cursorRef.current) return;
-    const box = ref.current.getBoundingClientRect();
-    const { x, y } = lastMouseRef.current;
-    cursorRef.current.style.transform = `translate3d(${x - box.left}px, ${y - box.top}px, 0)`;
-  };
-
-  // Per-frame, not per-move: the card's box shifts under a *stationary* cursor
-  // whenever the page scrolls, and only a live re-measure keeps the pill glued
-  // through that (mirrors ProductSection's identical follow-cursor badge).
-  useEffect(() => {
-    if (!isHovered) return;
-    let frameId = 0;
-    const loop = () => {
-      positionCursor();
-      frameId = requestAnimationFrame(loop);
-    };
-    frameId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(frameId);
-  }, [isHovered]);
 
   // Runs the border beam only while the card is on screen.
   //
@@ -111,20 +74,10 @@ export default function SoliprioCard({
     return () => observer.disconnect();
   }, []);
 
-  const handleEnter = (event: React.PointerEvent<HTMLAnchorElement>) => {
-    if (event.pointerType !== "mouse") return;
-    lastMouseRef.current = { x: event.clientX, y: event.clientY };
-    // Positioned immediately rather than waiting for the raf loop's first
-    // tick, so the pill doesn't visibly start its fade-in from a stale spot.
-    positionCursor();
-    setIsHovered(true);
-  };
-
   const handleMove = (event: React.PointerEvent<HTMLAnchorElement>) => {
     // A coarse pointer has no meaningful hover position, and this card only
     // renders on desktop anyway — guard so a tap can't leave it stuck tilted.
     if (event.pointerType !== "mouse") return;
-    lastMouseRef.current = { x: event.clientX, y: event.clientY };
     const el = ref.current;
     const card = cardRef.current;
     if (!el || !card) return;
@@ -154,7 +107,6 @@ export default function SoliprioCard({
     const card = cardRef.current;
     if (!card) return;
     rect.current = null;
-    setIsHovered(false);
     // Tilt only. `--mx`/`--my` deliberately stay where the pointer left: the
     // sheen is still fading out at that moment, so recentring them would slide
     // a visible highlight into the middle of the card on the way out. The next
@@ -166,65 +118,54 @@ export default function SoliprioCard({
 
   return (
     // The tilt transform lives on the inner div, not here: this outer `<a>`
-    // has to stay flat because it is what `positionCursor` measures against.
+    // has to stay flat because it is what the tilt math measures against.
     <a
       ref={ref}
       href="#"
       aria-label={label}
       {...(swapsPhoto ? { "data-swaps-photo": "" } : {})}
-      onPointerEnter={handleEnter}
       onPointerMove={handleMove}
       onPointerLeave={handleLeave}
-      className={`soliprio-stage relative block h-[200px] w-[311.25px] shrink-0 ${
-        isHovered ? "cursor-none" : "cursor-pointer"
-      }`}
+      className="soliprio-stage relative inline-block shrink-0 cursor-pointer"
     >
       <div
         ref={cardRef}
-        className="soliprio-card relative size-full"
+        className="soliprio-card relative flex flex-col items-center gap-3 rounded-xl bg-gradient-to-b from-white/12 to-white/4 px-2 pt-2 pb-4 backdrop-blur-[4px]"
         style={
           {
             "--beam": beam,
-            "--beam-radius": beamRadius,
+            "--beam-radius": "12px",
             "--beam-delay": beamDelay,
           } as React.CSSProperties
         }
       >
-        <img
-          loading="lazy"
-          decoding="async"
-          src={src}
-          alt=""
-          className="size-full object-cover"
-        />
-        <span
-          aria-hidden
-          className="soliprio-glare pointer-events-none absolute inset-0"
-          style={{
-            maskImage: `url(${src})`,
-            WebkitMaskImage: `url(${src})`,
-          }}
-        />
+        <div className="relative h-[200px] w-[311.25px] overflow-hidden rounded-lg">
+          <img
+            loading="lazy"
+            decoding="async"
+            src={src}
+            alt=""
+            className="size-full object-cover"
+          />
+          {/* Masked with the card art's own alpha channel, so the sheen stops
+              at the rounded silhouette instead of squaring off over its
+              transparent corners. */}
+          <span
+            aria-hidden
+            className="soliprio-glare pointer-events-none absolute inset-0"
+            style={{
+              maskImage: `url(${src})`,
+              WebkitMaskImage: `url(${src})`,
+            }}
+          />
+        </div>
+
+        {/* Border beam now traces the whole wrapper (fill + label row), not
+            just the artwork, so it reads as one card rather than ringing the
+            photo alone. */}
         <span aria-hidden className="soliprio-beam pointer-events-none" />
 
-        {/* Follow-cursor pill — same fill/border/blur recipe as
-            ProductSection's circular badge (border-white/25, bg-white/[0.01],
-            backdrop-blur-md, the `fade-overlay` show/hide so an invisible
-            instance isn't repainted every frame), just a pill instead of a
-            disc and sized to spec.
-
-            Sits *inside* the tilted element on purpose, so it rotates with the
-            artwork and reads as a label lying on the card's surface. The
-            default `transform-style: flat` is what makes that work — the pill
-            is rendered into its parent's plane rather than standing up in 3D
-            beside it. */}
-        <span
-          ref={cursorRef}
-          aria-hidden
-          className="fade-overlay pointer-events-none absolute left-0 top-0 z-30 flex h-12 -translate-x-1/2 -translate-y-1/2 items-center gap-1 whitespace-nowrap rounded-full border border-white/25 bg-white/[0.01] px-6 text-base font-semibold text-white shadow-lg backdrop-blur-md"
-          data-shown={isHovered ? "true" : "false"}
-          style={{ "--fade-ms": "200ms", isolation: "isolate" } as React.CSSProperties}
-        >
+        <span className="flex items-center gap-1 whitespace-nowrap text-sm font-semibold leading-5 text-white">
           {label}
           <ArrowRight />
         </span>

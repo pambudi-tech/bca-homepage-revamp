@@ -1087,7 +1087,6 @@ export default function ProductSection({
   const live = useIsLive(sectionRef);
   const leftGlassRef = useRef<SVGImageElement>(null);
   const rightGlassRef = useRef<SVGImageElement>(null);
-  const mobileCloveRef = useRef<HTMLImageElement>(null);
 
   const categoryOf = (key: string) =>
     categories.find((c) => c.key === key) ?? categories[0];
@@ -1133,9 +1132,6 @@ export default function ProductSection({
       }
       if (rightGlassRef.current) {
         rightGlassRef.current.style.transform = `translate3d(0, ${centerDist * -0.3}px, 0)`;
-      }
-      if (mobileCloveRef.current) {
-        mobileCloveRef.current.style.transform = `translate3d(0, ${centerDist * -0.1}px, 0) scale(1.2)`;
       }
     };
     const onScroll = () => {
@@ -1242,21 +1238,8 @@ export default function ProductSection({
   return (
     <section
       ref={sectionRef}
-      className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-36 pt-0 xl:pb-40 xl:pt-0"
+      className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-40 pt-0 xl:pt-0"
     >
-      {/* Clove pattern — mobile only, right side. The fluted glass overlay
-          below is desktop-only (`hidden xl:block`), so under xl the section
-          would otherwise show nothing but the plain gradient. Rides the same
-          scroll-parallax as the desktop glass strips (see the effect above). */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden xl:hidden">
-        <img loading="lazy" decoding="async"
-          ref={mobileCloveRef}
-          src="/assets/product/bg-clove-b.svg"
-          alt=""
-          className="absolute -bottom-[176px] -right-28 h-[460px] w-[350px] origin-bottom-right opacity-60 will-change-transform"
-        />
-      </div>
-
       {/* Fluted glass vertical strips — both layout variants use the glass
           overlay now, which is why the clove background pattern they used to
           reveal underneath it is never rendered here any more. */}

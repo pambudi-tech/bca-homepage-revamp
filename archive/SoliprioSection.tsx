@@ -12,24 +12,30 @@ import { Glow, Logos } from "./soliprio-parts";
    1920 while the band itself stays full-bleed. The numbers below are those
    offsets, taken straight from the design. */
 
-/** Vertical drift for the desktop backdrop, in px each way. The band is 640px
- *  tall and crops a 722px photo (656px scaled 1.1x to cover the taller band),
- *  so 41px is already hidden above and below — staying inside that budget
- *  means the parallax never uncovers an edge. */
+/** Vertical drift for the desktop backdrop, in px each way. The band is 580px
+ *  tall and crops a 656px photo, so 38px is already hidden above and below —
+ *  staying inside that budget means the parallax never uncovers an edge. */
 const PHOTO_DRIFT = 32;
 
-/* `swapsPhoto` marks the card that owns the band's alternate backdrop: the
+/* `radius` is the corner radius baked into each .webp, scaled to the card's
+   311.25x200 display size (measured 7.4px/8.1px at the original 249x160,
+   ×1.25 for the taller card) — the border beam traces it so the ring sits on
+   the artwork's edge rather than clipping across its rounded corners.
+
+   `swapsPhoto` marks the card that owns the band's alternate backdrop: the
    default is the Prioritas photo, and Solitaire brings its own. */
 const CARDS = [
   {
     key: "solitaire",
     src: "/assets/soliprio/bca-solitaire-card.webp",
+    radius: "9.25px",
     beamDelay: "0s",
     swapsPhoto: true,
   },
   {
     key: "prioritas",
     src: "/assets/soliprio/bca-prioritas-card.webp",
+    radius: "10.1px",
     // Half a lap behind, so the two beams never sweep in lockstep.
     beamDelay: "-2.25s",
     swapsPhoto: false,
@@ -48,7 +54,7 @@ export default async function SoliprioSection() {
       {/* ===== Desktop (>= xl) ===== */}
       <div
         data-reveal-group
-        className="soliprio-band relative hidden h-[640px] overflow-clip bg-[#0f0f0f] xl:block"
+        className="soliprio-band relative hidden h-[580px] overflow-clip bg-[#0f0f0f] xl:block"
       >
         {/* Photo is pinned 92px from the left edge and bleeds 60px past the
             right one, so it grows with the viewport instead of re-cropping.
@@ -56,7 +62,7 @@ export default async function SoliprioSection() {
             a replaced element, so with `width: auto` it would size itself from
             the intrinsic ratio and ignore the right offset entirely. */}
         <SoliprioPhoto
-          className="absolute left-[92px] top-1/2 h-[722px] w-[calc(100%-32px)] -translate-y-1/2"
+          className="absolute left-[92px] top-1/2 h-[656px] w-[calc(100%-32px)] -translate-y-1/2"
           imgClassName="absolute inset-0 size-full max-w-none object-cover"
           drift={PHOTO_DRIFT}
         />
@@ -76,33 +82,23 @@ export default async function SoliprioSection() {
           className="pointer-events-none absolute left-[calc(50%-391px)] top-[300px] h-[560px] w-[1370px] max-w-none -translate-x-1/2"
         />
 
-        {/* Centred 1216px content grid, same one the rest of the page uses —
-            padding instead of the old left-[calc(50%-343px)] +
-            -translate-x-1/2 pair (the column's left edge sits at centre −
-            608px either way, since a 1216px box centred by `mx-auto` starts
-            exactly there). The full-bleed background layers above (photo,
-            glow, pattern) are untouched siblings, so this only ever
-            repositions the text/cards. */}
-        <div className="absolute inset-0 mx-auto flex w-full max-w-[1216px] flex-col justify-between py-16">
+        {/* 530px column, left edge at centre − 608px (the 1216px content grid). */}
+        <div className="absolute left-[calc(50%-343px)] top-[88px] flex w-[530px] -translate-x-1/2 flex-col gap-14">
           <div data-reveal className="flex w-[464px] flex-col gap-8">
             <Logos variant="desktop" />
-            <div className="flex flex-col gap-3">
-              <p className="text-[32px] leading-10 tracking-[-0.64px] text-white">
-                {t("title")}
-              </p>
-              <p className="w-[320px] text-base leading-6 text-white/70">
-                {t("description")}
-              </p>
-            </div>
+            <p className="text-[32px] leading-10 tracking-[-0.64px] text-white">
+              {t("title")}
+            </p>
           </div>
 
-          <div data-reveal className="flex items-start gap-8">
+          <div data-reveal className="flex items-center gap-8">
             {CARDS.map((card, i) => (
               <SoliprioCard
                 key={card.key}
                 src={card.src}
                 label={t(card.key)}
                 beam={beams[i]}
+                beamRadius={card.radius}
                 beamDelay={card.beamDelay}
                 swapsPhoto={card.swapsPhoto}
               />
@@ -114,7 +110,6 @@ export default async function SoliprioSection() {
       {/* ===== Mobile (< xl) ===== */}
       <SoliprioMobile
         title={t("title")}
-        description={t("description")}
         swapKey={swapKey}
         cards={CARDS.map((card) => ({
           key: card.key,

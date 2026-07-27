@@ -38,11 +38,13 @@ export type SoliprioMobileCard = {
 
 export default function SoliprioMobile({
   title,
+  description,
   cards,
   /** Card whose photo replaces the default backdrop when it is centred. */
   swapKey,
 }: {
   title: string;
+  description: string;
   cards: readonly SoliprioMobileCard[];
   swapKey: string;
 }) {
@@ -127,11 +129,14 @@ export default function SoliprioMobile({
 
       <div
         data-reveal
-        className="absolute left-1/2 top-[174px] flex w-[320px] -translate-x-1/2 flex-col items-center gap-4"
+        className="absolute left-1/2 top-[174px] flex w-[320px] -translate-x-1/2 flex-col items-center gap-3"
       >
         <Logos variant="mobile" />
         <p className="text-center text-2xl leading-[1.2] tracking-[-0.48px] text-white">
           {title}
+        </p>
+        <p className="text-center text-sm leading-5 text-white/70">
+          {description}
         </p>
       </div>
 

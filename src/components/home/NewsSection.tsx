@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { NEWS_LIST_SIZE, type NewsArticle, type NewsCategory } from "./news-data";
+import { NEWS_LIST_SIZE, NEWS_LIST_SIZE_DESKTOP, type NewsArticle, type NewsCategory } from "./news-data";
 import { useLenis } from "@/components/SmoothScroll";
 
 function AdditionalInfo({ date, category, muted = false }: { date: string; category: string; muted?: boolean }) {
@@ -47,7 +47,7 @@ function HighlightArticle({ article }: { article: NewsArticle }) {
       href={article.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative block h-[320px] w-full shrink-0 overflow-clip rounded-xl text-left shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)] xl:h-[464px] xl:w-[492px]">
+      className="group relative block h-[320px] w-full shrink-0 overflow-clip rounded-xl text-left shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)] xl:h-[464px] xl:w-full">
       <img loading="lazy" decoding="async"
         src={article.image}
         alt=""
@@ -162,14 +162,12 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[560px] px-4 xl:w-[1280px] xl:max-w-none xl:px-0">
-        {/* Heading — stacked on mobile, eyebrow column + h2 side by side on desktop. */}
-        <div data-reveal-group className="flex flex-col xl:flex-row xl:gap-10">
-          <div className="flex items-center py-4 xl:w-60 xl:shrink-0">
-            <p data-reveal className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px]">
-              {t("eyebrow")}
-            </p>
-          </div>
-          <h2 data-reveal="blur-up" className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:w-[560px] xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]">
+        {/* Heading — eyebrow stacked above h2 at every breakpoint. */}
+        <div data-reveal-group className="flex flex-col py-4 xl:py-0">
+          <p data-reveal className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px]">
+            {t("eyebrow")}
+          </p>
+          <h2 data-reveal="blur-up" className="mt-2 text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:mt-3 xl:w-[560px] xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]">
             {t("heading")}
           </h2>
         </div>
@@ -188,10 +186,12 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
           ))}
         </div>
 
-        <div data-reveal-group className="mt-6 xl:mt-10 xl:flex xl:gap-26">
-          {/* Desktop-only sidebar — mobile surfaces the categories as the chip row above. */}
-          <div data-reveal className="hidden h-[464px] w-44 shrink-0 flex-col items-start justify-between pb-4 xl:flex">
-            <div className="flex flex-col items-start gap-3">
+        <div data-reveal-group className="mt-6 xl:mt-10">
+          {/* Desktop-only chip row — categories laid out horizontally with
+              "Lihat Lebih Banyak" pinned to the right edge of the same row.
+              Mobile surfaces the categories as the chip row above instead. */}
+          <div data-reveal className="hidden items-center justify-between xl:flex">
+            <div className="flex items-center gap-3">
               {categories.map((cat) => (
                 <CategoryChip
                   key={cat.key}
@@ -212,10 +212,10 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
             </a>
           </div>
 
-          <div className="xl:flex xl:flex-1 xl:gap-4">
+          {/* Mobile — highlight card above a horizontal carousel of 3 cards. */}
+          <div className="xl:hidden">
             <HighlightArticle article={active.highlight} />
-            {/* Article cards — horizontal carousel on mobile, stacked list on desktop. */}
-            <div className="hide-scrollbar -mx-4 mt-8 flex gap-4 overflow-x-auto px-4 [scrollbar-width:none] xl:mx-0 xl:mt-0 xl:flex-1 xl:flex-col xl:overflow-visible xl:px-0">
+            <div className="hide-scrollbar -mx-4 mt-8 flex gap-4 overflow-x-auto px-4 [scrollbar-width:none]">
               {/* Keyed by slot, not by article: `data-reveal` is wired up once on
                   mount by ScrollReveal, so a remount on tab switch would hand
                   back fresh nodes that nothing ever reveals — stuck at opacity
@@ -224,6 +224,22 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
                   internal state. */}
               {active.articles.slice(0, NEWS_LIST_SIZE).map((article, i) => (
                 <ArticleItem key={i} article={article} />
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop — 3-column grid: highlight card, then two columns of 3
+              stacked cards each (7 cards total). */}
+          <div className="hidden xl:mt-8 xl:grid xl:grid-cols-3 xl:gap-4">
+            <HighlightArticle article={active.highlight} />
+            <div className="flex flex-col gap-4">
+              {active.articles.slice(0, 3).map((article, i) => (
+                <ArticleItem key={i} article={article} />
+              ))}
+            </div>
+            <div className="flex flex-col gap-4">
+              {active.articles.slice(3, NEWS_LIST_SIZE_DESKTOP).map((article, i) => (
+                <ArticleItem key={i + 3} article={article} />
               ))}
             </div>
           </div>

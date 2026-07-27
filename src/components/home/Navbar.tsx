@@ -272,7 +272,7 @@ export default function Navbar({
   const lastScrollY = useRef(0);
 
   const scrollToLocation = () => {
-    document.getElementById("lokasi")?.scrollIntoView({ behavior: "smooth" });
+    window.open("https://www.bca.co.id/id/lokasi-bca", "_blank", "noopener,noreferrer");
   };
 
   const scrollToPromo = () => {

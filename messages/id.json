@@ -137,8 +137,9 @@
   },
   "soliprio": {
     "title": "Layanan Prestisius dan Personal, Hanya untuk Anda.",
-    "solitaire": "Akses BCA Solitaire",
-    "prioritas": "Akses BCA Prioritas"
+    "description": "Eksklusif bagi nasabah terpilih melalui undangan resmi BCA,",
+    "solitaire": "Pelajari BCA Solitaire",
+    "prioritas": "Pelajari BCA Prioritas"
   },
   "nav": {
     "segments": {
@@ -253,52 +254,6 @@
     "eyebrow": "Kabar & Wawasan",
     "heading": "Update Seputar BCA",
     "seeMore": "Lihat Lebih Banyak"
-  },
-  "lokasi": {
-    "heading": "Lokasi BCA di Sekitar Anda",
-    "useMyLocation": "Gunakan lokasi saya",
-    "locatingDetail": "Menentukan lokasi…",
-    "locatedAreaUnknown": "Terdeteksi, di luar area cakupan",
-    "stopUsingLocation": "Berhenti pakai lokasi ini",
-    "locating": "Mencari lokasi Anda…",
-    "searchLabel": "Cari area atau kota",
-    "searchPlaceholder": "Atau cari area, mis. Kelapa Gading",
-    "yourLocation": "Lokasi Anda",
-    "defaultPlace": "Menara BCA",
-    "nearestFrom": "Terdekat dari {place}",
-    "permissionDenied": "Akses lokasi ditolak. Anda masih bisa mencari berdasarkan nama area di kolom pencarian.",
-    "permissionBlocked": "Akses lokasi diblokir oleh browser Anda. Buka pengaturan situs lewat ikon kunci/info di address bar, izinkan Lokasi, lalu klik \"Gunakan lokasi saya\" lagi — tidak perlu memuat ulang halaman.",
-    "positionUnavailable": "Lokasi Anda belum terdeteksi. Coba lagi, atau cari berdasarkan nama area.",
-    "noResults": "Belum ada lokasi BCA di sekitar sini. Coba area lain atau ubah filternya.",
-    "route": "Rute",
-    "routeLabel": "Buka rute ke {name} di Google Maps",
-    "seeAll": "Lihat semua lokasi BCA",
-    "filters": {
-      "all": "Semua",
-      "cabang": "Cabang",
-      "atm": "ATM"
-    },
-    "type": {
-      "cabang": "Cabang",
-      "atm": "ATM"
-    },
-    "map": {
-      "region": "Peta lokasi ATM dan cabang BCA",
-      "zoomIn": "Perbesar peta",
-      "zoomOut": "Perkecil peta",
-      "ctrlZoom": "Tekan ctrl + scroll untuk memperbesar peta",
-      "cmdZoom": "Tekan ⌘ + scroll untuk memperbesar peta",
-      "twoFingers": "Gunakan dua jari untuk menggeser peta",
-      "unavailable": "Peta tidak dapat ditampilkan di peramban ini. Daftar lokasi di samping tetap bisa digunakan.",
-      "attribution": "Atribusi peta",
-      "yourPosition": "Posisi Anda"
-    },
-    "primer": {
-      "title": "Izinkan lokasi Anda?",
-      "body": "Kami akan meminta browser Anda membagikan lokasi, supaya bisa menampilkan ATM & cabang BCA terdekat. Anda tetap bisa mencari lewat kolom di bawah tanpa ini.",
-      "allow": "Izinkan",
-      "notNow": "Nanti Saja"
-    }
   },
   "megamenu": {
     "Simpanan": {
