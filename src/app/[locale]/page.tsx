@@ -7,7 +7,6 @@ import ProductSection from "@/components/home/ProductSection";
 import MyBcaSection from "@/components/home/MyBcaSection";
 import PromoSection from "@/components/home/PromoSection";
 import SoliprioSection from "@/components/home/SoliprioSection";
-import LocationSection from "@/components/home/LocationSection";
 import NewsSection from "@/components/home/NewsSection";
 import Footer from "@/components/home/Footer";
 import BackToTop from "@/components/home/BackToTop";
@@ -59,7 +58,6 @@ export default async function Home({
         <MyBcaSection />
         <PromoSection promos={promos} now={now} />
         <SoliprioSection />
-        <LocationSection />
         <NewsSection categories={news} />
       </div>
 

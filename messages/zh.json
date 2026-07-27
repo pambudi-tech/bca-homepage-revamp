@@ -137,6 +137,7 @@
   },
   "soliprio": {
     "title": "尊崇专属的礼遇，只为您而设。",
+    "description": "通过 BCA 官方邀请提供给特选客户的专属服务，享有个人化服务与尊贵礼遇。",
     "solitaire": "了解 BCA Solitaire",
     "prioritas": "了解 BCA Prioritas"
   },
@@ -253,52 +254,6 @@
     "eyebrow": "新闻与洞察",
     "heading": "BCA 最新动态",
     "seeMore": "查看更多"
-  },
-  "lokasi": {
-    "heading": "您附近的 BCA 网点",
-    "useMyLocation": "使用我的位置",
-    "locatingDetail": "正在确定区域…",
-    "locatedAreaUnknown": "已检测到，但超出覆盖范围",
-    "stopUsingLocation": "停止使用此位置",
-    "locating": "正在获取您的位置…",
-    "searchLabel": "搜索区域或城市",
-    "searchPlaceholder": "或搜索区域，例如 Kelapa Gading",
-    "yourLocation": "您的位置",
-    "defaultPlace": "BCA大厦",
-    "nearestFrom": "距离{place}最近",
-    "permissionDenied": "位置权限已被拒绝。您仍可在上方输入区域名称进行搜索。",
-    "permissionBlocked": "您的浏览器已阻止位置访问。请点击地址栏中的锁形/信息图标打开网站设置，允许位置权限，然后再次点击\"使用我的位置\"——无需刷新页面。",
-    "positionUnavailable": "未能获取您的位置。请重试，或按区域名称搜索。",
-    "noResults": "附近暂无 BCA 网点。请尝试其他区域或更改筛选条件。",
-    "route": "路线",
-    "routeLabel": "在 Google 地图中打开前往{name}的路线",
-    "seeAll": "查看全部 BCA 网点",
-    "filters": {
-      "all": "全部",
-      "cabang": "分行",
-      "atm": "ATM"
-    },
-    "type": {
-      "cabang": "分行",
-      "atm": "ATM"
-    },
-    "map": {
-      "region": "BCA 分行与 ATM 地图",
-      "zoomIn": "放大地图",
-      "zoomOut": "缩小地图",
-      "ctrlZoom": "按住 ctrl 并滚动以缩放地图",
-      "cmdZoom": "按住 ⌘ 并滚动以缩放地图",
-      "twoFingers": "使用双指移动地图",
-      "unavailable": "此浏览器无法显示地图。旁边的网点列表仍可正常使用。",
-      "attribution": "地图归属信息",
-      "yourPosition": "您的位置"
-    },
-    "primer": {
-      "title": "允许使用您的位置吗？",
-      "body": "我们将请求您的浏览器共享位置信息，以便显示最近的 BCA 分行和 ATM。即使不允许，您仍可以在下方按区域搜索。",
-      "allow": "允许",
-      "notNow": "暂不"
-    }
   },
   "megamenu": {
     "Simpanan": {

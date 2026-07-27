@@ -28,7 +28,7 @@ export default function MobileNav({
   const [menuOpen, setMenuOpen] = useState(false);
 
   const scrollToLocation = () => {
-    document.getElementById("lokasi")?.scrollIntoView({ behavior: "smooth" });
+    window.open("https://www.bca.co.id/id/lokasi-bca", "_blank", "noopener,noreferrer");
   };
 
   useEffect(() => {

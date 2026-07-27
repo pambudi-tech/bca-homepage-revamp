@@ -22,3 +22,19 @@ Combined with `antialias: true` and a pixel ratio of 2, it was the single most
 expensive thing on the page for mid-range Android. If it comes back, consider
 dropping the pixel ratio to 1.5 and gating the whole effect behind a
 "desktop + not reduced-motion" check.
+
+## SoliprioSection.tsx
+
+A pre-edit snapshot of `src/components/home/SoliprioSection.tsx`, taken before
+adding the desktop wrapper/label/description work in July 2026.
+
+## ProductSection.tsx / lokasi-bca/
+
+Snapshots of `ProductSection.tsx` (the curved carousel) and the Lokasi BCA map
+feature (`LocationSection.tsx`, `LocationMap.tsx`, `LocationFinder.tsx`,
+`bca-map-style.ts`, `location-data.ts`, `src/lib/locations.ts`, and the
+`/api/locations/{nearby,places,reverse}` routes), pulled from `HEAD` — the
+state those files were in before the working tree deleted/modified them
+(the Lokasi BCA section and its API routes were removed from `src/`, and
+`ProductSection.tsx` was reworked). Kept here in case any of it needs to be
+referenced or restored later.
