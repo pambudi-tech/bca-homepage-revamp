@@ -60,6 +60,12 @@ export default function LocationFinder({ initial }: Props) {
   const [placeLabel, setPlaceLabel] = useState<string | null>(null);
   const [filter, setFilter] = useState<Filter>("all");
   const [data, setData] = useState<NearbyResponse>(initial);
+  /** The origin `data` was actually fetched for. `pending` alone can't gate
+   *  "are we still locating the visitor" — it also goes true on a plain
+   *  filter switch (see the nearby-fetch effect below), which doesn't touch
+   *  `origin` at all. Comparing this against `origin` tells the two cases
+   *  apart. */
+  const [dataOrigin, setDataOrigin] = useState<Origin>(DEFAULT_ORIGIN);
   const [pending, setPending] = useState(false);
   const [geo, setGeo] = useState<GeoState>("idle");
   /** Mirrors the browser's real geolocation permission (see the effect below).
@@ -89,14 +95,42 @@ export default function LocationFinder({ initial }: Props) {
   // deriving this means a cleared field hides them without a second render.
   const suggestions = query.trim().length >= 2 ? places : [];
 
-  /* The kelurahan/kota line shown once the visitor's own position is in use —
-     see `areaLine()` for why the nearest result's own area stands in for a
-     reverse-geocode. `data.results[0]` briefly still belongs to the previous
-     origin while `pending` is true; the row shows a "locating…" placeholder
-     for that window rather than a stale place. Absent past the 50km coverage
-     radius (see MAX_RADIUS_METERS), where there is nothing to name. */
+  /* The kelurahan/kota line shown once the visitor's own position is in use.
+     This is a real reverse-geocode (see `../api/locations/reverse`), fetched
+     right after `applyPosition` sets `origin`. `reverseArea` is null both
+     before that fetch has started and while it's in flight; once it settles
+     it holds `{origin, area}` keyed to the origin it answers for — `area` is
+     itself null only if the fetch *succeeded* with nothing nameable there,
+     as opposed to "haven't heard back yet". That distinction is what lets
+     `locating` below tell "still working on it" apart from "asked, got
+     nothing". */
+  const [reverseArea, setReverseArea] = useState<{
+    origin: Origin;
+    area: { label: string; sub: string } | null;
+  } | null>(null);
+
+  /* True while either fetch this row depends on hasn't caught up with the
+     current `origin` yet — the nearby list (`dataOrigin`) or the reverse-
+     geocode (`reverseArea`). Deliberately NOT the raw `pending` flag: that
+     one also goes true on a plain filter switch (Semua/Cabang/ATM), which
+     never moves `origin` at all, and gating on it directly used to hide-then-
+     reshow this row on every tab click — reading as constant "re-locating".
+     Comparing origins instead isolates the one case that actually needs the
+     placeholder: a genuinely new position whose answers haven't arrived yet. */
+  const locating =
+    originIsUser &&
+    (!sameOrigin(dataOrigin, origin) || !reverseArea || !sameOrigin(reverseArea.origin, origin));
+
+  /* Once settled, the reverse-geocode's own answer is authoritative; the
+     nearest result's own area (`areaLine()`) only stands in if that fetch
+     failed outright (`reverseArea` present for this origin but `area` null
+     came from a rejected promise, not a "no address" success — see the
+     effect below). Never shown while still loading, so a visitor never sees
+     the wrong ATM's neighbourhood flash before the real one replaces it. */
   const locatedArea =
-    originIsUser && !pending && data.results[0] ? areaLine(data.results[0]) : null;
+    originIsUser && !locating
+      ? (reverseArea?.area ?? (data.results[0] ? areaLine(data.results[0]) : null))
+      : null;
 
   const [mapArmed, setMapArmed] = useState(false);
   /* `null` until the first client-side check resolves — deliberately, so the
@@ -160,6 +194,7 @@ export default function LocationFinder({ initial }: Props) {
       .then((res) => (res.ok ? res.json() : Promise.reject(new Error(String(res.status)))))
       .then((next: NearbyResponse) => {
         setData(next);
+        setDataOrigin(origin);
         setSelectedId(null);
       })
       // A failed query keeps the previous three cards rather than blanking the
@@ -210,6 +245,29 @@ export default function LocationFinder({ initial }: Props) {
     setQuery("");
     setOpen(false);
   }, []);
+
+  // Reverse-geocodes the visitor's own position into a real place name once
+  // it's in use — see `locatedArea` above for how the result is consumed.
+  useEffect(() => {
+    if (!originIsUser) return;
+    const controller = new AbortController();
+
+    fetch("/api/locations/reverse", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ lat: origin.lat, lng: origin.lng }),
+      signal: controller.signal,
+    })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json: { area: { label: string; sub: string } | null } | null) => {
+        setReverseArea({ origin, area: json?.area ?? null });
+      })
+      .catch(() => {
+        setReverseArea({ origin, area: null });
+      });
+
+    return () => controller.abort();
+  }, [originIsUser, origin]);
 
   const locate = useCallback(() => {
     if (!("geolocation" in navigator)) {
@@ -417,7 +475,7 @@ export default function LocationFinder({ initial }: Props) {
 
   const controlsShared = {
     originIsUser,
-    pending,
+    locating,
     locatedArea,
     stopUsingMyLocation,
     geo,
@@ -577,7 +635,7 @@ type ControlsProps = {
   idBase: string;
   inputRef: React.RefObject<HTMLInputElement | null>;
   originIsUser: boolean;
-  pending: boolean;
+  locating: boolean;
   locatedArea: { label: string; sub: string } | null;
   stopUsingMyLocation: () => void;
   geo: GeoState;
@@ -627,7 +685,7 @@ function Controls({
   idBase,
   inputRef,
   originIsUser,
-  pending,
+  locating,
   locatedArea,
   stopUsingMyLocation,
   geo,
@@ -677,7 +735,7 @@ function Controls({
                 than switching to a different "done" glyph. */}
             <span aria-hidden className="bca-locate-icon size-6 shrink-0 bg-blue-500" />
             <span className="flex min-w-0 flex-1 items-baseline gap-1.5 overflow-hidden">
-              {pending ? (
+              {locating ? (
                 <span className="truncate text-base text-blue-500 opacity-70">
                   {t("locatingDetail")}
                 </span>

@@ -946,13 +946,12 @@ html.lenis, html.lenis body {
    swaps can restart it by alternating names — that keeps the swap off
    requestAnimationFrame, which is throttled whenever the tab isn't painting. */
 @keyframes product-photo-in-a {
-  from { transform: translate3d(var(--photo-from), 0, 0); }
+  from { transform: translate3d(0, var(--photo-from), 0); }
   to { transform: translate3d(0, 0, 0); }
 }
 @keyframes product-photo-out-a {
-  from { transform: translate3d(0, 0, 0); filter: blur(0px); }
-  60% { filter: blur(8px); }
-  to { transform: translate3d(var(--photo-to), 0, 0); filter: blur(8px); }
+  from { transform: translate3d(0, 0, 0); opacity: 1; }
+  to { transform: translate3d(0, var(--photo-to), 0); opacity: 0; }
 }
 @keyframes product-copy-swap-a {
   0% { opacity: 1; }
@@ -961,13 +960,12 @@ html.lenis, html.lenis body {
   100% { opacity: 1; }
 }
 @keyframes product-photo-in-b {
-  from { transform: translate3d(var(--photo-from), 0, 0); }
+  from { transform: translate3d(0, var(--photo-from), 0); }
   to { transform: translate3d(0, 0, 0); }
 }
 @keyframes product-photo-out-b {
-  from { transform: translate3d(0, 0, 0); filter: blur(0px); }
-  60% { filter: blur(8px); }
-  to { transform: translate3d(var(--photo-to), 0, 0); filter: blur(8px); }
+  from { transform: translate3d(0, 0, 0); opacity: 1; }
+  to { transform: translate3d(0, var(--photo-to), 0); opacity: 0; }
 }
 @keyframes product-copy-swap-b {
   0% { opacity: 1; }

@@ -3,6 +3,7 @@ import HeroArea from "@/components/home/HeroArea";
 import Navbar from "@/components/home/Navbar";
 import ScrollCue from "@/components/home/ScrollCue";
 import ProductSection from "@/components/home/ProductSection";
+
 import MyBcaSection from "@/components/home/MyBcaSection";
 import PromoSection from "@/components/home/PromoSection";
 import SoliprioSection from "@/components/home/SoliprioSection";
@@ -43,7 +44,7 @@ export default async function Home({
     <main className="flex flex-1 flex-col overflow-x-clip bg-blue-100">
       {/* 1. KONTEN UTAMA: z-10 dan background solid untuk "menutupi" footer saat di atas */}
       <div className="relative z-10 bg-blue-100">
-        <Navbar />
+        <Navbar productCategories={produk.categories} />
         {/* .pre-stage — held invisible by the intro preloader, fades up as
             its curtain lifts (see the preloader rules in globals.css). */}
         <div className="pre-stage">
@@ -54,6 +55,7 @@ export default async function Home({
         <div className="h-0 xl:h-[136px]" />
         <ScrollCue />
         <ProductSection categories={produk.categories} defaultKey={produk.defaultKey} />
+
         <MyBcaSection />
         <PromoSection promos={promos} now={now} />
         <SoliprioSection />

@@ -78,10 +78,10 @@ export default function MegaMenuPanel({
       style={{ "--mm-n": rowCount } as CSSProperties}
       className="mm-panel w-full max-w-[1920px] overflow-hidden rounded-b-3xl bg-white"
     >
-      <div className="mm-content mx-auto flex h-[400px] w-[1280px] items-center gap-20 py-4">
+      <div className="mm-content mx-auto flex w-[1280px] items-stretch gap-20 py-4">
         {/* product list + article links */}
-        <div className="flex h-full gap-2">
-          <div className="flex h-full w-[360px] flex-col justify-between">
+        <div className="flex gap-2">
+          <div className="flex w-[360px] flex-col">
             <div className="flex flex-col">
               {category.products.map((product, i) => (
                 <button
@@ -104,7 +104,7 @@ export default function MegaMenuPanel({
             </div>
           </div>
 
-          <div className="flex h-full w-[360px] flex-col gap-2">
+          <div className="flex w-[360px] flex-col gap-2">
             {category.links.map((link, i) => (
               <button
                 key={`${link.label}-${i}`}
@@ -121,7 +121,7 @@ export default function MegaMenuPanel({
 
         {/* editorial / marketing space */}
         <div
-          className="mm-item group relative h-full flex-1 overflow-hidden rounded-3xl"
+          className="mm-item group relative flex-1 overflow-hidden rounded-3xl"
           style={{ "--mm-i": 2 } as CSSProperties}
         >
           <img loading="lazy" decoding="async"

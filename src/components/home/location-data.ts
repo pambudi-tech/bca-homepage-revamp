@@ -123,11 +123,13 @@ export function locationLines(loc: BcaLocation): { title: string; sub: string } 
  * shape as a search suggestion — so the confirmation reads as one more row in
  * the same visual language, not a different kind of information.
  *
- * There is no reverse-geocoding call behind this: it reads the area/district/
- * city off the nearest BCA location already returned by `/api/locations/nearby`
- * (see `LocationFinder.tsx`), which is accurate at the kelurahan the visitor is
- * actually in for anything within ordinary walking distance of that location,
- * and never sends the visitor's coordinates to a third-party geocoder.
+ * This is a fallback only: `LocationFinder.tsx` reverse-geocodes the
+ * visitor's real position via `/api/locations/reverse` and prefers that
+ * result. This reads the area/district/city off the nearest BCA location
+ * already returned by `/api/locations/nearby` instead, for the brief window
+ * before the reverse-geocode resolves (or if it fails) — accurate at the
+ * kelurahan the visitor is actually in for anything within ordinary walking
+ * distance of that location.
  */
 export function areaLine(loc: Pick<BcaLocation, "area" | "district" | "city">): {
   label: string;

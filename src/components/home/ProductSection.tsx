@@ -9,6 +9,7 @@ import {
   type ProductCategory,
 } from "./product-data";
 import LayoutSwitcher from "./LayoutSwitcher";
+import FlutedGlassOverlay from "./FlutedGlassOverlay";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useIsLive } from "@/lib/useIsLive";
 import { useLayoutVariant } from "@/lib/useLayoutVariant";
@@ -75,6 +76,9 @@ function swapStyles(swapping: boolean, dir: number, stagger: number, alt: boolea
   // No swap in flight: leave the cards to their entrance/hover choreography.
   if (!swapping) return { incoming: {}, outgoing: {}, copy: {} };
   const suffix = alt ? "a" : "b";
+  // Vertical swipe: moving to a later category swipes up (`dir` > 0 — the
+  // incoming photo rises in from below, the outgoing one clears the top),
+  // moving to an earlier one swipes down (mirrored).
   return {
     incoming: {
       "--photo-from": `${dir * 28}%`,
@@ -108,11 +112,10 @@ function PhotoLayer({
       <img loading="lazy" decoding="async"
         src={product.image}
         alt=""
-        className={`absolute inset-0 size-full object-cover ${
-          hoverZoom
-            ? "scale-100 transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-            : ""
-        }`}
+        className={`absolute inset-0 size-full object-cover ${hoverZoom
+          ? "scale-100 transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+          : ""
+          }`}
       />
     </div>
   );
@@ -153,9 +156,8 @@ function ProductCard({
     if (!cardRef.current || !cursorRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const { x: clientX, y: clientY } = lastMouseRef.current;
-    cursorRef.current.style.transform = `translate3d(${clientX - rect.left - 56}px, ${
-      clientY - rect.top - 56
-    }px, 0)`;
+    cursorRef.current.style.transform = `translate3d(${clientX - rect.left - 56}px, ${clientY - rect.top - 56
+      }px, 0)`;
   };
 
   const handleCardClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -210,9 +212,8 @@ function ProductCard({
       onMouseMove={handleCardMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group relative h-[400px] shrink-0 grow-0 overflow-clip rounded-3xl bg-white text-left ${
-        active ? "cursor-none" : "cursor-pointer"
-      }`}
+      className={`group relative h-[400px] shrink-0 grow-0 overflow-clip rounded-3xl bg-white text-left ${active ? "cursor-none" : "cursor-pointer"
+        }`}
       style={{
         // Six category cards share the 1280px row now (was three product
         // cards): 440 + 5×150 + 5×16 gap = 1270, leaving a hair of slack so a
@@ -257,34 +258,33 @@ function ProductCard({
         }}
       >
         <div className="w-full" style={swap.copy}>
-        <p className="w-full text-xl font-semibold leading-7 tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
-          {copy.title}
-        </p>
-        <div
-          className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
-          style={{ gridTemplateRows: active ? "1fr" : "0fr", opacity: active ? 1 : 0 }}
-        >
-          <div className="overflow-hidden">
-            <p className="w-full pt-2 text-base leading-6 text-white/80">
-              {copy.subtitle}
-            </p>
-            <div className="flex items-center gap-0.5 pt-8 text-base font-semibold text-blue-100 md:hidden">
-              {t("learnMore")}
-              <img loading="lazy" decoding="async"
-                src="/assets/cycle1/pelajari-icon.svg"
-                alt=""
-                className="size-5 transition-transform group-hover:translate-x-1"
-              />
+          <p className="w-full text-xl font-semibold leading-7 tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+            {copy.title}
+          </p>
+          <div
+            className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+            style={{ gridTemplateRows: active ? "1fr" : "0fr", opacity: active ? 1 : 0 }}
+          >
+            <div className="overflow-hidden">
+              <p className="w-full pt-2 text-base leading-6 text-white/80">
+                {copy.subtitle}
+              </p>
+              <div className="flex items-center gap-0.5 pt-8 text-base font-semibold text-blue-100 md:hidden">
+                {t("learnMore")}
+                <img loading="lazy" decoding="async"
+                  src="/assets/cycle1/pelajari-icon.svg"
+                  alt=""
+                  className="size-5 transition-transform group-hover:translate-x-1"
+                />
+              </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
 
       <div
-        className={`absolute bottom-6 right-6 transition-opacity duration-300 ${
-          active ? "opacity-100" : "opacity-0"
-        }`}
+        className={`absolute bottom-6 right-6 transition-opacity duration-300 ${active ? "opacity-100" : "opacity-0"
+          }`}
       >
         <svg viewBox="0 0 32 32" className="size-8 -rotate-90">
           <circle cx="16" cy="16" r={RING_RADIUS} fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
@@ -364,9 +364,8 @@ function MobileProductCard({
 
       {/* Autoplay ring — top-left on mobile so it clears the bottom copy panel. */}
       <div
-        className={`absolute left-4 top-4 z-20 transition-opacity duration-300 ${
-          active ? "opacity-100" : "opacity-0"
-        }`}
+        className={`absolute left-4 top-4 z-20 transition-opacity duration-300 ${active ? "opacity-100" : "opacity-0"
+          }`}
       >
         <svg viewBox="0 0 32 32" className="size-8 -rotate-90">
           {/* Backing disc: card photos are often light at the top, where a plain
@@ -408,21 +407,21 @@ function MobileProductCard({
         }}
       >
         <div className="w-full" style={swap.copy}>
-        <p className="w-full text-lg font-semibold leading-[26px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
-          {copy.title}
-        </p>
-        <div
-          className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
-          style={{ gridTemplateRows: active ? "1fr" : "0fr", opacity: active ? 1 : 0 }}
-        >
-          <div className="overflow-hidden">
-            <p className="w-full pt-1 text-sm leading-5 text-white/80">{copy.subtitle}</p>
-            <div className="flex items-center gap-0.5 pt-6 text-sm font-semibold text-blue-100">
-              {t("learnMore")}
-              <img loading="lazy" decoding="async" src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5" />
+          <p className="w-full text-lg font-semibold leading-[26px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+            {copy.title}
+          </p>
+          <div
+            className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+            style={{ gridTemplateRows: active ? "1fr" : "0fr", opacity: active ? 1 : 0 }}
+          >
+            <div className="overflow-hidden">
+              <p className="w-full pt-1 text-sm leading-5 text-white/80">{copy.subtitle}</p>
+              <div className="flex items-center gap-0.5 pt-6 text-sm font-semibold text-blue-100">
+                {t("learnMore")}
+                <img loading="lazy" decoding="async" src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5" />
+              </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     </button>
@@ -614,9 +613,8 @@ function MobileProductCarousel({
       ref={scrollRef}
       onTouchStart={() => (pausedRef.current = true)}
       onTouchEnd={() => (pausedRef.current = false)}
-      className={`hide-scrollbar -mx-4 flex h-[360px] snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4 [scrollbar-width:none] transition-opacity duration-700 ease-out xl:hidden ${
-        entered ? "opacity-100" : "opacity-0"
-      }`}
+      className={`hide-scrollbar -mx-4 flex h-[360px] snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4 [scrollbar-width:none] transition-opacity duration-700 ease-out xl:hidden ${entered ? "opacity-100" : "opacity-0"
+        }`}
       style={{ transitionDelay: entered ? "250ms" : "0ms" }}
     >
       {slots.map(({ real }, slot) => (
@@ -643,30 +641,18 @@ function MobileProductCarousel({
  * away, so the row reads as the inside of a cylinder), `s` the scale and `o`
  * the opacity. Slot 3 is the parking spot just past the visible arc.
  */
-const CURVE_SLOTS = [
-  { x: 0, r: 0, s: 1, o: 1 },
-  { x: 441, r: 38, s: 0.76, o: 1 },
-  { x: 648, r: 46, s: 0.64, o: 1 },
-  { x: 815, r: 52, s: 0.56, o: 0 },
-];
-const CURVE_MAX_SLOT = CURVE_SLOTS.length - 1;
-/** Drag distance that equals one card step — slot 1's travel. */
-const CURVE_STEP_PX = CURVE_SLOTS[1].x;
+/**
+ * True cylinder geometry for the film-strip carousel.
+ * Cards rotate around a central vertical axis.
+ */
+const CARD_GAP = 32; // Jarak antar kartu (dalam pixel)
+const CURVE_ANGLE_STEP = 15; // 360 / 24 = 15 degrees per card to form a perfect circle
 
-function curveAt(p: number) {
-  const a = Math.min(Math.abs(p), CURVE_MAX_SLOT);
-  const i = Math.min(Math.floor(a), CURVE_MAX_SLOT - 1);
-  const t = a - i;
-  const lo = CURVE_SLOTS[i];
-  const hi = CURVE_SLOTS[i + 1];
-  const sign = p < 0 ? -1 : 1;
-  return {
-    x: sign * (lo.x + (hi.x - lo.x) * t),
-    r: sign * (lo.r + (hi.r - lo.r) * t),
-    s: lo.s + (hi.s - lo.s) * t,
-    o: lo.o + (hi.o - lo.o) * t,
-  };
-}
+// Radius dihitung otomatis berdasarkan gap dan lebar kartu samping (480px)
+const CURVE_RADIUS = ((480 + CARD_GAP) / 2) / Math.sin((CURVE_ANGLE_STEP / 2) * (Math.PI / 180));
+
+/** Drag distance that equals one card step. */
+const CURVE_STEP_PX = 450;
 
 /** Signed shortest ring distance, in (-len/2, len/2]. */
 function wrapHalf(v: number, len: number) {
@@ -715,9 +701,8 @@ function CurvedProductCard({
     if (!cardRef.current || !cursorRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const { x: clientX, y: clientY } = lastMouseRef.current;
-    cursorRef.current.style.transform = `translate3d(${clientX - rect.left - 56}px, ${
-      clientY - rect.top - 56
-    }px, 0)`;
+    cursorRef.current.style.transform = `translate3d(${clientX - rect.left - 56}px, ${clientY - rect.top - 56
+      }px, 0)`;
   };
 
   const handleCardClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -759,9 +744,8 @@ function CurvedProductCard({
       onMouseLeave={() => setIsHovered(false)}
       tabIndex={hidden ? -1 : 0}
       aria-hidden={hidden}
-      className={`group absolute left-1/2 top-1/2 h-[400px] w-[566px] overflow-clip rounded-3xl bg-white text-left ${
-        active ? "cursor-none" : "cursor-pointer"
-      }`}
+      className={`group absolute left-1/2 top-1/2 h-[400px] overflow-clip rounded-3xl bg-white text-left ${active ? "cursor-none" : "cursor-pointer"
+        }`}
       style={style}
     >
       <div className="absolute inset-0">
@@ -805,9 +789,8 @@ function CurvedProductCard({
       </div>
 
       <div
-        className={`absolute bottom-6 right-6 transition-opacity duration-300 ${
-          active ? "opacity-100" : "opacity-0"
-        }`}
+        className={`absolute bottom-6 right-6 transition-opacity duration-300 ${active ? "opacity-100" : "opacity-0"
+          }`}
       >
         <svg viewBox="0 0 32 32" className="size-8 -rotate-90">
           <circle cx="16" cy="16" r={RING_RADIUS} fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
@@ -853,6 +836,7 @@ function CurvedCarousel({
   outgoingProducts,
   copyProducts,
   activeIndex,
+  categoryKey,
   onSelect,
   progressRef,
   entered,
@@ -864,6 +848,10 @@ function CurvedCarousel({
   outgoingProducts: Product[] | null;
   copyProducts: Product[];
   activeIndex: number;
+  /** Identifies which category `products` belongs to — a change here means
+   *  the ring should snap straight to `activeIndex` with no rotation, since
+   *  the photo swap (not a ring spin) is what should carry the transition. */
+  categoryKey: string;
   onSelect: (index: number) => void;
   progressRef: React.RefObject<SVGCircleElement | null>;
   entered: boolean;
@@ -872,18 +860,31 @@ function CurvedCarousel({
   swapAlt: boolean;
 }) {
   const n = products.length;
-  // The track is a ring: with fewer products than visible slots the products
-  // repeat, so the wrap always happens outside the visible arc (where cards
-  // sit at opacity 0) and never as an on-screen jump.
-  const copies = Math.max(1, Math.ceil(7 / n));
+
+  // To prevent the carousel from looking like a blocky polygon (e.g., an octagon if n=8),
+  // we clone the products to ensure the cylinder always has enough sides to look smooth.
+  // We use the global CURVE_ANGLE_STEP to figure out how many cards make a full circle.
+  const targetRingLen = Math.round(360 / CURVE_ANGLE_STEP);
+  const copies = Math.max(1, Math.round(targetRingLen / Math.max(1, n)));
   const ringLen = n * copies;
 
-  // `activeIndex` wraps modulo n, so the ring accumulates the shortest signed
-  // step instead — advancing 8 -> 0 keeps travelling forward rather than
-  // spinning the whole ring back. Adjusted during render (the sanctioned
-  // derived-state pattern) so the move and the index land in the same commit.
+  // Use the global constants for the geometry
+  const angleStep = CURVE_ANGLE_STEP;
+  const radius = CURVE_RADIUS;
+
   const [ring, setRing] = useState({ activeIndex, n, pos: activeIndex });
-  if (ring.activeIndex !== activeIndex || ring.n !== n) {
+  // A category swap replaces the whole product set, so `activeIndex` resetting
+  // to 0 shouldn't spin the ring back through every other card — it should
+  // land there directly, as if the visible cards were simply refilled.
+  const prevCategoryRef = useRef(categoryKey);
+  const [snapping, setSnapping] = useState(false);
+  if (prevCategoryRef.current !== categoryKey) {
+    prevCategoryRef.current = categoryKey;
+    if (ring.activeIndex !== activeIndex || ring.n !== n || ring.pos !== activeIndex) {
+      setRing({ activeIndex, n, pos: activeIndex });
+    }
+    if (!snapping) setSnapping(true);
+  } else if (ring.activeIndex !== activeIndex || ring.n !== n) {
     let pos = activeIndex;
     if (ring.n === n) {
       let d = (activeIndex - ring.activeIndex) % n;
@@ -894,6 +895,15 @@ function CurvedCarousel({
     setRing({ activeIndex, n, pos });
   }
   const ringPos = ring.pos;
+
+  // The snap above must land with no transition, then hand transitions back
+  // for anything after — one throwaway frame with `transition: none` is what
+  // keeps the reflow from being interpolated.
+  useEffect(() => {
+    if (!snapping) return;
+    const id = requestAnimationFrame(() => setSnapping(false));
+    return () => cancelAnimationFrame(id);
+  }, [snapping]);
 
   // Drag-to-rotate. Capture starts only after a small threshold so plain
   // clicks still reach the cards; once captured, pointer events retarget to
@@ -935,19 +945,22 @@ function CurvedCarousel({
 
   return (
     <div
-      className={`relative hidden h-[400px] w-full select-none overflow-hidden transition-opacity duration-700 ease-out xl:block ${
-        entered ? "opacity-100" : "opacity-0"
-      }`}
+      className={`relative hidden h-[400px] w-full select-none overflow-hidden transition-opacity duration-700 ease-out xl:block ${entered ? "opacity-100" : "opacity-0"
+        }`}
       style={{
-        perspective: "1400px",
+        // A deeper perspective (farther vanishing point) compresses the
+        // 3-D perspective distortion so the arc reads as a smooth cylinder
+        // rather than a series of angled planes collapsing toward a point.
+        perspective: "400px",
+        perspectiveOrigin: "50% 50%",
         transitionDelay: entered ? "250ms" : "0ms",
         cursor: dragDx !== null ? "grabbing" : undefined,
         // Fade the outermost cards into the background at both edges. A mask
         // (not an overlay) so it works over the section's gradient.
         maskImage:
-          "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
+          "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
         WebkitMaskImage:
-          "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
+          "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
       }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
@@ -959,29 +972,59 @@ function CurvedCarousel({
         const pIdx = j % n;
         const offset = wrapHalf(j - ringPos, ringLen);
         const p = offset + dragFrac;
-        const c = curveAt(p);
-        const hidden = Math.abs(p) > 2.5;
+
+        // Cards on the far back of the cylinder are hidden
+        const isBackface = Math.abs(p) > ringLen / 4;
+
+        // --- HACK 3D: Adjust angle for active card width ---
+        // The active card is 560px, inactive is 480px. Difference is 80px (40px per side).
+        // We push inactive cards away by 40px along the arc so the gap remains consistent.
+        const pushPx = 40;
+        const pushDeg = (pushPx / radius) * (180 / Math.PI);
+        // Interpolate push so it doesn't snap abruptly during drag
+        const extraAngle = Math.abs(p) >= 1 ? Math.sign(p) * pushDeg : p * pushDeg;
+
+        // Calculate curve position
+        const r = p * angleStep + extraAngle;
+
+        // Fade out cards at the edge of the visible arc to blend with the background
+        const absP = Math.abs(p);
+        let o = 1;
+        if (absP > 1.5) {
+          o = Math.max(0, 1 - (absP - 1.5));
+        }
+
         const isActive = offset === 0;
         return (
           <CurvedProductCard
             key={j}
             product={products[pIdx]}
-            outgoing={outgoingProducts?.[pIdx % outgoingProducts.length] ?? null}
+            // Indexed by `j` (this slot's stable key), not `pIdx` (the *new*
+            // category's index at this slot) — right before the swap, this
+            // same DOM node was rendering the outgoing category at `j % oldN`,
+            // so that's the photo that has to keep showing until it slides
+            // off. Re-deriving it from `pIdx` picked the wrong outgoing photo
+            // whenever the two categories don't share the same product count,
+            // which read as the old card's photo jumping right before the
+            // transition played.
+            outgoing={outgoingProducts?.[j % outgoingProducts.length] ?? null}
             copy={copyProducts[pIdx] ?? products[pIdx]}
             active={isActive}
-            hidden={hidden}
+            hidden={isBackface}
             onSelect={() => onSelect(pIdx)}
             progressRef={isActive ? progressRef : undefined}
             swap={swapStyles(swapping, swapDir, Math.min(Math.abs(offset), 2) * SWAP_STAGGER_MS, swapAlt)}
             style={{
-              transform: `translate(-50%, -50%) translateX(${c.x}px) rotateY(${c.r}deg) scale(${c.s})`,
+              // True cylinder transform
+              transform: `translate(-50%, -50%) translateZ(-${radius}px) rotateY(${r}deg) translateZ(${radius}px)`,
               zIndex: 30 - Math.round(Math.abs(p) * 10),
-              opacity: c.o,
+              opacity: isBackface ? 0 : o,
+              width: isActive ? 560 : 480,
               transition:
-                dragDx !== null
+                dragDx !== null || snapping
                   ? "none"
-                  : "transform 600ms cubic-bezier(0.4,0,0.2,1), opacity 300ms ease",
-              pointerEvents: hidden ? "none" : undefined,
+                  : "transform 600ms cubic-bezier(0.4,0,0.2,1), opacity 300ms ease, width 600ms cubic-bezier(0.4,0,0.2,1)",
+              pointerEvents: isBackface ? "none" : undefined,
             }}
           />
         );
@@ -1028,6 +1071,8 @@ export default function ProductSection({
   const live = useIsLive(sectionRef);
   const cloveARef = useRef<HTMLImageElement>(null);
   const cloveBRef = useRef<HTMLImageElement>(null);
+  const leftGlassRef = useRef<SVGImageElement>(null);
+  const rightGlassRef = useRef<SVGImageElement>(null);
 
   const categoryOf = (key: string) =>
     categories.find((c) => c.key === key) ?? categories[0];
@@ -1070,6 +1115,13 @@ export default function ProductSection({
       }
       if (cloveBRef.current) {
         cloveBRef.current.style.transform = `translate3d(-50%, ${rectTop * 0.2}px, 0)`;
+      }
+      const centerDist = rectTop + section.offsetHeight / 2 - window.innerHeight / 2;
+      if (leftGlassRef.current) {
+        leftGlassRef.current.style.transform = `translate3d(0, ${centerDist * 0.35}px, 0)`;
+      }
+      if (rightGlassRef.current) {
+        rightGlassRef.current.style.transform = `translate3d(0, ${centerDist * -0.3}px, 0)`;
       }
     };
     const onScroll = () => {
@@ -1141,6 +1193,10 @@ export default function ProductSection({
     setOutgoingCategory(activeCategory);
     setSwapAlt((a) => !a);
     setActiveCategory(key);
+    // Every category has enough products to fill the visible arc, so the new
+    // category always starts from its first card — CurvedCarousel snaps the
+    // ring there instantly (no rotation) the moment the category changes, so
+    // this reads as the cards being refilled in place, not a scroll back.
     setActiveIndex(0);
   };
 
@@ -1193,53 +1249,60 @@ export default function ProductSection({
         ]}
       />
 
-      <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-visible">
-        {/* wrapper carries the desktop position/size and a mobile-only 0.8x
-            scale from its top-left anchor; the img inside keeps filling it at
-            100% so the scroll-driven translate3d (set via ref, below) isn't
-            clobbered by a CSS scale on the same transform property. */}
-        <div className="absolute left-[calc(50%-937px)] top-[-400px] h-[1614px] w-[1178px] origin-top-left scale-[0.8] sm:scale-100">
-          <img loading="lazy" decoding="async"
-            ref={cloveARef}
-            src="/assets/product/bg-clove-a.svg"
-            alt=""
-            className="absolute inset-0 size-full opacity-80 will-change-transform"
-          />
+      {variant !== "curved" && (
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-visible">
+          {/* wrapper carries the desktop position/size and a mobile-only 0.8x
+              scale from its top-left anchor; the img inside keeps filling it at
+              100% so the scroll-driven translate3d (set via ref, below) isn't
+              clobbered by a CSS scale on the same transform property. */}
+          <div className="absolute left-[calc(50%-937px)] top-[-400px] h-[1614px] w-[1178px] origin-top-left scale-[0.8] sm:scale-100">
+            <img loading="lazy" decoding="async"
+              ref={cloveARef}
+              src="/assets/product/bg-clove-a.svg"
+              alt=""
+              className="absolute inset-0 size-full opacity-80 will-change-transform"
+            />
+          </div>
+          <div className="absolute left-[calc(50%+107px)] top-[104px] h-[1668px] w-[1218px] origin-top-left scale-[0.8] sm:left-[calc(50%+667px)] sm:top-[-96px] sm:scale-100">
+            <img loading="lazy" decoding="async"
+              ref={cloveBRef}
+              src="/assets/product/bg-clove-b.svg"
+              alt=""
+              className="absolute inset-0 size-full opacity-80 will-change-transform"
+            />
+          </div>
         </div>
-        <div className="absolute left-[calc(50%+107px)] top-[104px] h-[1668px] w-[1218px] origin-top-left scale-[0.8] sm:left-[calc(50%+667px)] sm:top-[-96px] sm:scale-100">
-          <img loading="lazy" decoding="async"
-            ref={cloveBRef}
-            src="/assets/product/bg-clove-b.svg"
-            alt=""
-            className="absolute inset-0 size-full opacity-80 will-change-transform"
-          />
-        </div>
-      </div>
+      )}
+
+      {/* Fluted glass vertical strips — above clove bg (z-0), below content (z-10) */}
+      {variant === "curved" && (
+        <>
+          <FlutedGlassOverlay side="left" fluteWidth={48} strength={90} liquidity={1} blur={0} drip={0.75} imageRef={leftGlassRef} />
+          <FlutedGlassOverlay side="right" fluteWidth={48} strength={160} liquidity={1} blur={0} drip={0.75} imageSrc="/assets/gradien-1.png" imageRef={rightGlassRef} />
+        </>
+      )}
 
       <div className="relative z-10 mx-auto w-full max-w-[560px] px-4 xl:w-[1280px] xl:max-w-none xl:px-0">
         {/* Heading — stacked on mobile. On desktop the curved layout stacks it
             too (vertical alignment, centered on the page); the accordion keeps
             the eyebrow-column + h2 side-by-side row. */}
         <div
-          className={`flex flex-col transition-all duration-700 ease-out ${
-            variant === "curved"
-              ? "xl:items-center xl:gap-5 xl:text-center"
-              : "xl:flex-row xl:gap-10"
-          } ${entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
+          className={`flex flex-col transition-all duration-700 ease-out ${variant === "curved"
+            ? "xl:items-center xl:gap-5 xl:text-center"
+            : "xl:flex-row xl:gap-10"
+            } ${entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
         >
           <div
-            className={`flex items-center py-4 xl:shrink-0 ${
-              variant === "curved" ? "" : "xl:w-[240px]"
-            }`}
+            className={`flex items-center py-4 xl:shrink-0 ${variant === "curved" ? "" : "xl:w-[240px]"
+              }`}
           >
             <p className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px] xl:text-blue-800">
               {t("eyebrow")}
             </p>
           </div>
           <h2
-            className={`text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px] ${
-              variant === "curved" ? "" : "xl:w-[560px]"
-            }`}
+            className={`text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px] ${variant === "curved" ? "" : "xl:w-[560px]"
+              }`}
           >
             {t("heading")}
           </h2>
@@ -1247,9 +1310,8 @@ export default function ProductSection({
 
         {/* Category chips — mobile only; the desktop uses the vertical text list. */}
         <div
-          className={`mt-5 flex flex-wrap gap-2 transition-all duration-700 ease-out xl:hidden ${
-            entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-          }`}
+          className={`mt-5 flex flex-wrap gap-2 transition-all duration-700 ease-out xl:hidden ${entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            }`}
           style={{ transitionDelay: entered ? "120ms" : "0ms" }}
         >
           {categories.map((cat) => {
@@ -1258,11 +1320,10 @@ export default function ProductSection({
               <button
                 key={cat.key}
                 onClick={() => selectCategory(cat.key)}
-                className={`flex h-12 items-center justify-center rounded-xl border px-[18px] text-sm transition-colors duration-200 ${
-                  isActive
-                    ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500"
-                    : "border-neutral-300 bg-white font-semibold text-neutral-700 active:bg-blue-100"
-                }`}
+                className={`flex h-12 items-center justify-center rounded-xl border px-[18px] text-sm transition-colors duration-200 ${isActive
+                  ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500"
+                  : "border-neutral-300 bg-white font-semibold text-neutral-700 active:bg-blue-100"
+                  }`}
               >
                 {cat.label}
               </button>
@@ -1275,9 +1336,8 @@ export default function ProductSection({
               the categories *as* its cards, so its old left-hand list is gone. */}
           {variant === "curved" && (
             <div
-              className={`hidden flex-wrap items-baseline justify-center gap-x-10 gap-y-2 pb-10 text-center text-blue-500 transition-all duration-700 ease-out xl:flex ${
-                entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-              }`}
+              className={`hidden flex-wrap items-baseline justify-center gap-x-10 gap-y-2 pb-10 text-center text-blue-500 transition-all duration-700 ease-out xl:flex ${entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                }`}
               style={{ transitionDelay: entered ? "150ms" : "0ms" }}
             >
               {categories.map((cat) => {
@@ -1295,9 +1355,8 @@ export default function ProductSection({
                     onClick={() => selectCategory(cat.key)}
                     onMouseEnter={() => setHoverCategory(cat.key)}
                     onMouseLeave={() => setHoverCategory(null)}
-                    className={`origin-center text-left text-[32px] leading-10 tracking-[-0.64px] transition-all duration-200 ${
-                      isActive ? "font-bold" : "font-semibold"
-                    } ${dim ? "opacity-50" : "opacity-100"}`}
+                    className={`origin-center text-left text-[32px] leading-10 tracking-[-0.64px] transition-all duration-200 ${isActive ? "font-bold" : "font-semibold"
+                      } ${dim ? "opacity-50" : "opacity-100"}`}
                     style={{ transform: `scale(${isActive ? 1 : 0.75})` }}
                   >
                     {cat.label}
@@ -1318,6 +1377,7 @@ export default function ProductSection({
                 outgoingProducts={outgoingProducts}
                 copyProducts={copyProducts}
                 activeIndex={activeIndex}
+                categoryKey={activeCategory}
                 onSelect={setActiveIndex}
                 progressRef={progressRef}
                 entered={entered}
@@ -1369,9 +1429,8 @@ export default function ProductSection({
                 the desktop accordion drops this hint + CTA. It stays on the
                 curved layout and on mobile (both still list products). */}
             <div
-              className={`mt-6 flex flex-col items-center gap-5 xl:mt-12 ${
-                variant === "curved" ? "" : "xl:hidden"
-              } ${entered ? "opacity-100" : "opacity-0"}`}
+              className={`mt-6 flex flex-col items-center gap-5 xl:mt-12 ${variant === "curved" ? "" : "xl:hidden"
+                } ${entered ? "opacity-100" : "opacity-0"}`}
               style={{
                 transition: `opacity 700ms ease-out ${entered ? "610ms" : "0ms"}`,
               }}

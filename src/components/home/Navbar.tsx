@@ -8,6 +8,7 @@ import { routing, type AppLocale } from "@/i18n/routing";
 import MegaMenuPanel, { type MegaMenuMode } from "./MegaMenuPanel";
 import MobileNav from "./MobileNav";
 import { PRELOADER_DONE_EVENT } from "@/components/Preloader";
+import type { ProductCategory } from "./product-data";
 
 /* How long the panel stays mounted after the pointer leaves, and how long the
    outgoing panel lingers when switching tabs. Both mirror globals.css. */
@@ -139,13 +140,20 @@ function LocationButton({ label, onClick }: { label: string; onClick: () => void
   );
 }
 
-export default function Navbar() {
+export default function Navbar({
+  productCategories,
+}: {
+  /** Live product lists from Supabase (see `getProductCategories`), keyed the
+      same as `MEGAMENU_STRUCTURE` — merged in so the mega menu shows every
+      product per category instead of a hardcoded handful. */
+  productCategories?: ProductCategory[];
+}) {
   const locale = useLocale() as AppLocale;
   const router = useRouter();
   const pathname = usePathname();
   const tNav = useTranslations("nav");
   const tLang = useTranslations("languages");
-  const MEGAMENU = useMegaMenu();
+  const MEGAMENU = useMegaMenu(productCategories);
   const SEGMENTS = Object.keys(tNav.raw("segments")) as string[];
   const NAV_TABS = [
     ...MEGAMENU.map((menu) => ({
