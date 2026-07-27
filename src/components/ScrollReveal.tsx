@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { PRELOADER_DONE_EVENT } from "@/components/Preloader";
+import { onPreloaderDone } from "@/components/Preloader";
 
 /**
  * Global scroll-reveal controller — the runtime half of the `[data-reveal]`
@@ -132,16 +132,13 @@ export default function ScrollReveal() {
     const arm = () => {
       teardown = setup();
     };
-    // Reduced motion already returned above, so a mounted .pre-root here means
-    // the loading page really is running and will fire the done event.
-    if (document.querySelector(".pre-root")) {
-      window.addEventListener(PRELOADER_DONE_EVENT, arm, { once: true });
-      return () => {
-        window.removeEventListener(PRELOADER_DONE_EVENT, arm);
-        teardown?.();
-      };
-    }
-    arm();
+    // Armed once the preloader is out of the way — or immediately if it already
+    // finished or never ran (reduced motion).
+    const stop = onPreloaderDone(arm);
+    return () => {
+      stop();
+      teardown?.();
+    };
     return () => teardown?.();
   }, []);
 

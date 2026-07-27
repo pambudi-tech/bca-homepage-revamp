@@ -7,7 +7,7 @@ import { useMegaMenu } from "./use-megamenu";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { routing, type AppLocale } from "@/i18n/routing";
 import type { MegaMenuCategory } from "./megamenu-data";
-import { useLenis } from "@/components/SmoothScroll";
+import { useScrollLock } from "@/components/SmoothScroll";
 
 const LOCALE_META: Record<AppLocale, { flag: string }> = {
   id: { flag: "/assets/cycle1/flag-id.svg" },
@@ -77,29 +77,24 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
   const [enterDir, setEnterDir] = useState<Dir | null>(null);
   const [exiting, setExiting] = useState<{ view: View; dir: Dir } | null>(null);
   const [mounted, setMounted] = useState(false);
-  const lenis = useLenis();
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- gates the createPortal below, which needs document.body and is unavailable during server render
     setMounted(true);
   }, []);
 
-  // Reset to the root view each time the menu opens, and lock page scroll while
-  // it's open (the menu keeps its own internal scroll via `data-lenis-prevent`).
+  useScrollLock(open);
+
+  // Reset to the root view each time the menu opens (the menu keeps its own
+  // internal scroll via `data-lenis-prevent`, unrelated to the scroll lock).
   useEffect(() => {
     if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- KNOWN cascading render: resets view state when the menu opens. Deferred rather than fixed here because changing render timing needs visual verification this repo has no tests for. See plans/008.
       setView({ type: "main" });
       setEnterDir(null);
       setExiting(null);
-      lenis?.stop();
-    } else {
-      lenis?.start();
     }
-    // Belt and braces: if this ever unmounts while open, scroll must not stay
-    // locked for the rest of the session.
-    return () => {
-      lenis?.start();
-    };
-  }, [open, lenis]);
+  }, [open]);
 
   const navigate = (to: View, dir: Dir) => {
     setExiting({ view, dir });

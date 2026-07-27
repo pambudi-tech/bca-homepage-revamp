@@ -58,6 +58,10 @@ function SearchPlaceholderCarousel({
 
   useEffect(() => {
     if (!live) return;
+    let swapTimer: ReturnType<typeof setTimeout> | undefined;
+    let rafOuter = 0;
+    let rafInner = 0;
+
     const id = setInterval(() => {
       const activeIdx = activeSlotRef.current;
       const waitingIdx = activeIdx === 0 ? 1 : 0;
@@ -70,7 +74,7 @@ function SearchPlaceholderCarousel({
       });
       activeSlotRef.current = waitingIdx;
 
-      setTimeout(() => {
+      swapTimer = setTimeout(() => {
         const text = placeholders[nextIndexRef.current % placeholders.length];
         nextIndexRef.current += 1;
         setSlots((prev) => {
@@ -78,8 +82,8 @@ function SearchPlaceholderCarousel({
           next[activeIdx] = { text, state: "waiting", instant: true };
           return next;
         });
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
+        rafOuter = requestAnimationFrame(() => {
+          rafInner = requestAnimationFrame(() => {
             setSlots((prev) => {
               const next = [...prev];
               next[activeIdx] = { ...next[activeIdx], instant: false };
@@ -89,7 +93,13 @@ function SearchPlaceholderCarousel({
         });
       }, 700);
     }, 2500);
-    return () => clearInterval(id);
+
+    return () => {
+      clearInterval(id);
+      clearTimeout(swapTimer);
+      cancelAnimationFrame(rafOuter);
+      cancelAnimationFrame(rafInner);
+    };
   }, [live, placeholders]);
 
   return (
@@ -226,6 +236,7 @@ export default function HeroWidget({
 
   // Recent searches live in localStorage; load the stored copy on mount.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reads localStorage, unavailable during server render
     setRecent(getRecentSearches());
   }, []);
 
@@ -265,7 +276,11 @@ export default function HeroWidget({
   // `display:none` wrapper, so this stays false and nothing here ever ticks.
   const live = useIsLive(rootRef);
 
+  // Resets the ticker's rotation back to sequential order whenever the kurs
+  // list itself changes — `order` is otherwise mutated in place by
+  // scrollByCard, so it can't just be derived from `kurs` every render.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- KNOWN cascading render: re-derives `order` from the `kurs` prop; a no-op safety net in practice, since `kurs` never changes identity after mount. Deferred rather than fixed here because changing render timing needs visual verification this repo has no tests for. See plans/008.
     setOrder(kurs.map((_, i) => i));
   }, [kurs]);
 

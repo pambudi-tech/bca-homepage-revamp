@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { useLenis } from "@/components/SmoothScroll";
+import { useLenis, useScrollLock } from "@/components/SmoothScroll";
 
 /**
  * Intro loading page — Figma "Loading Page" (BCA.co.id Design Exploration,
@@ -36,6 +36,26 @@ export const PRELOADER_DONE_EVENT = "bca:preloader-done";
 // already fire?" instead of only being able to subscribe to "will it fire?".
 let preloaderHasFinished = false;
 export const hasPreloaderFinished = () => preloaderHasFinished;
+
+/**
+ * Runs `callback` once the intro preloader has finished — immediately if it
+ * already has. Returns an unsubscribe function suitable for returning straight
+ * from a `useEffect`.
+ *
+ * Prefer this over subscribing to PRELOADER_DONE_EVENT by hand. The event is
+ * one-shot and fires at the *start* of the exit animation, while `.pre-root`
+ * stays mounted for another ~1.35s, so "is .pre-root in the DOM?" is not a
+ * usable test for "will the event still fire?" — a component mounting inside
+ * that window would wait forever.
+ */
+export function onPreloaderDone(callback: () => void): () => void {
+  if (!document.querySelector(".pre-root") || preloaderHasFinished) {
+    callback();
+    return () => {};
+  }
+  window.addEventListener(PRELOADER_DONE_EVENT, callback, { once: true });
+  return () => window.removeEventListener(PRELOADER_DONE_EVENT, callback);
+}
 
 /** Shortest time the loading page stays up, so a cached revisit doesn't blink. */
 const MIN_VISIBLE_MS = 700;
@@ -143,19 +163,16 @@ export default function Preloader() {
   const timings1 = allTimings.slice(0, words1.length);
   const timings2 = allTimings.slice(words1.length);
 
-  // Park Lenis while the loading page is up. The cleanup restarts it as soon
-  // as the phase leaves "loading" — scrolling during the exit is fine, the
-  // homepage is already there underneath.
+  // Park Lenis while the loading page is up — scrolling during the exit is
+  // fine, the homepage is already there underneath.
+  useScrollLock(phase === "loading");
+
+  // The document sat at `overflow: hidden` for the whole hold, so the scroll
+  // limit Lenis cached is the clamped one. Without this it stops short of the
+  // real page height and scrolling feels stuck once the lock lifts.
   useEffect(() => {
-    if (!lenis || phase !== "loading") return;
-    lenis.stop();
-    return () => {
-      lenis.start();
-      // The document sat at `overflow: hidden` for the whole hold, so the
-      // scroll limit Lenis cached is the clamped one. Without this it stops
-      // short of the real page height and scrolling feels stuck.
-      lenis.resize();
-    };
+    if (!lenis || phase === "loading") return;
+    lenis.resize();
   }, [lenis, phase]);
 
   useEffect(() => {

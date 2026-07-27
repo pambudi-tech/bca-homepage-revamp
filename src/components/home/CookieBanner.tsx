@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { PRELOADER_DONE_EVENT } from "@/components/Preloader";
+import { onPreloaderDone } from "@/components/Preloader";
 
 const STORAGE_KEY = "bca-cookie-consent";
 
@@ -44,26 +44,21 @@ export default function CookieBanner() {
 
   useEffect(() => {
     if (hasDecided()) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- gated on localStorage via hasDecided(), unavailable during server render
     setMounted(true);
     // Wait for the preloader curtain to start lifting before this fades in —
     // otherwise it flashes in underneath the curtain on slower loads. The
     // extra beat lands it just after the hero. If the preloader already left
     // (reduced motion, or mounted after the fact), just show it after a
     // short settle.
-    const reveal = () => setTimeout(() => setShown(true), 400);
     let id: ReturnType<typeof setTimeout>;
-    if (document.querySelector(".pre-root")) {
-      const onDone = () => {
-        id = reveal();
-      };
-      window.addEventListener(PRELOADER_DONE_EVENT, onDone, { once: true });
-      return () => {
-        window.removeEventListener(PRELOADER_DONE_EVENT, onDone);
-        clearTimeout(id);
-      };
-    }
-    id = reveal();
-    return () => clearTimeout(id);
+    const stop = onPreloaderDone(() => {
+      id = setTimeout(() => setShown(true), 400);
+    });
+    return () => {
+      stop();
+      clearTimeout(id);
+    };
   }, []);
 
   if (!mounted) return null;
