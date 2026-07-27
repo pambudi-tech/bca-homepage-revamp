@@ -54,7 +54,7 @@ export default function MegaMenuPanel({
                 </button>
               ))}
             </div>
-            <div className="mm-item p-4" style={{ "--mm-i": category.products.length } as CSSProperties}>
+            <div className="mm-item mt-auto p-4" style={{ "--mm-i": category.products.length } as CSSProperties}>
               <button className="flex items-center gap-0.5 text-base font-semibold leading-4 text-blue-500 transition-transform duration-200 hover:translate-x-0.5">
                 {category.ctaLabel}
                 <ArrowRight />

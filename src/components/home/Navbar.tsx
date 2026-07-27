@@ -8,6 +8,7 @@ import { routing, type AppLocale } from "@/i18n/routing";
 import MegaMenuPanel, { type MegaMenuMode } from "./MegaMenuPanel";
 import MobileNav from "./MobileNav";
 import { onPreloaderDone } from "@/components/Preloader";
+import { HALO_BCA_OPEN_EVENT, HelpIcon } from "./HaloBcaChat";
 import type { ProductCategory } from "./product-data";
 
 /* How long the panel stays mounted after the pointer leaves, and how long the
@@ -45,20 +46,26 @@ function LinkLabel({ label, hover }: { label: string; hover: boolean }) {
   );
 }
 
-function NavbarLink({ label, href }: { label: string; href: string }) {
+function NavbarLink({
+  label,
+  href,
+  onClick,
+}: {
+  label: string;
+  href?: string;
+  onClick?: () => void;
+}) {
   const [hover, setHover] = useState(false);
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      className={`flex h-10 items-center justify-center gap-0.5 rounded-full border px-4 backdrop-blur-[12px] transition-colors duration-300 ${hover
-          ? "border-white/20 bg-[rgba(18,20,23,0.5)]"
-          : "border-white/25 bg-[rgba(5,13,25,0.1)]"
-        }`}
-    >
+  const sharedProps = {
+    onMouseEnter: () => setHover(true),
+    onMouseLeave: () => setHover(false),
+    className: `flex h-10 items-center justify-center gap-0.5 rounded-full border px-4 backdrop-blur-[12px] transition-colors duration-300 ${hover
+        ? "border-white/20 bg-[rgba(18,20,23,0.5)]"
+        : "border-white/25 bg-[rgba(5,13,25,0.1)]"
+      }`,
+  };
+  const content = (
+    <>
       <LinkLabel label={label} hover={hover} />
       <span
         className={`grid overflow-hidden transition-[grid-template-columns] duration-300 ${hover ? "grid-cols-[1fr]" : "grid-cols-[0fr]"
@@ -68,7 +75,29 @@ function NavbarLink({ label, href }: { label: string; href: string }) {
           <img src="/assets/navbar/arrow-right.svg" alt="" className="size-5" />
         </span>
       </span>
-    </a>
+    </>
+  );
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" {...sharedProps}>
+        {content}
+      </a>
+    );
+  }
+  return (
+    <button onClick={onClick} {...sharedProps}>
+      {content}
+    </button>
+  );
+}
+
+/** Same up/down expand mark as MobileMenu.tsx's segment picker pill. */
+function ExpandIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`shrink-0 ${className}`} aria-hidden>
+      <path d="m8 9 4-4 4 4" />
+      <path d="m8 15 4 4 4-4" />
+    </svg>
   );
 }
 
@@ -97,7 +126,7 @@ function SearchButton({ label }: { label: string }) {
   );
 }
 
-/** Pin glyph shared by the desktop `LocationButton` and the mobile navbar's
+/** Pin glyph shared by the desktop `IconLinkButton` and the mobile navbar's
  *  icon-only equivalent — both scroll to the same `#lokasi` section. */
 export function LocationIcon({ className = "size-6 shrink-0 text-neutral-100 opacity-80" }: { className?: string }) {
   return (
@@ -114,7 +143,15 @@ export function LocationIcon({ className = "size-6 shrink-0 text-neutral-100 opa
   );
 }
 
-function LocationButton({ label, onClick }: { label: string; onClick: () => void }) {
+function IconLinkButton({
+  label,
+  icon,
+  onClick,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  onClick: () => void;
+}) {
   const [hover, setHover] = useState(false);
   return (
     <button
@@ -127,7 +164,7 @@ function LocationButton({ label, onClick }: { label: string; onClick: () => void
           : "w-10 justify-center border-white/25 bg-[rgba(5,13,25,0.1)] px-2"
         }`}
     >
-      <LocationIcon />
+      {icon}
       <span
         className={`grid overflow-hidden transition-[grid-template-columns] duration-300 ${hover ? "grid-cols-[1fr]" : "grid-cols-[0fr]"
           }`}
@@ -153,24 +190,21 @@ export default function Navbar({
   const pathname = usePathname();
   const tNav = useTranslations("nav");
   const tLang = useTranslations("languages");
-  const MEGAMENU = useMegaMenu(productCategories);
   const SEGMENTS = Object.keys(tNav.raw("segments")) as string[];
-  const NAV_TABS = [
-    ...MEGAMENU.map((menu) => ({
-      key: menu.key,
-      label: menu.label,
-      width: menu.width,
-      chevron: menu.chevron ?? true,
-    })),
-    { key: "Promo", label: tNav("promo"), width: undefined, chevron: false },
-  ];
+  const MEGAMENU = useMegaMenu(productCategories);
+  const NAV_TABS = MEGAMENU.map((menu) => ({
+    key: menu.key,
+    label: menu.label,
+    width: menu.width,
+    chevron: menu.chevron ?? true,
+  }));
   const otherLocales = routing.locales.filter((l) => l !== locale);
 
   const switchLocale = (nextLocale: AppLocale) => {
     router.replace(pathname, { locale: nextLocale });
   };
 
-  const [activeSegment, setActiveSegment] = useState("Individu");
+  const [activeSegment, setActiveSegment] = useState(SEGMENTS[0]);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   /* What's actually on screen. It lags behind `openMenu` so the panel can play
      its close animation before unmounting, and so the tab we moved away from
@@ -184,11 +218,22 @@ export default function Navbar({
   const [langOpen, setLangOpen] = useState(false);
   const [langHover, setLangHover] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
+  const [segmentOpen, setSegmentOpen] = useState(false);
+  const [segmentHover, setSegmentHover] = useState(false);
+  const segmentRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastScrollY = useRef(0);
 
   const scrollToLocation = () => {
     document.getElementById("lokasi")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const scrollToPromo = () => {
+    document.getElementById("promo")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const openHaloBca = () => {
+    window.dispatchEvent(new CustomEvent(HALO_BCA_OPEN_EVENT));
   };
 
   useEffect(() => {
@@ -221,6 +266,9 @@ export default function Navbar({
     const onClickOutside = (e: MouseEvent) => {
       if (langRef.current && !langRef.current.contains(e.target as Node)) {
         setLangOpen(false);
+      }
+      if (segmentRef.current && !segmentRef.current.contains(e.target as Node)) {
+        setSegmentOpen(false);
       }
     };
     document.addEventListener("mousedown", onClickOutside);
@@ -348,28 +396,69 @@ export default function Navbar({
                 <div className="flex items-center gap-5">
                   <img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-9 w-[114.75px]" />
                   <div className="flex items-center gap-2">
-                    <div className="flex items-start gap-1 rounded-full border border-white/15 bg-[rgba(5,13,25,0.2)] p-1 backdrop-blur-[12px]">
-                      {SEGMENTS.map((segment) => (
-                        <button
-                          key={segment}
-                          onClick={() => setActiveSegment(segment)}
-                          className={`flex h-8 w-24 items-center justify-center rounded-full text-sm font-semibold text-white transition-colors duration-200 ${segment === activeSegment
-                              ? "bg-blue-500"
-                              : "opacity-80 hover:bg-white/10"
+                    <div ref={segmentRef} className="relative">
+                      <button
+                        onClick={() => setSegmentOpen((v) => !v)}
+                        onMouseEnter={() => setSegmentHover(true)}
+                        onMouseLeave={() => setSegmentHover(false)}
+                        className={`flex h-10 cursor-pointer items-center gap-2 rounded-full border pl-4 pr-1 backdrop-blur-[4px] transition-colors ${segmentHover || segmentOpen
+                            ? "border-neutral-300 bg-white"
+                            : "border-white/25 bg-[rgba(5,13,25,0.1)]"
+                          }`}
+                      >
+                        <span
+                          className={`whitespace-nowrap text-sm font-semibold ${segmentHover || segmentOpen ? "text-neutral-900" : "text-white"
                             }`}
                         >
-                          {tNav(`segments.${segment}`)}
-                        </button>
-                      ))}
+                          {tNav("andaBerada")}
+                        </span>
+                        <span className="flex h-8 items-center gap-1 whitespace-nowrap rounded-full bg-blue-500 pl-3 pr-2 text-sm font-semibold text-white">
+                          {tNav(`segments.${activeSegment}`)}
+                          <ExpandIcon className="size-4" />
+                        </span>
+                      </button>
+
+                      {segmentOpen && (
+                        <div className="absolute right-0 top-[calc(100%+8px)] z-40 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-[0px_8px_16px_0px_rgba(0,0,0,0.10),0px_20px_32px_0px_rgba(0,0,0,0.12)]">
+                          {SEGMENTS.filter((segment) => segment !== activeSegment).map((segment) => (
+                            <button
+                              key={segment}
+                              onClick={() => {
+                                setActiveSegment(segment);
+                                setSegmentOpen(false);
+                              }}
+                              className="group flex w-[148px] items-center gap-2 p-4 text-left text-neutral-900 transition-colors hover:bg-cyan-100 hover:text-blue-500"
+                            >
+                              <span className="flex-1 text-base font-semibold">
+                                {tNav(`segments.${segment}`)}
+                              </span>
+                              <svg viewBox="0 0 20 20" fill="none" className="size-5 shrink-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100" aria-hidden>
+                                <path
+                                  d="M9.29272 3.45947C9.68319 3.069 10.3162 3.06911 10.7068 3.45947L16.5408 9.29248C16.9312 9.6829 16.931 10.316 16.5408 10.7065L10.7068 16.5405C10.3162 16.9307 9.68314 16.9309 9.29272 16.5405C8.90231 16.1501 8.90253 15.517 9.29272 15.1265L13.4197 10.9995H4.16675C3.61446 10.9995 3.16675 10.5518 3.16675 9.99951C3.16692 9.44738 3.61457 8.99951 4.16675 8.99951H13.4197L9.29272 4.87354C8.90242 4.48305 8.90242 3.84996 9.29272 3.45947Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </button>
+                          ))}
+                        </div>
+                      )}
                     </div>
+
                     <NavbarLink label={tNav("tentangBca")} href="https://www.bca.co.id/id/tentang-bca" />
                     <NavbarLink label={tNav("karir")} href="https://karir.bca.co.id/" />
+                    <NavbarLink label={tNav("pengajuan")} href="https://www.bca.co.id/id/Forms/webform-bca" />
+                    <NavbarLink label={tNav("promo")} onClick={scrollToPromo} />
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <SearchButton label={tNav("search")} />
-                  <LocationButton label={tNav("lokasiBca")} onClick={scrollToLocation} />
+                  <IconLinkButton label={tNav("lokasiBca")} icon={<LocationIcon />} onClick={scrollToLocation} />
+                  <IconLinkButton
+                    label={tNav("haloBca")}
+                    icon={<HelpIcon className="size-6 shrink-0 text-neutral-100 opacity-80" />}
+                    onClick={openHaloBca}
+                  />
 
                   <div ref={langRef} className="relative">
                     <button
@@ -474,24 +563,6 @@ export default function Navbar({
                       );
                     })}
                   </div>
-                  <a
-                    href="https://www.bca.co.id/id/Forms/webform-bca"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`group flex items-center gap-1 whitespace-nowrap px-4 text-sm font-semibold ${menuOpen ? "text-neutral-800" : "text-white/80"
-                      }`}
-                  >
-                    {tNav("webformBca")}
-                    <span className="grid grid-cols-[0fr] overflow-hidden transition-[grid-template-columns] duration-300 group-hover:grid-cols-[1fr]">
-                      <span className="overflow-hidden">
-                        <img
-                          src="/assets/navbar/arrow-right.svg"
-                          alt=""
-                          className={`size-4 ${menuOpen ? "brightness-0" : ""}`}
-                        />
-                      </span>
-                    </span>
-                  </a>
                 </div>
               </div>
 

@@ -3,6 +3,10 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { MOBILE_MENU_EVENT } from "./MobileNav";
+
+/** Lets other chrome (the desktop navbar's "Halo BCA" icon) open this panel
+    without lifting its state up — dispatch this event from anywhere. */
+export const HALO_BCA_OPEN_EVENT = "bca:halo-bca-open";
 import { onPreloaderDone } from "@/components/Preloader";
 
 // Google's published test key — always renders and always validates, but is
@@ -76,7 +80,7 @@ function useRecaptcha(containerRef: React.RefObject<HTMLDivElement | null>, acti
 
 /** Inline, not <img> — the icon has to inherit the button's text color so the
     fill can swap along with the label on hover/open. */
-function HelpIcon({ className }: { className?: string }) {
+export function HelpIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden className={className}>
       <path
@@ -272,6 +276,12 @@ export default function HaloBcaChat() {
     return () => window.removeEventListener(MOBILE_MENU_EVENT, onMenuToggle);
   }, []);
 
+  useEffect(() => {
+    const onOpenRequest = () => setOpen(true);
+    window.addEventListener(HALO_BCA_OPEN_EVENT, onOpenRequest);
+    return () => window.removeEventListener(HALO_BCA_OPEN_EVENT, onOpenRequest);
+  }, []);
+
   const DISMISS_PX = 96;
 
   const onHandlePointerDown = (e: React.PointerEvent) => {
@@ -449,12 +459,14 @@ export default function HaloBcaChat() {
         // the button reads as active even when the pointer moves away.
         data-open={open}
         aria-label={open ? t("close") : t("label")}
-        className={`flex items-center gap-2 rounded-full border border-neutral-300 bg-neutral-100 p-3.5 text-blue-500 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-[background-color,color,transform] duration-500 ease-out hover:bg-blue-500 hover:text-neutral-100 data-[open=true]:bg-blue-500 data-[open=true]:text-neutral-100 xl:px-5 xl:py-3 ${ready ? "translate-y-0" : "translate-y-4"}`}
+        className={`group flex items-center gap-2 rounded-full border border-neutral-300 bg-neutral-100 p-3.5 text-blue-500 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-[background-color,color,transform] duration-500 ease-out hover:bg-blue-500 hover:text-neutral-100 data-[open=true]:bg-blue-500 data-[open=true]:text-neutral-100 xl:px-3.5 ${ready ? "translate-y-0" : "translate-y-4"}`}
       >
         {/* Swaps to the mobile-menu's X once open — same icon, same
             second-click-to-close affordance. */}
         {open ? <CloseIcon className="size-6" /> : <HelpIcon className="size-6" />}
-        <span className="hidden text-sm font-bold xl:inline">{t("label")}</span>
+        <span className="hidden grid-cols-[0fr] overflow-hidden whitespace-nowrap transition-[grid-template-columns] duration-300 xl:grid xl:group-hover:grid-cols-[1fr]">
+          <span className="overflow-hidden text-sm font-bold">{t("label")}</span>
+        </span>
       </button>
     </div>
   );

@@ -197,6 +197,7 @@ export default function HeroWidget({
   const [searchFocused, setSearchFocused] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [hoveredAction, setHoveredAction] = useState<number | null>(null);
+  const [initialPromoHover, setInitialPromoHover] = useState(false);
   const [recent, setRecent] = useState<string[]>([]);
   const [tickerPaused, setTickerPaused] = useState(false);
   const [order, setOrder] = useState<number[]>(() => kurs.map((_, i) => i));
@@ -435,40 +436,84 @@ export default function HeroWidget({
 
         <div className="absolute top-[96px] z-20 flex w-full flex-col items-start px-5">
           {variant === "initial" ? (
+            // Same seamless-tile language as the "final" phase's quick-action
+            // rail (single bg-white rounded-3xl, hairline outlines between
+            // tiles, rounded only at the outer edges) — just two tiles, and
+            // Login's destinations are permanently expanded rather than a
+            // click-to-open panel.
             <div
-              className="flex w-full items-center gap-8 rounded-3xl p-2"
-              style={{
-                background: "#ffffff",
-                backdropFilter: "blur(6px)",
-                WebkitBackdropFilter: "blur(6px)",
-              }}
+              className="grid w-full items-stretch rounded-3xl bg-white"
+              style={{ gridTemplateColumns: "minmax(0,1fr) 248px" }}
             >
-              <div className="flex shrink-0 items-center gap-4 px-2">
+              {/* Login info + destinations share one cell with no divider
+                  between them — only the Promo tile beside it gets one. */}
+              <div className="flex h-20 min-w-0 items-center gap-4 rounded-l-3xl py-5 pr-3 pl-4">
                 <img src="/assets/quick-action/login.svg" alt="" className="size-10 shrink-0" />
-                <div className="flex flex-col items-start gap-1 whitespace-nowrap">
+                <div className="flex shrink-0 flex-col items-start gap-1 whitespace-nowrap">
                   <p className="text-base font-bold text-neutral-800">{t("loginCepat.title")}</p>
                   <p className="text-sm font-normal text-neutral-700">{t("loginCepat.subtitle")}</p>
                 </div>
+
+                <div className="flex h-16 min-w-0 flex-1 items-center gap-2 pl-4">
+                  {LOGIN_DESTINATIONS.map((dest) => (
+                    <a
+                      key={dest.label}
+                      href={dest.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/login relative flex h-16 min-w-0 flex-1 items-center justify-center gap-4 rounded-2xl border border-neutral-300 bg-white px-4 transition-colors duration-200 hover:border-blue-300 hover:bg-cyan-100"
+                    >
+                      {/* Always in the markup — visibility is CSS-only (opacity),
+                          so this copy is crawlable, not gated behind a hover-only mount. */}
+                      <div className="pointer-events-none absolute bottom-[calc(100%+16px)] left-1/2 z-30 w-56 -translate-x-1/2 rounded-2xl border border-neutral-200 bg-white p-4 text-left opacity-0 shadow-[0px_8px_16px_0px_rgba(0,0,0,0.10),0px_20px_32px_0px_rgba(0,0,0,0.12)] transition-opacity duration-200 group-hover/login:opacity-100">
+                        <p className="text-sm font-bold text-neutral-800">{dest.label}</p>
+                        <p className="mt-1 text-sm font-normal text-neutral-600">{dest.description}</p>
+                        {/* Message-bubble tail — rotated square with only its
+                            leading corner rounded, so the tip reads as soft
+                            rather than a sharp triangle point. */}
+                        <span
+                          aria-hidden
+                          className="absolute -bottom-1.5 left-1/2 size-3 -translate-x-1/2 rotate-45 rounded-br-[4px] border-r border-b border-neutral-200 bg-white"
+                        />
+                      </div>
+                      <span className="flex size-10 shrink-0 items-center justify-center">
+                        <img src={dest.icon} alt="" className={`${dest.iconClass} object-contain`} />
+                      </span>
+                      {/* Fills the remaining width so long labels wrap
+                          instead of overflowing the card. */}
+                      <span className="min-w-0 flex-1 text-sm font-semibold text-neutral-800">
+                        {dest.label}
+                      </span>
+                      <ExternalArrow />
+                    </a>
+                  ))}
+                </div>
               </div>
-              <div className="flex min-w-0 flex-1 items-center gap-2">
-                {LOGIN_DESTINATIONS.map((dest) => (
-                  <a
-                    key={dest.label}
-                    href={dest.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group/login flex h-16 min-w-0 flex-1 items-center justify-center gap-4 rounded-2xl border border-neutral-300 bg-white px-4 transition-colors duration-200 hover:border-blue-300 hover:bg-cyan-100"
-                  >
-                    <span className="flex size-10 shrink-0 items-center justify-center">
-                      <img src={dest.icon} alt="" className={`${dest.iconClass} object-contain`} />
-                    </span>
-                    <span className="text-sm font-semibold whitespace-nowrap text-neutral-800">
-                      {dest.label}
-                    </span>
-                    <ExternalArrow />
-                  </a>
-                ))}
-              </div>
+
+              {/* Same spec as the "final" phase's Promo quick-action tile —
+                  248px wide, confetti-on-hover. */}
+              <button
+                type="button"
+                onClick={() => {
+                  if (lenis) lenis.scrollTo("#promo", { offset: 0, duration: 1 });
+                  else document.querySelector("#promo")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                onMouseEnter={() => setInitialPromoHover(true)}
+                onMouseLeave={() => setInitialPromoHover(false)}
+                className="relative flex h-20 min-w-0 shrink-0 cursor-pointer items-center gap-4 overflow-hidden rounded-r-3xl px-4 py-5 text-left transition-colors duration-300 ease-in-out hover:bg-cyan-100"
+                style={{ outline: "1px solid #e9ecef", outlineOffset: "-0.5px" }}
+              >
+                {initialPromoHover && <Confetti />}
+                <img
+                  src="/assets/quick-action/discount-shape.svg"
+                  alt=""
+                  className="relative z-10 size-10 shrink-0"
+                />
+                <div className="relative z-10 flex min-w-0 flex-col items-start gap-1 whitespace-nowrap">
+                  <p className="text-base font-bold text-neutral-800">{t("quickActions.promo.title")}</p>
+                  <p className="text-sm font-normal text-neutral-700">{t("quickActions.promo.subtitle")}</p>
+                </div>
+              </button>
             </div>
           ) : (
           <div

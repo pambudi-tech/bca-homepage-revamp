@@ -152,7 +152,9 @@
     "karir": "Careers",
     "search": "Search",
     "lokasiBca": "BCA Location",
-    "webformBca": "BCA Webform"
+    "haloBca": "Halo BCA",
+    "pengajuan": "Apply",
+    "andaBerada": "You are in BCA"
   },
   "mobileMenu": {
     "tutupMenu": "Close menu",

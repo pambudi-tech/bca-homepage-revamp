@@ -152,7 +152,9 @@
     "karir": "招聘",
     "search": "搜索",
     "lokasiBca": "BCA网点位置",
-    "webformBca": "BCA网络表单"
+    "haloBca": "Halo BCA",
+    "pengajuan": "申请",
+    "andaBerada": "您正在浏览 BCA"
   },
   "mobileMenu": {
     "tutupMenu": "关闭菜单",
