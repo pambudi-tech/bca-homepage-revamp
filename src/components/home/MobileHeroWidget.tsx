@@ -610,9 +610,14 @@ export default function MobileHeroWidget({
                   backgroundColor: loginOpen ? "#e6f3ff" : "#ffffff",
                 }}
               >
+                {/* `inert` tracks the same condition as the opacity class:
+                    `opacity-0 pointer-events-none` hides this from the eye and
+                    the mouse, but not from the keyboard — without this, Tab
+                    still lands on a fully transparent button. */}
                 <button
                   onClick={toggleLogin}
                   aria-expanded={loginOpen}
+                  inert={loginOpen}
                   className={`absolute inset-y-0 left-0 flex w-full flex-col items-start justify-center gap-2 p-[14px] text-left transition-opacity duration-200 ${loginOpen ? "pointer-events-none opacity-0" : "opacity-100 delay-100"
                     }`}
                 >
@@ -629,6 +634,7 @@ export default function MobileHeroWidget({
 
                 <div
                   ref={loginPanelRef}
+                  inert={!loginOpen}
                   /* `top-0` rather than `inset-y-0`: the panel sizes to
                      its own content so its height can be measured, and
                      the rail follows that instead of the other way
