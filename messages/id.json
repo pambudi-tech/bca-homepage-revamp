@@ -158,6 +158,8 @@
     "andaBerada": "Anda berada di BCA",
     "kembaliKe": "Kembali ke BCA",
     "pilihSegmen": "Pilih Segmen",
+    "primary": "Navigasi utama",
+    "skipToContent": "Lompat ke konten utama",
     "aboutTabs": {
       "korporasi": "Korporasi",
       "hubunganInvestor": "Hubungan Investor",
@@ -172,7 +174,8 @@
     "bukaMenu": "Buka menu",
     "bahasa": "Bahasa",
     "pilihSegmen": "Pilih Segmen Anda",
-    "kembali": "Kembali"
+    "kembali": "Kembali",
+    "menuLabel": "Menu utama"
   },
   "cookieBanner": {
     "ariaLabel": "Pemberitahuan cookie",

@@ -37,7 +37,8 @@ export default function MobileNav({
 
   return (
     <>
-    <div
+    <nav
+      aria-label={tNav("primary")}
       className={`pre-nav fixed left-0 right-0 top-0 z-30 flex h-16 items-center justify-between px-4 transition-[transform,translate,background-color] duration-300 xl:hidden ${
         hidden && !menuOpen ? "-translate-y-full" : "translate-y-0"
       } ${scrolled || menuOpen ? "bg-[rgba(18,20,23,0.95)]" : ""}`}
@@ -65,7 +66,7 @@ export default function MobileNav({
           <img src="/assets/cycle1/outline-menu.svg" alt="" className="size-6" />
         </button>
       </div>
-    </div>
+    </nav>
 
     <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
     </>

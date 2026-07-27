@@ -408,6 +408,7 @@ export default function HeroWidget({
               <div className="relative flex h-10 min-w-0 flex-1 items-center">
                 <input
                   type="text"
+                  aria-label={tNav("search")}
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   onFocus={focusSearch}
@@ -592,6 +593,7 @@ export default function HeroWidget({
             })}
 
             <div
+              inert={!loginOpen}
               className={`flex h-20 min-w-0 items-center gap-3 overflow-hidden px-3 transition-[clip-path,opacity] duration-300 ease-in-out ${loginOpen ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
                 }`}
               style={{

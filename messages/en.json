@@ -158,6 +158,8 @@
     "andaBerada": "You are in BCA",
     "kembaliKe": "Back to BCA",
     "pilihSegmen": "Select Segment",
+    "primary": "Main navigation",
+    "skipToContent": "Skip to main content",
     "aboutTabs": {
       "korporasi": "Corporate",
       "hubunganInvestor": "Investor Relations",
@@ -172,7 +174,8 @@
     "bukaMenu": "Open menu",
     "bahasa": "Language",
     "pilihSegmen": "Choose Your Segment",
-    "kembali": "Back"
+    "kembali": "Back",
+    "menuLabel": "Main menu"
   },
   "cookieBanner": {
     "ariaLabel": "Cookie notice",
