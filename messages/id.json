@@ -72,7 +72,26 @@
     "noResultsHint": "Coba kata kunci lain atau lihat semua hasil di bawah.",
     "viewAllResults": "Lihat semua hasil",
     "needHelp": "Butuh bantuan?",
-    "visitHelpCenter": "Kunjungi Pusat Bantuan"
+    "visitHelpCenter": "Kunjungi Pusat Bantuan",
+    "categories": {
+      "produk-layanan": "Produk & Layanan",
+      "artikel": "Artikel",
+      "promo": "Promo"
+    },
+    "popular": {
+      "openAccount": "Buka Rekening",
+      "exchangeRate": "Kurs Hari Ini",
+      "creditCardPromo": "Promo Kartu Kredit",
+      "mortgage": "KPR BCA",
+      "activateMybca": "Aktivasi myBCA",
+      "atmLocation": "Lokasi ATM"
+    },
+    "topics": {
+      "topic-rekening": "Buka rekening & tabungan",
+      "topic-kartu": "Kartu kredit & Paylater",
+      "topic-kredit": "KPR & kredit kendaraan",
+      "topic-investasi": "Investasi & reksa dana"
+    }
   },
   "scrollCue": {
     "keepGoing": "Terus melangkah",
@@ -105,7 +124,16 @@
     "heading": "Apresiasi Terbaik untuk Menemani Setiap Momen Berharga",
     "viewMore": "Lihat 200+ Promo Lainnya",
     "prevSlide": "Event sebelumnya",
-    "nextSlide": "Event berikutnya"
+    "nextSlide": "Event berikutnya",
+    "badge": {
+      "almostEnd": "Segera Berakhir!",
+      "popular": "Populer"
+    },
+    "timestamp": {
+      "expired": "Promo Berakhir",
+      "hoursLeft": "Berakhir dalam {hours} jam",
+      "until": "Hingga {date}"
+    }
   },
   "soliprio": {
     "title": "Layanan Prestisius dan Personal, Hanya untuk Anda.",

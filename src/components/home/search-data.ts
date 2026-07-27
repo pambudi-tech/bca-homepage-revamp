@@ -59,15 +59,13 @@ export type SearchRecommendations = {
   information: InfoRec[];
 };
 
-// Human label + badge palette per information category. Colors come straight
-// from the Figma "Categorical Badge" tokens.
-export const INFO_CATEGORY_META: Record<
-  InfoCategory,
-  { label: string; bg: string; text: string }
-> = {
-  "produk-layanan": { label: "Produk & Layanan", bg: "#ccfffe", text: "#188b88" },
-  artikel: { label: "Artikel", bg: "#f4e5f6", text: "#70257c" },
-  promo: { label: "Promo", bg: "#ffead1", text: "#c44d00" },
+// Badge palette per information category — the label is translated in
+// SearchRecommendation via `t(\`categories.${category}\`)`. Colors come
+// straight from the Figma "Categorical Badge" tokens.
+export const INFO_CATEGORY_STYLE: Record<InfoCategory, { bg: string; text: string }> = {
+  "produk-layanan": { bg: "#ccfffe", text: "#188b88" },
+  artikel: { bg: "#f4e5f6", text: "#70257c" },
+  promo: { bg: "#ffead1", text: "#c44d00" },
 };
 
 /* ---------------------------------------------------------------------------
@@ -1290,24 +1288,32 @@ export function bcaSearchResultUrl(keyword: string): string {
  * state: it guides the user instead of showing filtered products/info.
  * ------------------------------------------------------------------------- */
 
-/** Trending keyword chips. Clicking one fills the field and runs the search. */
-export const POPULAR_SEARCHES: string[] = [
-  "Buka Rekening",
-  "Kurs Hari Ini",
-  "Promo Kartu Kredit",
-  "KPR BCA",
-  "Aktivasi myBCA",
-  "Lokasi ATM",
+/**
+ * Trending keyword chips. Clicking one fills the field and runs the search
+ * against `keyword` — the label shown is translated
+ * (`t(\`popular.${id}\`)` in SearchRecommendation), but `keyword` is matched
+ * against the Indonesian-only corpus below and must stay Indonesian in every
+ * locale or the chip would return nothing on `/en` and `/zh`.
+ */
+export type PopularSearch = { id: string; keyword: string };
+
+export const POPULAR_SEARCHES: PopularSearch[] = [
+  { id: "openAccount", keyword: "Buka Rekening" },
+  { id: "exchangeRate", keyword: "Kurs Hari Ini" },
+  { id: "creditCardPromo", keyword: "Promo Kartu Kredit" },
+  { id: "mortgage", keyword: "KPR BCA" },
+  { id: "activateMybca", keyword: "Aktivasi myBCA" },
+  { id: "atmLocation", keyword: "Lokasi ATM" },
 ];
 
 /** Guided entry points — richer than a bare chip, but capped at 4 to stay light. */
-export type PopularTopic = { id: string; label: string; keyword: string; icon: ProductIcon };
+export type PopularTopic = { id: string; keyword: string; icon: ProductIcon };
 
 export const POPULAR_TOPICS: PopularTopic[] = [
-  { id: "topic-rekening", label: "Buka rekening & tabungan", keyword: "rekening", icon: "wallet" },
-  { id: "topic-kartu", label: "Kartu kredit & Paylater", keyword: "kartu", icon: "card" },
-  { id: "topic-kredit", label: "KPR & kredit kendaraan", keyword: "kpr", icon: "house" },
-  { id: "topic-investasi", label: "Investasi & reksa dana", keyword: "investasi", icon: "chart" },
+  { id: "topic-rekening", keyword: "rekening", icon: "wallet" },
+  { id: "topic-kartu", keyword: "kartu", icon: "card" },
+  { id: "topic-kredit", keyword: "kpr", icon: "house" },
+  { id: "topic-investasi", keyword: "investasi", icon: "chart" },
 ];
 
 /* ---------------------------------------------------------------------------

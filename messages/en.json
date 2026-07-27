@@ -72,7 +72,26 @@
     "noResultsHint": "Try a different keyword or view all results below.",
     "viewAllResults": "View all results",
     "needHelp": "Need help?",
-    "visitHelpCenter": "Visit Help Center"
+    "visitHelpCenter": "Visit Help Center",
+    "categories": {
+      "produk-layanan": "Products & Services",
+      "artikel": "Articles",
+      "promo": "Promos"
+    },
+    "popular": {
+      "openAccount": "Open an Account",
+      "exchangeRate": "Today's Exchange Rate",
+      "creditCardPromo": "Credit Card Promos",
+      "mortgage": "BCA Mortgage",
+      "activateMybca": "Activate myBCA",
+      "atmLocation": "ATM Locations"
+    },
+    "topics": {
+      "topic-rekening": "Open an account & savings",
+      "topic-kartu": "Credit cards & Paylater",
+      "topic-kredit": "Mortgages & vehicle loans",
+      "topic-investasi": "Investments & mutual funds"
+    }
   },
   "scrollCue": {
     "keepGoing": "Keep exploring",
@@ -105,7 +124,16 @@
     "heading": "The Best Rewards for Every Precious Moment",
     "viewMore": "View 200+ More Promos",
     "prevSlide": "Previous event",
-    "nextSlide": "Next event"
+    "nextSlide": "Next event",
+    "badge": {
+      "almostEnd": "Ending Soon!",
+      "popular": "Popular"
+    },
+    "timestamp": {
+      "expired": "Promo Ended",
+      "hoursLeft": "Ends in {hours} hours",
+      "until": "Until {date}"
+    }
   },
   "soliprio": {
     "title": "Prestigious, Personal Service — Made Only for You.",

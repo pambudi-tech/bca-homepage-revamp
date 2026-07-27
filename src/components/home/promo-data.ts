@@ -106,8 +106,12 @@ export const POPULAR_REDEEM_THRESHOLD = 1_000;
 
 export type PromoBadge = {
   key: PromoBadgeKey;
-  label: string | null;
 };
+
+export type PromoTimestamp =
+  | { kind: "expired" }
+  | { kind: "hoursLeft"; hours: number }
+  | { kind: "until"; date: string };
 
 const MS_HOUR = 3_600_000;
 const MS_DAY = 24 * MS_HOUR;
@@ -135,32 +139,32 @@ export function getPromoBadge(promo: Promo, now: Date): PromoBadge {
   const { end } = resolvePeriod(promo);
   const toEnd = end.getTime() - now.getTime();
 
-  if (toEnd > 0 && toEnd < MS_DAY) return { key: "almostEnd", label: "Segera Berakhir!" };
+  if (toEnd > 0 && toEnd < MS_DAY) return { key: "almostEnd" };
 
-  if ((promo.redeemCount ?? 0) >= POPULAR_REDEEM_THRESHOLD) return { key: "popular", label: "Populer" };
+  if ((promo.redeemCount ?? 0) >= POPULAR_REDEEM_THRESHOLD) return { key: "popular" };
 
-  return { key: "default", label: null };
+  return { key: "default" };
 }
 
-const MONTHS_ID = [
-  "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des",
-];
+/** "Hingga 15 Jul 2026" — always in WIB, so the server and the browser agree. */
+const PROMO_DATE_FORMAT = new Intl.DateTimeFormat("id-ID", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  timeZone: "Asia/Jakarta",
+});
 
-function formatDateID(date: Date) {
-  return `${date.getDate()} ${MONTHS_ID[date.getMonth()]} ${date.getFullYear()}`;
-}
-
-export function getPromoTimestamp(promo: Promo, now: Date, badge: PromoBadge) {
+export function getPromoTimestamp(promo: Promo, now: Date, badge: PromoBadge): PromoTimestamp {
   const { end } = resolvePeriod(promo);
 
-  if (now.getTime() > end.getTime()) return "Promo Berakhir";
+  if (now.getTime() > end.getTime()) return { kind: "expired" };
 
   if (badge.key === "almostEnd") {
     // Ceil (not round) so a few minutes left still reads as "1 jam" rather than
     // "0 jam", and cap at 23 so it never contradicts the < 24h badge window above.
     const hours = Math.min(23, Math.max(1, Math.ceil((end.getTime() - now.getTime()) / MS_HOUR)));
-    return `Berakhir dalam ${hours} jam`;
+    return { kind: "hoursLeft", hours };
   }
 
-  return `Hingga ${formatDateID(end)}`;
+  return { kind: "until", date: PROMO_DATE_FORMAT.format(end) };
 }
