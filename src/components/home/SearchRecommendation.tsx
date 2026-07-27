@@ -2,10 +2,9 @@
 
 import { useTranslations } from "next-intl";
 import {
-  INFO_CATEGORY_META,
+  INFO_CATEGORY_STYLE,
   POPULAR_SEARCHES,
   bcaSearchResultUrl,
-  type InfoCategory,
   type ProductIcon,
   type SearchRecommendations,
 } from "./search-data";
@@ -283,14 +282,14 @@ export default function SearchRecommendation({
           <section className="flex flex-col gap-3">
             <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{t("popularSearches")}</p>
             <div className="flex flex-wrap gap-2">
-              {POPULAR_SEARCHES.map((term) => (
+              {POPULAR_SEARCHES.map(({ id, keyword }) => (
                 <button
-                  key={term}
+                  key={id}
                   type="button"
-                  onClick={() => onSelectQuery(term)}
+                  onClick={() => onSelectQuery(keyword)}
                   className="inline-flex items-center rounded-full border border-neutral-300 px-3.5 py-1.5 text-sm font-semibold text-neutral-800 transition-colors hover:border-blue-500 hover:bg-blue-100 hover:text-blue-500"
                 >
-                  {term}
+                  {t(`popular.${id}`)}
                 </button>
               ))}
             </div>
@@ -377,7 +376,7 @@ export default function SearchRecommendation({
               <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{t("relatedInfo")}</p>
               <ul className="flex flex-col">
                 {information.slice(0, 3).map((info) => {
-                  const meta = INFO_CATEGORY_META[info.category];
+                  const style = INFO_CATEGORY_STYLE[info.category];
                   return (
                     <li key={info.id}>
                       <a
@@ -396,9 +395,9 @@ export default function SearchRecommendation({
                         {!compact && (
                           <span
                             className="flex h-6 shrink-0 items-center rounded-lg px-3 text-sm font-semibold"
-                            style={{ backgroundColor: meta.bg, color: meta.text }}
+                            style={{ backgroundColor: style.bg, color: style.text }}
                           >
-                            {meta.label}
+                            {t(`categories.${info.category}`)}
                           </span>
                         )}
                       </a>
