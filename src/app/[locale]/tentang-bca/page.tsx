@@ -13,7 +13,7 @@ export default async function TentangBcaPage({
   setRequestLocale(locale);
 
   return (
-    <main className="flex min-h-screen flex-col bg-blue-100">
+    <main id="main-content" className="flex min-h-screen flex-col bg-blue-100">
       <Navbar variant="about" />
       <div className="h-24" />
     </main>

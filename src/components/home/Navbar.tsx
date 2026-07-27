@@ -71,6 +71,9 @@ function NavbarLink({
   const sharedProps = {
     onMouseEnter: () => setHover(true),
     onMouseLeave: () => setHover(false),
+    // Pairs the blue fill with a signal assistive tech can read — the fill
+    // alone only tells a sighted user which page they are on.
+    "aria-current": active ? ("page" as const) : undefined,
     style: viewTransitionName ? ({ viewTransitionName } as CSSProperties) : undefined,
     className: `flex h-10 items-center justify-center gap-0.5 rounded-full border px-4 backdrop-blur-[12px] transition-colors duration-300 ${active
         ? `border-blue-500 ${hover ? "bg-[#0068c0]" : "bg-blue-500"}`
@@ -439,7 +442,8 @@ export default function Navbar({
           data-shown={menuOpen}
           className="fade-overlay fixed inset-0 z-20 bg-black/50 backdrop-blur-[2px]"
         />
-        <div
+        <nav
+          aria-label={tNav("primary")}
           className={`pre-nav fixed left-0 right-0 top-0 z-30 flex flex-col items-start transition-transform duration-300 ${shouldHide ? "-translate-y-full" : "translate-y-0"
             }`}
           onMouseLeave={scheduleClose}
@@ -680,7 +684,7 @@ export default function Navbar({
               )}
             </div>
           </div>
-        </div>
+        </nav>
       </div>
     </>
   );

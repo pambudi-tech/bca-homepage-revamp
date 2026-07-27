@@ -40,7 +40,7 @@ export default async function Home({
   ]);
 
   return (
-    <main className="flex flex-1 flex-col overflow-x-clip bg-blue-100">
+    <main id="main-content" className="flex flex-1 flex-col overflow-x-clip bg-blue-100">
       {/* 1. KONTEN UTAMA: z-10 dan background solid untuk "menutupi" footer saat di atas */}
       <div className="relative z-10 bg-blue-100">
         <Navbar productCategories={produk.categories} />

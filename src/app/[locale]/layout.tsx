@@ -68,11 +68,23 @@ export default async function LocaleLayout({
     notFound();
   }
   setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "nav" });
 
   return (
     <html lang={locale} className={`${bcaSans.variable} h-full antialiased overscroll-none bg-blue-100`}>
       <body className="min-h-full flex flex-col overscroll-none bg-blue-100">
         <NextIntlClientProvider>
+          {/* First focusable element on the page: lets keyboard users jump the
+              navbar, segment picker and mega-menu triggers straight to the
+              content. `sr-only` keeps it out of the visual design until it
+              takes focus, at which point `focus:not-sr-only` brings it on
+              screen. */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-blue-500"
+          >
+            {t("skipToContent")}
+          </a>
           <SmoothScroll>
             {/* Server-rendered, and visible from the first paint by CSS alone —
                 see the .pre-* block in globals.css. */}
