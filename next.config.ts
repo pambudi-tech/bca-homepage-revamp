@@ -33,6 +33,12 @@ const CSP = [
 ].join("; ");
 
 const nextConfig: NextConfig = {
+  experimental: {
+    // Lets the navbar's own elements (segment pill, active tab fill, tab
+    // row) morph smoothly between routes instead of hard-swapping — see
+    // the `viewTransitionName`s in Navbar.tsx / globals.css.
+    viewTransition: true,
+  },
   async headers() {
     return [
       {

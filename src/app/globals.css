@@ -1142,6 +1142,30 @@ html.lenis, html.lenis body {
   color: var(--color-blue-500);
 }
 
+/* Cross-page navbar continuity (experimental.viewTransition in
+   next.config.ts): the segment pill, active-tab fill and tab row carry a
+   stable `viewTransitionName` (see Navbar.tsx) so the browser morphs their
+   size/color across a route change instead of hard-swapping them — this is
+   what makes e.g. "Tentang BCA" filling blue read as one continuous motion
+   rather than two different pages snapping past each other. Slightly slower
+   than the browser default (250ms) so the morph reads as intentional. */
+::view-transition-group(nav-tentang-bca),
+::view-transition-group(nav-segment-pill),
+::view-transition-group(nav-tab-row),
+::view-transition-group(nav-top-row) {
+  animation-duration: 320ms;
+  animation-timing-function: ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+
 /* The panel MapLibre raises when a wheel or one-finger drag is refused. */
 .maplibregl-cooperative-gesture-screen {
   background: rgba(18, 20, 23, 0.55);

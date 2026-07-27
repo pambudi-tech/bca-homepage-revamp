@@ -154,7 +154,17 @@
     "lokasiBca": "Lokasi BCA",
     "haloBca": "Halo BCA",
     "pengajuan": "Pengajuan",
-    "andaBerada": "Anda berada di BCA"
+    "andaBerada": "Anda berada di BCA",
+    "kembaliKe": "Kembali ke BCA",
+    "pilihSegmen": "Pilih Segmen",
+    "aboutTabs": {
+      "korporasi": "Korporasi",
+      "hubunganInvestor": "Hubungan Investor",
+      "tataKelola": "Tata Kelola Perusahaan",
+      "sustainability": "Sustainability",
+      "csr": "CSR",
+      "mediaRiset": "Media & Riset"
+    }
   },
   "mobileMenu": {
     "tutupMenu": "Tutup menu",

@@ -8,13 +8,11 @@ import {
   type Product,
   type ProductCategory,
 } from "./product-data";
-import LayoutSwitcher from "./LayoutSwitcher";
 import FlutedGlassOverlay from "./FlutedGlassOverlay";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useIsLive } from "@/lib/useIsLive";
-import { useLayoutVariant } from "@/lib/useLayoutVariant";
 
-/** Layout variants offered by this section's LayoutSwitcher. */
+/** Layout variants this section supports (only "accordion" is switcher-exposed; see `variant` below). */
 const PRODUCT_VARIANTS = ["accordion", "curved"] as const;
 type ProductVariant = (typeof PRODUCT_VARIANTS)[number];
 
@@ -1062,7 +1060,9 @@ export default function ProductSection({
   defaultKey?: string;
 } = {}) {
   const t = useTranslations("product");
-  const [variant, setVariant] = useLayoutVariant<ProductVariant>("product", "curved", PRODUCT_VARIANTS);
+  // The layout switcher is gone from the UI (only "accordion" ships now), but
+  // "curved" and CurvedCarousel are kept intact in code below in case it comes back.
+  const [variant] = useState<ProductVariant>("accordion");
   const [activeCategory, setActiveCategory] = useState(defaultKey);
   // The photos being swiped away. Present only for the length of a swap; the
   // incoming set renders from `activeCategory` underneath from the first frame.
@@ -1085,8 +1085,6 @@ export default function ProductSection({
   const sectionRef = useRef<HTMLElement>(null);
   // Parks the autoplay timer while the section is off-screen or the tab is hidden.
   const live = useIsLive(sectionRef);
-  const cloveARef = useRef<HTMLImageElement>(null);
-  const cloveBRef = useRef<HTMLImageElement>(null);
   const leftGlassRef = useRef<SVGImageElement>(null);
   const rightGlassRef = useRef<SVGImageElement>(null);
 
@@ -1115,9 +1113,11 @@ export default function ProductSection({
     image: c.image || SAMPLE_CATEGORY_PHOTOS[i % SAMPLE_CATEGORY_PHOTOS.length],
   }));
   const activeCategoryIndex = Math.max(0, categories.findIndex((c) => c.key === activeCategory));
-  // Desktop accordion autoplay steps through categories; every other view
-  // (curved, mobile) steps through the active category's products.
-  const cyclingCategories = variant === "accordion" && isDesktop;
+  // Desktop accordion autoplay steps through categories; desktop curved steps
+  // through the active category's products. Mobile always shows the category
+  // list now (see MobileProductCarousel below), so it cycles categories too,
+  // regardless of which desktop variant is selected.
+  const cyclingCategories = !isDesktop || variant === "accordion";
 
   useEffect(() => {
     let raf = 0;
@@ -1126,12 +1126,6 @@ export default function ProductSection({
       const section = sectionRef.current;
       if (!section) return;
       const rectTop = section.getBoundingClientRect().top;
-      if (cloveARef.current) {
-        cloveARef.current.style.transform = `translate3d(-50%, ${rectTop * 0.12}px, 0)`;
-      }
-      if (cloveBRef.current) {
-        cloveBRef.current.style.transform = `translate3d(-50%, ${rectTop * 0.2}px, 0)`;
-      }
       const centerDist = rectTop + section.offsetHeight / 2 - window.innerHeight / 2;
       if (leftGlassRef.current) {
         leftGlassRef.current.style.transform = `translate3d(0, ${centerDist * 0.35}px, 0)`;
@@ -1244,60 +1238,13 @@ export default function ProductSection({
   return (
     <section
       ref={sectionRef}
-      className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-[120px] pt-0 xl:pb-36 xl:pt-0"
+      className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-40 pt-0 xl:pt-0"
     >
-      {/* prototype-only: lets the client flip this section's layout live. */}
-      <LayoutSwitcher
-        label="Layout Produk"
-        value={variant}
-        onChange={setVariant}
-        options={[
-          {
-            value: "accordion",
-            name: "Accordion Cards",
-            description: "Enam kartu kategori berjajar; kartu aktif melebar.",
-          },
-          {
-            value: "curved",
-            name: "Curved Carousel",
-            description:
-              "Kartu berjajar melengkung dan berputar tanpa ujung; kategori berbaris di atas.",
-          },
-        ]}
-      />
-
-      {variant !== "curved" && (
-        <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-visible">
-          {/* wrapper carries the desktop position/size and a mobile-only 0.8x
-              scale from its top-left anchor; the img inside keeps filling it at
-              100% so the scroll-driven translate3d (set via ref, below) isn't
-              clobbered by a CSS scale on the same transform property. */}
-          <div className="absolute left-[calc(50%-937px)] top-[-400px] h-[1614px] w-[1178px] origin-top-left scale-[0.8] sm:scale-100">
-            <img loading="lazy" decoding="async"
-              ref={cloveARef}
-              src="/assets/product/bg-clove-a.svg"
-              alt=""
-              className="absolute inset-0 size-full opacity-80 will-change-transform"
-            />
-          </div>
-          <div className="absolute left-[calc(50%+107px)] top-[104px] h-[1668px] w-[1218px] origin-top-left scale-[0.8] sm:left-[calc(50%+667px)] sm:top-[-96px] sm:scale-100">
-            <img loading="lazy" decoding="async"
-              ref={cloveBRef}
-              src="/assets/product/bg-clove-b.svg"
-              alt=""
-              className="absolute inset-0 size-full opacity-80 will-change-transform"
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Fluted glass vertical strips — above clove bg (z-0), below content (z-10) */}
-      {variant === "curved" && (
-        <>
-          <FlutedGlassOverlay side="left" fluteWidth={48} strength={90} liquidity={1} blur={0} drip={0.75} imageRef={leftGlassRef} />
-          <FlutedGlassOverlay side="right" fluteWidth={48} strength={160} liquidity={1} blur={0} drip={0.75} imageSrc="/assets/gradien-1.png" imageRef={rightGlassRef} />
-        </>
-      )}
+      {/* Fluted glass vertical strips — both layout variants use the glass
+          overlay now, which is why the clove background pattern they used to
+          reveal underneath it is never rendered here any more. */}
+      <FlutedGlassOverlay side="left" fluteWidth={48} strength={90} liquidity={1} blur={0} drip={0.75} imageRef={leftGlassRef} />
+      <FlutedGlassOverlay side="right" fluteWidth={48} strength={160} liquidity={1} blur={0} drip={0.75} imageSrc="/assets/gradien-1.png" imageRef={rightGlassRef} />
 
       <div className="relative z-10 mx-auto w-full max-w-[560px] px-4 xl:w-[1280px] xl:max-w-none xl:px-0">
         {/* Heading — stacked on mobile. On desktop the curved layout stacks it
@@ -1313,7 +1260,7 @@ export default function ProductSection({
             className={`flex items-center py-4 xl:shrink-0 ${variant === "curved" ? "" : "xl:w-[240px]"
               }`}
           >
-            <p className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px] xl:text-blue-800">
+            <p className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px]">
               {t("eyebrow")}
             </p>
           </div>
@@ -1323,29 +1270,6 @@ export default function ProductSection({
           >
             {t("heading")}
           </h2>
-        </div>
-
-        {/* Category chips — mobile only; the desktop uses the vertical text list. */}
-        <div
-          className={`mt-5 flex flex-wrap gap-2 transition-all duration-700 ease-out xl:hidden ${entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            }`}
-          style={{ transitionDelay: entered ? "120ms" : "0ms" }}
-        >
-          {categories.map((cat) => {
-            const isActive = cat.key === activeCategory;
-            return (
-              <button
-                key={cat.key}
-                onClick={() => selectCategory(cat.key)}
-                className={`flex h-12 items-center justify-center rounded-xl border px-[18px] text-sm transition-colors duration-200 ${isActive
-                  ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500"
-                  : "border-neutral-300 bg-white font-semibold text-neutral-700 active:bg-blue-100"
-                  }`}
-              >
-                {cat.label}
-              </button>
-            );
-          })}
         </div>
 
         <div className={`mt-6 xl:mt-12 ${variant === "curved" ? "flex flex-col" : ""}`}>
@@ -1427,14 +1351,16 @@ export default function ProductSection({
             {/* Mobile carousel — fixed-width cards, active one grows taller and
                 reveals its subtitle + CTA. Full-bleeds within the padded column.
                 The track height is pinned to the tallest (active) card so the
-                CTA below never shifts while cards swap size. */}
+                CTA below never shifts while cards swap size. Shows the
+                *categories* here (not the active category's products) — same
+                interactions as before, just listing categories instead. */}
             <MobileProductCarousel
-              products={products}
-              outgoingProducts={outgoingProducts}
-              copyProducts={copyProducts}
-              activeIndex={activeIndex}
-              onSelect={setActiveIndex}
-              swapping={swapping}
+              products={categoryCards}
+              outgoingProducts={null}
+              copyProducts={categoryCards}
+              activeIndex={activeCategoryIndex}
+              onSelect={(i) => selectCategoryCard(categories[i].key)}
+              swapping={false}
               swapDir={swapDir}
               swapAlt={swapAlt}
               progressRef={mobileProgressRef}
@@ -1442,11 +1368,23 @@ export default function ProductSection({
               pausedRef={pausedRef}
             />
 
-            {/* Accordion cards are categories now, each already its own link, so
-                the desktop accordion drops this hint + CTA. It stays on the
-                curved layout and on mobile (both still list products). */}
+            {/* Pill progress bar — the mobile carousel loops endlessly, so this
+                is the only cue that the category list is actually finite: the
+                cyan fill fills up as the active category approaches the last. */}
+            <div className="mt-6 flex justify-center xl:hidden">
+              <div className="h-2 w-16 overflow-hidden rounded-full bg-blue-300">
+                <div
+                  className="h-full rounded-full bg-cyan-500 transition-[width] duration-300"
+                  style={{ width: `${((activeCategoryIndex + 1) / categories.length) * 100}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Accordion cards (desktop and mobile) are each already their own
+                link, so this hint + CTA is dropped everywhere except the
+                curved desktop layout. */}
             <div
-              className={`mt-6 flex flex-col items-center gap-5 xl:mt-12 ${variant === "curved" ? "" : "xl:hidden"
+              className={`mt-6 flex-col items-center gap-5 xl:mt-12 ${variant === "curved" ? "hidden xl:flex" : "hidden"
                 } ${entered ? "opacity-100" : "opacity-0"}`}
               style={{
                 transition: `opacity 700ms ease-out ${entered ? "610ms" : "0ms"}`,

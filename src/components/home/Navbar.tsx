@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useMegaMenu } from "./use-megamenu";
-import { useRouter, usePathname } from "@/i18n/navigation";
+import { Link, useRouter, usePathname } from "@/i18n/navigation";
 import { routing, type AppLocale } from "@/i18n/routing";
 import MegaMenuPanel, { type MegaMenuMode } from "./MegaMenuPanel";
 import MobileNav from "./MobileNav";
@@ -49,19 +49,34 @@ function LinkLabel({ label, hover }: { label: string; hover: boolean }) {
 function NavbarLink({
   label,
   href,
+  internalHref,
   onClick,
+  active,
+  viewTransitionName,
 }: {
   label: string;
   href?: string;
+  /** Same-app route (via the i18n-aware `Link`) — normal navigation, no
+      new tab, unlike `href` which is always an external target. */
+  internalHref?: string;
   onClick?: () => void;
+  /** Filled blue — this link's destination is the page currently on screen. */
+  active?: boolean;
+  /** Same name on every page this link appears on, so the browser morphs
+      its fill/position across a navigation instead of hard-swapping it —
+      see the "seamless nav" pieces in globals.css. */
+  viewTransitionName?: string;
 }) {
   const [hover, setHover] = useState(false);
   const sharedProps = {
     onMouseEnter: () => setHover(true),
     onMouseLeave: () => setHover(false),
-    className: `flex h-10 items-center justify-center gap-0.5 rounded-full border px-4 backdrop-blur-[12px] transition-colors duration-300 ${hover
-        ? "border-white/20 bg-[rgba(18,20,23,0.5)]"
-        : "border-white/25 bg-[rgba(5,13,25,0.1)]"
+    style: viewTransitionName ? ({ viewTransitionName } as CSSProperties) : undefined,
+    className: `flex h-10 items-center justify-center gap-0.5 rounded-full border px-4 backdrop-blur-[12px] transition-colors duration-300 ${active
+        ? `border-blue-500 ${hover ? "bg-[#0068c0]" : "bg-blue-500"}`
+        : hover
+          ? "border-white/20 bg-[rgba(18,20,23,0.5)]"
+          : "border-white/25 bg-[rgba(5,13,25,0.1)]"
       }`,
   };
   const content = (
@@ -77,6 +92,13 @@ function NavbarLink({
       </span>
     </>
   );
+  if (internalHref) {
+    return (
+      <Link href={internalHref} {...sharedProps}>
+        {content}
+      </Link>
+    );
+  }
   if (href) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" {...sharedProps}>
@@ -179,11 +201,17 @@ function IconLinkButton({
 
 export default function Navbar({
   productCategories,
+  variant = "default",
 }: {
   /** Live product lists from Supabase (see `getProductCategories`), keyed the
       same as `MEGAMENU_STRUCTURE` — merged in so the mega menu shows every
       product per category instead of a hardcoded handful. */
   productCategories?: ProductCategory[];
+  /** "about" is the segment-agnostic Tentang BCA shell: the segment pill
+      goes inert (no dropdown) and the tab row shows the About-section
+      links instead of the product mega menu. Panels never mount for those
+      tabs since their keys don't exist in `MEGAMENU` — nothing to wire up. */
+  variant?: "default" | "about";
 }) {
   const locale = useLocale() as AppLocale;
   const router = useRouter();
@@ -192,19 +220,37 @@ export default function Navbar({
   const tLang = useTranslations("languages");
   const SEGMENTS = Object.keys(tNav.raw("segments")) as string[];
   const MEGAMENU = useMegaMenu(productCategories);
-  const NAV_TABS = MEGAMENU.map((menu) => ({
-    key: menu.key,
-    label: menu.label,
-    width: menu.width,
-    chevron: menu.chevron ?? true,
+  const ABOUT_TABS = (Object.keys(tNav.raw("aboutTabs")) as string[]).map((key) => ({
+    key,
+    label: tNav(`aboutTabs.${key}`),
+    width: undefined as number | undefined,
+    chevron: false,
   }));
+  const NAV_TABS =
+    variant === "about"
+      ? ABOUT_TABS
+      : MEGAMENU.map((menu) => ({
+          key: menu.key,
+          label: menu.label,
+          width: menu.width,
+          chevron: menu.chevron ?? true,
+        }));
   const otherLocales = routing.locales.filter((l) => l !== locale);
 
   const switchLocale = (nextLocale: AppLocale) => {
     router.replace(pathname, { locale: nextLocale });
   };
 
-  const [activeSegment, setActiveSegment] = useState(SEGMENTS[0]);
+  // The pill reflects whichever page you're actually on, not a persisted
+  // preference: the default shell IS the Individu homepage, so it reads
+  // "Individu" from the start; the About shell has no inherent segment, so
+  // it starts on the "Pilih Segmen" placeholder until you pick one.
+  const [activeSegment, setActiveSegment] = useState<string | null>(
+    variant === "about" ? null : (SEGMENTS[0] ?? null)
+  );
+  const chooseSegment = (segment: string) => {
+    setActiveSegment(segment);
+  };
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   /* What's actually on screen. It lags behind `openMenu` so the panel can play
      its close animation before unmounting, and so the tab we moved away from
@@ -221,6 +267,7 @@ export default function Navbar({
   const [segmentOpen, setSegmentOpen] = useState(false);
   const [segmentHover, setSegmentHover] = useState(false);
   const segmentRef = useRef<HTMLDivElement>(null);
+  const segmentCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastScrollY = useRef(0);
 
@@ -347,7 +394,10 @@ export default function Navbar({
   }, [outgoing]);
 
   const menuOpen = openMenu !== null;
-  const solid = scrolled || menuOpen;
+  // The transparent/white-text idle state is designed to sit over the
+  // home hero photo — pages without one (like the About shell) need the
+  // solid bar from the very first frame instead of waiting on scroll.
+  const solid = variant === "about" || scrolled || menuOpen;
   const panelCategory = panel ? MEGAMENU.find((c) => c.key === panel.key) : undefined;
   const outgoingCategory = outgoing ? MEGAMENU.find((c) => c.key === outgoing) : undefined;
   const shouldHide = navHidden && !menuOpen && !langOpen;
@@ -362,6 +412,17 @@ export default function Navbar({
   const closeNow = () => {
     cancelClose();
     setOpenMenu(null);
+  };
+
+  // Same debounced pattern as the mega menu tabs — hover opens the segment
+  // dropdown immediately, and closing waits a beat so crossing the gap
+  // between the pill and the panel doesn't flicker it shut.
+  const scheduleSegmentClose = () => {
+    if (segmentCloseTimer.current) clearTimeout(segmentCloseTimer.current);
+    segmentCloseTimer.current = setTimeout(() => setSegmentOpen(false), 120);
+  };
+  const cancelSegmentClose = () => {
+    if (segmentCloseTimer.current) clearTimeout(segmentCloseTimer.current);
   };
 
   return (
@@ -388,6 +449,7 @@ export default function Navbar({
               }`}
           >
             <div
+              style={{ viewTransitionName: "nav-top-row" } as CSSProperties}
               className={`relative z-10 flex w-full items-center justify-center px-10 py-4 transition-colors duration-200 ${solid ? "bg-[rgba(18,20,23,0.95)]" : ""
                 }`}
               onMouseEnter={closeNow}
@@ -396,12 +458,22 @@ export default function Navbar({
                 <div className="flex items-center gap-5">
                   <img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-9 w-[114.75px]" />
                   <div className="flex items-center gap-2">
-                    <div ref={segmentRef} className="relative">
-                      <button
-                        onClick={() => setSegmentOpen((v) => !v)}
+                    <div
+                      ref={segmentRef}
+                      className="relative"
+                      onMouseEnter={() => {
+                        cancelSegmentClose();
+                        setSegmentOpen(true);
+                      }}
+                      onMouseLeave={scheduleSegmentClose}
+                    >
+                      {/* Hover-only trigger — opening this is not a click
+                          action, only picking an option in the dropdown is. */}
+                      <div
                         onMouseEnter={() => setSegmentHover(true)}
                         onMouseLeave={() => setSegmentHover(false)}
-                        className={`flex h-10 cursor-pointer items-center gap-2 rounded-full border pl-4 pr-1 backdrop-blur-[4px] transition-colors ${segmentHover || segmentOpen
+                        style={{ viewTransitionName: "nav-segment-pill" } as CSSProperties}
+                        className={`flex h-10 items-center gap-2 rounded-full border pl-4 pr-1 backdrop-blur-[4px] transition-colors ${segmentHover || segmentOpen
                             ? "border-neutral-300 bg-white"
                             : "border-white/25 bg-[rgba(5,13,25,0.1)]"
                           }`}
@@ -410,13 +482,21 @@ export default function Navbar({
                           className={`whitespace-nowrap text-sm font-semibold ${segmentHover || segmentOpen ? "text-neutral-900" : "text-white"
                             }`}
                         >
-                          {tNav("andaBerada")}
+                          {/* On the segment-agnostic About shell, "Anda berada
+                              di" reads ambiguous — this pill is actually a
+                              way back to the segment's homepage from here. */}
+                          {tNav(variant === "about" ? "kembaliKe" : "andaBerada")}
                         </span>
-                        <span className="flex h-8 items-center gap-1 whitespace-nowrap rounded-full bg-blue-500 pl-3 pr-2 text-sm font-semibold text-white">
-                          {tNav(`segments.${activeSegment}`)}
+                        <span
+                          className={`flex h-8 items-center gap-1 whitespace-nowrap rounded-full pl-3 pr-2 text-sm font-semibold ${activeSegment
+                              ? "bg-blue-500 text-white"
+                              : `border ${segmentHover || segmentOpen ? "border-neutral-300 text-neutral-900" : "border-white/25 text-white"}`
+                            }`}
+                        >
+                          {activeSegment ? tNav(`segments.${activeSegment}`) : tNav("pilihSegmen")}
                           <ExpandIcon className="size-4" />
                         </span>
-                      </button>
+                      </div>
 
                       {segmentOpen && (
                         <div className="absolute right-0 top-[calc(100%+8px)] z-40 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-[0px_8px_16px_0px_rgba(0,0,0,0.10),0px_20px_32px_0px_rgba(0,0,0,0.12)]">
@@ -424,8 +504,12 @@ export default function Navbar({
                             <button
                               key={segment}
                               onClick={() => {
-                                setActiveSegment(segment);
+                                chooseSegment(segment);
                                 setSegmentOpen(false);
+                                // Choosing a segment here has nowhere to land
+                                // on this page — it always means "take me
+                                // back to that segment's homepage".
+                                if (variant === "about") router.push("/");
                               }}
                               className="group flex w-[148px] items-center gap-2 p-4 text-left text-neutral-900 transition-colors hover:bg-cyan-100 hover:text-blue-500"
                             >
@@ -444,7 +528,12 @@ export default function Navbar({
                       )}
                     </div>
 
-                    <NavbarLink label={tNav("tentangBca")} href="https://www.bca.co.id/id/tentang-bca" />
+                    <NavbarLink
+                      label={tNav("tentangBca")}
+                      internalHref="/tentang-bca"
+                      active={variant === "about"}
+                      viewTransitionName="nav-tentang-bca"
+                    />
                     <NavbarLink label={tNav("karir")} href="https://karir.bca.co.id/" />
                     <NavbarLink label={tNav("pengajuan")} href="https://www.bca.co.id/id/Forms/webform-bca" />
                     <NavbarLink label={tNav("promo")} onClick={scrollToPromo} />
@@ -508,6 +597,7 @@ export default function Navbar({
               onMouseEnter={cancelClose}
             >
               <div
+                style={{ viewTransitionName: "nav-tab-row" } as CSSProperties}
                 className={`flex h-11 w-full items-center justify-center transition-colors duration-200 ${menuOpen
                     ? "border border-neutral-300 bg-white"
                     : scrolled

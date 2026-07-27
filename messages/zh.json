@@ -154,7 +154,17 @@
     "lokasiBca": "BCA网点位置",
     "haloBca": "Halo BCA",
     "pengajuan": "申请",
-    "andaBerada": "您正在浏览 BCA"
+    "andaBerada": "您正在浏览 BCA",
+    "kembaliKe": "返回 BCA",
+    "pilihSegmen": "选择细分",
+    "aboutTabs": {
+      "korporasi": "企业信息",
+      "hubunganInvestor": "投资者关系",
+      "tataKelola": "公司治理",
+      "sustainability": "可持续发展",
+      "csr": "社会责任",
+      "mediaRiset": "媒体与研究"
+    }
   },
   "mobileMenu": {
     "tutupMenu": "关闭菜单",

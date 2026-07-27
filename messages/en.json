@@ -154,7 +154,17 @@
     "lokasiBca": "BCA Location",
     "haloBca": "Halo BCA",
     "pengajuan": "Apply",
-    "andaBerada": "You are in BCA"
+    "andaBerada": "You are in BCA",
+    "kembaliKe": "Back to BCA",
+    "pilihSegmen": "Select Segment",
+    "aboutTabs": {
+      "korporasi": "Corporate",
+      "hubunganInvestor": "Investor Relations",
+      "tataKelola": "Corporate Governance",
+      "sustainability": "Sustainability",
+      "csr": "CSR",
+      "mediaRiset": "Media & Research"
+    }
   },
   "mobileMenu": {
     "tutupMenu": "Close menu",
