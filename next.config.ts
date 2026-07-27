@@ -22,7 +22,11 @@ const CSP = [
   "img-src 'self' data: blob: https:",
   "font-src 'self'",
   "frame-src https://www.google.com",
-  "connect-src 'self'",
+  "connect-src 'self' https://tiles.openfreemap.org",
+  // MapLibre GL parses tiles in a Worker it spawns from a blob: URL; with no
+  // worker-src, that request falls back to script-src, which doesn't carry
+  // blob: — so the worker (and the whole map) silently never starts.
+  "worker-src 'self' blob:",
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
