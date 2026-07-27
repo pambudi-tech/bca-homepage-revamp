@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 
 // Pure JS + CSS confetti for the top of the Promo section (replaces the old
 // static /assets/promo/confetti.png). Pieces are generated once from a seeded
@@ -67,8 +67,31 @@ const PIECES: Piece[] = Array.from({ length: 66 }, (_, id) => {
 });
 
 export default function Confetti() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Runs the pieces only while the band is on screen. 66 pieces x 3 nested
+  // infinite animations is 198 of them, each pinned to its own compositor
+  // layer by `will-change` — left alone they run for the whole life of the
+  // page even though this band sits well below the fold. Flipping
+  // `data-confetti-live` lets CSS park them instead (see globals.css).
+  //
+  // The margin starts them slightly before the band scrolls in, so the pieces
+  // are already in flight on arrival rather than visibly unfreezing.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => el.toggleAttribute("data-confetti-live", entry.isIntersecting),
+      { rootMargin: "200px" }
+    );
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[460px] overflow-hidden">
+    <div ref={ref} aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[460px] overflow-hidden">
       {PIECES.map((p) => (
         <span
           key={p.id}

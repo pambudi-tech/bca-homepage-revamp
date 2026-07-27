@@ -767,18 +767,35 @@ html.pre-revealing .pre-nav {
   top: 0;
   will-change: transform, opacity;
   animation: confetti-fall var(--confetti-dur) linear var(--confetti-delay) infinite;
+  animation-play-state: paused;
 }
 
 .confetti-sway {
   display: block;
   will-change: transform;
   animation: confetti-sway var(--confetti-sway-dur) ease-in-out var(--confetti-delay) infinite alternate;
+  animation-play-state: paused;
 }
 
 .confetti-spin {
   display: block;
   will-change: transform;
   animation: confetti-spin var(--confetti-spin-dur) linear var(--confetti-delay) infinite;
+  animation-play-state: paused;
+}
+
+/* Parked until the band is actually on screen — Confetti.tsx flips
+   `data-confetti-live` from an IntersectionObserver. 66 pieces x 3 nested
+   animations is 198 infinite animations, each on its own compositor layer via
+   `will-change`; left running they burn frames for the whole session on a
+   section that sits well below the fold. The negative per-piece
+   `animation-delay` means a parked piece still sits at a scattered mid-flight
+   position, so the first frame on arrival looks exactly as it does today.
+   Same mechanism as `.soliprio-beam` / `[data-beam-live]` above. */
+[data-confetti-live] .confetti-piece,
+[data-confetti-live] .confetti-sway,
+[data-confetti-live] .confetti-spin {
+  animation-play-state: running;
 }
 
 @keyframes confetti-fall {
