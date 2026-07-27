@@ -3,12 +3,30 @@ import { cookies } from "next/headers";
 import { getTranslations } from "next-intl/server";
 import { AUTH_COOKIE_NAME } from "@/lib/preview-auth";
 
+/**
+ * Only ever redirect within this site. `redirectTo` arrives from the query
+ * string, so without this an attacker-supplied absolute URL would turn the
+ * preview gate into an open redirect off a BCA-branded domain — the classic
+ * phishing hand-off. `proxy.ts` only ever writes a same-origin pathname here,
+ * so nothing legitimate is lost.
+ */
+function safeRedirectTarget(value: unknown): string {
+  if (typeof value !== "string") return "/";
+  // Must be a single-slash-rooted path. `//evil.example` is protocol-relative
+  // and `https://…` is absolute — both are external.
+  if (!value.startsWith("/") || value.startsWith("//")) return "/";
+  // A backslash is normalised to a forward slash by some user agents, so
+  // `/\evil.example` can escape the origin too.
+  if (value.includes("\\")) return "/";
+  return value;
+}
+
 async function login(formData: FormData) {
   "use server";
 
   const password = formData.get("password");
   const expected = process.env.PREVIEW_PASSWORD;
-  const redirectTo = (formData.get("redirectTo") as string) || "/";
+  const redirectTo = safeRedirectTarget(formData.get("redirectTo"));
   const loginPath = formData.get("loginPath") as string;
 
   if (typeof password === "string" && password === expected) {
@@ -33,7 +51,8 @@ export default async function LoginPage({
   searchParams: Promise<{ error?: string; redirectTo?: string }>;
 }) {
   const { locale } = await params;
-  const { error, redirectTo = "/" } = await searchParams;
+  const { error, redirectTo: rawRedirectTo } = await searchParams;
+  const redirectTo = safeRedirectTarget(rawRedirectTo);
   const t = await getTranslations({ locale, namespace: "login" });
   const loginPath = locale === "id" ? "/login" : `/${locale}/login`;
 
