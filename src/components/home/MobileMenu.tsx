@@ -110,8 +110,16 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
     }
     // Only steal focus back if it is not already somewhere deliberate —
     // guards against yanking focus during the closing animation if the user
-    // has already clicked elsewhere.
-    if (restoreFocusRef.current && document.activeElement === document.body) {
+    // has already clicked elsewhere. `.fade-overlay[data-shown="false"]`
+    // delays its `visibility:hidden` switch by `--fade-ms` so the closing
+    // animation stays smooth, so at the instant `open` flips false the
+    // control the user just clicked (e.g. the X button) is still focused and
+    // still technically inside the menu — it is NOT `document.body` yet.
+    // Treat "still focused inside the closing menu" the same as "fell to
+    // body": both mean nothing else outside the menu deliberately took focus.
+    const activeEl = document.activeElement;
+    const stillInsideMenu = portalRef.current?.contains(activeEl) ?? false;
+    if (restoreFocusRef.current && (activeEl === document.body || stillInsideMenu)) {
       restoreFocusRef.current.focus();
       restoreFocusRef.current = null;
     }
