@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Dead code, already excluded from tsconfig.json.
     "archive/**",
+    // Throwaway scratch scripts, not app code.
+    "scratch/**",
   ]),
 ]);
 

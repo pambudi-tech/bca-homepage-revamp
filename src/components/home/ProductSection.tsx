@@ -886,6 +886,13 @@ function CurvedCarousel({
   // land there directly, as if the visible cards were simply refilled.
   const prevCategoryRef = useRef(categoryKey);
   const [snapping, setSnapping] = useState(false);
+  // Reads/writes a ref during render on purpose — this is React's documented
+  // "adjust state when a prop changes" pattern (see
+  // https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes).
+  // Doing the snap here, in the same render as the category swap, is what
+  // keeps the ring from flashing at the old position for one frame the way an
+  // effect-based reset would.
+  /* eslint-disable react-hooks/refs */
   if (prevCategoryRef.current !== categoryKey) {
     prevCategoryRef.current = categoryKey;
     if (ring.activeIndex !== activeIndex || ring.n !== n || ring.pos !== activeIndex) {
@@ -902,6 +909,7 @@ function CurvedCarousel({
     }
     setRing({ activeIndex, n, pos });
   }
+  /* eslint-enable react-hooks/refs */
   const ringPos = ring.pos;
 
   // The snap above must land with no transition, then hand transitions back

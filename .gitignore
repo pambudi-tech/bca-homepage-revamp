@@ -45,3 +45,6 @@ next-env.d.ts
 
 # claude code local settings
 .claude/settings.local.json
+
+# throwaway scratch scripts, not app code
+/scratch

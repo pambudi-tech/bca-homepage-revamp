@@ -125,6 +125,7 @@ export default function FlutedGlassOverlay({
   const filterId = `fluted-strip-${side}`;
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- builds the displacement maps via <canvas>, a browser-only DOM API unavailable during server render/render itself
     setMaps(buildLiquidMaps(fluteWidth, liquidity, drip));
   }, [fluteWidth, liquidity, drip]);
 
