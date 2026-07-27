@@ -49,8 +49,13 @@ function PromoRibbon({ badgeKey, label }: { badgeKey: Exclude<PromoBadgeKey, "de
 }
 
 function PromoCard({ promo, now, reveal = true }: { promo: Promo; now: Date; reveal?: boolean }) {
+  const t = useTranslations("promo");
   const badge = getPromoBadge(promo, now);
-  const timestamp = getPromoTimestamp(promo, now, badge);
+  const ts = getPromoTimestamp(promo, now, badge);
+  const timestamp = t(`timestamp.${ts.kind}`, {
+    hours: ts.kind === "hoursLeft" ? ts.hours : 0,
+    date: ts.kind === "until" ? ts.date : "",
+  });
 
   return (
     <a
@@ -111,7 +116,7 @@ function PromoCard({ promo, now, reveal = true }: { promo: Promo; now: Date; rev
         />
       </div>
 
-      {badge.key !== "default" && <PromoRibbon badgeKey={badge.key} label={badge.label!} />}
+      {badge.key !== "default" && <PromoRibbon badgeKey={badge.key} label={t(`badge.${badge.key}`)} />}
     </a>
   );
 }
