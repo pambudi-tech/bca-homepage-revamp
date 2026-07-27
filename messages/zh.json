@@ -174,7 +174,8 @@
     "bukaMenu": "打开菜单",
     "bahasa": "语言",
     "pilihSegmen": "选择您的客户类型",
-    "kembali": "返回"
+    "kembali": "返回",
+    "menuLabel": "主菜单"
   },
   "cookieBanner": {
     "ariaLabel": "Cookie 提示",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { useLocale, useTranslations } from "next-intl";
 import { useMegaMenu } from "./use-megamenu";
@@ -77,6 +77,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
   const [enterDir, setEnterDir] = useState<Dir | null>(null);
   const [exiting, setExiting] = useState<{ view: View; dir: Dir } | null>(null);
   const [mounted, setMounted] = useState(false);
+  const portalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- gates the createPortal below, which needs document.body and is unavailable during server render
@@ -84,6 +85,55 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
   }, []);
 
   useScrollLock(open);
+
+  // Escape closes the menu, matching every other dismissible surface on the
+  // site (HaloBcaChat, the hero search, LayoutSwitcher). Bound only while
+  // open so a stray Escape elsewhere on the page costs nothing.
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open, onClose]);
+
+  // Remembers the control that opened the menu (the hamburger in MobileNav)
+  // and hands focus back on close — otherwise focus falls to <body> and a
+  // keyboard user restarts from the top of the page.
+  const restoreFocusRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (open) {
+      restoreFocusRef.current = document.activeElement as HTMLElement | null;
+      return;
+    }
+    // Only steal focus back if it is not already somewhere deliberate —
+    // guards against yanking focus during the closing animation if the user
+    // has already clicked elsewhere.
+    if (restoreFocusRef.current && document.activeElement === document.body) {
+      restoreFocusRef.current.focus();
+      restoreFocusRef.current = null;
+    }
+  }, [open]);
+
+  // Focus trap. The menu is portaled to <body>, so every *other* body child is
+  // the page behind it — marking them inert takes them out of the tab order
+  // and the accessibility tree for as long as the menu is open, without
+  // touching their styles or their animations. Cleanup is unconditional so a
+  // fast open/close can never strand an inert page.
+  useEffect(() => {
+    if (!open) return;
+    const root = portalRef.current;
+    if (!root) return;
+
+    const siblings = [...document.body.children].filter(
+      (el) => el !== root && !el.hasAttribute("inert")
+    );
+    siblings.forEach((el) => el.setAttribute("inert", ""));
+
+    return () => siblings.forEach((el) => el.removeAttribute("inert"));
+  }, [open]);
 
   // Reset to the root view each time the menu opens (the menu keeps its own
   // internal scroll via `data-lenis-prevent`, unrelated to the scroll lock).
@@ -150,7 +200,11 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
   if (!mounted) return null;
   return createPortal(
     <div
+      ref={portalRef}
       data-shown={open}
+      role="dialog"
+      aria-modal="true"
+      aria-label={tMobile("menuLabel")}
       className="fade-overlay fixed inset-0 z-[60] flex justify-center xl:hidden"
       style={
         {

@@ -174,7 +174,8 @@
     "bukaMenu": "Buka menu",
     "bahasa": "Bahasa",
     "pilihSegmen": "Pilih Segmen Anda",
-    "kembali": "Kembali"
+    "kembali": "Kembali",
+    "menuLabel": "Menu utama"
   },
   "cookieBanner": {
     "ariaLabel": "Pemberitahuan cookie",
