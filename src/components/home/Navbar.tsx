@@ -75,7 +75,7 @@ function NavbarLink({
     // alone only tells a sighted user which page they are on.
     "aria-current": active ? ("page" as const) : undefined,
     style: viewTransitionName ? ({ viewTransitionName } as CSSProperties) : undefined,
-    className: `flex h-10 items-center justify-center gap-0.5 rounded-full border px-4 backdrop-blur-[12px] transition-colors duration-300 ${active
+    className: `flex h-10 items-center justify-center gap-0.5 rounded-full border px-4 transition-colors duration-300 ${active
         ? `border-blue-500 ${hover ? "bg-[#0068c0]" : "bg-blue-500"}`
         : hover
           ? "border-white/20 bg-[rgba(18,20,23,0.5)]"
@@ -133,7 +133,7 @@ function SearchButton({ label }: { label: string }) {
       aria-label={label}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className={`flex h-10 items-center justify-start gap-0.5 rounded-full border backdrop-blur-[4px] transition-all duration-300 ${hover
+      className={`flex h-10 items-center justify-start gap-0.5 rounded-full border transition-all duration-300 ${hover
           ? "w-auto border-white/20 bg-[rgba(18,20,23,0.5)] px-4"
           : "w-10 border-white/25 bg-[rgba(5,13,25,0.1)] px-2"
         }`}
@@ -184,7 +184,7 @@ function IconLinkButton({
       onClick={onClick}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className={`flex h-10 items-center rounded-full border backdrop-blur-[4px] transition-all duration-300 ${hover
+      className={`flex h-10 items-center rounded-full border transition-all duration-300 ${hover
           ? "w-auto justify-start gap-0.5 border-white/20 bg-[rgba(18,20,23,0.5)] px-4"
           : "w-10 justify-center border-white/25 bg-[rgba(5,13,25,0.1)] px-2"
         }`}
@@ -477,7 +477,7 @@ export default function Navbar({
                         onMouseEnter={() => setSegmentHover(true)}
                         onMouseLeave={() => setSegmentHover(false)}
                         style={{ viewTransitionName: "nav-segment-pill" } as CSSProperties}
-                        className={`flex h-10 items-center gap-2 rounded-full border pl-4 pr-1 backdrop-blur-[4px] transition-colors ${segmentHover || segmentOpen
+                        className={`flex h-10 items-center gap-2 rounded-full border pl-4 pr-1 transition-colors ${segmentHover || segmentOpen
                             ? "border-neutral-300 bg-white"
                             : "border-white/25 bg-[rgba(5,13,25,0.1)]"
                           }`}
@@ -558,7 +558,7 @@ export default function Navbar({
                       onClick={() => setLangOpen((v) => !v)}
                       onMouseEnter={() => setLangHover(true)}
                       onMouseLeave={() => setLangHover(false)}
-                      className={`flex h-10 cursor-pointer items-center gap-0.5 rounded-full border px-2 backdrop-blur-[4px] transition-colors ${langHover || langOpen
+                      className={`flex h-10 cursor-pointer items-center gap-0.5 rounded-full border px-2 transition-colors ${langHover || langOpen
                           ? "border-neutral-300 bg-white"
                           : "border-white/25 bg-[rgba(5,13,25,0.1)]"
                         }`}

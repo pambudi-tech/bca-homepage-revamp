@@ -153,7 +153,7 @@
     "karir": "Karir",
     "search": "Cari",
     "lokasiBca": "Lokasi BCA",
-    "haloBca": "Halo BCA",
+    "haloBca": "Bantuan",
     "pengajuan": "Pengajuan",
     "andaBerada": "Anda berada di BCA",
     "kembaliKe": "Kembali ke BCA",
@@ -257,6 +257,11 @@
     "eyebrow": "Kabar & Wawasan",
     "heading": "Update Seputar BCA",
     "seeMore": "Lihat Lebih Banyak"
+  },
+  "faq": {
+    "heading": "Dukungan Tepercaya yang Selalu Sedia di Sisi Anda",
+    "notFound": "Tidak menemukan yang Anda cari?",
+    "cta": "Kunjungi Pusat Bantuan"
   },
   "megamenu": {
     "Simpanan": {

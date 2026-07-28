@@ -8,7 +8,10 @@ import {
   type Product,
   type ProductCategory,
 } from "./product-data";
-import FlutedGlassOverlay from "./FlutedGlassOverlay";
+import { MEGAMENU_STRUCTURE } from "./megamenu-data";
+// FlutedGlassOverlay is paused (not deleted) — laggy on Safari, see the
+// commented-out usage below. Bring this import back when it's re-enabled.
+// import FlutedGlassOverlay from "./FlutedGlassOverlay";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useIsLive } from "@/lib/useIsLive";
 
@@ -19,6 +22,43 @@ type ProductVariant = (typeof PRODUCT_VARIANTS)[number];
 const AUTO_ADVANCE_MS = 6000;
 const RING_RADIUS = 13;
 const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
+
+/** Category → editorial image, reused from the navbar's mega menu so the
+ *  accordion's active-card photo matches what the mega menu shows for the
+ *  same category. */
+const MEGAMENU_CATEGORY_IMAGES: Record<string, string> = Object.fromEntries(
+  MEGAMENU_STRUCTURE.map((c) => [c.key, c.image])
+);
+
+/** Blanket scale applied to every glass badge, on top of each category's own
+ *  `scale` tweak below. */
+const GLASS_ICON_SCALE = 1.1;
+
+/**
+ * Glass-badge icon shown on a collapsed accordion card, keyed by category.
+ * Every category now has an asset.
+ *
+ * `offsetX`/`offsetY`/`scale` are one-off nudges per category while the
+ * assets are still being fitted by eye — not derived from anything, just
+ * tweaked until each badge sits right against its own art. Remove once the
+ * badges settle.
+ */
+const CATEGORY_GLASS_ICONS: Record<
+  string,
+  { src: string; offsetX?: number; offsetY?: number; scale?: number }
+> = {
+  Simpanan: { src: "/assets/product/simpanan-glass.webp", offsetX: -40 },
+  "Kartu Kredit": { src: "/assets/product/kartu-kredit-glass.webp" },
+  Pinjaman: { src: "/assets/product/pinjaman-glass.webp", offsetX: -16, scale: 1.1 },
+  "e-Banking": { src: "/assets/product/ebanking-glass.webp" },
+  Asuransi: {
+    src: "/assets/product/asuransi-glass.webp",
+    offsetX: -24,
+    offsetY: 16,
+    scale: 0.9,
+  },
+  Investasi: { src: "/assets/product/investasi-glass.webp", offsetX: 0 },
+};
 
 /**
  * Category swaps animate the card *contents* only — the cards themselves keep
@@ -129,6 +169,7 @@ function ProductCard({
   entered,
   enterDelayMs,
   swap,
+  glassIcon,
 }: {
   product: Product;
   /** The photos being swiped away, drawn over `product` for the swap only. */
@@ -141,6 +182,9 @@ function ProductCard({
   entered: boolean;
   enterDelayMs: number;
   swap: ReturnType<typeof swapStyles>;
+  /** Glass-badge icon shown top-left while the card is collapsed; not every
+   *  category has one yet. */
+  glassIcon?: { src: string; offsetX?: number; offsetY?: number; scale?: number };
 }) {
   const t = useTranslations("common");
   const [isHovered, setIsHovered] = useState(false);
@@ -221,9 +265,45 @@ function ProductCard({
         transition: `flex-basis 500ms cubic-bezier(0.4,0,0.2,1), clip-path 700ms cubic-bezier(0.16,1,0.3,1) ${enterDelayMs}ms`,
       }}
     >
+      {/* Inactive cards show a flat gradient fill instead of their photo — the
+          image only appears once the card is active. */}
       <div
-        className="absolute inset-y-0 right-0 w-[566px] transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
-        style={{ transform: active ? "translateX(0)" : "translateX(96px)" }}
+        aria-hidden
+        className="absolute inset-0 bg-gradient-to-t from-blue-500 to-cyan-500 transition-opacity duration-300 ease-out"
+        style={{ opacity: active ? 0 : 1 }}
+      />
+
+      {/* Glass badge — top-left of the collapsed card, cropped by the card's
+          own overflow-clip so 32px of its 200px bleeds off the left edge. */}
+      {glassIcon && (
+        <img loading="lazy" decoding="async"
+          aria-hidden
+          src={glassIcon.src}
+          alt=""
+          className="absolute top-4 size-[200px] max-w-none origin-center object-contain transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+          style={{
+            left: -32 + (glassIcon.offsetX ?? 0),
+            top: 16 + (glassIcon.offsetY ?? 0),
+            // Selecting the card shrinks the badge out as it fades (down to
+            // half size); deselecting grows it back in from that half size —
+            // one scale drives both, since the CSS transition above already
+            // interpolates whichever direction `active` just flipped.
+            transform: `scale(${GLASS_ICON_SCALE *
+              (glassIcon.scale ?? 1) *
+              (isHovered && !active ? 1.1 : 1) *
+              (active ? 0.5 : 1)
+              })`,
+            opacity: active ? 0 : 1,
+          }}
+        />
+      )}
+
+      <div
+        className="absolute inset-y-0 right-0 w-[566px] transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        style={{
+          transform: active ? "translateX(0)" : "translateX(96px)",
+          opacity: active ? 1 : 0,
+        }}
       >
         {/* Each layer carries the category-swap slide, so it composes with the
             active/inactive shift on the wrapper above and the hover zooms
@@ -233,15 +313,15 @@ function ProductCard({
         {outgoing && <PhotoLayer product={outgoing} style={swap.outgoing} />}
       </div>
 
-      <div
-        aria-hidden
-        className="absolute inset-x-0 bottom-0 h-60 transition-[height] duration-300 ease-out group-hover:h-72"
-        style={{
-          background: active
-            ? "linear-gradient(to top, #005caa 0%, rgba(0,181,240,0) 100%)"
-            : "linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(18,20,23,0) 100%)",
-        }}
-      />
+      {active && (
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-60 transition-[height] duration-300 ease-out group-hover:h-72"
+          style={{
+            background: "linear-gradient(to top, #005caa 0%, rgba(0,181,240,0) 100%)",
+          }}
+        />
+      )}
 
       <div
         className="hero-search absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[width] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
@@ -249,10 +329,18 @@ function ProductCard({
           // Collapsed cards are only 150px wide now, so the resting panel is
           // narrower than the old 3-card layout's 184.
           width: active ? 280 : 134,
-          backgroundColor: "rgba(0,0,0,0.3)",
-          backdropFilter: "blur(16px) saturate(1.25)",
-          WebkitBackdropFilter: "blur(16px) saturate(1.25)",
-          isolation: "isolate",
+          // Collapsed cards get a plain glass fill (10% white) — no border,
+          // blur, or saturate, unlike the active card's spec below.
+          ...(active
+            ? {
+              backgroundColor: "rgba(0,0,0,0.3)",
+              backdropFilter: "blur(16px) saturate(1.25)",
+              WebkitBackdropFilter: "blur(16px) saturate(1.25)",
+              isolation: "isolate",
+            }
+            : {
+              backgroundColor: "rgba(255,255,255,0.1)",
+            }),
         }}
       >
         <div className="w-full" style={swap.copy}>
@@ -1088,6 +1176,10 @@ export default function ProductSection({
   const leftGlassRef = useRef<SVGImageElement>(null);
   const rightGlassRef = useRef<SVGImageElement>(null);
   const mobileCloveRef = useRef<HTMLImageElement>(null);
+  // Desktop clove pattern, standing in while FlutedGlassOverlay is paused
+  // (see the commented-out import above).
+  const cloveARef = useRef<HTMLImageElement>(null);
+  const cloveBRef = useRef<HTMLImageElement>(null);
 
   const categoryOf = (key: string) =>
     categories.find((c) => c.key === key) ?? categories[0];
@@ -1105,13 +1197,18 @@ export default function ProductSection({
   // The desktop accordion now shows the *categories* themselves — one card per
   // category (Simpanan, Kartu Kredit, …) — rather than the products inside the
   // active one. Each card is shaped like a Product so it can reuse ProductCard's
-  // photo / hover / expand treatment; the photo falls back to a bundled sample
-  // while Supabase's category `image` column is still empty.
+  // photo / hover / expand treatment. The photo reuses the same editorial image
+  // as the navbar's mega menu, so the two stay visually consistent per category;
+  // Supabase's `image` column and the bundled sample photos are only a fallback
+  // for categories the mega menu doesn't know about.
   const isDesktop = useIsDesktop();
   const categoryCards: Product[] = categories.map((c, i) => ({
     title: c.label,
     subtitle: c.description ?? "",
-    image: c.image || SAMPLE_CATEGORY_PHOTOS[i % SAMPLE_CATEGORY_PHOTOS.length],
+    image:
+      MEGAMENU_CATEGORY_IMAGES[c.key] ||
+      c.image ||
+      SAMPLE_CATEGORY_PHOTOS[i % SAMPLE_CATEGORY_PHOTOS.length],
   }));
   const activeCategoryIndex = Math.max(0, categories.findIndex((c) => c.key === activeCategory));
   // Desktop accordion autoplay steps through categories; desktop curved steps
@@ -1136,6 +1233,12 @@ export default function ProductSection({
       }
       if (mobileCloveRef.current) {
         mobileCloveRef.current.style.transform = `translate3d(0, ${centerDist * -0.1}px, 0) scale(1.2)`;
+      }
+      if (cloveARef.current) {
+        cloveARef.current.style.transform = `translate3d(-50%, ${rectTop * 0.12}px, 0)`;
+      }
+      if (cloveBRef.current) {
+        cloveBRef.current.style.transform = `translate3d(-50%, ${rectTop * 0.2}px, 0)`;
       }
     };
     const onScroll = () => {
@@ -1257,11 +1360,37 @@ export default function ProductSection({
         />
       </div>
 
-      {/* Fluted glass vertical strips — both layout variants use the glass
-          overlay now, which is why the clove background pattern they used to
-          reveal underneath it is never rendered here any more. */}
-      <FlutedGlassOverlay side="left" fluteWidth={48} strength={90} liquidity={1} blur={0} drip={0.75} imageRef={leftGlassRef} />
-      <FlutedGlassOverlay side="right" fluteWidth={48} strength={160} liquidity={1} blur={0} drip={0.75} imageSrc="/assets/gradien-1.png" imageRef={rightGlassRef} />
+      {/* Fluted glass vertical strips — PAUSED (not deleted): laggy on Safari
+          (SVG feDisplacementMap has weak/no GPU acceleration in WebKit).
+          Standing in with the desktop clove pattern that used to render here
+          before the glass overlay replaced it, until a lighter-weight
+          implementation lands. To restore: uncomment the import above and
+          this block, and remove the clove-A/B markup just below. */}
+      {/* <FlutedGlassOverlay side="left" fluteWidth={48} strength={90} liquidity={1} blur={0} drip={0.75} imageRef={leftGlassRef} />
+      <FlutedGlassOverlay side="right" fluteWidth={48} strength={160} liquidity={1} blur={0} drip={0.75} imageSrc="/assets/gradien-1.png" imageRef={rightGlassRef} /> */}
+
+      {/* Desktop clove pattern — the pre-fluted-glass background, brought back
+          while the glass overlay is paused. Same two-layer parallax as it had
+          before (see the effect above): cloveA drifts at 0.12x scroll,
+          cloveB at 0.2x. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-visible hidden xl:block">
+        <div className="absolute left-[calc(50%-937px)] top-[-400px] h-[1614px] w-[1178px] origin-top-left">
+          <img loading="lazy" decoding="async"
+            ref={cloveARef}
+            src="/assets/product/bg-clove-a.svg"
+            alt=""
+            className="absolute inset-0 size-full opacity-80 will-change-transform"
+          />
+        </div>
+        <div className="absolute left-[calc(50%+107px)] top-[104px] h-[1668px] w-[1218px] origin-top-left">
+          <img loading="lazy" decoding="async"
+            ref={cloveBRef}
+            src="/assets/product/bg-clove-b.svg"
+            alt=""
+            className="absolute inset-0 size-full opacity-80 will-change-transform"
+          />
+        </div>
+      </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[560px] px-4 xl:w-[1280px] xl:max-w-none xl:px-0">
         {/* Heading — stacked on mobile. On desktop the curved layout stacks it
@@ -1360,6 +1489,7 @@ export default function ProductSection({
                     entered={entered}
                     enterDelayMs={250 + i * 80}
                     swap={swapStyles(false, 1, 0, false)}
+                    glassIcon={CATEGORY_GLASS_ICONS[categories[i].key]}
                   />
                 ))}
               </div>

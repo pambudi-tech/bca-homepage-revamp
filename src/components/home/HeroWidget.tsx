@@ -455,7 +455,7 @@ export default function HeroWidget({
                   <p className="text-sm font-normal text-neutral-700">{t("loginCepat.subtitle")}</p>
                 </div>
 
-                <div className="flex h-16 min-w-0 flex-1 items-center gap-2 pl-4">
+                <div className="flex h-16 min-w-0 flex-1 items-center gap-2 pl-3">
                   {LOGIN_DESTINATIONS.map((dest) => (
                     <a
                       key={dest.label}
@@ -517,117 +517,117 @@ export default function HeroWidget({
               </button>
             </div>
           ) : (
-          <div
-            className="grid w-full items-stretch overflow-clip rounded-3xl bg-white transition-[grid-template-columns] duration-300 ease-in-out"
-            style={{
-              gridTemplateColumns: loginOpen
-                ? "248px minmax(0,1fr) 104px 104px 104px 104px"
-                : "1fr 0px 1fr 1fr 1fr 1fr",
-            }}
-          >
-            {QUICK_ACTIONS.map((action, index) => {
-              const isLogin = index === 0;
-              const collapsed = loginOpen && !isLogin;
-              // Real links get an <a> so middle-click / open-in-new-tab work.
-              const Tag: ElementType = action.href ? "a" : "button";
-              return (
-                <Tag
-                  key={action.title}
-                  {...(action.href
-                    ? { href: action.href, target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
-                  onClick={() => {
-                    if (isLogin) {
-                      setLoginOpen((v) => !v);
-                      return;
-                    }
-                    if (loginOpen) setLoginOpen(false);
-                    if (action.scrollTo) {
-                      // offset 0 → land exactly at the section top so the
-                      // preceding (myBCA) section is fully out of view.
-                      if (lenis) lenis.scrollTo(action.scrollTo, { offset: 0, duration: 1 });
-                      else
-                        document
-                          .querySelector(action.scrollTo)
-                          ?.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                  onMouseEnter={() => setHoveredAction(index)}
-                  onMouseLeave={() => setHoveredAction((h) => (h === index ? null : h))}
-                  className={`relative flex h-20 min-w-0 cursor-pointer items-center justify-start gap-4 overflow-hidden px-4 py-5 transition-colors duration-300 ease-in-out ${isLogin && loginOpen ? "bg-cyan-100" : "hover:bg-cyan-100"
-                    } ${index === 0 ? "rounded-l-3xl" : ""} ${index === QUICK_ACTIONS.length - 1 ? "rounded-r-3xl" : ""
-                    }`}
-                  style={{
-                    gridColumn: index === 0 ? 1 : index + 2,
-                    gridRow: 1,
-                    outline: "1px solid #e9ecef",
-                    outlineOffset: "-0.5px",
-                  }}
-                >
-                  {action.confetti && hoveredAction === index && <Confetti />}
-                  <div
-                    className="relative z-10 flex items-center gap-4 transition-transform duration-300 ease-in-out"
-                    style={{ transform: collapsed ? "translateX(16px)" : "translateX(0px)" }}
-                  >
-                    <img src={action.icon} alt="" className="size-10 shrink-0" />
-                    <div
-                      className={`flex min-w-0 flex-col items-start gap-1 overflow-hidden text-left whitespace-nowrap transition-[opacity,transform] duration-200 ease-in-out ${collapsed ? "translate-x-3 opacity-0" : "translate-x-0 opacity-100"
-                        }`}
-                    >
-                      <p
-                        className={`text-base font-bold ${isLogin && loginOpen ? "text-blue-800" : "text-neutral-800"
-                          }`}
-                      >
-                        {action.title}
-                      </p>
-                      <p
-                        className={`text-sm font-normal ${isLogin && loginOpen ? "text-blue-800" : "text-neutral-700"
-                          }`}
-                      >
-                        {action.subtitle}
-                      </p>
-                    </div>
-                  </div>
-                </Tag>
-              );
-            })}
-
             <div
-              inert={!loginOpen}
-              className={`flex h-20 min-w-0 items-center gap-3 overflow-hidden px-3 transition-[clip-path,opacity] duration-300 ease-in-out ${loginOpen ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
-                }`}
+              className="grid w-full items-stretch overflow-clip rounded-3xl bg-white transition-[grid-template-columns] duration-300 ease-in-out"
               style={{
-                gridColumn: 2,
-                gridRow: 1,
-                clipPath: loginOpen ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)",
+                gridTemplateColumns: loginOpen
+                  ? "248px minmax(0,1fr) 104px 104px 104px 104px"
+                  : "1fr 0px 1fr 1fr 1fr 1fr",
               }}
             >
-              {[LOGIN_DESTINATIONS[0], LOGIN_DESTINATIONS[2]].map((dest) => (
-                <a
-                  key={dest.label}
-                  href={dest.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-16 min-w-0 flex-1 items-center justify-center gap-4 rounded-2xl border border-neutral-300 bg-white px-4 transition-colors duration-200 hover:border-blue-300 hover:bg-cyan-100"
-                >
-                  <span className="flex size-10 shrink-0 items-center justify-center">
-                    <img src={dest.icon} alt="" className={`${dest.iconClass} object-contain`} />
-                  </span>
-                  <span className="text-sm font-semibold whitespace-nowrap text-neutral-800">
-                    {dest.label}
-                  </span>
-                  <ExternalArrow />
-                </a>
-              ))}
-              <button
-                onClick={() => setLoginOpen(false)}
-                aria-label={t("closeLogin")}
-                className="flex size-10 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-black/5"
+              {QUICK_ACTIONS.map((action, index) => {
+                const isLogin = index === 0;
+                const collapsed = loginOpen && !isLogin;
+                // Real links get an <a> so middle-click / open-in-new-tab work.
+                const Tag: ElementType = action.href ? "a" : "button";
+                return (
+                  <Tag
+                    key={action.title}
+                    {...(action.href
+                      ? { href: action.href, target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    onClick={() => {
+                      if (isLogin) {
+                        setLoginOpen((v) => !v);
+                        return;
+                      }
+                      if (loginOpen) setLoginOpen(false);
+                      if (action.scrollTo) {
+                        // offset 0 → land exactly at the section top so the
+                        // preceding (myBCA) section is fully out of view.
+                        if (lenis) lenis.scrollTo(action.scrollTo, { offset: 0, duration: 1 });
+                        else
+                          document
+                            .querySelector(action.scrollTo)
+                            ?.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                    onMouseEnter={() => setHoveredAction(index)}
+                    onMouseLeave={() => setHoveredAction((h) => (h === index ? null : h))}
+                    className={`relative flex h-20 min-w-0 cursor-pointer items-center justify-start gap-4 overflow-hidden px-4 py-5 transition-colors duration-300 ease-in-out ${isLogin && loginOpen ? "bg-cyan-100" : "hover:bg-cyan-100"
+                      } ${index === 0 ? "rounded-l-3xl" : ""} ${index === QUICK_ACTIONS.length - 1 ? "rounded-r-3xl" : ""
+                      }`}
+                    style={{
+                      gridColumn: index === 0 ? 1 : index + 2,
+                      gridRow: 1,
+                      outline: "1px solid #e9ecef",
+                      outlineOffset: "-0.5px",
+                    }}
+                  >
+                    {action.confetti && hoveredAction === index && <Confetti />}
+                    <div
+                      className="relative z-10 flex items-center gap-4 transition-transform duration-300 ease-in-out"
+                      style={{ transform: collapsed ? "translateX(16px)" : "translateX(0px)" }}
+                    >
+                      <img src={action.icon} alt="" className="size-10 shrink-0" />
+                      <div
+                        className={`flex min-w-0 flex-col items-start gap-1 overflow-hidden text-left whitespace-nowrap transition-[opacity,transform] duration-200 ease-in-out ${collapsed ? "translate-x-3 opacity-0" : "translate-x-0 opacity-100"
+                          }`}
+                      >
+                        <p
+                          className={`text-base font-bold ${isLogin && loginOpen ? "text-blue-800" : "text-neutral-800"
+                            }`}
+                        >
+                          {action.title}
+                        </p>
+                        <p
+                          className={`text-sm font-normal ${isLogin && loginOpen ? "text-blue-800" : "text-neutral-700"
+                            }`}
+                        >
+                          {action.subtitle}
+                        </p>
+                      </div>
+                    </div>
+                  </Tag>
+                );
+              })}
+
+              <div
+                inert={!loginOpen}
+                className={`flex h-20 min-w-0 items-center gap-3 overflow-hidden px-3 transition-[clip-path,opacity] duration-300 ease-in-out ${loginOpen ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
+                  }`}
+                style={{
+                  gridColumn: 2,
+                  gridRow: 1,
+                  clipPath: loginOpen ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)",
+                }}
               >
-                <img src="/assets/cycle1/outline-close.svg" alt="" className="size-6" />
-              </button>
+                {[LOGIN_DESTINATIONS[0], LOGIN_DESTINATIONS[2]].map((dest) => (
+                  <a
+                    key={dest.label}
+                    href={dest.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex h-16 min-w-0 flex-1 items-center justify-center gap-4 rounded-2xl border border-neutral-300 bg-white px-4 transition-colors duration-200 hover:border-blue-300 hover:bg-cyan-100"
+                  >
+                    <span className="flex size-10 shrink-0 items-center justify-center">
+                      <img src={dest.icon} alt="" className={`${dest.iconClass} object-contain`} />
+                    </span>
+                    <span className="text-sm font-semibold whitespace-nowrap text-neutral-800">
+                      {dest.label}
+                    </span>
+                    <ExternalArrow />
+                  </a>
+                ))}
+                <button
+                  onClick={() => setLoginOpen(false)}
+                  aria-label={t("closeLogin")}
+                  className="flex size-10 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-black/5"
+                >
+                  <img src="/assets/cycle1/outline-close.svg" alt="" className="size-6" />
+                </button>
+              </div>
             </div>
-          </div>
           )}
         </div>
       </div>

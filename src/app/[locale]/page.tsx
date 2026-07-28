@@ -8,6 +8,7 @@ import MyBcaSection from "@/components/home/MyBcaSection";
 import PromoSection from "@/components/home/PromoSection";
 import SoliprioSection from "@/components/home/SoliprioSection";
 import NewsSection from "@/components/home/NewsSection";
+import FaqSection from "@/components/home/FaqSection";
 import Footer from "@/components/home/Footer";
 import BackToTop from "@/components/home/BackToTop";
 import CookieBanner from "@/components/home/CookieBanner";
@@ -59,6 +60,7 @@ export default async function Home({
         <PromoSection promos={promos} now={now} />
         <SoliprioSection />
         <NewsSection categories={news} />
+        <FaqSection />
       </div>
 
       {/* 2. FOOTER: desktop pakai sticky reveal (z-0 di layer belakang);
