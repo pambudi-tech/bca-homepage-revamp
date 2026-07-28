@@ -396,13 +396,15 @@ export default function HaloBcaChat() {
                 ? { transform: `translateY(${dragY}px)`, transition: dragging ? "none" : "transform 200ms ease-out" }
                 : undefined
             }
-            // Desktop cap is `100vh - 96px` (the button's own 32px offset +
-            // ~48px height + the 16px gap above it) for the bottom side, and
-            // another flat 32px for the top so the panel never presses flush
-            // against the top edge on short viewports — a fixed 70vh clipped
-            // the form on ordinary laptop screens instead. overflow-y-auto
-            // stays as a safety net once even that shrunk height isn't enough.
-            className="halobca-panel fixed inset-x-0 bottom-0 z-[70] mx-auto max-h-[calc(100vh-32px)] w-full max-w-[560px] overflow-y-auto rounded-t-2xl bg-neutral-100 p-6 pb-[calc(24px+env(safe-area-inset-bottom))] shadow-[0_-8px_32px_rgba(0,0,0,0.16)] xl:absolute xl:inset-x-auto xl:right-0 xl:bottom-[calc(100%+16px)] xl:mx-0 xl:max-h-[calc(100vh-128px)] xl:w-[min(calc(100vw-2.5rem),400px)] xl:max-w-none xl:rounded-2xl xl:pb-6 xl:shadow-[0_16px_48px_rgba(0,0,0,0.16)]"
+            // Mobile bottom sheet is capped at 75% of the viewport height so it
+            // never covers the whole screen; overflow-y-auto lets the form
+            // scroll internally once its content exceeds that cap. Desktop cap
+            // is `100vh - 96px` (the button's own 32px offset + ~48px height +
+            // the 16px gap above it) for the bottom side, and another flat 32px
+            // for the top so the panel never presses flush against the top edge
+            // on short viewports — a fixed 70vh clipped the form on ordinary
+            // laptop screens instead.
+            className="halobca-panel fixed inset-x-0 bottom-0 z-[70] mx-auto max-h-[75vh] w-full max-w-[560px] overflow-y-auto rounded-t-2xl bg-neutral-100 p-6 pb-[calc(24px+env(safe-area-inset-bottom))] shadow-[0_-8px_32px_rgba(0,0,0,0.16)] xl:absolute xl:inset-x-auto xl:right-0 xl:bottom-[calc(100%+16px)] xl:mx-0 xl:max-h-[calc(100vh-128px)] xl:w-[min(calc(100vw-2.5rem),400px)] xl:max-w-none xl:rounded-2xl xl:pb-6 xl:shadow-[0_16px_48px_rgba(0,0,0,0.16)]"
           >
             {/* Grab handle — mobile bottom-sheet affordance, hidden on desktop.
                 `touch-none` stops the page from scrolling while dragging. */}
