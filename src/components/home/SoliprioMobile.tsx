@@ -93,7 +93,7 @@ export default function SoliprioMobile({
   return (
     <div
       data-reveal-group
-      className="relative h-[580px] overflow-clip bg-[#0f0f0f] xl:hidden"
+      className="relative h-[640px] overflow-clip bg-[#0f0f0f] xl:hidden"
     >
       {/* Design places a 740x328 photo at x=-276. Covering a full-width,
           328px-tall band reproduces exactly that scale (the source's 2.256

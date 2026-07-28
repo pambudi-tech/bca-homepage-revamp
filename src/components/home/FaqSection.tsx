@@ -12,57 +12,90 @@ function PlusIcon({ className }: { className?: string }) {
   );
 }
 
-function MinusIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path d="M5 12h14" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
-    </svg>
-  );
-}
-
 function AccordionRow({
   question,
   answer,
   open,
   onToggle,
+  glass,
 }: {
   question: string;
   answer: string;
   open: boolean;
   onToggle: () => void;
+  glass?: boolean;
 }) {
   return (
     <div
-      className={`w-full shrink-0 rounded-xl transition-colors ${
-        open ? "bg-neutral-100" : "hover:bg-neutral-100"
+      className={`group w-full shrink-0 rounded-xl transition-colors ${
+        glass
+          ? open
+            ? "bg-white/15"
+            : "hover:bg-white/10"
+          : open
+            ? "bg-neutral-100"
+            : "hover:bg-cyan-100"
       }`}
     >
       <button
         type="button"
         onClick={onToggle}
         aria-expanded={open}
-        className="flex w-full cursor-pointer items-center gap-4 p-4 text-left"
+        className="flex w-full cursor-pointer items-center gap-8 p-4 text-left"
       >
         <span
-          className={`flex-1 text-base leading-6 ${
-            open ? "font-bold text-blue-700" : "font-semibold text-neutral-800"
+          className={`flex-1 text-base leading-6 transition-[color,opacity] ${
+            glass
+              ? open
+                ? "font-bold text-white opacity-100"
+                : "font-semibold text-neutral-100 opacity-75 group-hover:opacity-100"
+              : open
+                ? "font-bold text-blue-700"
+                : "font-semibold text-neutral-800"
           }`}
         >
           {question}
         </span>
-        {open ? (
-          <MinusIcon className="size-6 shrink-0 text-blue-700" />
-        ) : (
-          <PlusIcon className="size-6 shrink-0 text-blue-500" />
-        )}
+        <PlusIcon
+          className={`size-6 shrink-0 transition-[transform,color] duration-300 ${
+            open
+              ? `rotate-45 ${glass ? "text-white" : "text-blue-700"}`
+              : glass
+                ? "text-cyan-300"
+                : "text-blue-500"
+          }`}
+        />
       </button>
-      {open && <p className="px-4 pb-4 text-base leading-[1.5] text-neutral-800">{answer}</p>}
+      {/* Height animates via the CSS grid 0fr → 1fr trick — no JS measurement,
+          and the row stays in the DOM (rather than conditionally rendered) so
+          the transition has something to animate between. */}
+      <div
+        className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+          open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <p className={`px-4 pb-4 text-base leading-[1.5] ${glass ? "text-neutral-100" : "text-neutral-800"}`}>
+            {answer}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
 
-export default function FaqSection() {
+type FaqSectionProps = {
+  /** "solid" (default) matches the Figma spec — an opaque white panel.
+   *  "glass" is an alternate treatment: a frosted panel over the photo,
+   *  with the tab list and CTA filled darker (80% black) than the question
+   *  list (50% black) so the list reads as the lighter, more open area. */
+  variant?: "solid" | "glass";
+};
+
+export default function FaqSection({ variant: initialVariant = "solid" }: FaqSectionProps) {
   const t = useTranslations("faq");
+  const [variant, setVariant] = useState(initialVariant);
+  const glass = variant === "glass";
   const [activeKey, setActiveKey] = useState(FAQ_CATEGORIES[0].key);
   const [openIndex, setOpenIndex] = useState(-1);
   const active = FAQ_CATEGORIES.find((c) => c.key === activeKey) ?? FAQ_CATEGORIES[0];
@@ -72,17 +105,14 @@ export default function FaqSection() {
     setOpenIndex(-1);
   };
 
-  const card = (
-    <div data-reveal className="w-full max-w-[640px] overflow-clip rounded-3xl bg-white shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)]">
-      {/* Header */}
-      <div className="bg-blue-500 px-6 py-6 xl:px-8 xl:py-6">
-        <p className="w-80 text-2xl font-semibold leading-8 tracking-[-0.48px] text-white">
-          {t("heading")}
-        </p>
-      </div>
-
-      {/* Tab list */}
-      <div className="hide-scrollbar flex items-center gap-4 overflow-x-auto border-b border-neutral-300 bg-white px-4 pt-2 [scrollbar-width:none] xl:gap-4 xl:px-6">
+  const cardBody = (
+    <>
+      {/* Tab list — 80% fill on the glass variant. */}
+      <div
+        className={`hide-scrollbar flex items-center gap-4 overflow-x-auto border-b px-4 pt-2 [scrollbar-width:none] xl:gap-4 xl:px-6 ${
+          glass ? "border-white/20 bg-black/60 backdrop-blur-md" : "border-neutral-300 bg-white"
+        }`}
+      >
         {FAQ_CATEGORIES.map((cat) => {
           const isActive = cat.key === active.key;
           return (
@@ -95,7 +125,13 @@ export default function FaqSection() {
             >
               <span
                 className={`flex w-full flex-1 items-center justify-center whitespace-nowrap px-3 text-base ${
-                  isActive ? "font-bold text-neutral-800" : "font-semibold text-neutral-700"
+                  glass
+                    ? isActive
+                      ? "font-bold text-white"
+                      : "font-semibold text-neutral-100"
+                    : isActive
+                      ? "font-bold text-neutral-800"
+                      : "font-semibold text-neutral-700"
                 }`}
               >
                 {cat.label}
@@ -108,10 +144,13 @@ export default function FaqSection() {
 
       {/* Accordion list — fixed height so more than 3 questions scroll internally.
           `data-lenis-prevent` keeps Lenis from hijacking wheel/touch input here,
-          same pattern as MobileMenu's internal scroller. */}
+          same pattern as MobileMenu's internal scroller. 50% fill on the
+          glass variant, lighter than the tab list and CTA. */}
       <div
         data-lenis-prevent
-        className="flex h-[320px] flex-col gap-1 overflow-y-auto bg-white px-2 py-2 xl:h-[240px] xl:px-4"
+        className={`flex h-[360px] flex-col gap-1 overflow-y-auto px-2 py-2 ${
+          glass ? "scrollbar-glass bg-black/50 backdrop-blur-md" : "bg-white"
+        }`}
       >
         {active.items.map((item, i) => (
           <AccordionRow
@@ -120,36 +159,115 @@ export default function FaqSection() {
             answer={item.answer}
             open={openIndex === i}
             onToggle={() => setOpenIndex(openIndex === i ? -1 : i)}
+            glass={glass}
           />
         ))}
       </div>
 
-      {/* Footer CTA */}
-      <div className="flex flex-col items-center justify-center gap-4 border-t border-neutral-300 px-6 py-6 xl:flex-row xl:justify-between xl:py-0 xl:h-24">
-        <p className="text-center text-base font-semibold text-neutral-800 xl:text-left">{t("notFound")}</p>
+      {/* Footer CTA — 80% fill on the glass variant, matching the tab list. */}
+      <div
+        className={`flex flex-col items-center justify-center gap-4 border-t px-6 py-6 xl:flex-row xl:justify-between xl:py-0 xl:h-24 ${
+          glass ? "border-white/20 bg-black/60 backdrop-blur-md" : "border-neutral-300"
+        }`}
+      >
+        <p
+          className={`text-center text-base font-semibold xl:w-[200px] xl:text-left ${
+            glass ? "text-neutral-100" : "text-neutral-800"
+          }`}
+        >
+          {t("notFound")}
+        </p>
         <a
           href="https://www.bca.co.id/id/bantuan/pusat-informasi"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-12 shrink-0 items-center justify-center gap-1 rounded-full border border-blue-500 px-6 transition-colors duration-200 hover:bg-blue-100"
+          className={`flex h-12 shrink-0 items-center justify-center gap-1 rounded-full border px-6 transition-colors duration-200 ${
+            glass
+              ? "border-white text-white hover:bg-white/10"
+              : "border-blue-500 hover:bg-blue-100"
+          }`}
         >
-          <span className="text-base font-semibold text-blue-500">{t("cta")}</span>
-          <img loading="lazy" decoding="async" src="/assets/navbar/icon-arrow-blue.svg" alt="" className="size-5" />
+          <span className={`text-base font-semibold ${glass ? "text-white" : "text-blue-500"}`}>{t("cta")}</span>
+          <img loading="lazy" decoding="async"
+            src={glass ? "/assets/navbar/icon-arrow-white.svg" : "/assets/navbar/icon-arrow-blue.svg"}
+            alt=""
+            className="size-5"
+          />
         </a>
       </div>
+    </>
+  );
+
+  const desktopCard = (
+    <div
+      data-reveal
+      className={`relative w-full max-w-[560px] overflow-clip rounded-3xl ${
+        glass
+          ? "hero-search isolate"
+          : "bg-white shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)]"
+      }`}
+    >
+      {cardBody}
+    </div>
+  );
+
+  const mobileCard = (
+    <div
+      data-reveal
+      className={`relative w-full max-w-[640px] overflow-clip rounded-3xl ${
+        glass
+          ? "hero-search isolate"
+          : "bg-white shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)]"
+      }`}
+    >
+      {/* Header */}
+      <div className="bg-blue-500 px-6 py-6">
+        <p className="w-80 text-2xl font-semibold leading-8 tracking-[-0.48px] text-white">
+          {t("heading")}
+        </p>
+      </div>
+      {cardBody}
     </div>
   );
 
   return (
     <section id="faq-section" className="relative">
+      {/* Dev-only switcher between the "solid" (Figma spec) and "glass"
+          panel treatments — not part of the design, just for comparing them
+          live on the page. */}
+      <div className="absolute right-4 top-4 z-20 flex gap-1 rounded-full bg-black/40 p-1 backdrop-blur-md">
+        <button
+          type="button"
+          onClick={() => setVariant("solid")}
+          className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
+            !glass ? "bg-white text-neutral-800" : "text-white hover:bg-white/10"
+          }`}
+        >
+          Solid
+        </button>
+        <button
+          type="button"
+          onClick={() => setVariant("glass")}
+          className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
+            glass ? "bg-white text-neutral-800" : "text-white hover:bg-white/10"
+          }`}
+        >
+          Glass
+        </button>
+      </div>
+
       {/* ===== Desktop (>= xl): bg photo + dark overlay behind a floating card,
-           fixed 640px section — matches the Figma spec. ===== */}
+           fixed 640px section — matches the Figma spec. Heading lives over the
+           photo, bottom-left, instead of inside the panel — styled like the
+           hero search prompt. ===== */}
       <div className="relative hidden h-[640px] items-center overflow-clip xl:flex">
+        {/* Fills the section's own 640px height exactly — no separate fixed
+            height to fight with, so nothing gets clipped off the bottom. */}
         <img loading="lazy" decoding="async"
           src="/assets/faq-bg.webp"
           alt=""
           aria-hidden
-          className="absolute inset-x-0 top-0 h-[720px] w-full object-cover"
+          className="absolute inset-0 size-full object-cover"
         />
         {/* Darkens the right half of the backdrop so the white card reads
             clearly against the photo behind it — CSS only, per design spec.
@@ -160,7 +278,23 @@ export default function FaqSection() {
           style={{ background: "linear-gradient(to left, rgba(0,0,0,0.8), rgba(0,0,0,0))" }}
         />
 
-        <div className="relative z-10 mx-auto flex w-[1280px] justify-end">{card}</div>
+        {/* One 1280px row, heading column and card as plain flex siblings
+            pushed to opposite edges — since the row itself is centered on
+            screen, the column's left margin mirrors the card's right margin
+            exactly. `items-stretch` sizes the column to the card's own
+            height, so `justify-between` inside it lands the eyebrow flush
+            with the card's top and the heading flush with its bottom. */}
+        <div className="relative z-10 mx-auto flex w-[1280px] items-stretch justify-between px-8">
+          <div className="flex flex-col justify-between py-6">
+            <p className="text-sm font-semibold uppercase leading-[14px] tracking-[2.1px] text-white opacity-75 [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+              FREQUENLY ASKED QUESTION
+            </p>
+            <p className="-mt-6 w-[260px] text-[32px] font-semibold leading-9 tracking-[-0.64px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+              {t("heading")}
+            </p>
+          </div>
+          {desktopCard}
+        </div>
       </div>
 
       {/* ===== Mobile (< xl): bg photo as a cover banner on top, card panel
@@ -176,7 +310,7 @@ export default function FaqSection() {
             className="h-[480px] w-full object-cover object-[calc(50%+160px)_top]"
           />
         </div>
-        <div className="relative z-10 -mt-[120px] mx-auto w-full max-w-[560px] px-4 pb-8">{card}</div>
+        <div className="relative z-10 -mt-[120px] mx-auto w-full max-w-[560px] px-4 pb-8">{mobileCard}</div>
       </div>
     </section>
   );

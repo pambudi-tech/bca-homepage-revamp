@@ -111,6 +111,31 @@ body {
   display: none;
 }
 
+/* Translucent white scrollbar for scrollable panels sitting on the FAQ
+   section's glass variant — the default OS scrollbar reads as a light,
+   opaque bar that clashes with the frosted-dark fill behind it. */
+.scrollbar-glass {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+}
+
+.scrollbar-glass::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-glass::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-glass::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+}
+
+.scrollbar-glass::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
 /* Soliprio's dark vignette. In Figma it's a solid #0F0F0F circle sitting under
    a very wide Gaussian layer blur (r=840/sigma=160 on desktop, r=360/sigma=40 on
    mobile), which is what softens the photo into the headline side of the band.
