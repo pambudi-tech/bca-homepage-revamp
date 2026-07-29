@@ -226,6 +226,20 @@ export default function HaloBcaChat() {
   // from the very first render.
   const [pastNews, setPastNews] = useState(false);
 
+  // Runs the border beam (same mechanism as SoliprioCard's) only while the
+  // button is on screen — left alone it repaints every frame for the whole
+  // life of the page.
+  useEffect(() => {
+    const el = buttonRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => el.toggleAttribute("data-beam-live", entry.isIntersecting),
+      { rootMargin: "200px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     const newsSection = document.getElementById("news-section");
     if (!newsSection) return;
@@ -397,57 +411,73 @@ export default function HaloBcaChat() {
                 : undefined
             }
             // Mobile bottom sheet is capped at 75% of the viewport height so it
-            // never covers the whole screen; overflow-y-auto lets the form
-            // scroll internally once its content exceeds that cap. Desktop cap
-            // is `100vh - 96px` (the button's own 32px offset + ~48px height +
-            // the 16px gap above it) for the bottom side, and another flat 32px
-            // for the top so the panel never presses flush against the top edge
-            // on short viewports — a fixed 70vh clipped the form on ordinary
-            // laptop screens instead.
-            className="halobca-panel fixed inset-x-0 bottom-0 z-[70] mx-auto max-h-[75vh] w-full max-w-[560px] overflow-y-auto rounded-t-2xl bg-neutral-100 p-6 pb-[calc(24px+env(safe-area-inset-bottom))] shadow-[0_-8px_32px_rgba(0,0,0,0.16)] xl:absolute xl:inset-x-auto xl:right-0 xl:bottom-[calc(100%+16px)] xl:mx-0 xl:max-h-[calc(100vh-128px)] xl:w-[min(calc(100vw-2.5rem),400px)] xl:max-w-none xl:rounded-2xl xl:pb-6 xl:shadow-[0_16px_48px_rgba(0,0,0,0.16)]"
+            // never covers the whole screen. The panel itself is a flex column
+            // that no longer scrolls as a whole — only the middle content block
+            // does (see the `overflow-y-auto` div below) — so the submit button
+            // in the footer stays pinned on screen instead of scrolling away
+            // with the fields. Desktop cap is `100vh - 96px` (the button's own
+            // 32px offset + ~48px height + the 16px gap above it) for the
+            // bottom side, and another flat 32px for the top so the panel never
+            // presses flush against the top edge on short viewports — a fixed
+            // 70vh clipped the form on ordinary laptop screens instead.
+            className="halobca-panel fixed inset-x-0 bottom-0 z-[70] mx-auto flex max-h-[75vh] w-full max-w-[560px] flex-col overflow-hidden rounded-t-2xl bg-neutral-100 shadow-[0_-8px_32px_rgba(0,0,0,0.16)] xl:absolute xl:inset-x-auto xl:right-0 xl:bottom-[calc(100%+16px)] xl:mx-0 xl:max-h-[calc(100vh-128px)] xl:w-[min(calc(100vw-2.5rem),400px)] xl:max-w-none xl:rounded-2xl xl:shadow-[0_16px_48px_rgba(0,0,0,0.16)]"
           >
             {/* Grab handle — mobile bottom-sheet affordance, hidden on desktop.
-                `touch-none` stops the page from scrolling while dragging. */}
+                `touch-none` stops the page from scrolling while dragging.
+                `shrink-0` keeps it out of the scrollable middle block below. */}
             <div
               onPointerDown={onHandlePointerDown}
               onPointerMove={onHandlePointerMove}
               onPointerUp={endDrag}
               onPointerCancel={endDrag}
-              className="-mt-2 touch-none pt-2 xl:hidden"
+              className="-mt-2 shrink-0 touch-none px-6 pt-4 xl:hidden"
             >
               <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-neutral-300" />
             </div>
-            <h2 className="text-lg leading-6 font-bold tracking-[-0.02em] text-neutral-900">{t("title")}</h2>
-          <p className="mt-2 text-sm leading-5 text-neutral-600">{t("subtitle")}</p>
 
-          <form onSubmit={submit} className="mt-6 flex flex-col gap-4">
-            <Field label={t("fields.nama")} placeholder={t("fields.namaPlaceholder")} value={values.nama} onChange={set("nama")} error={errors.nama} />
-            <Field label={t("fields.email")} type="email" placeholder={t("fields.emailPlaceholder")} value={values.email} onChange={set("email")} error={errors.email} />
-            <Field label={t("fields.telepon")} type="tel" inputMode="tel" placeholder={t("fields.teleponPlaceholder")} value={values.telepon} onChange={set("telepon")} error={errors.telepon} />
-            <Field as="select" label={t("fields.produk")} placeholder={t("fields.produkPlaceholder")} options={products} value={values.produk} onChange={set("produk")} error={errors.produk} />
+            {/* Everything except the submit button lives in this scrolling
+                block, so the button in the footer below stays fixed on
+                screen while the fields scroll underneath it. */}
+            <div data-lenis-prevent className="min-h-0 flex-1 overflow-y-auto px-6 pt-6 xl:pt-6">
+              <h2 className="text-lg leading-6 font-bold tracking-[-0.02em] text-neutral-900">{t("title")}</h2>
+              <p className="mt-2 text-sm leading-5 text-neutral-600">{t("subtitle")}</p>
 
-            {/* Real Google reCAPTCHA v2 checkbox — grecaptcha.render() mounts
-                its iframe into this div directly (see useRecaptcha above),
-                it isn't React-rendered content. */}
-            <div className="flex justify-center overflow-hidden">
-              <div ref={recaptchaRef} />
+              <form id="halobca-form" onSubmit={submit} className="mt-6 flex flex-col gap-4">
+                <Field label={t("fields.nama")} placeholder={t("fields.namaPlaceholder")} value={values.nama} onChange={set("nama")} error={errors.nama} />
+                <Field label={t("fields.email")} type="email" placeholder={t("fields.emailPlaceholder")} value={values.email} onChange={set("email")} error={errors.email} />
+                <Field label={t("fields.telepon")} type="tel" inputMode="tel" placeholder={t("fields.teleponPlaceholder")} value={values.telepon} onChange={set("telepon")} error={errors.telepon} />
+                <Field as="select" label={t("fields.produk")} placeholder={t("fields.produkPlaceholder")} options={products} value={values.produk} onChange={set("produk")} error={errors.produk} />
+
+                {/* Real Google reCAPTCHA v2 checkbox — grecaptcha.render() mounts
+                    its iframe into this div directly (see useRecaptcha above),
+                    it isn't React-rendered content. */}
+                <div className="flex justify-center overflow-hidden">
+                  <div ref={recaptchaRef} />
+                </div>
+                {captchaTouched && !captchaToken ? (
+                  <p className="-mt-2 text-center text-xs leading-[18px] text-red-500">{t("errors.captcha")}</p>
+                ) : null}
+
+                <a href="#" className="text-center text-sm text-blue-500 underline">
+                  {t("terms")}
+                </a>
+              </form>
             </div>
-            {captchaTouched && !captchaToken ? (
-              <p className="-mt-2 text-center text-xs leading-[18px] text-red-500">{t("errors.captcha")}</p>
-            ) : null}
 
-            <a href="#" className="text-center text-sm text-blue-500 underline">
-              {t("terms")}
-            </a>
-            <button
-              type="submit"
-              // Matches the product section's CTA button (ProductSection.tsx)
-              // — same height, radius, and hover/active blue steps.
-              className="flex h-12 items-center justify-center rounded-full bg-blue-500 text-base font-semibold text-neutral-100 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f]"
-            >
-              {t("submit")}
-            </button>
-          </form>
+            {/* Fixed footer — stays visible while the block above scrolls.
+                `form="halobca-form"` associates this button with the form even
+                though it now lives outside it in the DOM. */}
+            <div className="shrink-0 px-6 pt-4 pb-[calc(24px+env(safe-area-inset-bottom))] xl:pb-6">
+              <button
+                type="submit"
+                form="halobca-form"
+                // Matches the product section's CTA button (ProductSection.tsx)
+                // — same height, radius, and hover/active blue steps.
+                className="flex h-12 w-full items-center justify-center rounded-full bg-blue-500 text-base font-semibold text-neutral-100 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f]"
+              >
+                {t("submit")}
+              </button>
+            </div>
           </div>
         </>
       ) : null}
@@ -461,8 +491,13 @@ export default function HaloBcaChat() {
         // the button reads as active even when the pointer moves away.
         data-open={open}
         aria-label={open ? t("close") : t("label")}
-        className={`group flex items-center gap-2 rounded-full border border-neutral-300 bg-neutral-100 p-3.5 text-blue-500 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-[background-color,color,transform] duration-500 ease-out hover:bg-blue-500 hover:text-neutral-100 data-[open=true]:bg-blue-500 data-[open=true]:text-neutral-100 xl:px-3.5 ${ready ? "translate-y-0" : "translate-y-4"}`}
+        className={`halobca-fab group relative flex items-center justify-center rounded-full border border-neutral-300 bg-neutral-100 px-4 py-4 text-blue-500 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-[background-color,color,transform,gap] duration-500 ease-out hover:bg-blue-500 hover:text-neutral-100 data-[open=true]:bg-blue-500 data-[open=true]:text-neutral-100 xl:hover:gap-2 xl:data-[open=true]:gap-2 ${ready ? "translate-y-0" : "translate-y-4"}`}
+        style={{ "--beam": "#0068c0", "--beam-radius": "9999px" } as React.CSSProperties}
       >
+        {/* Same border-beam mechanism as SoliprioCard — a light sweeping the
+            edge to mark the button as interactive before anyone hovers it.
+            Only shown at rest: opening the panel hides it via `data-open`. */}
+        <span aria-hidden className="halobca-beam pointer-events-none" />
         {/* Swaps to the mobile-menu's X once open — same icon, same
             second-click-to-close affordance. */}
         {open ? <CloseIcon className="size-6" /> : <HelpIcon className="size-6" />}

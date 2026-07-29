@@ -116,7 +116,7 @@ export default function SoliprioMobile({
       />
 
       {/* Same arcs, turned a quarter-turn so they sweep down the band. */}
-      <div className="pointer-events-none absolute left-1/2 top-[-118px] flex h-[1174px] w-[480px] -translate-x-1/2 items-center justify-center">
+      <div className="pointer-events-none absolute left-1/2 top-[-86px] flex h-[1174px] w-[480px] -translate-x-1/2 items-center justify-center">
         <img
           loading="lazy"
           decoding="async"
@@ -174,7 +174,7 @@ export default function SoliprioMobile({
         // *vertical* scroller too — enough that an off-axis thumb swipe drags
         // it a few px down and springs back. Visually identical either way
         // (an `auto` y-axis already clips here), it just removes the axis.
-        className="hide-scrollbar absolute inset-x-0 top-[344px] flex snap-x snap-mandatory items-start gap-6 overflow-x-auto overflow-y-hidden overscroll-none px-[calc(50%-110px)] [scrollbar-width:none]"
+        className="hide-scrollbar absolute inset-x-0 top-[376px] flex snap-x snap-mandatory items-start gap-6 overflow-x-auto overflow-y-hidden overscroll-none px-[calc(50%-110px)] [scrollbar-width:none]"
         style={{
           maskImage:
             "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",

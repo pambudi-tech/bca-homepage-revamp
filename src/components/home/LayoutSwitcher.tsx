@@ -28,6 +28,7 @@ export default function LayoutSwitcher<T extends string>({
   visibilityClassName = "hidden xl:block",
   menuAlign = "left",
   dimWhenIdle = false,
+  icon,
 }: {
   label: string;
   options: LayoutOption<T>[];
@@ -44,6 +45,10 @@ export default function LayoutSwitcher<T extends string>({
   /** Fades the button to 50% opacity until hovered/focused/opened, so it
    *  doesn't compete with the content it floats over. */
   dimWhenIdle?: boolean;
+  /** Replaces the default layout-grid glyph — for switchers that pick
+   *  something other than a layout (e.g. a seasonal theme). Should be an
+   *  18px-square SVG that inherits `currentColor`. */
+  icon?: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -74,13 +79,15 @@ export default function LayoutSwitcher<T extends string>({
         className={`flex size-9 items-center justify-center rounded-full border border-black/10 bg-white/85 text-neutral-600 shadow-[0_2px_8px_rgba(0,0,0,0.12)] backdrop-blur transition-[background-color,color,opacity] duration-200 hover:bg-white hover:text-blue-500 ${dimWhenIdle && !open ? "opacity-25 hover:opacity-100 focus-visible:opacity-100" : "opacity-100"
           }`}
       >
-        {/* layout-grid icon */}
-        <svg viewBox="0 0 20 20" fill="none" className="size-[18px]">
-          <rect x="2.5" y="2.5" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
-          <rect x="11.5" y="2.5" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
-          <rect x="2.5" y="11.5" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
-          <rect x="11.5" y="11.5" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.5" transform="rotate(45 14.5 14.5)" />
-        </svg>
+        {icon ?? (
+          /* layout-grid icon */
+          <svg viewBox="0 0 20 20" fill="none" className="size-[18px]">
+            <rect x="2.5" y="2.5" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
+            <rect x="11.5" y="2.5" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
+            <rect x="2.5" y="11.5" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
+            <rect x="11.5" y="11.5" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.5" transform="rotate(45 14.5 14.5)" />
+          </svg>
+        )}
       </button>
 
       {open && (

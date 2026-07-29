@@ -4,37 +4,63 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { getPromoBadge, getPromoTimestamp, type Promo, type PromoBadgeKey } from "./promo-data";
 import Confetti from "./Confetti";
+import ChristmasDecor from "./ChristmasDecor";
+import CnyDecor from "./CnyDecor";
 import EventSlider from "./EventSlider";
 import LayoutSwitcher from "./LayoutSwitcher";
 import { useLayoutVariant } from "@/lib/useLayoutVariant";
 // import PercentGlass from "./PercentGlass"; // temporarily hidden
 
-const RIBBON_STYLE: Record<Exclude<PromoBadgeKey, "default">, { from: string; to: string; shadow: string; text: string; border: string }> = {
-  popular: { from: "#fe924d", to: "#fe6706", shadow: "#b24906", text: "#ffffff", border: "#b24906" },
-  almostEnd: { from: "#ffd31c", to: "#ffba00", shadow: "#b28301", text: "#4c3801", border: "rgba(0,0,0,0.3)" },
+const RIBBON_STYLE: Record<
+  Exclude<PromoBadgeKey, "default">,
+  { from: string; to: string; shadow: string; shadowDark: string; text: string; border: string }
+> = {
+  popular: { from: "#fe924d", to: "#fe6706", shadow: "#b24906", shadowDark: "#762e00", text: "#ffffff", border: "#b24906" },
+  almostEnd: { from: "#ffd31c", to: "#ffba00", shadow: "#b28301", shadowDark: "#745501", text: "#4c3801", border: "rgba(0,0,0,0.3)" },
 };
 
 // Elevated shadow used on hover (Figma "Shadows/Default", scaled up).
 const CARD_SHADOW =
   "0 1px 2px 0 rgba(204,204,204,0.14), 0 5px 5px 0 rgba(204,204,204,0.12), 0 10px 6px 0 rgba(204,204,204,0.10), 0 18px 20px -8px rgba(0,92,170,0.18)";
 
-/** Layout variants offered by this section's LayoutSwitcher. */
-const PROMO_VARIANTS = ["grid", "strip"] as const;
-type PromoVariant = (typeof PROMO_VARIANTS)[number];
+/**
+ * Seasonal dressing for the band behind the cards. "confetti" is the
+ * year-round default; the rest are holiday scenes that swap the animation
+ * wholesale rather than recolouring the confetti, so each occasion gets motion
+ * that actually belongs to it.
+ */
+const PROMO_THEMES = ["confetti", "christmas", "cny"] as const;
+type PromoTheme = (typeof PROMO_THEMES)[number];
 
 function PromoRibbon({ badgeKey, label }: { badgeKey: Exclude<PromoBadgeKey, "default">; label: string }) {
   const style = RIBBON_STYLE[badgeKey];
   return (
     <div className="absolute right-[-8px] top-40 flex items-center">
-      {/* folded-corner shadow — absolute + rendered first, so the `relative` main
-          ribbon below paints on top of it (shadow tucks BEHIND the ribbon). */}
-      <div className="absolute right-0 top-6 flex h-5 w-2 items-center justify-center">
+      {/* curled paper-fold tail — three stacked layers, absolute + rendered
+          first so the `relative` main ribbon below paints on top of it (the
+          fold tucks BEHIND the ribbon). Layer 1 is an S-curve that continues
+          the ribbon's own gradient tone around the fold; layers 2 and 3 are
+          rounded humps that darken progressively underneath it, giving the
+          tail its curled depth instead of a single pinched corner. */}
+      <div className="absolute right-0 top-[22px] flex h-[22px] w-2 items-center justify-center">
         <div className="rotate-90">
-          <div className="h-2 w-5 rounded-t-[40px]" style={{ backgroundColor: style.shadow }} />
+          <svg width="22" height="8" viewBox="0 0 22 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 8C0 3.58172 3.58172 0 8 0L17.1111 0C19.8112 0 22 2.18883 22 4.88889V8L0 8Z" fill={style.to} />
+          </svg>
+        </div>
+      </div>
+      <div className="absolute right-0 top-[34px] flex h-[10px] w-2 items-center justify-center">
+        <div className="rotate-90">
+          <div className="h-2 w-[10px] rounded-t-[40px]" style={{ backgroundColor: style.shadow }} />
+        </div>
+      </div>
+      <div className="absolute right-[2px] top-9 flex h-2 w-1.5 items-center justify-center">
+        <div className="rotate-90">
+          <div className="h-1.5 w-2 rounded-t-[40px]" style={{ backgroundColor: style.shadowDark }} />
         </div>
       </div>
       <div
-        className="relative flex h-9 shrink-0 items-center justify-end overflow-clip rounded-bl-3xl rounded-br-[4px] rounded-tr-lg border-b-2 px-6 pb-3.5 pt-3"
+        className="relative flex h-9 shrink-0 items-center justify-end overflow-clip rounded-bl-3xl rounded-tr-lg border-b-2 py-3 pl-4 pr-6"
         style={{
           backgroundImage: `linear-gradient(to bottom, ${style.from}, ${style.to})`,
           borderColor: style.border,
@@ -250,158 +276,35 @@ function MobilePromoCarousel({ promos, now }: { promos: Promo[]; now: Date }) {
   );
 }
 
-/**
- * Left column of the side-by-side "strip" layout: eyebrow, headline, and the
- * "Lihat 200+" CTA that replaces the grid's MorePromoCard.
- */
-function PromoLeftColumn() {
-  const t = useTranslations("promo");
-  return (
-    <div className="flex w-[560px] shrink-0 flex-col items-start gap-6">
-      <p className="text-sm font-semibold uppercase leading-[14px] tracking-[2.1px] text-blue-500">
-        {t("eyebrow")}
-      </p>
-      <h2 className="text-[32px] font-semibold leading-10 tracking-[-0.64px] text-blue-700">
-        {t("heading")}
-      </h2>
-      <a
-        href="https://promo.bca.co.id/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group/cta flex h-12 items-center justify-center gap-1 whitespace-nowrap rounded-full bg-blue-500 px-7 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f]"
-      >
-        <span className="px-0.5 text-base font-semibold leading-5 text-white">
-          {t("viewMore")}
-        </span>
-        <img loading="lazy" decoding="async" src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5 transition-transform duration-200 group-hover/cta:translate-x-0.5" />
-      </a>
-    </div>
-  );
-}
-
-/** Steady drift of each film strip, px per second. */
-const STRIP_SPEED = 32;
-/** Vertical breathing room below every card in a strip, px. */
-const STRIP_GAP = 24;
-/** Height of the strips' viewing window, px. */
-const STRIP_WINDOW = 800;
-
-/**
- * Desktop-only "strip" variant: headline + CTA on the left and two vertical
- * film strips on the right, one drifting up and one drifting down. Each
- * strip holds the promo set twice, so wrapping the
- * shared offset at one set-height loops seamlessly; the down strip renders
- * the set rotated by half so the columns never mirror each other. Hovering
- * anywhere over the strips eases both to a stop.
- */
-function FilmStripLayout({ promos, now }: { promos: Promo[]; now: Date }) {
-  const upRef = useRef<HTMLDivElement>(null);
-  const downRef = useRef<HTMLDivElement>(null);
-  const pausedRef = useRef(false);
-  const speedRef = useRef(0);
-  const offsetRef = useRef(0);
-
-  // Same seven promos in both columns, but the down strip starts half a set
-  // later so identical cards don't ride side by side.
-  const half = Math.ceil(promos.length / 2);
-  const downPromos = [...promos.slice(half), ...promos.slice(0, half)];
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let raf = 0;
-    let last = performance.now();
-    const tick = (t: number) => {
-      const dt = Math.min((t - last) / 1000, 0.1);
-      last = t;
-      // Ease toward the target speed so hover pause/resume glides.
-      const target = pausedRef.current ? 0 : STRIP_SPEED;
-      speedRef.current += (target - speedRef.current) * Math.min(dt * 5, 1);
-      const up = upRef.current;
-      const down = downRef.current;
-      if (up && down) {
-        // One full set = half the duplicated track; wrapping there is seamless
-        // because the second copy is pixel-identical to the first.
-        const set = up.scrollHeight / 2;
-        if (set > 0) {
-          offsetRef.current = (offsetRef.current + speedRef.current * dt) % set;
-          up.style.transform = `translateY(${-offsetRef.current}px)`;
-          down.style.transform = `translateY(${offsetRef.current - set}px)`;
-        }
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
-  const renderTrack = (list: Promo[], ref: React.RefObject<HTMLDivElement | null>) => (
-    <div className="w-[302px]">
-      <div ref={ref}>
-        {/* The set twice over; fixed per-card padding (not flex gap) keeps the
-            repeat period exactly setHeight, so the wrap point never jumps. */}
-        {[...list, ...list].map((promo, i) => (
-          <div key={`${promo.id}-${i}`} style={{ paddingBottom: STRIP_GAP }}>
-            <PromoCard promo={promo} now={now} reveal={false} />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  return (
-    /* No top margin: with the section's xl padding zeroed for this variant,
-       the window is meant to kiss the section's top and bottom edges. */
-    <div className="hidden items-center gap-10 xl:flex">
-      <PromoLeftColumn />
-
-      {/* The strips' window — edges feathered with a mask so cards dissolve
-          in and out instead of guillotining at the boundary. */}
-      <div
-        className="ml-auto flex gap-6 overflow-hidden px-2"
-        style={{
-          height: STRIP_WINDOW,
-          maskImage: "linear-gradient(to bottom, transparent, black 12%, black 88%, transparent)",
-          WebkitMaskImage: "linear-gradient(to bottom, transparent, black 12%, black 88%, transparent)",
-        }}
-        onMouseEnter={() => (pausedRef.current = true)}
-        onMouseLeave={() => (pausedRef.current = false)}
-      >
-        {renderTrack(promos, upRef)}
-        {renderTrack(downPromos, downRef)}
-      </div>
-    </div>
-  );
-}
-
 export default function PromoSection({ promos, now }: { promos: Promo[]; now: Date }) {
   const t = useTranslations("promo");
-  const [variant, selectVariant] = useLayoutVariant<PromoVariant>("promo", "grid", PROMO_VARIANTS);
-  // ScrollReveal scans the DOM once on mount, so any variant subtree that
-  // (re)mounts after a live switch must not emit `data-reveal` — it would
-  // never be observed and would sit at opacity 0 forever.
-  const [switched, setSwitched] = useState(false);
-  const setVariant = (next: PromoVariant) => {
-    setSwitched(true);
-    selectVariant(next);
-  };
+  const [theme, setTheme] = useLayoutVariant<PromoTheme>("promo-theme", "confetti", PROMO_THEMES);
+  const [switched] = useState(false);
 
   return (
     <section
       id="promo"
-      className={`relative overflow-clip bg-gradient-to-b from-blue-100 to-blue-200 py-12 ${
-        // The film strip is meant to run edge to edge, so it drops the desktop
-        // padding and lets its 800px window set the section height itself.
-        variant === "strip" ? "xl:py-0" : "xl:py-24"
-      }`}
+      className="relative overflow-clip bg-gradient-to-b from-blue-100 to-blue-200 pb-12 pt-20 xl:pb-24 xl:pt-36"
     >
-      {/* prototype-only: lets the client flip this section's layout live. */}
+      {/* prototype-only: flips the seasonal animation behind the cards. */}
       <LayoutSwitcher
-        label="Layout Promo"
-        value={variant}
-        onChange={setVariant}
+        label="Tema Promo"
+        value={theme}
+        onChange={setTheme}
+        visibilityClassName="block"
+        icon={
+          /* snowflake icon */
+          <svg viewBox="0 0 20 20" fill="none" className="size-[18px]">
+            <g stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M10 2.5v15M3.5 6.25l13 7.5M16.5 6.25l-13 7.5" />
+              <path d="M8 4.4 10 6.2l2-1.8M8 15.6l2-1.8 2 1.8" />
+            </g>
+          </svg>
+        }
         options={[
-          { value: "grid", name: "Grid Flow", description: "Kartu berjajar rapi dan wrap ke baris berikutnya." },
-          { value: "strip", name: "Film Strip", description: "Dua kolom kartu berjalan berlawanan arah; hover untuk pause." },
+          { value: "confetti", name: "Confetti", description: "Animasi default sepanjang tahun." },
+          { value: "christmas", name: "Natal", description: "Salju, garland cemara berlampu hangat, dan pita merah (WebGL)." },
+          { value: "cny", name: "Imlek", description: "Kelopak mei hua, ranting berbunga, lampion, dan petasan (WebGL)." },
         ]}
       />
 
@@ -421,15 +324,14 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
         aria-hidden
         className="pointer-events-none absolute bottom-[-368px] right-[-380px] h-[896px] w-[770px] max-w-none origin-bottom-right scale-[0.8] opacity-60 sm:scale-100 xl:bottom-[-720px] xl:right-[-720px] xl:h-[1634px] xl:w-[1344px]"
       />
-      {/* confetti — top of the section (pure JS + CSS, see Confetti.tsx) */}
-      <Confetti />
+      {/* seasonal dressing — confetti by default (pure JS + CSS), or a WebGL
+          holiday scene. Both sit behind the content at z-0. */}
+      {theme === "christmas" ? <ChristmasDecor /> : theme === "cny" ? <CnyDecor /> : <Confetti />}
 
       <div className="relative z-10 mx-auto w-full max-w-[560px] px-4 xl:w-[1280px] xl:max-w-none xl:px-0">
         {/* Heading — stacked on mobile, eyebrow column + h2 side by side on
-            desktop. The strip variant renders its own headline in its left
-            column, so this row bows out at xl there (class change only — the
-            nodes stay mounted for ScrollReveal). */}
-        <div data-reveal-group className={`relative flex flex-col xl:flex-row xl:gap-10 ${variant !== "grid" ? "xl:hidden" : ""}`}>
+            desktop. */}
+        <div data-reveal-group className="relative flex flex-col xl:flex-row xl:gap-10">
           <div className="flex items-center py-4 xl:w-60 xl:shrink-0">
             <p data-reveal className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px]">
               {t("eyebrow")}
@@ -456,22 +358,17 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
           <MobilePromoCarousel promos={promos} now={now} />
         </div>
 
-        {/* Cards, desktop — wrapping grid, only for the "grid" variant (the film
-            strip renders its own tracks below). Tighter 60ms stagger: eight
+        {/* Cards, desktop — wrapping grid. Tighter 60ms stagger: eight
             cards at the default 90ms would trickle too long. */}
         <div
           {...(switched ? {} : { "data-reveal-group": "60" })}
-          className={`mt-10 hidden items-start content-center gap-6 ${
-            variant === "grid" ? "xl:flex xl:flex-wrap" : ""
-          }`}
+          className="mt-10 hidden items-start content-center gap-6 xl:flex xl:flex-wrap"
         >
           {promos.map((promo) => (
             <PromoCard key={promo.id} promo={promo} now={now} reveal={!switched} />
           ))}
           <MorePromoCard reveal={!switched} />
         </div>
-
-        {variant === "strip" && <FilmStripLayout promos={promos} now={now} />}
 
         {/* Mobile-only CTA — the desktop surfaces this via the "Show More" card.
             Styled to match the product section's mobile CTA. */}

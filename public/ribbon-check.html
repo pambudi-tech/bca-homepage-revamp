@@ -1,0 +1,42 @@
+<!doctype html>
+<html><head><style>
+body{background:#1a2a44;padding:80px;zoom:3;font-family:sans-serif}
+.wrap{position:relative;width:200px;height:100px;background:#fff;border-radius:24px;margin-bottom:60px}
+.ribbon{position:absolute;right:-8px;top:40px;display:flex;align-items:center}
+.ribbon .body{position:relative;height:36px;display:flex;align-items:center;justify-content:flex-end;overflow:hidden;border-bottom:2px solid #b24906;border-radius:0 8px 0 24px;padding:12px 24px 14px 16px;background:linear-gradient(to bottom,#fe924d,#fe6706)}
+.ribbon .body p{white-space:nowrap;font-size:14px;font-weight:600;color:#fff;margin:0}
+
+.new .fold1{position:absolute;right:0;top:22px;width:8px;height:22px;display:flex;align-items:center;justify-content:center}
+.new .fold1 .rot{transform:rotate(90deg)}
+.new .fold2{position:absolute;right:0;top:34px;width:8px;height:10px;display:flex;align-items:center;justify-content:center}
+.new .fold2 .rot{transform:rotate(90deg)}
+.new .fold2 .shape{width:10px;height:8px;border-radius:40px 40px 0 0;background:#b24906}
+.new .fold3{position:absolute;right:2px;top:36px;width:6px;height:8px;display:flex;align-items:center;justify-content:center}
+.new .fold3 .rot{transform:rotate(90deg)}
+.new .fold3 .shape{width:8px;height:6px;border-radius:40px 40px 0 0;background:#762e00}
+
+.old .fold{position:absolute;right:0;top:24px;width:8px;height:20px;display:flex;align-items:center;justify-content:center}
+.old .fold .rot{transform:rotate(90deg)}
+.old .fold .shape{width:20px;height:8px;border-radius:40px 40px 0 0;background:#b24906}
+.old .body{border-radius:4px 8px 0 24px}
+label{color:#fff;font-size:12px;display:block;margin-bottom:8px}
+</style></head>
+<body>
+<label>OLD</label>
+<div class="wrap old">
+  <div class="ribbon">
+    <div class="fold"><div class="rot"><div class="shape"></div></div></div>
+    <div class="body"><p>Paling Disukai</p></div>
+  </div>
+</div>
+
+<label>NEW</label>
+<div class="wrap new">
+  <div class="ribbon">
+    <div class="fold1"><div class="rot"><svg width="22" height="8" viewBox="0 0 22 8" fill="none"><path d="M0 8C0 3.58172 3.58172 0 8 0L17.1111 0C19.8112 0 22 2.18883 22 4.88889V8L0 8Z" fill="#fe6706"/></svg></div></div>
+    <div class="fold2"><div class="rot"><div class="shape"></div></div></div>
+    <div class="fold3"><div class="rot"><div class="shape"></div></div></div>
+    <div class="body"><p>Paling Disukai</p></div>
+  </div>
+</div>
+</body></html>

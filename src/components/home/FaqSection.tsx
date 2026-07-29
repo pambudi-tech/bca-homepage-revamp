@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { FAQ_CATEGORIES } from "./faq-data";
 
@@ -99,16 +99,42 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
   const [activeKey, setActiveKey] = useState(FAQ_CATEGORIES[0].key);
   const [openIndex, setOpenIndex] = useState(-1);
   const active = FAQ_CATEGORIES.find((c) => c.key === activeKey) ?? FAQ_CATEGORIES[0];
+  const tabRefs = useRef(new Map<string, HTMLButtonElement>());
+  const tabListRef = useRef<HTMLDivElement>(null);
+
+  // Same 16px gutter as the tab list's own `px-4` — so a snapped-to tab keeps
+  // breathing room from the edge instead of sitting flush against it.
+  const TAB_SNAP_PADDING = 16;
 
   const selectTab = (key: string) => {
     setActiveKey(key);
     setOpenIndex(-1);
+
+    const list = tabListRef.current;
+    const tab = tabRefs.current.get(key);
+    if (!list || !tab) return;
+
+    const tabLeft = tab.offsetLeft;
+    const tabRight = tabLeft + tab.offsetWidth;
+    const viewLeft = list.scrollLeft;
+    const viewRight = viewLeft + list.clientWidth;
+
+    let target: number | null = null;
+    if (tabLeft - TAB_SNAP_PADDING < viewLeft) {
+      target = tabLeft - TAB_SNAP_PADDING;
+    } else if (tabRight + TAB_SNAP_PADDING > viewRight) {
+      target = tabRight + TAB_SNAP_PADDING - list.clientWidth;
+    }
+    if (target !== null) {
+      list.scrollTo({ left: target, behavior: "smooth" });
+    }
   };
 
   const cardBody = (
     <>
       {/* Tab list — 80% fill on the glass variant. */}
       <div
+        ref={tabListRef}
         className={`hide-scrollbar flex items-center gap-4 overflow-x-auto border-b px-4 pt-2 [scrollbar-width:none] xl:gap-4 xl:px-6 ${
           glass ? "border-white/20 bg-black/60 backdrop-blur-md" : "border-neutral-300 bg-white"
         }`}
@@ -118,6 +144,10 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
           return (
             <button
               key={cat.key}
+              ref={(el) => {
+                if (el) tabRefs.current.set(cat.key, el);
+                else tabRefs.current.delete(cat.key);
+              }}
               type="button"
               onClick={() => selectTab(cat.key)}
               aria-pressed={isActive}
@@ -147,8 +177,9 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
           same pattern as MobileMenu's internal scroller. 50% fill on the
           glass variant, lighter than the tab list and CTA. */}
       <div
+        key={active.key}
         data-lenis-prevent
-        className={`flex h-[360px] flex-col gap-1 overflow-y-auto px-2 py-2 ${
+        className={`content-fade-in flex h-[360px] flex-col gap-1 overflow-y-auto px-2 py-2 ${
           glass ? "scrollbar-glass bg-black/50 backdrop-blur-md" : "bg-white"
         }`}
       >
@@ -222,7 +253,7 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
     >
       {/* Header */}
       <div className="bg-blue-500 px-6 py-6">
-        <p className="w-80 text-2xl font-semibold leading-8 tracking-[-0.48px] text-white">
+        <p className="mx-auto w-80 text-center text-2xl font-semibold leading-8 tracking-[-0.48px] text-white">
           {t("heading")}
         </p>
       </div>
@@ -310,7 +341,7 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
             className="h-[480px] w-full object-cover object-[calc(50%+160px)_top]"
           />
         </div>
-        <div className="relative z-10 -mt-[120px] mx-auto w-full max-w-[560px] px-4 pb-8">{mobileCard}</div>
+        <div className="relative z-10 -mt-[112px] mx-auto w-full max-w-[560px] px-4 pb-8">{mobileCard}</div>
       </div>
     </section>
   );

@@ -49,15 +49,20 @@ const CATEGORY_GLASS_ICONS: Record<
 > = {
   Simpanan: { src: "/assets/product/simpanan-glass.webp", offsetX: -40 },
   "Kartu Kredit": { src: "/assets/product/kartu-kredit-glass.webp" },
-  Pinjaman: { src: "/assets/product/pinjaman-glass.webp", offsetX: -16, scale: 1.1 },
-  "e-Banking": { src: "/assets/product/ebanking-glass.webp" },
+  Pinjaman: {
+    src: "/assets/product/pinjaman-glass.webp",
+    offsetX: -16 + 32 - 16,
+    offsetY: 24 - 8 + 8,
+    scale: 1.1 * 1.1,
+  },
+  "e-Banking": { src: "/assets/product/ebanking-glass.webp", offsetX: 12 - 4 },
   Asuransi: {
     src: "/assets/product/asuransi-glass.webp",
     offsetX: -24,
     offsetY: 16,
     scale: 0.9,
   },
-  Investasi: { src: "/assets/product/investasi-glass.webp", offsetX: 0 },
+  Investasi: { src: "/assets/product/investasi-glass.webp", offsetX: 8 },
 };
 
 /**
@@ -1345,7 +1350,7 @@ export default function ProductSection({
   return (
     <section
       ref={sectionRef}
-      className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-36 pt-0 xl:pb-40 xl:pt-0"
+      className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-[120px] pt-0 xl:pb-40 xl:pt-0"
     >
       {/* Clove pattern — mobile only, right side. The fluted glass overlay
           below is desktop-only (`hidden xl:block`), so under xl the section
@@ -1382,7 +1387,7 @@ export default function ProductSection({
             className="absolute inset-0 size-full opacity-80 will-change-transform"
           />
         </div>
-        <div className="absolute left-[calc(50%+107px)] top-[104px] h-[1668px] w-[1218px] origin-top-left">
+        <div className="absolute left-[calc(50%+667px)] top-[-136px] h-[1668px] w-[1218px] origin-top-left">
           <img loading="lazy" decoding="async"
             ref={cloveBRef}
             src="/assets/product/bg-clove-b.svg"

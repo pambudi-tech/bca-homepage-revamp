@@ -16,10 +16,8 @@ export type NewsCategory = {
   articles: NewsArticle[];
 };
 
-/** How many of `articles` fit beside the highlight card on mobile (single carousel row). */
-export const NEWS_LIST_SIZE = 3;
-
-/** How many of `articles` fit beside the highlight card on desktop (two columns of three). */
+/** How many of `articles` fit beside the highlight card — a single scrollable
+ *  row on mobile, two columns of three on desktop. */
 export const NEWS_LIST_SIZE_DESKTOP = 6;
 
 const BASE = "https://www.bca.co.id";

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { NEWS_LIST_SIZE, NEWS_LIST_SIZE_DESKTOP, type NewsArticle, type NewsCategory } from "./news-data";
+import { NEWS_LIST_SIZE_DESKTOP, type NewsArticle, type NewsCategory } from "./news-data";
 import { useLenis } from "@/components/SmoothScroll";
 
 function AdditionalInfo({ date, category, muted = false }: { date: string; category: string; muted?: boolean }) {
@@ -23,10 +23,21 @@ function AdditionalInfo({ date, category, muted = false }: { date: string; categ
 }
 
 /** Category selector — h-12/14px text on mobile, h-14/16px text on desktop. */
-function CategoryChip({ label, active, onSelect }: { label: string; active: boolean; onSelect: () => void }) {
+function CategoryChip({
+  label,
+  active,
+  onSelect,
+  chipRef,
+}: {
+  label: string;
+  active: boolean;
+  onSelect: () => void;
+  chipRef?: (el: HTMLButtonElement | null) => void;
+}) {
   return (
     <button
       type="button"
+      ref={chipRef}
       onClick={onSelect}
       aria-pressed={active}
       className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-sm transition-colors xl:h-14 xl:px-4 xl:text-base ${
@@ -90,8 +101,8 @@ function ArticleItem({ article }: { article: NewsArticle }) {
       href={article.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex h-[264px] w-[307px] shrink-0 flex-col overflow-clip rounded-xl border border-neutral-300 bg-white text-left shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)] xl:h-36 xl:w-full xl:flex-row xl:items-center">
-      <div className="h-[120px] w-full shrink-0 overflow-clip bg-white xl:h-full xl:w-[180px]">
+      className="group flex h-[264px] w-[307px] shrink-0 snap-start flex-col overflow-clip rounded-xl border border-neutral-300 bg-white text-left shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)] xl:h-36 xl:w-full xl:flex-row xl:items-center">
+      <div className="h-[120px] w-full shrink-0 overflow-clip bg-white xl:h-full xl:w-[142px]">
         <img loading="lazy" decoding="async"
           src={article.image}
           alt=""
@@ -99,7 +110,10 @@ function ArticleItem({ article }: { article: NewsArticle }) {
         />
       </div>
       <div className="flex min-w-0 flex-1 flex-col justify-between px-5 pb-5 pt-4 xl:h-full">
-        <p className="line-clamp-3 w-full text-base font-semibold leading-6 text-neutral-800 transition-colors duration-200 group-hover:text-blue-500 xl:line-clamp-2 xl:h-14 xl:text-lg xl:leading-[26px]">
+        <p
+          title={article.title}
+          className="line-clamp-3 w-full text-base font-semibold leading-6 text-neutral-800 transition-colors duration-200 group-hover:text-blue-500 xl:line-clamp-2 xl:h-14 xl:text-base xl:leading-6"
+        >
           {article.title}
         </p>
         <AdditionalInfo date={article.date} category={article.category} muted />
@@ -116,6 +130,56 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
   const parallaxRef = useRef<HTMLDivElement>(null);
   const lenis = useLenis();
   const PARALLAX_SPEED = 0.3;
+
+  // Mobile chip row — same snap-into-view-with-gutter behaviour as FaqSection's
+  // tab strip. Desktop's chip row never overflows, so it doesn't need this.
+  const chipRefs = useRef(new Map<string, HTMLButtonElement>());
+  const chipListRef = useRef<HTMLDivElement>(null);
+  const CHIP_SNAP_PADDING = 16;
+
+  // Article grid — ArticleItem/HighlightArticle carry ScrollReveal's one-time
+  // `data-reveal` wiring, so they can't be remounted (via a `key` swap) to
+  // replay a CSS animation the way FaqSection's accordion does. Instead the
+  // fade-in class is manually removed and re-added on every category switch.
+  const mobileContentRef = useRef<HTMLDivElement>(null);
+  const desktopContentRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
+
+  const selectCategory = (key: string) => {
+    setActiveKey(key);
+
+    const list = chipListRef.current;
+    const chip = chipRefs.current.get(key);
+    if (list && chip) {
+      const chipLeft = chip.offsetLeft;
+      const chipRight = chipLeft + chip.offsetWidth;
+      const viewLeft = list.scrollLeft;
+      const viewRight = viewLeft + list.clientWidth;
+
+      let target: number | null = null;
+      if (chipLeft - CHIP_SNAP_PADDING < viewLeft) {
+        target = chipLeft - CHIP_SNAP_PADDING;
+      } else if (chipRight + CHIP_SNAP_PADDING > viewRight) {
+        target = chipRight + CHIP_SNAP_PADDING - list.clientWidth;
+      }
+      if (target !== null) {
+        list.scrollTo({ left: target, behavior: "smooth" });
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    for (const el of [mobileContentRef.current, desktopContentRef.current]) {
+      if (!el) continue;
+      el.classList.remove("content-fade-in");
+      void el.offsetWidth;
+      el.classList.add("content-fade-in");
+    }
+  }, [activeKey]);
 
   useEffect(() => {
     if (!lenis) return;
@@ -162,12 +226,14 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[560px] px-4 xl:w-[1280px] xl:max-w-none xl:px-0">
-        {/* Heading — eyebrow stacked above h2 at every breakpoint. */}
-        <div data-reveal-group className="flex flex-col py-4 xl:py-0">
-          <p data-reveal className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px]">
-            {t("eyebrow")}
-          </p>
-          <h2 data-reveal="blur-up" className="mt-2 text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:mt-3 xl:w-[560px] xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]">
+        {/* Heading — eyebrow stacked above the h2, both mobile and desktop. */}
+        <div data-reveal-group className="flex flex-col xl:gap-3">
+          <div className="flex items-center py-4 xl:py-0">
+            <p data-reveal className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px]">
+              {t("eyebrow")}
+            </p>
+          </div>
+          <h2 data-reveal="blur-up" className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:w-[560px] xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]">
             {t("heading")}
           </h2>
         </div>
@@ -175,13 +241,21 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
         {/* Mobile category chips — horizontal scroller, full-bleeding out of the
             padded column. Revealed as one row (the container, not each chip) so
             the chips' own transition-colors utilities are never overridden. */}
-        <div data-reveal className="hide-scrollbar -mx-4 mt-6 flex gap-3 overflow-x-auto px-4 [scrollbar-width:none] xl:hidden">
+        <div
+          ref={chipListRef}
+          data-reveal
+          className="hide-scrollbar -mx-4 mt-6 flex gap-3 overflow-x-auto px-4 [scrollbar-width:none] xl:hidden"
+        >
           {categories.map((cat) => (
             <CategoryChip
               key={cat.key}
+              chipRef={(el) => {
+                if (el) chipRefs.current.set(cat.key, el);
+                else chipRefs.current.delete(cat.key);
+              }}
               label={cat.label}
               active={cat.key === active.key}
-              onSelect={() => setActiveKey(cat.key)}
+              onSelect={() => selectCategory(cat.key)}
             />
           ))}
         </div>
@@ -197,7 +271,7 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
                   key={cat.key}
                   label={cat.label}
                   active={cat.key === active.key}
-                  onSelect={() => setActiveKey(cat.key)}
+                  onSelect={() => selectCategory(cat.key)}
                 />
               ))}
             </div>
@@ -213,16 +287,16 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
           </div>
 
           {/* Mobile — highlight card above a horizontal carousel of 3 cards. */}
-          <div className="xl:hidden">
+          <div ref={mobileContentRef} className="xl:hidden">
             <HighlightArticle article={active.highlight} />
-            <div className="hide-scrollbar -mx-4 mt-8 flex gap-4 overflow-x-auto px-4 [scrollbar-width:none]">
+            <div className="hide-scrollbar -mx-4 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-pl-4 px-4 [scrollbar-width:none]">
               {/* Keyed by slot, not by article: `data-reveal` is wired up once on
                   mount by ScrollReveal, so a remount on tab switch would hand
                   back fresh nodes that nothing ever reveals — stuck at opacity
                   0. Reusing the same three nodes keeps them revealed and just
                   swaps their contents. Safe here because the cards hold no
                   internal state. */}
-              {active.articles.slice(0, NEWS_LIST_SIZE).map((article, i) => (
+              {active.articles.slice(0, NEWS_LIST_SIZE_DESKTOP).map((article, i) => (
                 <ArticleItem key={i} article={article} />
               ))}
             </div>
@@ -230,7 +304,7 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
 
           {/* Desktop — 3-column grid: highlight card, then two columns of 3
               stacked cards each (7 cards total). */}
-          <div className="hidden xl:mt-8 xl:grid xl:grid-cols-3 xl:gap-4">
+          <div ref={desktopContentRef} className="hidden xl:mt-8 xl:grid xl:grid-cols-3 xl:gap-4">
             <HighlightArticle article={active.highlight} />
             <div className="flex flex-col gap-4">
               {active.articles.slice(0, 3).map((article, i) => (

@@ -428,6 +428,53 @@ a:focus-visible > .soliprio-card .soliprio-beam {
   opacity: 0.8;
 }
 
+/* HaloBCA floating button: a comet beam like `.soliprio-beam`, but solid
+   `--beam`-coloured (no white flash — this button is small enough that the
+   flash read as a stray highlight rather than a comet) and shown only at
+   rest. Hovering or opening the panel turns it off rather than closing it
+   into a full ring, since those states already get their own bg/color
+   swap. */
+.halobca-beam {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--beam-radius, 9999px);
+  padding: 2px;
+  background: conic-gradient(
+    from var(--beam-angle, 0deg),
+    transparent 0%,
+    var(--beam) 14%,
+    transparent 32%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  filter: drop-shadow(0 0 3px var(--beam)) drop-shadow(0 0 8px var(--beam));
+  opacity: 1;
+  transition: opacity 300ms ease-out;
+  animation: soliprio-beam-spin 4.5s linear infinite;
+  animation-play-state: paused;
+}
+
+[data-beam-live] .halobca-beam {
+  animation-play-state: running;
+}
+
+.halobca-fab:hover .halobca-beam,
+.halobca-fab[data-open="true"] .halobca-beam {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .halobca-beam {
+    animation: none;
+  }
+}
+
 /* No `position` rule here on purpose — this is unlayered CSS, so it would beat
    Tailwind's `.absolute`/`.relative` utilities in the cascade regardless of
    source order. Callers must supply their own `relative`/`absolute` class. */
@@ -913,8 +960,19 @@ html.pre-revealing .pre-nav {
 .kurs-in-next { animation: kurs-in-next 400ms ease-in-out both; }
 .kurs-in-prev { animation: kurs-in-prev 400ms ease-in-out both; }
 
+/* Shared fade/rise-in used wherever a topic/category switch swaps a list's
+   content in place (FaqSection's accordion, NewsSection's article grid).
+   FaqSection gets it for free by remounting via `key={active.key}`; NewsSection
+   can't remount (its cards carry ScrollReveal's one-time `data-reveal` wiring),
+   so it replays the class manually — remove, force reflow, re-add. */
+@keyframes content-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.content-fade-in { animation: content-fade-in 280ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+
 @media (prefers-reduced-motion: reduce) {
-  .kurs-in-next, .kurs-in-prev { animation-duration: 1ms; }
+  .kurs-in-next, .kurs-in-prev, .content-fade-in { animation-duration: 1ms; }
 }
 
 /* ---------- Mega menu motion (MegaMenuPanel.tsx via Navbar.tsx) ----------

@@ -34,9 +34,9 @@ export default function HeroArea({ kurs, banners }: { kurs: KursEntry[]; banners
         className="fade-overlay fixed inset-0 z-30 bg-black/50 backdrop-blur-[2px]"
       />
 
-      {/* Mobile / tablet widget — normal flow, pulled up 144px so the glass
-          search panel overlaps the banner's lower 144px. */}
-      <div className="relative z-40 mx-auto -mt-[144px] max-w-[560px] px-2 xl:hidden">
+      {/* Mobile / tablet widget — normal flow, pulled up 152px so the glass
+          search panel overlaps the banner's lower 152px. */}
+      <div className="relative z-40 mx-auto -mt-[152px] max-w-[560px] px-2 xl:hidden">
         <MobileHeroWidget kurs={kurs} onSearchActiveChange={setSearchActive} />
       </div>
 

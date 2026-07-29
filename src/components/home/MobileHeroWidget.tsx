@@ -129,7 +129,6 @@ function SearchPlaceholder({
 
 type QuickAction = {
   title: string;
-  subtitle: string;
   icon: string;
   scrollTo?: string;
   href?: string;
@@ -141,43 +140,40 @@ type QuickAction = {
 // snap instead of animate.
 const RAIL_PADDING_X = 48;
 const LOGIN_CARD_WIDTH_COLLAPSED = 160;
-// Collapsed rail 104px; opened login card is 28 (padding) + 40 (header) +
-// 12 (gap) + 100 (login tiles) = 180px. That's only the starting guess — the
-// tile labels wrap on narrow screens, so the real open height is measured and
-// the rail and the kurs bar below it follow it.
-const RAIL_H = 106;
-const RAIL_H_OPEN = 182;
+// Collapsed rail 64px (icon + title sit side by side, no subtitle); opened
+// login card is 28 (padding) + 24 (header) + 12 (gap) + 100 (login tiles) =
+// 164px. That's only the starting guess — the tile labels wrap on narrow
+// screens, so the real open height is measured and the rail and the kurs bar
+// below it follow it.
+const RAIL_H = 64;
+const RAIL_H_OPEN = 164;
 // Kurs top padding clears the rail and leaves the same 16px gap in both
 // states — derived from the collapsed rail height (see the geometry note by
 // the padding-top style below), so it moves with `collapsedRailH`.
-const kursPtFor = (collapsedRailH: number) => collapsedRailH - 8;
+const kursPtFor = (collapsedRailH: number) => collapsedRailH - 16;
 // Focusing the search scrolls the widget this far below the viewport top —
 // so the dropdown gets the rest of the screen to open into.
 const SEARCH_TOP_GAP = 24;
 
 function useQuickActions(t: (key: string) => string): QuickAction[] {
   return [
-    { title: t("loginCepat.title"), subtitle: t("loginCepat.subtitle"), icon: "/assets/quick-action/login.svg" },
+    { title: t("loginCepat.title"), icon: "/assets/quick-action/login.svg" },
     {
       title: t("quickActions.promo.title"),
-      subtitle: t("quickActions.promo.subtitle"),
       icon: "/assets/quick-action/discount-shape.svg",
       scrollTo: "#promo",
     },
     {
       title: t("quickActions.halobca.title"),
-      subtitle: t("quickActions.halobca.subtitle"),
       icon: "/assets/quick-action/message-question.svg",
     },
     {
       title: t("quickActions.location.title"),
-      subtitle: t("quickActions.location.subtitle"),
       icon: "/assets/quick-action/location.svg",
       href: "https://www.bca.co.id/id/lokasi-bca",
     },
     {
       title: t("quickActions.webform.title"),
-      subtitle: t("quickActions.webform.subtitle"),
       icon: "/assets/quick-action/document.svg",
       href: "https://www.bca.co.id/id/Forms/webform-bca",
     },
@@ -201,7 +197,7 @@ function QuickActionCard({
   widthPx?: number;
 }) {
   const className =
-    "flex h-[106px] w-40 shrink-0 flex-col items-start justify-center gap-2 rounded-xl border border-neutral-300 bg-white p-[14px] text-left transition-[background-color,transform] duration-200 active:scale-95 active:bg-cyan-100";
+    "flex h-16 w-40 shrink-0 items-center gap-3 rounded-xl border border-neutral-300 bg-white p-[14px] text-left transition-[background-color,transform] duration-200 active:scale-95 active:bg-cyan-100";
   const style = widthPx ? { width: widthPx } : undefined;
   if (action.href) {
     return (
@@ -444,7 +440,7 @@ export default function MobileHeroWidget({
   };
 
   return (
-    // The search panel (h-144) and the kurs bar are stacked flush; the
+    // The search panel (h-152) and the kurs bar are stacked flush; the
     // quick-action rail is absolutely positioned so it straddles the seam,
     // overlapping the panel's empty lower half and the top of the kurs bar.
     <div ref={rootRef} className="relative">
@@ -479,7 +475,7 @@ export default function MobileHeroWidget({
       {/* 1. Search panel — same glass treatment as the desktop hero search:
              `.hero-search` gradient top-border + reactive backdrop blur. */}
       <div
-        className="hero-search relative flex h-[144px] items-start justify-center overflow-clip rounded-t-3xl p-4"
+        className="hero-search relative flex h-[152px] items-start justify-center overflow-clip rounded-t-3xl p-4"
         style={{
           backdropFilter: "blur(16px) saturate(1.25)",
           WebkitBackdropFilter: "blur(16px) saturate(1.25)",
@@ -618,18 +614,13 @@ export default function MobileHeroWidget({
                   onClick={toggleLogin}
                   aria-expanded={loginOpen}
                   inert={loginOpen}
-                  className={`absolute inset-y-0 left-0 flex w-full flex-col items-start justify-center gap-2 p-[14px] text-left transition-opacity duration-200 ${loginOpen ? "pointer-events-none opacity-0" : "opacity-100 delay-100"
+                  className={`absolute inset-y-0 left-0 flex w-full items-center gap-3 p-[14px] text-left transition-opacity duration-200 ${loginOpen ? "pointer-events-none opacity-0" : "opacity-100 delay-100"
                     }`}
                 >
                   <img src={action.icon} alt="" className="size-6" />
-                  <div className="flex flex-col gap-1">
-                    <p className="whitespace-nowrap text-base leading-[19px] font-bold text-neutral-800">
-                      {action.title}
-                    </p>
-                    <p className="whitespace-nowrap text-xs font-normal text-neutral-700">
-                      {action.subtitle}
-                    </p>
-                  </div>
+                  <p className="whitespace-nowrap text-base leading-[19px] font-bold text-neutral-800">
+                    {action.title}
+                  </p>
                 </button>
 
                 <div
@@ -652,10 +643,9 @@ export default function MobileHeroWidget({
                     className="flex shrink-0 items-center gap-4"
                   >
                     <img src={action.icon} alt="" className="size-6 shrink-0" />
-                    <div className="flex min-w-0 flex-1 flex-col gap-1 text-left">
-                      <p className="text-base leading-[19px] font-bold text-neutral-800">{action.title}</p>
-                      <p className="text-xs font-normal text-neutral-700">{action.subtitle}</p>
-                    </div>
+                    <p className="min-w-0 flex-1 text-left text-base leading-[19px] font-bold text-neutral-800">
+                      {action.title}
+                    </p>
                     <img
                       src="/assets/cycle1/outline-close.svg"
                       alt=""
@@ -706,14 +696,9 @@ export default function MobileHeroWidget({
                 }}
               >
                 <img src={action.icon} alt="" className="size-6" />
-                <div className="flex flex-col gap-1">
-                  <p className="whitespace-nowrap text-base leading-[19px] font-bold text-neutral-800">
-                    {action.title}
-                  </p>
-                  <p className="whitespace-nowrap text-xs font-normal text-neutral-700">
-                    {action.subtitle}
-                  </p>
-                </div>
+                <p className="whitespace-nowrap text-base leading-[19px] font-bold text-neutral-800">
+                  {action.title}
+                </p>
               </QuickActionCard>
             )
           )}

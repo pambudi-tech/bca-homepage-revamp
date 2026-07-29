@@ -95,7 +95,12 @@ export default function Confetti() {
       {PIECES.map((p) => (
         <span
           key={p.id}
-          className="confetti-piece"
+          // The full 66 pieces are tuned for the desktop-width band; on a
+          // phone the same count lands in a much narrower strip and reads as
+          // crowded, so every third piece drops out below the desktop
+          // breakpoint (id % 3 keeps them spread through the set, not just
+          // trimmed off one end).
+          className={`confetti-piece ${p.id % 3 === 0 ? "max-xl:hidden" : ""}`}
           style={
             {
               left: `${p.left}%`,
