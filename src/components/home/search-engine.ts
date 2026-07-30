@@ -275,20 +275,40 @@ function scoreOne(item: Searchable, query: ParsedQuery): number {
 }
 
 /**
- * Ranks `items` against `keyword`, best first, dropping non-matches.
+ * Ranks `items` against `keyword`, best first, dropping non-matches, and
+ * keeps each item's score alongside it. Used when the caller needs to compare
+ * how strong one group's best match is against another group's (e.g. deciding
+ * whether "Promo Terkait" should outrank "Produk Terkait" for a given query).
  *
  * Ties break on the record's own `weight`, then on original array order — so
  * equally-relevant records stay in the curated order the dataset declares.
  */
-export function rankBySearch<T extends Searchable>(items: T[], keyword: string, limit?: number): T[] {
+export function rankBySearchScored<T extends Searchable>(
+  items: T[],
+  keyword: string,
+  limit?: number,
+): { item: T; score: number }[] {
   const query = parseQuery(keyword);
-  if (!query.phrase) return limit != null ? items.slice(0, limit) : items;
+  if (!query.phrase) {
+    const base = limit != null ? items.slice(0, limit) : items;
+    return base.map((item) => ({ item, score: 0 }));
+  }
 
   const scored = items
     .map((item, index) => ({ item, index, score: scoreOne(item, query) }))
     .filter((entry) => entry.score > 0)
     .sort((a, b) => b.score - a.score || a.index - b.index);
 
-  const ranked = scored.map((entry) => entry.item);
-  return limit != null ? ranked.slice(0, limit) : ranked;
+  const limited = limit != null ? scored.slice(0, limit) : scored;
+  return limited.map(({ item, score }) => ({ item, score }));
+}
+
+/**
+ * Ranks `items` against `keyword`, best first, dropping non-matches.
+ *
+ * Ties break on the record's own `weight`, then on original array order — so
+ * equally-relevant records stay in the curated order the dataset declares.
+ */
+export function rankBySearch<T extends Searchable>(items: T[], keyword: string, limit?: number): T[] {
+  return rankBySearchScored(items, keyword, limit).map((entry) => entry.item);
 }

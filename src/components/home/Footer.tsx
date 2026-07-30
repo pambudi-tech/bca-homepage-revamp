@@ -6,6 +6,7 @@ import {
   ALL_SOCIAL_MEDIA_LINK,
   BOTTOM_LINK_HREFS,
   FOOTER_LINK_COLUMN_KEYS,
+  LINK_COLUMN_HREFS,
   SOCIAL_LINKS,
 } from "./footer-data";
 import { useLenis } from "@/components/SmoothScroll";
@@ -145,14 +146,30 @@ export default function Footer() {
               >
                 <p className="text-xs font-semibold uppercase tracking-[1.8px]">{column.heading}</p>
                 <div className="flex flex-col items-center gap-4 xl:items-end xl:gap-6">
-                  {column.links.map((link) => (
-                    <button
-                      key={link}
-                      className="text-center text-sm text-white/70 transition-colors hover:text-white xl:text-right"
-                    >
-                      {link}
-                    </button>
-                  ))}
+                  {column.links.map((link, index) => {
+                    const href = LINK_COLUMN_HREFS[column.key]?.[index];
+                    if (href) {
+                      return (
+                        <a
+                          key={link}
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-center text-sm text-white/70 transition-colors hover:text-white xl:text-right"
+                        >
+                          {link}
+                        </a>
+                      );
+                    }
+                    return (
+                      <button
+                        key={link}
+                        className="text-center text-sm text-white/70 transition-colors hover:text-white xl:text-right"
+                      >
+                        {link}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             ))}

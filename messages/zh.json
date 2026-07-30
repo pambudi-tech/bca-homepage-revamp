@@ -67,6 +67,7 @@
     "popularSearches": "热门搜索",
     "relatedProducts": "相关产品",
     "viewAll": "查看全部",
+    "relatedProgram": "相关活动",
     "relatedInfo": "相关信息",
     "noResultsFor": "未找到“{keyword}”的结果",
     "noResultsHint": "请尝试其他关键词，或查看下方全部结果。",
@@ -220,16 +221,17 @@
         "links": [
           "关于BCA",
           "招聘信息",
-          "利率信息"
+          "利率信息",
+          "分行与ATM位置"
         ]
       },
       "Layanan": {
         "heading": "服务",
         "links": [
-          "分行与ATM位置",
           "帮助中心",
-          "活动与项目",
-          "模拟计算器"
+          "客户服务",
+          "模拟计算器",
+          "分行网络"
         ]
       },
       "Wawasan": {

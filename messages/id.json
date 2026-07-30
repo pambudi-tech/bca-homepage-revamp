@@ -67,6 +67,7 @@
     "popularSearches": "Pencarian Populer",
     "relatedProducts": "Produk Terkait",
     "viewAll": "Lihat Semua",
+    "relatedProgram": "Program Terkait",
     "relatedInfo": "Informasi Terkait",
     "noResultsFor": "Tidak ada hasil untuk “{keyword}”",
     "noResultsHint": "Coba kata kunci lain atau lihat semua hasil di bawah.",
@@ -117,7 +118,7 @@
     "eyebrow": "Produk & Layanan",
     "heading": "Solusi BCA untuk Setiap Tujuan Keuangan Anda",
     "ctaHint": "Temukan {category} yang tepat untuk Anda",
-    "ctaLabel": "Mulai Sekarang",
+    "ctaLabel": "Buka GoodPlan BCA",
     "mobileCtaHint": "Temukan produk & layanan yang tepat untuk Anda"
   },
   "promo": {
@@ -220,16 +221,17 @@
         "links": [
           "Tentang BCA",
           "Karir",
-          "Info Suku Bunga"
+          "Info Suku Bunga",
+          "Lokasi Cabang & ATM"
         ]
       },
       "Layanan": {
         "heading": "Layanan",
         "links": [
-          "Lokasi Cabang & ATM",
           "Pusat Bantuan",
-          "Event & Program",
-          "Simulasi & Kalkulator"
+          "Customer Service",
+          "Simulasi & Kalkulator",
+          "Jaringan Cabang"
         ]
       },
       "Wawasan": {

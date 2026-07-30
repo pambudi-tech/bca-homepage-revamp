@@ -19,7 +19,7 @@
 // server-side proxy that queries BCA's real search endpoint and returns JSON).
 // The component only depends on the shape, so the UI won't change.
 
-import { rankBySearch, type Searchable } from "./search-engine";
+import { rankBySearchScored, type Searchable } from "./search-engine";
 
 export type ProductIcon =
   | "mybca"
@@ -54,9 +54,16 @@ export type InfoRec = Searchable & {
   category: InfoCategory;
 };
 
+/** Which section led the ranking for this query — best top score first. */
+export type SearchSectionKey = "products" | "program" | "information";
+
 export type SearchRecommendations = {
   products: ProductRec[];
   information: InfoRec[];
+  /** Image-led campaign cards (concerts, events) — see `PROGRAMS` below. */
+  program: ProgramRec[];
+  /** Section render order, best-matching group first (e.g. "The Weeknd" → program leads). */
+  order: SearchSectionKey[];
 };
 
 // Badge palette per information category — the label is translated in
@@ -1247,13 +1254,80 @@ const INFORMATION: InfoRec[] = [
   },
 ];
 
+/* ---------------------------------------------------------------------------
+ * Programs — image-led campaigns (concerts, events) rendered as cards, same
+ * shape as products. Distinct from a plain `InfoRec` promo (a badge + one
+ * line of text) because a campaign like a concert presale reads much better
+ * with the event's own key art than a generic category icon.
+ *
+ * Rendered as their own "Program Terkait" section, only when this group's
+ * best match outscores products/information — see `getSearchRecommendations`.
+ * ------------------------------------------------------------------------- */
+
+export type ProgramRec = Searchable & {
+  id: string;
+  title: string;
+  description: string;
+  href: string;
+  /** Path under /public — e.g. "/assets/program/the-weeknd-presale.webp". */
+  image: string;
+};
+
+// Artist/event names here so a query like "The Weeknd" or "Coldplay" surfaces
+// the ticket presale and 0% installment campaign instead of only generic
+// products — this is what someone typing an artist name is actually after.
+const PROGRAMS: ProgramRec[] = [
+  {
+    id: "promo-konser-presale",
+    title: "Presale Tiket Konser Khusus Kartu Kredit BCA",
+    description: "Beli tiket lebih dulu sebelum public sale dengan Kartu Kredit BCA",
+    href: "#",
+    // Reuses the "After Hours Til Dawn Tour - The Weeknd" banner already
+    // shipped for EventSlider (src/components/home/EventSlider.tsx) — same
+    // real campaign, so no new asset needed here.
+    image: "/assets/promo/event-banner-2.webp",
+    tags: [
+      "konser", "presale", "tiket", "the weeknd", "coldplay", "konser musik",
+      "tiket konser", "musisi", "artis", "tour", "concert",
+    ],
+    weight: 9,
+  },
+  {
+    id: "promo-cicilan-tiket-konser",
+    title: "Cicilan 0% Tiket Konser dengan Kartu Kredit BCA",
+    description: "Ubah pembelian tiket konser jadi cicilan ringan tanpa bunga",
+    href: "#",
+    image: "/assets/promo/event-banner-1.webp",
+    tags: [
+      "konser", "cicilan 0", "tiket", "installment", "the weeknd", "coldplay",
+      "tiket konser", "event", "hiburan",
+    ],
+    weight: 8,
+  },
+  {
+    id: "promo-live-in-concert",
+    title: "BCA Live in Concert: Beli Tiket Lebih Dulu Pakai myBCA",
+    description: "Akses prioritas tiket konser pilihan langsung dari myBCA",
+    href: "#",
+    image: "/assets/promo/event-banner-3.webp",
+    tags: ["konser", "live in concert", "tiket", "myBCA", "event musik", "hiburan"],
+  },
+];
 const MAX_PRODUCTS = 3;
+const MAX_PROGRAM = 3;
 const MAX_INFORMATION = 4;
 
+const DEFAULT_SECTION_ORDER: SearchSectionKey[] = ["products", "information", "program"];
+
+function byWeight<T extends { weight?: number }>(a: T, b: T): number {
+  return (b.weight ?? 0) - (a.weight ?? 0);
+}
+
 /**
- * Returns the products + information to show in the search-recommendation
- * dropdown for a given keyword. Empty/whitespace keyword returns a popular
- * default set (so the dropdown is useful the moment the field is focused).
+ * Returns the products + information + program cards to show in the
+ * search-recommendation dropdown for a given keyword. Empty/whitespace
+ * keyword returns a popular default set (so the dropdown is useful the
+ * moment the field is focused).
  *
  * Ranking, synonym expansion and typo tolerance live in search-engine.ts.
  * This is the swap point for a real backend later — see the file header.
@@ -1264,17 +1338,39 @@ export function getSearchRecommendations(keyword: string): SearchRecommendations
   if (!q) {
     // Default set is ordered by `weight` so the empty state leads with the
     // products people actually open, not whatever sits first in the array.
+    // Program cards don't have a generic "default" — they only show up when
+    // a query actually matches one, so the empty state skips them.
     return {
-      products: [...PRODUCTS].sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0)).slice(0, MAX_PRODUCTS),
-      information: [...INFORMATION]
-        .sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0))
-        .slice(0, MAX_INFORMATION),
+      products: [...PRODUCTS].sort(byWeight).slice(0, MAX_PRODUCTS),
+      information: [...INFORMATION].sort(byWeight).slice(0, MAX_INFORMATION),
+      program: [],
+      order: DEFAULT_SECTION_ORDER,
     };
   }
 
+  const productsScored = rankBySearchScored(PRODUCTS, q, MAX_PRODUCTS);
+  const informationScored = rankBySearchScored(INFORMATION, q, MAX_INFORMATION);
+  const programScored = rankBySearchScored(PROGRAMS, q, MAX_PROGRAM);
+
+  // Whichever group's best match is strongest leads the dropdown — this is
+  // what lets a campaign-shaped query (an artist name, an event) surface
+  // "Program Terkait" above "Produk Terkait" instead of never appearing.
+  const topScore = (scored: { score: number }[]) => scored[0]?.score ?? -1;
+  const order = (["products", "information", "program"] as SearchSectionKey[])
+    .map((key, index) => ({
+      key,
+      index,
+      top:
+        key === "products" ? topScore(productsScored) : key === "information" ? topScore(informationScored) : topScore(programScored),
+    }))
+    .sort((a, b) => b.top - a.top || a.index - b.index)
+    .map((entry) => entry.key);
+
   return {
-    products: rankBySearch(PRODUCTS, q, MAX_PRODUCTS),
-    information: rankBySearch(INFORMATION, q, MAX_INFORMATION),
+    products: productsScored.map((entry) => entry.item),
+    information: informationScored.map((entry) => entry.item),
+    program: programScored.map((entry) => entry.item),
+    order,
   };
 }
 

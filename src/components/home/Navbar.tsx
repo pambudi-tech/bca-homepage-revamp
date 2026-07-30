@@ -8,7 +8,6 @@ import { routing, type AppLocale } from "@/i18n/routing";
 import MegaMenuPanel, { type MegaMenuMode } from "./MegaMenuPanel";
 import MobileNav from "./MobileNav";
 import { onPreloaderDone } from "@/components/Preloader";
-import { HALO_BCA_OPEN_EVENT, HelpIcon } from "./HaloBcaChat";
 import type { ProductCategory } from "./product-data";
 import type { MegaMenuContent } from "@/lib/megamenu";
 
@@ -76,7 +75,7 @@ function NavbarLink({
     // alone only tells a sighted user which page they are on.
     "aria-current": active ? ("page" as const) : undefined,
     style: viewTransitionName ? ({ viewTransitionName } as CSSProperties) : undefined,
-    className: `flex h-10 items-center justify-center gap-0.5 rounded-full border px-4 transition-colors duration-300 ${active
+    className: `flex h-10 cursor-pointer items-center justify-center gap-0.5 rounded-full border px-4 transition-colors duration-300 ${active
         ? `border-blue-500 ${hover ? "bg-[#0068c0]" : "bg-blue-500"}`
         : hover
           ? "border-white/20 bg-[rgba(18,20,23,0.5)]"
@@ -134,7 +133,7 @@ function SearchButton({ label }: { label: string }) {
       aria-label={label}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className={`flex h-10 items-center justify-start gap-0.5 rounded-full border transition-all duration-300 ${hover
+      className={`flex h-10 cursor-pointer items-center justify-start gap-0.5 rounded-full border transition-all duration-300 ${hover
           ? "w-auto border-white/20 bg-[rgba(18,20,23,0.5)] px-4"
           : "w-10 border-white/25 bg-[rgba(5,13,25,0.1)] px-2"
         }`}
@@ -185,7 +184,7 @@ function IconLinkButton({
       onClick={onClick}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className={`flex h-10 items-center rounded-full border transition-all duration-300 ${hover
+      className={`flex h-10 cursor-pointer items-center rounded-full border transition-all duration-300 ${hover
           ? "w-auto justify-start gap-0.5 border-white/20 bg-[rgba(18,20,23,0.5)] px-4"
           : "w-10 justify-center border-white/25 bg-[rgba(5,13,25,0.1)] px-2"
         }`}
@@ -306,11 +305,7 @@ export default function Navbar({
   };
 
   const scrollToPromo = () => {
-    document.getElementById("promo")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const openHaloBca = () => {
-    window.dispatchEvent(new CustomEvent(HALO_BCA_OPEN_EVENT));
+    window.open("https://promo.bca.co.id", "_blank", "noopener,noreferrer");
   };
 
   useEffect(() => {
@@ -579,11 +574,6 @@ export default function Navbar({
                 <div className="flex items-center gap-3">
                   <SearchButton label={tNav("search")} />
                   <IconLinkButton label={tNav("lokasiBca")} icon={<LocationIcon />} onClick={scrollToLocation} />
-                  <IconLinkButton
-                    label={tNav("haloBca")}
-                    icon={<HelpIcon className="size-6 shrink-0 text-neutral-100 opacity-80" />}
-                    onClick={openHaloBca}
-                  />
 
                   <div ref={langRef} className="relative">
                     <button

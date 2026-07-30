@@ -229,7 +229,12 @@ function QuickActionCard({
 
 function KursCard({ entry, beliLabel, jualLabel }: { entry: KursEntry; beliLabel: string; jualLabel: string }) {
   return (
-    <div className="flex w-full max-w-[360px] items-center justify-between gap-2 rounded-xl border border-[#017CBD] bg-black/10 px-5 py-2.5">
+    <a
+      href="https://www.bca.co.id/id/informasi/kurs"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex w-full max-w-[360px] items-center justify-between gap-2 rounded-xl border border-[#017CBD] bg-black/10 px-5 py-2.5"
+    >
       {/* title: fill but caps at 84px, so it yields room first — flag + code
           then wrap (flag on top, code below) once the card gets narrow. */}
       <div className="flex min-w-0 max-w-[84px] flex-1 flex-wrap content-center items-center gap-x-3 gap-y-1">
@@ -248,7 +253,7 @@ function KursCard({ entry, beliLabel, jualLabel }: { entry: KursEntry; beliLabel
           <span className="w-[72px] text-right text-sm leading-5">{entry.jual}</span>
         </div>
       </div>
-    </div>
+    </a>
   );
 }
 

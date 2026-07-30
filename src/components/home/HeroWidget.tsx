@@ -268,7 +268,7 @@ export default function HeroWidget({
     return () => window.removeEventListener("resize", measure);
   }, [showRecommendation]);
   const trackRef = useRef<HTMLDivElement>(null);
-  const firstCardRef = useRef<HTMLDivElement>(null);
+  const firstCardRef = useRef<HTMLAnchorElement>(null);
   const cardStepRef = useRef(0);
   const offsetRef = useRef(0);
   const tickerPausedRef = useRef(false);
@@ -461,7 +461,7 @@ export default function HeroWidget({
                           so this copy is crawlable, not gated behind a hover-only mount. */}
                       <div className="pointer-events-none absolute bottom-[calc(100%+16px)] left-1/2 z-30 w-56 -translate-x-1/2 rounded-2xl border border-neutral-200 bg-white p-4 text-left opacity-0 shadow-[0px_8px_16px_0px_rgba(0,0,0,0.10),0px_20px_32px_0px_rgba(0,0,0,0.12)] transition-opacity duration-200 group-hover/login:opacity-100">
                         <p className="text-sm font-bold text-neutral-800">{dest.label}</p>
-                        <p className="mt-1 text-sm font-normal text-neutral-600">{dest.description}</p>
+                        <p className="mt-1 text-sm font-normal text-neutral-700">{dest.description}</p>
                         {/* Message-bubble tail — rotated square with only its
                             leading corner rounded, so the tip reads as soft
                             rather than a sharp triangle point. */}
@@ -656,9 +656,14 @@ export default function HeroWidget({
           className="absolute inset-0 rounded-b-3xl bg-gradient-to-b from-cyan-500 to-blue-500"
         />
         <div className="absolute bottom-5 left-8 flex h-14 w-[120px] flex-col items-start justify-center gap-2">
-          <p className="w-[120px] text-base font-semibold text-white underline [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+          <a
+            href="https://www.bca.co.id/id/informasi/kurs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-[120px] text-base font-semibold text-white underline [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]"
+          >
             {t("kursToday")}
-          </p>
+          </a>
         </div>
 
         <div
@@ -678,9 +683,12 @@ export default function HeroWidget({
             {[...order, ...order, ...order].map((idx, i) => {
               const entry = kurs[idx];
               return (
-                <div
+                <a
                   key={`${entry.code}-${i}`}
                   ref={i === 0 ? firstCardRef : undefined}
+                  href="https://www.bca.co.id/id/informasi/kurs"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex h-12 shrink-0 items-center gap-4 rounded-xl border border-[#017CBD] bg-black/10 p-4"
                 >
                   <div className="flex items-center gap-3">
@@ -702,7 +710,7 @@ export default function HeroWidget({
                       <span className="w-20 text-right text-base">{entry.jual}</span>
                     </div>
                   </div>
-                </div>
+                </a>
               );
             })}
           </div>

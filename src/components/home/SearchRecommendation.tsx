@@ -5,7 +5,9 @@ import {
   INFO_CATEGORY_STYLE,
   POPULAR_SEARCHES,
   bcaSearchResultUrl,
+  type InfoRec,
   type ProductIcon,
+  type ProgramRec,
   type SearchRecommendations,
 } from "./search-data";
 
@@ -225,9 +227,9 @@ export default function SearchRecommendation({
   compact = false,
 }: Props) {
   const t = useTranslations("search");
-  const { products, information } = recommendations;
+  const { products, information, program, order } = recommendations;
   const isEmpty = keyword.trim() === "";
-  const hasResults = products.length > 0 || information.length > 0;
+  const hasResults = products.length > 0 || information.length > 0 || program.length > 0;
   const seeAllUrl = bcaSearchResultUrl(keyword || "");
 
   return (
@@ -297,20 +299,113 @@ export default function SearchRecommendation({
         </div>
       ) : hasResults ? (
         <div className={`flex flex-col ${compact ? "gap-5 p-3" : "gap-8 p-6"}`}>
-          {products.length > 0 && (
-            <section className="flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{t("relatedProducts")}</p>
-                <a
-                  href={seeAllUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-0.5 text-sm font-semibold text-blue-500 hover:underline"
-                >
-                  {t("viewAll")}
-                  <ArrowDiagonalIcon className="size-5" />
-                </a>
-              </div>
+          {order.map((sectionKey) => {
+            if (sectionKey === "products") {
+              return products.length > 0 ? (
+                <ProductsSection
+                  key="products"
+                  products={products}
+                  compact={compact}
+                  label={t("relatedProducts")}
+                  viewAllLabel={t("viewAll")}
+                  seeAllUrl={seeAllUrl}
+                />
+              ) : null;
+            }
+            if (sectionKey === "program") {
+              return program.length > 0 ? (
+                <ProgramSection key="program" program={program} compact={compact} label={t("relatedProgram")} />
+              ) : null;
+            }
+            return information.length > 0 ? (
+              <InfoSection key="information" items={information} compact={compact} label={t("relatedInfo")} t={t} />
+            ) : null;
+          })}
+        </div>
+      ) : (
+        <div className="px-6 py-8 text-center">
+          <p className="text-sm font-semibold text-neutral-800">
+            {t("noResultsFor", { keyword })}
+          </p>
+          <p className="mt-1 text-sm text-neutral-700">
+            {t("noResultsHint")}
+          </p>
+        </div>
+      )}
+
+      {/* Desktop puts the two links side by side split by a vertical rule;
+          mobile stacks them, so the divider becomes the top border of the
+          second row and the help label breaks onto two lines. */}
+      <div
+        className={`flex border-t border-neutral-300 ${
+          compact ? "flex-col" : "items-center justify-between"
+        }`}
+      >
+        {!isEmpty && hasResults && (
+          <a
+            href={seeAllUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`flex flex-1 items-center gap-3 text-sm font-semibold text-blue-500 transition-colors hover:bg-blue-100 ${
+              compact ? "p-3.5" : "p-5"
+            }`}
+          >
+            <SearchIcon className="size-6 shrink-0" />
+            {t("viewAllResults")}
+          </a>
+        )}
+        {(isEmpty || !hasResults) && (
+          <a
+            href="https://www.bca.co.id/id/bantuan/pusat-informasi"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`flex flex-1 items-center gap-3 transition-colors hover:bg-blue-100 ${
+              compact ? "p-3.5" : "p-5"
+            }`}
+          >
+            <HeadphoneIcon className="size-6 shrink-0 text-neutral-800" />
+            <span className={`flex gap-1 ${compact ? "flex-col items-start" : "items-center"}`}>
+              <span className="text-sm font-semibold text-neutral-800">{t("needHelp")}</span>
+              <span className="flex items-center gap-0.5 text-sm font-semibold text-blue-500">
+                {t("visitHelpCenter")}
+                <ArrowDiagonalIcon className="size-5 shrink-0" />
+              </span>
+            </span>
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------------
+ * Result sections — extracted so `order` can render them in whichever
+ * sequence best matches the query (see search-data.ts).
+ * ------------------------------------------------------------------------- */
+
+type ProductsSectionProps = {
+  products: SearchRecommendations["products"];
+  compact: boolean;
+  label: string;
+  viewAllLabel: string;
+  seeAllUrl: string;
+};
+
+function ProductsSection({ products, compact, label, viewAllLabel, seeAllUrl }: ProductsSectionProps) {
+  return (
+    <section className="flex flex-col gap-3">
+      <div className="flex items-center justify-between">
+        <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{label}</p>
+        <a
+          href={seeAllUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-0.5 text-sm font-semibold text-blue-500 hover:underline"
+        >
+          {viewAllLabel}
+          <ArrowDiagonalIcon className="size-5" />
+        </a>
+      </div>
               {/* Desktop lays the cards out as three equal columns; mobile
                   scrolls them horizontally as fixed 200px cards, bleeding to
                   the panel edges so the overflow reads as a carousel. */}
@@ -368,98 +463,102 @@ export default function SearchRecommendation({
                   );
                 })}
               </div>
-            </section>
-          )}
+    </section>
+  );
+}
 
-          {information.length > 0 && (
-            <section className="flex flex-col gap-3">
-              <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{t("relatedInfo")}</p>
-              <ul className="flex flex-col">
-                {information.slice(0, 3).map((info) => {
-                  const style = INFO_CATEGORY_STYLE[info.category];
-                  return (
-                    <li key={info.id}>
-                      <a
-                        href={info.href}
-                        className="group flex items-center gap-8 rounded-xl px-3 py-3 transition-colors duration-200 hover:bg-cyan-100"
-                      >
-                        {/* Mobile has no room for the badge, so the title wraps
-                            across the full row instead of truncating. */}
-                        <span
-                          className={`min-w-0 flex-1 text-sm font-semibold text-neutral-800 transition-colors duration-200 group-hover:text-blue-500 ${
-                            compact ? "" : "truncate"
-                          }`}
-                        >
-                          {info.title}
-                        </span>
-                        {!compact && (
-                          <span
-                            className="flex h-6 shrink-0 items-center rounded-lg px-3 text-sm font-semibold"
-                            style={{ backgroundColor: style.bg, color: style.text }}
-                          >
-                            {t(`categories.${info.category}`)}
-                          </span>
-                        )}
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </section>
-          )}
-        </div>
-      ) : (
-        <div className="px-6 py-8 text-center">
-          <p className="text-sm font-semibold text-neutral-800">
-            {t("noResultsFor", { keyword })}
-          </p>
-          <p className="mt-1 text-sm text-neutral-700">
-            {t("noResultsHint")}
-          </p>
-        </div>
-      )}
+type ProgramSectionProps = {
+  program: ProgramRec[];
+  compact: boolean;
+  label: string;
+};
 
-      {/* Desktop puts the two links side by side split by a vertical rule;
-          mobile stacks them, so the divider becomes the top border of the
-          second row and the help label breaks onto two lines. */}
+/** Same card layout as ProductsSection, but led by the campaign's own key art
+ * instead of a generic category icon — a concert presale reads better with
+ * its poster than with a wallet icon. */
+function ProgramSection({ program, compact, label }: ProgramSectionProps) {
+  return (
+    <section className="flex flex-col gap-3">
+      <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{label}</p>
       <div
-        className={`flex border-t border-neutral-300 ${
-          compact ? "flex-col" : "items-center justify-between"
+        className={`flex ${
+          compact ? "hide-scrollbar -mx-3 gap-2 overflow-x-auto px-3 [scrollbar-width:none]" : "gap-3"
         }`}
       >
-        {!isEmpty && hasResults && (
+        {program.map((item) => (
           <a
-            href={seeAllUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`flex flex-1 items-center gap-3 text-sm font-semibold text-blue-500 transition-colors hover:bg-blue-100 ${
-              compact ? "p-3.5" : "p-5"
+            key={item.id}
+            href={item.href}
+            className={`group flex overflow-hidden rounded-xl border border-neutral-300 transition-colors hover:border-cyan-500 hover:bg-cyan-100 ${
+              compact ? "w-[200px] shrink-0 flex-col gap-3" : "flex-1 flex-col gap-4 pb-5"
             }`}
           >
-            <SearchIcon className="size-6 shrink-0" />
-            {t("viewAllResults")}
+            <img
+              src={item.image}
+              alt=""
+              className={`w-full shrink-0 object-cover ${compact ? "h-24" : "h-32"}`}
+            />
+            <div className={`flex min-w-0 flex-col gap-1.5 ${compact ? "px-3 pb-3" : "px-4"}`}>
+              <p
+                className={`font-semibold text-neutral-800 group-hover:text-blue-500 ${
+                  compact ? "text-sm" : "truncate text-base"
+                }`}
+              >
+                {item.title}
+              </p>
+              <p className={`leading-normal text-neutral-700 ${compact ? "text-xs" : "text-sm"}`}>
+                {item.description}
+              </p>
+            </div>
           </a>
-        )}
-        {(isEmpty || !hasResults) && (
-          <a
-            href="https://www.bca.co.id/id/bantuan/pusat-informasi"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`flex flex-1 items-center gap-3 transition-colors hover:bg-blue-100 ${
-              compact ? "p-3.5" : "p-5"
-            }`}
-          >
-            <HeadphoneIcon className="size-6 shrink-0 text-neutral-800" />
-            <span className={`flex gap-1 ${compact ? "flex-col items-start" : "items-center"}`}>
-              <span className="text-sm font-semibold text-neutral-800">{t("needHelp")}</span>
-              <span className="flex items-center gap-0.5 text-sm font-semibold text-blue-500">
-                {t("visitHelpCenter")}
-                <ArrowDiagonalIcon className="size-5 shrink-0" />
-              </span>
-            </span>
-          </a>
-        )}
+        ))}
       </div>
-    </div>
+    </section>
+  );
+}
+
+type InfoSectionProps = {
+  items: InfoRec[];
+  compact: boolean;
+  label: string;
+  t: ReturnType<typeof useTranslations>;
+};
+
+function InfoSection({ items, compact, label, t }: InfoSectionProps) {
+  return (
+    <section className="flex flex-col gap-3">
+      <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{label}</p>
+      <ul className="flex flex-col">
+        {items.slice(0, 3).map((info) => {
+          const style = INFO_CATEGORY_STYLE[info.category];
+          return (
+            <li key={info.id}>
+              <a
+                href={info.href}
+                className="group flex items-center gap-8 rounded-xl px-3 py-3 transition-colors duration-200 hover:bg-cyan-100"
+              >
+                {/* Mobile has no room for the badge, so the title wraps
+                    across the full row instead of truncating. */}
+                <span
+                  className={`min-w-0 flex-1 text-sm font-semibold text-neutral-800 transition-colors duration-200 group-hover:text-blue-500 ${
+                    compact ? "" : "truncate"
+                  }`}
+                >
+                  {info.title}
+                </span>
+                {!compact && (
+                  <span
+                    className="flex h-6 shrink-0 items-center rounded-lg px-3 text-sm font-semibold"
+                    style={{ backgroundColor: style.bg, color: style.text }}
+                  >
+                    {t(`categories.${info.category}`)}
+                  </span>
+                )}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }

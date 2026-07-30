@@ -67,6 +67,7 @@
     "popularSearches": "Popular Searches",
     "relatedProducts": "Related Products",
     "viewAll": "View All",
+    "relatedProgram": "Related Programs",
     "relatedInfo": "Related Information",
     "noResultsFor": "No results for “{keyword}”",
     "noResultsHint": "Try a different keyword or view all results below.",
@@ -220,16 +221,17 @@
         "links": [
           "About BCA",
           "Careers",
-          "Interest Rate Info"
+          "Interest Rate Info",
+          "Branch & ATM Locations"
         ]
       },
       "Layanan": {
         "heading": "Services",
         "links": [
-          "Branch & ATM Locations",
           "Help Center",
-          "Events & Programs",
-          "Simulations & Calculators"
+          "Customer Service",
+          "Simulations & Calculators",
+          "Branch Network"
         ]
       },
       "Wawasan": {
