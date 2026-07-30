@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { FAQ_CATEGORIES } from "./faq-data";
 
@@ -102,6 +102,28 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
   const tabRefs = useRef(new Map<string, HTMLButtonElement>());
   const tabListRef = useRef<HTMLDivElement>(null);
 
+  // Drives the scroll shadows below the tab list and above the CTA footer —
+  // they should only show while the accordion list actually has more content
+  // hidden past that edge, not just because the list happens to scroll.
+  const [showTopShadow, setShowTopShadow] = useState(false);
+  const [showBottomShadow, setShowBottomShadow] = useState(false);
+  const accordionRef = useRef<HTMLDivElement | null>(null);
+
+  const updateScrollShadows = (el: HTMLDivElement | null) => {
+    if (!el) return;
+    setShowTopShadow(el.scrollTop > 1);
+    setShowBottomShadow(el.scrollTop + el.clientHeight < el.scrollHeight - 1);
+  };
+
+  // Opening/closing a row changes scrollHeight via the animated grid-rows
+  // trick, not a scroll event, so re-check once that 300ms transition has
+  // settled — otherwise a row opened past the visible area never gets a
+  // bottom shadow until the user happens to scroll.
+  useEffect(() => {
+    const id = setTimeout(() => updateScrollShadows(accordionRef.current), 320);
+    return () => clearTimeout(id);
+  }, [openIndex]);
+
   // Same 16px gutter as the tab list's own `px-4` — so a snapped-to tab keeps
   // breathing room from the edge instead of sitting flush against it.
   const TAB_SNAP_PADDING = 16;
@@ -132,12 +154,15 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
 
   const cardBody = (
     <>
-      {/* Tab list — 80% fill on the glass variant. */}
+      {/* Tab list — 80% fill on the glass variant. Gains a downward shadow
+          once the accordion below has been scrolled away from its top, so
+          the tab list reads as sitting above the (now partially hidden)
+          content rather than just a static header. */}
       <div
         ref={tabListRef}
-        className={`hide-scrollbar flex items-center gap-4 overflow-x-auto border-b px-4 pt-2 [scrollbar-width:none] xl:gap-4 xl:px-6 ${
+        className={`hide-scrollbar relative z-10 flex items-center gap-4 overflow-x-auto border-b px-4 pt-2 [scrollbar-width:none] transition-shadow duration-200 xl:gap-4 xl:px-6 ${
           glass ? "border-white/20 bg-black/60 backdrop-blur-md" : "border-neutral-300 bg-white"
-        }`}
+        } ${showTopShadow ? "shadow-[0_4px_8px_-2px_rgba(0,0,0,0.15)]" : ""}`}
       >
         {FAQ_CATEGORIES.map((cat) => {
           const isActive = cat.key === active.key;
@@ -178,6 +203,11 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
           glass variant, lighter than the tab list and CTA. */}
       <div
         key={active.key}
+        ref={(el) => {
+          accordionRef.current = el;
+          updateScrollShadows(el);
+        }}
+        onScroll={(e) => updateScrollShadows(e.currentTarget)}
         data-lenis-prevent
         className={`content-fade-in flex h-[360px] flex-col gap-1 overflow-y-auto px-2 py-2 ${
           glass ? "scrollbar-glass bg-black/50 backdrop-blur-md" : "bg-white"
@@ -195,11 +225,14 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
         ))}
       </div>
 
-      {/* Footer CTA — 80% fill on the glass variant, matching the tab list. */}
+      {/* Footer CTA — 80% fill on the glass variant, matching the tab list.
+          Gains an upward shadow while the accordion above still has more
+          content below the fold, so it reads as sitting on top of that
+          hidden content instead of just a static footer. */}
       <div
-        className={`flex flex-col items-center justify-center gap-4 border-t px-6 py-6 xl:flex-row xl:justify-between xl:py-0 xl:h-24 ${
+        className={`relative z-10 flex flex-col items-center justify-center gap-4 border-t px-6 py-6 transition-shadow duration-200 xl:flex-row xl:justify-between xl:py-0 xl:h-24 ${
           glass ? "border-white/20 bg-black/60 backdrop-blur-md" : "border-neutral-300"
-        }`}
+        } ${showBottomShadow ? "shadow-[0_-4px_8px_-2px_rgba(0,0,0,0.15)]" : ""}`}
       >
         <p
           className={`text-center text-base font-semibold xl:w-[200px] xl:text-left ${
@@ -245,18 +278,8 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
   const mobileCard = (
     <div
       data-reveal
-      className={`relative w-full max-w-[640px] overflow-clip rounded-3xl ${
-        glass
-          ? "hero-search isolate"
-          : "bg-white shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)]"
-      }`}
+      className={`relative w-full overflow-clip rounded-t-3xl ${glass ? "hero-search isolate" : "bg-white"}`}
     >
-      {/* Header */}
-      <div className="bg-blue-500 px-6 py-6">
-        <p className="mx-auto w-80 text-center text-2xl font-semibold leading-8 tracking-[-0.48px] text-white">
-          {t("heading")}
-        </p>
-      </div>
       {cardBody}
     </div>
   );
@@ -264,28 +287,8 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
   return (
     <section id="faq-section" className="relative">
       {/* Dev-only switcher between the "solid" (Figma spec) and "glass"
-          panel treatments — not part of the design, just for comparing them
-          live on the page. */}
-      <div className="absolute right-4 top-4 z-20 flex gap-1 rounded-full bg-black/40 p-1 backdrop-blur-md">
-        <button
-          type="button"
-          onClick={() => setVariant("solid")}
-          className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-            !glass ? "bg-white text-neutral-800" : "text-white hover:bg-white/10"
-          }`}
-        >
-          Solid
-        </button>
-        <button
-          type="button"
-          onClick={() => setVariant("glass")}
-          className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-            glass ? "bg-white text-neutral-800" : "text-white hover:bg-white/10"
-          }`}
-        >
-          Glass
-        </button>
-      </div>
+          panel treatments — hidden for now so only "Solid" shows; the
+          setVariant plumbing stays in place to bring it back later. */}
 
       {/* ===== Desktop (>= xl): bg photo + dark overlay behind a floating card,
            fixed 640px section — matches the Figma spec. Heading lives over the
@@ -306,7 +309,7 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
         <div
           aria-hidden
           className="absolute inset-y-0 right-0 w-1/2"
-          style={{ background: "linear-gradient(to left, rgba(0,0,0,0.8), rgba(0,0,0,0))" }}
+          style={{ background: "linear-gradient(to left, rgba(0,0,0,0.6), rgba(0,0,0,0))" }}
         />
 
         {/* One 1280px row, heading column and card as plain flex siblings
@@ -317,9 +320,11 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
             with the card's top and the heading flush with its bottom. */}
         <div className="relative z-10 mx-auto flex w-[1280px] items-stretch justify-between px-8">
           <div className="flex flex-col justify-between py-6">
-            <p className="text-sm font-semibold uppercase leading-[14px] tracking-[2.1px] text-white opacity-75 [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
-              FREQUENLY ASKED QUESTION
-            </p>
+            <div className="flex items-center py-4 xl:w-auto xl:shrink-0">
+              <p className="text-sm font-semibold uppercase leading-[14px] tracking-[2.1px] text-white opacity-75 [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+                FREQUENLY ASKED QUESTION
+              </p>
+            </div>
             <p className="-mt-6 w-[260px] text-[32px] font-semibold leading-9 tracking-[-0.64px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
               {t("heading")}
             </p>
@@ -340,8 +345,54 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
             aria-hidden
             className="h-[480px] w-full object-cover object-[calc(50%+160px)_top]"
           />
+          {/* Eyebrow + heading now live over the photo instead of inside a
+              blue wrapper — left-aligned, matching the desktop treatment.
+              Heading sits 24px above where the card starts overlapping the
+              photo (the card's -mt-[112px] pull-up + this 24px gap). */}
+          <div className="absolute left-4 top-2 flex items-center py-4">
+            <p className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-white opacity-75 [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+              FREQUENLY ASKED QUESTION
+            </p>
+          </div>
+          {/* Darkens behind the heading so the white text stays legible —
+              same gradient treatment as the desktop version, just flipped
+              to fade upward from the bottom edge instead of from the right. */}
+          <div
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-[160px] w-full"
+            style={{ background: "linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0))" }}
+          />
+          {/* Progressive blur on top of the darken layer. `backdrop-filter`
+              can't be given a gradient blur amount directly, so this fakes a
+              smooth 0 -> 8px ramp by stacking several bands, each blurred a
+              little more and masked to a thinner strip near the bottom. */}
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[160px] w-full">
+            <div
+              className="absolute inset-0 backdrop-blur-[1px]"
+              style={{ maskImage: "linear-gradient(to top, black 0%, black 20%, transparent 40%)" }}
+            />
+            <div
+              className="absolute inset-0 backdrop-blur-[2px]"
+              style={{ maskImage: "linear-gradient(to top, black 0%, black 15%, transparent 30%)" }}
+            />
+            <div
+              className="absolute inset-0 backdrop-blur-[4px]"
+              style={{ maskImage: "linear-gradient(to top, black 0%, black 10%, transparent 20%)" }}
+            />
+            <div
+              className="absolute inset-0 backdrop-blur-[6px]"
+              style={{ maskImage: "linear-gradient(to top, black 0%, black 5%, transparent 10%)" }}
+            />
+            <div
+              className="absolute inset-0 backdrop-blur-[8px]"
+              style={{ maskImage: "linear-gradient(to top, black 0%, transparent 5%)" }}
+            />
+          </div>
+          <p className="absolute bottom-12 left-4 right-4 text-2xl font-semibold leading-8 tracking-[-0.48px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+            {t("heading")}
+          </p>
         </div>
-        <div className="relative z-10 -mt-[112px] mx-auto w-full max-w-[560px] px-4 pb-8">{mobileCard}</div>
+        <div className="relative z-10 -mt-6 w-full">{mobileCard}</div>
       </div>
     </section>
   );

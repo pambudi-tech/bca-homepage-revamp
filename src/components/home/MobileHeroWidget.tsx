@@ -150,7 +150,7 @@ const RAIL_H_OPEN = 164;
 // Kurs top padding clears the rail and leaves the same 16px gap in both
 // states — derived from the collapsed rail height (see the geometry note by
 // the padding-top style below), so it moves with `collapsedRailH`.
-const kursPtFor = (collapsedRailH: number) => collapsedRailH - 16;
+const kursPtFor = (collapsedRailH: number) => collapsedRailH - 20;
 // Focusing the search scrolls the widget this far below the viewport top —
 // so the dropdown gets the rest of the screen to open into.
 const SEARCH_TOP_GAP = 24;
@@ -584,7 +584,7 @@ export default function MobileHeroWidget({
              the rest. `-inset-x-2` bleeds the rail to the screen edges. */}
       <div
         ref={railRef}
-        className="hide-scrollbar absolute inset-x-[-8px] top-[120px] z-10 overflow-x-auto overflow-y-clip transition-[height] duration-300 ease-in-out [scrollbar-width:none]"
+        className="hide-scrollbar absolute inset-x-[-8px] top-[116px] z-10 overflow-x-auto overflow-y-clip transition-[height] duration-300 ease-in-out [scrollbar-width:none]"
         style={{ height: loginOpen ? loginPanelH : collapsedRailH }}
       >
         <div className="flex h-full w-max items-start gap-3 px-6">

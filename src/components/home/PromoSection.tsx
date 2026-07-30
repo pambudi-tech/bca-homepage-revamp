@@ -328,7 +328,7 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
           holiday scene. Both sit behind the content at z-0. */}
       {theme === "christmas" ? <ChristmasDecor /> : theme === "cny" ? <CnyDecor /> : <Confetti />}
 
-      <div className="relative z-10 mx-auto w-full max-w-[560px] px-4 xl:w-[1280px] xl:max-w-none xl:px-0">
+      <div className="relative z-10 mx-auto flex w-full max-w-[560px] flex-col gap-10 px-4 xl:w-[1280px] xl:max-w-none xl:gap-10 xl:px-0">
         {/* Heading — stacked on mobile, eyebrow column + h2 side by side on
             desktop. */}
         <div data-reveal-group className="relative flex flex-col xl:flex-row xl:gap-10">
@@ -346,59 +346,64 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
 
         {/* Event slider — center-mode "peek" carousel, sits above the promo
             cards for every layout variant. */}
-        <div data-reveal className="mt-8 xl:mt-10">
+        <div data-reveal>
           <EventSlider />
         </div>
 
-        {/* Cards, mobile — endlessly looping swipe row (full-bleeding out of the
-            padded column), shared by both variants since neither desktop layout
-            fits below xl. No "show more" card here: the CTA button below the
-            row already carries it. */}
-        <div {...(switched ? {} : { "data-reveal": "" })} className="mt-8 xl:hidden">
-          <MobilePromoCarousel promos={promos} now={now} />
-        </div>
+        {/* Promo list/grid — mobile carousel and desktop grid are alternates
+            (only one is ever visible per breakpoint), plus the mobile-only CTA
+            that closes out the row. */}
+        <div>
+          {/* Cards, mobile — endlessly looping swipe row (full-bleeding out of the
+              padded column), shared by both variants since neither desktop layout
+              fits below xl. No "show more" card here: the CTA button below the
+              row already carries it. */}
+          <div {...(switched ? {} : { "data-reveal": "" })} className="xl:hidden">
+            <MobilePromoCarousel promos={promos} now={now} />
+          </div>
 
-        {/* Cards, desktop — wrapping grid. Tighter 60ms stagger: eight
-            cards at the default 90ms would trickle too long. */}
-        <div
-          {...(switched ? {} : { "data-reveal-group": "60" })}
-          className="mt-10 hidden items-start content-center gap-6 xl:flex xl:flex-wrap"
-        >
-          {promos.map((promo) => (
-            <PromoCard key={promo.id} promo={promo} now={now} reveal={!switched} />
-          ))}
-          <MorePromoCard reveal={!switched} />
-        </div>
+          {/* Cards, desktop — wrapping grid. Tighter 60ms stagger: eight
+              cards at the default 90ms would trickle too long. */}
+          <div
+            {...(switched ? {} : { "data-reveal-group": "60" })}
+            className="hidden items-start content-center gap-6 xl:flex xl:flex-wrap"
+          >
+            {promos.map((promo) => (
+              <PromoCard key={promo.id} promo={promo} now={now} reveal={!switched} />
+            ))}
+            <MorePromoCard reveal={!switched} />
+          </div>
 
-        {/* Mobile-only CTA — the desktop surfaces this via the "Show More" card.
-            Styled to match the product section's mobile CTA. */}
-        <a
-          href="https://promo.bca.co.id/"
-          target="_blank"
-          rel="noopener noreferrer"
-          data-reveal
-          className="mx-auto mt-9 flex h-12 w-fit items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f] xl:hidden"
-        >
-          <span className="text-base font-semibold text-neutral-100">
-            Lihat 200+ promo lainnya
-          </span>
-          {/* Drawn as a mask so the shape stays one shared asset and the color
-              comes from the same token as the label. */}
-          <span
-            aria-hidden
-            className="size-5 shrink-0 bg-neutral-100"
-            style={{
-              maskImage: "url(/assets/cycle1/pelajari-icon.svg)",
-              WebkitMaskImage: "url(/assets/cycle1/pelajari-icon.svg)",
-              maskSize: "contain",
-              WebkitMaskSize: "contain",
-              maskRepeat: "no-repeat",
-              WebkitMaskRepeat: "no-repeat",
-              maskPosition: "center",
-              WebkitMaskPosition: "center",
-            }}
-          />
-        </a>
+          {/* Mobile-only CTA — the desktop surfaces this via the "Show More" card.
+              Styled to match the product section's mobile CTA. */}
+          <a
+            href="https://promo.bca.co.id/"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-reveal
+            className="mx-auto mt-9 flex h-12 w-fit items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f] xl:hidden"
+          >
+            <span className="text-base font-semibold text-neutral-100">
+              Lihat 200+ promo lainnya
+            </span>
+            {/* Drawn as a mask so the shape stays one shared asset and the color
+                comes from the same token as the label. */}
+            <span
+              aria-hidden
+              className="size-5 shrink-0 bg-neutral-100"
+              style={{
+                maskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+                WebkitMaskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+                maskSize: "contain",
+                WebkitMaskSize: "contain",
+                maskRepeat: "no-repeat",
+                WebkitMaskRepeat: "no-repeat",
+                maskPosition: "center",
+                WebkitMaskPosition: "center",
+              }}
+            />
+          </a>
+        </div>
       </div>
     </section>
   );

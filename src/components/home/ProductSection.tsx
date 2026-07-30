@@ -321,8 +321,7 @@ function ProductCard({
             // half size); deselecting grows it back in from that half size —
             // one scale drives both, since the CSS transition above already
             // interpolates whichever direction `active` just flipped.
-            transform: `rotate(${glassIcon.rotate ?? 0}deg) scaleX(${
-              (glassIcon.mirrorX ? -1 : 1) *
+            transform: `rotate(${glassIcon.rotate ?? 0}deg) scaleX(${(glassIcon.mirrorX ? -1 : 1) *
               GLASS_ICON_SCALE *
               (glassIcon.scale ?? 1) *
               (isHovered && !active ? 1.1 : 1) *
@@ -1446,7 +1445,7 @@ export default function ProductSection({
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto w-full max-w-[560px] px-4 xl:w-[1280px] xl:max-w-none xl:px-0">
+      <div className="relative z-10 mx-auto flex w-full max-w-[560px] flex-col gap-10 px-4 xl:w-[1280px] xl:max-w-none xl:gap-12 xl:px-0">
         {/* Heading — stacked on mobile. On desktop the curved layout stacks it
             too (vertical alignment, centered on the page); the accordion keeps
             the eyebrow-column + h2 side-by-side row. */}
@@ -1472,7 +1471,7 @@ export default function ProductSection({
           </h2>
         </div>
 
-        <div className={`mt-6 xl:mt-12 ${variant === "curved" ? "flex flex-col" : ""}`}>
+        <div className={variant === "curved" ? "flex flex-col" : ""}>
           {/* Desktop category row — curved layout only. The accordion now shows
               the categories *as* its cards, so its old left-hand list is gone. */}
           {variant === "curved" && (
@@ -1580,80 +1579,80 @@ export default function ProductSection({
                 />
               </div>
             </div>
-
-            {/* Hint + CTA below the category cards, on every breakpoint —
-                the desktop accordion doesn't otherwise show any CTA (the
-                curved-only block below stays hidden for it). */}
-            <div
-              className={`mt-6 flex flex-col items-center gap-5 xl:mt-12 ${entered ? "opacity-100" : "opacity-0"
-                }`}
-              style={{
-                transition: `opacity 700ms ease-out ${entered ? "610ms" : "0ms"}`,
-              }}
-            >
-              <p className="w-[320px] text-center text-base font-semibold text-blue-700 xl:w-auto xl:text-[18px]">
-                {t("mobileCtaHint")}
-              </p>
-              <a
-                href="https://www.bca.co.id/id/individu/layanan/goodplan-bca"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-12 items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f]"
-              >
-                <span className="text-base font-semibold text-neutral-100">{t("ctaLabel")}</span>
-                <span
-                  aria-hidden
-                  className="size-5 shrink-0 bg-neutral-100"
-                  style={{
-                    maskImage: "url(/assets/cycle1/pelajari-icon.svg)",
-                    WebkitMaskImage: "url(/assets/cycle1/pelajari-icon.svg)",
-                    maskSize: "contain",
-                    WebkitMaskSize: "contain",
-                    maskRepeat: "no-repeat",
-                    WebkitMaskRepeat: "no-repeat",
-                    maskPosition: "center",
-                    WebkitMaskPosition: "center",
-                  }}
-                />
-              </a>
-            </div>
-
-            {/* Accordion cards (desktop and mobile) are each already their own
-                link, so this hint + CTA is dropped everywhere except the
-                curved desktop layout. */}
-            <div
-              className={`mt-6 flex-col items-center gap-5 xl:mt-12 ${variant === "curved" ? "hidden xl:flex" : "hidden"
-                } ${entered ? "opacity-100" : "opacity-0"}`}
-              style={{
-                transition: `opacity 700ms ease-out ${entered ? "610ms" : "0ms"}`,
-              }}
-            >
-              <p className="text-center text-base font-semibold text-blue-700 xl:text-xl">
-                {t("ctaHint", { category: category.label })}
-              </p>
-              <button
-                className="flex h-12 items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f]"
-              >
-                <span className="text-base font-semibold text-neutral-100">{t("ctaLabel")}</span>
-                {/* Drawn as a mask so the shape stays one shared asset and the
-                    color comes from the same token as the label. */}
-                <span
-                  aria-hidden
-                  className="size-5 shrink-0 bg-neutral-100"
-                  style={{
-                    maskImage: "url(/assets/cycle1/pelajari-icon.svg)",
-                    WebkitMaskImage: "url(/assets/cycle1/pelajari-icon.svg)",
-                    maskSize: "contain",
-                    WebkitMaskSize: "contain",
-                    maskRepeat: "no-repeat",
-                    WebkitMaskRepeat: "no-repeat",
-                    maskPosition: "center",
-                    WebkitMaskPosition: "center",
-                  }}
-                />
-              </button>
-            </div>
           </div>
+        </div>
+
+        {/* Hint + CTA below the category cards, on every breakpoint —
+            the desktop accordion doesn't otherwise show any CTA (the
+            curved-only block below stays hidden for it). */}
+        <div
+          className={`flex flex-col items-center gap-5 ${entered ? "opacity-100" : "opacity-0"
+            }`}
+          style={{
+            transition: `opacity 700ms ease-out ${entered ? "610ms" : "0ms"}`,
+          }}
+        >
+          <p className="w-[320px] text-center text-base font-semibold text-blue-700 xl:w-auto xl:text-[18px]">
+            {t("mobileCtaHint")}
+          </p>
+          <a
+            href="https://www.bca.co.id/id/individu/layanan/goodplan-bca"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex h-12 items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f]"
+          >
+            <span className="text-base font-semibold text-neutral-100">{t("ctaLabel")}</span>
+            <span
+              aria-hidden
+              className="size-5 shrink-0 bg-neutral-100"
+              style={{
+                maskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+                WebkitMaskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+                maskSize: "contain",
+                WebkitMaskSize: "contain",
+                maskRepeat: "no-repeat",
+                WebkitMaskRepeat: "no-repeat",
+                maskPosition: "center",
+                WebkitMaskPosition: "center",
+              }}
+            />
+          </a>
+        </div>
+
+        {/* Accordion cards (desktop and mobile) are each already their own
+            link, so this hint + CTA is dropped everywhere except the
+            curved desktop layout. */}
+        <div
+          className={`flex-col items-center gap-5 ${variant === "curved" ? "hidden xl:flex" : "hidden"
+            } ${entered ? "opacity-100" : "opacity-0"}`}
+          style={{
+            transition: `opacity 700ms ease-out ${entered ? "610ms" : "0ms"}`,
+          }}
+        >
+          <p className="text-center text-base font-semibold text-blue-700 xl:text-xl">
+            {t("ctaHint", { category: category.label })}
+          </p>
+          <button
+            className="flex h-12 items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f]"
+          >
+            <span className="text-base font-semibold text-neutral-100">{t("ctaLabel")}</span>
+            {/* Drawn as a mask so the shape stays one shared asset and the
+                color comes from the same token as the label. */}
+            <span
+              aria-hidden
+              className="size-5 shrink-0 bg-neutral-100"
+              style={{
+                maskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+                WebkitMaskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+                maskSize: "contain",
+                WebkitMaskSize: "contain",
+                maskRepeat: "no-repeat",
+                WebkitMaskRepeat: "no-repeat",
+                maskPosition: "center",
+                WebkitMaskPosition: "center",
+              }}
+            />
+          </button>
         </div>
       </div>
     </section>

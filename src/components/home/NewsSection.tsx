@@ -12,9 +12,8 @@ function AdditionalInfo({ date, category, muted = false }: { date: string; categ
       <p className={`whitespace-nowrap text-xs font-semibold uppercase tracking-[1.8px] ${textClass}`}>{date}</p>
       <span className={`size-1 shrink-0 rounded-full ${muted ? "bg-neutral-600" : "bg-white"}`} />
       <p
-        className={`overflow-hidden text-ellipsis whitespace-nowrap text-xs font-semibold uppercase tracking-[1.8px] ${
-          muted ? "text-neutral-600" : "text-white"
-        }`}
+        className={`overflow-hidden text-ellipsis whitespace-nowrap text-xs font-semibold uppercase tracking-[1.8px] ${muted ? "text-neutral-600" : "text-white"
+          }`}
       >
         {category}
       </p>
@@ -40,11 +39,10 @@ function CategoryChip({
       ref={chipRef}
       onClick={onSelect}
       aria-pressed={active}
-      className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-sm transition-colors xl:h-14 xl:px-4 xl:text-base ${
-        active
-          ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500"
-          : "border-neutral-300 bg-white font-semibold text-neutral-700 hover:bg-blue-100"
-      }`}
+      className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-sm transition-colors xl:h-14 xl:px-4 xl:text-base ${active
+        ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500"
+        : "border-neutral-300 bg-white font-semibold text-neutral-700 hover:bg-blue-100"
+        }`}
     >
       {label}
     </button>
@@ -225,10 +223,10 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
         />
       </div>
 
-      <div className="relative z-10 mx-auto w-full max-w-[560px] px-4 xl:w-[1280px] xl:max-w-none xl:px-0">
+      <div className="relative z-10 mx-auto flex w-full max-w-[560px] flex-col gap-6 px-4 xl:w-[1280px] xl:max-w-none xl:gap-8 xl:px-0">
         {/* Heading — eyebrow stacked above the h2, both mobile and desktop. */}
         <div data-reveal-group className="flex flex-col xl:gap-3">
-          <div className="flex items-center py-4 xl:py-0">
+          <div className="flex items-center py-4 xl:shrink-0 xl:w-60">
             <p data-reveal className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px]">
               {t("eyebrow")}
             </p>
@@ -238,29 +236,33 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
           </h2>
         </div>
 
-        {/* Mobile category chips — horizontal scroller, full-bleeding out of the
-            padded column. Revealed as one row (the container, not each chip) so
-            the chips' own transition-colors utilities are never overridden. */}
-        <div
-          ref={chipListRef}
-          data-reveal
-          className="hide-scrollbar -mx-4 mt-6 flex gap-3 overflow-x-auto px-4 [scrollbar-width:none] xl:hidden"
-        >
-          {categories.map((cat) => (
-            <CategoryChip
-              key={cat.key}
-              chipRef={(el) => {
-                if (el) chipRefs.current.set(cat.key, el);
-                else chipRefs.current.delete(cat.key);
-              }}
-              label={cat.label}
-              active={cat.key === active.key}
-              onSelect={() => selectCategory(cat.key)}
-            />
-          ))}
-        </div>
+        {/* Chip group — mobile row (own horizontal scroller) and the desktop
+            row (with "Lihat Lebih Banyak" pinned to its right edge) are
+            alternates by breakpoint, never both visible at once. */}
+        <div data-reveal-group>
+          {/* Mobile category chips — horizontal scroller, full-bleeding out of
+              the padded column. Revealed as one row (the container, not each
+              chip) so the chips' own transition-colors utilities are never
+              overridden. */}
+          <div
+            ref={chipListRef}
+            data-reveal
+            className="hide-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4 [scrollbar-width:none] xl:hidden"
+          >
+            {categories.map((cat) => (
+              <CategoryChip
+                key={cat.key}
+                chipRef={(el) => {
+                  if (el) chipRefs.current.set(cat.key, el);
+                  else chipRefs.current.delete(cat.key);
+                }}
+                label={cat.label}
+                active={cat.key === active.key}
+                onSelect={() => selectCategory(cat.key)}
+              />
+            ))}
+          </div>
 
-        <div data-reveal-group className="mt-6 xl:mt-10">
           {/* Desktop-only chip row — categories laid out horizontally with
               "Lihat Lebih Banyak" pinned to the right edge of the same row.
               Mobile surfaces the categories as the chip row above instead. */}
@@ -285,7 +287,12 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
               <img loading="lazy" decoding="async" src="/assets/navbar/icon-arrow-blue.svg" alt="" className="size-5" />
             </a>
           </div>
+        </div>
 
+        {/* List/grid group — mobile highlight+carousel and the desktop 3-column
+            grid are alternates by breakpoint, plus the mobile-only CTA that
+            closes out the section. */}
+        <div>
           {/* Mobile — highlight card above a horizontal carousel of 3 cards. */}
           <div ref={mobileContentRef} className="xl:hidden">
             <HighlightArticle article={active.highlight} />
@@ -304,7 +311,7 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
 
           {/* Desktop — 3-column grid: highlight card, then two columns of 3
               stacked cards each (7 cards total). */}
-          <div ref={desktopContentRef} className="hidden xl:mt-8 xl:grid xl:grid-cols-3 xl:gap-4">
+          <div ref={desktopContentRef} className="hidden xl:grid xl:grid-cols-3 xl:gap-4">
             <HighlightArticle article={active.highlight} />
             <div className="flex flex-col gap-4">
               {active.articles.slice(0, 3).map((article, i) => (
@@ -317,33 +324,33 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
               ))}
             </div>
           </div>
-        </div>
 
-        {/* Mobile-only CTA — desktop surfaces this via the sidebar's "seeMore"
-            link. Styled to match the promo section's mobile CTA. */}
-        <a
-          data-reveal
-          href={`https://www.bca.co.id/id/informasi/${active.key}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mx-auto mt-9 flex h-12 w-fit items-center justify-center gap-1 rounded-full border border-blue-500 bg-neutral-100 px-6 transition-colors duration-200 xl:hidden"
-        >
-          <span className="text-base font-semibold text-blue-500">{t("seeMore")}</span>
-          <span
-            aria-hidden
-            className="size-5 shrink-0 bg-blue-500"
-            style={{
-              maskImage: "url(/assets/cycle1/pelajari-icon.svg)",
-              WebkitMaskImage: "url(/assets/cycle1/pelajari-icon.svg)",
-              maskSize: "contain",
-              WebkitMaskSize: "contain",
-              maskRepeat: "no-repeat",
-              WebkitMaskRepeat: "no-repeat",
-              maskPosition: "center",
-              WebkitMaskPosition: "center",
-            }}
-          />
-        </a>
+          {/* Mobile-only CTA — desktop surfaces this via the sidebar's "seeMore"
+              link. Styled to match the promo section's mobile CTA. */}
+          <a
+            data-reveal
+            href={`https://www.bca.co.id/id/informasi/${active.key}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mx-auto mt-9 flex h-12 w-fit items-center justify-center gap-1 rounded-full border border-blue-500 bg-neutral-100 px-6 transition-colors duration-200 xl:hidden"
+          >
+            <span className="text-base font-semibold text-blue-500">{t("seeMore")}</span>
+            <span
+              aria-hidden
+              className="size-5 shrink-0 bg-blue-500"
+              style={{
+                maskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+                WebkitMaskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+                maskSize: "contain",
+                WebkitMaskSize: "contain",
+                maskRepeat: "no-repeat",
+                WebkitMaskRepeat: "no-repeat",
+                maskPosition: "center",
+                WebkitMaskPosition: "center",
+              }}
+            />
+          </a>
+        </div>
       </div>
     </section>
   );
