@@ -134,32 +134,41 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     ]),
   },
   {
-    key: "Investasi",
-    label: "Investasi",
+    key: "Wealth Management",
+    label: "Wealth Management",
     image: SAMPLE_CATEGORY_PHOTOS[4],
-    description: "Kembangkan dana lewat beragam instrumen",
+    description: "Investasi dan proteksi untuk masa depan finansial Anda",
+    // Matches bca.co.id/id/individu/produk/investasi-dan-asuransi: 4 named
+    // investment products, then "Asuransi" as a single link out to the
+    // bancassurance page — not a list of named insurance products.
     products: withFeaturedDefaults([
       { title: "Reksa Dana", subtitle: "Investasi terjangkau untuk rencana masa depanmu", ...EVERYDAY },
       { title: "Obligasi", subtitle: "Berbagai macam pilihan obligasi dari BCA", ...MASTERCARD },
-      { title: "Rekening Dana Nasabah (RDN)", subtitle: "Rekening dana untuk transaksi investasi lebih aman", ...AMEX },
-      { title: "Rekening Dana Lender (RDL) BCA", subtitle: "Fasilitas rekening untuk transaksi pendanaan P2P lending", ...EVERYDAY },
+      { title: "Asuransi", subtitle: "Cari tahu tentang Asuransi", ...AMEX },
+      { title: "Rekening Dana Nasabah (RDN)", subtitle: "Rekening dana untuk transaksi investasi lebih aman", ...EVERYDAY },
+      { title: "Rekening Dana Lender (RDL) BCA", subtitle: "Fasilitas rekening untuk transaksi pendanaan P2P lending", ...MASTERCARD },
     ]),
   },
   {
-    key: "Asuransi",
-    label: "Asuransi",
-    image: SAMPLE_CATEGORY_PHOTOS[5],
-    description: "Proteksi menyeluruh untuk Anda dan keluarga",
+    key: "Transaksi",
+    label: "Transaksi",
+    image: SAMPLE_CATEGORY_PHOTOS[0],
+    description: "Bayar, transfer, dan kirim uang lebih praktis",
     products: withFeaturedDefaults([
-      { title: "Asuransi Jiwa", subtitle: "Proteksi jiwa dengan premi terjangkau", ...EVERYDAY },
-      { title: "Asuransi Kesehatan", subtitle: "Perlindungan biaya rumah sakit lebih tenang", ...MASTERCARD },
-      { title: "Asuransi Kendaraan", subtitle: "Proteksi kendaraan dari risiko tak terduga", ...AMEX },
-      { title: "Asuransi Harta Benda", subtitle: "Proteksi untuk rumah dan aset berharga Anda", ...EVERYDAY },
-      { title: "Asuransi Kecelakaan Diri", subtitle: "Perlindungan finansial akibat risiko kecelakaan", ...MASTERCARD },
-      { title: "Asuransi Pendidikan", subtitle: "Persiapkan masa depan pendidikan anak lebih terjamin", ...AMEX },
-      { title: "Asuransi Pensiun & Anuitas", subtitle: "Rencanakan masa pensiun dengan penghasilan tetap", ...EVERYDAY },
-      { title: "Asuransi Perjalanan", subtitle: "Perlindungan menyeluruh selama perjalanan Anda", ...MASTERCARD },
-      { title: "Asuransi Warisan", subtitle: "Wariskan perlindungan finansial untuk keluarga tercinta", ...AMEX },
+      { title: "Flazz", subtitle: "Kartu prabayar untuk transaksi cepat sehari-hari", ...SIMPANAN_3 },
+      { title: "Firecash", subtitle: "Setor tarik tunai tanpa kartu di jaringan mitra", ...SIMPANAN_2 },
+      { title: "Remittance", subtitle: "Kirim dan terima uang dari luar negeri", ...SIMPANAN_1 },
     ]),
+  },
+  {
+    // A single loyalty-points program (bca.co.id/id/individu/produk/reward-bca),
+    // not a catalog of named products — no `products` to list, so this
+    // category card renders but never gets the mega menu's expand chevron
+    // (see `Navbar.tsx`, where chevron is derived from `products.length`).
+    key: "Reward BCA",
+    label: "Reward BCA",
+    image: "/assets/category/kartu-kredit.webp",
+    description: "Kumpulkan dan tukar poin dari setiap transaksi",
+    products: [],
   },
 ];

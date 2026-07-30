@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { MEGAMENU_STRUCTURE, type MegaMenuCategory } from "./megamenu-data";
 import type { ProductCategory } from "./product-data";
+import type { MegaMenuContent } from "@/lib/megamenu";
 
 type MegaMenuText = {
   label: string;
@@ -16,8 +17,13 @@ type MegaMenuText = {
     has a category matching the key, its featured products replace the
     hardcoded translation list — the panel hugs however many featured
     products that category has (falling back to all of them if none are
-    flagged) instead of a fixed count. */
-export function useMegaMenu(productCategories?: ProductCategory[]): MegaMenuCategory[] {
+    flagged) instead of a fixed count. Same for `megamenuContent` (from
+    Supabase via `getMegaMenuContent`): its links/editorial replace the
+    hardcoded translation whenever that category has rows. */
+export function useMegaMenu(
+  productCategories?: ProductCategory[],
+  megamenuContent?: MegaMenuContent,
+): MegaMenuCategory[] {
   const t = useTranslations("megamenu");
   const tSearch = useTranslations("search");
 
@@ -27,11 +33,12 @@ export function useMegaMenu(productCategories?: ProductCategory[]): MegaMenuCate
     const liveProducts = liveCategory
       ? liveCategory.products.filter((p) => p.featured)
       : [];
+    const liveLinks = megamenuContent?.linksByKey[structure.key];
+    const liveEditorial = megamenuContent?.editorialByKey[structure.key];
     return {
       key: structure.key,
       label: text.label,
       width: structure.width,
-      chevron: structure.chevron,
       // The translation-based lists already end with their own "Lihat Semua
       // X" row; the live Supabase list doesn't have one, so it's appended
       // here to match.
@@ -42,10 +49,10 @@ export function useMegaMenu(productCategories?: ProductCategory[]): MegaMenuCate
           ]
         : text.products,
       ctaLabel: text.ctaLabel,
-      links: text.links,
-      editorial: {
+      links: liveLinks?.length ? liveLinks : text.links,
+      editorial: liveEditorial ?? {
         title: text.editorialTitle,
-        image: structure.image,
+        image: liveCategory?.image || structure.image,
       },
     };
   });

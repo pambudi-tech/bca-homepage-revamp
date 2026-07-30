@@ -10,6 +10,7 @@ import MobileNav from "./MobileNav";
 import { onPreloaderDone } from "@/components/Preloader";
 import { HALO_BCA_OPEN_EVENT, HelpIcon } from "./HaloBcaChat";
 import type { ProductCategory } from "./product-data";
+import type { MegaMenuContent } from "@/lib/megamenu";
 
 /* How long the panel stays mounted after the pointer leaves, and how long the
    outgoing panel lingers when switching tabs. Both mirror globals.css. */
@@ -204,12 +205,16 @@ function IconLinkButton({
 
 export default function Navbar({
   productCategories,
+  megamenuContent,
   variant = "default",
 }: {
   /** Live product lists from Supabase (see `getProductCategories`), keyed the
       same as `MEGAMENU_STRUCTURE` — merged in so the mega menu shows every
       product per category instead of a hardcoded handful. */
   productCategories?: ProductCategory[];
+  /** Live article/video links + editorial card from Supabase (see
+      `getMegaMenuContent`), keyed the same as `MEGAMENU_STRUCTURE`. */
+  megamenuContent?: MegaMenuContent;
   /** "about" is the segment-agnostic Tentang BCA shell: the segment pill
       goes inert (no dropdown) and the tab row shows the About-section
       links instead of the product mega menu. Panels never mount for those
@@ -222,22 +227,44 @@ export default function Navbar({
   const tNav = useTranslations("nav");
   const tLang = useTranslations("languages");
   const SEGMENTS = Object.keys(tNav.raw("segments")) as string[];
-  const MEGAMENU = useMegaMenu(productCategories);
+  const MEGAMENU = useMegaMenu(productCategories, megamenuContent);
   const ABOUT_TABS = (Object.keys(tNav.raw("aboutTabs")) as string[]).map((key) => ({
     key,
     label: tNav(`aboutTabs.${key}`),
     width: undefined as number | undefined,
     chevron: false,
+    onClick: undefined as (() => void) | undefined,
   }));
+  // Categories that exist in Supabase's `product_categories` but aren't
+  // curated into MEGAMENU_STRUCTURE (no editorial/links copy written for
+  // them yet) — e.g. "Reward BCA", a single loyalty program with no
+  // products of its own. They still get a tab, just without an expand
+  // chevron or panel, driven entirely by whether they actually have any
+  // products — no per-category hardcoding.
+  const extraCategories = (productCategories ?? []).filter(
+    (c) => !MEGAMENU.some((menu) => menu.key === c.key)
+  );
   const NAV_TABS =
     variant === "about"
       ? ABOUT_TABS
-      : MEGAMENU.map((menu) => ({
-          key: menu.key,
-          label: menu.label,
-          width: menu.width,
-          chevron: menu.chevron ?? true,
-        }));
+      : [
+          // Every entry in MEGAMENU opens a panel, so its tab always gets the
+          // expand chevron — no per-category override needed.
+          ...MEGAMENU.map((menu) => ({
+            key: menu.key,
+            label: menu.label,
+            width: menu.width,
+            chevron: true,
+            onClick: undefined as (() => void) | undefined,
+          })),
+          ...extraCategories.map((c) => ({
+            key: c.key,
+            label: c.label,
+            width: undefined as number | undefined,
+            chevron: c.products.length > 0,
+            onClick: undefined as (() => void) | undefined,
+          })),
+        ];
   const otherLocales = routing.locales.filter((l) => l !== locale);
 
   const switchLocale = (nextLocale: AppLocale) => {
@@ -431,7 +458,12 @@ export default function Navbar({
   return (
     <>
       {/* Mobile navigation (logo + search + burger) — below the xl breakpoint. */}
-      <MobileNav scrolled={scrolled} hidden={navHidden} />
+      <MobileNav
+        scrolled={scrolled}
+        hidden={navHidden}
+        productCategories={productCategories}
+        megamenuContent={megamenuContent}
+      />
 
       {/* Desktop navigation — hidden on mobile/tablet. `xl:contents` keeps the
           two fixed children positioning against the viewport. */}
@@ -623,7 +655,10 @@ export default function Navbar({
                             setOpenMenu(tab.key);
                           }}
                         >
-                          <button className="flex min-h-0 flex-1 items-center justify-center gap-1 px-4 pt-1">
+                          <button
+                            className="flex min-h-0 flex-1 items-center justify-center gap-1 px-4 pt-1"
+                            onClick={tab.onClick}
+                          >
                             <span
                               className={`whitespace-nowrap text-sm leading-[14px] ${isOpen
                                   ? "font-bold text-blue-500"

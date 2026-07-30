@@ -120,30 +120,31 @@ export async function getProductCategories(locale: AppLocale): Promise<ProductSe
     }
     const rows = data as CategoryRow[];
 
-    // A category with no cards would render an empty row, so drop it here
-    // rather than letting it reach the carousel.
-    const categories = rows
-      .filter((r) => r.products?.length)
-      .map((r) => ({
-        key: r.key,
-        label: pick(locale, r.label, r.label_en, r.label_zh),
-        image: r.image ?? undefined,
-        description: r.description
-          ? pick(locale, r.description, r.description_en, r.description_zh)
-          : undefined,
-        products: r.products.map((p) => ({
-          title: pick(locale, p.title, p.title_en, p.title_zh),
-          subtitle: pick(locale, p.subtitle, p.subtitle_en, p.subtitle_zh),
-          image: p.image,
-          featured: p.is_featured,
-        })),
-      }));
+    // A category with zero products still renders fine — the accordion card
+    // shows the category itself (label/image/description), not a per-product
+    // list (that's only used by the unshipped "curved" variant) — so a
+    // category like "Reward BCA" (a single loyalty program, not a product
+    // catalog) stays visible instead of being dropped.
+    const categories = rows.map((r) => ({
+      key: r.key,
+      label: pick(locale, r.label, r.label_en, r.label_zh),
+      image: r.image ?? undefined,
+      description: r.description
+        ? pick(locale, r.description, r.description_en, r.description_zh)
+        : undefined,
+      products: (r.products ?? []).map((p) => ({
+        title: pick(locale, p.title, p.title_en, p.title_zh),
+        subtitle: pick(locale, p.subtitle, p.subtitle_en, p.subtitle_zh),
+        image: p.image,
+        featured: p.is_featured,
+      })),
+    }));
     if (!categories.length) {
-      console.error("[products] no usable rows after filtering, using bundled fallback");
+      console.error("[products] no usable rows, using bundled fallback");
       return fallback();
     }
 
-    const flagged = rows.find((r) => r.is_default && r.products?.length);
+    const flagged = rows.find((r) => r.is_default);
     return {
       categories,
       defaultKey: flagged?.key ?? categories[0].key,

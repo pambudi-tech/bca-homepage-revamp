@@ -117,7 +117,8 @@
     "eyebrow": "Products & Services",
     "heading": "BCA Solutions for Every Financial Goal",
     "ctaHint": "Find the right {category} for you",
-    "ctaLabel": "Get Started"
+    "ctaLabel": "Get Started",
+    "mobileCtaHint": "Find the right product & service for you"
   },
   "promo": {
     "eyebrow": "Events & Programs",
@@ -372,16 +373,16 @@
       ],
       "editorialTitle": "Pay with QRIS on myBCA, Get up to 50% Off at Selected Merchants"
     },
-    "Investasi": {
-      "label": "Investments",
+    "Wealth Management": {
+      "label": "Wealth Management",
       "products": [
         "Mutual Funds",
         "Bonds",
-        "Government Securities",
-        "Customer Fund Account",
-        "View All Investments"
+        "Insurance",
+        "Customer Fund Account (RDN)",
+        "View All Wealth Management"
       ],
-      "ctaLabel": "Calculate Investment Potential",
+      "ctaLabel": "Calculate Investment & Protection Potential",
       "links": [
         {
           "label": "A guide to choosing investments that match your risk profile",
@@ -391,37 +392,13 @@
           "label": "How to buy Mutual Funds via myBCA"
         },
         {
-          "label": "What's the difference between Mutual Funds, Bonds, and Government Securities?"
-        },
-        {
-          "label": "What's the minimum investment amount at BCA?"
-        }
-      ],
-      "editorialTitle": "Buy Government Bonds Now, Enjoy Special Returns Higher Than a Time Deposit"
-    },
-    "Asuransi": {
-      "label": "Insurance",
-      "products": [
-        "Life Insurance",
-        "Health Insurance",
-        "Property Insurance",
-        "Vehicle Insurance",
-        "View All Insurance"
-      ],
-      "ctaLabel": "Calculate Estimated Premium",
-      "links": [
-        {
-          "label": "What's the difference between life and health insurance?",
-          "type": "video"
-        },
-        {
           "label": "Choosing the right insurance for your family"
         },
         {
           "label": "What's the difference between life and health insurance?"
         }
       ],
-      "editorialTitle": "Get 20% Off Your Premium for First-Year Enrollment"
+      "editorialTitle": "Investment and protection in one app, starting from Rp10,000"
     },
     "Transaksi": {
       "label": "Transactions",

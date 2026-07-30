@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import MobileMenu from "./MobileMenu";
 import { LocationIcon } from "./Navbar";
+import type { ProductCategory } from "./product-data";
+import type { MegaMenuContent } from "@/lib/megamenu";
 
 // Broadcast so unrelated fixed-position UI (HaloBcaChat's floating button)
 // can hide itself while the mobile menu overlay covers the viewport, without
@@ -19,9 +21,13 @@ export const MOBILE_MENU_EVENT = "bca:mobile-menu-open";
 export default function MobileNav({
   scrolled,
   hidden,
+  productCategories,
+  megamenuContent,
 }: {
   scrolled: boolean;
   hidden: boolean;
+  productCategories?: ProductCategory[];
+  megamenuContent?: MegaMenuContent;
 }) {
   const t = useTranslations("mobileMenu");
   const tNav = useTranslations("nav");
@@ -68,7 +74,12 @@ export default function MobileNav({
       </div>
     </nav>
 
-    <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+    <MobileMenu
+      open={menuOpen}
+      onClose={() => setMenuOpen(false)}
+      productCategories={productCategories}
+      megamenuContent={megamenuContent}
+    />
     </>
   );
 }

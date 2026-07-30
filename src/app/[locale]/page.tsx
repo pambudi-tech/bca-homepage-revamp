@@ -17,6 +17,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { getKursHariIni } from "@/lib/kurs";
 import { getBanners } from "@/lib/banners";
 import { getProductCategories } from "@/lib/products";
+import { getMegaMenuContent } from "@/lib/megamenu";
 import { getPromos } from "@/lib/promos";
 import { getNewsCategories } from "@/lib/news";
 import type { AppLocale } from "@/i18n/routing";
@@ -32,10 +33,11 @@ export default async function Home({
   // One `now` for the whole render so promo badges and their countdown text
   // can't disagree by a few milliseconds.
   const now = new Date();
-  const [kurs, banners, produk, promos, news] = await Promise.all([
+  const [kurs, banners, produk, megamenu, promos, news] = await Promise.all([
     getKursHariIni(),
     getBanners(locale as AppLocale),
     getProductCategories(locale as AppLocale),
+    getMegaMenuContent(locale as AppLocale),
     getPromos(now),
     getNewsCategories(),
   ]);
@@ -44,7 +46,7 @@ export default async function Home({
     <main id="main-content" className="flex flex-1 flex-col overflow-x-clip bg-blue-100">
       {/* 1. KONTEN UTAMA: z-10 dan background solid untuk "menutupi" footer saat di atas */}
       <div className="relative z-10 bg-blue-100">
-        <Navbar productCategories={produk.categories} />
+        <Navbar productCategories={produk.categories} megamenuContent={megamenu} />
         {/* .pre-stage — held invisible by the intro preloader, fades up as
             its curtain lifts (see the preloader rules in globals.css). */}
         <div className="pre-stage">

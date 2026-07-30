@@ -117,7 +117,8 @@
     "eyebrow": "Produk & Layanan",
     "heading": "Solusi BCA untuk Setiap Tujuan Keuangan Anda",
     "ctaHint": "Temukan {category} yang tepat untuk Anda",
-    "ctaLabel": "Mulai Sekarang"
+    "ctaLabel": "Mulai Sekarang",
+    "mobileCtaHint": "Temukan produk & layanan yang tepat untuk Anda"
   },
   "promo": {
     "eyebrow": "Event & Program",
@@ -372,16 +373,16 @@
       ],
       "editorialTitle": "Belanja Pakai QRIS di myBCA Banking, Dapatkan Diskon Hingga 50% di Merchant Pilihan"
     },
-    "Investasi": {
-      "label": "Investasi",
+    "Wealth Management": {
+      "label": "Wealth Management",
       "products": [
         "Reksa Dana",
         "Obligasi",
-        "Surat Berharga Negara",
-        "Rekening Dana Nasabah",
-        "Lihat Semua Investasi"
+        "Asuransi",
+        "Rekening Dana Nasabah (RDN)",
+        "Lihat Semua Wealth Management"
       ],
-      "ctaLabel": "Hitung Potensi Investasi",
+      "ctaLabel": "Hitung Potensi Investasi & Proteksi",
       "links": [
         {
           "label": "Panduan memilih produk investasi sesuai profil risiko",
@@ -391,37 +392,13 @@
           "label": "Cara beli Reksa Dana lewat myBCA"
         },
         {
-          "label": "Apa perbedaan Reksa Dana, Obligasi, dan SBN?"
-        },
-        {
-          "label": "Berapa minimal investasi di BCA?"
-        }
-      ],
-      "editorialTitle": "Beli SBN dan Obligasi Sekarang, Nikmati Imbal Hasil Spesial Lebih Tinggi dari Deposito"
-    },
-    "Asuransi": {
-      "label": "Asuransi",
-      "products": [
-        "Asuransi Jiwa",
-        "Asuransi Kesehatan",
-        "Asuransi Properti",
-        "Asuransi Kendaraan",
-        "Lihat Semua Asuransi"
-      ],
-      "ctaLabel": "Hitung Estimasi Premi Asuransi",
-      "links": [
-        {
-          "label": "Apa perbedaan asuransi jiwa dan asuransi kesehatan?",
-          "type": "video"
-        },
-        {
           "label": "Memilih asuransi yang tepat untuk keluargamu"
         },
         {
           "label": "Apa perbedaan asuransi jiwa dan asuransi kesehatan?"
         }
       ],
-      "editorialTitle": "Dapatkan Diskon Premi 20% untuk Pendaftaran Tahun Pertama"
+      "editorialTitle": "Investasi dan Proteksi dalam Satu Genggaman, Mulai dari Rp10 Ribu"
     },
     "Transaksi": {
       "label": "Transaksi",

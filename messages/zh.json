@@ -117,7 +117,8 @@
     "eyebrow": "产品与服务",
     "heading": "为您的每一个财务目标提供BCA解决方案",
     "ctaHint": "为您找到合适的{category}",
-    "ctaLabel": "立即开始"
+    "ctaLabel": "立即开始",
+    "mobileCtaHint": "为您找到合适的产品与服务"
   },
   "promo": {
     "eyebrow": "活动与项目",
@@ -372,16 +373,16 @@
       ],
       "editorialTitle": "在myBCA使用QRIS消费，指定商户享最高50%折扣"
     },
-    "Investasi": {
-      "label": "投资",
+    "Wealth Management": {
+      "label": "财富管理",
       "products": [
         "共同基金",
         "债券",
-        "政府证券",
-        "客户资金账户",
-        "查看全部投资产品"
+        "保险",
+        "客户资金账户 (RDN)",
+        "查看全部财富管理产品"
       ],
-      "ctaLabel": "计算投资潜力",
+      "ctaLabel": "计算投资与保障潜力",
       "links": [
         {
           "label": "根据风险偏好选择投资产品指南",
@@ -391,37 +392,13 @@
           "label": "如何通过myBCA购买共同基金"
         },
         {
-          "label": "共同基金、债券与政府证券有什么区别？"
-        },
-        {
-          "label": "在BCA的最低投资金额是多少？"
-        }
-      ],
-      "editorialTitle": "现在购买政府债券，享受高于定期存款的特别收益"
-    },
-    "Asuransi": {
-      "label": "保险",
-      "products": [
-        "人寿保险",
-        "健康保险",
-        "财产保险",
-        "车辆保险",
-        "查看全部保险产品"
-      ],
-      "ctaLabel": "计算预估保费",
-      "links": [
-        {
-          "label": "人寿保险与健康保险有什么区别？",
-          "type": "video"
-        },
-        {
           "label": "为家人选择合适的保险"
         },
         {
           "label": "人寿保险与健康保险有什么区别？"
         }
       ],
-      "editorialTitle": "首年投保享保费20%折扣"
+      "editorialTitle": "投资与保障一站式服务，最低1万印尼盾起"
     },
     "Transaksi": {
       "label": "交易",

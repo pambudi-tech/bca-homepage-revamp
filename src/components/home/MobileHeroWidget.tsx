@@ -140,12 +140,12 @@ type QuickAction = {
 // snap instead of animate.
 const RAIL_PADDING_X = 48;
 const LOGIN_CARD_WIDTH_COLLAPSED = 160;
-// Collapsed rail 64px (icon + title sit side by side, no subtitle); opened
-// login card is 28 (padding) + 24 (header) + 12 (gap) + 100 (login tiles) =
-// 164px. That's only the starting guess — the tile labels wrap on narrow
-// screens, so the real open height is measured and the rail and the kurs bar
-// below it follow it.
-const RAIL_H = 64;
+// Collapsed rail 80px (cards show title only, no subtitle); opened login card
+// is 28 (padding) + 24 (header) + 12 (gap) + 100 (login tiles) = 164px.
+// That's only the starting guess — the tile labels wrap on narrow screens, so
+// the real open height is measured and the rail and the kurs bar below it
+// follow it.
+const RAIL_H = 80;
 const RAIL_H_OPEN = 164;
 // Kurs top padding clears the rail and leaves the same 16px gap in both
 // states — derived from the collapsed rail height (see the geometry note by
@@ -197,7 +197,7 @@ function QuickActionCard({
   widthPx?: number;
 }) {
   const className =
-    "flex h-16 w-40 shrink-0 items-center gap-3 rounded-xl border border-neutral-300 bg-white p-[14px] text-left transition-[background-color,transform] duration-200 active:scale-95 active:bg-cyan-100";
+    "flex h-20 w-40 shrink-0 flex-col items-start justify-center gap-2 rounded-xl border border-neutral-300 bg-white p-[14px] text-left transition-[background-color,transform] duration-200 active:scale-95 active:bg-cyan-100";
   const style = widthPx ? { width: widthPx } : undefined;
   if (action.href) {
     return (
@@ -614,7 +614,7 @@ export default function MobileHeroWidget({
                   onClick={toggleLogin}
                   aria-expanded={loginOpen}
                   inert={loginOpen}
-                  className={`absolute inset-y-0 left-0 flex w-full items-center gap-3 p-[14px] text-left transition-opacity duration-200 ${loginOpen ? "pointer-events-none opacity-0" : "opacity-100 delay-100"
+                  className={`absolute inset-y-0 left-0 flex w-full flex-col items-start justify-center gap-2 p-[14px] text-left transition-opacity duration-200 ${loginOpen ? "pointer-events-none opacity-0" : "opacity-100 delay-100"
                     }`}
                 >
                   <img src={action.icon} alt="" className="size-6" />

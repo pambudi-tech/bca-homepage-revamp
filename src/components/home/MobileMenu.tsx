@@ -7,6 +7,8 @@ import { useMegaMenu } from "./use-megamenu";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { routing, type AppLocale } from "@/i18n/routing";
 import type { MegaMenuCategory } from "./megamenu-data";
+import type { ProductCategory } from "./product-data";
+import type { MegaMenuContent } from "@/lib/megamenu";
 import { useScrollLock } from "@/components/SmoothScroll";
 
 const LOCALE_META: Record<AppLocale, { flag: string }> = {
@@ -54,18 +56,43 @@ type View = { type: "main" } | { type: "segment" } | { type: "detail"; key: stri
 type Dir = "fwd" | "back";
 const viewKey = (v: View) => (v.type === "detail" ? `detail:${v.key}` : v.type);
 
-export default function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
+export default function MobileMenu({
+  open,
+  onClose,
+  productCategories,
+  megamenuContent,
+}: {
+  open: boolean;
+  onClose: () => void;
+  /** Same live Supabase data the desktop nav gets (see `Navbar.tsx`) —
+      without it, categories not curated into MEGAMENU_STRUCTURE (e.g.
+      "Reward BCA") wouldn't show up here at all. */
+  productCategories?: ProductCategory[];
+  megamenuContent?: MegaMenuContent;
+}) {
   const locale = useLocale() as AppLocale;
   const router = useRouter();
   const pathname = usePathname();
   const tNav = useTranslations("nav");
   const tMobile = useTranslations("mobileMenu");
   const tLang = useTranslations("languages");
-  const MEGAMENU = useMegaMenu();
+  const MEGAMENU = useMegaMenu(productCategories, megamenuContent);
   const SEGMENTS = Object.keys(tNav.raw("segments")) as string[];
+  // Categories in Supabase's `product_categories` that aren't curated into
+  // MEGAMENU_STRUCTURE — same rule as the desktop nav: no products means no
+  // detail view to expand into.
+  const extraCategories = (productCategories ?? []).filter(
+    (c) => !MEGAMENU.some((menu) => menu.key === c.key)
+  );
   const MENU_ITEMS = [
-    ...MEGAMENU.map((c) => ({ key: c.key, label: c.label, expandable: true })),
-    { key: "Promo", label: tNav("promo"), expandable: false },
+    ...MEGAMENU.map((c) => ({ key: c.key, label: c.label, expandable: true, href: undefined as string | undefined })),
+    { key: "Promo", label: tNav("promo"), expandable: false, href: undefined as string | undefined },
+    ...extraCategories.map((c) => ({
+      key: c.key,
+      label: c.label,
+      expandable: false,
+      href: undefined as string | undefined,
+    })),
   ];
   const otherLocales = routing.locales.filter((l) => l !== locale);
   const switchLocale = (nextLocale: AppLocale) => {
@@ -289,7 +316,7 @@ function MainView({
   onOpenDetail,
   onLeaf,
 }: {
-  menuItems: { key: string; label: string; expandable: boolean }[];
+  menuItems: { key: string; label: string; expandable: boolean; href?: string }[];
   tNav: (key: string) => string;
   tMobile: (key: string) => string;
   tLang: (key: string) => string;
@@ -332,7 +359,11 @@ function MainView({
         {menuItems.map((item) => (
           <button
             key={item.key}
-            onClick={() => (item.expandable ? onOpenDetail(item.key) : onLeaf())}
+            onClick={() => {
+              if (item.expandable) return onOpenDetail(item.key);
+              if (item.href) window.open(item.href, "_blank", "noopener,noreferrer");
+              onLeaf();
+            }}
             className="flex items-center justify-between px-1 py-5 text-left transition-opacity active:opacity-60"
           >
             <span className="text-base font-semibold leading-6 text-white">{item.label}</span>

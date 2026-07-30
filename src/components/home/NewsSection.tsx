@@ -112,7 +112,7 @@ function ArticleItem({ article }: { article: NewsArticle }) {
       <div className="flex min-w-0 flex-1 flex-col justify-between px-5 pb-5 pt-4 xl:h-full">
         <p
           title={article.title}
-          className="line-clamp-3 w-full text-base font-semibold leading-6 text-neutral-800 transition-colors duration-200 group-hover:text-blue-500 xl:line-clamp-2 xl:h-14 xl:text-base xl:leading-6"
+          className="line-clamp-3 w-full text-base font-semibold leading-6 text-neutral-800 transition-colors duration-200 group-hover:text-blue-500 xl:line-clamp-2 xl:text-base xl:leading-6"
         >
           {article.title}
         </p>

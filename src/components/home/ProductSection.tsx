@@ -8,7 +8,6 @@ import {
   type Product,
   type ProductCategory,
 } from "./product-data";
-import { MEGAMENU_STRUCTURE } from "./megamenu-data";
 // FlutedGlassOverlay is paused (not deleted) — laggy on Safari, see the
 // commented-out usage below. Bring this import back when it's re-enabled.
 // import FlutedGlassOverlay from "./FlutedGlassOverlay";
@@ -22,13 +21,6 @@ type ProductVariant = (typeof PRODUCT_VARIANTS)[number];
 const AUTO_ADVANCE_MS = 6000;
 const RING_RADIUS = 13;
 const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
-
-/** Category → editorial image, reused from the navbar's mega menu so the
- *  accordion's active-card photo matches what the mega menu shows for the
- *  same category. */
-const MEGAMENU_CATEGORY_IMAGES: Record<string, string> = Object.fromEntries(
-  MEGAMENU_STRUCTURE.map((c) => [c.key, c.image])
-);
 
 /** Blanket scale applied to every glass badge, on top of each category's own
  *  `scale` tweak below. */
@@ -45,17 +37,34 @@ const GLASS_ICON_SCALE = 1.1;
  */
 const CATEGORY_GLASS_ICONS: Record<
   string,
-  { src: string; offsetX?: number; offsetY?: number; scale?: number }
+  {
+    src: string;
+    offsetX?: number;
+    offsetY?: number;
+    scale?: number;
+    mirrorX?: boolean;
+    rotate?: number;
+  }
 > = {
-  Simpanan: { src: "/assets/product/simpanan-glass.webp", offsetX: -40 },
-  "Kartu Kredit": { src: "/assets/product/kartu-kredit-glass.webp" },
+  Simpanan: {
+    src: "/assets/product/simpanan-glass.webp",
+    offsetX: -40 + 24 + 64,
+    mirrorX: true,
+  },
+  "Kartu Kredit": {
+    src: "/assets/product/kartu-kredit-glass.webp",
+    offsetX: 24,
+  },
   Pinjaman: {
     src: "/assets/product/pinjaman-glass.webp",
     offsetX: -16 + 32 - 16,
     offsetY: 24 - 8 + 8,
     scale: 1.1 * 1.1,
   },
-  "e-Banking": { src: "/assets/product/ebanking-glass.webp", offsetX: 12 - 4 },
+  "e-Banking": {
+    src: "/assets/product/ebanking-glass.webp",
+    offsetX: 12 - 4 + 16 + 16,
+  },
   Asuransi: {
     src: "/assets/product/asuransi-glass.webp",
     offsetX: -24,
@@ -63,6 +72,17 @@ const CATEGORY_GLASS_ICONS: Record<
     scale: 0.9,
   },
   Investasi: { src: "/assets/product/investasi-glass.webp", offsetX: 8 },
+  "Wealth Management": {
+    src: "/assets/product/investasi-glass.webp",
+    offsetX: 8 + 12,
+    mirrorX: true,
+  },
+  Transaksi: {
+    src: "/assets/product/transaksi-glass.webp",
+    offsetX: 32,
+    rotate: 90,
+  },
+  "Reward BCA": { src: "/assets/product/reward-glass.webp" },
 };
 
 /**
@@ -189,7 +209,14 @@ function ProductCard({
   swap: ReturnType<typeof swapStyles>;
   /** Glass-badge icon shown top-left while the card is collapsed; not every
    *  category has one yet. */
-  glassIcon?: { src: string; offsetX?: number; offsetY?: number; scale?: number };
+  glassIcon?: {
+    src: string;
+    offsetX?: number;
+    offsetY?: number;
+    scale?: number;
+    mirrorX?: boolean;
+    rotate?: number;
+  };
 }) {
   const t = useTranslations("common");
   const [isHovered, setIsHovered] = useState(false);
@@ -259,15 +286,16 @@ function ProductCard({
       onMouseMove={handleCardMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group relative h-[400px] shrink-0 grow-0 overflow-clip rounded-3xl bg-white text-left ${active ? "cursor-none" : "cursor-pointer"
+      className={`group relative h-[420px] shrink-0 overflow-clip rounded-3xl bg-white text-left ${active ? "cursor-none" : "cursor-pointer"
         }`}
       style={{
-        // Six category cards share the 1280px row now (was three product
-        // cards): 440 + 5×150 + 5×16 gap = 1270, leaving a hair of slack so a
-        // sub-pixel rounding never wraps the row.
-        flexBasis: active ? 440 : 150,
+        // Inactive cards sit at a fixed 128px; the active card grows to
+        // fill whatever space is left in the row (so this still works as
+        // the category count changes).
+        flexGrow: active ? 1 : 0,
+        flexBasis: active ? 0 : 128,
         clipPath: entered ? "inset(0 0 0 0)" : "inset(0 100% 0 0)",
-        transition: `flex-basis 500ms cubic-bezier(0.4,0,0.2,1), clip-path 700ms cubic-bezier(0.16,1,0.3,1) ${enterDelayMs}ms`,
+        transition: `flex-grow 500ms cubic-bezier(0.4,0,0.2,1), flex-basis 500ms cubic-bezier(0.4,0,0.2,1), clip-path 700ms cubic-bezier(0.16,1,0.3,1) ${enterDelayMs}ms`,
       }}
     >
       {/* Inactive cards show a flat gradient fill instead of their photo — the
@@ -293,7 +321,13 @@ function ProductCard({
             // half size); deselecting grows it back in from that half size —
             // one scale drives both, since the CSS transition above already
             // interpolates whichever direction `active` just flipped.
-            transform: `scale(${GLASS_ICON_SCALE *
+            transform: `rotate(${glassIcon.rotate ?? 0}deg) scaleX(${
+              (glassIcon.mirrorX ? -1 : 1) *
+              GLASS_ICON_SCALE *
+              (glassIcon.scale ?? 1) *
+              (isHovered && !active ? 1.1 : 1) *
+              (active ? 0.5 : 1)
+              }) scaleY(${GLASS_ICON_SCALE *
               (glassIcon.scale ?? 1) *
               (isHovered && !active ? 1.1 : 1) *
               (active ? 0.5 : 1)
@@ -328,34 +362,28 @@ function ProductCard({
         />
       )}
 
+      {/* Active content — title + subtitle + CTA panel. Both this and the
+          collapsed panel below stay mounted at all times and simply cross-fade:
+          becoming active slides this one up into place from just below while
+          it fades in from 0 to full opacity; losing active reverses it. */}
       <div
-        className="hero-search absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[width] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        className="hero-search absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
         style={{
-          // Collapsed cards are only 150px wide now, so the resting panel is
-          // narrower than the old 3-card layout's 184.
-          width: active ? 280 : 134,
-          // Collapsed cards get a plain glass fill (10% white) — no border,
-          // blur, or saturate, unlike the active card's spec below.
-          ...(active
-            ? {
-              backgroundColor: "rgba(0,0,0,0.3)",
-              backdropFilter: "blur(16px) saturate(1.25)",
-              WebkitBackdropFilter: "blur(16px) saturate(1.25)",
-              isolation: "isolate",
-            }
-            : {
-              backgroundColor: "rgba(255,255,255,0.1)",
-            }),
+          width: 280,
+          backgroundColor: "rgba(0,0,0,0.3)",
+          backdropFilter: "blur(16px) saturate(1.25)",
+          WebkitBackdropFilter: "blur(16px) saturate(1.25)",
+          isolation: "isolate",
+          transform: active ? "translateY(0)" : "translateY(20px)",
+          opacity: active ? 1 : 0,
+          pointerEvents: active ? "auto" : "none",
         }}
       >
         <div className="w-full" style={swap.copy}>
           <p className="w-full text-xl font-semibold leading-7 tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
             {copy.title}
           </p>
-          <div
-            className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
-            style={{ gridTemplateRows: active ? "1fr" : "0fr", opacity: active ? 1 : 0 }}
-          >
+          <div className="grid w-full" style={{ gridTemplateRows: "1fr" }}>
             <div className="overflow-hidden">
               <p className="w-full pt-2 text-base leading-6 text-white/80">
                 {copy.subtitle}
@@ -371,6 +399,31 @@ function ProductCard({
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Collapsed (default) content — rotated vertical title. Slides down
+          and fades out as the card becomes active; fades back in as it
+          returns to default. No shared width, background, or swap-animation
+          styles with the active panel above — just its own rotated title with
+          a plain 16px pad on every side. */}
+      <div
+        className="absolute bottom-2 left-2 flex overflow-clip rounded-2xl p-4 transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        style={{
+          transform: active ? "translateY(20px)" : "translateY(0)",
+          opacity: active ? 0 : 1,
+          pointerEvents: active ? "none" : "auto",
+        }}
+      >
+        <p
+          className="w-max whitespace-nowrap text-xl font-semibold leading-7 tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]"
+          style={{
+            writingMode: "vertical-rl",
+            textOrientation: "sideways",
+            transform: "rotate(180deg)",
+          }}
+        >
+          {copy.title}
+        </p>
       </div>
 
       <div
@@ -1202,18 +1255,14 @@ export default function ProductSection({
   // The desktop accordion now shows the *categories* themselves — one card per
   // category (Simpanan, Kartu Kredit, …) — rather than the products inside the
   // active one. Each card is shaped like a Product so it can reuse ProductCard's
-  // photo / hover / expand treatment. The photo reuses the same editorial image
-  // as the navbar's mega menu, so the two stay visually consistent per category;
-  // Supabase's `image` column and the bundled sample photos are only a fallback
-  // for categories the mega menu doesn't know about.
+  // photo / hover / expand treatment. The photo comes straight from Supabase's
+  // `image` column; the bundled sample photos are only a fallback for
+  // categories that haven't had one set yet.
   const isDesktop = useIsDesktop();
   const categoryCards: Product[] = categories.map((c, i) => ({
     title: c.label,
     subtitle: c.description ?? "",
-    image:
-      MEGAMENU_CATEGORY_IMAGES[c.key] ||
-      c.image ||
-      SAMPLE_CATEGORY_PHOTOS[i % SAMPLE_CATEGORY_PHOTOS.length],
+    image: c.image || SAMPLE_CATEGORY_PHOTOS[i % SAMPLE_CATEGORY_PHOTOS.length],
   }));
   const activeCategoryIndex = Math.max(0, categories.findIndex((c) => c.key === activeCategory));
   // Desktop accordion autoplay steps through categories; desktop curved steps
@@ -1530,6 +1579,43 @@ export default function ProductSection({
                   style={{ width: `${((activeCategoryIndex + 1) / categories.length) * 100}%` }}
                 />
               </div>
+            </div>
+
+            {/* Hint + CTA below the category cards, on every breakpoint —
+                the desktop accordion doesn't otherwise show any CTA (the
+                curved-only block below stays hidden for it). */}
+            <div
+              className={`mt-6 flex flex-col items-center gap-5 xl:mt-12 ${entered ? "opacity-100" : "opacity-0"
+                }`}
+              style={{
+                transition: `opacity 700ms ease-out ${entered ? "610ms" : "0ms"}`,
+              }}
+            >
+              <p className="w-[320px] text-center text-base font-semibold text-blue-700 xl:w-auto xl:text-[18px]">
+                {t("mobileCtaHint")}
+              </p>
+              <a
+                href="https://www.bca.co.id/id/individu/layanan/goodplan-bca"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-12 items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f]"
+              >
+                <span className="text-base font-semibold text-neutral-100">{t("ctaLabel")}</span>
+                <span
+                  aria-hidden
+                  className="size-5 shrink-0 bg-neutral-100"
+                  style={{
+                    maskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+                    WebkitMaskImage: "url(/assets/cycle1/pelajari-icon.svg)",
+                    maskSize: "contain",
+                    WebkitMaskSize: "contain",
+                    maskRepeat: "no-repeat",
+                    WebkitMaskRepeat: "no-repeat",
+                    maskPosition: "center",
+                    WebkitMaskPosition: "center",
+                  }}
+                />
+              </a>
             </div>
 
             {/* Accordion cards (desktop and mobile) are each already their own
