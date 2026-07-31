@@ -209,6 +209,7 @@
     }
   },
   "footer": {
+    "allSocialMedia": "Lihat semua media sosial BCA",
     "kantorPusat": "Kantor Pusat",
     "alamat": "Menara BCA, Grand Indonesia,\nJl. MH Thamrin No. 1\nJakarta 10310",
     "copyright": "Copyrights © 2026 PT Bank Central Asia Tbk, All Rights Reserved",
@@ -262,6 +263,7 @@
     "seeMore": "Lihat Lebih Banyak"
   },
   "faq": {
+    "eyebrow": "FREQUENTLY ASKED QUESTION",
     "heading": "Dukungan Tepercaya yang Senantiasa di Sisi Anda",
     "notFound": "Tidak menemukan yang Anda cari?",
     "cta": "Kunjungi Pusat Bantuan"

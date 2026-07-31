@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { getAverageColor, rgbToCss } from "@/lib/image-color";
+import MyBcaParallax from "./MyBcaParallax";
 
 export default async function MyBcaSection() {
   const t = await getTranslations("mybca");
@@ -75,18 +76,19 @@ export default async function MyBcaSection() {
         <div className="relative mx-auto w-full max-w-[440px]">
           {/* Stage keeps the Figma 392x412 ratio so the overlap below scales with it.
               Lifted above the backdrop so the subject pokes into the section above,
-              unclipped — mirrors the desktop phone-woman's negative top offset. */}
-          <div className="relative -mt-14 aspect-[392/412]">
+              unclipped — mirrors the desktop phone-woman's negative top offset.
+              MyBcaParallax drives the rise itself (continuous scroll-linked, unlike
+              [data-reveal]'s one-shot intersection fade), so it owns the entrance here. */}
+          <MyBcaParallax className="relative -mt-14 aspect-[392/412]">
             {/* Clipped at the card's top edge (17.6% overlap) so the subject never shows behind the glass. */}
             <div className="absolute inset-0 bottom-[17.6%] overflow-clip">
               <img loading="lazy" decoding="async"
-                data-reveal
                 src="/assets/mybca/phone-woman-mobile.webp"
                 alt="Aplikasi myBCA di genggaman"
                 className="absolute left-[51.02%] top-0 w-[91.84%] -translate-x-1/2"
               />
             </div>
-          </div>
+          </MyBcaParallax>
 
           {/* Glass card — pulled up to overlap the phone-woman's lower edge.
               data-reveal sits on this wrapper (not the .hero-search card) so

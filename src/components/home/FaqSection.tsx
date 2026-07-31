@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { FAQ_CATEGORIES } from "./faq-data";
+import { FAQ_CATEGORIES, type FaqCategory } from "./faq-data";
 
 function PlusIcon({ className }: { className?: string }) {
   return (
@@ -90,15 +90,18 @@ type FaqSectionProps = {
    *  with the tab list and CTA filled darker (80% black) than the question
    *  list (50% black) so the list reads as the lighter, more open area. */
   variant?: "solid" | "glass";
+  /** Loaded from Supabase (falls back to bundled FAQ_CATEGORIES) by the page,
+   *  same pattern as ProductSection/NewsSection. */
+  categories?: FaqCategory[];
 };
 
-export default function FaqSection({ variant: initialVariant = "solid" }: FaqSectionProps) {
+export default function FaqSection({ variant: initialVariant = "solid", categories = FAQ_CATEGORIES }: FaqSectionProps) {
   const t = useTranslations("faq");
   const [variant, setVariant] = useState(initialVariant);
   const glass = variant === "glass";
-  const [activeKey, setActiveKey] = useState(FAQ_CATEGORIES[0].key);
+  const [activeKey, setActiveKey] = useState(categories[0].key);
   const [openIndex, setOpenIndex] = useState(-1);
-  const active = FAQ_CATEGORIES.find((c) => c.key === activeKey) ?? FAQ_CATEGORIES[0];
+  const active = categories.find((c) => c.key === activeKey) ?? categories[0];
   const tabRefs = useRef(new Map<string, HTMLButtonElement>());
   const tabListRef = useRef<HTMLDivElement>(null);
 
@@ -164,7 +167,7 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
           glass ? "border-white/20 bg-black/60 backdrop-blur-md" : "border-neutral-300 bg-white"
         } ${showTopShadow ? "shadow-[0_4px_8px_-2px_rgba(0,0,0,0.15)]" : ""}`}
       >
-        {FAQ_CATEGORIES.map((cat) => {
+        {categories.map((cat) => {
           const isActive = cat.key === active.key;
           return (
             <button
@@ -322,7 +325,7 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
           <div className="flex flex-col justify-between py-6">
             <div className="flex items-center py-4 xl:w-auto xl:shrink-0">
               <p className="text-sm font-semibold uppercase leading-[14px] tracking-[2.1px] text-white opacity-75 [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
-                FREQUENLY ASKED QUESTION
+                {t("eyebrow")}
               </p>
             </div>
             <p className="-mt-6 w-[260px] text-[32px] font-semibold leading-9 tracking-[-0.64px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
@@ -351,7 +354,7 @@ export default function FaqSection({ variant: initialVariant = "solid" }: FaqSec
               photo (the card's -mt-[112px] pull-up + this 24px gap). */}
           <div className="absolute left-4 top-2 flex items-center py-4">
             <p className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-white opacity-75 [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
-              FREQUENLY ASKED QUESTION
+              {t("eyebrow")}
             </p>
           </div>
           {/* Darkens behind the heading so the white text stays legible —

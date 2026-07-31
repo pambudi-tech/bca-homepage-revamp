@@ -50,7 +50,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
       {
         question: "Apa saja aplikasi dan platform resmi BCA?",
         answer:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis et quam mattis, posuere dolor quis, laoreet dolor. Pellentesque sit amet commodo sapien, sit amet euismod tellus. Proin ac est nec massa commodo tristique.",
+          "Platform resmi BCA meliputi aplikasi myBCA dan BCA mobile, internet banking KlikBCA, website bca.co.id, serta akun media sosial dan Halo BCA yang terverifikasi. Selalu pastikan mengunduh aplikasi dari App Store atau Google Play resmi dan mengakses situs melalui domain bca.co.id.",
       },
       {
         question: "Bagaimana cara menghubungi Halo BCA?",

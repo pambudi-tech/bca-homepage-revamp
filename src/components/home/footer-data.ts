@@ -15,7 +15,6 @@ export const SOCIAL_LINKS: SocialLink[] = [
 ];
 
 export const ALL_SOCIAL_MEDIA_LINK = {
-  label: "Lihat semua media sosial BCA",
   href: "https://www.bca.co.id/id/tentang-bca/media-riset/Social-Media",
 };
 

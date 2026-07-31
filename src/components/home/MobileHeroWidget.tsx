@@ -427,11 +427,25 @@ export default function MobileHeroWidget({
   };
 
   // Opening scrolls the rail back to the start so the (now much wider) login
-  // card is fully in view rather than half-scrolled off.
+  // card is fully in view rather than half-scrolled off, and scrolls the page
+  // up so the opened panel isn't cut off below the fold — same as focusSearch.
   const toggleLogin = () => {
     const next = !loginOpen;
     setLoginOpen(next);
-    if (next) railRef.current?.scrollTo({ left: 0, behavior: "smooth" });
+    if (next) {
+      railRef.current?.scrollTo({ left: 0, behavior: "smooth" });
+      const el = rootRef.current;
+      if (el) {
+        if (lenis) {
+          lenis.scrollTo(el, { offset: -SEARCH_TOP_GAP, duration: 0.8 });
+        } else {
+          window.scrollTo({
+            top: window.scrollY + el.getBoundingClientRect().top - SEARCH_TOP_GAP,
+            behavior: "smooth",
+          });
+        }
+      }
+    }
   };
 
   // Initial phase only has two cards left (Login Cepat + Promo), so instead

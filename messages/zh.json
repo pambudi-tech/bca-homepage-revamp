@@ -209,6 +209,7 @@
     }
   },
   "footer": {
+    "allSocialMedia": "查看BCA所有社交媒体",
     "kantorPusat": "总部",
     "alamat": "Menara BCA, Grand Indonesia,\nJl. MH Thamrin No. 1\nJakarta 10310",
     "copyright": "版权所有 © 2026 PT Bank Central Asia Tbk，保留所有权利",
@@ -262,6 +263,7 @@
     "seeMore": "查看更多"
   },
   "faq": {
+    "eyebrow": "常见问题",
     "heading": "值得信赖的支持，随时在您身边",
     "notFound": "没有找到您想要的答案？",
     "cta": "访问帮助中心"

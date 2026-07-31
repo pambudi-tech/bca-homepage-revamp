@@ -384,7 +384,7 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
             className="mx-auto mt-9 flex h-12 w-fit items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f] xl:hidden"
           >
             <span className="text-base font-semibold text-neutral-100">
-              Lihat 200+ promo lainnya
+              {t("viewMore")}
             </span>
             {/* Drawn as a mask so the shape stays one shared asset and the color
                 comes from the same token as the label. */}

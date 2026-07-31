@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   INFO_CATEGORY_STYLE,
@@ -232,13 +233,28 @@ export default function SearchRecommendation({
   const hasResults = products.length > 0 || information.length > 0 || program.length > 0;
   const seeAllUrl = bcaSearchResultUrl(keyword || "");
 
+  // Drives the shadow above the footer links on mobile — the results list
+  // scrolls internally (fixed panel height) while the footer stays pinned
+  // below it, same treatment as FaqSection's CTA footer.
+  const [showBottomShadow, setShowBottomShadow] = useState(false);
+  const updateScrollShadow = (el: HTMLDivElement | null) => {
+    if (!el) return;
+    setShowBottomShadow(el.scrollTop + el.clientHeight < el.scrollHeight - 1);
+  };
+
   return (
     <div
       onMouseDown={onMouseDown}
-      className={`rounded-xl border border-neutral-300 bg-white shadow-[0px_10px_6px_rgba(204,204,204,0.07),0px_5px_5px_rgba(204,204,204,0.12),0px_1px_2px_rgba(204,204,204,0.14)] ${
-        compact ? "max-h-[70dvh] overflow-y-auto overscroll-contain" : "overflow-hidden"
+      className={`flex flex-col overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-[0px_10px_6px_rgba(204,204,204,0.07),0px_5px_5px_rgba(204,204,204,0.12),0px_1px_2px_rgba(204,204,204,0.14)] ${
+        compact ? "max-h-[70dvh]" : "max-h-[640px]"
       }`}
     >
+      <div
+        ref={updateScrollShadow}
+        onScroll={(e) => updateScrollShadow(e.currentTarget)}
+        data-lenis-prevent
+        className="min-h-0 flex-1 overflow-y-auto overscroll-contain"
+      >
       {isEmpty ? (
         <div className={`flex flex-col gap-6 ${compact ? "p-3.5" : "p-6"}`}>
           {recent.length > 0 && (
@@ -332,14 +348,18 @@ export default function SearchRecommendation({
           </p>
         </div>
       )}
+      </div>
 
       {/* Desktop puts the two links side by side split by a vertical rule;
           mobile stacks them, so the divider becomes the top border of the
-          second row and the help label breaks onto two lines. */}
+          second row and the help label breaks onto two lines. The results
+          list above scrolls internally (capped height) while this footer
+          stays pinned, gaining an upward shadow while there's more to
+          scroll — same treatment as FaqSection's CTA footer. */}
       <div
-        className={`flex border-t border-neutral-300 ${
+        className={`relative z-10 flex shrink-0 border-t border-neutral-300 transition-shadow duration-200 ${
           compact ? "flex-col" : "items-center justify-between"
-        }`}
+        } ${showBottomShadow ? "shadow-[0_-4px_8px_-2px_rgba(0,0,0,0.15)]" : ""}`}
       >
         {!isEmpty && hasResults && (
           <a
@@ -425,7 +445,7 @@ function ProductsSection({ products, compact, label, viewAllLabel, seeAllUrl }: 
                       className={`group flex rounded-xl border border-neutral-300 transition-colors hover:border-cyan-500 hover:bg-cyan-100 ${
                         compact
                           ? "w-[200px] shrink-0 flex-col gap-3 p-3"
-                          : "flex-1 flex-col gap-4 px-4 pt-4 pb-5"
+                          : "w-[calc((100%-1.5rem)/3)] shrink-0 flex-col gap-4 px-4 pt-4 pb-5"
                       }`}
                     >
                       {product.icon === "mybca" ? (
@@ -490,7 +510,7 @@ function ProgramSection({ program, compact, label }: ProgramSectionProps) {
             key={item.id}
             href={item.href}
             className={`group flex overflow-hidden rounded-xl border border-neutral-300 transition-colors hover:border-cyan-500 hover:bg-cyan-100 ${
-              compact ? "w-[200px] shrink-0 flex-col gap-3" : "flex-1 flex-col gap-4 pb-5"
+              compact ? "w-[200px] shrink-0 flex-col gap-3" : "w-[calc((100%-1.5rem)/3)] shrink-0 flex-col gap-4 pb-5"
             }`}
           >
             <img

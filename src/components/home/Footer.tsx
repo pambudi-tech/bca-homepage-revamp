@@ -114,7 +114,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="col-span-2 text-center text-sm text-white underline transition-colors hover:text-white/80 xl:col-span-1 xl:flex xl:items-center xl:text-left"
             >
-              {ALL_SOCIAL_MEDIA_LINK.label}
+              {t("allSocialMedia")}
             </a>
           </div>
         </div>

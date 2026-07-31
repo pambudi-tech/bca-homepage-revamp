@@ -86,13 +86,16 @@ export default function MobileMenu({
   );
   const MENU_ITEMS = [
     ...MEGAMENU.map((c) => ({ key: c.key, label: c.label, expandable: true, href: undefined as string | undefined })),
-    { key: "Promo", label: tNav("promo"), expandable: false, href: undefined as string | undefined },
     ...extraCategories.map((c) => ({
       key: c.key,
       label: c.label,
       expandable: false,
       href: undefined as string | undefined,
     })),
+  ];
+  const ACTION_ITEMS = [
+    { key: "Promo", label: tNav("promo"), href: "https://promo.bca.co.id" },
+    { key: "Pengajuan", label: tNav("pengajuan"), href: "https://www.bca.co.id/id/Forms/webform-bca" },
   ];
   const otherLocales = routing.locales.filter((l) => l !== locale);
   const switchLocale = (nextLocale: AppLocale) => {
@@ -207,6 +210,7 @@ export default function MobileMenu({
     return (
       <MainView
         menuItems={MENU_ITEMS}
+        actionItems={ACTION_ITEMS}
         tNav={tNav}
         tMobile={tMobile}
         tLang={tLang}
@@ -307,6 +311,7 @@ function ViewScroller({ children }: { children: React.ReactNode }) {
 
 function MainView({
   menuItems,
+  actionItems,
   tNav,
   tMobile,
   tLang,
@@ -317,6 +322,7 @@ function MainView({
   onLeaf,
 }: {
   menuItems: { key: string; label: string; expandable: boolean; href?: string }[];
+  actionItems: { key: string; label: string; href: string }[];
   tNav: (key: string) => string;
   tMobile: (key: string) => string;
   tLang: (key: string) => string;
@@ -374,7 +380,22 @@ function MainView({
 
       <div className="flex-1" />
 
-      <div className="relative flex h-16 items-center justify-between pl-1">
+      <div className="flex flex-col border-t border-[rgba(186,213,255,0.25)] pt-2">
+        {actionItems.map((item) => (
+          <a
+            key={item.key}
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={onLeaf}
+            className="flex items-center justify-between px-1 py-4 text-left transition-opacity active:opacity-60"
+          >
+            <span className="text-base font-semibold leading-6 text-white">{item.label}</span>
+          </a>
+        ))}
+      </div>
+
+      <div className="relative flex h-14 items-center justify-between pl-1">
         <span className="text-base font-semibold leading-6 text-white">{tMobile("bahasa")}</span>
         <button
           onClick={() => setLangOpen((v) => !v)}

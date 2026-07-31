@@ -41,7 +41,7 @@ function CategoryChip({
       aria-pressed={active}
       className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-sm transition-colors xl:h-14 xl:px-4 xl:text-base ${active
         ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500"
-        : "border-neutral-300 bg-white font-semibold text-neutral-700 hover:bg-blue-100"
+        : "border-neutral-300 bg-white font-semibold text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100 hover:text-blue-500"
         }`}
     >
       {label}
@@ -56,7 +56,7 @@ function HighlightArticle({ article }: { article: NewsArticle }) {
       href={article.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative block h-[320px] w-full shrink-0 overflow-clip rounded-xl text-left shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)] xl:h-[464px] xl:w-full">
+      className="group relative block h-[320px] w-full shrink-0 overflow-clip rounded-xl border border-transparent text-left shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)] xl:h-[464px] xl:w-full xl:transition-transform xl:duration-300 xl:ease-out xl:hover:-translate-y-1.5 xl:hover:border-cyan-500">
       <img loading="lazy" decoding="async"
         src={article.image}
         alt=""
@@ -79,7 +79,7 @@ function HighlightArticle({ article }: { article: NewsArticle }) {
           isolation: "isolate",
         }}
       >
-        <p className="w-full text-lg font-semibold leading-[26px] tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)] xl:text-xl xl:leading-7">
+        <p className="w-full text-lg font-semibold leading-[26px] tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)] transition-[font-weight] duration-300 xl:text-xl xl:leading-7 xl:group-hover:font-bold">
           {article.title}
         </p>
         <AdditionalInfo date={article.date} category={article.category} />
@@ -99,7 +99,7 @@ function ArticleItem({ article }: { article: NewsArticle }) {
       href={article.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex h-[264px] w-[307px] shrink-0 snap-start flex-col overflow-clip rounded-xl border border-neutral-300 bg-white text-left shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)] xl:h-36 xl:w-full xl:flex-row xl:items-center">
+      className="group flex h-[264px] w-[307px] shrink-0 snap-start flex-col overflow-clip rounded-xl border border-neutral-300 bg-white text-left shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)] transition-colors xl:h-36 xl:w-full xl:flex-row xl:items-center xl:transition-transform xl:duration-300 xl:ease-out xl:hover:-translate-y-1.5 xl:hover:border-cyan-500">
       <div className="h-[120px] w-full shrink-0 overflow-clip bg-white xl:h-full xl:w-[142px]">
         <img loading="lazy" decoding="async"
           src={article.image}
@@ -110,7 +110,7 @@ function ArticleItem({ article }: { article: NewsArticle }) {
       <div className="flex min-w-0 flex-1 flex-col justify-between px-5 pb-5 pt-4 xl:h-full">
         <p
           title={article.title}
-          className="line-clamp-3 w-full text-base font-semibold leading-6 text-neutral-800 transition-colors duration-200 group-hover:text-blue-500 xl:line-clamp-2 xl:text-base xl:leading-6"
+          className="line-clamp-3 w-full text-base font-semibold leading-6 text-neutral-800 transition-colors duration-200 group-hover:text-blue-500 xl:line-clamp-2 xl:text-base xl:leading-6 xl:group-hover:font-bold"
         >
           {article.title}
         </p>

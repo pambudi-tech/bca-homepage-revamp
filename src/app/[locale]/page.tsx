@@ -20,6 +20,7 @@ import { getProductCategories } from "@/lib/products";
 import { getMegaMenuContent } from "@/lib/megamenu";
 import { getPromos } from "@/lib/promos";
 import { getNewsCategories } from "@/lib/news";
+import { getFaqCategories } from "@/lib/faq";
 import type { AppLocale } from "@/i18n/routing";
 
 export default async function Home({
@@ -33,13 +34,14 @@ export default async function Home({
   // One `now` for the whole render so promo badges and their countdown text
   // can't disagree by a few milliseconds.
   const now = new Date();
-  const [kurs, banners, produk, megamenu, promos, news] = await Promise.all([
+  const [kurs, banners, produk, megamenu, promos, news, faq] = await Promise.all([
     getKursHariIni(),
     getBanners(locale as AppLocale),
     getProductCategories(locale as AppLocale),
     getMegaMenuContent(locale as AppLocale),
-    getPromos(now),
-    getNewsCategories(),
+    getPromos(now, locale as AppLocale),
+    getNewsCategories(locale as AppLocale),
+    getFaqCategories(locale as AppLocale),
   ]);
 
   return (
@@ -62,7 +64,7 @@ export default async function Home({
         <PromoSection promos={promos} now={now} />
         <SoliprioSection />
         <NewsSection categories={news} />
-        <FaqSection />
+        <FaqSection categories={faq} />
       </div>
 
       {/* 2. FOOTER: desktop pakai sticky reveal (z-0 di layer belakang);
