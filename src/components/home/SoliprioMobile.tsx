@@ -225,7 +225,7 @@ export default function SoliprioMobile({
             >
               <div
                 style={{ transform: isActive ? "scale(1)" : "scale(0.9)" }}
-                className={`relative flex flex-col items-center rounded-xl bg-gradient-to-b from-white/12 to-white/4 px-1 pt-1 backdrop-blur-[4px] transition-[transform,padding-bottom] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+                className={`relative flex flex-col items-center rounded-xl bg-gradient-to-b from-white/12 to-white/4 px-1 pt-1 backdrop-blur-[4px] transition-[transform,padding-bottom] duration-500 ease-in-out ${
                   isActive ? "pb-3" : "pb-1"
                 }`}
               >
@@ -254,7 +254,7 @@ export default function SoliprioMobile({
                     image a matching 4px on both edges rather than sitting
                     flush. */}
                 <div
-                  className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                  className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-in-out"
                   style={{
                     gridTemplateRows: isActive ? "1fr" : "0fr",
                     opacity: isActive ? 1 : 0,

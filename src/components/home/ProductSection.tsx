@@ -145,11 +145,11 @@ function swapStyles(swapping: boolean, dir: number, stagger: number, alt: boolea
   return {
     incoming: {
       "--photo-from": `${dir * 28}%`,
-      animation: `product-photo-in-${suffix} ${SWAP_MS}ms cubic-bezier(0.65,0,0.35,1) ${stagger}ms both`,
+      animation: `product-photo-in-${suffix} ${SWAP_MS}ms var(--ease-emphasis) ${stagger}ms both`,
     } as React.CSSProperties,
     outgoing: {
       "--photo-to": `${-dir * 100}%`,
-      animation: `product-photo-out-${suffix} ${SWAP_MS}ms cubic-bezier(0.65,0,0.35,1) ${stagger}ms both`,
+      animation: `product-photo-out-${suffix} ${SWAP_MS}ms var(--ease-emphasis) ${stagger}ms both`,
     } as React.CSSProperties,
     copy: {
       animation: `product-copy-swap-${suffix} ${SWAP_MS}ms ease-in-out ${stagger}ms both`,
@@ -295,7 +295,7 @@ function ProductCard({
         flexGrow: active ? 1 : 0,
         flexBasis: active ? 0 : 128,
         clipPath: entered ? "inset(0 0 0 0)" : "inset(0 100% 0 0)",
-        transition: `flex-grow 500ms cubic-bezier(0.4,0,0.2,1), flex-basis 500ms cubic-bezier(0.4,0,0.2,1), clip-path 700ms cubic-bezier(0.16,1,0.3,1) ${enterDelayMs}ms`,
+        transition: `flex-grow 500ms var(--ease-in-out), flex-basis 500ms var(--ease-in-out), clip-path 700ms var(--ease-entrance) ${enterDelayMs}ms`,
       }}
     >
       {/* Inactive cards show a flat gradient fill instead of their photo — the
@@ -313,7 +313,7 @@ function ProductCard({
           aria-hidden
           src={glassIcon.src}
           alt=""
-          className="absolute top-4 size-[200px] max-w-none origin-center object-contain transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+          className="absolute top-4 size-[200px] max-w-none origin-center object-contain transition-[opacity,transform] duration-500 ease-in-out"
           style={{
             left: -32 + (glassIcon.offsetX ?? 0),
             top: 16 + (glassIcon.offsetY ?? 0),
@@ -337,7 +337,7 @@ function ProductCard({
       )}
 
       <div
-        className="absolute inset-y-0 right-0 w-[566px] transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        className="absolute inset-y-0 right-0 w-[566px] transition-[transform,opacity] duration-500 ease-in-out"
         style={{
           transform: active ? "translateX(0)" : "translateX(96px)",
           opacity: active ? 1 : 0,
@@ -366,7 +366,7 @@ function ProductCard({
           becoming active slides this one up into place from just below while
           it fades in from 0 to full opacity; losing active reverses it. */}
       <div
-        className="hero-search absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        className="hero-search absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[transform,opacity] duration-500 ease-in-out"
         style={{
           width: 280,
           backgroundColor: "rgba(0,0,0,0.3)",
@@ -406,7 +406,7 @@ function ProductCard({
           styles with the active panel above — just its own rotated title with
           a plain 16px pad on every side. */}
       <div
-        className="absolute bottom-2 left-2 flex overflow-clip rounded-2xl p-4 transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        className="absolute bottom-2 left-2 flex overflow-clip rounded-2xl p-4 transition-[transform,opacity] duration-500 ease-in-out"
         style={{
           transform: active ? "translateY(20px)" : "translateY(0)",
           opacity: active ? 0 : 1,
@@ -493,7 +493,7 @@ function MobileProductCard({
   return (
     <button
       onClick={onSelect}
-      className="relative shrink-0 snap-center overflow-clip rounded-3xl bg-white text-left transition-[height] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+      className="relative shrink-0 snap-center overflow-clip rounded-3xl bg-white text-left transition-[height] duration-500 ease-in-out"
       style={{ width: 280, height: active ? 360 : 328 }}
     >
       {/* Same idea as the desktop card: the photo frame is wider than the card
@@ -554,7 +554,7 @@ function MobileProductCard({
             {copy.title}
           </p>
           <div
-            className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+            className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-in-out"
             style={{ gridTemplateRows: active ? "1fr" : "0fr", opacity: active ? 1 : 0 }}
           >
             <div className="overflow-hidden">
@@ -915,7 +915,7 @@ function CurvedProductCard({
       />
 
       <div
-        className="hero-search absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[width] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        className="hero-search absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[width] duration-500 ease-in-out"
         style={{
           width: active ? 280 : 184,
           backgroundColor: "rgba(0,0,0,0.3)",
@@ -929,7 +929,7 @@ function CurvedProductCard({
             {copy.title}
           </p>
           <div
-            className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+            className="grid w-full transition-[grid-template-rows,opacity] duration-500 ease-in-out"
             style={{ gridTemplateRows: active ? "1fr" : "0fr", opacity: active ? 1 : 0 }}
           >
             <div className="overflow-hidden">
@@ -1182,7 +1182,7 @@ function CurvedCarousel({
               transition:
                 dragDx !== null || snapping
                   ? "none"
-                  : "transform 600ms cubic-bezier(0.4,0,0.2,1), opacity 300ms ease, width 600ms cubic-bezier(0.4,0,0.2,1)",
+                  : "transform 600ms var(--ease-in-out), opacity 300ms ease, width 600ms var(--ease-in-out)",
               pointerEvents: isBackface ? "none" : undefined,
             }}
           />

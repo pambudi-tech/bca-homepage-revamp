@@ -156,6 +156,21 @@
 
   /* White type over photography. Seventeen call sites carried this inline. */
   --text-shadow-hero: 0px 2px 4px rgba(0, 0, 0, 0.15);
+
+  /* ---- Motion ----
+     Tailwind's stock --ease-in / --ease-out / --ease-in-out are left intact
+     and still used. These two are the curves this site adds on top.
+
+     --ease-entrance is the house curve: a fast start settling into a long,
+     soft tail. It drives every arrival on the page — scroll reveals, the hero
+     entrance, the mega-menu unfurl, the HaloBCA panel, the Soliprio card
+     settle, the preloader handoff. If an element enters, it uses this.
+
+     --ease-emphasis is symmetric in-out, used where something travels a fixed
+     distance and stops rather than arriving: the preloader's per-word rise and
+     the product photo swap. */
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-emphasis: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 @theme inline {
@@ -329,7 +344,7 @@ html.hero-search-open .page-stack {
     translate3d(0, var(--lift), 0);
   /* Long enough to glide back on leave; the hover rule below shortens it so
      the card still tracks the cursor closely while it's being pointed at. */
-  transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 500ms var(--ease-entrance);
 }
 
 /* Both states key off the anchor rather than `.soliprio-card` itself. For
@@ -657,9 +672,9 @@ a:focus-visible > .soliprio-card .soliprio-beam {
        the native properties, so both can live on one element and compose. */
     transform: translateY(24px);
     transition:
-      opacity 700ms cubic-bezier(0.16, 1, 0.3, 1) var(--rv-delay, 0ms),
-      transform 700ms cubic-bezier(0.16, 1, 0.3, 1) var(--rv-delay, 0ms),
-      filter 700ms cubic-bezier(0.16, 1, 0.3, 1) var(--rv-delay, 0ms);
+      opacity 700ms var(--ease-entrance) var(--rv-delay, 0ms),
+      transform 700ms var(--ease-entrance) var(--rv-delay, 0ms),
+      filter 700ms var(--ease-entrance) var(--rv-delay, 0ms);
   }
 
   /* Opacity only — for glows/backdrops where movement would look detached. */
@@ -694,11 +709,11 @@ a:focus-visible > .soliprio-card .soliprio-beam {
 }
 
 .animate-hero-title {
-  animation: hero-content-in 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: hero-content-in 700ms var(--ease-entrance) both;
 }
 
 .animate-hero-cta {
-  animation: hero-content-in 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: hero-content-in 700ms var(--ease-entrance) both;
   animation-delay: 150ms;
 }
 
@@ -720,7 +735,7 @@ a:focus-visible > .soliprio-card .soliprio-beam {
 }
 
 .animate-scroll-cue-dot {
-  animation: scroll-cue-dot 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: scroll-cue-dot 1.6s var(--ease-in-out) infinite;
 }
 
 /* ---------- Intro loading page (Preloader.tsx) ----------
@@ -837,7 +852,7 @@ a:focus-visible > .soliprio-card .soliprio-beam {
   display: inline-block;
   position: relative;
   animation-name: pre-word-rise;
-  animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  animation-timing-function: var(--ease-emphasis);
   animation-fill-mode: both;
 }
 
@@ -897,7 +912,7 @@ a:focus-visible > .soliprio-card .soliprio-beam {
 }
 
 .pre-logo {
-  animation: pre-fade-up 800ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both;
+  animation: pre-fade-up 800ms var(--ease-entrance) 80ms both;
 }
 
 /* ---- gate ----
@@ -947,11 +962,11 @@ html.preloading .pre-stage {
 /* Timed against the exit: the hero fades up while the loading page is still
    clearing, and the navbar drops in once it is off the top. */
 html.pre-revealing .pre-stage {
-  transition: opacity 900ms cubic-bezier(0.16, 1, 0.3, 1) 200ms;
+  transition: opacity 900ms var(--ease-entrance) 200ms;
 }
 
 html.pre-revealing .pre-nav {
-  transition: translate 500ms cubic-bezier(0.16, 1, 0.3, 1) 800ms;
+  transition: translate 500ms var(--ease-entrance) 800ms;
 }
 
 /* Promo confetti — pure CSS motion; pieces are generated in Confetti.tsx.
@@ -1092,7 +1107,7 @@ html.pre-revealing .pre-nav {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.content-fade-in { animation: content-fade-in 280ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.content-fade-in { animation: content-fade-in 280ms var(--ease-entrance) both; }
 
 @media (prefers-reduced-motion: reduce) {
   .kurs-in-next, .kurs-in-prev, .content-fade-in { animation-duration: 1ms; }
@@ -1137,10 +1152,10 @@ html.pre-revealing .pre-nav {
 }
 
 .mm-panel[data-mode="open"] {
-  animation: mm-unfurl 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: mm-unfurl 420ms var(--ease-entrance) both;
 }
 .mm-panel[data-mode="open"] .mm-item {
-  animation: mm-item-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: mm-item-in 420ms var(--ease-entrance) both;
   animation-delay: calc(140ms + var(--mm-i, 0) * 40ms);
 }
 
@@ -1156,10 +1171,10 @@ html.pre-revealing .pre-nav {
 
 /* Rows clear out first; the furl waits for them (180ms) before wiping up. */
 .mm-panel[data-mode="close"] {
-  animation: mm-furl 240ms cubic-bezier(0.4, 0, 1, 1) 180ms both;
+  animation: mm-furl 240ms var(--ease-in) 180ms both;
 }
 .mm-panel[data-mode="close"] .mm-item {
-  animation: mm-item-out 180ms cubic-bezier(0.4, 0, 1, 1) both;
+  animation: mm-item-out 180ms var(--ease-in) both;
   animation-delay: calc((var(--mm-n, 1) - 1 - var(--mm-i, 0)) * 20ms);
 }
 
@@ -1182,10 +1197,10 @@ html.pre-revealing .pre-nav {
   to { opacity: 0; transform: translateY(32px); }
 }
 .halobca-panel[data-state="open"] {
-  animation: halobca-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: halobca-in 420ms var(--ease-entrance) both;
 }
 .halobca-panel[data-state="closing"] {
-  animation: halobca-out 240ms cubic-bezier(0.4, 0, 1, 1) both;
+  animation: halobca-out 240ms var(--ease-in) both;
 }
 .halobca-scrim[data-state="open"] {
   animation: mm-fade-in 300ms ease-out both;
