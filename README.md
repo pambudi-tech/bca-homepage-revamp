@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BCA.co.id — Homepage Revamp
 
-## Getting Started
+A design exploration of the BCA (Bank Central Asia) public homepage, built as
+a Next.js App Router site in three locales (Indonesian, English, Chinese).
+This is **not** the production bca.co.id — it is a revamp prototype, currently
+gated behind a shared password (see "The preview gate" below).
 
-First, run the development server:
+## Getting started
+
+```bash
+git clone <this-repo>
+cd BCAcoid-homepage-revamp
+npm install
+cp .env.example .env.local
+```
+
+Fill in `.env.local` as needed, then:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**The site works without any environment variables set.** Every Supabase-backed
+section (products, promos, news, FAQ, banners) falls back to a bundled dataset
+when Supabase isn't configured, so a fresh clone isn't blocked on credentials.
+The only variable worth setting locally is `PREVIEW_PASSWORD` — leave it empty
+to skip the login gate entirely during development.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts
 
-## Learn More
+| Command | Purpose |
+|---|---|
+| `npm run dev` | Start the dev server (Turbopack) |
+| `npm run build` | Production build |
+| `npm run start` | Run a production build locally |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | `tsc --noEmit` |
 
-To learn more about Next.js, take a look at the following resources:
+**There is no test suite.** Verification on this project is `lint` +
+`typecheck` + `build`, plus manual/visual checks in the browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+  app/[locale]/        App Router pages, one tree shared across all 3 locales
+  components/          Preloader, ScrollReveal, SmoothScroll — page-level infra
+  components/home/      All homepage sections, nav chrome, and their fallback data
+  lib/                  Supabase fetchers (one per section) + a few shared hooks
+  i18n/                 next-intl routing/config
+  fonts/                BCA Sans, self-hosted WOFF2
+  proxy.ts              Middleware — see below, this is NOT middleware.ts
+messages/               en.json / id.json / zh.json — next-intl message catalogs
+supabase/               SQL schema + RLS policies for every fetched table
+public/assets/          Static images, icons, seasonal artwork
+docs/                   Design-token reference (see below)
+plans/                  Implementation plans from AI-assisted audit passes
+archive/                Removed-but-kept-for-reference code; excluded from
+                        tsconfig and ESLint, imported by nothing
+```
 
-## Deploy on Vercel
+**`src/proxy.ts`, not `middleware.ts`.** This Next.js version renames the
+middleware entry point and export — see `AGENTS.md` for what else differs from
+what you might expect.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Design system
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Colors, type, elevation, motion and the pill CTA button are all tokens defined
+in `src/app/globals.css`'s `@theme` block, with a semantic layer on top of the
+raw Figma-derived values. **New UI should reach for a token, not a literal.**
+See [`docs/design-tokens.md`](docs/design-tokens.md) for the full reference —
+what each token is for, how to pick a value for something new, and the rule
+for when a repeated value earns a token at all.
+
+## How data works
+
+Every homepage section that shows dynamic content (`products`, `promos`,
+`news`, `faq`, `banners`, `kurs`) fetches from Supabase's auto-generated REST
+API via plain `fetch()` — no client library — in `src/lib/*.ts`. Each fetcher:
+
+- Sets `next: { revalidate: N }` for ISR-style caching.
+- Falls back to a bundled dataset (`src/components/home/*-data.ts`) if the
+  fetch fails or the environment variables are unset, so no section ever
+  renders empty.
+
+The SQL that creates and seeds each table, plus its Row Level Security
+policies, lives in `supabase/*.sql`.
+
+## Localisation
+
+Three locales — `id` (default, unprefixed), `en`, `zh` — configured in
+`src/i18n/routing.ts` with `localePrefix: "as-needed"`. Messages live in
+`messages/{id,en,zh}.json` and must stay at key-set parity across all three.
+
+## The preview gate
+
+Setting `PREVIEW_PASSWORD` gates every route behind `/login` (see
+`src/proxy.ts`). **Leaving it unset makes the site fully public** — there is
+no gate at all in that case. This matters for anyone deploying a preview: an
+unset `NEXT_PUBLIC_SITE_URL` also defaults Open Graph/canonical URLs to
+`http://localhost:3000` rather than the real bank's domain — see
+`.env.example` for details on both.
+
+## Conventions
+
+This repo has several non-obvious conventions — the preloader handshake,
+how `ScrollReveal` expects the DOM to behave, the fetch-with-fallback pattern,
+and more — documented in [`AGENTS.md`](AGENTS.md) for anyone (human or AI)
+working on the code.
