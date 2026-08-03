@@ -266,7 +266,7 @@ export default function SearchRecommendation({
     <div
       onMouseDown={onMouseDown}
       style={maxHeight ? { maxHeight } : undefined}
-      className={`flex flex-col overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-[0px_10px_6px_rgba(204,204,204,0.07),0px_5px_5px_rgba(204,204,204,0.12),0px_1px_2px_rgba(204,204,204,0.14)] ${
+      className={`flex flex-col overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-card ${
         compact ? "max-h-[70dvh]" : "max-h-[640px]" /* = PANEL_MAX_HEIGHT; literal so Tailwind can see it */
       }`}
     >
@@ -380,7 +380,7 @@ export default function SearchRecommendation({
       <div
         className={`relative z-10 flex shrink-0 border-t border-neutral-300 transition-shadow duration-200 ${
           compact ? "flex-col" : "items-center justify-between"
-        } ${showBottomShadow ? "shadow-[0_-4px_8px_-2px_rgba(0,0,0,0.15)]" : ""}`}
+        } ${showBottomShadow ? "shadow-scroll-top" : ""}`}
       >
         {!isEmpty && hasResults && (
           <a

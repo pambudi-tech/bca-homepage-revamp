@@ -543,7 +543,7 @@ export default function Navbar({
                       </div>
 
                       {segmentOpen && (
-                        <div className="absolute right-0 top-[calc(100%+8px)] z-40 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-[0px_8px_16px_0px_rgba(0,0,0,0.10),0px_20px_32px_0px_rgba(0,0,0,0.12)]">
+                        <div className="absolute right-0 top-[calc(100%+8px)] z-40 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-panel">
                           {SEGMENTS.filter((segment) => segment !== activeSegment).map((segment) => (
                             <button
                               key={segment}
@@ -617,7 +617,7 @@ export default function Navbar({
                     </button>
 
                     {langOpen && (
-                      <div className="absolute right-0 top-[calc(100%+8px)] z-40 overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-[0px_11px_11px_0px_rgba(224,224,224,0.14),0px_24px_15px_0px_rgba(224,224,224,0.08),0px_3px_6px_0px_rgba(224,224,224,0.16)]">
+                      <div className="absolute right-0 top-[calc(100%+8px)] z-40 overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-menu">
                         {otherLocales.map((code) => (
                           <button
                             key={code}

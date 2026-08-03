@@ -30,9 +30,9 @@ export default async function MyBcaSection() {
             className="absolute left-[589px] top-0 h-[470px] w-[507px] object-cover"
           />
 
-          <div data-reveal className="absolute left-0 top-[108px] flex h-[328px] w-[480px] flex-col items-start justify-between rounded-t-3xl border-2 border-white/15 bg-gradient-to-b from-[rgba(18,20,23,0.25)] to-[rgba(18,20,23,0.5)] px-8 pb-10 pt-6 shadow-[-8px_0px_16px_0px_rgba(0,0,0,0.25)] backdrop-blur-[14px]">
+          <div data-reveal className="absolute left-0 top-[108px] flex h-[328px] w-[480px] flex-col items-start justify-between rounded-t-3xl border-2 border-white/15 bg-gradient-to-b from-[rgba(18,20,23,0.25)] to-[rgba(18,20,23,0.5)] px-8 pb-10 pt-6 shadow-edge-left backdrop-blur-[14px]">
             <div className="flex w-full flex-col items-start gap-4 text-white">
-              <p className="w-full text-[28px] font-semibold leading-10 tracking-[-0.64px] [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+              <p className="w-full text-[28px] font-semibold leading-10 tracking-[-0.64px] text-shadow-hero">
                 {t("heading")}
               </p>
               <p className="w-full text-base leading-6 text-neutral-500 opacity-80">
@@ -98,7 +98,7 @@ export default async function MyBcaSection() {
                 over a saturating backdrop filter, with `hero-search` painting the 2px
                 top-lit gradient outline. */}
             <div
-              className="hero-search relative flex flex-col items-center gap-8 overflow-clip rounded-t-3xl px-6 py-8 text-center shadow-[-8px_0px_16px_0px_rgba(0,0,0,0.25)]"
+              className="hero-search relative flex flex-col items-center gap-8 overflow-clip rounded-t-3xl px-6 py-8 text-center shadow-edge-left"
               style={{
                 backgroundColor: "rgba(0,0,0,0.3)",
                 backdropFilter: "blur(16px) saturate(1.25)",
@@ -108,7 +108,7 @@ export default async function MyBcaSection() {
             >
               {/* Capped at the Figma text width so the heading keeps its 3-line wrap. */}
               <div className="flex w-full max-w-80 flex-col items-center gap-4">
-                <p className="text-heading text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+                <p className="text-heading text-white text-shadow-hero">
                   {t("heading")}
                 </p>
                 <p className="w-64 max-w-full text-sm leading-5 text-neutral-500 opacity-80">

@@ -340,7 +340,7 @@ export default function HeroWidget({
           />
           <div className="relative flex flex-1 items-center justify-center gap-6">
             <div className="flex items-center justify-center px-2">
-              <p className="whitespace-nowrap text-lg font-semibold text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+              <p className="whitespace-nowrap text-lg font-semibold text-white text-shadow-hero">
                 {t("searchPrompt")}
               </p>
             </div>
@@ -408,7 +408,7 @@ export default function HeroWidget({
                     >
                       {/* Always in the markup — visibility is CSS-only (opacity),
                           so this copy is crawlable, not gated behind a hover-only mount. */}
-                      <div className="pointer-events-none absolute bottom-[calc(100%+16px)] left-1/2 z-30 w-56 -translate-x-1/2 rounded-2xl border border-neutral-200 bg-white p-4 text-left opacity-0 shadow-[0px_8px_16px_0px_rgba(0,0,0,0.10),0px_20px_32px_0px_rgba(0,0,0,0.12)] transition-opacity duration-200 group-hover/login:opacity-100">
+                      <div className="pointer-events-none absolute bottom-[calc(100%+16px)] left-1/2 z-30 w-56 -translate-x-1/2 rounded-2xl border border-neutral-200 bg-white p-4 text-left opacity-0 shadow-panel transition-opacity duration-200 group-hover/login:opacity-100">
                         <p className="text-sm font-bold text-neutral-800">{dest.label}</p>
                         <p className="mt-1 text-sm font-normal text-neutral-700">{dest.description}</p>
                         {/* Message-bubble tail — rotated square with only its
@@ -461,7 +461,7 @@ export default function HeroWidget({
                 </button>
                 {/* Same tooltip language as the login destination cards —
                     always in the markup, visibility is CSS-only (opacity). */}
-                <div className="pointer-events-none absolute bottom-[calc(100%+16px)] left-1/2 z-30 w-56 -translate-x-1/2 rounded-2xl border border-neutral-200 bg-white p-4 text-left opacity-0 shadow-[0px_8px_16px_0px_rgba(0,0,0,0.10),0px_20px_32px_0px_rgba(0,0,0,0.12)] transition-opacity duration-200 group-hover/promo:opacity-100">
+                <div className="pointer-events-none absolute bottom-[calc(100%+16px)] left-1/2 z-30 w-56 -translate-x-1/2 rounded-2xl border border-neutral-200 bg-white p-4 text-left opacity-0 shadow-panel transition-opacity duration-200 group-hover/promo:opacity-100">
                   <p className="text-sm font-normal text-neutral-700">
                     Temukan promo terbaik dari kami, khusus untuk Anda
                   </p>
@@ -609,7 +609,7 @@ export default function HeroWidget({
             href="https://www.bca.co.id/id/informasi/kurs"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-[120px] text-base font-semibold text-white underline [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]"
+            className="w-[120px] text-base font-semibold text-white underline text-shadow-hero"
           >
             {t("kursToday")}
           </a>

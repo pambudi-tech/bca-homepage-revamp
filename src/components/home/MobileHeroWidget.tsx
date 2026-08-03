@@ -509,7 +509,7 @@ export default function MobileHeroWidget({
           }}
         />
         <div className="relative flex w-full flex-col items-center gap-3">
-          <p className="px-2 text-[16px] font-semibold text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+          <p className="px-2 text-[16px] font-semibold text-white text-shadow-hero">
             {t("searchPrompt")}
           </p>
           <div

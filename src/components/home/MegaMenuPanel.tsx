@@ -89,7 +89,7 @@ export default function MegaMenuPanel({
           />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[212px] bg-gradient-to-t from-black/50 to-[rgba(18,20,23,0)]" />
           <div className="absolute bottom-2 left-2 flex w-[240px] flex-col overflow-hidden rounded-2xl border border-white/35 bg-black/30 px-5 pb-5 pt-4 backdrop-blur-[10px]">
-            <p className="text-subtitle text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+            <p className="text-subtitle text-white text-shadow-hero">
               {category.editorial.title}
             </p>
             {/* Revealed on hover; the 32px gap collapses with it. */}

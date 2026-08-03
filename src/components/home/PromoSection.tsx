@@ -134,7 +134,7 @@ function PromoCard({ promo, now, reveal = true }: { promo: Promo; now: Date; rev
       />
 
       {/* logo — sibling of the card so it overlaps the cover edge without being clipped */}
-      <div className="absolute left-5 top-[124px] size-[72px] overflow-clip rounded-xl border border-neutral-300 bg-white shadow-[0_1px_2px_0_rgba(204,204,204,0.14),0_5px_5px_0_rgba(204,204,204,0.12)]">
+      <div className="absolute left-5 top-[124px] size-[72px] overflow-clip rounded-xl border border-neutral-300 bg-white shadow-card">
         <img loading="lazy" decoding="async"
           src={promo.logo}
           alt=""

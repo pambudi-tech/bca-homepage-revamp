@@ -178,7 +178,7 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
             key={activeSlide}
             className="flex w-[240px] flex-col items-start gap-5 xl:w-[420px] xl:gap-8"
           >
-            <h1 className="animate-hero-title text-[24px] font-semibold leading-[32px] tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)] xl:text-[36px] xl:leading-[48px] xl:tracking-[-0.8px] xl:[text-shadow:none]">
+            <h1 className="animate-hero-title text-[24px] font-semibold leading-[32px] tracking-[-0.4px] text-white text-shadow-hero xl:text-[36px] xl:leading-[48px] xl:tracking-[-0.8px] xl:text-shadow-none">
               {slides[activeSlide].title}
             </h1>
             <div className="animate-hero-cta">

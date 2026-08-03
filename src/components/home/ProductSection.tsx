@@ -379,7 +379,7 @@ function ProductCard({
         }}
       >
         <div className="w-full" style={swap.copy}>
-          <p className="w-full text-title text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+          <p className="w-full text-title text-white text-shadow-hero">
             {copy.title}
           </p>
           <div className="grid w-full" style={{ gridTemplateRows: "1fr" }}>
@@ -414,7 +414,7 @@ function ProductCard({
         }}
       >
         <p
-          className="w-max whitespace-nowrap text-title text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]"
+          className="w-max whitespace-nowrap text-title text-white text-shadow-hero"
           style={{
             writingMode: "vertical-rl",
             textOrientation: "sideways",
@@ -550,7 +550,7 @@ function MobileProductCard({
         }}
       >
         <div className="w-full" style={swap.copy}>
-          <p className="w-full text-subtitle text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+          <p className="w-full text-subtitle text-white text-shadow-hero">
             {copy.title}
           </p>
           <div
@@ -925,7 +925,7 @@ function CurvedProductCard({
         }}
       >
         <div className="w-full" style={swap.copy}>
-          <p className="w-full text-title text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+          <p className="w-full text-title text-white text-shadow-hero">
             {copy.title}
           </p>
           <div

@@ -165,7 +165,7 @@ export default function FaqSection({ variant: initialVariant = "solid", categori
         ref={tabListRef}
         className={`hide-scrollbar relative z-10 flex items-center gap-4 overflow-x-auto border-b px-4 pt-2 [scrollbar-width:none] transition-shadow duration-200 xl:gap-4 xl:px-6 ${
           glass ? "border-white/20 bg-black/60 backdrop-blur-md" : "border-neutral-300 bg-white"
-        } ${showTopShadow ? "shadow-[0_4px_8px_-2px_rgba(0,0,0,0.15)]" : ""}`}
+        } ${showTopShadow ? "shadow-scroll-bottom" : ""}`}
       >
         {categories.map((cat) => {
           const isActive = cat.key === active.key;
@@ -235,7 +235,7 @@ export default function FaqSection({ variant: initialVariant = "solid", categori
       <div
         className={`relative z-10 flex flex-col items-center justify-center gap-4 border-t px-6 py-6 transition-shadow duration-200 xl:flex-row xl:justify-between xl:py-0 xl:h-24 ${
           glass ? "border-white/20 bg-black/60 backdrop-blur-md" : "border-neutral-300"
-        } ${showBottomShadow ? "shadow-[0_-4px_8px_-2px_rgba(0,0,0,0.15)]" : ""}`}
+        } ${showBottomShadow ? "shadow-scroll-top" : ""}`}
       >
         <p
           className={`text-center text-base font-semibold xl:w-[200px] xl:text-left ${
@@ -271,7 +271,7 @@ export default function FaqSection({ variant: initialVariant = "solid", categori
       className={`relative w-full max-w-[560px] overflow-clip rounded-3xl ${
         glass
           ? "hero-search isolate"
-          : "bg-white shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)]"
+          : "bg-white shadow-card"
       }`}
     >
       {cardBody}
@@ -324,11 +324,11 @@ export default function FaqSection({ variant: initialVariant = "solid", categori
         <div className="relative z-10 mx-auto flex w-[1280px] items-stretch justify-between px-8">
           <div className="flex flex-col justify-between py-6">
             <div className="flex items-center py-4 xl:w-auto xl:shrink-0">
-              <p className="text-eyebrow-lg uppercase text-white opacity-75 [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+              <p className="text-eyebrow-lg uppercase text-white opacity-75 text-shadow-hero">
                 {t("eyebrow")}
               </p>
             </div>
-            <p className="-mt-6 w-[260px] text-display text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+            <p className="-mt-6 w-[260px] text-display text-white text-shadow-hero">
               {t("heading")}
             </p>
           </div>
@@ -353,7 +353,7 @@ export default function FaqSection({ variant: initialVariant = "solid", categori
               Heading sits 24px above where the card starts overlapping the
               photo (the card's -mt-[112px] pull-up + this 24px gap). */}
           <div className="absolute left-4 top-2 flex items-center py-4">
-            <p className="text-eyebrow uppercase text-white opacity-75 [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+            <p className="text-eyebrow uppercase text-white opacity-75 text-shadow-hero">
               {t("eyebrow")}
             </p>
           </div>
@@ -391,7 +391,7 @@ export default function FaqSection({ variant: initialVariant = "solid", categori
               style={{ maskImage: "linear-gradient(to top, black 0%, transparent 5%)" }}
             />
           </div>
-          <p className="absolute bottom-12 left-4 right-4 text-heading text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+          <p className="absolute bottom-12 left-4 right-4 text-heading text-white text-shadow-hero">
             {t("heading")}
           </p>
         </div>

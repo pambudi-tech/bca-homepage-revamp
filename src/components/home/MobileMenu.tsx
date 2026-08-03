@@ -408,7 +408,7 @@ function MainView({
         </button>
 
         {langOpen && (
-          <div className="absolute bottom-[calc(100%+8px)] right-0 z-10 overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-[0px_11px_11px_0px_rgba(224,224,224,0.14)]">
+          <div className="absolute bottom-[calc(100%+8px)] right-0 z-10 overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-menu-flat">
             {otherLocales.map((code) => (
               <button
                 key={code}

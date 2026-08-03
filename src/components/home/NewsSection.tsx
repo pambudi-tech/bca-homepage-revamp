@@ -56,7 +56,7 @@ function HighlightArticle({ article }: { article: NewsArticle }) {
       href={article.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative block h-[320px] w-full shrink-0 overflow-clip rounded-xl border border-transparent text-left shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)] xl:h-[464px] xl:w-full xl:transition-transform xl:duration-300 xl:ease-out xl:hover:-translate-y-1.5 xl:hover:border-cyan-500">
+      className="group relative block h-[320px] w-full shrink-0 overflow-clip rounded-xl border border-transparent text-left shadow-card xl:h-[464px] xl:w-full xl:transition-transform xl:duration-300 xl:ease-out xl:hover:-translate-y-1.5 xl:hover:border-cyan-500">
       <img loading="lazy" decoding="async"
         src={article.image}
         alt=""
@@ -79,7 +79,7 @@ function HighlightArticle({ article }: { article: NewsArticle }) {
           isolation: "isolate",
         }}
       >
-        <p className="w-full text-subtitle text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)] transition-[font-weight] duration-300 xl:text-title xl:group-hover:font-bold">
+        <p className="w-full text-subtitle text-white text-shadow-hero transition-[font-weight] duration-300 xl:text-title xl:group-hover:font-bold">
           {article.title}
         </p>
         <AdditionalInfo date={article.date} category={article.category} />
@@ -99,7 +99,7 @@ function ArticleItem({ article }: { article: NewsArticle }) {
       href={article.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex h-[264px] w-[307px] shrink-0 snap-start flex-col overflow-clip rounded-xl border border-neutral-300 bg-white text-left shadow-[0px_1px_2px_0px_rgba(204,204,204,0.14),0px_5px_5px_0px_rgba(204,204,204,0.12),0px_10px_6px_0px_rgba(204,204,204,0.07)] transition-colors xl:h-36 xl:w-full xl:flex-row xl:items-center xl:transition-transform xl:duration-300 xl:ease-out xl:hover:-translate-y-1.5 xl:hover:border-cyan-500">
+      className="group flex h-[264px] w-[307px] shrink-0 snap-start flex-col overflow-clip rounded-xl border border-neutral-300 bg-white text-left shadow-card transition-colors xl:h-36 xl:w-full xl:flex-row xl:items-center xl:transition-transform xl:duration-300 xl:ease-out xl:hover:-translate-y-1.5 xl:hover:border-cyan-500">
       <div className="h-[120px] w-full shrink-0 overflow-clip bg-white xl:h-full xl:w-[142px]">
         <img loading="lazy" decoding="async"
           src={article.image}

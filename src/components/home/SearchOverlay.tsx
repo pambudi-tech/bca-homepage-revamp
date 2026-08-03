@@ -157,7 +157,7 @@ export default function SearchOverlay({
         className={`flex w-full max-w-[960px] flex-col px-10 pt-[104px] transition-[opacity,transform] duration-300 ease-out ${open ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
           }`}
       >
-        <p className="mb-4 text-center text-lg font-semibold text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+        <p className="mb-4 text-center text-lg font-semibold text-white text-shadow-hero">
           {t("searchPrompt")}
         </p>
 

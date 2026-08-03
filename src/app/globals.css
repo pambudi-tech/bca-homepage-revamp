@@ -116,6 +116,46 @@
   --text-display--line-height: calc(40 / 32);             /* 40px */
   --text-display--letter-spacing: -0.02em;                /* -0.64px */
   --text-display--font-weight: 600;
+
+  /* ---- Elevation & effects ----
+     Named for what they lift, not for how far. The stock Tailwind shadow-sm/
+     md/lg scale is left intact and still usable; these are the BCA-specific
+     stacks that were being copy-pasted.
+
+     --shadow-card was previously written three different ways across five call
+     sites — the canonical three-layer form here is the one used by the news
+     and FAQ cards. Layer order matters: box-shadow paints front-to-back in
+     source order, so the reversed copy in SearchRecommendation and the
+     two-layer copy in PromoSection did not composite identically. */
+  --shadow-card:
+    0px 1px 2px 0px rgba(204, 204, 204, 0.14),
+    0px 5px 5px 0px rgba(204, 204, 204, 0.12),
+    0px 10px 6px 0px rgba(204, 204, 204, 0.07);
+
+  /* Floating chrome that sits over the page: the hero widget's dropdowns and
+     the navbar's search panel. */
+  --shadow-panel:
+    0px 8px 16px 0px rgba(0, 0, 0, 0.10),
+    0px 20px 32px 0px rgba(0, 0, 0, 0.12);
+
+  /* Cast leftward by the MyBCA phone mock onto the panel behind it. */
+  --shadow-edge-left: -8px 0px 16px 0px rgba(0, 0, 0, 0.25);
+
+  /* The soft edge on a scroll container, marking content continuing past the
+     boundary. Two directions, same shadow. */
+  --shadow-scroll-top: 0 -4px 8px -2px rgba(0, 0, 0, 0.15);
+  --shadow-scroll-bottom: 0 4px 8px -2px rgba(0, 0, 0, 0.15);
+
+  /* Warm-grey lift used by the navbar's mega-menu shell and the mobile menu.
+     The mobile variant uses only the first layer — see --shadow-menu-flat. */
+  --shadow-menu:
+    0px 11px 11px 0px rgba(224, 224, 224, 0.14),
+    0px 24px 15px 0px rgba(224, 224, 224, 0.08),
+    0px 3px 6px 0px rgba(224, 224, 224, 0.16);
+  --shadow-menu-flat: 0px 11px 11px 0px rgba(224, 224, 224, 0.14);
+
+  /* White type over photography. Seventeen call sites carried this inline. */
+  --text-shadow-hero: 0px 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 @theme inline {
