@@ -87,7 +87,7 @@ export default async function SoliprioSection() {
           <div data-reveal className="flex w-[464px] flex-col gap-8">
             <Logos variant="desktop" />
             <div className="flex flex-col gap-3">
-              <p className="text-[32px] leading-10 tracking-[-0.64px] text-white">
+              <p className="text-display font-normal text-white">
                 {t("title")}
               </p>
               <p className="w-[320px] text-base leading-6 text-white/70">

@@ -108,7 +108,7 @@ export default async function MyBcaSection() {
             >
               {/* Capped at the Figma text width so the heading keeps its 3-line wrap. */}
               <div className="flex w-full max-w-80 flex-col items-center gap-4">
-                <p className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+                <p className="text-heading text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
                   {t("heading")}
                 </p>
                 <p className="w-64 max-w-full text-sm leading-5 text-neutral-500 opacity-80">

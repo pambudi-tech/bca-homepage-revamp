@@ -324,11 +324,11 @@ export default function FaqSection({ variant: initialVariant = "solid", categori
         <div className="relative z-10 mx-auto flex w-[1280px] items-stretch justify-between px-8">
           <div className="flex flex-col justify-between py-6">
             <div className="flex items-center py-4 xl:w-auto xl:shrink-0">
-              <p className="text-sm font-semibold uppercase leading-[14px] tracking-[2.1px] text-white opacity-75 [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+              <p className="text-eyebrow-lg uppercase text-white opacity-75 [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
                 {t("eyebrow")}
               </p>
             </div>
-            <p className="-mt-6 w-[260px] text-[32px] font-semibold leading-9 tracking-[-0.64px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+            <p className="-mt-6 w-[260px] text-display text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
               {t("heading")}
             </p>
           </div>
@@ -353,7 +353,7 @@ export default function FaqSection({ variant: initialVariant = "solid", categori
               Heading sits 24px above where the card starts overlapping the
               photo (the card's -mt-[112px] pull-up + this 24px gap). */}
           <div className="absolute left-4 top-2 flex items-center py-4">
-            <p className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-white opacity-75 [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+            <p className="text-eyebrow uppercase text-white opacity-75 [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
               {t("eyebrow")}
             </p>
           </div>
@@ -391,7 +391,7 @@ export default function FaqSection({ variant: initialVariant = "solid", categori
               style={{ maskImage: "linear-gradient(to top, black 0%, transparent 5%)" }}
             />
           </div>
-          <p className="absolute bottom-12 left-4 right-4 text-2xl font-semibold leading-8 tracking-[-0.48px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+          <p className="absolute bottom-12 left-4 right-4 text-heading text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
             {t("heading")}
           </p>
         </div>

@@ -79,7 +79,7 @@ function HighlightArticle({ article }: { article: NewsArticle }) {
           isolation: "isolate",
         }}
       >
-        <p className="w-full text-lg font-semibold leading-[26px] tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)] transition-[font-weight] duration-300 xl:text-xl xl:leading-7 xl:group-hover:font-bold">
+        <p className="w-full text-subtitle text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)] transition-[font-weight] duration-300 xl:text-title xl:group-hover:font-bold">
           {article.title}
         </p>
         <AdditionalInfo date={article.date} category={article.category} />
@@ -227,11 +227,11 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
         {/* Heading — eyebrow stacked above the h2, both mobile and desktop. */}
         <div data-reveal-group className="flex flex-col xl:gap-3">
           <div className="flex items-center py-4 xl:shrink-0 xl:w-60">
-            <p data-reveal className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px]">
+            <p data-reveal className="text-eyebrow uppercase text-blue-500 xl:text-eyebrow-lg">
               {t("eyebrow")}
             </p>
           </div>
-          <h2 data-reveal="blur-up" className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:w-[560px] xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]">
+          <h2 data-reveal="blur-up" className="text-heading text-blue-700 xl:w-[560px] xl:text-display">
             {t("heading")}
           </h2>
         </div>

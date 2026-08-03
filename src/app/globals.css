@@ -64,6 +64,58 @@
   --color-primary-hover: #0068c0;
   --color-primary-active: #00457f;
   --color-on-primary: var(--color-neutral-100);
+
+  /* ---- Type scale ----
+     Each token carries size, line height, letter spacing and weight together,
+     because in this design they are never chosen independently — a 24px
+     heading is always 32px leading at -0.02em, and writing that as four
+     classes at every call site is how the six near-identical copies of the
+     section heading happened.
+
+     Tracking is derived, not hand-picked. Every negative value in the old
+     markup works out to exactly -0.02em (-0.4px at 20px, -0.48px at 24px,
+     -0.64px at 32px) and every eyebrow to +0.15em (1.8px at 12px, 2.1px at
+     14px). Expressed in em here so a size change carries its tracking with it
+     instead of silently going stale.
+
+     Line heights follow Tailwind's own theme.css convention of writing the
+     px pair as a division, so the source values stay readable.
+
+     These do NOT replace Tailwind's stock text-xs..text-2xl scale, which is
+     still used in ~190 places. They sit alongside it and say what a piece of
+     type IS rather than how it is assembled. Any of the four properties can
+     still be overridden per call site with the matching utility (font-bold,
+     leading-9, tracking-*) — Tailwind resolves those through --tw-* variables,
+     so the override wins regardless of class order. */
+  --text-eyebrow: 0.75rem;                                /* 12px */
+  --text-eyebrow--line-height: 1;                         /* 12px */
+  --text-eyebrow--letter-spacing: 0.15em;                 /* 1.8px */
+  --text-eyebrow--font-weight: 600;
+
+  --text-eyebrow-lg: 0.875rem;                            /* 14px */
+  --text-eyebrow-lg--line-height: 1;                      /* 14px */
+  --text-eyebrow-lg--letter-spacing: 0.15em;              /* 2.1px */
+  --text-eyebrow-lg--font-weight: 600;
+
+  --text-subtitle: 1.125rem;                              /* 18px */
+  --text-subtitle--line-height: calc(26 / 18);            /* 26px */
+  --text-subtitle--letter-spacing: -0.02em;               /* -0.36px */
+  --text-subtitle--font-weight: 600;
+
+  --text-title: 1.25rem;                                  /* 20px */
+  --text-title--line-height: calc(28 / 20);               /* 28px */
+  --text-title--letter-spacing: -0.02em;                  /* -0.4px */
+  --text-title--font-weight: 600;
+
+  --text-heading: 1.5rem;                                 /* 24px */
+  --text-heading--line-height: calc(32 / 24);             /* 32px */
+  --text-heading--letter-spacing: -0.02em;                /* -0.48px */
+  --text-heading--font-weight: 600;
+
+  --text-display: 2rem;                                   /* 32px */
+  --text-display--line-height: calc(40 / 32);             /* 40px */
+  --text-display--letter-spacing: -0.02em;                /* -0.64px */
+  --text-display--font-weight: 600;
 }
 
 @theme inline {

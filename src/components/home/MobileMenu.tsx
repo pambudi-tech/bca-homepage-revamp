@@ -451,7 +451,7 @@ function SegmentView({
       <div className="mt-6 flex h-10 items-center px-1">
         <button onClick={onBack} className="flex items-center gap-3 text-white transition-opacity active:opacity-60">
           <ChevronLeft className="size-6" />
-          <span className="text-lg font-semibold leading-[26px]">{tMobile("kembali")}</span>
+          <span className="text-subtitle">{tMobile("kembali")}</span>
         </button>
       </div>
 
@@ -494,7 +494,7 @@ function DetailView({
       <div className="mt-6 flex h-10 items-center px-1">
         <button onClick={onBack} className="flex items-center gap-3 text-white transition-opacity active:opacity-60">
           <ChevronLeft className="size-6" />
-          <span className="text-lg font-semibold leading-[26px]">{cat.label}</span>
+          <span className="text-subtitle">{cat.label}</span>
         </button>
       </div>
 

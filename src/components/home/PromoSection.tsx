@@ -158,7 +158,7 @@ function MorePromoCard({ reveal = true }: { reveal?: boolean }) {
       className="group relative block h-[360px] w-[280px] shrink-0 overflow-clip rounded-3xl border border-white transition-transform duration-300 ease-out hover:-translate-y-1.5 xl:w-[302px]"
       style={{ backgroundImage: "linear-gradient(180deg, #005caa 0%, #00b5f0 100%)" }}
     >
-      <p className="absolute left-6 top-6 w-[157px] text-xl font-semibold leading-7 tracking-[-0.4px] text-white xl:text-2xl xl:leading-[1.3] xl:tracking-[-0.48px]">
+      <p className="absolute left-6 top-6 w-[157px] text-title text-white xl:text-2xl xl:leading-[1.3] xl:tracking-[-0.48px]">
         {t("viewMore")}
       </p>
       {/* diagonal (external) arrow */}
@@ -333,11 +333,11 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
             desktop. */}
         <div data-reveal-group className="relative flex flex-col xl:flex-row xl:gap-10">
           <div className="flex items-center py-4 xl:w-60 xl:shrink-0">
-            <p data-reveal className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px]">
+            <p data-reveal className="text-eyebrow uppercase text-blue-500 xl:text-eyebrow-lg">
               {t("eyebrow")}
             </p>
           </div>
-          <h2 data-reveal="blur-up" className="text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:w-[560px] xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px]">
+          <h2 data-reveal="blur-up" className="text-heading text-blue-700 xl:w-[560px] xl:text-display">
             {t("heading")}
           </h2>
           {/* 3D percentage glass (three.js) temporarily hidden — see PercentGlass.tsx.

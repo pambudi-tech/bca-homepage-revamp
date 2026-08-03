@@ -379,7 +379,7 @@ function ProductCard({
         }}
       >
         <div className="w-full" style={swap.copy}>
-          <p className="w-full text-xl font-semibold leading-7 tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+          <p className="w-full text-title text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
             {copy.title}
           </p>
           <div className="grid w-full" style={{ gridTemplateRows: "1fr" }}>
@@ -414,7 +414,7 @@ function ProductCard({
         }}
       >
         <p
-          className="w-max whitespace-nowrap text-xl font-semibold leading-7 tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]"
+          className="w-max whitespace-nowrap text-title text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]"
           style={{
             writingMode: "vertical-rl",
             textOrientation: "sideways",
@@ -550,7 +550,7 @@ function MobileProductCard({
         }}
       >
         <div className="w-full" style={swap.copy}>
-          <p className="w-full text-lg font-semibold leading-[26px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+          <p className="w-full text-subtitle text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
             {copy.title}
           </p>
           <div
@@ -925,7 +925,7 @@ function CurvedProductCard({
         }}
       >
         <div className="w-full" style={swap.copy}>
-          <p className="w-full text-xl font-semibold leading-7 tracking-[-0.4px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+          <p className="w-full text-title text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
             {copy.title}
           </p>
           <div
@@ -1459,12 +1459,12 @@ export default function ProductSection({
             className={`flex items-center py-4 xl:shrink-0 ${variant === "curved" ? "" : "xl:w-[240px]"
               }`}
           >
-            <p className="text-xs font-semibold uppercase leading-3 tracking-[1.8px] text-blue-500 xl:text-sm xl:leading-[14px] xl:tracking-[2.1px]">
+            <p className="text-eyebrow uppercase text-blue-500 xl:text-eyebrow-lg">
               {t("eyebrow")}
             </p>
           </div>
           <h2
-            className={`text-2xl font-semibold leading-8 tracking-[-0.48px] text-blue-700 xl:text-[32px] xl:leading-10 xl:tracking-[-0.64px] ${variant === "curved" ? "" : "xl:w-[560px]"
+            className={`text-heading text-blue-700 xl:text-display ${variant === "curved" ? "" : "xl:w-[560px]"
               }`}
           >
             {t("heading")}
@@ -1495,7 +1495,7 @@ export default function ProductSection({
                     onClick={() => selectCategory(cat.key)}
                     onMouseEnter={() => setHoverCategory(cat.key)}
                     onMouseLeave={() => setHoverCategory(null)}
-                    className={`origin-center text-left text-[32px] leading-10 tracking-[-0.64px] transition-all duration-200 ${isActive ? "font-bold" : "font-semibold"
+                    className={`origin-center text-left text-display transition-all duration-200 ${isActive ? "font-bold" : "font-semibold"
                       } ${dim ? "opacity-50" : "opacity-100"}`}
                     style={{ transform: `scale(${isActive ? 1 : 0.75})` }}
                   >

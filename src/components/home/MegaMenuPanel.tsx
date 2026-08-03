@@ -47,7 +47,7 @@ export default function MegaMenuPanel({
                   style={{ "--mm-i": i } as CSSProperties}
                   className="mm-item group flex items-center justify-between rounded-xl px-4 pb-4 pt-3 text-left transition-colors duration-200 hover:bg-cyan-100"
                 >
-                  <span className="text-xl font-semibold leading-7 tracking-[-0.4px] text-neutral-800 transition-colors duration-200 group-hover:font-bold group-hover:text-blue-500">
+                  <span className="text-title text-neutral-800 transition-colors duration-200 group-hover:font-bold group-hover:text-blue-500">
                     {product}
                   </span>
                   <ArrowRight className="size-5 shrink-0 text-blue-500 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
@@ -89,7 +89,7 @@ export default function MegaMenuPanel({
           />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[212px] bg-gradient-to-t from-black/50 to-[rgba(18,20,23,0)]" />
           <div className="absolute bottom-2 left-2 flex w-[240px] flex-col overflow-hidden rounded-2xl border border-white/35 bg-black/30 px-5 pb-5 pt-4 backdrop-blur-[10px]">
-            <p className="text-lg font-semibold leading-[26px] text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
+            <p className="text-subtitle text-white [text-shadow:0px_2px_4px_rgba(0,0,0,0.15)]">
               {category.editorial.title}
             </p>
             {/* Revealed on hover; the 32px gap collapses with it. */}
