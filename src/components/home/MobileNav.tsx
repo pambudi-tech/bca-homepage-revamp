@@ -23,11 +23,18 @@ export default function MobileNav({
   hidden,
   productCategories,
   megamenuContent,
+  searchOpen,
+  onOpenSearch,
 }: {
   scrolled: boolean;
   hidden: boolean;
   productCategories?: ProductCategory[];
   megamenuContent?: MegaMenuContent;
+  /** Whether Navbar's single shared SearchOverlay is currently up — this bar
+   *  only needs to reflect that in `aria-expanded`, not own the overlay
+   *  itself. See Navbar for why there is exactly one overlay instance. */
+  searchOpen: boolean;
+  onOpenSearch: () => void;
 }) {
   const t = useTranslations("mobileMenu");
   const tNav = useTranslations("nav");
@@ -56,6 +63,14 @@ export default function MobileNav({
       />
 
       <div className="flex items-center gap-3">
+        <button
+          onClick={onOpenSearch}
+          aria-label={tNav("search")}
+          aria-expanded={searchOpen}
+          className="flex size-10 items-center justify-center rounded-full bg-[rgba(18,20,23,0.5)] backdrop-blur-[4px] transition-transform active:scale-95"
+        >
+          <img src="/assets/cycle1/outline-search.svg" alt="" className="size-6" />
+        </button>
         <button
           onClick={scrollToLocation}
           aria-label={tNav("lokasiBca")}

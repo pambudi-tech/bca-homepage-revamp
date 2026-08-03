@@ -12,6 +12,7 @@ import {
 // commented-out usage below. Bring this import back when it's re-enabled.
 // import FlutedGlassOverlay from "./FlutedGlassOverlay";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
+import { useIsDesktop } from "@/lib/useIsDesktop";
 import { useIsLive } from "@/lib/useIsLive";
 
 /** Layout variants this section supports (only "accordion" is switcher-exposed; see `variant` below). */
@@ -112,24 +113,6 @@ const COPY_SWAP_MS = 200;
  *  sliding into more cards. See MobileProductCarousel. */
 const MOBILE_LOOP_CLONES = 2;
 
-/**
- * True at the `xl` breakpoint (1280px+), where the desktop layouts render.
- * SSR-safe: starts false so server and first client render agree, then matches
- * after mount. The accordion uses it to know whether it's showing the category
- * cards (desktop) or the product carousel (mobile) — the two drive autoplay
- * differently, and CSS `display:none` alone can't tell the timer which is live.
- */
-function useIsDesktop() {
-  const [isDesktop, setIsDesktop] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1280px)");
-    const sync = () => setIsDesktop(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
-  return isDesktop;
-}
 
 /**
  * `alt` alternates per swap so consecutive swaps land on a different animation

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react"
 import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
 import { useScrollLock } from "@/components/SmoothScroll";
+import { useIsDesktop } from "@/lib/useIsDesktop";
 import SearchPlaceholderCarousel from "./SearchPlaceholderCarousel";
 import SearchRecommendation, { panelMaxHeight } from "./SearchRecommendation";
 import {
@@ -15,9 +16,32 @@ import {
   removeRecentSearch,
 } from "./search-data";
 
+/** `outline-close.svg` hardcodes its fill to BCA blue (for the white-card
+ *  close buttons in HeroWidget/MobileHeroWidget's login panel) — no good on
+ *  this overlay's dark scrim. Inline with `currentColor`, same path as
+ *  MobileMenu's own close glyph, so `text-white` actually has something to
+ *  paint. */
+function CloseIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden
+    >
+      <path d="M6 6l12 12M18 6 6 18" />
+    </svg>
+  );
+}
+
 /**
- * Full-screen search launched from the navbar's magnifier (desktop only — the
- * mobile bar has no search button; phones search from the hero widget).
+ * Full-screen search launched from the navbar's magnifier, on both desktop
+ * and mobile (the mobile bar's search button sits next to the location
+ * button — see MobileNav).
  *
  * Unlike the hero's search, the recommendation panel here is open from the
  * first frame: the overlay exists *because* you asked to search, so there is
@@ -28,8 +52,18 @@ import {
  *
  * Everything inside is reused rather than re-styled: the bar is the hero's
  * glass pill (rolling placeholder included) and the dropdown is the same
- * `SearchRecommendation` the hero and mobile widgets render.
+ * `SearchRecommendation` the hero and mobile widgets render — in its `compact`
+ * form below `xl`, so the overlay's dropdown reads identically to the one the
+ * mobile hero widget opens.
  */
+
+/**
+ * Everything stacked above the dropdown inside the column — 104px of top
+ * padding, the prompt line, the search bar, the gap under it — plus breathing
+ * room below the panel. The desktop layout is fixed, so there is nothing to
+ * measure.
+ */
+const PANEL_TOP_OFFSET = 240;
 export default function SearchOverlay({
   open,
   onClose,
@@ -41,6 +75,9 @@ export default function SearchOverlay({
   const tNav = useTranslations("nav");
   const tSearch = useTranslations("search");
   const placeholders = t.raw("placeholders") as string[];
+  // Which of the dropdown's two layouts to render. CSS can't decide this one:
+  // `compact` is a prop that restructures the panel, not a set of classes.
+  const isDesktop = useIsDesktop();
 
   const [searchValue, setSearchValue] = useState("");
   const [recent, setRecent] = useState<string[]>([]);
@@ -141,29 +178,35 @@ export default function SearchOverlay({
       onMouseDown={(e) => {
         if (!contentRef.current?.contains(e.target as Node)) onClose();
       }}
-      className="fade-overlay fixed inset-0 z-[80] hidden justify-center overflow-hidden bg-black/60 backdrop-blur-[4px] xl:flex"
+      className="fade-overlay fixed inset-0 z-[80] flex justify-center overflow-hidden bg-black/60 backdrop-blur-[4px]"
     >
       <button
         type="button"
         onClick={onClose}
         aria-label={tSearch("close")}
-        className="absolute right-8 top-8 flex size-10 cursor-pointer items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
+        className="absolute right-4 top-4 flex size-10 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 xl:right-8 xl:top-8"
       >
-        <img src="/assets/cycle1/outline-close.svg" alt="" className="size-6" />
+        <CloseIcon className="size-6" />
       </button>
 
       <div
         ref={contentRef}
-        className={`flex w-full max-w-[960px] flex-col px-10 pt-[104px] transition-[opacity,transform] duration-300 ease-out ${open ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
+        className={`flex w-full max-w-[960px] flex-col px-5 pt-20 transition-[opacity,transform] duration-300 ease-out xl:px-10 xl:pt-[104px] ${open ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
           }`}
       >
-        <p className="mb-4 text-center text-lg font-semibold text-white text-shadow-hero">
+        {/* 16px on mobile, 18px from xl — matching each hero widget's own
+            prompt rather than splitting the difference. */}
+        <p className="mb-3 text-center text-base font-semibold text-white text-shadow-hero xl:mb-4 xl:text-lg">
           {t("searchPrompt")}
         </p>
 
-        {/* The hero's glass pill, unchanged — see HeroWidget's search bar. */}
+        {/* The hero's glass pill. One structure covers both breakpoints: the
+            button is absolutely placed (the mobile hero's arrangement) and the
+            input's padding opens up at xl to land on the desktop hero's 32px
+            text inset and 40px button. Sizes below xl are the mobile hero's:
+            48px tall, 36px button. */}
         <div
-          className="soft-light-border relative flex items-center gap-2 rounded-[50px] p-2"
+          className="soft-light-border relative h-12 w-full rounded-[50px] xl:h-14"
           style={
             {
               background: "rgba(0,0,0,0.5)",
@@ -174,34 +217,38 @@ export default function SearchOverlay({
             } as CSSProperties
           }
         >
-          <div className="relative flex h-10 min-w-0 flex-1 items-center">
-            <input
-              ref={inputRef}
-              type="text"
-              aria-label={tNav("search")}
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") submitSearch(searchValue);
-              }}
-              className="relative z-10 h-7 w-full bg-transparent px-6 text-base font-semibold text-white focus:outline-none"
-            />
-            {/* Unlike the hero's, this carousel keeps rolling while the field is
-                focused — the overlay opens focused, so gating it on blur would
-                mean it never shows at all. */}
-            <SearchPlaceholderCarousel
-              placeholders={placeholders}
-              visible={!searchValue}
-              live={open}
-            />
-          </div>
+          {/* text-base (16px) is deliberate at every width — iOS Safari zooms
+              the page when a focused input's font-size is below it. The rolling
+              placeholder is a sibling overlay, not the `placeholder` attribute,
+              so it can still be 14px on mobile. Same reasoning as the mobile
+              hero widget's bar. */}
+          <input
+            ref={inputRef}
+            type="text"
+            aria-label={tNav("search")}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") submitSearch(searchValue);
+            }}
+            className="relative z-10 h-full w-full bg-transparent pl-6 pr-14 text-base font-semibold text-white focus:outline-none xl:pl-8 xl:pr-[72px]"
+          />
+          {/* Unlike the heroes', this carousel keeps rolling while the field is
+              focused — the overlay opens focused, so gating it on blur would
+              mean it never shows at all. */}
+          <SearchPlaceholderCarousel
+            placeholders={placeholders}
+            visible={!searchValue}
+            live={open}
+            className="inset-y-0 left-6 right-14 text-sm xl:left-8 xl:right-[72px] xl:text-base"
+          />
           <button
             type="button"
             aria-label={tNav("search")}
             onClick={() => submitSearch(searchValue)}
-            className="relative z-10 flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white transition-transform hover:scale-105"
+            className="absolute right-2 top-1/2 z-10 flex size-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white transition-transform active:scale-95 xl:size-10 xl:hover:scale-105"
           >
-            <img src="/assets/cycle1/outline-search-1.svg" alt="" className="size-6" />
+            <img src="/assets/cycle1/outline-search-1.svg" alt="" className="size-[22px] xl:size-6" />
           </button>
         </div>
 
@@ -215,10 +262,11 @@ export default function SearchOverlay({
             onClearRecent={clearRecent}
             // Keeps the caret in the field while clicking a chip or a recent term.
             onMouseDown={(e) => e.preventDefault()}
-            // 104px of top padding + the prompt line + the bar + the 8px gap,
-            // plus breathing room under the panel: the fixed layout above makes
-            // this constant, so there is nothing to measure.
-            maxHeight={panelMaxHeight(240)}
+            // Below xl this is the mobile hero widget's dropdown, unchanged —
+            // same compact layout, same 70dvh ceiling from the card itself, so
+            // no height override here.
+            compact={!isDesktop}
+            maxHeight={isDesktop ? panelMaxHeight(PANEL_TOP_OFFSET) : undefined}
           />
         </div>
       </div>

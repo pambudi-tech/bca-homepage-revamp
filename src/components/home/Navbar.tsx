@@ -301,6 +301,11 @@ export default function Navbar({
   const panelKey = useRef<string | null>(null);
   const seq = useRef(0);
   const [scrolled, setScrolled] = useState(false);
+  // Owned here rather than duplicated per breakpoint: SearchOverlay portals to
+  // `document.body` and runs its own focus trap (`inert` on every other body
+  // child) — two independent instances toggling that on the same DOM would be
+  // one component fighting the other's bookkeeping. One overlay, opened by
+  // whichever nav bar's search button is actually visible.
   const [searchOpen, setSearchOpen] = useState(false);
   const [navHidden, setNavHidden] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
@@ -465,12 +470,16 @@ export default function Navbar({
 
   return (
     <>
-      {/* Mobile navigation (logo + search + burger) — below the xl breakpoint. */}
+      {/* Mobile navigation (logo + search + burger) — below the xl breakpoint.
+          Shares this component's single `searchOpen` state/overlay (below)
+          rather than owning its own — see the note by that state. */}
       <MobileNav
         scrolled={scrolled}
         hidden={navHidden}
         productCategories={productCategories}
         megamenuContent={megamenuContent}
+        searchOpen={searchOpen}
+        onOpenSearch={() => setSearchOpen(true)}
       />
 
       {/* Desktop navigation — hidden on mobile/tablet. `xl:contents` keeps the
@@ -732,9 +741,12 @@ export default function Navbar({
             </div>
           </div>
         </nav>
-
-        <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
       </div>
+
+      {/* Shared by both nav bars — see the note on `searchOpen` above. It
+          portals to `document.body`, so its placement in this tree only
+          matters for props/state, not layout. */}
+      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );
 }

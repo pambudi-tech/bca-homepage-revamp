@@ -15,22 +15,28 @@ function slotStyle(state: SlotState): CSSProperties {
 }
 
 /**
- * The desktop search bar's rolling placeholder — one line slides up and out
- * while the next rises into its place. Shared by the hero widget and the
- * navbar's search overlay, which reuses that bar wholesale. (The mobile hero
- * widget keeps its own 14px variant.)
+ * The search bar's rolling placeholder — one line slides up and out while the
+ * next rises into its place. Shared by all three search bars: the desktop hero
+ * widget, the mobile hero widget, and the navbar's search overlay.
  *
  * `live` gates the timer: a hidden or closed host passes false and nothing
  * here ticks.
+ *
+ * `className` carries the bar-specific inset and type size — the two differ per
+ * bar (the desktop bars sit the text 32px in at 16px, the mobile one 24px in at
+ * 14px) and the overlay switches between them responsively, so this can't be a
+ * boolean. Font size goes on the wrapper and cascades to the lines.
  */
 export default function SearchPlaceholderCarousel({
   placeholders,
   visible,
   live,
+  className = "inset-0 px-6 text-base",
 }: {
   placeholders: string[];
   visible: boolean;
   live: boolean;
+  className?: string;
 }) {
   const [slots, setSlots] = useState<Slot[]>([
     { text: placeholders[0], state: "active", instant: false },
@@ -88,14 +94,14 @@ export default function SearchPlaceholderCarousel({
   return (
     <div
       aria-hidden
-      className={`pointer-events-none absolute inset-0 flex items-center overflow-hidden px-6 transition-opacity duration-200 ${visible ? "opacity-100" : "opacity-0"
+      className={`pointer-events-none absolute flex items-center overflow-hidden transition-opacity duration-200 ${className} ${visible ? "opacity-100" : "opacity-0"
         }`}
     >
       <div className="relative h-12 w-full overflow-hidden">
         {slots.map((slot, i) => (
           <span
             key={i}
-            className={`absolute inset-0 flex h-12 items-center whitespace-nowrap text-base font-semibold text-neutral-500 ${slot.instant ? "" : "transition-all duration-700 ease-in-out"
+            className={`absolute inset-0 flex h-12 items-center whitespace-nowrap font-semibold text-neutral-500 ${slot.instant ? "" : "transition-all duration-700 ease-in-out"
               }`}
             style={slotStyle(slot.state)}
           >

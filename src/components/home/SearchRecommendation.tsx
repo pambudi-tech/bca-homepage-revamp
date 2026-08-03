@@ -206,6 +206,8 @@ export const PANEL_MAX_HEIGHT = 640;
  * the design's ceiling normally, but never taller than the room actually left
  * below it. Callers pass the measured offset plus whatever breathing room they
  * want under the panel.
+ *
+ * Desktop only — the `compact` panel carries its own `max-h-[70dvh]`.
  */
 export function panelMaxHeight(topPx: number): string {
   return `min(${PANEL_MAX_HEIGHT}px, calc(100dvh - ${Math.round(topPx)}px))`;

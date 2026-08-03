@@ -337,12 +337,6 @@ function MainView({
   return (
     <>
       <div className="mt-6 flex items-center gap-3">
-        <button
-          aria-label={tNav("search")}
-          className="flex size-10 shrink-0 items-center justify-center rounded-full border border-[rgba(186,213,255,0.25)] transition-colors active:bg-white/10"
-        >
-          <img src="/assets/cycle1/outline-search.svg" alt="" className="size-6" />
-        </button>
         <a
           href="https://www.bca.co.id/id/tentang-bca"
           target="_blank"
