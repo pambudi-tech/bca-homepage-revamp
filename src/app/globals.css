@@ -48,6 +48,22 @@
   --color-cyan-400: #47d1ff;
   --color-cyan-500: #00b5f0;
   --color-cyan-700: #0094d5;
+
+  /* ---- Semantic tier ----
+     The ramps above say what a color *is*; these say what it is *for*. Call
+     sites should reach for these, so a change to BCA's primary blue is one
+     edit here rather than a grep across every button.
+
+     --color-primary-hover and --color-primary-active are the two shades the
+     Figma button states use. They deliberately are NOT rungs on the blue ramp:
+     #0068c0 falls between blue-400 and blue-500, and #00457f sits just below
+     blue-600 without matching it. Wedging them in as blue-450/550 would break
+     the 1:1 correspondence with the Figma "Foundation / Colors" page, so they
+     live here as named states instead. */
+  --color-primary: var(--color-blue-500);
+  --color-primary-hover: #0068c0;
+  --color-primary-active: #00457f;
+  --color-on-primary: var(--color-neutral-100);
 }
 
 @theme inline {

@@ -77,7 +77,7 @@ function NavbarLink({
     "aria-current": active ? ("page" as const) : undefined,
     style: viewTransitionName ? ({ viewTransitionName } as CSSProperties) : undefined,
     className: `flex h-10 cursor-pointer items-center justify-center gap-0.5 rounded-full border px-4 transition-colors duration-300 ${active
-        ? `border-blue-500 ${hover ? "bg-[#0068c0]" : "bg-blue-500"}`
+        ? `border-blue-500 ${hover ? "bg-primary-hover" : "bg-blue-500"}`
         : hover
           ? "border-white/20 bg-[rgba(18,20,23,0.5)]"
           : "border-white/25 bg-[rgba(5,13,25,0.1)]"

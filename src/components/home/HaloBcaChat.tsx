@@ -473,7 +473,7 @@ export default function HaloBcaChat() {
                 form="halobca-form"
                 // Matches the product section's CTA button (ProductSection.tsx)
                 // — same height, radius, and hover/active blue steps.
-                className="flex h-12 w-full items-center justify-center rounded-full bg-blue-500 text-base font-semibold text-neutral-100 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f]"
+                className="flex h-12 w-full items-center justify-center rounded-full bg-blue-500 text-base font-semibold text-neutral-100 transition-colors duration-200 hover:bg-primary-hover active:bg-primary-active"
               >
                 {t("submit")}
               </button>
@@ -492,7 +492,7 @@ export default function HaloBcaChat() {
         data-open={open}
         aria-label={open ? t("close") : t("label")}
         className={`halobca-fab group relative flex items-center justify-center rounded-full border border-neutral-300 bg-neutral-100 px-4 py-4 text-blue-500 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-[background-color,color,transform,gap] duration-500 ease-out hover:bg-blue-500 hover:text-neutral-100 data-[open=true]:bg-blue-500 data-[open=true]:text-neutral-100 xl:hover:gap-2 xl:data-[open=true]:gap-2 ${ready ? "translate-y-0" : "translate-y-4"}`}
-        style={{ "--beam": "#0068c0", "--beam-radius": "9999px" } as React.CSSProperties}
+        style={{ "--beam": "var(--color-primary-hover)", "--beam-radius": "9999px" } as React.CSSProperties}
       >
         {/* Same border-beam mechanism as SoliprioCard — a light sweeping the
             edge to mark the button as interactive before anyone hovers it.

@@ -39,7 +39,7 @@ export default async function MyBcaSection() {
                 {t("description")}
               </p>
             </div>
-            <button className="flex h-12 items-center justify-center gap-1 rounded-full bg-blue-500 px-6 text-white">
+            <button className="flex h-12 items-center justify-center gap-1 rounded-full bg-blue-500 px-6 text-on-primary transition-colors duration-200 hover:bg-primary-hover active:bg-primary-active">
               <img loading="lazy" decoding="async" src="/assets/mybca/icon-download.svg" alt="" className="size-5" />
               <span className="text-base font-semibold">{t("downloadDesktop")}</span>
             </button>
@@ -115,7 +115,7 @@ export default async function MyBcaSection() {
                   {t("description")}
                 </p>
               </div>
-              <button className="flex h-12 items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-[#0068c0] active:bg-[#00457f]">
+              <button className="flex h-12 items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-primary-hover active:bg-primary-active">
                 <img loading="lazy" decoding="async" src="/assets/mybca/icon-download.svg" alt="" className="size-5" />
                 <span className="text-base font-semibold text-neutral-100">{t("downloadMobile")}</span>
               </button>
