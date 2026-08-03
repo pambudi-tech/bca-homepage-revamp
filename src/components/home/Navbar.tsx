@@ -7,6 +7,7 @@ import { Link, useRouter, usePathname } from "@/i18n/navigation";
 import { routing, type AppLocale } from "@/i18n/routing";
 import MegaMenuPanel, { type MegaMenuMode } from "./MegaMenuPanel";
 import MobileNav from "./MobileNav";
+import SearchOverlay from "./SearchOverlay";
 import { onPreloaderDone } from "@/components/Preloader";
 import type { ProductCategory } from "./product-data";
 import type { MegaMenuContent } from "@/lib/megamenu";
@@ -126,11 +127,22 @@ function ExpandIcon({ className = "size-4" }: { className?: string }) {
   );
 }
 
-function SearchButton({ label }: { label: string }) {
+function SearchButton({
+  label,
+  onClick,
+  expanded,
+}: {
+  label: string;
+  onClick: () => void;
+  /** Whether the search overlay this button opens is currently up. */
+  expanded: boolean;
+}) {
   const [hover, setHover] = useState(false);
   return (
     <button
       aria-label={label}
+      aria-expanded={expanded}
+      onClick={onClick}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       className={`flex h-10 cursor-pointer items-center justify-start gap-0.5 rounded-full border transition-all duration-300 ${hover
@@ -289,6 +301,7 @@ export default function Navbar({
   const panelKey = useRef<string | null>(null);
   const seq = useRef(0);
   const [scrolled, setScrolled] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [navHidden, setNavHidden] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [langHover, setLangHover] = useState(false);
@@ -572,7 +585,16 @@ export default function Navbar({
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <SearchButton label={tNav("search")} />
+                  <SearchButton
+                    label={tNav("search")}
+                    expanded={searchOpen}
+                    onClick={() => {
+                      // A mega menu left open behind the overlay would still be
+                      // hover-tracking a bar the user can no longer reach.
+                      closeNow();
+                      setSearchOpen(true);
+                    }}
+                  />
                   <IconLinkButton label={tNav("lokasiBca")} icon={<LocationIcon />} onClick={scrollToLocation} />
 
                   <div ref={langRef} className="relative">
@@ -710,6 +732,8 @@ export default function Navbar({
             </div>
           </div>
         </nav>
+
+        <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
       </div>
     </>
   );

@@ -198,6 +198,19 @@ const PRODUCT_ICONS: Record<ProductIcon, (p: IconProps) => React.ReactElement> =
 
 /* ------------------------------------------------------------------------- */
 
+/** Tallest the desktop panel ever gets, viewport permitting. */
+export const PANEL_MAX_HEIGHT = 640;
+
+/**
+ * Height cap for a panel whose top edge sits `topPx` below the viewport top:
+ * the design's ceiling normally, but never taller than the room actually left
+ * below it. Callers pass the measured offset plus whatever breathing room they
+ * want under the panel.
+ */
+export function panelMaxHeight(topPx: number): string {
+  return `min(${PANEL_MAX_HEIGHT}px, calc(100dvh - ${Math.round(topPx)}px))`;
+}
+
 type Props = {
   recommendations: SearchRecommendations;
   keyword: string;
@@ -215,6 +228,12 @@ type Props = {
    * running off a short phone viewport.
    */
   compact?: boolean;
+  /**
+   * Overrides the default height cap (any CSS length). The navbar's search
+   * overlay opens the panel right below the viewport top, so its ceiling is
+   * whatever the viewport leaves rather than a fixed 640px.
+   */
+  maxHeight?: string;
 };
 
 export default function SearchRecommendation({
@@ -226,6 +245,7 @@ export default function SearchRecommendation({
   onClearRecent,
   onMouseDown,
   compact = false,
+  maxHeight,
 }: Props) {
   const t = useTranslations("search");
   const { products, information, program, order } = recommendations;
@@ -245,8 +265,9 @@ export default function SearchRecommendation({
   return (
     <div
       onMouseDown={onMouseDown}
+      style={maxHeight ? { maxHeight } : undefined}
       className={`flex flex-col overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-[0px_10px_6px_rgba(204,204,204,0.07),0px_5px_5px_rgba(204,204,204,0.12),0px_1px_2px_rgba(204,204,204,0.14)] ${
-        compact ? "max-h-[70dvh]" : "max-h-[640px]"
+        compact ? "max-h-[70dvh]" : "max-h-[640px]" /* = PANEL_MAX_HEIGHT; literal so Tailwind can see it */
       }`}
     >
       <div

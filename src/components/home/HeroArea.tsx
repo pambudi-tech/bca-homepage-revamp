@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { KursEntry } from "@/lib/kurs";
 import type { Slide } from "./hero-slides";
 import HeroSection from "./HeroSection";
@@ -20,8 +20,21 @@ import MobileHeroWidget from "./MobileHeroWidget";
 export default function HeroArea({ kurs, banners }: { kurs: KursEntry[]; banners: Slide[] }) {
   const [searchActive, setSearchActive] = useState(false);
 
+  // Lifts the whole page stack above the floating chrome for as long as the
+  // search is open — see `.hero-search-open` in globals.css for why a class on
+  // <html> rather than a prop: the stack's wrapper lives in a server component.
+  useEffect(() => {
+    if (!searchActive) return;
+    const root = document.documentElement;
+    root.classList.add("hero-search-open");
+    return () => root.classList.remove("hero-search-open");
+  }, [searchActive]);
+
   return (
-    <div className="relative z-10">
+    // `z-20` while searching, so the dimming overlay below outranks the
+    // sections further down the page — they carry `relative z-10` too, and
+    // being later in the DOM they would otherwise paint straight over it.
+    <div className={`relative ${searchActive ? "z-20" : "z-10"}`}>
       <HeroSection slides={banners} />
 
       {/* Search-focus page dimming — shared by both widget forms; each sits at

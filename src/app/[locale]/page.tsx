@@ -46,8 +46,11 @@ export default async function Home({
 
   return (
     <main id="main-content" className="flex flex-1 flex-col overflow-x-clip bg-blue-100">
-      {/* 1. KONTEN UTAMA: z-10 dan background solid untuk "menutupi" footer saat di atas */}
-      <div className="relative z-10 bg-blue-100">
+      {/* 1. KONTEN UTAMA: z-10 dan background solid untuk "menutupi" footer saat di atas.
+          `page-stack` menaikkan seluruh blok ini di atas chrome mengambang
+          (BackToTop / cookie banner / HaloBCA) selama hero search terbuka —
+          lihat `.hero-search-open` di globals.css. */}
+      <div className="page-stack relative z-10 bg-blue-100">
         <Navbar productCategories={produk.categories} megamenuContent={megamenu} />
         {/* .pre-stage — held invisible by the intro preloader, fades up as
             its curtain lifts (see the preloader rules in globals.css). */}

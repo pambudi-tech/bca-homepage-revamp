@@ -3,13 +3,14 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ElementType } from "react";
 import { useTranslations } from "next-intl";
 import type { KursEntry } from "@/lib/kurs";
-import { useLenis } from "@/components/SmoothScroll";
+import { useLenis, useScrollLock } from "@/components/SmoothScroll";
 import { useIsLive } from "@/lib/useIsLive";
 import { useLayoutVariant } from "@/lib/useLayoutVariant";
 import Confetti from "./Confetti";
 import { HERO_VARIANTS, LOGIN_DESTINATIONS, type HeroVariant } from "./hero-variant";
 import LayoutSwitcher from "./LayoutSwitcher";
-import SearchRecommendation from "./SearchRecommendation";
+import SearchPlaceholderCarousel from "./SearchPlaceholderCarousel";
+import SearchRecommendation, { panelMaxHeight } from "./SearchRecommendation";
 import {
   addRecentSearch,
   bcaSearchResultUrl,
@@ -22,107 +23,17 @@ import {
 // Gap (px) between the viewport top and the widget once the search is focused.
 const SEARCH_TOP_GAP = 56;
 
-const PLACEHOLDER_LINE_HEIGHT = 48;
+/** Gap under the open dropdown, so it never runs flush into the viewport edge. */
+const PANEL_BOTTOM_GAP = 24;
 
-type SlotState = "active" | "exiting" | "waiting";
-type Slot = { text: string; state: SlotState; instant: boolean };
+/** Distance from the search bar's bottom edge down to the dropdown's top. */
+const PANEL_OFFSET = 8;
 
 const softLightBorderVars = (thickness: string, gradient: string): CSSProperties =>
   ({
     "--slb-thickness": thickness,
     "--slb-gradient": gradient,
   }) as CSSProperties;
-
-function slotStyle(state: SlotState): CSSProperties {
-  if (state === "active") return { transform: "translateY(0px)", opacity: 1 };
-  if (state === "exiting")
-    return { transform: `translateY(-${PLACEHOLDER_LINE_HEIGHT}px)`, opacity: 0 };
-  return { transform: `translateY(${PLACEHOLDER_LINE_HEIGHT}px)`, opacity: 0 }; // waiting (below, ready to enter)
-}
-
-function SearchPlaceholderCarousel({
-  placeholders,
-  visible,
-  live,
-}: {
-  placeholders: string[];
-  visible: boolean;
-  live: boolean;
-}) {
-  const [slots, setSlots] = useState<Slot[]>([
-    { text: placeholders[0], state: "active", instant: false },
-    { text: placeholders[1 % placeholders.length], state: "waiting", instant: false },
-  ]);
-  const activeSlotRef = useRef(0);
-  const nextIndexRef = useRef(2 % placeholders.length);
-
-  useEffect(() => {
-    if (!live) return;
-    let swapTimer: ReturnType<typeof setTimeout> | undefined;
-    let rafOuter = 0;
-    let rafInner = 0;
-
-    const id = setInterval(() => {
-      const activeIdx = activeSlotRef.current;
-      const waitingIdx = activeIdx === 0 ? 1 : 0;
-
-      setSlots((prev) => {
-        const next = [...prev];
-        next[activeIdx] = { ...next[activeIdx], state: "exiting" };
-        next[waitingIdx] = { ...next[waitingIdx], state: "active" };
-        return next;
-      });
-      activeSlotRef.current = waitingIdx;
-
-      swapTimer = setTimeout(() => {
-        const text = placeholders[nextIndexRef.current % placeholders.length];
-        nextIndexRef.current += 1;
-        setSlots((prev) => {
-          const next = [...prev];
-          next[activeIdx] = { text, state: "waiting", instant: true };
-          return next;
-        });
-        rafOuter = requestAnimationFrame(() => {
-          rafInner = requestAnimationFrame(() => {
-            setSlots((prev) => {
-              const next = [...prev];
-              next[activeIdx] = { ...next[activeIdx], instant: false };
-              return next;
-            });
-          });
-        });
-      }, 700);
-    }, 2500);
-
-    return () => {
-      clearInterval(id);
-      clearTimeout(swapTimer);
-      cancelAnimationFrame(rafOuter);
-      cancelAnimationFrame(rafInner);
-    };
-  }, [live, placeholders]);
-
-  return (
-    <div
-      aria-hidden
-      className={`pointer-events-none absolute inset-0 flex items-center overflow-hidden px-6 transition-opacity duration-200 ${visible ? "opacity-100" : "opacity-0"
-        }`}
-    >
-      <div className="relative h-12 w-full overflow-hidden">
-        {slots.map((slot, i) => (
-          <span
-            key={i}
-            className={`absolute inset-0 flex h-12 items-center whitespace-nowrap text-base font-semibold text-neutral-500 ${slot.instant ? "" : "transition-all duration-700 ease-in-out"
-              }`}
-            style={slotStyle(slot.state)}
-          >
-            {slot.text}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 /**
  * The quick-action rail has two design phases, flipped live from the in-page
@@ -195,6 +106,7 @@ export default function HeroWidget({
   const [variant, setVariant] = useLayoutVariant<HeroVariant>("hero", "initial", HERO_VARIANTS);
   const [searchValue, setSearchValue] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
+  const [scrollSettled, setScrollSettled] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [hoveredAction, setHoveredAction] = useState<number | null>(null);
   const [initialPromoHover, setInitialPromoHover] = useState(false);
@@ -206,9 +118,14 @@ export default function HeroWidget({
   // Position of the recommendation panel, measured from the search bar. The
   // panel is rendered at the widget root (outside the search bar's
   // `overflow-clip` container) so it can spill over the quick-actions + kurs.
-  const [panelPos, setPanelPos] = useState<{ left: number; width: number; top: number } | null>(
-    null
-  );
+  // `top` is root-relative (it positions the panel); `viewportTop` is the same
+  // edge measured against the viewport, which is what caps the panel's height.
+  const [panelPos, setPanelPos] = useState<{
+    left: number;
+    width: number;
+    top: number;
+    viewportTop: number;
+  } | null>(null);
 
   const recommendations = useMemo(() => getSearchRecommendations(searchValue), [searchValue]);
   const showRecommendation = searchFocused;
@@ -219,16 +136,39 @@ export default function HeroWidget({
   // page-dimming overlay (state lifted to HeroArea via onSearchActiveChange).
   const focusSearch = () => {
     setSearchFocused(true);
+    setScrollSettled(false);
     const el = rootRef.current;
     if (!el) return;
     if (lenis) {
-      lenis.scrollTo(el, { offset: -SEARCH_TOP_GAP, duration: 0.8 });
+      // The scroll lock has to wait for this animation: `lenis.stop()` runs
+      // `reset()`, which kills any scrollTo in flight and would strand the
+      // widget halfway. `onComplete` fires on every path, including the one
+      // where we're already parked at the target.
+      lenis.scrollTo(el, {
+        offset: -SEARCH_TOP_GAP,
+        duration: 0.8,
+        onComplete: () => setScrollSettled(true),
+      });
     } else {
       window.scrollTo({
         top: window.scrollY + el.getBoundingClientRect().top - SEARCH_TOP_GAP,
         behavior: "smooth",
       });
+      // Native smooth scrolling reports no completion, so approximate it.
+      window.setTimeout(() => setScrollSettled(true), 600);
     }
+  };
+
+  // Search mode freezes the page, same as the navbar's search overlay — but
+  // only once the widget has finished travelling to its search position.
+  // `searchFocused &&` closes the race where the user dismisses the search
+  // before the scroll lands: the late `onComplete` then can't lock a page
+  // that is no longer searching.
+  useScrollLock(searchFocused && scrollSettled);
+
+  const closeSearch = () => {
+    setSearchFocused(false);
+    setScrollSettled(false);
   };
 
   useEffect(() => {
@@ -261,12 +201,21 @@ export default function HeroWidget({
       if (!searchBarRef.current || !rootRef.current) return;
       const sb = searchBarRef.current.getBoundingClientRect();
       const root = rootRef.current.getBoundingClientRect();
-      setPanelPos({ left: sb.left - root.left, width: sb.width, top: sb.bottom - root.top });
+      setPanelPos({
+        left: sb.left - root.left,
+        width: sb.width,
+        top: sb.bottom - root.top,
+        viewportTop: sb.bottom,
+      });
     };
     measure();
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
-  }, [showRecommendation]);
+    // Re-measured once the search scroll settles: `viewportTop` is only
+    // meaningful at the widget's final resting position, and taking it from
+    // wherever the page happened to be mid-animation would size the panel
+    // against the wrong viewport gap.
+  }, [showRecommendation, scrollSettled]);
   const trackRef = useRef<HTMLDivElement>(null);
   const firstCardRef = useRef<HTMLAnchorElement>(null);
   const cardStepRef = useRef(0);
@@ -412,7 +361,7 @@ export default function HeroWidget({
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   onFocus={focusSearch}
-                  onBlur={() => setSearchFocused(false)}
+                  onBlur={closeSearch}
                   onKeyDown={(e) => {
                     if (e.key === "Escape") e.currentTarget.blur();
                     if (e.key === "Enter") {
@@ -751,14 +700,18 @@ export default function HeroWidget({
           aria-hidden
           data-shown={showRecommendation}
           className="fade-overlay absolute inset-x-0 bottom-0 z-30 rounded-b-3xl bg-black/50 backdrop-blur-[2px]"
-          style={{ top: panelPos.top + 8 }}
+          style={{ top: panelPos.top + PANEL_OFFSET }}
         />
       )}
 
       {showRecommendation && panelPos && (
         <div
           className="absolute z-50"
-          style={{ left: panelPos.left, width: panelPos.width, top: panelPos.top + 8 }}
+          style={{
+            left: panelPos.left,
+            width: panelPos.width,
+            top: panelPos.top + PANEL_OFFSET,
+          }}
         >
           <SearchRecommendation
             recommendations={recommendations}
@@ -768,6 +721,17 @@ export default function HeroWidget({
             onRemoveRecent={removeRecent}
             onClearRecent={clearRecent}
             onMouseDown={(e) => e.preventDefault()}
+            // While the widget is still travelling, size against where it is
+            // *going* (SEARCH_TOP_GAP is the scroll target) rather than where
+            // it currently sits — measuring mid-flight would open the panel
+            // squashed and then snap it to full height on landing. Once the
+            // scroll settles the real measurement takes over, which is what
+            // keeps this honest if the page couldn't scroll that far.
+            maxHeight={panelMaxHeight(
+              (scrollSettled ? panelPos.viewportTop : SEARCH_TOP_GAP + panelPos.top) +
+                PANEL_OFFSET +
+                PANEL_BOTTOM_GAP
+            )}
           />
         </div>
       )}

@@ -105,6 +105,21 @@ body {
   transition: opacity var(--fade-ms) ease-in-out, visibility 0s var(--fade-ms);
 }
 
+/* The hero search's dimming scrim lives inside the page's main stack, which
+   sits at `z-index: 10`. `<main>` itself is `position: static`, so the page's
+   floating chrome — BackToTop (50), the cookie banner (60), HaloBCA's button
+   (70) — competes at the ROOT stacking level and outranks anything that stack
+   can contain, however high its own z-index goes. Punching the whole stack up
+   past 70 while a hero search is open is what puts the scrim over them; the
+   navbar and the hero keep their existing order relative to each other because
+   they travel together.
+
+   Toggled from HeroArea. The navbar-launched SearchOverlay needs none of this:
+   it portals to <body>, so its own `z-[80]` already compares at the root. */
+html.hero-search-open .page-stack {
+  z-index: 80;
+}
+
 /* Hide the horizontal scrollbar on the mobile quick-action rail while keeping
    it swipeable. `scrollbar-width: none` (Firefox) is set inline via a utility. */
 .hide-scrollbar::-webkit-scrollbar {
