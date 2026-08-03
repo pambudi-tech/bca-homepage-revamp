@@ -126,10 +126,10 @@ const BOUGH_COLOR = 0x4a3325;
 /** Distance along the bough between clusters, px. Close enough that clusters
  *  run into one another — the bough should read as heavy with flower, with
  *  wood showing only in the odd gap. */
-const CLUSTER_SPACING = 21;
-const BLOSSOMS_PER_CLUSTER: [number, number] = [7, 13];
+const CLUSTER_SPACING = 17;
+const BLOSSOMS_PER_CLUSTER: [number, number] = [10, 16];
 /** How far a flower strays from its cluster's centre, px. */
-const CLUSTER_SPREAD = 25;
+const CLUSTER_SPREAD = 16;
 /** How far a cluster's own centre sits off the bough, px. */
 const CLUSTER_OFFSET = 19;
 const BLOSSOM_SIZE: [number, number] = [15, 30];
@@ -148,14 +148,14 @@ const LIGHT_SIZE: [number, number] = [15, 25];
 /* ── coins ────────────────────────────────────────────────────────────── */
 
 const COIN_SPACING = 210;
-const COIN_RADIUS: [number, number] = [7, 10.5];
+const COIN_RADIUS: [number, number] = [10, 14];
 const COIN_GOLD = 0xd9a83c;
 
 /* ── lanterns ─────────────────────────────────────────────────────────── */
 
 /** Body height and half-width, px, before the per-lantern size step. */
-const LANTERN_HEIGHT = 34;
-const LANTERN_RADIUS = 21;
+const LANTERN_HEIGHT = 42;
+const LANTERN_RADIUS = 26;
 /** Big and small alternate, so a row of them has a rhythm. */
 const LANTERN_STEPS = [1, 0.76];
 /** Length of the cord from the tie down to the lantern, px. */
@@ -432,6 +432,20 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
       rate: 0.22 + rand() * 0.2,
     });
   }
+
+  // Short red cords keep the coins visibly suspended instead of making them
+  // read as loose gold discs floating inside the blossom clusters.
+  const coinCordGeometry = new THREE.CylinderGeometry(0.65, 0.65, 1, 6);
+  coinCordGeometry.translate(0, -0.5, 0);
+  const coinCordMaterial = new THREE.MeshBasicMaterial({ color: 0x7d1c20 });
+  const coinCordLength = 18 * scale;
+  coinSpots.forEach((coin) => {
+    const cord = new THREE.Mesh(coinCordGeometry, coinCordMaterial);
+    cord.position.set(coin.x, coin.y + coinCordLength, Z_COIN - 1);
+    cord.scale.y = coinCordLength;
+    group.add(cord);
+  });
+  disposables.push(coinCordGeometry, coinCordMaterial);
 
   /* --- lanterns -------------------------------------------------------- */
 

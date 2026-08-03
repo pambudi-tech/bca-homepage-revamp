@@ -6,6 +6,7 @@ import { getPromoBadge, getPromoTimestamp, type Promo, type PromoBadgeKey } from
 import Confetti from "./Confetti";
 import ChristmasDecor from "./ChristmasDecor";
 import CnyDecor from "./CnyDecor";
+import LebaranDecor from "./LebaranDecor";
 import EventSlider from "./EventSlider";
 import LayoutSwitcher from "./LayoutSwitcher";
 import { useLayoutVariant } from "@/lib/useLayoutVariant";
@@ -29,7 +30,7 @@ const CARD_SHADOW =
  * wholesale rather than recolouring the confetti, so each occasion gets motion
  * that actually belongs to it.
  */
-const PROMO_THEMES = ["confetti", "christmas", "cny"] as const;
+const PROMO_THEMES = ["confetti", "christmas", "cny", "lebaran"] as const;
 type PromoTheme = (typeof PROMO_THEMES)[number];
 
 function PromoRibbon({ badgeKey, label }: { badgeKey: Exclude<PromoBadgeKey, "default">; label: string }) {
@@ -305,6 +306,7 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
           { value: "confetti", name: "Confetti", description: "Animasi default sepanjang tahun." },
           { value: "christmas", name: "Natal", description: "Salju, garland cemara berlampu hangat, dan pita merah (WebGL)." },
           { value: "cny", name: "Imlek", description: "Kelopak mei hua, ranting berbunga, lampion, dan petasan (WebGL)." },
+          { value: "lebaran", name: "Lebaran", description: "Rumbai janur, ketupat dan lentera, bintang emas, dan bulan sabit (WebGL)." },
         ]}
       />
 
@@ -326,7 +328,15 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
       />
       {/* seasonal dressing — confetti by default (pure JS + CSS), or a WebGL
           holiday scene. Both sit behind the content at z-0. */}
-      {theme === "christmas" ? <ChristmasDecor /> : theme === "cny" ? <CnyDecor /> : <Confetti />}
+      {theme === "christmas" ? (
+        <ChristmasDecor />
+      ) : theme === "cny" ? (
+        <CnyDecor />
+      ) : theme === "lebaran" ? (
+        <LebaranDecor />
+      ) : (
+        <Confetti />
+      )}
 
       <div className="relative z-10 mx-auto flex w-full max-w-[560px] flex-col gap-10 px-4 xl:w-[1280px] xl:max-w-none xl:gap-10 xl:px-0">
         {/* Heading — stacked on mobile, eyebrow column + h2 side by side on
