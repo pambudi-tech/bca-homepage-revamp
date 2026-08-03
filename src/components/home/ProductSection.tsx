@@ -1599,7 +1599,7 @@ export default function ProductSection({
             href="https://www.bca.co.id/id/individu/layanan/goodplan-bca"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-12 items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-primary-hover active:bg-primary-active"
+            className="btn-base btn-primary"
           >
             <span className="text-base font-semibold text-neutral-100">{t("ctaLabel")}</span>
             <span
@@ -1633,7 +1633,7 @@ export default function ProductSection({
             {t("ctaHint", { category: category.label })}
           </p>
           <button
-            className="flex h-12 items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-primary-hover active:bg-primary-active"
+            className="btn-base btn-primary"
           >
             <span className="text-base font-semibold text-neutral-100">{t("ctaLabel")}</span>
             {/* Drawn as a mask so the shape stays one shared asset and the

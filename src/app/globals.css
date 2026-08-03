@@ -179,6 +179,60 @@
   --font-sans: var(--font-bca-sans);
 }
 
+/* ---------- Buttons ----------
+   The pill CTA, defined once. Before this existed the same twelve-utility
+   string was pasted into five files, and it had already drifted: one copy had
+   lost its hover and active states entirely, and two disagreed about whether
+   the label was `text-white` or `text-neutral-100`.
+
+   These are `@utility`, not plain classes, so they participate in the utility
+   layer: Tailwind emits custom utilities BEFORE built-in ones, which means a
+   call site can still override anything with a normal utility
+   (`btn-primary w-full`, `btn-secondary xl:hidden`). Built-in `hover:`
+   variants are emitted after these blocks at equal specificity, so a per-site
+   hover override wins too.
+
+   Deliberately NOT covered here: the cookie banner's pair and the hero CTA.
+   They share the radius and not much else — different transition properties,
+   an `active:scale` press, a breakpoint-dependent size, and in the hero's case
+   an inverted fill (white at rest, blue on hover). Folding them in would need
+   more overrides than they have classes today. */
+
+@utility btn-base {
+  display: flex;
+  height: calc(var(--spacing) * 12);
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--spacing) * 1);
+  border-radius: calc(infinity * 1px);
+  padding-inline: calc(var(--spacing) * 6);
+  transition-property: color, background-color, border-color;
+  transition-duration: 200ms;
+}
+
+@utility btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+
+  &:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  &:active {
+    background-color: var(--color-primary-active);
+  }
+}
+
+@utility btn-secondary {
+  border: 1px solid var(--color-blue-500);
+  background-color: var(--color-neutral-100);
+  color: var(--color-blue-500);
+
+  &:hover {
+    background-color: var(--color-blue-100);
+  }
+}
+
 /* No `scroll-behavior: smooth` here — Lenis drives smooth scrolling and
    overrides it with `scroll-behavior: auto !important` anyway (see the
    .lenis-smooth rules at the bottom of this file). Declaring it just meant two

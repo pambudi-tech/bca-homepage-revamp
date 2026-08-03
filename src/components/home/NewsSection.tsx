@@ -332,7 +332,7 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
             href={`https://www.bca.co.id/id/informasi/${active.key}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="mx-auto mt-9 flex h-12 w-fit items-center justify-center gap-1 rounded-full border border-blue-500 bg-neutral-100 px-6 transition-colors duration-200 xl:hidden"
+            className="btn-base btn-secondary mx-auto mt-9 w-fit xl:hidden"
           >
             <span className="text-base font-semibold text-blue-500">{t("seeMore")}</span>
             <span

@@ -471,9 +471,7 @@ export default function HaloBcaChat() {
               <button
                 type="submit"
                 form="halobca-form"
-                // Matches the product section's CTA button (ProductSection.tsx)
-                // — same height, radius, and hover/active blue steps.
-                className="flex h-12 w-full items-center justify-center rounded-full bg-blue-500 text-base font-semibold text-neutral-100 transition-colors duration-200 hover:bg-primary-hover active:bg-primary-active"
+                className="btn-base btn-primary w-full gap-0 text-base font-semibold"
               >
                 {t("submit")}
               </button>

@@ -381,7 +381,7 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
             target="_blank"
             rel="noopener noreferrer"
             data-reveal
-            className="mx-auto mt-9 flex h-12 w-fit items-center justify-center gap-1 rounded-full bg-blue-500 px-6 transition-colors duration-200 hover:bg-primary-hover active:bg-primary-active xl:hidden"
+            className="btn-base btn-primary mx-auto mt-9 w-fit xl:hidden"
           >
             <span className="text-base font-semibold text-neutral-100">
               {t("viewMore")}

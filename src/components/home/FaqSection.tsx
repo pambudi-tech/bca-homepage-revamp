@@ -248,10 +248,10 @@ export default function FaqSection({ variant: initialVariant = "solid", categori
           href="https://www.bca.co.id/id/bantuan/pusat-informasi"
           target="_blank"
           rel="noopener noreferrer"
-          className={`flex h-12 shrink-0 items-center justify-center gap-1 rounded-full border px-6 transition-colors duration-200 ${
+          className={`btn-base shrink-0 ${
             glass
-              ? "border-white text-white hover:bg-white/10"
-              : "border-blue-500 hover:bg-blue-100"
+              ? "rounded-full border border-white text-white transition-colors duration-200 hover:bg-white/10"
+              : "btn-secondary"
           }`}
         >
           <span className={`text-base font-semibold ${glass ? "text-white" : "text-blue-500"}`}>{t("cta")}</span>
