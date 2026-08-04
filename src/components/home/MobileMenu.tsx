@@ -257,7 +257,7 @@ export default function MobileMenu({
     >
       <div className="flex h-full w-full max-w-[440px] flex-col">
         {/* Menu nav bar */}
-        <div className="flex h-16 shrink-0 items-center justify-between px-4">
+        <div className="flex h-[calc(4rem+env(safe-area-inset-top))] shrink-0 items-center justify-between px-4 pt-[env(safe-area-inset-top)]">
           <img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-8 w-[102px]" />
           <div className="flex items-center gap-2">
             {/* The segment picker is its own view, so the pill is hidden while it's open. */}

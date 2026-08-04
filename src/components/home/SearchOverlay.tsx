@@ -192,14 +192,14 @@ export default function SearchOverlay({
         type="button"
         onClick={onClose}
         aria-label={tSearch("close")}
-        className="absolute right-4 top-3 z-10 flex size-10 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 xl:right-8 xl:top-8"
+        className="absolute right-4 top-[calc(0.75rem+env(safe-area-inset-top))] z-10 flex size-10 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 xl:right-8 xl:top-8"
       >
         <CloseIcon className="size-6" />
       </button>
 
       <div
         ref={contentRef}
-        className="flex w-full max-w-[960px] flex-col px-5 pt-20 xl:px-10 xl:pt-[104px]"
+        className="flex w-full max-w-[960px] flex-col px-5 pt-[calc(5rem+env(safe-area-inset-top))] xl:px-10 xl:pt-[104px]"
       >
         {/* 16px on mobile, 18px from xl — matching each hero widget's own
             prompt rather than splitting the difference. */}

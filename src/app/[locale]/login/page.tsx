@@ -71,52 +71,6 @@ export default async function LoginPage({
       id="main-content"
       className="relative isolate flex min-h-dvh flex-col items-center justify-center gap-8 overflow-hidden bg-blue-100 px-6 py-16"
     >
-      {/* Clove pattern, same two SVGs ProductSection uses. `isolate` on <main>
-          plus `-z-10` here puts the motif above the page fill and below the
-          card without any of the content needing a z-index of its own. Both
-          SVGs are `preserveAspectRatio="none"`, so width AND height have to be
-          pinned — `h-auto` collapses them and the motif stretches. Static, not
-          parallaxed: there is nothing to scroll on this page. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        {/* Under xl a single clove bottom-right, the treatment ProductSection
-            gives its own mobile breakpoint — the pair below would crowd the
-            card on a narrow screen. */}
-        <img
-          decoding="async"
-          src="/assets/product/bg-clove-b.svg"
-          alt=""
-          className="absolute -right-24 -bottom-[120px] h-[460px] w-[350px] opacity-60 xl:hidden"
-        />
-        {/* The desktop pair fades out via a mask rather than relying on the
-            SVG's own edges: bg-clove-{a,b} are each four overlapping
-            translucent layers, and where a layer ends short of the ones
-            beneath it, the art has a hard seam baked in — invisible against
-            ProductSection's busy background, but a stray straight line
-            floating on this page's plain fill. The radial mask dissolves
-            every edge (seams included) to transparent before it reaches the
-            image's own boundary, so nothing hard-edged survives to the eye. */}
-        <img
-          decoding="async"
-          src="/assets/product/bg-clove-a.svg"
-          alt=""
-          style={{
-            maskImage: "radial-gradient(70% 70% at 50% 45%, black 55%, transparent 100%)",
-            WebkitMaskImage: "radial-gradient(70% 70% at 50% 45%, black 55%, transparent 100%)",
-          }}
-          className="absolute top-1/2 -left-[440px] hidden h-[850px] w-[620px] -translate-y-1/2 opacity-70 xl:block"
-        />
-        <img
-          decoding="async"
-          src="/assets/product/bg-clove-b.svg"
-          alt=""
-          style={{
-            maskImage: "radial-gradient(70% 70% at 50% 45%, black 55%, transparent 100%)",
-            WebkitMaskImage: "radial-gradient(70% 70% at 50% 45%, black 55%, transparent 100%)",
-          }}
-          className="absolute top-[calc(50%+320px)] -right-[232px] hidden h-[1009px] w-[768px] -translate-y-1/2 opacity-70 xl:block"
-        />
-      </div>
-
       <form
         action={login}
         className="w-full max-w-[360px] rounded-2xl border border-neutral-300 bg-white p-8 shadow-card"

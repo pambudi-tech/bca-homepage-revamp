@@ -3,10 +3,12 @@ import localFont from "next/font/local";
 import { hasLocale } from "next-intl";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import SmoothScroll from "@/components/SmoothScroll";
 import Preloader from "@/components/Preloader";
 import PreviewIdleLogout from "@/components/PreviewIdleLogout";
+import { AUTH_COOKIE_NAME } from "@/lib/preview-auth";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
@@ -69,6 +71,9 @@ export async function generateMetadata({
 
 export const viewport: Viewport = {
   themeColor: "#005CAA",
+  // Lets the hero background reach behind display cutouts on supported mobile
+  // browsers. Interactive UI uses `safe-area-inset-top` where needed.
+  viewportFit: "cover",
 };
 
 export default async function LocaleLayout({
@@ -84,6 +89,9 @@ export default async function LocaleLayout({
   }
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "nav" });
+  const password = process.env.PREVIEW_PASSWORD;
+  const hasPreviewSession =
+    !password || (await cookies()).get(AUTH_COOKIE_NAME)?.value === password;
 
   return (
     <html lang={locale} className={`${bcaSans.variable} h-full antialiased overscroll-none bg-blue-100`}>
@@ -102,9 +110,10 @@ export default async function LocaleLayout({
           </a>
           <SmoothScroll>
             <PreviewIdleLogout />
-            {/* Server-rendered, and visible from the first paint by CSS alone —
-                see the .pre-* block in globals.css. */}
-            <Preloader />
+            {/* Do not show the loading page over the password gate. Once the
+                preview session is established, the redirected site request
+                mounts it normally from the first paint. */}
+            {hasPreviewSession && <Preloader />}
             {children}
           </SmoothScroll>
         </NextIntlClientProvider>
