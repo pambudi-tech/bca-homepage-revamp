@@ -40,7 +40,6 @@ async function login(formData: FormData) {
       secure: true,
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24 * 7,
     });
     redirect(redirectTo);
   }

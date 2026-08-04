@@ -6,6 +6,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import SmoothScroll from "@/components/SmoothScroll";
 import Preloader from "@/components/Preloader";
+import PreviewIdleLogout from "@/components/PreviewIdleLogout";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
@@ -100,6 +101,7 @@ export default async function LocaleLayout({
             {t("skipToContent")}
           </a>
           <SmoothScroll>
+            <PreviewIdleLogout />
             {/* Server-rendered, and visible from the first paint by CSS alone —
                 see the .pre-* block in globals.css. */}
             <Preloader />

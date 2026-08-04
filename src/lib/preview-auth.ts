@@ -1,6 +1,7 @@
 import { routing } from "@/i18n/routing";
 
 export const AUTH_COOKIE_NAME = "preview_auth";
+export const PREVIEW_IDLE_TIMEOUT_MS = 8 * 60 * 60 * 1000;
 
 /**
  * Where the preview gate lives for a given locale. `localePrefix: "as-needed"`
