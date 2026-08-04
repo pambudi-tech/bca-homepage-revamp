@@ -8,6 +8,7 @@
     "subheading": "Enter the password to continue",
     "passwordPlaceholder": "Password",
     "wrongPassword": "Wrong password, try again.",
+    "success": "Password accepted. Opening the website…",
     "submit": "Enter",
     "languageSwitcher": "Choose language",
     "disclaimer": "Property of Natuno. All rights reserved."

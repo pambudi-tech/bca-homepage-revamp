@@ -120,12 +120,12 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
   return (
     <div
       ref={rootRef}
-      className="relative h-[528px] overflow-clip bg-blue-500 xl:h-[620px]"
+      className="relative h-[516px] overflow-clip bg-blue-500 xl:h-[620px]"
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
       {/* Banner is a fixed 620px anchored to the section bottom, so on the
-          shorter (528px) mobile section its top spills out above and is clipped
+          shorter (516px) mobile section its top spills out above and is clipped
           — the desktop 620px section shows it in full. */}
       <div
         ref={parallaxRef}
