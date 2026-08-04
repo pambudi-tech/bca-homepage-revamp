@@ -4,10 +4,13 @@
     "description": "BCA.co.id 主页改版原型"
   },
   "login": {
-    "heading": "预览密码",
+    "heading": "BCA Homepage Revamp",
+    "subheading": "请输入密码以访问",
     "passwordPlaceholder": "密码",
     "wrongPassword": "密码错误，请重试。",
-    "submit": "进入"
+    "submit": "进入",
+    "languageSwitcher": "选择语言",
+    "disclaimer": "Property of Natuno. All rights reserved."
   },
   "languages": {
     "id": "Indonesia",

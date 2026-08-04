@@ -1,12 +1,14 @@
 import createMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { AUTH_COOKIE_NAME } from "@/lib/preview-auth";
+import {
+  AUTH_COOKIE_NAME,
+  LOGIN_PATHS,
+  loginPathForRequest,
+} from "@/lib/preview-auth";
 import { routing } from "@/i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
-
-const LOGIN_PATHS = new Set(["/login", "/en/login", "/zh/login"]);
 
 // Static files (public/ assets, manifest, etc.) — never run locale routing
 // against these, next-intl's middleware rewrites/redirects unprefixed paths
@@ -26,7 +28,7 @@ export function proxy(request: NextRequest) {
   if (password && !LOGIN_PATHS.has(pathname)) {
     const cookie = request.cookies.get(AUTH_COOKIE_NAME)?.value;
     if (cookie !== password) {
-      const loginUrl = new URL("/login", request.url);
+      const loginUrl = new URL(loginPathForRequest(pathname), request.url);
       loginUrl.searchParams.set("redirectTo", pathname);
       return NextResponse.redirect(loginUrl);
     }

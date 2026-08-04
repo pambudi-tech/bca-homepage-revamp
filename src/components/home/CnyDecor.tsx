@@ -41,12 +41,12 @@ import {
  *     tassel swings *late*, reading the gust from a quarter-second ago, which
  *     is what gives the pair weight
  *   • lights — sparse warm gold between the two blossom layers
- *   • coins — pierced gold tucked into the flowers, turning slowly
- *   • firecrackers — a red string off each end of the run, standing in for
- *     the Christmas garland's side legs. Only wide enough sections get them —
- *     below that the run behaves exactly like the Christmas one at the same
- *     width and just bleeds off both edges, so mobile has no dangling parts
- *     from either scene
+ *   • coins — pierced gold on a red cord, hung from the bottom of each swag so
+ *     each one lands in the gap between two lanterns, turning slowly
+ *   • firecrackers — a red string pinned to each section edge, standing in for
+ *     the Christmas garland's side legs and framing the band the way the
+ *     Lebaran ketupat bunches do. They overhang the edge a little on purpose;
+ *     on the narrowest phones only the right one is kept
  *   • petals — falling, and turning edge-on as they fall
  *   • clouds — xiangyun scrolls in thin gold, drifting sideways far behind
  *     everything as texture rather than as objects
@@ -98,19 +98,20 @@ const CLOUD_ALPHA: [number, number] = [0.09, 0.18];
 
 const GARLAND_TOP = 6;
 /**
- * Below this the run drops its ends and bleeds off both edges instead —
- * matching the width at which the Christmas garland's own legs disappear, so
- * the two scenes agree on when a phone stops getting dangling parts.
+ * How far the run overshoots each edge, px. Unlike the Christmas garland this
+ * one never turns down into legs — it just carries straight off both sides, so
+ * the overhang is what sells it as a run continuing past the section rather
+ * than one that stops at the frame.
  */
-const FRAME_MIN_WIDTH = 900;
-/** Where the run stops, in from each edge — this is also where the firecracker
- *  strings hang, so it has to stay comfortably on screen. */
-const FRAME_INSET = 34;
+const GARLAND_OVERHANG = 150;
 const FRAME_CORNER = 78;
-/** Tighter than the Christmas swag. There are no legs here, so every lantern
- *  hangs off a junction in the top run, and the run needs enough junctions to
- *  carry four or five of them. */
-const SWAG_TARGET = 260;
+/** At or below this width there is only room for one firecracker string, on
+ *  the right; anything wider keeps the default pair. */
+const SINGLE_SIDE_WIDTH = 640;
+/** Every lantern hangs off a junction in the run, so this sets how many of
+ *  them there are. Wide swags on purpose: at the lantern's current size a
+ *  tighter run crowds them into a solid row of red. */
+const SWAG_TARGET = 320;
 /** Shallower than the Christmas swag: the lanterns hang below every tie, and
  *  they need the room between the garland and the section's headline. */
 const SWAG_SAG: [number, number] = [44, 64];
@@ -124,12 +125,14 @@ const BOUGH_COLOR = 0x4a3325;
 /* ── blossom ──────────────────────────────────────────────────────────── */
 
 /** Distance along the bough between clusters, px. Close enough that clusters
- *  run into one another — the bough should read as heavy with flower, with
- *  wood showing only in the odd gap. */
-const CLUSTER_SPACING = 17;
-const BLOSSOMS_PER_CLUSTER: [number, number] = [10, 16];
-/** How far a flower strays from its cluster's centre, px. */
-const CLUSTER_SPREAD = 16;
+ *  run well into one another — the bough should read as heavy with flower,
+ *  with wood showing only in the odd gap. */
+const CLUSTER_SPACING = 9;
+const BLOSSOMS_PER_CLUSTER: [number, number] = [12, 19];
+/** How far a flower strays from its cluster's centre, px. Kept tight against
+ *  the closer spacing: a wide spread at this density stops reading as knots of
+ *  flower and turns back into an even dusting. */
+const CLUSTER_SPREAD = 12;
 /** How far a cluster's own centre sits off the bough, px. */
 const CLUSTER_OFFSET = 19;
 const BLOSSOM_SIZE: [number, number] = [15, 30];
@@ -147,17 +150,19 @@ const LIGHT_SIZE: [number, number] = [15, 25];
 
 /* ── coins ────────────────────────────────────────────────────────────── */
 
-const COIN_SPACING = 210;
-const COIN_RADIUS: [number, number] = [10, 14];
+/** One coin per swag, hung from the bough's lowest point so it lands squarely
+ *  between two lanterns rather than inside a flower cluster. */
+const COIN_RADIUS: [number, number] = [12, 16];
+/** Length of the cord from the bough down to the coin, px. Long enough to
+ *  clear the flowers so the coin hangs in the open air between lanterns. */
+const COIN_HANG: [number, number] = [30, 46];
 const COIN_GOLD = 0xd9a83c;
 
 /* ── lanterns ─────────────────────────────────────────────────────────── */
 
-/** Body height and half-width, px, before the per-lantern size step. */
-const LANTERN_HEIGHT = 42;
-const LANTERN_RADIUS = 26;
-/** Big and small alternate, so a row of them has a rhythm. */
-const LANTERN_STEPS = [1, 0.76];
+/** Body height and half-width, px, before the viewport scale. */
+const LANTERN_HEIGHT = 56;
+const LANTERN_RADIUS = 35;
 /** Length of the cord from the tie down to the lantern, px. */
 const LANTERN_HANG: [number, number] = [10, 22];
 /** How much of the gust a lantern takes, rad per unit. */
@@ -178,9 +183,20 @@ const LANTERN_GLOW = 0xff7a3a;
 /** These stand in for the side legs the Christmas garland has, so they carry
  *  the same sort of vertical weight. */
 const CRACKER_DROP: [number, number] = [170, 260];
-/** Vertical pitch between crackers, px. */
+/** Vertical pitch between crackers, px — at CRACKER_SIZE 1. */
 const CRACKER_PITCH = 16;
 const CRACKER_RED = 0xd0202c;
+/**
+ * How far in from the section edge the string's spine sits, px — same
+ * treatment the Lebaran ketupat gets. Small on purpose: the crackers swing out
+ * ~9.7px either side of the spine, so at this inset the outer ones clear the
+ * edge and the string reads as coming from off-screen rather than being parked
+ * politely inside the section.
+ */
+const CRACKER_INSET = 2;
+/** Size multiplier on the crackers themselves. The spine keeps its drop; only
+ *  the bodies grow, so a bigger cracker means proportionally fewer of them. */
+const CRACKER_SIZE = 1.9;
 
 /* ── stacking ─────────────────────────────────────────────────────────── */
 
@@ -189,9 +205,9 @@ const Z_PETAL_BACK = -400;
 const Z_BOUGH = -60;
 const Z_BLOSSOM_BACK = -40;
 const Z_LIGHT = -20;
-/** Between the two blossom layers on purpose — coins sit *in* the flowers, so
- *  the front layer has to be able to grow over them. */
-const Z_COIN = -28;
+/** In front of the flowers: a coin hangs clear of the bough on its own cord,
+ *  so nothing should grow over it. */
+const Z_COIN = 16;
 const Z_BLOSSOM_FRONT = 0;
 const Z_CRACKER = 14;
 const Z_LANTERN_GLOW = 18;
@@ -251,19 +267,20 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
   const disposables: { dispose: () => void }[] = [];
   const scale = clamp(width / REFERENCE_WIDTH, SCALE_RANGE[0], SCALE_RANGE[1]);
 
-  // Wide enough sections stop the run at the inset and hang a firecracker
-  // string off each end; narrow ones bleed the run off both edges instead, the
-  // same call the Christmas garland makes at this width — so a phone gets one
-  // plain top run and nothing dangling from either scene.
-  const { curve, ties, ends, bleeds } = createFramePath(THREE, {
+  // Always a top run that carries off both edges — never the Christmas
+  // garland's turned-down legs. The firecrackers are pinned to the section's
+  // own edges and no longer hang off this run's ends, so there is nothing left
+  // that needs the run to stop on screen.
+  const { curve, ties } = createFramePath(THREE, {
     width,
     height,
     scale,
     rand,
-    legs: width >= FRAME_MIN_WIDTH ? "none" : "bleed",
+    legs: "bleed",
     top: GARLAND_TOP,
-    inset: FRAME_INSET,
+    inset: 0,
     corner: FRAME_CORNER,
+    overhang: GARLAND_OVERHANG,
     swagTarget: SWAG_TARGET,
     sag: SWAG_SAG,
     tension: SWAG_TENSION,
@@ -271,10 +288,9 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
   const length = curve.getLength();
   const offsetAt = framePathSampler(THREE, curve);
 
-  /** Where both ends sit on screen the flower thins into them rather than
-   *  being cut off square. A bleeding run already ends past the section's
-   *  edges, where nobody can see it. */
-  const taper = (u: number) => (bleeds ? 1 : clamp(Math.min(u, 1 - u) / 0.03, 0.35, 1));
+  // The run always ends past the section's edges, where nobody can see where it
+  // stops — so unlike the Christmas garland nothing here has to thin into the
+  // ends.
 
   /* --- the bough ------------------------------------------------------- */
 
@@ -293,11 +309,11 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
   // what makes the flowers gather into bunches with bare wood showing between
   // them, instead of dusting the bough evenly the way pine needles do.
   const clusterCount = Math.max(3, Math.round(length / (CLUSTER_SPACING * scale)));
-  const knots: { x: number; y: number; thin: number }[] = [];
+  const knots: { x: number; y: number }[] = [];
   for (let i = 0; i < clusterCount; i++) {
     const u = clamp((i + rand() * 0.85) / clusterCount, 0.004, 0.996);
     const spot = offsetAt(u, rand() < 0.5 ? -1 : 1, rand() * CLUSTER_OFFSET * scale);
-    knots.push({ x: spot.x, y: spot.y, thin: taper(u) });
+    knots.push({ x: spot.x, y: spot.y });
   }
 
   const perKnot = knots.map(() => Math.round(between(BLOSSOMS_PER_CLUSTER, rand())));
@@ -338,7 +354,7 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
       layer.root[slot * 2 + 1] = knot.y + (rand() + rand() - 1) * spread;
 
       // A flower faces the viewer, so its angle is pure decoration.
-      layer.shape[slot * 4] = between(BLOSSOM_SIZE, rand()) * scale * knot.thin * (toBack ? 0.9 : 1);
+      layer.shape[slot * 4] = between(BLOSSOM_SIZE, rand()) * scale * (toBack ? 0.9 : 1);
       layer.shape[slot * 4 + 1] = rand() * Math.PI * 2;
       layer.shape[slot * 4 + 2] = rand() * Math.PI * 2;
       layer.shape[slot * 4 + 3] = 0.05 + rand() * 0.06;
@@ -351,7 +367,7 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
       layer.tint[slot * 3 + 2] = lift;
 
       layer.style[slot * 2] = Math.floor(rand() * BLOSSOM_VARIANTS);
-      layer.style[slot * 2 + 1] = knot.thin;
+      layer.style[slot * 2 + 1] = 1;
     }
   });
 
@@ -379,7 +395,7 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
     const spot = offsetAt(u, rand() < 0.5 ? -1 : 1, rand() * LIGHT_SPREAD * scale);
     lights.centre[i * 2] = spot.x;
     lights.centre[i * 2 + 1] = spot.y;
-    lights.state[i * 2] = between(LIGHT_SIZE, rand()) * scale * taper(u);
+    lights.state[i * 2] = between(LIGHT_SIZE, rand()) * scale;
     lightPulse.push({ phase: rand() * Math.PI * 2, rate: 0.7 + rand() * 0.9 });
   }
   lights.commitCentres();
@@ -412,7 +428,35 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
     roughness: 0.22,
     envMapIntensity: 1.4,
   });
-  const coinCount = Math.max(3, Math.round(length / (COIN_SPACING * scale)));
+  // Lanterns hang off the ties — the junctions *between* swags — so the bottom
+  // of each swag is exactly the gap between two of them. Walking the sampled
+  // curve for local minima in y finds those bottoms without having to re-derive
+  // the swag count the path was built from.
+  const SWAG_SAMPLES = 500;
+  const hangPoints: { x: number; y: number }[] = [];
+  {
+    const sample = new THREE.Vector3();
+    let prevY = Infinity;
+    let falling = false;
+    let low = { x: 0, y: Infinity, at: -1 };
+    for (let i = 0; i <= SWAG_SAMPLES; i++) {
+      sample.copy(curve.getPointAt(i / SWAG_SAMPLES));
+      if (sample.y < prevY) {
+        falling = true;
+        if (sample.y < low.y) low = { x: sample.x, y: sample.y, at: i };
+      } else if (falling) {
+        // Turned back upward: whatever we were tracking was a swag bottom.
+        // Anything past the section's edge is out on the overhang, where
+        // nobody can see it.
+        if (low.at > 0 && Math.abs(low.x) < width / 2) hangPoints.push(low);
+        falling = false;
+        low = { x: 0, y: Infinity, at: -1 };
+      }
+      prevY = sample.y;
+    }
+  }
+
+  const coinCount = Math.max(1, hangPoints.length);
   const coins = new THREE.InstancedMesh(coinGeometry, coinMaterial, coinCount);
   coins.position.z = Z_COIN;
   coins.frustumCulled = false;
@@ -420,29 +464,32 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
   disposables.push(coinGeometry, coinMaterial, coins);
 
   const coinSpots: { x: number; y: number; radius: number; phase: number; rate: number }[] = [];
+  const coinCords: number[] = [];
   for (let i = 0; i < coinCount; i++) {
-    // Pinned to a flower cluster rather than to the bough, so a coin always
-    // looks tucked into something.
-    const knot = knots[Math.floor(rand() * knots.length)];
+    const spot = hangPoints[i] ?? { x: 0, y: 0 };
+    const cord = between(COIN_HANG, rand()) * scale;
+    const radius = between(COIN_RADIUS, rand()) * scale;
+    coinCords.push(cord);
     coinSpots.push({
-      x: knot.x + (rand() * 2 - 1) * CLUSTER_SPREAD * scale,
-      y: knot.y + (rand() * 2 - 1) * CLUSTER_SPREAD * scale,
-      radius: between(COIN_RADIUS, rand()) * scale * knot.thin,
+      x: spot.x,
+      y: spot.y - cord - radius,
+      radius,
       phase: rand() * Math.PI * 2,
       rate: 0.22 + rand() * 0.2,
     });
   }
 
-  // Short red cords keep the coins visibly suspended instead of making them
-  // read as loose gold discs floating inside the blossom clusters.
+  // Red cords from the bough down to each coin, so it reads as hung between
+  // the lanterns rather than as a gold disc floating in mid-air.
   const coinCordGeometry = new THREE.CylinderGeometry(0.65, 0.65, 1, 6);
   coinCordGeometry.translate(0, -0.5, 0);
   const coinCordMaterial = new THREE.MeshBasicMaterial({ color: 0x7d1c20 });
-  const coinCordLength = 18 * scale;
-  coinSpots.forEach((coin) => {
+  coinSpots.forEach((coin, i) => {
     const cord = new THREE.Mesh(coinCordGeometry, coinCordMaterial);
-    cord.position.set(coin.x, coin.y + coinCordLength, Z_COIN - 1);
-    cord.scale.y = coinCordLength;
+    // Hung from the bough and run down to the coin's centre, where the disc
+    // itself hides the end of it.
+    cord.position.set(coin.x, coin.y + coinCords[i] + coin.radius, Z_COIN - 1);
+    cord.scale.y = coinCords[i] + coin.radius;
     group.add(cord);
   });
   disposables.push(coinCordGeometry, coinCordMaterial);
@@ -511,8 +558,10 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
   };
   const lanterns: Lantern[] = [];
 
+  // Every lantern is built to one size — they read as a set that way, the same
+  // call the Lebaran scene makes for its own hanging pieces.
   ties.forEach((tie, i) => {
-    const step = LANTERN_STEPS[i % LANTERN_STEPS.length] * scale;
+    const step = scale;
     const hang = between(LANTERN_HANG, rand()) * scale;
 
     const pivot = new THREE.Group();
@@ -562,10 +611,12 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
   type CrackerString = { pivot: THREE_NS.Group; gain: number; phase: number };
   const crackerStrings: CrackerString[] = [];
 
-  // One off each end of the run, standing in for the side legs the Christmas
-  // version turns down — but only where the run actually has ends on screen
-  // to hang them from. A bleeding run has none, and needs nothing here.
-  if (!bleeds) {
+  // Pinned to the section's own edges rather than to the garland's ends —
+  // the same treatment the Lebaran ketupat bunches get, so the two scenes
+  // frame the band identically. Wide sections get one down each side; below
+  // the xl breakpoint only the right one survives, since a phone has no room
+  // for a string crowding in from both sides.
+  {
     const bodyGeo = new THREE.CylinderGeometry(4.2, 4.2, 13, 12);
     const bandGeo = new THREE.CylinderGeometry(4.5, 4.5, 2.4, 12);
     const stringGeo = new THREE.CylinderGeometry(0.7, 0.7, 1, 6);
@@ -575,11 +626,13 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
     disposables.push(bodyGeo, bandGeo, stringGeo, redMaterial, stringMaterial);
 
     const drop = clamp(height * 0.16, CRACKER_DROP[0] * scale, CRACKER_DROP[1] * scale);
-    const rows = Math.max(5, Math.floor(drop / (CRACKER_PITCH * scale)));
+    const step = scale * CRACKER_SIZE;
+    const rows = Math.max(4, Math.floor(drop / (CRACKER_PITCH * step)));
 
-    for (const end of ends) {
+    const sides = width > SINGLE_SIDE_WIDTH ? [-1, 1] : [1];
+    for (const side of sides) {
       const pivot = new THREE.Group();
-      pivot.position.set(end.x, end.y + 6 * scale, Z_CRACKER);
+      pivot.position.set(side * (width / 2 - CRACKER_INSET * step), -GARLAND_TOP * scale, Z_CRACKER);
 
       const spine = new THREE.Mesh(stringGeo, stringMaterial);
       spine.scale.y = drop;
@@ -596,19 +649,19 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
       const turn = new THREE.Quaternion();
       const axis = new THREE.Vector3(0, 0, 1);
       const spot = new THREE.Vector3();
-      const size = new THREE.Vector3(scale, scale, scale);
+      const size = new THREE.Vector3(step, step, step);
       for (let i = 0; i < rows; i++) {
         // Alternating sides of the spine, each cocked a little — a real string
         // of crackers never hangs in a tidy column.
         turn.setFromAxisAngle(axis, (rand() * 2 - 1) * 0.3 + (i % 2 === 0 ? 0.22 : -0.22));
         spot.set(
-          (i % 2 === 0 ? 1 : -1) * 5.5 * scale,
-          -12 * scale - i * CRACKER_PITCH * scale,
+          (i % 2 === 0 ? 1 : -1) * 5.5 * step,
+          -12 * step - i * CRACKER_PITCH * step,
           (rand() * 2 - 1) * 2,
         );
         matrix.compose(spot, turn, size);
         bodies.setMatrixAt(i, matrix);
-        spot.y += 5.4 * scale;
+        spot.y += 5.4 * step;
         matrix.compose(spot, turn, size);
         bands.setMatrixAt(i, matrix);
       }

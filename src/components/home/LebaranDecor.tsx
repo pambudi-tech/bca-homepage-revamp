@@ -162,6 +162,9 @@ const KETUPAT_SIZE = 50;
  * so it frames the corner nicely.
  */
 const KETUPAT_INSET = 12;
+/** At or below this width there is only room for one bunch, on the right;
+ *  anything wider keeps the pair. */
+const SINGLE_SIDE_WIDTH = 640;
 /** Leaned inward a touch, so it reads as tucked into the corner. */
 const KETUPAT_LEAN = 0.12;
 /**
@@ -624,7 +627,11 @@ function buildLebaran(THREE: Three, width: number, height: number, maps: Maps): 
   // to the viewport, and clipped by neither.
   const clusterStep = scale;
 
-  for (const side of [-1, 1]) {
+  // On the narrowest phones there is no room for a bunch tucked into each
+  // corner — keep only the right side there. Everything wider gets the pair.
+  const ketupatSides = width > SINGLE_SIDE_WIDTH ? [-1, 1] : [1];
+
+  for (const side of ketupatSides) {
     const step = clusterStep;
     const pivot = new THREE.Group();
     pivot.position.set(side * (width / 2 - KETUPAT_INSET * step), 0 * step, Z_HANG + 8);

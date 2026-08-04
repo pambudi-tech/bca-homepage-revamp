@@ -347,7 +347,7 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
               {t("eyebrow")}
             </p>
           </div>
-          <h2 data-reveal="blur-up" className="text-heading text-blue-700 xl:w-[560px] xl:text-display">
+          <h2 data-reveal="blur-up" className="text-heading text-blue-700 w-[320px] xl:w-[560px] xl:text-display">
             {t("heading")}
           </h2>
           {/* 3D percentage glass (three.js) temporarily hidden — see PercentGlass.tsx.

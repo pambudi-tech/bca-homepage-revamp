@@ -4,10 +4,13 @@
     "description": "Prototype revamp homepage BCA.co.id"
   },
   "login": {
-    "heading": "Preview password",
-    "passwordPlaceholder": "Password",
-    "wrongPassword": "Password salah, coba lagi.",
-    "submit": "Masuk"
+    "heading": "BCA Homepage Revamp",
+    "subheading": "Masukkan kata sandi untuk mengakses",
+    "passwordPlaceholder": "Kata sandi",
+    "wrongPassword": "Kata sandi salah, coba lagi.",
+    "submit": "Masuk",
+    "languageSwitcher": "Pilih bahasa",
+    "disclaimer": "Property of Natuno. All rights reserved."
   },
   "languages": {
     "id": "Indonesia",

@@ -296,7 +296,14 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
           {/* Mobile — highlight card above a horizontal carousel of 3 cards. */}
           <div ref={mobileContentRef} className="xl:hidden">
             <HighlightArticle article={active.highlight} />
-            <div className="hide-scrollbar -mx-4 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-pl-4 px-4 [scrollbar-width:none]">
+            <div
+              // `overflow-y-hidden overscroll-none`: `overflow-x: auto` alone
+              // computes `overflow-y` to `auto` too, making this row a
+              // vertical scroller as well — an off-axis touch drags it a few
+              // px down/up before it springs back. Same fix as SoliprioMobile's
+              // carousel rail.
+              className="hide-scrollbar -mx-4 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden overscroll-none scroll-pl-4 px-4 [scrollbar-width:none]"
+            >
               {/* Keyed by slot, not by article: `data-reveal` is wired up once on
                   mount by ScrollReveal, so a remount on tab switch would hand
                   back fresh nodes that nothing ever reveals — stuck at opacity
