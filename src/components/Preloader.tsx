@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useLenis, useScrollLock } from "@/components/SmoothScroll";
+import { usePathname } from "@/i18n/navigation";
 
 /**
  * Intro loading page — Figma "Loading Page" (BCA.co.id Design Exploration,
@@ -148,6 +149,17 @@ function TaglineWords({ timings }: { timings: WordTiming[] }) {
 }
 
 export default function Preloader() {
+  const pathname = usePathname();
+
+  // A successful password action sets the session cookie before its client
+  // toast has time to complete. Keep the preloader off this route even after
+  // that re-render, otherwise it covers the confirmation immediately.
+  if (pathname.endsWith("/login")) return null;
+
+  return <PreloaderContent />;
+}
+
+function PreloaderContent() {
   const t = useTranslations("preloader");
   const [tagline1, tagline2] = t.raw("tagline") as [string, string];
   const [phase, setPhase] = useState<Phase>("loading");
