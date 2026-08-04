@@ -42,6 +42,14 @@ type Piece = {
   sz: string;
 };
 
+type BuntingFlag = {
+  id: number;
+  left: number;
+  top: number;
+  color: string;
+  turn: number;
+};
+
 const rand = mulberry32(20260714);
 
 const PIECES: Piece[] = Array.from({ length: 66 }, (_, id) => {
@@ -65,6 +73,79 @@ const PIECES: Piece[] = Array.from({ length: 66 }, (_, id) => {
     sz: (rand() * 0.8 - 0.4).toFixed(2),
   };
 });
+
+/** Fixed celebration bunting that shares the confetti palette. */
+function createBunting(count: number, top: number, sag: number, swags: number): BuntingFlag[] {
+  return Array.from({ length: count }, (_, id) => {
+    const progress = (id + 0.5) / count;
+    const withinSwag = (progress * swags) % 1;
+    return {
+      id,
+      left: progress * 100,
+      // Match the shallow individual swag beneath this flag, rather than one
+      // oversized arc across the entire promo band.
+      top: top + sag * 4 * withinSwag * (1 - withinSwag),
+      color: COLORS[(id * 5 + 1) % COLORS.length],
+      // Follow the string's tangent: clockwise on the falling side of a swag,
+      // level at its low point, then back up with the return slope.
+      turn: (1 - 2 * withinSwag) * 12,
+    };
+  });
+}
+
+const DESKTOP_BUNTING = createBunting(18, 0, 40, 3);
+const MOBILE_BUNTING = createBunting(12, 0, 30, 2);
+const SMALL_BUNTING = createBunting(8, 0, 30, 1);
+
+function Bunting({
+  flags,
+  swags,
+  mobile = false,
+  visibilityClass,
+}: {
+  flags: BuntingFlag[];
+  swags: number;
+  mobile?: boolean;
+  visibilityClass: string;
+}) {
+  const top = 0;
+  const sag = mobile ? 30 : 40;
+  const height = mobile ? 58 : 86;
+  const flagWidth = mobile ? 27 : 36;
+  const flagHeight = mobile ? 21 : 28;
+  const stringPath = Array.from({ length: swags }, (_, i) => {
+    const start = (i / swags) * 100;
+    const end = ((i + 1) / swags) * 100;
+    return `${i === 0 ? `M${start} ${top}` : ""} Q${(start + end) / 2} ${top + sag * 2} ${end} ${top}`;
+  }).join("");
+
+  return (
+    <div className={`pointer-events-none absolute inset-x-0 top-0 ${mobile ? "h-[58px]" : "h-[86px]"} ${visibilityClass}`}>
+      <svg aria-hidden viewBox={`0 0 100 ${height}`} preserveAspectRatio="none" className="absolute inset-0 size-full">
+        <path d={stringPath} fill="none" stroke={COLORS[1]} strokeWidth="0.35" vectorEffect="non-scaling-stroke" />
+      </svg>
+      {flags.map((flag) => (
+        <svg
+          key={flag.id}
+          aria-hidden
+          width={flagWidth}
+          height={flagHeight}
+          viewBox={`0 0 ${flagWidth} ${flagHeight}`}
+          className="absolute"
+          style={
+            {
+              left: `${flag.left}%`,
+              top: `${flag.top}px`,
+              transform: `translateX(-50%) rotate(${flag.turn}deg)`,
+            } as CSSProperties
+          }
+        >
+          <path d={`M0 0H${flagWidth}L${flagWidth / 2} ${flagHeight}Z`} fill={flag.color} />
+        </svg>
+      ))}
+    </div>
+  );
+}
 
 export default function Confetti() {
   const ref = useRef<HTMLDivElement>(null);
@@ -92,6 +173,9 @@ export default function Confetti() {
 
   return (
     <div ref={ref} aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[460px] overflow-hidden">
+      <Bunting flags={SMALL_BUNTING} swags={1} mobile visibilityClass="hidden max-[640px]:block" />
+      <Bunting flags={MOBILE_BUNTING} swags={2} mobile visibilityClass="hidden min-[641px]:block xl:hidden" />
+      <Bunting flags={DESKTOP_BUNTING} swags={3} visibilityClass="hidden xl:block" />
       {PIECES.map((p) => (
         <span
           key={p.id}

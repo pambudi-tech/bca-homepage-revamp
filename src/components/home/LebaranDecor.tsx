@@ -90,10 +90,12 @@ const STAR_TINTS = [0xfff6df, 0xffe6ac, 0xffd97a, 0xfff0c8];
 
 /** Two runs with different arc counts, which is what makes them cross. */
 const CHAINS = [
-  { top: 6, sag: [40, 52] as [number, number], swagTarget: 430 },
-  { top: 22, sag: [66, 82] as [number, number], swagTarget: 310 },
+  { top: 0, sag: [40, 52] as [number, number], swagTarget: 430 },
+  { top: 4, sag: [66, 82] as [number, number], swagTarget: 310 },
 ];
-const CHAIN_OVERHANG = 120;
+/** Just enough overshoot to avoid a cut edge, while keeping each chain visibly
+ *  attached to the section's top corners. */
+const CHAIN_OVERHANG = 24;
 const BEAD_SPACING = 8;
 const BEAD_RADIUS = 1.9;
 /** The chains only bob with the gust — a catenary cannot sway as a rigid body,

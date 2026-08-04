@@ -287,14 +287,14 @@ export function drawLanternSkin(width = 256, height = 128): HTMLCanvasElement {
   canvas.height = height;
   const ctx = canvas.getContext("2d")!;
 
-  ctx.fillStyle = "#c62828";
+  ctx.fillStyle = "#d0202c";
   ctx.fillRect(0, 0, width, height);
 
   // Lit from within, so the middle of the body glows warmer than its ends.
   const belly = ctx.createLinearGradient(0, 0, 0, height);
-  belly.addColorStop(0, "rgba(120,10,18,0.55)");
-  belly.addColorStop(0.5, "rgba(255,132,86,0.42)");
-  belly.addColorStop(1, "rgba(120,10,18,0.55)");
+  belly.addColorStop(0, "rgba(96,10,20,0.55)");
+  belly.addColorStop(0.5, "rgba(255,78,85,0.32)");
+  belly.addColorStop(1, "rgba(96,10,20,0.55)");
   ctx.fillStyle = belly;
   ctx.fillRect(0, 0, width, height);
 

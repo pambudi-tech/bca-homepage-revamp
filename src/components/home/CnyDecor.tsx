@@ -45,8 +45,9 @@ import {
  *     each one lands in the gap between two lanterns, turning slowly
  *   • firecrackers — a red string pinned to each section edge, standing in for
  *     the Christmas garland's side legs and framing the band the way the
- *     Lebaran ketupat bunches do. They overhang the edge a little on purpose;
- *     on the narrowest phones only the right one is kept
+ *     Lebaran ketupat bunches do. They stay just inside the edge so the larger
+ *     crackers frame the band without being clipped; on the narrowest phones
+ *     only the right one is kept
  *   • petals — falling, and turning edge-on as they fall
  *   • clouds — xiangyun scrolls in thin gold, drifting sideways far behind
  *     everything as texture rather than as objects
@@ -68,6 +69,8 @@ const REFERENCE_WIDTH = 1280;
  *  detail read as fussier at small sizes than pine and ribbon do, so mobile
  *  gets a bit more scale before it clamps. */
 const SCALE_RANGE: [number, number] = [0.66, 1];
+/** Shared lucky red for every solid red ornament in the scene. */
+const CNY_RED = 0xd0202c;
 
 /* ── petals ───────────────────────────────────────────────────────────── */
 
@@ -167,6 +170,8 @@ const LANTERN_RADIUS = 35;
 const LANTERN_HANG: [number, number] = [10, 22];
 /** How much of the gust a lantern takes, rad per unit. */
 const LANTERN_SWING = 0.075;
+/** Slow turn around the hanging cord, radians per second. */
+const LANTERN_SPIN: [number, number] = [0.22, 0.38];
 /**
  * How far behind the lantern its tassel reads the gust, seconds. This is the
  * whole trick: the tassel is lighter and trails, so it is still catching up
@@ -176,27 +181,26 @@ const LANTERN_SWING = 0.075;
 const TASSEL_LAG = 0.28;
 /** Tassel swings wider than the body it hangs from. */
 const TASSEL_SWING = 1.6;
-const LANTERN_GLOW = 0xff7a3a;
+const LANTERN_GLOW = CNY_RED;
 
 /* ── firecrackers ─────────────────────────────────────────────────────── */
 
 /** These stand in for the side legs the Christmas garland has, so they carry
  *  the same sort of vertical weight. */
-const CRACKER_DROP: [number, number] = [170, 260];
-/** Vertical pitch between crackers, px — at CRACKER_SIZE 1. */
-const CRACKER_PITCH = 16;
-const CRACKER_RED = 0xd0202c;
+const CRACKER_DROP: [number, number] = [230, 340];
+/** Vertical pitch between crackers, px — at CRACKER_SIZE 1. Kept close enough
+ *  that the larger bodies read as one festive string. */
+const CRACKER_PITCH = 13;
+const CRACKER_RED = CNY_RED;
 /**
- * How far in from the section edge the string's spine sits, px — same
- * treatment the Lebaran ketupat gets. Small on purpose: the crackers swing out
- * ~9.7px either side of the spine, so at this inset the outer ones clear the
- * edge and the string reads as coming from off-screen rather than being parked
- * politely inside the section.
+ * How far in from the section edge the string's spine sits, px. It accounts
+ * for the body width and alternating swing, so the fuller string remains
+ * contained rather than being clipped by the section edge.
  */
-const CRACKER_INSET = 2;
+const CRACKER_INSET = 13;
 /** Size multiplier on the crackers themselves. The spine keeps its drop; only
  *  the bodies grow, so a bigger cracker means proportionally fewer of them. */
-const CRACKER_SIZE = 1.9;
+const CRACKER_SIZE = 2.15;
 
 /* ── stacking ─────────────────────────────────────────────────────────── */
 
@@ -508,8 +512,8 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
     roughness: 0.46,
     metalness: 0.05,
     // Lit from inside — a lantern is a light source, not a red ball.
-    emissive: new THREE.Color(0xff5a24),
-    emissiveIntensity: 0.32,
+    emissive: new THREE.Color(CNY_RED),
+    emissiveIntensity: 0.26,
     envMapIntensity: 0.7,
   });
   const goldMaterial = new THREE.MeshStandardMaterial({
@@ -549,12 +553,14 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
 
   type Lantern = {
     pivot: THREE_NS.Group;
+    spinner: THREE_NS.Group;
     tassel: THREE_NS.Group;
     anchor: THREE_NS.Vector3;
     /** Distance from the pivot down to the middle of the body, px. */
     centre: number;
     phase: number;
     rate: number;
+    spin: number;
   };
   const lanterns: Lantern[] = [];
 
@@ -572,16 +578,21 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
     thread.scale.y = hang;
     pivot.add(thread);
 
+    // The cord stays fixed while the ornament turns beneath it. This separates
+    // a physical hanging rotation from the whole assembly simply swinging.
+    const spinner = new THREE.Group();
+    pivot.add(spinner);
+
     const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
     body.scale.setScalar(step);
     body.position.y = -hang - 4 * step;
-    pivot.add(body);
+    spinner.add(body);
 
     for (const end of [0, 1]) {
       const cap = new THREE.Mesh(capGeometry, goldMaterial);
       cap.scale.setScalar(step);
       cap.position.y = -hang - 4 * step + (end === 0 ? 1.5 : -LANTERN_HEIGHT + 1.5) * step;
-      pivot.add(cap);
+      spinner.add(cap);
     }
 
     const tassel = new THREE.Group();
@@ -591,16 +602,20 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
     tasselMesh.scale.set(26 * step, 46 * step, 1);
     tasselMesh.renderOrder = ORDER_TASSEL;
     tassel.add(tasselMesh);
+    // The tassel follows the hanging swing, but stays facing front while the
+    // lantern body turns above it.
     pivot.add(tassel);
 
     group.add(pivot);
     lanterns.push({
       pivot,
+      spinner,
       tassel,
       anchor: tie,
       centre: hang + 4 * step + LANTERN_HEIGHT * 0.5 * step,
       phase: rand() * Math.PI * 2,
       rate: 0.3 + rand() * 0.25,
+      spin: between(LANTERN_SPIN, rand()),
     });
 
     glow.state[i * 2] = LANTERN_RADIUS * 3.4 * step;
@@ -625,7 +640,7 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
     const stringMaterial = new THREE.MeshBasicMaterial({ color: 0x6f1418 });
     disposables.push(bodyGeo, bandGeo, stringGeo, redMaterial, stringMaterial);
 
-    const drop = clamp(height * 0.16, CRACKER_DROP[0] * scale, CRACKER_DROP[1] * scale);
+    const drop = clamp(height * 0.22, CRACKER_DROP[0] * scale, CRACKER_DROP[1] * scale);
     const step = scale * CRACKER_SIZE;
     const rows = Math.max(4, Math.floor(drop / (CRACKER_PITCH * step)));
 
@@ -749,6 +764,7 @@ function buildCny(THREE: Three, width: number, height: number, maps: Maps): Scen
     lanterns.forEach((lantern, i) => {
       const angle = LANTERN_SWING * breeze;
       lantern.pivot.rotation.z = angle;
+      lantern.spinner.rotation.y = time * lantern.spin;
       lantern.tassel.rotation.z = LANTERN_SWING * TASSEL_SWING * past - angle;
 
       // Candlelight: a slow, shallow breathe, never a blink.

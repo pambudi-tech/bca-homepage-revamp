@@ -141,8 +141,11 @@ const BERRY_RADIUS: [number, number] = [3.4, 5.2];
 
 /* ── bows ─────────────────────────────────────────────────────────────── */
 
-/** The bow art is drawn ~132 wide, so this is well under 1 — see `bowLoop`. */
+/** The bow art is drawn ~144 wide, so this is well under 1 — see `bowLoop`. */
 const BOW_SCALE = 0.62;
+/** The hanging tails need a little more presence than the knot and loops: they
+ *  are the part that carries the bow down into the promo band. */
+const BOW_TAIL_SCALE = 1.1;
 /** How far below the tie the bow's centre sits. The branch runs along the very
  *  top edge of the section, so a bow centred on it would have its loops
  *  guillotined; hung just under, it sits in the foliage where it belongs. */
@@ -150,24 +153,20 @@ const BOW_DROP = 30;
 /** The ribbon's own red, plus a deeper one for the pieces that sit underneath
  *  — the far tail and the knot — so the bow keeps its layering even where the
  *  lighting alone would not separate them. */
-const RIBBON_COLOR = 0xe8452c;
-const RIBBON_DEEP = 0xc42a19;
+const RIBBON_COLOR = 0xd3072b;
+const RIBBON_DEEP = 0x93091f;
 
 /* ── bells ────────────────────────────────────────────────────────────── */
 
 /** Bows are tied at the junctions between swags, so the bottom of a swag is
  *  exactly the gap between two of them — which is where the bells go. */
-const BELL_HEIGHT: [number, number] = [46, 58];
-/** Two to a point, the way the reference pairs them. The second is smaller and
- *  set behind, so the pair reads as one ornament rather than as two of the
- *  same thing side by side. */
-const BELL_PAIR: { x: number; y: number; size: number; tilt: number; behind: boolean }[] = [
-  { x: -0.36, y: 0, size: 1, tilt: -0.11, behind: false },
-  { x: 0.4, y: -0.08, size: 0.85, tilt: 0.14, behind: true },
-];
-/** Struck gold, and the near-black of the cavity behind the mouth. */
-const BELL_GOLD = 0xf0bb35;
-const BELL_MOUTH = 0x40302a;
+const BELL_HEIGHT = 60;
+/** A single, almost-upright bell keeps the decoration clean below each swag. */
+const BELL_TILT = -0.04;
+/** Rich mustard gold for the glossy shell, with deeper gold on the accents. */
+const BELL_GOLD = 0xd69a16;
+const BELL_ACCENT = 0xb76408;
+const BELL_MOUTH = 0x291604;
 
 /* ── stacking ─────────────────────────────────────────────────────────── */
 
@@ -205,37 +204,40 @@ const ORDER_SNOW_FRONT = 10;
  * proportions hold at any viewport.
  */
 
-/** One loop of the bow, drawn on the right and mirrored for the left: out and
- *  up from the knot, round the top, and back down underneath itself. */
+/** One broad, softly squared loop, drawn on the right and mirrored for the
+ *  left. The silhouette is full at its outer edge and pinched at the knot. */
 function bowLoop(THREE: Three) {
   const shape = new THREE.Shape();
-  shape.moveTo(3, 3);
-  shape.bezierCurveTo(16, 30, 34, 40, 50, 36);
-  shape.bezierCurveTo(64, 33, 66, 12, 60, 0);
-  shape.bezierCurveTo(54, -12, 40, -16, 26, -12);
-  shape.bezierCurveTo(14, -9, 6, -3, 3, 3);
+  shape.moveTo(4, 4);
+  shape.bezierCurveTo(17, 20, 35, 32, 55, 37);
+  shape.bezierCurveTo(66, 40, 72, 37, 72, 29);
+  shape.bezierCurveTo(73, 16, 69, 2, 65, -9);
+  shape.bezierCurveTo(47, -13, 33, -16, 21, -13);
+  shape.bezierCurveTo(11, -10, 6, -4, 4, 4);
   return shape;
 }
 
-/** One tail, again drawn right and mirrored: down and out from the knot, into
- *  the V notch that every cut ribbon end has. */
+/** One tail, again drawn right and mirrored: it starts with a proper width
+ *  beneath the knot, then opens out into the V-notched cut end. */
 function bowTail(THREE: Three) {
   const shape = new THREE.Shape();
-  shape.moveTo(-2, -1);
-  shape.bezierCurveTo(8, -18, 24, -40, 44, -74);
-  shape.lineTo(30, -54);
-  shape.lineTo(18, -78);
-  shape.bezierCurveTo(12, -50, 5, -22, -2, -1);
+  shape.moveTo(-9, 4);
+  shape.bezierCurveTo(5, -18, 27, -42, 53, -65);
+  shape.bezierCurveTo(61, -73, 67, -83, 73, -93);
+  shape.lineTo(49, -88);
+  shape.lineTo(36, -111);
+  shape.bezierCurveTo(26, -78, 13, -49, -4, -15);
+  shape.bezierCurveTo(-8, -7, -10, -1, -9, 4);
   shape.closePath();
   return shape;
 }
 
-/** The knot at the centre of the bow — a small rounded square. */
+/** The taller centre wrap that pinches the two loops together. */
 function bowKnot(THREE: Three) {
   const shape = new THREE.Shape();
-  const w = 9;
-  const h = 8;
-  const r = 3.4;
+  const w = 10;
+  const h = 14;
+  const r = 3.8;
   shape.moveTo(-w + r, -h);
   shape.lineTo(w - r, -h);
   shape.quadraticCurveTo(w, -h, w, -h + r);
@@ -254,28 +256,13 @@ function bowKnot(THREE: Three) {
  * lighting does the rest.
  */
 
-/** A squat arch with a real hole, so the branch shows through it. */
-function bellCrown(THREE: Three) {
-  const shape = new THREE.Shape();
-  shape.moveTo(-14, 2);
-  shape.bezierCurveTo(-14, 13, -8, 18, 0, 18);
-  shape.bezierCurveTo(8, 18, 14, 13, 14, 2);
-  shape.lineTo(7, 2);
-  shape.bezierCurveTo(7, 8, 4, 11, 0, 11);
-  shape.bezierCurveTo(-4, 11, -7, 8, -7, 2);
-  shape.closePath();
-  return shape;
-}
-
 /** Centre and radii of the mouth, shared by the hole cut in the body and the
  *  dark backing that sits behind it. */
-const BELL_MOUTH_ELLIPSE = { y: -70, rx: 54, ry: 11 };
+const BELL_MOUTH_ELLIPSE = { y: -90, rx: 51, ry: 18 };
 
 /**
- * The body: a narrow shoulder out of the crown that swells, then flares hard
- * into the skirt, closed off by the front half of the mouth ellipse. That late
- * flare is the whole silhouette — bring it earlier and the shape becomes a
- * cone, later and it becomes a dome.
+ * The body is deliberately a clean, rounded dome with a generous rolled lip:
+ * the toy-like silhouette keeps the bell readable at its small on-page size.
  *
  * The mouth is a genuine hole in the outline rather than a dark ellipse laid
  * over the front. Extruded, that hole gets its own inner wall, which is what
@@ -284,13 +271,16 @@ const BELL_MOUTH_ELLIPSE = { y: -70, rx: 54, ry: 11 };
  */
 function bellBody(THREE: Three) {
   const shape = new THREE.Shape();
-  shape.moveTo(0, 4);
-  shape.bezierCurveTo(-13, 4, -22, -12, -26, -30);
-  shape.bezierCurveTo(-32, -52, -44, -64, -58, -72);
-  // Front half of the mouth ellipse, left lip round to right lip.
-  shape.bezierCurveTo(-58, -92, 58, -92, 58, -72);
-  shape.bezierCurveTo(44, -64, 32, -52, 26, -30);
-  shape.bezierCurveTo(22, -12, 13, 4, 0, 4);
+  shape.moveTo(0, 3);
+  shape.bezierCurveTo(-28, 2, -45, -19, -45, -46);
+  shape.bezierCurveTo(-45, -62, -41, -70, -55, -82);
+  shape.bezierCurveTo(-62, -88, -62, -97, -53, -102);
+  // The lip continues beneath the dark opening, so it reads as a smooth,
+  // inflated rim instead of a flat cut-off edge.
+  shape.bezierCurveTo(-27, -109, 27, -109, 53, -102);
+  shape.bezierCurveTo(62, -97, 62, -88, 55, -82);
+  shape.bezierCurveTo(41, -70, 45, -62, 45, -46);
+  shape.bezierCurveTo(45, -19, 28, 2, 0, 3);
 
   const { y, rx, ry } = BELL_MOUTH_ELLIPSE;
   const mouth = new THREE.Path();
@@ -308,10 +298,8 @@ function bellCavity(THREE: Three) {
   return shape;
 }
 
-/** Crown top down to the front lip — what every per-instance scale is taken
- *  against. The body is ~116 across, so the bell comes out very close to
- *  square, which is the proportion the reference has. */
-const BELL_ART_HEIGHT = 105;
+/** Top button down to the skirt — the scaling reference for each bell pair. */
+const BELL_ART_HEIGHT = 138;
 
 /** Ribbon is thin stock with a soft edge; the bell is a cast shell with a
  *  heavier chamfer. Both are generous on `curveSegments` — these are the
@@ -552,7 +540,7 @@ function buildGarland(
     metalness: 0,
     sheen: 1,
     sheenRoughness: 0.35,
-    sheenColor: new THREE.Color(0xff8f9f),
+    sheenColor: new THREE.Color(0xf04c62),
     envMapIntensity: 0.9,
   });
   const satinDeep = new THREE.MeshPhysicalMaterial({
@@ -561,7 +549,7 @@ function buildGarland(
     metalness: 0,
     sheen: 1,
     sheenRoughness: 0.4,
-    sheenColor: new THREE.Color(0xe07a8a),
+    sheenColor: new THREE.Color(0xb91c39),
     envMapIntensity: 0.8,
   });
   disposables.push(loopGeometry, tailGeometry, knotGeometry, satin, satinDeep);
@@ -594,6 +582,7 @@ function buildGarland(
     // Set back far enough that the extruded loops never intersect them.
     const tails = new THREE.Group();
     tails.position.z = -9;
+    tails.scale.setScalar(BOW_TAIL_SCALE);
     for (const side of [1, -1]) {
       const tail = new THREE.Mesh(tailGeometry, side === 1 ? satin : satinDeep);
       tail.scale.x = side;
@@ -641,44 +630,56 @@ function buildGarland(
   // out in front of its neighbour.
   const bellBodyGeometry = new THREE.ExtrudeGeometry(bellBody(THREE), BELL_EXTRUDE);
   bellBodyGeometry.translate(0, 0, -BELL_EXTRUDE.depth / 2);
-  const bellCrownGeometry = new THREE.ExtrudeGeometry(bellCrown(THREE), {
-    ...BELL_EXTRUDE,
-    depth: 6,
-    bevelThickness: 1.5,
-    bevelSize: 1.5,
-  });
-  bellCrownGeometry.translate(0, 0, -3);
+  const bellTopGeometry = new THREE.SphereGeometry(1, 24, 18);
   const bellCavityGeometry = new THREE.ShapeGeometry(bellCavity(THREE), 32);
   const bellClapperGeometry = new THREE.SphereGeometry(1, 16, 12);
 
-  // Struck rather than plated: high metalness with a low roughness is what
-  // gives the shoulder its single bright sweep instead of a flat wash.
-  const bellGold = new THREE.MeshStandardMaterial({
+  // A glossy, almost toy-like finish follows the reference more closely than
+  // a dark cast-metal bell, while the warm emissive lift protects its yellow
+  // hue against the blue promo background.
+  const bellGold = new THREE.MeshPhysicalMaterial({
     color: BELL_GOLD,
-    metalness: 0.92,
+    emissive: 0x5c3600,
+    emissiveIntensity: 0.2,
+    metalness: 0.22,
     roughness: 0.24,
-    envMapIntensity: 1.35,
+    clearcoat: 1,
+    clearcoatRoughness: 0.14,
+    envMapIntensity: 1.15,
+  });
+  const bellAccent = new THREE.MeshPhysicalMaterial({
+    color: BELL_ACCENT,
+    emissive: 0x512300,
+    emissiveIntensity: 0.16,
+    metalness: 0.28,
+    roughness: 0.22,
+    clearcoat: 1,
+    clearcoatRoughness: 0.16,
+    envMapIntensity: 1.2,
   });
   // The cavity is the one thing in here that must not catch a highlight — it
   // is a hole, and any sheen on it reads as a disc.
   const bellMouthMaterial = new THREE.MeshBasicMaterial({ color: BELL_MOUTH });
   disposables.push(
     bellBodyGeometry,
-    bellCrownGeometry,
+    bellTopGeometry,
     bellCavityGeometry,
     bellClapperGeometry,
     bellGold,
+    bellAccent,
     bellMouthMaterial,
   );
 
-  /** One bell. Kept separate because each point gets a pair of them at
-   *  different sizes. */
+  /** One bell, assembled from its shell, top button, shadowed mouth and
+   *  fully visible clapper. */
   const buildBell = (step: number) => {
     const art = new THREE.Group();
     art.scale.setScalar(step);
 
-    const crown = new THREE.Mesh(bellCrownGeometry, bellGold);
-    art.add(crown);
+    const top = new THREE.Mesh(bellTopGeometry, bellAccent);
+    top.scale.set(13, 13, 9);
+    top.position.set(0, 16, 0);
+    art.add(top);
 
     const body = new THREE.Mesh(bellBodyGeometry, bellGold);
     art.add(body);
@@ -689,9 +690,9 @@ function buildGarland(
     cavity.position.z = -BELL_EXTRUDE.depth / 2 - 1;
     art.add(cavity);
 
-    const clapper = new THREE.Mesh(bellClapperGeometry, bellGold);
-    clapper.scale.set(11, 12, 11);
-    clapper.position.set(6, BELL_MOUTH_ELLIPSE.y - 5, -2);
+    const clapper = new THREE.Mesh(bellClapperGeometry, bellAccent);
+    clapper.scale.set(13, 13, 10);
+    clapper.position.set(0, BELL_MOUTH_ELLIPSE.y - 5, -2);
     art.add(clapper);
 
     return art;
@@ -701,23 +702,18 @@ function buildGarland(
   const bells: Bell[] = [];
 
   for (const spot of bellSpots) {
-    const size = between(BELL_HEIGHT, rand()) * scale;
+    const size = BELL_HEIGHT * scale;
 
     // No cord: the crown sits right on the branch, which is what "attached"
     // means here — a bell tied into the foliage rather than swung under it.
     const pivot = new THREE.Group();
     pivot.position.set(spot.x, spot.y, Z_BELL);
 
-    for (const slot of BELL_PAIR) {
-      // The art is drawn crown-at-origin down to BELL_ART_HEIGHT, so this is
-      // what turns `size` into the scale every piece of it shares.
-      const bell = buildBell((size * slot.size) / BELL_ART_HEIGHT);
-      // Far enough apart in z that the two shells never intersect where they
-      // overlap — each one is `BELL_EXTRUDE.depth * step` thick.
-      bell.position.set(size * slot.x, size * slot.y, slot.behind ? -size * 0.12 : size * 0.12);
-      bell.rotation.z = slot.tilt;
-      pivot.add(bell);
-    }
+    // The art is drawn top-to-skirt at BELL_ART_HEIGHT, so this converts the
+    // selected display height into the scale every piece shares.
+    const bell = buildBell(size / BELL_ART_HEIGHT);
+    bell.rotation.z = BELL_TILT;
+    pivot.add(bell);
 
     group.add(pivot);
     bells.push({
@@ -725,8 +721,9 @@ function buildGarland(
       phase: rand() * Math.PI * 2,
       rate: 0.55 + rand() * 0.45,
       // Tied on, so it only stirs with the branch — nothing like the swing a
-      // hung bell would have.
-      gain: 0.018 + rand() * 0.014,
+      // hung bell would have. This is still restrained, but pronounced enough
+      // to read as an ornament answering the breeze.
+      gain: 0.065 + rand() * 0.025,
     });
   }
 
