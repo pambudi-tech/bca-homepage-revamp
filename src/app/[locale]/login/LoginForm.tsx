@@ -41,51 +41,55 @@ export default function LoginForm({
   const isSuccessful = state === "success";
 
   return (
-    <form
-      action={formAction}
-      className="w-full max-w-[360px] rounded-2xl border border-neutral-300 bg-white p-8 shadow-card"
-    >
-      <h1 className="text-heading text-neutral-900">{heading}</h1>
-      <p className="mt-2 text-sm text-neutral-700">{subheading}</p>
-
-      <input
-        id={PASSWORD_FIELD_ID}
-        type="password"
-        name="password"
-        placeholder={passwordPlaceholder}
-        autoFocus
-        required
-        disabled={isSuccessful}
-        aria-invalid={hasError || undefined}
-        aria-describedby={hasError ? PASSWORD_ERROR_ID : undefined}
-        className={`mt-6 h-12 w-full rounded-xl border bg-neutral-200 px-3.5 text-sm leading-5 text-neutral-700 outline-none transition-colors placeholder:text-neutral-600 disabled:cursor-not-allowed disabled:opacity-60 ${
-          hasError ? "border-red-500" : "border-neutral-300 focus:border-cyan-500"
-        }`}
-      />
-
-      {hasError && (
-        <p id={PASSWORD_ERROR_ID} role="alert" className="mt-2 text-sm text-red-500">
-          {wrongPassword}
-        </p>
-      )}
-
-      <button
-        type="submit"
-        disabled={pending || isSuccessful}
-        className="btn-base btn-primary mt-6 w-full font-semibold disabled:cursor-wait disabled:opacity-60"
+    <>
+      <form
+        action={formAction}
+        className="w-full max-w-[360px] rounded-2xl border border-neutral-300 bg-white p-8 shadow-card"
       >
-        {submit}
-      </button>
+        <h1 className="text-heading text-neutral-900">{heading}</h1>
+        <p className="mt-2 text-sm text-neutral-700">{subheading}</p>
+
+        <input
+          id={PASSWORD_FIELD_ID}
+          type="password"
+          name="password"
+          placeholder={passwordPlaceholder}
+          autoFocus
+          required
+          disabled={isSuccessful}
+          aria-invalid={hasError || undefined}
+          aria-describedby={hasError ? PASSWORD_ERROR_ID : undefined}
+          className={`mt-6 h-12 w-full rounded-xl border bg-neutral-200 px-3.5 text-sm leading-5 text-neutral-700 outline-none transition-colors placeholder:text-neutral-600 disabled:cursor-not-allowed disabled:opacity-60 ${
+            hasError ? "border-red-500" : "border-neutral-300 focus:border-cyan-500"
+          }`}
+        />
+
+        {hasError && (
+          <p id={PASSWORD_ERROR_ID} role="alert" className="mt-2 text-sm text-red-500">
+            {wrongPassword}
+          </p>
+        )}
+
+        <button
+          type="submit"
+          disabled={pending || isSuccessful}
+          className="btn-base btn-primary mt-6 w-full font-semibold disabled:cursor-wait disabled:opacity-60"
+        >
+          {submit}
+        </button>
+      </form>
 
       {isSuccessful && (
-        <p
-          role="status"
-          aria-live="polite"
-          className="mt-4 rounded-xl bg-green-100 px-4 py-3 text-sm font-semibold text-green-700"
-        >
-          {successMessage}
-        </p>
+        <div className="pointer-events-none fixed inset-x-4 top-6 z-[110] flex justify-center">
+          <p
+            role="status"
+            aria-live="polite"
+            className="login-success-toast rounded-xl bg-blue-500 px-5 py-3 text-sm font-semibold text-neutral-100 shadow-panel"
+          >
+            {successMessage}
+          </p>
+        </div>
       )}
-    </form>
+    </>
   );
 }

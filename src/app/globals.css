@@ -762,6 +762,29 @@ a:focus-visible > .soliprio-card .soliprio-beam {
   }
 }
 
+/* Password gate success confirmation. Kept outside the gate card so it reads
+   as a brief system toast before the authenticated route starts its preloader. */
+@keyframes login-success-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-success-toast {
+  animation: login-success-toast-in 320ms var(--ease-entrance) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-success-toast {
+    animation: none;
+  }
+}
+
 .animate-hero-title {
   animation: hero-content-in 700ms var(--ease-entrance) both;
 }
