@@ -52,23 +52,68 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     // eslint-disable-next-line react-hooks/set-state-in-effect -- see comment above
     setLenisInstance(lenis);
 
+    // Parks the loop once Lenis has settled rather than ticking it 60x/sec
+    // for the entire time the tab is open (this was the one animation loop
+    // on the page with no visibility gate at all — see conversation with
+    // the site owner about mobile battery/heat). `isScrolling` goes false
+    // the instant Lenis's internal animation completes, so a couple of idle
+    // frames after that is a safe point to stop calling raf — touch
+    // scrolling itself is tracked via Lenis's native `scroll` listener, not
+    // this loop, so parking it doesn't affect touch at all. Only wheel
+    // input and scrollTo() calls need the loop running again.
+    const IDLE_FRAMES_BEFORE_SLEEP = 3;
     let frameId = 0;
+    let idleFrames = 0;
+
     function raf(time: number) {
       lenis.raf(time);
+      if (lenis.isScrolling) {
+        idleFrames = 0;
+      } else {
+        idleFrames += 1;
+        if (idleFrames >= IDLE_FRAMES_BEFORE_SLEEP) {
+          frameId = 0;
+          return;
+        }
+      }
       frameId = requestAnimationFrame(raf);
     }
+
+    const wake = () => {
+      if (frameId || document.hidden) return;
+      idleFrames = 0;
+      frameId = requestAnimationFrame(raf);
+    };
+
     frameId = requestAnimationFrame(raf);
+
+    // Only wheel/touch can start a *new* smooth-wheel animation from rest;
+    // native touch scroll, drag, and keyboard scrolling all go through
+    // Lenis's own scroll listener and don't need this loop at all.
+    window.addEventListener("wheel", wake, { passive: true });
+    window.addEventListener("touchstart", wake, { passive: true });
+
+    // scrollTo() (back-to-top, anchor nav, mega-menu close, …) starts an
+    // animation programmatically, so it needs the same wake-up.
+    const scrollTo = lenis.scrollTo.bind(lenis);
+    lenis.scrollTo = (...args: Parameters<typeof scrollTo>) => {
+      wake();
+      return scrollTo(...args);
+    };
 
     // A backgrounded tab can't be scrolled, so stop driving Lenis entirely
     // instead of leaving a throttled loop ticking for the whole page.
     const onVisibility = () => {
       cancelAnimationFrame(frameId);
-      if (!document.hidden) frameId = requestAnimationFrame(raf);
+      frameId = 0;
+      if (!document.hidden) wake();
     };
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       cancelAnimationFrame(frameId);
+      window.removeEventListener("wheel", wake);
+      window.removeEventListener("touchstart", wake);
       document.removeEventListener("visibilitychange", onVisibility);
       lenis.destroy();
     };
