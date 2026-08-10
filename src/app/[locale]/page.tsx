@@ -11,6 +11,7 @@ import NewsSection from "@/components/home/NewsSection";
 import FaqSection from "@/components/home/FaqSection";
 import Footer from "@/components/home/Footer";
 import BackToTop from "@/components/home/BackToTop";
+import QuickActionRail from "@/components/home/QuickActionRail";
 import CookieBanner from "@/components/home/CookieBanner";
 import HaloBcaChat from "@/components/home/HaloBcaChat";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -77,6 +78,7 @@ export default async function Home({
       </div>
 
       <BackToTop />
+      <QuickActionRail />
       <CookieBanner />
       <HaloBcaChat />
       {/* Orchestrates every [data-reveal] entrance below the hero — one

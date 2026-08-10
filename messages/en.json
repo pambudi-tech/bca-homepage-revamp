@@ -156,11 +156,13 @@
       "Prioritas": "Priority"
     },
     "promo": "Promo",
+    "login": "Log in",
     "tentangBca": "About BCA",
     "karir": "Careers",
     "search": "Search",
     "lokasiBca": "BCA Location",
     "haloBca": "Help",
+    "quickActions": "Quick actions",
     "pengajuan": "Apply",
     "andaBerada": "You are in BCA",
     "kembaliKe": "Back to BCA",
@@ -260,7 +262,12 @@
     "heading": "All Your Banking Needs in the Palm of Your Hand",
     "description": "From checking your balance to paying bills, everything's done in seconds with myBCA.",
     "downloadDesktop": "Download Now",
-    "downloadMobile": "Download myBCA"
+    "downloadMobile": "Download myBCA",
+    "downloadPrompt": "Or download the app on",
+    "scanQr": "Scan the QR code to open the myBCA download page",
+    "appStore": "Download on the App Store",
+    "googlePlay": "Get it on Google Play",
+    "detail": "See myBCA details"
   },
   "news": {
     "eyebrow": "News & Insights",

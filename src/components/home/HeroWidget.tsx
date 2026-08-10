@@ -449,7 +449,7 @@ export default function HeroWidget({
                   onMouseLeave={() => setInitialPromoHover(false)}
                   className="relative flex h-20 shrink-0 cursor-pointer items-center gap-4 overflow-hidden rounded-3xl bg-white px-4 py-5 text-left transition-colors duration-300 ease-in-out hover:bg-cyan-100"
                 >
-                  {initialPromoHover && <Confetti />}
+                  {initialPromoHover && <Confetti showBunting={false} />}
                   <img
                     src="/assets/quick-action/discount-shape.svg"
                     alt=""
@@ -520,7 +520,7 @@ export default function HeroWidget({
                       outlineOffset: "-0.5px",
                     }}
                   >
-                    {action.confetti && hoveredAction === index && <Confetti />}
+                    {action.confetti && hoveredAction === index && <Confetti showBunting={false} />}
                     <div
                       className="relative z-10 flex items-center gap-4 transition-transform duration-300 ease-in-out"
                       style={{ transform: collapsed ? "translateX(16px)" : "translateX(0px)" }}

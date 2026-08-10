@@ -47,86 +47,6 @@ function LinkLabel({ label, hover }: { label: string; hover: boolean }) {
   );
 }
 
-function NavbarLink({
-  label,
-  href,
-  internalHref,
-  onClick,
-  active,
-  viewTransitionName,
-}: {
-  label: string;
-  href?: string;
-  /** Same-app route (via the i18n-aware `Link`) — normal navigation, no
-      new tab, unlike `href` which is always an external target. */
-  internalHref?: string;
-  onClick?: () => void;
-  /** Filled blue — this link's destination is the page currently on screen. */
-  active?: boolean;
-  /** Same name on every page this link appears on, so the browser morphs
-      its fill/position across a navigation instead of hard-swapping it —
-      see the "seamless nav" pieces in globals.css. */
-  viewTransitionName?: string;
-}) {
-  const [hover, setHover] = useState(false);
-  const sharedProps = {
-    onMouseEnter: () => setHover(true),
-    onMouseLeave: () => setHover(false),
-    // Pairs the blue fill with a signal assistive tech can read — the fill
-    // alone only tells a sighted user which page they are on.
-    "aria-current": active ? ("page" as const) : undefined,
-    style: viewTransitionName ? ({ viewTransitionName } as CSSProperties) : undefined,
-    className: `flex h-10 cursor-pointer items-center justify-center gap-0.5 rounded-full border px-4 transition-colors duration-300 ${active
-        ? `border-blue-500 ${hover ? "bg-primary-hover" : "bg-blue-500"}`
-        : hover
-          ? "border-white/20 bg-[rgba(18,20,23,0.5)]"
-          : "border-white/25 bg-[rgba(5,13,25,0.1)]"
-      }`,
-  };
-  const content = (
-    <>
-      <LinkLabel label={label} hover={hover} />
-      <span
-        className={`grid overflow-hidden transition-[grid-template-columns] duration-300 ${hover ? "grid-cols-[1fr]" : "grid-cols-[0fr]"
-          }`}
-      >
-        <span className="overflow-hidden">
-          <img src="/assets/navbar/arrow-right.svg" alt="" className="size-5" />
-        </span>
-      </span>
-    </>
-  );
-  if (internalHref) {
-    return (
-      <Link href={internalHref} {...sharedProps}>
-        {content}
-      </Link>
-    );
-  }
-  if (href) {
-    return (
-      <a href={href} target="_blank" rel="noopener noreferrer" {...sharedProps}>
-        {content}
-      </a>
-    );
-  }
-  return (
-    <button onClick={onClick} {...sharedProps}>
-      {content}
-    </button>
-  );
-}
-
-/** Same up/down expand mark as MobileMenu.tsx's segment picker pill. */
-function ExpandIcon({ className = "size-4" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`shrink-0 ${className}`} aria-hidden>
-      <path d="m8 9 4-4 4 4" />
-      <path d="m8 15 4 4 4-4" />
-    </svg>
-  );
-}
-
 function SearchButton({
   label,
   onClick,
@@ -176,6 +96,15 @@ export function LocationIcon({ className = "size-6 shrink-0 text-neutral-100 opa
         d="M15.9997 30.3467C14.0264 30.3467 12.0397 29.6001 10.4931 28.1201C6.55975 24.3334 2.21308 18.2934 3.85308 11.1067C5.33308 4.58675 11.0264 1.66675 15.9997 1.66675C15.9997 1.66675 15.9997 1.66675 16.013 1.66675C20.9864 1.66675 26.6797 4.58675 28.1597 11.1201C29.7864 18.3067 25.4397 24.3334 21.5064 28.1201C19.9597 29.6001 17.973 30.3467 15.9997 30.3467ZM15.9997 3.66675C12.1197 3.66675 7.13308 5.73341 5.81308 11.5467C4.37308 17.8267 8.31975 23.2401 11.8931 26.6667C14.1997 28.8934 17.813 28.8934 20.1197 26.6667C23.6797 23.2401 27.6264 17.8267 26.213 11.5467C24.8797 5.73341 19.8797 3.66675 15.9997 3.66675Z"
         fill="currentColor"
       />
+    </svg>
+  );
+}
+
+function LoginIcon({ className = "size-6 shrink-0" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" className={className} aria-hidden>
+      <path d="M11.8667 10.0801C12.28 5.28007 14.7467 3.32007 20.1467 3.32007H20.32C26.28 3.32007 28.6667 5.70674 28.6667 11.6667V20.3601C28.6667 26.3201 26.28 28.7067 20.32 28.7067H20.1467C14.7867 28.7067 12.32 26.7734 11.88 22.0534" stroke="currentColor" strokeWidth="2.18" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M2.66748 16H19.8408M16.8667 11.5334L21.3334 16.0001L16.8667 20.4668" stroke="currentColor" strokeWidth="2.18" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -311,20 +240,8 @@ export default function Navbar({
   const [langOpen, setLangOpen] = useState(false);
   const [langHover, setLangHover] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
-  const [segmentOpen, setSegmentOpen] = useState(false);
-  const [segmentHover, setSegmentHover] = useState(false);
-  const segmentRef = useRef<HTMLDivElement>(null);
-  const segmentCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastScrollY = useRef(0);
-
-  const scrollToLocation = () => {
-    window.open("https://www.bca.co.id/id/lokasi-bca", "_blank", "noopener,noreferrer");
-  };
-
-  const scrollToPromo = () => {
-    window.open("https://promo.bca.co.id", "_blank", "noopener,noreferrer");
-  };
 
   useEffect(() => {
     let raf = 0;
@@ -356,9 +273,6 @@ export default function Navbar({
     const onClickOutside = (e: MouseEvent) => {
       if (langRef.current && !langRef.current.contains(e.target as Node)) {
         setLangOpen(false);
-      }
-      if (segmentRef.current && !segmentRef.current.contains(e.target as Node)) {
-        setSegmentOpen(false);
       }
     };
     document.addEventListener("mousedown", onClickOutside);
@@ -457,17 +371,6 @@ export default function Navbar({
     setOpenMenu(null);
   };
 
-  // Same debounced pattern as the mega menu tabs — hover opens the segment
-  // dropdown immediately, and closing waits a beat so crossing the gap
-  // between the pill and the panel doesn't flicker it shut.
-  const scheduleSegmentClose = () => {
-    if (segmentCloseTimer.current) clearTimeout(segmentCloseTimer.current);
-    segmentCloseTimer.current = setTimeout(() => setSegmentOpen(false), 120);
-  };
-  const cancelSegmentClose = () => {
-    if (segmentCloseTimer.current) clearTimeout(segmentCloseTimer.current);
-  };
-
   return (
     <>
       {/* Mobile navigation (logo + search + burger) — below the xl breakpoint.
@@ -510,86 +413,58 @@ export default function Navbar({
               <div className="flex w-full max-w-[1280px] items-center justify-between">
                 <div className="flex items-center gap-5">
                   <img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-9 w-[114.75px]" />
-                  <div className="flex items-center gap-2">
-                    <div
-                      ref={segmentRef}
-                      className="relative"
-                      onMouseEnter={() => {
-                        cancelSegmentClose();
-                        setSegmentOpen(true);
-                      }}
-                      onMouseLeave={scheduleSegmentClose}
+                  <div className="flex h-10 items-center gap-1 rounded-full border border-white/15 bg-[rgba(5,13,25,0.2)] p-1 backdrop-blur-[40px]">
+                    {SEGMENTS.map((segment) => {
+                      const active = activeSegment === segment;
+                      const segmentClass = `flex h-8 min-w-24 cursor-pointer items-center justify-center rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${active
+                          ? "bg-blue-500 text-white"
+                          : "text-white/80 hover:bg-white/10 hover:text-white"
+                        }`;
+
+                      if (segment === "Individu") {
+                        return (
+                          <Link
+                            key={segment}
+                            href="/"
+                            aria-current={variant === "default" ? "page" : undefined}
+                            style={active ? ({ viewTransitionName: "nav-segment-pill" } as CSSProperties) : undefined}
+                            className={segmentClass}
+                          >
+                            {tNav(`segments.${segment}`)}
+                          </Link>
+                        );
+                      }
+
+                      return (
+                        <button
+                          key={segment}
+                          onClick={() => chooseSegment(segment)}
+                          style={active ? ({ viewTransitionName: "nav-segment-pill" } as CSSProperties) : undefined}
+                          className={segmentClass}
+                        >
+                          {tNav(`segments.${segment}`)}
+                        </button>
+                      );
+                    })}
+                    <Link
+                      href="/tentang-bca"
+                      aria-current={variant === "about" ? "page" : undefined}
+                      style={{ viewTransitionName: "nav-tentang-bca" } as CSSProperties}
+                      className={`flex h-8 cursor-pointer items-center justify-center rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${variant === "about"
+                          ? "bg-blue-500 text-white"
+                          : "text-white/80 hover:bg-white/10 hover:text-white"
+                        }`}
                     >
-                      {/* Hover-only trigger — opening this is not a click
-                          action, only picking an option in the dropdown is. */}
-                      <div
-                        onMouseEnter={() => setSegmentHover(true)}
-                        onMouseLeave={() => setSegmentHover(false)}
-                        style={{ viewTransitionName: "nav-segment-pill" } as CSSProperties}
-                        className={`flex h-10 items-center gap-2 rounded-full border pl-4 pr-1 transition-colors ${segmentHover || segmentOpen
-                            ? "border-neutral-300 bg-white"
-                            : "border-white/25 bg-[rgba(5,13,25,0.1)]"
-                          }`}
-                      >
-                        <span
-                          className={`whitespace-nowrap text-sm font-semibold ${segmentHover || segmentOpen ? "text-neutral-900" : "text-white"
-                            }`}
-                        >
-                          {/* On the segment-agnostic About shell, "Anda berada
-                              di" reads ambiguous — this pill is actually a
-                              way back to the segment's homepage from here. */}
-                          {tNav(variant === "about" ? "kembaliKe" : "andaBerada")}
-                        </span>
-                        <span
-                          className={`flex h-8 items-center gap-1 whitespace-nowrap rounded-full pl-3 pr-2 text-sm font-semibold ${activeSegment
-                              ? "bg-blue-500 text-white"
-                              : `border ${segmentHover || segmentOpen ? "border-neutral-300 text-neutral-900" : "border-white/25 text-white"}`
-                            }`}
-                        >
-                          {activeSegment ? tNav(`segments.${activeSegment}`) : tNav("pilihSegmen")}
-                          <ExpandIcon className="size-4" />
-                        </span>
-                      </div>
-
-                      {segmentOpen && (
-                        <div className="absolute right-0 top-[calc(100%+8px)] z-40 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-panel">
-                          {SEGMENTS.filter((segment) => segment !== activeSegment).map((segment) => (
-                            <button
-                              key={segment}
-                              onClick={() => {
-                                chooseSegment(segment);
-                                setSegmentOpen(false);
-                                // Choosing a segment here has nowhere to land
-                                // on this page — it always means "take me
-                                // back to that segment's homepage".
-                                if (variant === "about") router.push("/");
-                              }}
-                              className="group flex w-[148px] items-center gap-2 p-4 text-left text-neutral-900 transition-colors hover:bg-cyan-100 hover:text-blue-500"
-                            >
-                              <span className="flex-1 text-base font-semibold">
-                                {tNav(`segments.${segment}`)}
-                              </span>
-                              <svg viewBox="0 0 20 20" fill="none" className="size-5 shrink-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100" aria-hidden>
-                                <path
-                                  d="M9.29272 3.45947C9.68319 3.069 10.3162 3.06911 10.7068 3.45947L16.5408 9.29248C16.9312 9.6829 16.931 10.316 16.5408 10.7065L10.7068 16.5405C10.3162 16.9307 9.68314 16.9309 9.29272 16.5405C8.90231 16.1501 8.90253 15.517 9.29272 15.1265L13.4197 10.9995H4.16675C3.61446 10.9995 3.16675 10.5518 3.16675 9.99951C3.16692 9.44738 3.61457 8.99951 4.16675 8.99951H13.4197L9.29272 4.87354C8.90242 4.48305 8.90242 3.84996 9.29272 3.45947Z"
-                                  fill="currentColor"
-                                />
-                              </svg>
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
-                    <NavbarLink
-                      label={tNav("tentangBca")}
-                      internalHref="/tentang-bca"
-                      active={variant === "about"}
-                      viewTransitionName="nav-tentang-bca"
-                    />
-                    <NavbarLink label={tNav("karir")} href="https://karir.bca.co.id/" />
-                    <NavbarLink label={tNav("pengajuan")} href="https://www.bca.co.id/id/Forms/webform-bca" />
-                    <NavbarLink label={tNav("promo")} onClick={scrollToPromo} />
+                      {tNav("tentangBca")}
+                    </Link>
+                    <a
+                      href="https://karir.bca.co.id/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-8 cursor-pointer items-center justify-center rounded-full px-4 text-sm font-semibold text-white/80 transition-colors duration-200 hover:bg-white/10 hover:text-white"
+                    >
+                      {tNav("karir")}
+                    </a>
                   </div>
                 </div>
 
@@ -604,8 +479,6 @@ export default function Navbar({
                       setSearchOpen(true);
                     }}
                   />
-                  <IconLinkButton label={tNav("lokasiBca")} icon={<LocationIcon />} onClick={scrollToLocation} />
-
                   <div ref={langRef} className="relative">
                     <button
                       onClick={() => setLangOpen((v) => !v)}
@@ -645,6 +518,16 @@ export default function Navbar({
                       </div>
                     )}
                   </div>
+
+                  <a
+                    href="https://mybca.bca.co.id/auth/login"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-full border border-white/25 bg-[rgba(5,13,25,0.1)] px-4 text-sm font-semibold text-white transition-colors duration-300 hover:border-white/20 hover:bg-[rgba(18,20,23,0.5)]"
+                  >
+                    <LoginIcon className="size-6 text-white/80" />
+                    {tNav("login")}
+                  </a>
                 </div>
               </div>
             </div>

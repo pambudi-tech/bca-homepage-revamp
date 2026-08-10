@@ -156,11 +156,13 @@
       "Prioritas": "优先"
     },
     "promo": "优惠",
+    "login": "登录",
     "tentangBca": "关于BCA",
     "karir": "招聘",
     "search": "搜索",
     "lokasiBca": "BCA网点位置",
     "haloBca": "帮助",
+    "quickActions": "快捷操作",
     "pengajuan": "申请",
     "andaBerada": "您正在浏览 BCA",
     "kembaliKe": "返回 BCA",
@@ -260,7 +262,12 @@
     "heading": "所有银行业务需求，尽在掌握",
     "description": "从查询余额到缴费，通过 myBCA 几秒钟即可完成。",
     "downloadDesktop": "立即下载",
-    "downloadMobile": "下载 myBCA"
+    "downloadMobile": "下载 myBCA",
+    "downloadPrompt": "或在以下平台下载",
+    "scanQr": "扫描二维码打开 myBCA 下载页面",
+    "appStore": "Download on the App Store",
+    "googlePlay": "Get it on Google Play",
+    "detail": "查看 myBCA 详情"
   },
   "news": {
     "eyebrow": "新闻与洞察",

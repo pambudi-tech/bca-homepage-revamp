@@ -156,11 +156,13 @@
       "Prioritas": "Prioritas"
     },
     "promo": "Promo",
+    "login": "Login",
     "tentangBca": "Tentang BCA",
     "karir": "Karir",
     "search": "Cari",
     "lokasiBca": "Lokasi BCA",
     "haloBca": "Bantuan",
+    "quickActions": "Akses cepat",
     "pengajuan": "Pengajuan",
     "andaBerada": "Anda berada di BCA",
     "kembaliKe": "Kembali ke BCA",
@@ -260,7 +262,12 @@
     "heading": "Semua Kebutuhan Perbankan dalam Satu Genggaman",
     "description": "Dari cek saldo sampai bayar tagihan, semua selesai dalam hitungan detik lewat myBCA.",
     "downloadDesktop": "Download Sekarang",
-    "downloadMobile": "Download myBCA"
+    "downloadMobile": "Download myBCA",
+    "downloadPrompt": "Atau download aplikasinya di",
+    "scanQr": "Scan QR untuk membuka halaman download myBCA",
+    "appStore": "Download on the App Store",
+    "googlePlay": "Get it on Google Play",
+    "detail": "Lihat detail myBCA"
   },
   "news": {
     "eyebrow": "Kabar & Wawasan",

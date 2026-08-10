@@ -1429,26 +1429,19 @@ export default function ProductSection({
       </div>
 
       <div className="relative z-10 mx-auto flex w-full max-w-[560px] flex-col gap-10 px-4 xl:w-[1280px] xl:max-w-none xl:gap-12 xl:px-0">
-        {/* Heading — stacked on mobile. On desktop the curved layout stacks it
-            too (vertical alignment, centered on the page); the accordion keeps
-            the eyebrow-column + h2 side-by-side row. */}
+        {/* Heading — eyebrow stacked above the h2, matching NewsSection. */}
         <div
-          className={`flex flex-col transition-all duration-700 ease-out ${variant === "curved"
-            ? "xl:items-center xl:gap-5 xl:text-center"
-            : "xl:flex-row xl:gap-10"
-            } ${entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
+          className={`flex flex-col transition-all duration-700 ease-out xl:gap-3 ${entered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
         >
           <div
-            className={`flex items-center py-4 xl:shrink-0 ${variant === "curved" ? "" : "xl:w-[240px]"
-              }`}
+            className="flex items-center py-4 xl:shrink-0 xl:w-60"
           >
             <p className="text-eyebrow uppercase text-blue-500 xl:text-eyebrow-lg">
               {t("eyebrow")}
             </p>
           </div>
           <h2
-            className={`text-heading text-blue-700 xl:text-display ${variant === "curved" ? "" : "xl:w-[560px]"
-              }`}
+            className="text-heading text-blue-700 xl:w-[560px] xl:text-display"
           >
             {t("heading")}
           </h2>

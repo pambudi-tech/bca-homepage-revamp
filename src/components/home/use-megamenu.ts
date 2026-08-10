@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { MEGAMENU_STRUCTURE, type MegaMenuCategory } from "./megamenu-data";
-import type { ProductCategory } from "./product-data";
+import { PRODUCT_CATEGORIES, type ProductCategory } from "./product-data";
 import type { MegaMenuContent } from "@/lib/megamenu";
 
 type MegaMenuText = {
@@ -30,6 +30,8 @@ export function useMegaMenu(
   return MEGAMENU_STRUCTURE.map((structure) => {
     const text = t.raw(structure.key) as MegaMenuText;
     const liveCategory = productCategories?.find((c) => c.key === structure.key);
+    const bundledCategory = PRODUCT_CATEGORIES.find((c) => c.key === structure.key);
+    const sourceCategory = liveCategory ?? bundledCategory;
     const liveProducts = liveCategory
       ? liveCategory.products.filter((p) => p.featured)
       : [];
@@ -39,16 +41,15 @@ export function useMegaMenu(
       key: structure.key,
       label: text.label,
       width: structure.width,
-      // The translation-based lists already end with their own "Lihat Semua
-      // X" row; the live Supabase list doesn't have one, so it's appended
-      // here to match.
-      products: liveCategory
-        ? [
-            ...(liveProducts.length ? liveProducts : liveCategory.products).map((p) => p.title),
-            `${tSearch("viewAll")} ${text.label}`,
-          ]
-        : text.products,
-      ctaLabel: text.ctaLabel,
+      // The restored desktop layout shows individual products in the middle
+      // column and reserves its final row for the "view all" CTA. Keep that
+      // CTA separate rather than treating it as a fifth product.
+      products: sourceCategory
+        ? (liveProducts.length ? liveProducts : sourceCategory.products)
+            .slice(0, 4)
+            .map((product) => ({ title: product.title, description: product.subtitle }))
+        : text.products.slice(0, -1).map((title) => ({ title })),
+      ctaLabel: `${tSearch("viewAll")} ${text.label}`,
       links: liveLinks?.length ? liveLinks : text.links,
       editorial: liveEditorial ?? {
         title: text.editorialTitle,

@@ -1,19 +1,30 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { getAverageColor, rgbToCss } from "@/lib/image-color";
 import MyBcaParallax from "./MyBcaParallax";
 
 export default async function MyBcaSection() {
+  const locale = await getLocale();
   const t = await getTranslations("mybca");
   const backdropColor = await getAverageColor("/assets/mybca/bg.webp");
   const backdropCss = rgbToCss(backdropColor);
   const backdropFadeCss = rgbToCss(backdropColor, 0);
+  const myBcaPageUrl = "https://www.bca.co.id/id/Individu/layanan/e-banking/myBCA";
+  const appStoreUrl = "https://apps.apple.com/id/app/mybca-new-bca-banking-apps/id1440241902";
+  const playStoreUrl = "https://play.google.com/store/apps/details?gl=ID&id=com.bca.mybca.omni.android";
+  const appStoreBadgeUrl = locale === "zh"
+    ? "https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/zh-tw?size=250x83"
+    : "https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83";
+  const playStoreBadgeUrl = locale === "zh"
+    ? "https://upload.wikimedia.org/wikipedia/commons/5/5e/Google_Play_Store_badge_TW.svg"
+    : "https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg";
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=10&data=${encodeURIComponent(myBcaPageUrl)}`;
 
   return (
     <section className="relative">
       {/* ===== Desktop (>= xl): card left, phone-woman right, side by side.
            Entrance staggers back-to-front: phone-woman rises, then the glass
            card settles last (auto 90ms steps). ===== */}
-      <div data-reveal-group className="relative hidden h-[360px] xl:block">
+      <div data-reveal-group className="relative hidden h-[460px] xl:block">
         <div className="absolute inset-0 overflow-clip">
           <img loading="lazy" decoding="async"
             src="/assets/mybca/bg.webp"
@@ -22,27 +33,52 @@ export default async function MyBcaSection() {
           />
         </div>
 
-        <div className="absolute left-1/2 top-[-76px] h-[470px] w-[1080px] -translate-x-1/2">
+        <div className="absolute left-1/2 top-0 h-[460px] w-[1080px] -translate-x-1/2">
           <img loading="lazy" decoding="async"
             data-reveal
             src="/assets/mybca/phone-woman.webp"
             alt=""
-            className="absolute left-[589px] top-0 h-[470px] w-[507px] object-cover"
+            className="absolute left-[589px] top-1/2 h-[536px] w-auto -translate-y-1/2 object-cover"
           />
 
-          <div data-reveal className="absolute left-0 top-[108px] flex h-[328px] w-[480px] flex-col items-start justify-between rounded-t-3xl border-2 border-white/15 bg-gradient-to-b from-[rgba(18,20,23,0.25)] to-[rgba(18,20,23,0.5)] px-8 pb-10 pt-6 shadow-edge-left backdrop-blur-[14px]">
+          <div data-reveal className="absolute bottom-0 left-0 flex h-[428px] w-[480px] flex-col items-center justify-between rounded-t-3xl border-2 border-white/15 bg-gradient-to-b from-[rgba(18,20,23,0.25)] to-[rgba(18,20,23,0.5)] px-8 pb-8 pt-6 text-center shadow-edge-left backdrop-blur-[14px]">
             <div className="flex w-full flex-col items-start gap-4 text-white">
               <p className="w-full text-[28px] font-semibold leading-10 tracking-[-0.64px] text-shadow-hero">
                 {t("heading")}
               </p>
-              <p className="w-full text-base leading-6 text-neutral-500 opacity-80">
-                {t("description")}
-              </p>
             </div>
-            <button className="btn-base btn-primary">
-              <img loading="lazy" decoding="async" src="/assets/mybca/icon-download.svg" alt="" className="size-5" />
-              <span className="text-base font-semibold">{t("downloadDesktop")}</span>
-            </button>
+            <div className="grid w-full grid-cols-[1fr_auto_1fr] items-center gap-x-4 rounded-[28px] bg-neutral-100 px-4 py-4 text-neutral-900">
+              <a href={myBcaPageUrl} aria-label={t("scanQr")} className="flex h-full w-full justify-center rounded-2xl bg-neutral-100 p-2">
+                <img loading="lazy" decoding="async" src={qrCodeUrl} alt={t("scanQr")} className="h-full w-auto object-contain" />
+              </a>
+              <div className="h-[148px] w-px bg-neutral-300" />
+              <div className="flex w-full flex-col items-center gap-3 p-1">
+                <p className="text-center text-sm font-semibold leading-4">{t("downloadPrompt")}</p>
+                <div className="flex flex-col items-center gap-2">
+                  <a href={appStoreUrl} aria-label={t("appStore")} className="block h-11 w-fit overflow-hidden rounded">
+                    <img
+                      loading="lazy"
+                      decoding="async"
+                      src={appStoreBadgeUrl}
+                      alt={t("appStore")}
+                      className="h-full w-auto"
+                    />
+                  </a>
+                  <a href={playStoreUrl} aria-label={t("googlePlay")} className="block h-11 w-fit overflow-hidden rounded">
+                    <img
+                      loading="lazy"
+                      decoding="async"
+                      src={playStoreBadgeUrl}
+                      alt={t("googlePlay")}
+                      className="h-full w-auto"
+                    />
+                  </a>
+                </div>
+              </div>
+            </div>
+            <a href={myBcaPageUrl} className="btn-base w-fit border border-white bg-transparent text-white hover:bg-white/10">
+              <span className="text-base font-semibold">{t("detail")}</span>
+            </a>
           </div>
         </div>
       </div>
@@ -115,10 +151,9 @@ export default async function MyBcaSection() {
                   {t("description")}
                 </p>
               </div>
-              <button className="btn-base btn-primary">
-                <img loading="lazy" decoding="async" src="/assets/mybca/icon-download.svg" alt="" className="size-5" />
+              <a href={myBcaPageUrl} className="btn-base border border-white bg-transparent text-white hover:bg-white/10">
                 <span className="text-base font-semibold text-neutral-100">{t("downloadMobile")}</span>
-              </button>
+              </a>
             </div>
           </div>
         </div>

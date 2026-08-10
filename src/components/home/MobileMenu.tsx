@@ -495,11 +495,11 @@ function DetailView({
       <nav className="mt-6 flex flex-col">
         {cat.products.map((product) => (
           <button
-            key={product}
+            key={product.title}
             onClick={onLeaf}
             className="flex items-center justify-between px-1 py-5 text-left transition-opacity active:opacity-60"
           >
-            <span className="text-base font-semibold leading-6 text-white">{product}</span>
+            <span className="text-base font-semibold leading-6 text-white">{product.title}</span>
             <ChevronRight className="size-5 text-white/90" />
           </button>
         ))}

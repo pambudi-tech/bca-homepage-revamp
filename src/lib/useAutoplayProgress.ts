@@ -9,12 +9,14 @@ import { useEffect, useRef, type RefObject } from "react";
 // The timer resets whenever `activeIndex`/`count`/`durationMs` change, freezes
 // while `pausedRef.current` is true, and calls `onAdvance` on completion.
 //
-// Driven by requestAnimationFrame rather than setInterval. Two reasons: the ring
-// now advances once per painted frame instead of in 50ms steps (so it no longer
-// needs a CSS transition to hide the stepping), and rAF is throttled by the
-// browser in background tabs, where a setInterval would happily keep ticking and
-// firing slide changes nobody is watching. `live` additionally parks it while
-// the carousel is off-screen.
+// Ticks on a ~80ms timer rather than every animation frame. A ring that fills
+// over several seconds looks identical at 12 ticks/sec as it does at 60 — but
+// this is one of the only loops on the page that runs the whole time its
+// carousel is merely visible (not just during a transition), across three
+// sections, so cutting the JS/paint work here ~5x is the difference between
+// "runs at rest" and "actually idle" while a visitor is just reading the page.
+// `live` (from `useIsLive`) already tears the loop down entirely off-screen or
+// on a hidden tab, so a plain timer doesn't reintroduce background ticking.
 
 type Options = {
   /** Current active slide index — the timer resets whenever this changes. */
@@ -75,10 +77,15 @@ export function useAutoplayProgress({
     writeRef.current(circumference);
     if (!live) return;
 
-    let raf = 0;
+    // Real elapsed time drives the math (via performance.now()), not tick
+    // count, so drift in the timer itself can't desync the ring from
+    // `durationMs` — TICK_MS only controls how often it's allowed to redraw.
+    const TICK_MS = 80;
+    let timeoutId: ReturnType<typeof setTimeout>;
     let last = performance.now();
 
-    const frame = (now: number) => {
+    const tick = () => {
+      const now = performance.now();
       // Clamped so returning to a parked tab doesn't apply one enormous delta
       // and skip a slide the moment the page comes back.
       const dt = Math.min(now - last, 100);
@@ -95,10 +102,10 @@ export function useAutoplayProgress({
           onAdvanceRef.current();
         }
       }
-      raf = requestAnimationFrame(frame);
+      timeoutId = setTimeout(tick, TICK_MS);
     };
 
-    raf = requestAnimationFrame(frame);
-    return () => cancelAnimationFrame(raf);
+    timeoutId = setTimeout(tick, TICK_MS);
+    return () => clearTimeout(timeoutId);
   }, [activeIndex, count, durationMs, circumference, progressRef, pausedRef, live]);
 }

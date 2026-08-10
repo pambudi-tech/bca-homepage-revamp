@@ -82,12 +82,8 @@ function createBunting(count: number, top: number, sag: number, swags: number): 
     return {
       id,
       left: progress * 100,
-      // Match the shallow individual swag beneath this flag, rather than one
-      // oversized arc across the entire promo band.
       top: top + sag * 4 * withinSwag * (1 - withinSwag),
       color: COLORS[(id * 5 + 1) % COLORS.length],
-      // Follow the string's tangent: clockwise on the falling side of a swag,
-      // level at its low point, then back up with the return slope.
       turn: (1 - 2 * withinSwag) * 12,
     };
   });
@@ -97,12 +93,7 @@ const DESKTOP_BUNTING = createBunting(18, 0, 40, 3);
 const MOBILE_BUNTING = createBunting(12, 0, 30, 2);
 const SMALL_BUNTING = createBunting(8, 0, 30, 1);
 
-function Bunting({
-  flags,
-  swags,
-  mobile = false,
-  visibilityClass,
-}: {
+function Bunting({ flags, swags, mobile = false, visibilityClass }: {
   flags: BuntingFlag[];
   swags: number;
   mobile?: boolean;
@@ -125,21 +116,7 @@ function Bunting({
         <path d={stringPath} fill="none" stroke={COLORS[1]} strokeWidth="0.35" vectorEffect="non-scaling-stroke" />
       </svg>
       {flags.map((flag) => (
-        <svg
-          key={flag.id}
-          aria-hidden
-          width={flagWidth}
-          height={flagHeight}
-          viewBox={`0 0 ${flagWidth} ${flagHeight}`}
-          className="absolute"
-          style={
-            {
-              left: `${flag.left}%`,
-              top: `${flag.top}px`,
-              transform: `translateX(-50%) rotate(${flag.turn}deg)`,
-            } as CSSProperties
-          }
-        >
+        <svg key={flag.id} aria-hidden width={flagWidth} height={flagHeight} viewBox={`0 0 ${flagWidth} ${flagHeight}`} className="absolute" style={{ left: `${flag.left}%`, top: `${flag.top}px`, transform: `translateX(-50%) rotate(${flag.turn}deg)` } as CSSProperties}>
           <path d={`M0 0H${flagWidth}L${flagWidth / 2} ${flagHeight}Z`} fill={flag.color} />
         </svg>
       ))}
@@ -147,7 +124,7 @@ function Bunting({
   );
 }
 
-export default function Confetti() {
+export default function Confetti({ showBunting = true }: { showBunting?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
 
   // Runs the pieces only while the band is on screen. 66 pieces x 3 nested
@@ -173,9 +150,11 @@ export default function Confetti() {
 
   return (
     <div ref={ref} aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[460px] overflow-hidden">
-      <Bunting flags={SMALL_BUNTING} swags={1} mobile visibilityClass="hidden max-[640px]:block" />
-      <Bunting flags={MOBILE_BUNTING} swags={2} mobile visibilityClass="hidden min-[641px]:block xl:hidden" />
-      <Bunting flags={DESKTOP_BUNTING} swags={3} visibilityClass="hidden xl:block" />
+      {showBunting && <>
+        <Bunting flags={SMALL_BUNTING} swags={1} mobile visibilityClass="hidden max-[640px]:block" />
+        <Bunting flags={MOBILE_BUNTING} swags={2} mobile visibilityClass="hidden min-[641px]:block xl:hidden" />
+        <Bunting flags={DESKTOP_BUNTING} swags={3} visibilityClass="hidden xl:block" />
+      </>}
       {PIECES.map((p) => (
         <span
           key={p.id}

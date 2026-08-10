@@ -1,6 +1,5 @@
 import type { CSSProperties } from "react";
-import { useTranslations } from "next-intl";
-import type { MegaMenuCategory } from "./megamenu-data";
+import type { MegaMenuCategory, MegaMenuLink } from "./megamenu-data";
 
 /* Icons are inlined so hover states can recolour them via `currentColor`. */
 
@@ -18,6 +17,11 @@ function ArrowRight({ className = "size-5" }: { className?: string }) {
 /** Which motion the panel plays — see the `.mm-panel` rules in globals.css. */
 export type MegaMenuMode = "open" | "switch" | "close" | "out";
 
+const LINK_ICONS: Record<NonNullable<MegaMenuLink["type"]>, string> = {
+  article: "/assets/navbar/icon-doc.svg",
+  video: "/assets/navbar/icon-youtube.svg",
+};
+
 export default function MegaMenuPanel({
   category,
   mode,
@@ -25,10 +29,9 @@ export default function MegaMenuPanel({
   category: MegaMenuCategory;
   mode: MegaMenuMode;
 }) {
-  const t = useTranslations("common");
-  /* Longest stagger column: the products plus the CTA beneath them. The close
-     animation counts backwards from this to empty the panel bottom-up. */
-  const rowCount = category.products.length + 1;
+  const tools = category.links.slice(0, 2);
+  const links = category.links.slice(2);
+  const rowCount = category.products.length + tools.length + links.length + 2;
 
   return (
     <div
@@ -36,71 +39,86 @@ export default function MegaMenuPanel({
       style={{ "--mm-n": rowCount } as CSSProperties}
       className="mm-panel w-full max-w-[1920px] overflow-hidden rounded-b-3xl bg-white"
     >
-      <div className="mm-content mx-auto flex w-[1280px] items-stretch gap-20 py-4">
-        {/* product list + article links */}
-        <div className="flex gap-2">
-          <div className="flex w-[360px] flex-col">
-            <div className="flex flex-col">
-              {category.products.map((product, i) => (
-                <button
-                  key={product}
-                  style={{ "--mm-i": i } as CSSProperties}
-                  className="mm-item group flex items-center justify-between rounded-xl px-4 pb-4 pt-3 text-left transition-colors duration-200 hover:bg-cyan-100"
-                >
-                  <span className="text-title text-neutral-800 transition-colors duration-200 group-hover:font-bold group-hover:text-blue-500">
-                    {product}
-                  </span>
-                  <ArrowRight className="size-5 shrink-0 text-blue-500 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
-                </button>
-              ))}
-            </div>
-            <div className="mm-item mt-auto p-4" style={{ "--mm-i": category.products.length } as CSSProperties}>
-              <button className="flex items-center gap-0.5 text-base font-semibold leading-4 text-blue-500 transition-transform duration-200 hover:translate-x-0.5">
-                {category.ctaLabel}
-                <ArrowRight />
-              </button>
-            </div>
-          </div>
-
-          <div className="flex w-[360px] flex-col gap-2">
-            {category.links.map((link, i) => (
-              <button
-                key={`${link.label}-${i}`}
-                style={{ "--mm-i": i } as CSSProperties}
-                className="mm-item group flex w-full items-center gap-3 rounded-xl px-3 pb-3 pt-2 text-left transition-colors duration-200 hover:bg-cyan-100"
-              >
-                <span className="flex-1 text-sm font-semibold leading-5 text-neutral-700 transition-colors duration-200 group-hover:text-blue-500">
-                  {link.label}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* editorial / marketing space */}
+      <div className="mm-content mx-auto flex h-[480px] w-[1280px] gap-5 py-4">
+        {/* Editorial image — restored to the left-hand hero column. */}
         <div
-          className="mm-item group relative flex-1 overflow-hidden rounded-3xl"
-          style={{ "--mm-i": 2 } as CSSProperties}
+          className="mm-item group relative h-full w-[400px] shrink-0 overflow-hidden rounded-xl"
+          style={{ "--mm-i": 0 } as CSSProperties}
         >
-          <img loading="lazy" decoding="async"
+          <img
+            loading="lazy"
+            decoding="async"
             src={category.editorial.image}
             alt=""
             className="size-full object-cover"
           />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[212px] bg-gradient-to-t from-black/50 to-[rgba(18,20,23,0)]" />
-          <div className="absolute bottom-2 left-2 flex w-[240px] flex-col overflow-hidden rounded-2xl border border-white/35 bg-black/30 px-5 pb-5 pt-4 backdrop-blur-[10px]">
-            <p className="text-subtitle text-white text-shadow-hero">
-              {category.editorial.title}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[212px] bg-gradient-to-t from-black/50 to-transparent" />
+          <div className="absolute bottom-2 left-2 w-[240px] rounded-2xl border border-white/35 bg-black/30 px-5 py-4 backdrop-blur-[10px]">
+            <p className="text-subtitle text-white text-shadow-hero">{category.editorial.title}</p>
+          </div>
+        </div>
+
+        {/* Product list — restored to the centre column. */}
+        <div className="flex h-full w-[420px] shrink-0 flex-col justify-between">
+          <div>
+            <p className="px-4 py-2 text-xs font-semibold uppercase tracking-[1.8px] text-neutral-600">
+              {category.label}
             </p>
-            {/* Revealed on hover; the 32px gap collapses with it. */}
-            <span className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out group-hover:grid-rows-[1fr]">
-              <span className="overflow-hidden">
-                <span className="mt-8 flex h-5 items-center gap-0.5 text-sm font-semibold leading-[14px] text-white">
-                  {t("learnMore")}
-                  <ArrowRight />
+            <div className="flex flex-col">
+              {category.products.map((product, i) => (
+                <button
+                  key={product.title}
+                  style={{ "--mm-i": i + 1 } as CSSProperties}
+                  className="mm-item group flex w-full flex-col items-start gap-0.5 rounded-xl px-4 pb-4 pt-3 text-left transition-colors duration-200 hover:bg-cyan-100"
+                >
+                  <span className="text-base font-semibold leading-6 text-neutral-800 transition-colors duration-200 group-hover:text-blue-500">
+                    {product.title}
+                  </span>
+                  {product.description && (
+                    <span className="text-sm leading-5 text-neutral-600">{product.description}</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+          <button
+            style={{ "--mm-i": category.products.length + 1 } as CSSProperties}
+            className="mm-item flex w-fit items-center gap-0.5 px-4 text-base font-semibold text-blue-500 transition-transform duration-200 hover:translate-x-0.5"
+          >
+            {category.ctaLabel}
+            <ArrowRight />
+          </button>
+        </div>
+
+        <div className="h-full w-px shrink-0 bg-neutral-200" />
+
+        {/* Tools and supporting links — restored to the right-hand column. */}
+        <div className="flex h-full min-w-0 flex-1 flex-col justify-between">
+          <div className="flex gap-4">
+            {tools.map((tool, i) => (
+              <button
+                key={tool.label}
+                style={{ "--mm-i": category.products.length + i + 2 } as CSSProperties}
+                className="mm-item flex h-[180px] flex-1 flex-col justify-between rounded-xl border border-neutral-200 p-5 text-left transition-colors duration-200 hover:bg-cyan-100"
+              >
+                <img src={LINK_ICONS[tool.type ?? "article"]} alt="" className="size-10" />
+                <span className="text-base font-semibold leading-6 text-neutral-800">{tool.label}</span>
+              </button>
+            ))}
+          </div>
+          <div className="flex flex-col">
+            {links.map((link, i) => (
+              <button
+                key={link.label}
+                style={{ "--mm-i": category.products.length + tools.length + i + 2 } as CSSProperties}
+                className="mm-item flex w-full items-center gap-3 rounded-xl p-3 text-left transition-colors duration-200 hover:bg-cyan-100"
+              >
+                <span className="flex size-8 shrink-0 items-center justify-center">
+                  <img src={LINK_ICONS[link.type ?? "article"]} alt="" className="size-6" />
                 </span>
-              </span>
-            </span>
+                <span className="flex-1 text-sm font-semibold leading-5 text-neutral-800">{link.label}</span>
+              </button>
+            ))}
           </div>
         </div>
       </div>

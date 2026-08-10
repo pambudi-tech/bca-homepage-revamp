@@ -95,10 +95,10 @@ type FaqSectionProps = {
   categories?: FaqCategory[];
 };
 
-export default function FaqSection({ variant: initialVariant = "solid", categories = FAQ_CATEGORIES }: FaqSectionProps) {
+export default function FaqSection({ variant: initialVariant = "glass", categories = FAQ_CATEGORIES }: FaqSectionProps) {
   const t = useTranslations("faq");
-  const [variant, setVariant] = useState(initialVariant);
-  const glass = variant === "glass";
+  const desktopGlass = initialVariant === "glass";
+  const mobileGlass = false;
   const [activeKey, setActiveKey] = useState(categories[0].key);
   const [openIndex, setOpenIndex] = useState(-1);
   const active = categories.find((c) => c.key === activeKey) ?? categories[0];
@@ -126,6 +126,13 @@ export default function FaqSection({ variant: initialVariant = "solid", categori
     const id = setTimeout(() => updateScrollShadows(accordionRef.current), 320);
     return () => clearTimeout(id);
   }, [openIndex]);
+
+  useEffect(() => {
+    const el = accordionRef.current;
+    if (!el) return;
+    el.scrollTop = 0;
+    updateScrollShadows(el);
+  }, [activeKey]);
 
   // Same 16px gutter as the tab list's own `px-4` — so a snapped-to tab keeps
   // breathing room from the edge instead of sitting flush against it.
@@ -155,7 +162,7 @@ export default function FaqSection({ variant: initialVariant = "solid", categori
     }
   };
 
-  const cardBody = (
+  const renderCardBody = (glass: boolean) => (
     <>
       {/* Tab list — 80% fill on the glass variant. Gains a downward shadow
           once the accordion below has been scrolled away from its top, so
@@ -205,27 +212,28 @@ export default function FaqSection({ variant: initialVariant = "solid", categori
           same pattern as MobileMenu's internal scroller. 50% fill on the
           glass variant, lighter than the tab list and CTA. */}
       <div
-        key={active.key}
         ref={(el) => {
           accordionRef.current = el;
           updateScrollShadows(el);
         }}
         onScroll={(e) => updateScrollShadows(e.currentTarget)}
         data-lenis-prevent
-        className={`content-fade-in flex h-[360px] flex-col gap-1 overflow-y-auto px-2 py-2 ${
+        className={`h-[360px] overflow-y-auto px-2 py-2 ${
           glass ? "scrollbar-glass bg-black/50 backdrop-blur-md" : "bg-white"
         }`}
       >
-        {active.items.map((item, i) => (
-          <AccordionRow
-            key={`${active.key}-${i}`}
-            question={item.question}
-            answer={item.answer}
-            open={openIndex === i}
-            onToggle={() => setOpenIndex(openIndex === i ? -1 : i)}
-            glass={glass}
-          />
-        ))}
+        <div key={active.key} className="content-fade-in flex flex-col gap-1">
+          {active.items.map((item, i) => (
+            <AccordionRow
+              key={`${active.key}-${i}`}
+              question={item.question}
+              answer={item.answer}
+              open={openIndex === i}
+              onToggle={() => setOpenIndex(openIndex === i ? -1 : i)}
+              glass={glass}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Footer CTA — 80% fill on the glass variant, matching the tab list.
@@ -269,30 +277,26 @@ export default function FaqSection({ variant: initialVariant = "solid", categori
     <div
       data-reveal
       className={`relative w-full max-w-[560px] overflow-clip rounded-3xl ${
-        glass
+        desktopGlass
           ? "hero-search isolate"
           : "bg-white shadow-card"
       }`}
     >
-      {cardBody}
+      {renderCardBody(desktopGlass)}
     </div>
   );
 
   const mobileCard = (
     <div
       data-reveal
-      className={`relative w-full overflow-clip rounded-t-3xl ${glass ? "hero-search isolate" : "bg-white"}`}
+      className={`relative w-full overflow-clip rounded-t-3xl ${mobileGlass ? "hero-search isolate" : "bg-white"}`}
     >
-      {cardBody}
+      {renderCardBody(mobileGlass)}
     </div>
   );
 
   return (
     <section id="faq-section" className="relative">
-      {/* Dev-only switcher between the "solid" (Figma spec) and "glass"
-          panel treatments — hidden for now so only "Solid" shows; the
-          setVariant plumbing stays in place to bring it back later. */}
-
       {/* ===== Desktop (>= xl): bg photo + dark overlay behind a floating card,
            fixed 640px section — matches the Figma spec. Heading lives over the
            photo, bottom-left, instead of inside the panel — styled like the

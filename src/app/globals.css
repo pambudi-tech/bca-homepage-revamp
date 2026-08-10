@@ -1180,9 +1180,10 @@ html.pre-revealing .pre-nav {
 
 /* Shared fade/rise-in used wherever a topic/category switch swaps a list's
    content in place (FaqSection's accordion, NewsSection's article grid).
-   FaqSection gets it for free by remounting via `key={active.key}`; NewsSection
-   can't remount (its cards carry ScrollReveal's one-time `data-reveal` wiring),
-   so it replays the class manually — remove, force reflow, re-add. */
+   FaqSection keeps the scroll wrapper mounted and remounts only its inner
+   question content via `key={active.key}`; NewsSection can't remount (its cards
+   carry ScrollReveal's one-time `data-reveal` wiring), so it replays the class
+   manually — remove, force reflow, re-add. */
 @keyframes content-fade-in {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }

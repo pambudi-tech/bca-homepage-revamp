@@ -3,12 +3,17 @@ export type MegaMenuLink = {
   type?: "article" | "video";
 };
 
+export type MegaMenuProduct = {
+  title: string;
+  description?: string;
+};
+
 export type MegaMenuCategory = {
   key: string;
   label: string;
   /** Fixed sub-nav tab width from the design; omit to size to content. */
   width?: number;
-  products: string[];
+  products: MegaMenuProduct[];
   ctaLabel: string;
   links: MegaMenuLink[];
   editorial: {
