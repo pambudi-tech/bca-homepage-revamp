@@ -64,6 +64,15 @@ export default function BackToTop() {
 
   const shown = visible && (!hidden || atBottom);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    root.dataset.backToTopShown = shown ? "true" : "false";
+
+    return () => {
+      delete root.dataset.backToTopShown;
+    };
+  }, [shown]);
+
   const scrollToTop = () => {
     if (lenis) lenis.scrollTo(0);
     else window.scrollTo({ top: 0, behavior: "smooth" });

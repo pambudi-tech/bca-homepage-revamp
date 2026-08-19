@@ -447,6 +447,51 @@ a:focus-visible > .soliprio-card .soliprio-glare {
   }
 }
 
+.credit-art-stage {
+  perspective: 700px;
+}
+
+.credit-art-shell {
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 50%;
+  --lift: 0px;
+  transform: rotateX(var(--rx)) rotateY(var(--ry))
+    translate3d(0, var(--lift), 0);
+  transition: transform 500ms var(--ease-entrance);
+}
+
+.credit-art-stage:hover > .credit-art-shell,
+.credit-art-stage:focus-within > .credit-art-shell {
+  --lift: -6px;
+  transition-duration: 150ms;
+}
+
+.credit-art-glare {
+  background: radial-gradient(
+    circle at var(--mx) var(--my),
+    rgba(255, 255, 255, 0.55),
+    rgba(255, 255, 255, 0.14) 34%,
+    rgba(255, 255, 255, 0) 66%
+  );
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+}
+
+.credit-art-stage:hover .credit-art-glare,
+.credit-art-stage:focus-within .credit-art-glare {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .credit-art-shell,
+  .credit-art-stage:hover > .credit-art-shell,
+  .credit-art-stage:focus-within > .credit-art-shell {
+    transform: none;
+  }
+}
+
 /* Registered so the conic gradient's start angle can actually be animated —
    an unregistered custom property is just a string and would step, not sweep. */
 @property --beam-angle {
@@ -1294,6 +1339,31 @@ html.pre-revealing .pre-nav {
   .halobca-panel, .halobca-scrim {
     animation-duration: 1ms !important;
   }
+}
+
+/* Credit card comparison dock. */
+.credit-comparison-panel {
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  will-change: max-width, bottom, transform, opacity;
+}
+
+html[data-back-to-top-shown="true"] .credit-comparison-panel {
+  bottom: calc(68px + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 768px) {
+  html[data-back-to-top-shown="true"] .credit-comparison-panel {
+    bottom: 64px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .credit-comparison-panel,
+  .credit-comparison-panel > div {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+
 }
 
 html.lenis, html.lenis body {

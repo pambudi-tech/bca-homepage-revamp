@@ -3,6 +3,154 @@
     "title": "BCA - 始终在您身边",
     "description": "BCA.co.id 主页改版原型"
   },
+  "creditCardDetail": {
+    "metadata": {
+      "title": "BCA 信用卡",
+      "description": "探索多种 BCA 信用卡选择，满足您的生活方式需求。"
+    },
+    "hero": {
+      "eyebrow": "BCA 信用卡",
+      "title": "多种选择，满足您的生活方式",
+      "applyCta": "在 myBCA 申请",
+      "cardsCta": "查看卡片选择",
+      "scrollCue": "向下滚动",
+      "cardsSection": "信用卡选择",
+      "imageAlt": "客厅中的 BCA 信用卡和 myBCA 应用界面"
+    },
+    "cardList": {
+      "eyebrow": "卡片选择",
+      "heading": "找到适合您需求的卡片",
+      "compare": "比较",
+      "detail": "卡片详情",
+      "apply": "申请",
+      "showAll": "显示全部14张卡片",
+      "comparisonPanel": {
+        "title": "比较卡片",
+        "count": "已选 {count} 张，最多 {max} 张",
+        "countMobile": "{count} / {max}",
+        "selected": "已选择 {count} 张卡片",
+        "selectedShort": "已选 {count} 张",
+        "chooseCard": "选择卡片",
+        "clearAll": "全部清除",
+        "compareCards": "比较 {count} 张卡片",
+        "compare": "比较",
+        "selectOneMore": "请至少再选择 1 张卡片",
+        "selectOneMoreCta": "再选 1 张",
+        "maxSelected": "最多可选择 {max} 张卡片",
+        "minimize": "最小化",
+        "minimizeAria": "最小化比较面板",
+        "expandAria": "打开比较面板",
+        "removeAria": "从比较中移除 {title}"
+      },
+      "filters": [
+        { "key": "all", "label": "全部" },
+        { "key": "travel", "label": "旅行" },
+        { "key": "lifestyle", "label": "生活方式" },
+        { "key": "reward", "label": "BCA 奖赏" }
+      ],
+      "cards": [
+        {
+          "id": "krisflyer-signature",
+          "title": "BCA Singapore Airlines KrisFlyer Visa Signature",
+          "image": "/assets/kartu-kredit/krisflyer-visa-signature.png",
+          "imageAlt": "BCA Singapore Airlines KrisFlyer Visa Signature",
+          "category": "travel",
+          "benefits": [
+            { "icon": "miles", "label": "最高10,000 KrisFlyer里程奖励" },
+            { "icon": "spend", "label": "每Rp13,500可获1 KrisFlyer里程" },
+            { "icon": "fee", "label": "年费Rp500千" }
+          ]
+        },
+        {
+          "id": "krisflyer-infinite",
+          "title": "BCA Singapore Airlines KrisFlyer Visa Infinite",
+          "image": "/assets/kartu-kredit/krisflyer-visa-infinite.png",
+          "imageAlt": "BCA Singapore Airlines KrisFlyer Visa Infinite",
+          "category": "travel",
+          "benefits": [
+            { "icon": "miles", "label": "最高12,500 KrisFlyer里程奖励" },
+            { "icon": "spend", "label": "每Rp10,800可获1 KrisFlyer里程" },
+            { "icon": "fee", "label": "年费Rp1百万" }
+          ]
+        },
+        {
+          "id": "tiket-mastercard",
+          "title": "BCA tiket.com Mastercard",
+          "image": "/assets/kartu-kredit/tiket-mastercard.png",
+          "imageAlt": "BCA tiket.com Mastercard",
+          "category": "travel",
+          "badge": "最高返现",
+          "benefits": [
+            { "icon": "voucher", "label": "电子优惠券最高Rp1百万" },
+            { "icon": "cashback", "label": "在tiket.com获1% Blibli Tiket积分" },
+            { "icon": "fee", "label": "年费Rp125千" }
+          ]
+        },
+        {
+          "id": "everyday-card",
+          "title": "BCA Everyday Card",
+          "image": "/assets/kartu-kredit/everyday-card.png",
+          "imageAlt": "BCA Everyday Card",
+          "category": "reward",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward 0.3%" },
+            { "icon": "installment", "label": "支持BCA分期" },
+            { "icon": "fee", "label": "年费Rp125千" }
+          ]
+        },
+        {
+          "id": "card-platinum",
+          "title": "BCA Card Platinum",
+          "image": "/assets/kartu-kredit/bca-card-platinum.png",
+          "imageAlt": "BCA Card Platinum",
+          "category": "lifestyle",
+          "badge": "热门",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward 0.3%" },
+            { "icon": "installment", "label": "支持BCA分期" },
+            { "icon": "fee", "label": "年费Rp125千" }
+          ]
+        },
+        {
+          "id": "visa-batman",
+          "title": "BCA Visa Batman",
+          "image": "/assets/kartu-kredit/visa-batman.png",
+          "imageAlt": "BCA Visa Batman",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward 0.3%" },
+            { "icon": "installment", "label": "支持BCA分期" },
+            { "icon": "fee", "label": "年费Rp125千" }
+          ]
+        },
+        {
+          "id": "mastercard-black",
+          "title": "BCA Mastercard Black",
+          "image": "/assets/kartu-kredit/mastercard-black.png",
+          "imageAlt": "BCA Mastercard Black",
+          "category": "lifestyle",
+          "badge": "最高额度",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward 0.3%" },
+            { "icon": "installment", "label": "支持BCA分期" },
+            { "icon": "fee", "label": "年费Rp125千" }
+          ]
+        },
+        {
+          "id": "blibli-mastercard",
+          "title": "BCA Blibli Mastercard",
+          "image": "/assets/kartu-kredit/blibli-mastercard.png",
+          "imageAlt": "BCA Blibli Mastercard",
+          "category": "reward",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward 0.3%" },
+            { "icon": "installment", "label": "支持BCA分期" },
+            { "icon": "fee", "label": "年费Rp125千" }
+          ]
+        }
+      ]
+    }
+  },
   "login": {
     "heading": "BCA Homepage Revamp",
     "subheading": "请输入密码以访问",

@@ -3,6 +3,154 @@
     "title": "BCA - Always By Your Side",
     "description": "Prototype revamp of the BCA.co.id homepage"
   },
+  "creditCardDetail": {
+    "metadata": {
+      "title": "BCA Credit Card",
+      "description": "Discover a range of BCA Credit Cards to complement your lifestyle."
+    },
+    "hero": {
+      "eyebrow": "BCA Credit Card",
+      "title": "A Range of Choices to Complement Your Lifestyle",
+      "applyCta": "Apply in myBCA",
+      "cardsCta": "View Card Options",
+      "scrollCue": "Scroll down",
+      "cardsSection": "Credit card options",
+      "imageAlt": "BCA Credit Card and myBCA app screen in a living room"
+    },
+    "cardList": {
+      "eyebrow": "Card Options",
+      "heading": "Find the Card That Fits Your Needs",
+      "compare": "Compare",
+      "detail": "Card Details",
+      "apply": "Apply",
+      "showAll": "Show All 14 Cards",
+      "comparisonPanel": {
+        "title": "Compare Cards",
+        "count": "{count} of up to {max} cards",
+        "countMobile": "{count} of {max}",
+        "selected": "{count} cards selected",
+        "selectedShort": "{count} selected",
+        "chooseCard": "Choose card",
+        "clearAll": "Clear all",
+        "compareCards": "Compare {count} Cards",
+        "compare": "Compare",
+        "selectOneMore": "Choose at least 1 more card",
+        "selectOneMoreCta": "Choose 1 more",
+        "maxSelected": "Maximum {max} cards selected",
+        "minimize": "Minimize",
+        "minimizeAria": "Minimize comparison panel",
+        "expandAria": "Open comparison panel",
+        "removeAria": "Remove {title} from comparison"
+      },
+      "filters": [
+        { "key": "all", "label": "All" },
+        { "key": "travel", "label": "Travel" },
+        { "key": "lifestyle", "label": "Lifestyle" },
+        { "key": "reward", "label": "BCA Rewards" }
+      ],
+      "cards": [
+        {
+          "id": "krisflyer-signature",
+          "title": "BCA Singapore Airlines KrisFlyer Visa Signature",
+          "image": "/assets/kartu-kredit/krisflyer-visa-signature.png",
+          "imageAlt": "BCA Singapore Airlines KrisFlyer Visa Signature",
+          "category": "travel",
+          "benefits": [
+            { "icon": "miles", "label": "Bonus up to 10,000 KrisFlyer miles" },
+            { "icon": "spend", "label": "1 KrisFlyer mile per Rp13,500" },
+            { "icon": "fee", "label": "Annual fee Rp500 thousand" }
+          ]
+        },
+        {
+          "id": "krisflyer-infinite",
+          "title": "BCA Singapore Airlines KrisFlyer Visa Infinite",
+          "image": "/assets/kartu-kredit/krisflyer-visa-infinite.png",
+          "imageAlt": "BCA Singapore Airlines KrisFlyer Visa Infinite",
+          "category": "travel",
+          "benefits": [
+            { "icon": "miles", "label": "Bonus up to 12,500 KrisFlyer miles" },
+            { "icon": "spend", "label": "1 KrisFlyer mile per Rp10,800" },
+            { "icon": "fee", "label": "Annual fee Rp1 million" }
+          ]
+        },
+        {
+          "id": "tiket-mastercard",
+          "title": "BCA tiket.com Mastercard",
+          "image": "/assets/kartu-kredit/tiket-mastercard.png",
+          "imageAlt": "BCA tiket.com Mastercard",
+          "category": "travel",
+          "badge": "Best Cashback",
+          "benefits": [
+            { "icon": "voucher", "label": "E-voucher up to Rp1 million" },
+            { "icon": "cashback", "label": "1% Blibli Tiket Points at tiket.com" },
+            { "icon": "fee", "label": "Annual fee Rp125 thousand" }
+          ]
+        },
+        {
+          "id": "everyday-card",
+          "title": "BCA Everyday Card",
+          "image": "/assets/kartu-kredit/everyday-card.png",
+          "imageAlt": "BCA Everyday Card",
+          "category": "reward",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward 0.3%" },
+            { "icon": "installment", "label": "BCA Installment available" },
+            { "icon": "fee", "label": "Annual fee Rp125 thousand" }
+          ]
+        },
+        {
+          "id": "card-platinum",
+          "title": "BCA Card Platinum",
+          "image": "/assets/kartu-kredit/bca-card-platinum.png",
+          "imageAlt": "BCA Card Platinum",
+          "category": "lifestyle",
+          "badge": "Popular",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward 0.3%" },
+            { "icon": "installment", "label": "BCA Installment available" },
+            { "icon": "fee", "label": "Annual fee Rp125 thousand" }
+          ]
+        },
+        {
+          "id": "visa-batman",
+          "title": "BCA Visa Batman",
+          "image": "/assets/kartu-kredit/visa-batman.png",
+          "imageAlt": "BCA Visa Batman",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward 0.3%" },
+            { "icon": "installment", "label": "BCA Installment available" },
+            { "icon": "fee", "label": "Annual fee Rp125 thousand" }
+          ]
+        },
+        {
+          "id": "mastercard-black",
+          "title": "BCA Mastercard Black",
+          "image": "/assets/kartu-kredit/mastercard-black.png",
+          "imageAlt": "BCA Mastercard Black",
+          "category": "lifestyle",
+          "badge": "Highest Limit",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward 0.3%" },
+            { "icon": "installment", "label": "BCA Installment available" },
+            { "icon": "fee", "label": "Annual fee Rp125 thousand" }
+          ]
+        },
+        {
+          "id": "blibli-mastercard",
+          "title": "BCA Blibli Mastercard",
+          "image": "/assets/kartu-kredit/blibli-mastercard.png",
+          "imageAlt": "BCA Blibli Mastercard",
+          "category": "reward",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward 0.3%" },
+            { "icon": "installment", "label": "BCA Installment available" },
+            { "icon": "fee", "label": "Annual fee Rp125 thousand" }
+          ]
+        }
+      ]
+    }
+  },
   "login": {
     "heading": "BCA Homepage Revamp",
     "subheading": "Enter the password to continue",

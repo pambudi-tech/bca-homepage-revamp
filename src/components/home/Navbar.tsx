@@ -412,7 +412,9 @@ export default function Navbar({
             >
               <div className="flex w-full max-w-[1280px] items-center justify-between">
                 <div className="flex items-center gap-5">
-                  <img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-9 w-[114.75px]" />
+                  <Link href="/" aria-label="BCA" className="inline-flex">
+                    <img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-9 w-[114.75px]" />
+                  </Link>
                   <div className="flex h-10 items-center gap-1 rounded-full border border-white/15 bg-[rgba(5,13,25,0.2)] p-1 backdrop-blur-[40px]">
                     {SEGMENTS.map((segment) => {
                       const active = activeSegment === segment;
@@ -549,6 +551,35 @@ export default function Navbar({
                   <div className="flex h-11 items-center gap-1">
                     {NAV_TABS.map((tab) => {
                       const isOpen = openMenu === tab.key;
+                      const tabContent = (
+                        <>
+                          <span
+                            className={`whitespace-nowrap text-sm leading-[14px] ${isOpen
+                                ? "font-bold text-blue-500"
+                                : menuOpen
+                                  ? "font-semibold text-neutral-800"
+                                  : "font-semibold text-white/80"
+                              }`}
+                          >
+                            {tab.label}
+                          </span>
+                          {tab.chevron && (
+                            <img
+                              src={
+                                isOpen
+                                  ? "/assets/navbar/chevron-down-blue.svg"
+                                  : menuOpen
+                                    ? "/assets/navbar/chevron-down-dark.svg"
+                                    : "/assets/navbar/chevron-down-white.svg"
+                              }
+                              alt=""
+                              className={`size-5 transition-transform duration-200 ${isOpen ? "rotate-180" : menuOpen ? "" : "opacity-80"
+                                }`}
+                            />
+                          )}
+                        </>
+                      );
+                      const isCreditCard = tab.key === "Kartu Kredit";
                       return (
                         <div
                           key={tab.key}
@@ -559,35 +590,21 @@ export default function Navbar({
                             setOpenMenu(tab.key);
                           }}
                         >
-                          <button
-                            className="flex min-h-0 flex-1 items-center justify-center gap-1 px-4 pt-1"
-                            onClick={tab.onClick}
-                          >
-                            <span
-                              className={`whitespace-nowrap text-sm leading-[14px] ${isOpen
-                                  ? "font-bold text-blue-500"
-                                  : menuOpen
-                                    ? "font-semibold text-neutral-800"
-                                    : "font-semibold text-white/80"
-                                }`}
+                          {isCreditCard ? (
+                            <Link
+                              href="/kartu-kredit"
+                              className="flex min-h-0 flex-1 items-center justify-center gap-1 px-4 pt-1"
                             >
-                              {tab.label}
-                            </span>
-                            {tab.chevron && (
-                              <img
-                                src={
-                                  isOpen
-                                    ? "/assets/navbar/chevron-down-blue.svg"
-                                    : menuOpen
-                                      ? "/assets/navbar/chevron-down-dark.svg"
-                                      : "/assets/navbar/chevron-down-white.svg"
-                                }
-                                alt=""
-                                className={`size-5 transition-transform duration-200 ${isOpen ? "rotate-180" : menuOpen ? "" : "opacity-80"
-                                  }`}
-                              />
-                            )}
-                          </button>
+                              {tabContent}
+                            </Link>
+                          ) : (
+                            <button
+                              className="flex min-h-0 flex-1 items-center justify-center gap-1 px-4 pt-1"
+                              onClick={tab.onClick}
+                            >
+                              {tabContent}
+                            </button>
+                          )}
                           <div
                             className={`h-1 w-full rounded-t-xl bg-blue-500 transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"
                               }`}

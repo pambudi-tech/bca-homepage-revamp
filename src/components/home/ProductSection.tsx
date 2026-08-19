@@ -2,6 +2,7 @@
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Link, useRouter } from "@/i18n/navigation";
 import {
   PRODUCT_CATEGORIES,
   SAMPLE_CATEGORY_PHOTOS,
@@ -173,6 +174,7 @@ function ProductCard({
   copy,
   active,
   onSelect,
+  href,
   progressRef,
   entered,
   enterDelayMs,
@@ -186,6 +188,7 @@ function ProductCard({
   copy: Product;
   active: boolean;
   onSelect: () => void;
+  href?: string;
   progressRef: React.Ref<SVGCircleElement> | undefined;
   entered: boolean;
   enterDelayMs: number;
@@ -202,6 +205,7 @@ function ProductCard({
   };
 }) {
   const t = useTranslations("common");
+  const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLButtonElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -223,6 +227,10 @@ function ProductCard({
     // A click means the pointer is over this card, so the badge should be up the
     // moment it becomes active — without waiting for the next mouse move.
     setIsHovered(true);
+    if (href) {
+      router.push(href);
+      return;
+    }
     onSelect();
   };
 
@@ -281,6 +289,54 @@ function ProductCard({
         transition: `flex-grow 500ms var(--ease-in-out), flex-basis 500ms var(--ease-in-out), clip-path 700ms var(--ease-entrance) ${enterDelayMs}ms`,
       }}
     >
+      <CardContent
+        active={active}
+        outgoing={outgoing}
+        product={product}
+        copy={copy}
+        swap={swap}
+        glassIcon={glassIcon}
+        isHovered={isHovered}
+        progressRef={progressRef}
+        cursorRef={cursorRef}
+        t={t}
+      />
+    </button>
+  );
+}
+
+function CardContent({
+  active,
+  outgoing,
+  product,
+  copy,
+  swap,
+  glassIcon,
+  isHovered,
+  progressRef,
+  cursorRef,
+  t,
+}: {
+  active: boolean;
+  outgoing: Product | null;
+  product: Product;
+  copy: Product;
+  swap: ReturnType<typeof swapStyles>;
+  glassIcon?: {
+    src: string;
+    offsetX?: number;
+    offsetY?: number;
+    scale?: number;
+    mirrorX?: boolean;
+    rotate?: number;
+  };
+  isHovered: boolean;
+  progressRef: React.Ref<SVGCircleElement> | undefined;
+  cursorRef: React.RefObject<HTMLDivElement | null>;
+  t: (key: string) => string;
+}) {
+  return (
+    <>
       {/* Inactive cards show a flat gradient fill instead of their photo — the
           image only appears once the card is active. */}
       <div
@@ -431,11 +487,6 @@ function ProductCard({
 
       <div
         ref={cursorRef}
-        // `fade-overlay` (not a bare `opacity-0`) is what keeps this cheap: an
-        // element parked at opacity 0 is still painted and composited, so the
-        // backdrop-filter below was re-blurring a 112px disc every frame, on
-        // every card, while invisible. `visibility: hidden` drops it out of
-        // paint entirely. See the .fade-overlay note in globals.css.
         className="fade-overlay pointer-events-none absolute left-0 top-0 z-30 flex size-28 items-center justify-center rounded-full border border-white/25 bg-white/[0.01] text-sm font-semibold text-white shadow-lg backdrop-blur-md"
         data-shown={active && isHovered ? "true" : "false"}
         style={{
@@ -445,7 +496,8 @@ function ProductCard({
       >
         {t("learnMore")}
       </div>
-    </button>
+
+    </>
   );
 }
 
@@ -479,6 +531,38 @@ function MobileProductCard({
       className="relative shrink-0 snap-center overflow-clip rounded-3xl bg-white text-left transition-[height] duration-500 ease-in-out"
       style={{ width: 280, height: active ? 360 : 328 }}
     >
+      <MobileCardContent
+        active={active}
+        product={product}
+        outgoing={outgoing}
+        copy={copy}
+        swap={swap}
+        progressRef={progressRef}
+        t={t}
+      />
+    </button>
+  );
+}
+
+function MobileCardContent({
+  active,
+  product,
+  outgoing,
+  copy,
+  swap,
+  progressRef,
+  t,
+}: {
+  active: boolean;
+  product: Product;
+  outgoing: Product | null;
+  copy: Product;
+  swap: ReturnType<typeof swapStyles>;
+  progressRef: React.Ref<SVGCircleElement> | undefined;
+  t: (key: string) => string;
+}) {
+  return (
+    <>
       {/* Same idea as the desktop card: the photo frame is wider than the card
           and anchored to its right edge, so the card acts as a window and the
           88px that spill past the left edge get clipped — the photo reads as
@@ -550,7 +634,7 @@ function MobileProductCard({
           </div>
         </div>
       </div>
-    </button>
+    </>
   );
 }
 
@@ -1514,6 +1598,7 @@ export default function ProductSection({
                     copy={card}
                     active={i === activeCategoryIndex}
                     onSelect={() => selectCategoryCard(categories[i].key)}
+                    href={i === activeCategoryIndex && categories[i].key === "Kartu Kredit" ? "/kartu-kredit" : undefined}
                     progressRef={i === activeCategoryIndex ? progressRef : undefined}
                     entered={entered}
                     enterDelayMs={250 + i * 80}
@@ -1608,9 +1693,7 @@ export default function ProductSection({
           <p className="text-center text-base font-semibold text-blue-700 xl:text-xl">
             {t("ctaHint", { category: category.label })}
           </p>
-          <button
-            className="btn-base btn-primary"
-          >
+          <Link href="/kartu-kredit" className="btn-base btn-primary">
             <span className="text-base font-semibold text-neutral-100">{t("ctaLabel")}</span>
             {/* Drawn as a mask so the shape stays one shared asset and the
                 color comes from the same token as the label. */}
@@ -1628,7 +1711,7 @@ export default function ProductSection({
                 WebkitMaskPosition: "center",
               }}
             />
-          </button>
+          </Link>
         </div>
       </div>
     </section>

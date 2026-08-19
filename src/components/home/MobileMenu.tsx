@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { useLocale, useTranslations } from "next-intl";
 import { useMegaMenu } from "./use-megamenu";
 import { useRouter, usePathname } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import { routing, type AppLocale } from "@/i18n/routing";
 import type { MegaMenuCategory } from "./megamenu-data";
 import type { ProductCategory } from "./product-data";
@@ -258,7 +259,9 @@ export default function MobileMenu({
       <div className="flex h-full w-full max-w-[440px] flex-col">
         {/* Menu nav bar */}
         <div className="flex h-[calc(4rem+env(safe-area-inset-top))] shrink-0 items-center justify-between px-4 pt-[env(safe-area-inset-top)]">
+        <Link href="/" aria-label="BCA" className="inline-flex">
           <img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-8 w-[102px]" />
+        </Link>
           <div className="flex items-center gap-2">
             {/* The segment picker is its own view, so the pill is hidden while it's open. */}
             {view.type !== "segment" && (
@@ -357,18 +360,36 @@ function MainView({
 
       <nav className="mt-6 flex flex-col">
         {menuItems.map((item) => (
-          <button
-            key={item.key}
-            onClick={() => {
-              if (item.expandable) return onOpenDetail(item.key);
-              if (item.href) window.open(item.href, "_blank", "noopener,noreferrer");
-              onLeaf();
-            }}
-            className="flex items-center justify-between px-1 py-5 text-left transition-opacity active:opacity-60"
-          >
-            <span className="text-base font-semibold leading-6 text-white">{item.label}</span>
-            {item.expandable && <ChevronRight className="size-6 text-white/90" />}
-          </button>
+          item.expandable ? (
+            <button
+              key={item.key}
+              onClick={() => onOpenDetail(item.key)}
+              className="flex items-center justify-between px-1 py-5 text-left transition-opacity active:opacity-60"
+            >
+              <span className="text-base font-semibold leading-6 text-white">{item.label}</span>
+              <ChevronRight className="size-6 text-white/90" />
+            </button>
+          ) : item.key === "Kartu Kredit" ? (
+            <Link
+              key={item.key}
+              href="/kartu-kredit"
+              onClick={onLeaf}
+              className="flex items-center justify-between px-1 py-5 text-left transition-opacity active:opacity-60"
+            >
+              <span className="text-base font-semibold leading-6 text-white">{item.label}</span>
+            </Link>
+          ) : (
+            <button
+              key={item.key}
+              onClick={() => {
+                if (item.href) window.open(item.href, "_blank", "noopener,noreferrer");
+                onLeaf();
+              }}
+              className="flex items-center justify-between px-1 py-5 text-left transition-opacity active:opacity-60"
+            >
+              <span className="text-base font-semibold leading-6 text-white">{item.label}</span>
+            </button>
+          )
         ))}
       </nav>
 
@@ -493,16 +514,28 @@ function DetailView({
       </div>
 
       <nav className="mt-6 flex flex-col">
-        {cat.products.map((product) => (
-          <button
-            key={product.title}
-            onClick={onLeaf}
-            className="flex items-center justify-between px-1 py-5 text-left transition-opacity active:opacity-60"
-          >
-            <span className="text-base font-semibold leading-6 text-white">{product.title}</span>
-            <ChevronRight className="size-5 text-white/90" />
-          </button>
-        ))}
+        {cat.products.map((product) =>
+          cat.key === "Kartu Kredit" ? (
+            <Link
+              key={product.title}
+              href="/kartu-kredit"
+              onClick={onLeaf}
+              className="flex items-center justify-between px-1 py-5 text-left transition-opacity active:opacity-60"
+            >
+              <span className="text-base font-semibold leading-6 text-white">{product.title}</span>
+              <ChevronRight className="size-5 text-white/90" />
+            </Link>
+          ) : (
+            <button
+              key={product.title}
+              onClick={onLeaf}
+              className="flex items-center justify-between px-1 py-5 text-left transition-opacity active:opacity-60"
+            >
+              <span className="text-base font-semibold leading-6 text-white">{product.title}</span>
+              <ChevronRight className="size-5 text-white/90" />
+            </button>
+          )
+        )}
       </nav>
     </>
   );

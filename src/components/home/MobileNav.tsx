@@ -6,6 +6,7 @@ import MobileMenu from "./MobileMenu";
 import { LocationIcon } from "./Navbar";
 import type { ProductCategory } from "./product-data";
 import type { MegaMenuContent } from "@/lib/megamenu";
+import { Link } from "@/i18n/navigation";
 
 // Broadcast so unrelated fixed-position UI (HaloBcaChat's floating button)
 // can hide itself while the mobile menu overlay covers the viewport, without
@@ -56,11 +57,13 @@ export default function MobileNav({
         hidden && !menuOpen ? "-translate-y-full" : "translate-y-0"
       } ${scrolled || menuOpen ? "bg-[rgba(18,20,23,0.95)]" : ""}`}
     >
-      <img
-        src="/assets/cycle1/bca-logo.svg"
-        alt="BCA"
-        className="h-8 w-[102px] drop-shadow-[0px_2px_2px_rgba(0,0,0,0.25)]"
-      />
+      <Link href="/" aria-label="BCA" className="inline-flex">
+        <img
+          src="/assets/cycle1/bca-logo.svg"
+          alt="BCA"
+          className="h-8 w-[102px] drop-shadow-[0px_2px_2px_rgba(0,0,0,0.25)]"
+        />
+      </Link>
 
       <div className="flex items-center gap-3">
         <button
