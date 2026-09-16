@@ -1465,6 +1465,7 @@ export default function ProductSection({
   return (
     <section
       ref={sectionRef}
+      id="products"
       className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-[120px] pt-0 xl:pb-40 xl:pt-0"
     >
       {/* Clove pattern — mobile only, right side. The fluted glass overlay

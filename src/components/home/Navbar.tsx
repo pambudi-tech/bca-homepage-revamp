@@ -2,20 +2,14 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { useMegaMenu } from "./use-megamenu";
-import { Link, useRouter, usePathname } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { routing, type AppLocale } from "@/i18n/routing";
-import MegaMenuPanel, { type MegaMenuMode } from "./MegaMenuPanel";
-import MobileNav from "./MobileNav";
-import SearchOverlay from "./SearchOverlay";
-import { onPreloaderDone } from "@/components/Preloader";
 import type { ProductCategory } from "./product-data";
 import type { MegaMenuContent } from "@/lib/megamenu";
-
-/* How long the panel stays mounted after the pointer leaves, and how long the
-   outgoing panel lingers when switching tabs. Both mirror globals.css. */
-const MEGAMENU_CLOSE_MS = 440;
-const MEGAMENU_SWITCH_MS = 160;
+import MobileNav from "./MobileNav";
+import SearchOverlay from "./SearchOverlay";
+import SearchPlaceholderCarousel from "./SearchPlaceholderCarousel";
+import { SEGMENT_EXTERNAL_LINKS } from "./segment-links";
 
 const LOCALE_META: Record<AppLocale, { flag: string }> = {
   id: { flag: "/assets/cycle1/flag-id.svg" },
@@ -23,79 +17,28 @@ const LOCALE_META: Record<AppLocale, { flag: string }> = {
   zh: { flag: "/assets/navbar/flag-zh.png" },
 };
 
-function LinkLabel({ label, hover }: { label: string; hover: boolean }) {
-  return (
-    <span className="flex items-center justify-center px-1">
-      <span className="relative inline-flex">
-        <span aria-hidden className="invisible whitespace-nowrap text-sm font-bold">
-          {label}
-        </span>
-        <span
-          className={`absolute inset-0 whitespace-nowrap text-sm font-semibold text-white transition-opacity duration-300 ${hover ? "opacity-0" : "opacity-80"
-            }`}
-        >
-          {label}
-        </span>
-        <span
-          className={`absolute inset-0 whitespace-nowrap text-sm font-bold text-white transition-opacity duration-300 ${hover ? "opacity-100" : "opacity-0"
-            }`}
-        >
-          {label}
-        </span>
-      </span>
-    </span>
-  );
-}
+export const NAVBAR_VISIBILITY_EVENT = "bca:navbar-hidden";
+export const NAVBAR_ANCHOR_LOCK_EVENT = "bca:navbar-anchor-lock";
 
-function SearchButton({
-  label,
-  onClick,
-  expanded,
-}: {
-  label: string;
-  onClick: () => void;
-  /** Whether the search overlay this button opens is currently up. */
-  expanded: boolean;
-}) {
-  const [hover, setHover] = useState(false);
+function SearchButton({ label, placeholders, onClick, expanded }: { label: string; placeholders: string[]; onClick: () => void; expanded: boolean }) {
   return (
     <button
       aria-label={label}
       aria-expanded={expanded}
       onClick={onClick}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      className={`flex h-10 cursor-pointer items-center justify-start gap-0.5 rounded-full border transition-all duration-300 ${hover
-          ? "w-auto border-white/20 bg-[rgba(18,20,23,0.5)] px-4"
-          : "w-10 border-white/25 bg-[rgba(5,13,25,0.1)] px-2"
-        }`}
+      className="relative flex h-10 w-60 cursor-pointer items-center rounded-full border border-white/15 bg-[rgba(5,13,25,0.2)] px-3 text-left backdrop-blur-[40px] transition-colors duration-200 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
     >
       <img src="/assets/cycle1/outline-search.svg" alt="" className="size-6 shrink-0" />
-      <span
-        className={`grid overflow-hidden transition-[grid-template-columns] duration-300 ${hover ? "grid-cols-[1fr]" : "grid-cols-[0fr]"
-          }`}
-      >
-        <span className="overflow-hidden">
-          <LinkLabel label={label} hover={hover} />
-        </span>
-      </span>
+      <SearchPlaceholderCarousel placeholders={placeholders} visible live={!expanded} lineHeight={40} className="inset-y-0 left-11 right-3 text-sm" />
     </button>
   );
 }
 
-/** Pin glyph shared by the desktop `IconLinkButton` and the mobile navbar's
- *  icon-only equivalent — both scroll to the same `#lokasi` section. */
-export function LocationIcon({ className = "size-6 shrink-0 text-neutral-100 opacity-80" }: { className?: string }) {
+export function LocationIcon({ className = "size-6" }: { className?: string }) {
   return (
     <svg aria-hidden viewBox="0 0 32 32" fill="none" className={className}>
-      <path
-        d="M15.9999 18.8927C13.1598 18.8927 10.8398 16.586 10.8398 13.7327C10.8398 10.8793 13.1598 8.58594 15.9999 8.58594C18.8399 8.58594 21.1599 10.8926 21.1599 13.746C21.1599 16.5993 18.8399 18.8927 15.9999 18.8927ZM15.9999 10.5859C14.2665 10.5859 12.8398 11.9993 12.8398 13.746C12.8398 15.4927 14.2532 16.906 15.9999 16.906C17.7465 16.906 19.1599 15.4927 19.1599 13.746C19.1599 11.9993 17.7332 10.5859 15.9999 10.5859Z"
-        fill="currentColor"
-      />
-      <path
-        d="M15.9997 30.3467C14.0264 30.3467 12.0397 29.6001 10.4931 28.1201C6.55975 24.3334 2.21308 18.2934 3.85308 11.1067C5.33308 4.58675 11.0264 1.66675 15.9997 1.66675C15.9997 1.66675 15.9997 1.66675 16.013 1.66675C20.9864 1.66675 26.6797 4.58675 28.1597 11.1201C29.7864 18.3067 25.4397 24.3334 21.5064 28.1201C19.9597 29.6001 17.973 30.3467 15.9997 30.3467ZM15.9997 3.66675C12.1197 3.66675 7.13308 5.73341 5.81308 11.5467C4.37308 17.8267 8.31975 23.2401 11.8931 26.6667C14.1997 28.8934 17.813 28.8934 20.1197 26.6667C23.6797 23.2401 27.6264 17.8267 26.213 11.5467C24.8797 5.73341 19.8797 3.66675 15.9997 3.66675Z"
-        fill="currentColor"
-      />
+      <path d="M16 18.893a5.153 5.153 0 1 1 0-10.307 5.153 5.153 0 0 1 0 10.307Zm0-8.307a3.16 3.16 0 1 0 0 6.32 3.16 3.16 0 0 0 0-6.32Z" fill="currentColor" />
+      <path d="M16 30.347a7.93 7.93 0 0 1-5.507-2.227C6.56 24.333 2.213 18.293 3.853 11.107 5.333 4.587 11.027 1.667 16 1.667s10.68 2.92 12.16 9.453c1.627 7.187-2.72 13.213-6.653 17A7.93 7.93 0 0 1 16 30.347Zm0-26.68c-3.88 0-8.867 2.066-10.187 7.88-1.44 6.28 2.507 11.693 6.08 15.12a5.9 5.9 0 0 0 8.214 0c3.56-3.427 7.506-8.84 6.093-15.107C24.867 5.733 19.88 3.667 16 3.667Z" fill="currentColor" />
     </svg>
   );
 }
@@ -103,144 +46,29 @@ export function LocationIcon({ className = "size-6 shrink-0 text-neutral-100 opa
 function LoginIcon({ className = "size-6 shrink-0" }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 32" fill="none" className={className} aria-hidden>
-      <path d="M11.8667 10.0801C12.28 5.28007 14.7467 3.32007 20.1467 3.32007H20.32C26.28 3.32007 28.6667 5.70674 28.6667 11.6667V20.3601C28.6667 26.3201 26.28 28.7067 20.32 28.7067H20.1467C14.7867 28.7067 12.32 26.7734 11.88 22.0534" stroke="currentColor" strokeWidth="2.18" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M2.66748 16H19.8408M16.8667 11.5334L21.3334 16.0001L16.8667 20.4668" stroke="currentColor" strokeWidth="2.18" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M11.867 10.08c.413-4.8 2.88-6.76 8.28-6.76h.173c5.96 0 8.347 2.387 8.347 8.347v8.693c0 5.96-2.387 8.347-8.347 8.347h-.173c-5.36 0-7.827-1.934-8.267-6.654" stroke="currentColor" strokeWidth="2.18" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M2.667 16H19.84m-2.973-4.467L21.333 16l-4.466 4.467" stroke="currentColor" strokeWidth="2.18" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
-function IconLinkButton({
-  label,
-  icon,
-  onClick,
-}: {
-  label: string;
-  icon: React.ReactNode;
-  onClick: () => void;
-}) {
-  const [hover, setHover] = useState(false);
-  return (
-    <button
-      aria-label={label}
-      onClick={onClick}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      className={`flex h-10 cursor-pointer items-center rounded-full border transition-all duration-300 ${hover
-          ? "w-auto justify-start gap-0.5 border-white/20 bg-[rgba(18,20,23,0.5)] px-4"
-          : "w-10 justify-center border-white/25 bg-[rgba(5,13,25,0.1)] px-2"
-        }`}
-    >
-      {icon}
-      <span
-        className={`grid overflow-hidden transition-[grid-template-columns] duration-300 ${hover ? "grid-cols-[1fr]" : "grid-cols-[0fr]"
-          }`}
-      >
-        <span className="overflow-hidden">
-          <LinkLabel label={label} hover={hover} />
-        </span>
-      </span>
-    </button>
-  );
-}
-
-export default function Navbar({
-  productCategories,
-  megamenuContent,
-  variant = "default",
-}: {
-  /** Live product lists from Supabase (see `getProductCategories`), keyed the
-      same as `MEGAMENU_STRUCTURE` — merged in so the mega menu shows every
-      product per category instead of a hardcoded handful. */
-  productCategories?: ProductCategory[];
-  /** Live article/video links + editorial card from Supabase (see
-      `getMegaMenuContent`), keyed the same as `MEGAMENU_STRUCTURE`. */
-  megamenuContent?: MegaMenuContent;
-  /** "about" is the segment-agnostic Tentang BCA shell: the segment pill
-      goes inert (no dropdown) and the tab row shows the About-section
-      links instead of the product mega menu. Panels never mount for those
-      tabs since their keys don't exist in `MEGAMENU` — nothing to wire up. */
-  variant?: "default" | "about";
-}) {
+export default function Navbar({ productCategories, megamenuContent, variant = "default" }: { productCategories?: ProductCategory[]; megamenuContent?: MegaMenuContent; variant?: "default" | "about" | "promo" }) {
   const locale = useLocale() as AppLocale;
   const router = useRouter();
   const pathname = usePathname();
   const tNav = useTranslations("nav");
+  const tHero = useTranslations("hero");
   const tLang = useTranslations("languages");
-  const SEGMENTS = Object.keys(tNav.raw("segments")) as string[];
-  const MEGAMENU = useMegaMenu(productCategories, megamenuContent);
-  const ABOUT_TABS = (Object.keys(tNav.raw("aboutTabs")) as string[]).map((key) => ({
-    key,
-    label: tNav(`aboutTabs.${key}`),
-    width: undefined as number | undefined,
-    chevron: false,
-    onClick: undefined as (() => void) | undefined,
-  }));
-  // Categories that exist in Supabase's `product_categories` but aren't
-  // curated into MEGAMENU_STRUCTURE (no editorial/links copy written for
-  // them yet) — e.g. "Reward BCA", a single loyalty program with no
-  // products of its own. They still get a tab, just without an expand
-  // chevron or panel, driven entirely by whether they actually have any
-  // products — no per-category hardcoding.
-  const extraCategories = (productCategories ?? []).filter(
-    (c) => !MEGAMENU.some((menu) => menu.key === c.key)
-  );
-  const NAV_TABS =
-    variant === "about"
-      ? ABOUT_TABS
-      : [
-          // Every entry in MEGAMENU opens a panel, so its tab always gets the
-          // expand chevron — no per-category override needed.
-          ...MEGAMENU.map((menu) => ({
-            key: menu.key,
-            label: menu.label,
-            width: menu.width,
-            chevron: true,
-            onClick: undefined as (() => void) | undefined,
-          })),
-          ...extraCategories.map((c) => ({
-            key: c.key,
-            label: c.label,
-            width: undefined as number | undefined,
-            chevron: c.products.length > 0,
-            onClick: undefined as (() => void) | undefined,
-          })),
-        ];
-  const otherLocales = routing.locales.filter((l) => l !== locale);
-
-  const switchLocale = (nextLocale: AppLocale) => {
-    router.replace(pathname, { locale: nextLocale });
-  };
-
-  // The pill reflects whichever page you're actually on, not a persisted
-  // preference: the default shell IS the Individu homepage, so it reads
-  // "Individu" from the start; the About shell has no inherent segment, so
-  // it starts on the "Pilih Segmen" placeholder until you pick one.
-  const [activeSegment, setActiveSegment] = useState<string | null>(
-    variant === "about" ? null : (SEGMENTS[0] ?? null)
-  );
-  const chooseSegment = (segment: string) => {
-    setActiveSegment(segment);
-  };
-  const [openMenu, setOpenMenu] = useState<string | null>(null);
-  /* What's actually on screen. It lags behind `openMenu` so the panel can play
-     its close animation before unmounting, and so the tab we moved away from
-     can fade out behind the incoming one. */
-  const [panel, setPanel] = useState<{ key: string; mode: MegaMenuMode; seq: number } | null>(null);
-  const [outgoing, setOutgoing] = useState<string | null>(null);
-  const panelKey = useRef<string | null>(null);
-  const seq = useRef(0);
-  const [scrolled, setScrolled] = useState(false);
-  // Owned here rather than duplicated per breakpoint: SearchOverlay portals to
-  // `document.body` and runs its own focus trap (`inert` on every other body
-  // child) — two independent instances toggling that on the same DOM would be
-  // one component fighting the other's bookkeeping. One overlay, opened by
-  // whichever nav bar's search button is actually visible.
+  const segments = Object.keys(tNav.raw("segments")) as string[];
+  const searchPlaceholders = tHero.raw("placeholders") as string[];
+  const otherLocales = routing.locales.filter((item) => item !== locale);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [navHidden, setNavHidden] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [langHover, setLangHover] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [navHidden, setNavHidden] = useState(false);
+  const [anchorLocked, setAnchorLocked] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
@@ -248,14 +76,10 @@ export default function Navbar({
     const update = () => {
       raf = 0;
       const y = window.scrollY;
-      setScrolled(y > 40);
-      if (y < 80) {
-        setNavHidden(false);
-      } else if (y > lastScrollY.current + 4) {
-        setNavHidden(true);
-      } else if (y < lastScrollY.current - 4) {
-        setNavHidden(false);
-      }
+      setScrolled(y > 8);
+      if (y < 80) setNavHidden(false);
+      else if (y > lastScrollY.current + 4) setNavHidden(true);
+      else if (y < lastScrollY.current - 4) setNavHidden(false);
       lastScrollY.current = y;
     };
     const onScroll = () => {
@@ -270,382 +94,81 @@ export default function Navbar({
   }, []);
 
   useEffect(() => {
-    const onClickOutside = (e: MouseEvent) => {
-      if (langRef.current && !langRef.current.contains(e.target as Node)) {
-        setLangOpen(false);
+    const lockForAnchor = (event: Event) => {
+      setAnchorLocked((event as CustomEvent<boolean>).detail);
+    };
+    const releaseAnchorLock = () => setAnchorLocked(false);
+    const releaseOnKey = (event: KeyboardEvent) => {
+      if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(event.key)) {
+        releaseAnchorLock();
       }
     };
-    document.addEventListener("mousedown", onClickOutside);
-    return () => document.removeEventListener("mousedown", onClickOutside);
+
+    window.addEventListener(NAVBAR_ANCHOR_LOCK_EVENT, lockForAnchor);
+    window.addEventListener("wheel", releaseAnchorLock, { passive: true });
+    window.addEventListener("touchstart", releaseAnchorLock, { passive: true });
+    window.addEventListener("keydown", releaseOnKey);
+    return () => {
+      window.removeEventListener(NAVBAR_ANCHOR_LOCK_EVENT, lockForAnchor);
+      window.removeEventListener("wheel", releaseAnchorLock);
+      window.removeEventListener("touchstart", releaseAnchorLock);
+      window.removeEventListener("keydown", releaseOnKey);
+    };
   }, []);
 
-  // The dropdown's other-locale flags only mount into the DOM once it's
-  // opened (see `{langOpen && ...}` below), so the preloader never sees
-  // them and they'd otherwise fetch — and visibly flash in — right as the
-  // visitor opens the switcher. Warm the browser's cache for them here
-  // instead: a background Image() request that's never attached to the
-  // page, kicked off once the preloader's critical-path wait is over so it
-  // never competes with first paint, and only for the flags that aren't
-  // already loaded (the active locale's is already in the trigger button).
-  useEffect(() => {
-    const fetchOtherFlags = () => {
-      for (const code of routing.locales) {
-        if (code === locale) continue;
-        new Image().src = LOCALE_META[code as AppLocale].flag;
-      }
-    };
-    let idleHandle: number | ReturnType<typeof setTimeout> | undefined;
-    const warm = () => {
-      idleHandle =
-        "requestIdleCallback" in window
-          ? requestIdleCallback(fetchOtherFlags)
-          : setTimeout(fetchOtherFlags, 200);
-    };
-    const cancelWarm = () => {
-      if (idleHandle === undefined) return;
-      if ("cancelIdleCallback" in window && typeof idleHandle === "number") {
-        cancelIdleCallback(idleHandle);
-      } else {
-        clearTimeout(idleHandle as ReturnType<typeof setTimeout>);
-      }
-    };
-
-    // Waits for the preloader so this never competes with the critical-path
-    // load — or warms immediately if it already finished or never ran.
-    const stop = onPreloaderDone(warm);
-    return () => {
-      stop();
-      cancelWarm();
-    };
-  }, [locale]);
-
-  /* Drive the panel's motion mode off `openMenu`. Opening from nothing unfurls;
-     moving between tabs while open only crossfades; leaving plays the close and
-     unmounts once it finishes. Keep these in sync with globals.css. */
-  useEffect(() => {
-    if (openMenu) {
-      const prev = panelKey.current;
-      panelKey.current = openMenu;
-      seq.current += 1;
-      if (prev && prev !== openMenu) {
-        setOutgoing(prev);
-        setPanel({ key: openMenu, mode: "switch", seq: seq.current });
-      } else {
-        setPanel({ key: openMenu, mode: "open", seq: seq.current });
-      }
-      return;
-    }
-    if (!panelKey.current) return;
-    panelKey.current = null;
-    setOutgoing(null);
-    // Same seq, so the panel keeps its DOM node and animates out in place.
-    setPanel((p) => (p ? { ...p, mode: "close" } : p));
-    const t = setTimeout(() => setPanel(null), MEGAMENU_CLOSE_MS);
-    return () => clearTimeout(t);
-  }, [openMenu]);
+  const shouldHide = (navHidden || anchorLocked) && !langOpen && !searchOpen;
 
   useEffect(() => {
-    if (!outgoing) return;
-    const t = setTimeout(() => setOutgoing(null), MEGAMENU_SWITCH_MS);
-    return () => clearTimeout(t);
-  }, [outgoing]);
+    window.dispatchEvent(new CustomEvent<boolean>(NAVBAR_VISIBILITY_EVENT, { detail: shouldHide }));
+  }, [shouldHide]);
 
-  const menuOpen = openMenu !== null;
-  // The transparent/white-text idle state is designed to sit over the
-  // home hero photo — pages without one (like the About shell) need the
-  // solid bar from the very first frame instead of waiting on scroll.
-  const solid = variant === "about" || scrolled || menuOpen;
-  const panelCategory = panel ? MEGAMENU.find((c) => c.key === panel.key) : undefined;
-  const outgoingCategory = outgoing ? MEGAMENU.find((c) => c.key === outgoing) : undefined;
-  const shouldHide = navHidden && !menuOpen && !langOpen;
+  useEffect(() => {
+    const close = (event: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(event.target as Node)) setLangOpen(false);
+    };
+    document.addEventListener("mousedown", close);
+    return () => document.removeEventListener("mousedown", close);
+  }, []);
 
-  const scheduleClose = () => {
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-    closeTimer.current = setTimeout(() => setOpenMenu(null), 120);
-  };
-  const cancelClose = () => {
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-  };
-  const closeNow = () => {
-    cancelClose();
-    setOpenMenu(null);
-  };
+  const activeSegment = variant === "default" ? segments[0] : null;
 
   return (
     <>
-      {/* Mobile navigation (logo + search + burger) — below the xl breakpoint.
-          Shares this component's single `searchOpen` state/overlay (below)
-          rather than owning its own — see the note by that state. */}
-      <MobileNav
-        scrolled={scrolled}
-        hidden={navHidden}
-        productCategories={productCategories}
-        megamenuContent={megamenuContent}
-        searchOpen={searchOpen}
-        onOpenSearch={() => setSearchOpen(true)}
-      />
+      <MobileNav scrolled={scrolled} hidden={shouldHide} productCategories={productCategories} megamenuContent={megamenuContent} searchOpen={searchOpen} onOpenSearch={() => setSearchOpen(true)} />
 
-      {/* Desktop navigation — hidden on mobile/tablet. `xl:contents` keeps the
-          two fixed children positioning against the viewport. */}
-      <div className="hidden xl:contents">
-        {/* Focus overlay — dims the page behind the mega menu so the panel stands out. */}
-        <div
-          aria-hidden
-          data-shown={menuOpen}
-          className="fade-overlay fixed inset-0 z-20 bg-black/50 backdrop-blur-[2px]"
-        />
-        <nav
-          aria-label={tNav("primary")}
-          className={`pre-nav fixed left-0 right-0 top-0 z-30 flex flex-col items-start transition-transform duration-300 ${shouldHide ? "-translate-y-full" : "translate-y-0"
-            }`}
-          onMouseLeave={scheduleClose}
-        >
-          <div
-            className={`relative flex w-full flex-col items-start transition-shadow duration-200 ${solid ? "shadow-lg" : ""
-              }`}
-          >
-            <div
-              style={{ viewTransitionName: "nav-top-row" } as CSSProperties}
-              className={`relative z-10 flex w-full items-center justify-center px-10 py-4 transition-colors duration-200 ${solid ? "bg-[rgba(18,20,23,0.95)]" : ""
-                }`}
-              onMouseEnter={closeNow}
-            >
-              <div className="flex w-full max-w-[1280px] items-center justify-between">
-                <div className="flex items-center gap-5">
-                  <Link href="/" aria-label="BCA" className="inline-flex">
-                    <img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-9 w-[114.75px]" />
-                  </Link>
-                  <div className="flex h-10 items-center gap-1 rounded-full border border-white/15 bg-[rgba(5,13,25,0.2)] p-1 backdrop-blur-[40px]">
-                    {SEGMENTS.map((segment) => {
-                      const active = activeSegment === segment;
-                      const segmentClass = `flex h-8 min-w-24 cursor-pointer items-center justify-center rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${active
-                          ? "bg-blue-500 text-white"
-                          : "text-white/80 hover:bg-white/10 hover:text-white"
-                        }`;
-
-                      if (segment === "Individu") {
-                        return (
-                          <Link
-                            key={segment}
-                            href="/"
-                            aria-current={variant === "default" ? "page" : undefined}
-                            style={active ? ({ viewTransitionName: "nav-segment-pill" } as CSSProperties) : undefined}
-                            className={segmentClass}
-                          >
-                            {tNav(`segments.${segment}`)}
-                          </Link>
-                        );
-                      }
-
-                      return (
-                        <button
-                          key={segment}
-                          onClick={() => chooseSegment(segment)}
-                          style={active ? ({ viewTransitionName: "nav-segment-pill" } as CSSProperties) : undefined}
-                          className={segmentClass}
-                        >
-                          {tNav(`segments.${segment}`)}
-                        </button>
-                      );
-                    })}
-                    <Link
-                      href="/tentang-bca"
-                      aria-current={variant === "about" ? "page" : undefined}
-                      style={{ viewTransitionName: "nav-tentang-bca" } as CSSProperties}
-                      className={`flex h-8 cursor-pointer items-center justify-center rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${variant === "about"
-                          ? "bg-blue-500 text-white"
-                          : "text-white/80 hover:bg-white/10 hover:text-white"
-                        }`}
-                    >
-                      {tNav("tentangBca")}
-                    </Link>
-                    <a
-                      href="https://karir.bca.co.id/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex h-8 cursor-pointer items-center justify-center rounded-full px-4 text-sm font-semibold text-white/80 transition-colors duration-200 hover:bg-white/10 hover:text-white"
-                    >
-                      {tNav("karir")}
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <SearchButton
-                    label={tNav("search")}
-                    expanded={searchOpen}
-                    onClick={() => {
-                      // A mega menu left open behind the overlay would still be
-                      // hover-tracking a bar the user can no longer reach.
-                      closeNow();
-                      setSearchOpen(true);
-                    }}
-                  />
-                  <div ref={langRef} className="relative">
-                    <button
-                      onClick={() => setLangOpen((v) => !v)}
-                      onMouseEnter={() => setLangHover(true)}
-                      onMouseLeave={() => setLangHover(false)}
-                      className={`flex h-10 cursor-pointer items-center gap-0.5 rounded-full border px-2 transition-colors ${langHover || langOpen
-                          ? "border-neutral-300 bg-white"
-                          : "border-white/25 bg-[rgba(5,13,25,0.1)]"
-                        }`}
-                    >
-                      <img src={LOCALE_META[locale].flag} alt="" className="size-6" />
-                      <span
-                        className={`flex w-8 items-center justify-center text-center text-base font-bold ${langHover || langOpen ? "text-neutral-900" : "text-white"
-                          }`}
-                      >
-                        {locale.toUpperCase()}
-                      </span>
-                    </button>
-
-                    {langOpen && (
-                      <div className="absolute right-0 top-[calc(100%+8px)] z-40 overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-menu">
-                        {otherLocales.map((code) => (
-                          <button
-                            key={code}
-                            onClick={() => {
-                              setLangOpen(false);
-                              switchLocale(code);
-                            }}
-                            className="flex w-[148px] items-center gap-2 p-4 text-left transition-colors hover:bg-blue-100"
-                          >
-                            <img src={LOCALE_META[code].flag} alt="" className="size-6 rounded-full object-cover" />
-                            <span className="flex-1 text-base font-semibold text-neutral-900">
-                              {tLang(code)}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  <a
-                    href="https://mybca.bca.co.id/auth/login"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-full border border-white/25 bg-[rgba(5,13,25,0.1)] px-4 text-sm font-semibold text-white transition-colors duration-300 hover:border-white/20 hover:bg-[rgba(18,20,23,0.5)]"
-                  >
-                    <LoginIcon className="size-6 text-white/80" />
-                    {tNav("login")}
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div
-              className="relative flex w-full flex-col items-center"
-              onMouseEnter={cancelClose}
-            >
-              <div
-                style={{ viewTransitionName: "nav-tab-row" } as CSSProperties}
-                className={`flex h-11 w-full items-center justify-center transition-colors duration-200 ${menuOpen
-                    ? "border border-neutral-300 bg-white"
-                    : scrolled
-                      ? "bg-neutral-900/90"
-                      : ""
-                  }`}
-              >
-                <div className="flex h-11 w-[1280px] items-center justify-between gap-1">
-                  <div className="flex h-11 items-center gap-1">
-                    {NAV_TABS.map((tab) => {
-                      const isOpen = openMenu === tab.key;
-                      const tabContent = (
-                        <>
-                          <span
-                            className={`whitespace-nowrap text-sm leading-[14px] ${isOpen
-                                ? "font-bold text-blue-500"
-                                : menuOpen
-                                  ? "font-semibold text-neutral-800"
-                                  : "font-semibold text-white/80"
-                              }`}
-                          >
-                            {tab.label}
-                          </span>
-                          {tab.chevron && (
-                            <img
-                              src={
-                                isOpen
-                                  ? "/assets/navbar/chevron-down-blue.svg"
-                                  : menuOpen
-                                    ? "/assets/navbar/chevron-down-dark.svg"
-                                    : "/assets/navbar/chevron-down-white.svg"
-                              }
-                              alt=""
-                              className={`size-5 transition-transform duration-200 ${isOpen ? "rotate-180" : menuOpen ? "" : "opacity-80"
-                                }`}
-                            />
-                          )}
-                        </>
-                      );
-                      const isCreditCard = tab.key === "Kartu Kredit";
-                      return (
-                        <div
-                          key={tab.key}
-                          className={`flex h-11 flex-col items-start transition-colors ${isOpen ? "bg-cyan-100" : ""
-                            }`}
-                          onMouseEnter={() => {
-                            cancelClose();
-                            setOpenMenu(tab.key);
-                          }}
-                        >
-                          {isCreditCard ? (
-                            <Link
-                              href="/kartu-kredit"
-                              className="flex min-h-0 flex-1 items-center justify-center gap-1 px-4 pt-1"
-                            >
-                              {tabContent}
-                            </Link>
-                          ) : (
-                            <button
-                              className="flex min-h-0 flex-1 items-center justify-center gap-1 px-4 pt-1"
-                              onClick={tab.onClick}
-                            >
-                              {tabContent}
-                            </button>
-                          )}
-                          <div
-                            className={`h-1 w-full rounded-t-xl bg-blue-500 transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"
-                              }`}
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-
-              {panel && panelCategory && (
-                <div
-                  className={`relative flex w-full justify-center ${panel.mode === "close" ? "pointer-events-none" : ""
-                    }`}
-                  onMouseEnter={cancelClose}
-                  onMouseLeave={scheduleClose}
-                >
-                  {/* The tab we just left, stacked behind and fading out. */}
-                  {outgoingCategory && (
-                    <div className="pointer-events-none absolute inset-0 flex justify-center">
-                      <MegaMenuPanel category={outgoingCategory} mode="out" />
-                    </div>
-                  )}
-                  {/* `seq` in the key remounts on open/switch so the entrance
-                      replays; a close reuses the same key and animates in place. */}
-                  <MegaMenuPanel
-                    key={`${panel.key}-${panel.seq}`}
-                    category={panelCategory}
-                    mode={panel.mode}
-                  />
-                </div>
-              )}
+      <nav
+        aria-label={tNav("primary")}
+        data-hidden={shouldHide}
+        className={`pre-nav fixed inset-x-0 top-0 z-40 hidden h-[72px] transition-transform duration-300 xl:block ${shouldHide ? "-translate-y-full" : "translate-y-0"}`}
+      >
+        <div className={`flex h-full w-full items-center justify-center px-10 transition-[background-color,box-shadow] duration-200 ${scrolled ? "bg-blue-500 shadow-lg" : "bg-transparent"}`}>
+        <div className="mx-auto flex w-full max-w-[1280px] items-center justify-between">
+          <div className="flex items-center gap-5">
+            <Link href="/" aria-label="BCA" className="inline-flex"><img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-9 w-[115px]" /></Link>
+            <div className="flex h-10 items-center rounded-full border border-white/15 bg-black/20 p-1 backdrop-blur-[40px]">
+              {segments.map((segment) => {
+                const active = segment === activeSegment;
+                const className = `flex h-8 min-w-24 items-center justify-center rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${active ? "bg-neutral-100 text-blue-500" : "text-white/80 hover:bg-white/10 hover:text-white"}`;
+                if (segment === "Individu") return <Link key={segment} href="/" className={className} style={active ? ({ viewTransitionName: "nav-segment-pill" } as CSSProperties) : undefined}>{tNav(`segments.${segment}`)}</Link>;
+                return <a key={segment} href={SEGMENT_EXTERNAL_LINKS[segment]} target="_blank" rel="noopener noreferrer" className={className}>{tNav(`segments.${segment}`)}</a>;
+              })}
+              <Link href="/tentang-bca" className={`flex h-8 items-center rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${variant === "about" ? "bg-neutral-100 text-blue-500" : "text-white/80 hover:bg-white/10 hover:text-white"}`}>{tNav("tentangBca")}</Link>
+              <a href="https://karir.bca.co.id/" target="_blank" rel="noopener noreferrer" className="flex h-8 items-center rounded-full px-4 text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white">{tNav("karir")}</a>
             </div>
           </div>
-        </nav>
-      </div>
 
-      {/* Shared by both nav bars — see the note on `searchOpen` above. It
-          portals to `document.body`, so its placement in this tree only
-          matters for props/state, not layout. */}
+          <div className="flex items-center gap-3">
+            <SearchButton label={tNav("search")} placeholders={searchPlaceholders} expanded={searchOpen} onClick={() => setSearchOpen(true)} />
+            <div ref={langRef} className="relative">
+              <button onClick={() => setLangOpen((open) => !open)} onMouseEnter={() => setLangHover(true)} onMouseLeave={() => setLangHover(false)} className={`flex h-10 items-center gap-0.5 rounded-full border px-2 transition-colors ${langHover || langOpen ? "border-neutral-300 bg-white" : "border-white/25 bg-[rgba(5,13,25,0.1)]"}`}><img src={LOCALE_META[locale].flag} alt="" className="size-6 rounded-full object-cover" /><span className={`w-8 text-center text-base font-bold ${langHover || langOpen ? "text-neutral-900" : "text-white"}`}>{locale.toUpperCase()}</span></button>
+              {langOpen ? <div className="absolute right-0 top-12 overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-menu">{otherLocales.map((code) => <button key={code} onClick={() => { setLangOpen(false); router.replace(pathname, { locale: code }); }} className="flex w-36 items-center gap-2 p-4 text-left text-neutral-900 hover:bg-blue-100"><img src={LOCALE_META[code].flag} alt="" className="size-6 rounded-full object-cover" /><span className="font-semibold">{tLang(code)}</span></button>)}</div> : null}
+            </div>
+            <a href="https://mybca.bca.co.id/auth/login" target="_blank" rel="noopener noreferrer" className="flex h-10 items-center justify-center gap-2 rounded-full border border-white/25 bg-[rgba(5,13,25,0.1)] px-4 text-sm font-semibold text-white transition-colors duration-300 hover:border-white/20 hover:bg-[rgba(18,20,23,0.5)]"><LoginIcon className="size-6 text-white/80" />{tNav("login")}</a>
+          </div>
+        </div>
+        </div>
+      </nav>
+
       <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );

@@ -236,6 +236,7 @@ type Props = {
    * whatever the viewport leaves rather than a fixed 640px.
    */
   maxHeight?: string;
+  screen?: boolean;
 };
 
 export default function SearchRecommendation({
@@ -248,6 +249,7 @@ export default function SearchRecommendation({
   onMouseDown,
   compact = false,
   maxHeight,
+  screen = false,
 }: Props) {
   const t = useTranslations("search");
   const { products, information, program, order } = recommendations;
@@ -268,8 +270,10 @@ export default function SearchRecommendation({
     <div
       onMouseDown={onMouseDown}
       style={maxHeight ? { maxHeight } : undefined}
-      className={`flex flex-col overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-card ${
-        compact ? "max-h-[70dvh]" : "max-h-[640px]" /* = PANEL_MAX_HEIGHT; literal so Tailwind can see it */
+      className={`flex flex-col overflow-hidden bg-white ${
+        screen
+          ? "h-full max-h-none rounded-none border-0 shadow-none"
+          : `rounded-xl border border-neutral-300 shadow-card ${compact ? "max-h-[70dvh]" : "max-h-[640px]"}`
       }`}
     >
       <div
@@ -279,7 +283,7 @@ export default function SearchRecommendation({
         className="min-h-0 flex-1 overflow-y-auto overscroll-contain"
       >
       {isEmpty ? (
-        <div className={`flex flex-col gap-6 ${compact ? "p-3.5" : "p-6"}`}>
+        <div className={`flex flex-col gap-6 ${screen ? "p-4" : compact ? "p-3.5" : "p-6"}`}>
           {recent.length > 0 && (
             <section className="flex flex-col gap-3">
               <div className="flex items-center justify-between">
@@ -337,7 +341,7 @@ export default function SearchRecommendation({
           </section>
         </div>
       ) : hasResults ? (
-        <div className={`flex flex-col ${compact ? "gap-5 p-3" : "gap-8 p-6"}`}>
+        <div className={`flex flex-col ${screen ? "gap-6 p-4" : compact ? "gap-5 p-3" : "gap-8 p-6"}`}>
           {order.map((sectionKey) => {
             if (sectionKey === "products") {
               return products.length > 0 ? (

@@ -1,7 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import HeroArea from "@/components/home/HeroArea";
+import SectionAnchor from "@/components/home/SectionAnchor";
 import Navbar from "@/components/home/Navbar";
-import ScrollCue from "@/components/home/ScrollCue";
 import ProductSection from "@/components/home/ProductSection";
 
 import MyBcaSection from "@/components/home/MyBcaSection";
@@ -58,10 +58,7 @@ export default async function Home({
         <div className="pre-stage">
           <HeroArea kurs={kurs} banners={banners} />
         </div>
-        {/* spacer for the desktop hero widget that overflows the hero section
-            (496 + 288 - 640). Mobile lays the widget out in normal flow. */}
-        <div className="h-0 xl:h-[136px]" />
-        <ScrollCue />
+        <SectionAnchor />
         <ProductSection categories={produk.categories} defaultKey={produk.defaultKey} />
 
         <MyBcaSection />

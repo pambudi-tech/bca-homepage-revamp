@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import MobileMenu from "./MobileMenu";
-import { LocationIcon } from "./Navbar";
 import type { ProductCategory } from "./product-data";
 import type { MegaMenuContent } from "@/lib/megamenu";
 import { Link } from "@/i18n/navigation";
@@ -41,10 +40,6 @@ export default function MobileNav({
   const tNav = useTranslations("nav");
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const scrollToLocation = () => {
-    window.open("https://www.bca.co.id/id/lokasi-bca", "_blank", "noopener,noreferrer");
-  };
-
   useEffect(() => {
     window.dispatchEvent(new CustomEvent<boolean>(MOBILE_MENU_EVENT, { detail: menuOpen }));
   }, [menuOpen]);
@@ -53,7 +48,7 @@ export default function MobileNav({
     <>
     <nav
       aria-label={tNav("primary")}
-      className={`pre-nav fixed left-0 right-0 top-0 z-30 flex h-[calc(4rem+env(safe-area-inset-top))] items-center justify-between px-4 pt-[env(safe-area-inset-top)] transition-[transform,translate,background-color] duration-300 xl:hidden ${
+      className={`pre-nav fixed left-0 right-0 top-0 z-30 flex h-[calc(4rem+env(safe-area-inset-top))] items-center justify-between px-4 py-3 pt-[calc(0.75rem+env(safe-area-inset-top))] transition-[transform,translate,background-color] duration-300 xl:hidden ${
         hidden && !menuOpen ? "-translate-y-full" : "translate-y-0"
       } ${scrolled || menuOpen ? "bg-[rgba(18,20,23,0.95)]" : ""}`}
     >
@@ -65,28 +60,24 @@ export default function MobileNav({
         />
       </Link>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <button
           onClick={onOpenSearch}
           aria-label={tNav("search")}
           aria-expanded={searchOpen}
-          className="flex size-10 items-center justify-center rounded-full bg-[rgba(18,20,23,0.5)] backdrop-blur-[4px] transition-transform active:scale-95"
+          className="flex size-10 items-center justify-center rounded-full bg-[rgba(18,20,23,0.5)] transition-transform active:scale-95"
         >
           <img src="/assets/cycle1/outline-search.svg" alt="" className="size-6" />
-        </button>
-        <button
-          onClick={scrollToLocation}
-          aria-label={tNav("lokasiBca")}
-          className="flex size-10 items-center justify-center rounded-full bg-[rgba(18,20,23,0.5)] backdrop-blur-[4px] transition-transform active:scale-95"
-        >
-          <LocationIcon className="size-6 text-neutral-100" />
         </button>
         <button
           onClick={() => setMenuOpen((v) => !v)}
           aria-label={menuOpen ? t("tutupMenu") : t("bukaMenu")}
           aria-expanded={menuOpen}
-          className="flex size-10 items-center justify-center rounded-full bg-[rgba(18,20,23,0.5)] backdrop-blur-[4px] transition-transform active:scale-95"
+          className="flex h-10 items-center gap-2 rounded-full bg-[rgba(18,20,23,0.5)] py-1 pl-1 pr-3 transition-transform active:scale-95"
         >
+          <span className="flex h-8 w-24 items-center justify-center rounded-full bg-neutral-100 px-5 text-sm font-semibold text-blue-500">
+            {tNav("segments.Individu")}
+          </span>
           <img src="/assets/cycle1/outline-menu.svg" alt="" className="size-6" />
         </button>
       </div>

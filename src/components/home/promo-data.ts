@@ -2,12 +2,31 @@
 // "isMostLiked" signal (from redemption/engagement tracking). The badge shown
 // on a card is derived from those two inputs, not hand-picked per card —
 // see getPromoBadge below for the exact windows.
+export const PROMO_CATEGORY_KEYS = [
+  "fnb",
+  "hobby",
+  "entertainment",
+  "health-beauty",
+  "travel",
+  "telco",
+  "ecommerce",
+  "fashion-shopping",
+  "retail",
+  "home-electronics",
+  "groceries",
+  "loyalty-reward",
+  "others",
+] as const;
+
+export type PromoCategory = (typeof PROMO_CATEGORY_KEYS)[number];
+
 export type Promo = {
   id: string;
   title: string;
   brand: string;
   cover: string;
   logo: string;
+  category: PromoCategory;
   /** Absolute period, as stored in Supabase (`start_at` / `end_at`). */
   startAt: Date;
   endAt: Date;
@@ -35,6 +54,7 @@ export const PROMO_SEEDS: PromoSeed[] = [
     brand: "myBCA",
     cover: "/assets/promo/card1-cover.webp",
     logo: "/assets/promo/card1-logo.png",
+    category: "others",
     startOffsetDays: -60,
     endOffsetDays: 330,
     redeemCount: 4_820,
@@ -45,6 +65,7 @@ export const PROMO_SEEDS: PromoSeed[] = [
     brand: "Ebiga Jjampong",
     cover: "/assets/promo/card2-cover.webp",
     logo: "/assets/promo/card2-logo.png",
+    category: "fnb",
     startOffsetDays: -0.5,
     endOffsetDays: 140,
   },
@@ -54,6 +75,7 @@ export const PROMO_SEEDS: PromoSeed[] = [
     brand: "Jakarta Movin",
     cover: "/assets/promo/card3-cover.webp",
     logo: "/assets/promo/card3-logo.png",
+    category: "entertainment",
     startOffsetDays: -100,
     endOffsetDays: 19,
   },
@@ -63,6 +85,7 @@ export const PROMO_SEEDS: PromoSeed[] = [
     brand: "Tiket.com",
     cover: "/assets/promo/card4-cover.webp",
     logo: "/assets/promo/card4-logo.png",
+    category: "travel",
     startOffsetDays: -90,
     endOffsetDays: 79,
   },
@@ -72,6 +95,7 @@ export const PROMO_SEEDS: PromoSeed[] = [
     brand: "Bluebird",
     cover: "/assets/promo/card5-cover.webp",
     logo: "/assets/promo/card5-logo.png",
+    category: "entertainment",
     startOffsetDays: -40,
     endOffsetDays: 20 / 24,
   },
@@ -81,6 +105,7 @@ export const PROMO_SEEDS: PromoSeed[] = [
     brand: "Garuda Indonesia",
     cover: "/assets/promo/card6-cover.webp",
     logo: "/assets/promo/card6-logo.png",
+    category: "travel",
     startOffsetDays: -30,
     endOffsetDays: 45,
   },
@@ -90,6 +115,7 @@ export const PROMO_SEEDS: PromoSeed[] = [
     brand: "Luna's Doughnuts",
     cover: "/assets/promo/card7-cover.webp",
     logo: "/assets/promo/card7-logo.png",
+    category: "fnb",
     startOffsetDays: 2,
     endOffsetDays: 30,
   },

@@ -1,63 +1,15 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import type { KursEntry } from "@/lib/kurs";
 import type { Slide } from "./hero-slides";
 import HeroSection from "./HeroSection";
-import HeroWidget from "./HeroWidget";
-import MobileHeroWidget from "./MobileHeroWidget";
+import HeroCompactWidget from "./HeroCompactWidget";
 
-/**
- * Wraps the hero slider + hero widget and owns the "search mode" state so the
- * page-dimming overlay can live at the same stacking level as the widget.
- *
- * `HeroSection` is a single responsive component (banner + carousel). The hero
- * widget still has two forms, toggled at the `xl` breakpoint:
- *   - < xl : MobileHeroWidget laid out in normal flow, pulled up so its glass
- *            search panel overlaps the banner.
- *   - ≥ xl : the original absolutely-positioned 1280px HeroWidget.
- */
+/** Composes the database-backed banner, compact login/rate cards, and section navigation. */
 export default function HeroArea({ kurs, banners }: { kurs: KursEntry[]; banners: Slide[] }) {
-  const [searchActive, setSearchActive] = useState(false);
-
-  // Lifts the whole page stack above the floating chrome for as long as the
-  // search is open — see `.hero-search-open` in globals.css for why a class on
-  // <html> rather than a prop: the stack's wrapper lives in a server component.
-  useEffect(() => {
-    if (!searchActive) return;
-    const root = document.documentElement;
-    root.classList.add("hero-search-open");
-    return () => root.classList.remove("hero-search-open");
-  }, [searchActive]);
-
   return (
-    // `z-20` while searching, so the dimming overlay below outranks the
-    // sections further down the page — they carry `relative z-10` too, and
-    // being later in the DOM they would otherwise paint straight over it.
-    <div className={`relative ${searchActive ? "z-20" : "z-10"}`}>
+    <div className="relative z-10">
       <HeroSection slides={banners} />
-
-      {/* Search-focus page dimming — shared by both widget forms; each sits at
-          z-40 so it stays above the wash. Unmounted when idle: it covers the
-          whole viewport and carries a backdrop-filter, which the compositor
-          keeps paying for even at opacity 0. */}
-      <div
-        aria-hidden
-        data-shown={searchActive}
-        className="fade-overlay fixed inset-0 z-30 bg-black/50 backdrop-blur-[2px]"
-      />
-
-      {/* Mobile / tablet widget — normal flow, pulled up 152px so the glass
-          search panel overlaps the banner's lower 152px. */}
-      <div className="relative z-40 mx-auto -mt-[152px] max-w-[560px] px-2 xl:hidden">
-        <MobileHeroWidget kurs={kurs} onSearchActiveChange={setSearchActive} />
-      </div>
-
-      {/* Desktop widget. */}
-      <div className="hidden xl:block">
-        <div className="absolute left-1/2 top-[484px] z-40 w-[1280px] -translate-x-1/2">
-          <HeroWidget kurs={kurs} onSearchActiveChange={setSearchActive} />
-        </div>
+      <div className="absolute inset-x-0 top-[400px] z-20 overflow-hidden xl:left-1/2 xl:right-auto xl:w-[1280px] xl:-translate-x-1/2 xl:overflow-visible">
+        <HeroCompactWidget kurs={kurs} />
       </div>
     </div>
   );

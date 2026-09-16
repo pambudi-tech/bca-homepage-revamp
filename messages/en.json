@@ -3,6 +3,82 @@
     "title": "BCA - Always By Your Side",
     "description": "Prototype revamp of the BCA.co.id homepage"
   },
+  "promoPage": {
+    "metadata": {
+      "title": "BCA Promotions",
+      "description": "Discover a range of BCA promotions for every need."
+    },
+    "hero": {
+      "eyebrow": "BCA Promotions",
+      "title": "Enjoy a Variety of Promotions for Every Need",
+      "cta": "Explore All Promotions",
+      "imageAlt": "A couple enjoying a range of activities and BCA lifestyle offers"
+    },
+    "search": {
+      "prompt": "Find the Best Promotion for You",
+      "label": "Search promotions",
+      "allCategories": "All Categories",
+      "categoryLabel": "Choose a promotion category",
+      "placeholders": ["Fore Coffee", "Dining discounts", "Ticket promotions", "myBCA cashback"],
+      "popularPromos": "Popular promotions",
+      "results": "Promotion search results",
+      "noResults": "No promotions found yet",
+      "noResultsHint": "Try another keyword or category."
+    },
+    "common": { "previous": "Previous", "next": "Next" },
+    "seasonal": {
+      "badge": "Gebyar BCA Special",
+      "discount": "Discount",
+      "emphasis": "BIG",
+      "partner": "Selected BCA Partners",
+      "quota": "Limited quota!",
+      "quotaHint": "Claim yours before it ends"
+    },
+    "allPromos": {
+      "title": "All Promos",
+      "showCount": "Showing {shown} of {total} promos",
+      "sort": "Sort by",
+      "relevance": "Relevance",
+      "endingSoon": "Ending Soon",
+      "popular": "Most Popular",
+      "location": "Location",
+      "product": "BCA Products",
+      "showMore": "Show More",
+      "showLess": "Show Less",
+      "searchLocation": "Search City",
+      "searchProduct": "Search BCA Products",
+      "reset": "Reset",
+      "apply": "Apply",
+      "closeAdvanced": "Close filter panel",
+      "filter": "Filter",
+      "noResults": "No promos match your search yet.",
+      "clearFilters": "Clear Filters"
+    },
+    "locationPromo": {
+      "eyebrow": "Special Promos at",
+      "defaultLocation": "Grand Indonesia",
+      "locations": ["Grand Indonesia", "Plaza Indonesia", "Mall Kelapa Gading", "Kota Kasablanka"]
+    },
+    "endingSoon": {
+      "title": "Ending Soon",
+      "description": "Selected promotions that are about to end"
+    },
+    "categories": {
+      "fnb": "Food and Beverages",
+      "hobby": "Hobby",
+      "entertainment": "Entertainment",
+      "health-beauty": "Health and Beauty",
+      "travel": "Travel and Leisure",
+      "telco": "Telco",
+      "ecommerce": "E-commerce",
+      "fashion-shopping": "Fashion & Shopping",
+      "retail": "Retail",
+      "home-electronics": "Home Appliances & Electronic",
+      "groceries": "Groceries",
+      "loyalty-reward": "Reward BCA",
+      "others": "Others"
+    }
+  },
   "creditCardDetail": {
     "metadata": {
       "title": "BCA Credit Card",
@@ -210,7 +286,21 @@
     "kursNext": "Next rate",
     "kursDisclaimer": "Rates may change during the transaction process.",
     "prevSlide": "Previous",
-    "nextSlide": "Next"
+    "nextSlide": "Next",
+    "playSlide": "Play carousel",
+    "pauseSlide": "Pause carousel",
+    "goToSlide": "Open slide",
+    "loginCard": "Log in to {service}",
+    "kursERate": "BCA E-Rate Exchange",
+    "viewAll": "View All",
+    "sectionAnchor": {
+      "label": "Page section navigation",
+      "products": "Products & Services",
+      "promo": "Events & Promos",
+      "soliprio": "Solitaire & Prioritas",
+      "news": "News & Education",
+      "faq": "FAQ"
+    }
   },
   "search": {
     "recentSearches": "Recent Searches",
@@ -308,6 +398,7 @@
     "tentangBca": "About BCA",
     "karir": "Careers",
     "search": "Search",
+    "searchPlaceholder": "Open a BCA account",
     "lokasiBca": "BCA Location",
     "haloBca": "Help",
     "quickActions": "Quick actions",
@@ -331,6 +422,7 @@
     "bukaMenu": "Open menu",
     "bahasa": "Language",
     "pilihSegmen": "Choose Your Segment",
+    "sesiAktif": "Active session",
     "kembali": "Back",
     "menuLabel": "Main menu"
   },

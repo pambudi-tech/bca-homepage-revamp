@@ -32,7 +32,9 @@ type Options = {
    * cycle drives more than one ring (e.g. the desktop and mobile cards, only one
    * of which is visible at a given breakpoint).
    */
-  progressRef: RefObject<SVGCircleElement | null> | RefObject<SVGCircleElement | null>[];
+  progressRef:
+    | RefObject<SVGGeometryElement | null>
+    | RefObject<SVGGeometryElement | null>[];
   /** Ref that freezes the timer while true (hover / manual pause). */
   pausedRef: RefObject<boolean>;
   /** Called when a cycle completes — typically advances the slide. */

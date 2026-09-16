@@ -3,6 +3,82 @@
     "title": "BCA - Senantiasa di Sisi Anda",
     "description": "Prototype revamp homepage BCA.co.id"
   },
+  "promoPage": {
+    "metadata": {
+      "title": "Promo BCA",
+      "description": "Temukan beragam promo BCA untuk setiap kebutuhanmu."
+    },
+    "hero": {
+      "eyebrow": "Promo BCA",
+      "title": "Nikmati Beragam Promo untuk Setiap Kebutuhan",
+      "cta": "Jelajahi Semua Promo",
+      "imageAlt": "Pasangan menikmati beragam aktivitas dan penawaran gaya hidup BCA"
+    },
+    "search": {
+      "prompt": "Cari Promo Terbaik Buatmu",
+      "label": "Cari promo",
+      "allCategories": "Semua Kategori",
+      "categoryLabel": "Pilih kategori promo",
+      "placeholders": ["Fore Coffee", "Diskon makanan", "Promo tiket", "Cashback myBCA"],
+      "popularPromos": "Promo populer",
+      "results": "Hasil pencarian promo",
+      "noResults": "Promo belum ditemukan",
+      "noResultsHint": "Coba kata kunci atau kategori lainnya."
+    },
+    "common": { "previous": "Sebelumnya", "next": "Berikutnya" },
+    "seasonal": {
+      "badge": "Spesial Gebyar BCA",
+      "discount": "Diskon",
+      "emphasis": "BESAR",
+      "partner": "Partner Pilihan BCA",
+      "quota": "Kuota terbatas!",
+      "quotaHint": "Segera klaim sebelum berakhir"
+    },
+    "allPromos": {
+      "title": "Semua Promo",
+      "showCount": "Menampilkan {shown} dari {total} promo",
+      "sort": "Urutkan",
+      "relevance": "Relevansi",
+      "endingSoon": "Segera Berakhir",
+      "popular": "Terpopuler",
+      "location": "Lokasi",
+      "product": "Produk BCA",
+      "showMore": "Lihat Selengkapnya",
+      "showLess": "Tampilkan Lebih Sedikit",
+      "searchLocation": "Cari Kota",
+      "searchProduct": "Cari Produk BCA",
+      "reset": "Reset",
+      "apply": "Terapkan",
+      "closeAdvanced": "Tutup panel filter",
+      "filter": "Filter",
+      "noResults": "Belum ada promo yang sesuai dengan pencarianmu.",
+      "clearFilters": "Hapus Filter"
+    },
+    "locationPromo": {
+      "eyebrow": "Promo Spesial di",
+      "defaultLocation": "Grand Indonesia",
+      "locations": ["Grand Indonesia", "Plaza Indonesia", "Mall Kelapa Gading", "Kota Kasablanka"]
+    },
+    "endingSoon": {
+      "title": "Berakhir Sebentar Lagi",
+      "description": "Promo pilihan yang akan segera berakhir"
+    },
+    "categories": {
+      "fnb": "Makanan & Minuman",
+      "hobby": "Hobi",
+      "entertainment": "Hiburan",
+      "health-beauty": "Kesehatan & Kecantikan",
+      "travel": "Travel & Liburan",
+      "telco": "Telekomunikasi",
+      "ecommerce": "E-commerce",
+      "fashion-shopping": "Fashion & Belanja",
+      "retail": "Ritel",
+      "home-electronics": "Peralatan Rumah & Elektronik",
+      "groceries": "Kebutuhan Harian",
+      "loyalty-reward": "Reward BCA",
+      "others": "Lainnya"
+    }
+  },
   "creditCardDetail": {
     "metadata": {
       "title": "Kartu Kredit BCA",
@@ -210,7 +286,21 @@
     "kursNext": "Kurs berikutnya",
     "kursDisclaimer": "Kurs dapat berubah selama proses transaksi.",
     "prevSlide": "Sebelumnya",
-    "nextSlide": "Berikutnya"
+    "nextSlide": "Berikutnya",
+    "playSlide": "Putar carousel",
+    "pauseSlide": "Jeda carousel",
+    "goToSlide": "Buka slide",
+    "loginCard": "Login {service}",
+    "kursERate": "Kurs E-Rate BCA",
+    "viewAll": "Lihat Semua",
+    "sectionAnchor": {
+      "label": "Navigasi bagian halaman",
+      "products": "Produk & Layanan",
+      "promo": "Event & Promo",
+      "soliprio": "Solitaire & Prioritas",
+      "news": "Berita & Edukasi",
+      "faq": "FAQ"
+    }
   },
   "search": {
     "recentSearches": "Pencarian Terakhir",
@@ -308,6 +398,7 @@
     "tentangBca": "Tentang BCA",
     "karir": "Karir",
     "search": "Cari",
+    "searchPlaceholder": "Buka rekening BCA",
     "lokasiBca": "Lokasi BCA",
     "haloBca": "Bantuan",
     "quickActions": "Akses cepat",
@@ -331,6 +422,7 @@
     "bukaMenu": "Buka menu",
     "bahasa": "Bahasa",
     "pilihSegmen": "Pilih Segmen Anda",
+    "sesiAktif": "Sesi aktif",
     "kembali": "Kembali",
     "menuLabel": "Menu utama"
   },

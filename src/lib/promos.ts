@@ -1,4 +1,9 @@
-import { resolveFallbackPromos, type Promo } from "@/components/home/promo-data";
+import {
+  PROMO_CATEGORY_KEYS,
+  resolveFallbackPromos,
+  type Promo,
+  type PromoCategory,
+} from "@/components/home/promo-data";
 import type { AppLocale } from "@/i18n/routing";
 
 // The columns we select from the Supabase `promos` table. `title_en`/`title_zh`
@@ -13,10 +18,28 @@ type PromoRow = {
   start_at: string;
   end_at: string;
   redeem_count: number;
+  category?: string | null;
   // Embedded parent row. Nullable in the response type only because PostgREST
   // returns null if the join ever fails; the FK makes that unreachable.
   brands: { name: string; logo: string } | null;
 };
+
+const FALLBACK_CATEGORY_BY_ID: Record<string, PromoCategory> = {
+  "cashback-mybca": "others",
+  "diskon-ebiga": "fnb",
+  "presale-musikal": "entertainment",
+  "voucher-tiket": "travel",
+  "bluebird-javajazz": "entertainment",
+  "garuda-potongan": "travel",
+  "lunas-doughnuts": "fnb",
+};
+
+function resolvePromoCategory(id: string, category?: string | null): PromoCategory {
+  if (category && (PROMO_CATEGORY_KEYS as readonly string[]).includes(category)) {
+    return category as PromoCategory;
+  }
+  return FALLBACK_CATEGORY_BY_ID[id] ?? "others";
+}
 
 /**
  * Reads the promo cards from Supabase — same approach as `products.ts`:
@@ -51,7 +74,8 @@ export async function getPromos(now: Date, locale: AppLocale): Promise<Promo[]> 
     // Ask for the i18n columns first and step down if the migration adding
     // them hasn't been run yet, same staged-degrade approach as products.ts —
     // otherwise a missing column 400s the whole request back to bundled data.
-    let res = await request("id,title,title_en,title_zh");
+    let res = await request("id,title,title_en,title_zh,category");
+    if (!res.ok) res = await request("id,title,title_en,title_zh");
     if (!res.ok) res = await request("id,title");
     if (!res.ok) {
       console.error(`[promos] Supabase returned ${res.status} on every fallback query, using bundled fallback`);
@@ -74,6 +98,7 @@ export async function getPromos(now: Date, locale: AppLocale): Promise<Promo[]> 
         brand: r.brands!.name,
         cover: r.cover,
         logo: r.brands!.logo,
+        category: resolvePromoCategory(r.id, r.category),
         startAt: new Date(r.start_at),
         endAt: new Date(r.end_at),
         redeemCount: r.redeem_count,

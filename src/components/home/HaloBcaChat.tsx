@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import TextField from "@/components/ui/TextField";
 import { MOBILE_MENU_EVENT } from "./MobileNav";
 
 /** Lets other chrome (the desktop navbar's "Halo BCA" icon) open this panel
@@ -108,81 +109,6 @@ function CloseIcon({ className = "size-6" }: { className?: string }) {
     >
       <path d="M6 6l12 12M18 6 6 18" />
     </svg>
-  );
-}
-
-/** Text input per Figma "Text Input States" (node 1651:7098): 48px tall,
-    neutral-200 fill, neutral-300 border that turns cyan-400 on focus and
-    red-500 on error, with the error message beneath. Kept local to this
-    component for now — promote to src/components/ui once a second caller
-    needs it. */
-function Field({
-  label,
-  error,
-  as = "input",
-  options,
-  ...props
-}: {
-  label: string;
-  error?: string;
-  as?: "input" | "select";
-  options?: string[];
-} & React.InputHTMLAttributes<HTMLInputElement>) {
-  const id = useId();
-  const errorId = `${id}-error`;
-  const box = [
-    "h-12 w-full rounded-xl border bg-neutral-200 px-3.5 text-sm leading-5 text-neutral-700",
-    "outline-none transition-colors placeholder:text-neutral-600",
-    "disabled:text-neutral-500",
-    error ? "border-red-500" : "border-neutral-300 focus:border-cyan-400",
-  ].join(" ");
-
-  return (
-    <div className="flex w-full flex-col gap-2">
-      <label htmlFor={id} className="text-sm leading-5 font-bold text-neutral-800">
-        {label}
-      </label>
-      {as === "select" ? (
-        // `appearance-none` + our own chevron so the control matches the Figma
-        // field in every browser instead of showing the OS default caret.
-        <div className="relative w-full">
-          <select
-            id={id}
-            aria-invalid={Boolean(error)}
-            aria-describedby={error ? errorId : undefined}
-            className={`${box} appearance-none pr-10 ${props.value ? "" : "text-neutral-600"}`}
-            {...(props as React.SelectHTMLAttributes<HTMLSelectElement>)}
-          >
-            <option value="">{props.placeholder}</option>
-            {options?.map((o) => (
-              <option key={o} value={o} className="text-neutral-700">
-                {o}
-              </option>
-            ))}
-          </select>
-          <svg
-            viewBox="0 0 12 8"
-            aria-hidden
-            className="pointer-events-none absolute top-1/2 right-3.5 w-3 -translate-y-1/2 text-neutral-600"
-          >
-            <path d="M1 1.5 6 6.5l5-5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
-      ) : (
-        <input
-          id={id}
-          aria-invalid={Boolean(error)}
-          aria-describedby={error ? errorId : undefined}
-          className={box}
-          {...props}
-        />
-      )}
-      {error ? (
-        <p id={errorId} className="text-xs leading-[18px] text-red-500">
-          {error}
-        </p>
-      ) : null}
-    </div>
   );
 }
 
@@ -443,10 +369,10 @@ export default function HaloBcaChat() {
               <p className="mt-2 text-sm leading-5 text-neutral-600">{t("subtitle")}</p>
 
               <form id="halobca-form" onSubmit={submit} className="mt-6 flex flex-col gap-4">
-                <Field label={t("fields.nama")} placeholder={t("fields.namaPlaceholder")} value={values.nama} onChange={set("nama")} error={errors.nama} />
-                <Field label={t("fields.email")} type="email" placeholder={t("fields.emailPlaceholder")} value={values.email} onChange={set("email")} error={errors.email} />
-                <Field label={t("fields.telepon")} type="tel" inputMode="tel" placeholder={t("fields.teleponPlaceholder")} value={values.telepon} onChange={set("telepon")} error={errors.telepon} />
-                <Field as="select" label={t("fields.produk")} placeholder={t("fields.produkPlaceholder")} options={products} value={values.produk} onChange={set("produk")} error={errors.produk} />
+                <TextField label={t("fields.nama")} placeholder={t("fields.namaPlaceholder")} value={values.nama} onChange={set("nama")} error={errors.nama} />
+                <TextField label={t("fields.email")} type="email" placeholder={t("fields.emailPlaceholder")} value={values.email} onChange={set("email")} error={errors.email} />
+                <TextField label={t("fields.telepon")} type="tel" inputMode="tel" placeholder={t("fields.teleponPlaceholder")} value={values.telepon} onChange={set("telepon")} error={errors.telepon} />
+                <TextField as="select" label={t("fields.produk")} placeholder={t("fields.produkPlaceholder")} options={products} value={values.produk} onChange={set("produk")} error={errors.produk} />
 
                 {/* Real Google reCAPTCHA v2 checkbox — grecaptcha.render() mounts
                     its iframe into this div directly (see useRecaptcha above),

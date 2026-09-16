@@ -175,9 +175,8 @@ export default function SearchOverlay({
       aria-modal="true"
       aria-label={tNav("search")}
       aria-hidden={!open}
-      // Anything outside the column — the dimmed page around it — dismisses.
-      // The close button also lives outside `contentRef`, so exclude it too.
       onMouseDown={(e) => {
+        if (!isDesktop) return;
         const t = e.target as Node;
         if (
           !contentRef.current?.contains(t) &&
@@ -185,81 +184,85 @@ export default function SearchOverlay({
         )
           onClose();
       }}
-      className="fade-overlay fixed inset-0 z-[80] flex justify-center overflow-hidden bg-black/60 backdrop-blur-[4px]"
+      className="fade-overlay fixed inset-0 z-[80] flex justify-center overflow-hidden bg-neutral-100 xl:bg-black/60 xl:backdrop-blur-[4px]"
+      style={{ "--fade-ms": "300ms" } as CSSProperties}
     >
       <button
         ref={closeRef}
         type="button"
         onClick={onClose}
         aria-label={tSearch("close")}
-        className="absolute right-4 top-[calc(0.75rem+env(safe-area-inset-top))] z-10 flex size-10 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 xl:right-8 xl:top-8"
+        className="absolute right-8 top-8 z-10 hidden size-10 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 xl:flex"
       >
         <CloseIcon className="size-6" />
       </button>
 
-      <div
-        ref={contentRef}
-        className="flex w-full max-w-[960px] flex-col px-5 pt-[calc(5rem+env(safe-area-inset-top))] xl:px-10 xl:pt-[104px]"
-      >
-        {/* 16px on mobile, 18px from xl — matching each hero widget's own
-            prompt rather than splitting the difference. */}
-        <p className="mb-3 text-center text-base font-semibold text-white text-shadow-hero xl:mb-4 xl:text-lg">
-          {t("searchPrompt")}
-        </p>
-
-        {/* The hero's glass pill. One structure covers both breakpoints: the
-            button is absolutely placed (the mobile hero's arrangement) and the
-            input's padding opens up at xl to land on the desktop hero's 32px
-            text inset and 40px button. Sizes below xl are the mobile hero's:
-            48px tall, 36px button. */}
-        <div
-          className="soft-light-border relative h-12 w-full rounded-[50px] xl:h-14"
-          style={
-            {
+      {!isDesktop ? (
+        <div ref={contentRef} className="flex h-full w-full max-w-[440px] flex-col bg-neutral-100">
+          <header className="flex h-[calc(4rem+env(safe-area-inset-top))] shrink-0 items-center gap-2 px-4 pt-[env(safe-area-inset-top)]">
+            <button type="button" onClick={onClose} aria-label={tSearch("close")} className="flex size-6 shrink-0 items-center justify-center">
+              <img src="/assets/navbar/chevron-right-blue.svg" alt="" className="size-6 rotate-90" />
+            </button>
+            <div className="relative h-10 min-w-0 flex-1 overflow-hidden rounded-full border border-cyan-500 bg-neutral-200 backdrop-blur-[28px]">
+              <img src="/assets/cycle1/outline-search-1.svg" alt="" className="absolute left-3 top-2 size-6" />
+              <input
+                ref={inputRef}
+                type="text"
+                aria-label={tNav("search")}
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") submitSearch(searchValue);
+                }}
+                className="relative z-10 h-full w-full bg-transparent pl-11 pr-3 text-base text-neutral-800 focus:outline-none"
+              />
+              <SearchPlaceholderCarousel placeholders={placeholders} visible={!searchValue} live={open} lineHeight={40} className="inset-y-0 left-11 right-3 text-sm" />
+            </div>
+          </header>
+          <div className="min-h-0 flex-1">
+            <SearchRecommendation
+              recommendations={recommendations}
+              keyword={searchValue}
+              recent={recent}
+              onSelectQuery={selectQuery}
+              onRemoveRecent={removeRecent}
+              onClearRecent={clearRecent}
+              onMouseDown={(e) => e.preventDefault()}
+              compact
+              screen
+            />
+          </div>
+        </div>
+      ) : (
+        <div ref={contentRef} className="flex w-full max-w-[960px] flex-col px-10 pt-[104px]">
+          <p className="mb-4 text-center text-lg font-semibold text-white text-shadow-hero">{t("searchPrompt")}</p>
+          <div
+            className="soft-light-border relative h-14 w-full rounded-[50px]"
+            style={{
               background: "rgba(0,0,0,0.5)",
               backdropFilter: "blur(12px) saturate(1.25)",
               WebkitBackdropFilter: "blur(12px) saturate(1.25)",
               "--slb-thickness": "1px",
               "--slb-gradient": "rgba(255,255,255,0.15)",
-            } as CSSProperties
-          }
-        >
-          {/* text-base (16px) is deliberate at every width — iOS Safari zooms
-              the page when a focused input's font-size is below it. The rolling
-              placeholder is a sibling overlay, not the `placeholder` attribute,
-              so it can still be 14px on mobile. Same reasoning as the mobile
-              hero widget's bar. */}
-          <input
-            ref={inputRef}
-            type="text"
-            aria-label={tNav("search")}
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") submitSearch(searchValue);
-            }}
-            className="relative z-10 h-full w-full bg-transparent pl-6 pr-14 text-base font-semibold text-white focus:outline-none xl:pl-8 xl:pr-[72px]"
-          />
-          {/* Unlike the heroes', this carousel keeps rolling while the field is
-              focused — the overlay opens focused, so gating it on blur would
-              mean it never shows at all. */}
-          <SearchPlaceholderCarousel
-            placeholders={placeholders}
-            visible={!searchValue}
-            live={open}
-            className="inset-y-0 left-6 right-14 text-sm xl:left-8 xl:right-[72px] xl:text-base"
-          />
-          <button
-            type="button"
-            aria-label={tNav("search")}
-            onClick={() => submitSearch(searchValue)}
-            className="absolute right-2 top-1/2 z-10 flex size-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white transition-transform active:scale-95 xl:size-10 xl:hover:scale-105"
+            } as CSSProperties}
           >
-            <img src="/assets/cycle1/outline-search-1.svg" alt="" className="size-[22px] xl:size-6" />
-          </button>
-        </div>
-
-        <div className="mt-2">
+            <input
+              ref={inputRef}
+              type="text"
+              aria-label={tNav("search")}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") submitSearch(searchValue);
+              }}
+              className="relative z-10 h-full w-full bg-transparent pl-8 pr-[72px] text-base font-semibold text-white focus:outline-none"
+            />
+            <SearchPlaceholderCarousel placeholders={placeholders} visible={!searchValue} live={open} className="inset-y-0 left-8 right-[72px] text-base" />
+            <button type="button" aria-label={tNav("search")} onClick={() => submitSearch(searchValue)} className="absolute right-2 top-1/2 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white transition-transform hover:scale-105">
+              <img src="/assets/cycle1/outline-search-1.svg" alt="" className="size-6" />
+            </button>
+          </div>
+          <div className="mt-2">
           <SearchRecommendation
             recommendations={recommendations}
             keyword={searchValue}
@@ -272,11 +275,11 @@ export default function SearchOverlay({
             // Below xl this is the mobile hero widget's dropdown, unchanged —
             // same compact layout, same 70dvh ceiling from the card itself, so
             // no height override here.
-            compact={!isDesktop}
-            maxHeight={isDesktop ? panelMaxHeight(PANEL_TOP_OFFSET) : undefined}
+            maxHeight={panelMaxHeight(PANEL_TOP_OFFSET)}
           />
+          </div>
         </div>
-      </div>
+      )}
     </div>,
     document.body
   );

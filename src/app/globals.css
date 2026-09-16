@@ -138,6 +138,9 @@
     0px 8px 16px 0px rgba(0, 0, 0, 0.10),
     0px 20px 32px 0px rgba(0, 0, 0, 0.12);
 
+  /* Sticky action row at the bottom of an attached filter flyout. */
+  --shadow-panel-footer: 0px -4px 12px 0px rgba(0, 0, 0, 0.08);
+
   /* Cast leftward by the MyBCA phone mock onto the panel behind it. */
   --shadow-edge-left: -8px 0px 16px 0px rgba(0, 0, 0, 0.25);
 

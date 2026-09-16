@@ -2,16 +2,14 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
-const PLACEHOLDER_LINE_HEIGHT = 48;
-
 type SlotState = "active" | "exiting" | "waiting";
 type Slot = { text: string; state: SlotState; instant: boolean };
 
-function slotStyle(state: SlotState): CSSProperties {
+function slotStyle(state: SlotState, lineHeight: number): CSSProperties {
   if (state === "active") return { transform: "translateY(0px)", opacity: 1 };
   if (state === "exiting")
-    return { transform: `translateY(-${PLACEHOLDER_LINE_HEIGHT}px)`, opacity: 0 };
-  return { transform: `translateY(${PLACEHOLDER_LINE_HEIGHT}px)`, opacity: 0 }; // waiting (below, ready to enter)
+    return { transform: `translateY(-${lineHeight}px)`, opacity: 0 };
+  return { transform: `translateY(${lineHeight}px)`, opacity: 0 }; // waiting (below, ready to enter)
 }
 
 /**
@@ -31,11 +29,13 @@ export default function SearchPlaceholderCarousel({
   placeholders,
   visible,
   live,
+  lineHeight = 48,
   className = "inset-0 px-6 text-base",
 }: {
   placeholders: string[];
   visible: boolean;
   live: boolean;
+  lineHeight?: number;
   className?: string;
 }) {
   const [slots, setSlots] = useState<Slot[]>([
@@ -97,13 +97,13 @@ export default function SearchPlaceholderCarousel({
       className={`pointer-events-none absolute flex items-center overflow-hidden transition-opacity duration-200 ${className} ${visible ? "opacity-100" : "opacity-0"
         }`}
     >
-      <div className="relative h-12 w-full overflow-hidden">
+      <div className="relative h-full w-full overflow-hidden">
         {slots.map((slot, i) => (
           <span
             key={i}
-            className={`absolute inset-0 flex h-12 items-center whitespace-nowrap font-semibold text-neutral-500 ${slot.instant ? "" : "transition-all duration-700 ease-in-out"
+            className={`absolute inset-0 flex h-full items-center whitespace-nowrap font-semibold text-neutral-500 ${slot.instant ? "" : "transition-all duration-700 ease-in-out"
               }`}
-            style={slotStyle(slot.state)}
+            style={slotStyle(slot.state, lineHeight)}
           >
             {slot.text}
           </span>
