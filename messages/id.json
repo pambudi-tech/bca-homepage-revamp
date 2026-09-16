@@ -338,8 +338,7 @@
     }
   },
   "scrollCue": {
-    "keepGoing": "Terus melangkah",
-    "exploreBca": "jelajahi dunia BCA"
+    "label": "Scroll untuk melihat lebih"
   },
   "backToTop": {
     "label": "Kembali ke atas"
@@ -365,11 +364,15 @@
     "mobileCtaHint": "Temukan produk & layanan yang tepat untuk Anda"
   },
   "promo": {
-    "eyebrow": "Event & Program",
-    "heading": "Apresiasi Terbaik untuk Menemani Setiap Momen Berharga",
+    "eyebrow": "Promo",
+    "heading": "Apresiasi Terbaik untuk Anda",
+    "eventEyebrow": "Event",
+    "eventHeading": "Momen Seru Setiap Saat",
     "viewMore": "Lihat 200+ Promo Lainnya",
     "prevSlide": "Event sebelumnya",
     "nextSlide": "Event berikutnya",
+    "playSlide": "Putar carousel",
+    "pauseSlide": "Jeda carousel",
     "badge": {
       "almostEnd": "Segera Berakhir!",
       "popular": "Populer"
@@ -393,6 +396,7 @@
       "Solitaire": "Solitaire",
       "Prioritas": "Prioritas"
     },
+    "produk": "Produk",
     "promo": "Promo",
     "login": "Login",
     "tentangBca": "Tentang BCA",
@@ -400,7 +404,7 @@
     "search": "Cari",
     "searchPlaceholder": "Buka rekening BCA",
     "lokasiBca": "Lokasi BCA",
-    "haloBca": "Bantuan",
+    "haloBca": "HaloBCA",
     "quickActions": "Akses cepat",
     "pengajuan": "Pengajuan",
     "andaBerada": "Anda berada di BCA",

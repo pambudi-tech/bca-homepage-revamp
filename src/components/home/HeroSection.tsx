@@ -8,7 +8,7 @@ import { useIsLive } from "@/lib/useIsLive";
 import { SLIDES, SLIDE_DURATION_MS, type Slide, type SlideCta } from "./hero-slides";
 
 const PARALLAX_SPEED = 0.45;
-const INDICATOR_LENGTH = 48;
+const INDICATOR_LENGTH = 40;
 
 /** Hero CTA — one button sized responsively. The desktop-only hover treatment
  *  (blue fill + glow + inverted icon) is gated behind `xl:`, so on touch the
@@ -120,16 +120,14 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
   return (
     <div
       ref={rootRef}
-      className="relative h-[min(640px,calc(90svh-48px))] overflow-clip bg-blue-500 xl:h-[600px]"
+      className="relative h-[min(640px,calc(90svh-48px))] overflow-clip bg-blue-500 xl:h-[80svh]"
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-      {/* Banner is a fixed 620px anchored to the section bottom, so on the
-          shorter (516px) mobile section its top spills out above and is clipped
-          — the desktop 620px section shows it in full. */}
+      {/* The banner follows the responsive section height. */}
       <div
         ref={parallaxRef}
-        className="absolute inset-x-0 bottom-0 h-full origin-top will-change-transform xl:h-[620px]"
+        className="absolute inset-x-0 bottom-0 h-full origin-top will-change-transform"
         style={{ transform: "translate3d(0, 0, 0) scale(1.1)" }}
       >
         {/* Slide 0 is the LCP element on essentially every visit, so it's flagged
@@ -170,13 +168,13 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
         }}
       />
 
-      <div className="absolute bottom-[200px] left-4 w-[328px] xl:left-1/2 xl:right-auto xl:top-32 xl:bottom-auto xl:w-[1280px] xl:-translate-x-1/2">
+      <div className="absolute bottom-[304px] left-4 w-[328px] xl:left-1/2 xl:right-auto xl:top-32 xl:bottom-auto xl:w-[1280px] xl:-translate-x-1/2">
         <div className="flex flex-col items-start gap-6 xl:gap-8">
           <div
             key={activeSlide}
             className="flex w-[280px] flex-col items-start gap-4 xl:w-[560px] xl:gap-6"
           >
-            <h1 className="animate-hero-title max-w-[240px] text-xl font-semibold leading-7 tracking-[-0.4px] text-white text-shadow-hero xl:line-clamp-2 xl:max-w-none xl:text-[40px] xl:leading-[48px] xl:tracking-[-0.8px] xl:text-shadow-none">
+            <h1 className="animate-hero-title max-w-[240px] text-xl font-semibold leading-7 tracking-[-0.4px] text-white text-shadow-hero xl:line-clamp-2 xl:max-w-none xl:text-[clamp(36px,5svh,40px)] xl:leading-[clamp(44px,6svh,48px)] xl:tracking-[-0.8px] xl:text-shadow-none">
               {slides[activeSlide].title}
             </h1>
             <div className="animate-hero-cta">
@@ -190,8 +188,8 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
                 index === activeSlide ? (
                   <button key={index} onClick={() => setPaused((value) => !value)} aria-label={paused ? t("playSlide") : t("pauseSlide")} className="relative flex h-2 w-12 items-center after:absolute after:-inset-y-3 after:inset-x-0 after:content-['']">
                     <svg viewBox="0 0 48 8" className="h-2 w-12 overflow-visible" aria-hidden>
-                      <line x1="0" y1="4" x2="48" y2="4" stroke="rgba(255,255,255,0.25)" strokeWidth="8" strokeLinecap="round" />
-                      <line ref={progressLineRef} x1="0" y1="4" x2="48" y2="4" stroke="white" strokeWidth="8" strokeLinecap="round" strokeDasharray={INDICATOR_LENGTH} strokeDashoffset={INDICATOR_LENGTH} />
+                      <line x1="4" y1="4" x2="44" y2="4" stroke="rgba(255,255,255,0.25)" strokeWidth="8" strokeLinecap="round" />
+                      <line ref={progressLineRef} x1="4" y1="4" x2="44" y2="4" stroke="white" strokeWidth="8" strokeLinecap="round" strokeDasharray={INDICATOR_LENGTH} strokeDashoffset={INDICATOR_LENGTH} />
                     </svg>
                   </button>
                 ) : (

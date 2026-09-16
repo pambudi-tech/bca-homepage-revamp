@@ -83,7 +83,7 @@ export default function BackToTop() {
       type="button"
       onClick={scrollToTop}
       aria-label={t("label")}
-      className={`group fixed bottom-3 left-1/2 z-50 h-11 w-auto px-5 -translate-x-1/2 transition-all duration-300 ease-out md:bottom-0 md:h-[52px] md:w-[218px] md:px-0 ${
+      className={`group fixed bottom-[calc(86px+env(safe-area-inset-bottom)+12px)] left-1/2 z-30 h-11 w-auto px-5 -translate-x-1/2 transition-all duration-300 ease-out md:h-[52px] md:w-[218px] md:px-0 xl:bottom-0 ${
         shown
           ? "pointer-events-auto translate-y-0 opacity-100"
           : "pointer-events-none translate-y-[150%] opacity-0 md:translate-y-full"

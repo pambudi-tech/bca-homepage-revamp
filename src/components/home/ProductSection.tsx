@@ -1343,7 +1343,7 @@ export default function ProductSection({
     <section
       ref={sectionRef}
       id="products"
-      className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-[120px] pt-10 xl:pb-40 xl:pt-20"
+      className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-20 pt-10 xl:pb-40 xl:pt-20"
     >
       {/* Clove pattern — mobile only, right side. The fluted glass overlay
           below is desktop-only (`hidden xl:block`), so under xl the section

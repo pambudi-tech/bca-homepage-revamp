@@ -1,16 +1,82 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { KursEntry } from "@/lib/kurs";
+import { useIsLive } from "@/lib/useIsLive";
 import { LOGIN_DESTINATIONS } from "./hero-variant";
 
 const LOGIN_CARDS = LOGIN_DESTINATIONS.slice(0, 2);
+const RATE_FORMATTER = new Intl.NumberFormat("id-ID", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+function parseRate(value: string) {
+  return Number(value.replaceAll(".", "").replace(",", "."));
+}
+
+function AnimatedRate({ value }: { value: string }) {
+  const elementRef = useRef<HTMLSpanElement>(null);
+  const previousValueRef = useRef(parseRate(value));
+
+  useLayoutEffect(() => {
+    const element = elementRef.current;
+    const nextValue = parseRate(value);
+    if (!element || !Number.isFinite(nextValue)) return;
+
+    const previousValue = previousValueRef.current;
+    previousValueRef.current = nextValue;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion || previousValue === nextValue) {
+      element.textContent = value;
+      return;
+    }
+
+    element.textContent = RATE_FORMATTER.format(previousValue);
+    const rise = element.animate(
+      [
+        { opacity: 0.55, transform: "translateY(6px)" },
+        { opacity: 1, transform: "translateY(0)" },
+      ],
+      { duration: 500, easing: "cubic-bezier(0.22, 1, 0.36, 1)" }
+    );
+    const startedAt = performance.now();
+    let frame = 0;
+    const count = (now: number) => {
+      const progress = Math.min((now - startedAt) / 650, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      element.textContent = RATE_FORMATTER.format(
+        previousValue + (nextValue - previousValue) * eased
+      );
+      if (progress < 1) frame = requestAnimationFrame(count);
+      else element.textContent = value;
+    };
+    frame = requestAnimationFrame(count);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      rise.cancel();
+    };
+  }, [value]);
+
+  return <span ref={elementRef}>{value}</span>;
+}
 
 export default function HeroCompactWidget({ kurs }: { kurs: KursEntry[] }) {
   const t = useTranslations("hero");
   const [activeRate, setActiveRate] = useState(0);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const live = useIsLive(rootRef);
   const entry = kurs[activeRate];
+
+  useEffect(() => {
+    if (!live || kurs.length < 2) return;
+    const timer = window.setTimeout(() => {
+      setActiveRate((current) => (current + 1) % kurs.length);
+    }, 5_000);
+    return () => window.clearTimeout(timer);
+  }, [activeRate, kurs.length, live]);
 
   const moveRate = (direction: 1 | -1) => {
     if (!kurs.length) return;
@@ -18,7 +84,7 @@ export default function HeroCompactWidget({ kurs }: { kurs: KursEntry[] }) {
   };
 
   return (
-    <div className="hide-scrollbar flex gap-2 overflow-x-auto px-4 [scrollbar-width:none] xl:gap-4 xl:overflow-visible xl:px-0">
+    <div ref={rootRef} className="hide-scrollbar flex gap-2 overflow-x-auto px-4 [scrollbar-width:none] xl:gap-4 xl:overflow-visible xl:px-0">
       {LOGIN_CARDS.map((destination) => (
         <a
           key={destination.label}
@@ -52,11 +118,11 @@ export default function HeroCompactWidget({ kurs }: { kurs: KursEntry[] }) {
               <img src={entry.flag} alt={entry.code} className="size-8 xl:size-10" />
               <div>
                 <span className="block text-xs font-semibold leading-[18px] text-white/60 xl:text-sm xl:leading-5">{t("beli")}</span>
-                <strong className="text-sm leading-5 xl:text-base xl:leading-6">{entry.beli}</strong>
+                <strong className="text-sm leading-5 xl:text-base xl:leading-6"><AnimatedRate value={entry.beli} /></strong>
               </div>
               <div>
                 <span className="block text-xs font-semibold leading-[18px] text-white/60 xl:text-sm xl:leading-5">{t("jual")}</span>
-                <strong className="text-sm leading-5 xl:text-base xl:leading-6">{entry.jual}</strong>
+                <strong className="text-sm leading-5 xl:text-base xl:leading-6"><AnimatedRate value={entry.jual} /></strong>
               </div>
             </div>
             <div className="flex gap-2">

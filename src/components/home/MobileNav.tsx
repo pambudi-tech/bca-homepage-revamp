@@ -50,7 +50,7 @@ export default function MobileNav({
       aria-label={tNav("primary")}
       className={`pre-nav fixed left-0 right-0 top-0 z-30 flex h-[calc(4rem+env(safe-area-inset-top))] items-center justify-between px-4 py-3 pt-[calc(0.75rem+env(safe-area-inset-top))] transition-[transform,translate,background-color] duration-300 xl:hidden ${
         hidden && !menuOpen ? "-translate-y-full" : "translate-y-0"
-      } ${scrolled || menuOpen ? "bg-[rgba(18,20,23,0.95)]" : ""}`}
+      } ${menuOpen ? "bg-[rgba(18,20,23,0.95)]" : scrolled ? "bg-blue-500" : "bg-transparent"}`}
     >
       <Link href="/" aria-label="BCA" className="inline-flex">
         <img

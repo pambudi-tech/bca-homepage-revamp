@@ -129,12 +129,12 @@ export default async function MyBcaSection() {
           {/* Glass card — pulled up to overlap the phone-woman's lower edge.
               data-reveal sits on this wrapper (not the .hero-search card) so
               the entrance never touches the backdrop-filter element. */}
-          <div data-reveal className="relative -mt-[calc(17.6%+8px)] px-2.5">
+          <div data-reveal className="relative -mt-[calc(17.6%+48px)] px-2.5">
             {/* Fill + outline reuse the product-card glass treatment: flat black 30%
                 over a saturating backdrop filter, with `hero-search` painting the 2px
                 top-lit gradient outline. */}
             <div
-              className="hero-search relative flex flex-col items-center gap-8 overflow-clip rounded-t-3xl px-6 py-8 text-center shadow-edge-left"
+              className="hero-search relative flex flex-col items-center gap-6 overflow-clip rounded-t-3xl px-6 pb-8 pt-6 text-center shadow-edge-left"
               style={{
                 backgroundColor: "rgba(0,0,0,0.3)",
                 backdropFilter: "blur(16px) saturate(1.25)",
@@ -144,16 +144,16 @@ export default async function MyBcaSection() {
             >
               {/* Capped at the Figma text width so the heading keeps its 3-line wrap. */}
               <div className="flex w-full max-w-80 flex-col items-center">
-                <p className="text-heading text-white text-shadow-hero">
+                <p className="text-xl font-semibold leading-7 text-white text-shadow-hero">
                   {t("heading")}
                 </p>
               </div>
-              <div className="flex w-full items-center gap-2">
-                <a href={myBcaPageUrl} className="btn-base btn-primary min-w-0 flex-1 px-4">
+              <div className="flex flex-col items-center gap-2">
+                <a href={myBcaPageUrl} className="btn-base btn-primary w-fit">
                   <span className="whitespace-nowrap text-base font-semibold">{t("downloadMobile")}</span>
                 </a>
-                <a href={myBcaPageUrl} className="btn-base min-w-0 flex-1 border border-neutral-100 bg-transparent px-4 text-neutral-100 hover:bg-white/10">
-                  <span className="whitespace-nowrap text-base font-semibold">{t("detail")}</span>
+                <a href={myBcaPageUrl} className="px-4 py-2 text-base font-semibold text-neutral-100 hover:underline">
+                  {t("detail")}
                 </a>
               </div>
             </div>

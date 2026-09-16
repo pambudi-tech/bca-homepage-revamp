@@ -29,13 +29,12 @@ export default function ScrollCue() {
   return (
     <div
       ref={ref}
-      className="flex items-center justify-center gap-4 py-8 transition-opacity duration-300 ease-out xl:py-10"
+      className="flex w-full items-center justify-start gap-4 px-1 pb-10 pt-8 transition-opacity duration-300 ease-out xl:pt-10"
     >
-      <span className="w-40 text-right text-sm font-normal text-neutral-700 xl:text-base">{t("keepGoing")}</span>
-      <div className="flex h-9 w-6 shrink-0 items-start justify-center rounded-full border-2 border-[#9cc3e8] pt-1.5">
-        <span className="animate-scroll-cue-dot size-2 rounded-full bg-cyan-500" />
+      <div className="flex h-9 w-6 shrink-0 items-start justify-center rounded-full border-2 border-white/60 pt-1.5">
+        <span className="animate-scroll-cue-dot size-2 rounded-full bg-neutral-100" />
       </div>
-      <span className="w-40 text-left text-sm font-normal text-neutral-700 xl:text-base">{t("exploreBca")}</span>
+      <span className="text-left text-sm font-normal text-white/70 xl:text-base">{t("label")}</span>
     </div>
   );
 }

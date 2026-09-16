@@ -38,20 +38,32 @@ export default function QuickActionRail() {
     };
   }, []);
 
+  const scrollToSection = (id: string) => {
+    setTooltipSuppressed(true);
+    setHoveredAction(null);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   const actions: RailAction[] = [
+    {
+      label: tNav("produk"),
+      icon: "/assets/quick-action/product.svg",
+      onClick: () => scrollToSection("products"),
+    },
     {
       label: tNav("pengajuan"),
       icon: "/assets/quick-action/document.svg",
       href: "https://www.bca.co.id/id/Forms/webform-bca",
     },
     {
+      label: tNav("promo"),
+      icon: "/assets/quick-action/discount-shape.svg",
+      href: "https://promo.bca.co.id/",
+    },
+    {
       label: tNav("haloBca"),
       icon: "/assets/quick-action/message-question.svg",
-      onClick: () => {
-        setTooltipSuppressed(true);
-        setHoveredAction(null);
-        document.getElementById("faq-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      },
+      href: "https://www.bca.co.id/id/Individu/layanan/Customer-Service/HaloBCA",
     },
     {
       label: tNav("lokasiBca"),
@@ -59,8 +71,49 @@ export default function QuickActionRail() {
       href: "https://www.bca.co.id/id/lokasi-bca",
     },
   ];
+  const mobileActions = actions;
 
   return (
+    <>
+    <nav
+      aria-label={tNav("quickActions")}
+      className={`fixed inset-x-0 bottom-0 z-40 flex h-[calc(86px+env(safe-area-inset-bottom))] items-stretch overflow-hidden rounded-t-[20px] bg-blue-500 pb-[env(safe-area-inset-bottom)] transition-transform duration-300 xl:hidden ${ready ? "translate-y-0" : "translate-y-full"}`}
+    >
+      {mobileActions.map((action) => {
+        const content = (
+          <>
+            <img src={action.icon} alt="" className="size-6 brightness-0 invert" />
+            <span className="text-xs font-semibold leading-[18px] text-neutral-100">{action.label}</span>
+          </>
+        );
+
+        if (action.onClick) {
+          return (
+            <button
+              key={action.label}
+              type="button"
+              onClick={action.onClick}
+              className="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 transition-colors active:bg-white/10"
+            >
+              {content}
+            </button>
+          );
+        }
+
+        return (
+          <a
+            key={action.label}
+            href={action.href}
+            target={action.href?.startsWith("http") ? "_blank" : undefined}
+            rel={action.href?.startsWith("http") ? "noopener noreferrer" : undefined}
+            className="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 transition-colors active:bg-white/10"
+          >
+            {content}
+          </a>
+        );
+      })}
+    </nav>
+
     <aside
       aria-label={tNav("quickActions")}
       onPointerLeave={() => {
@@ -72,10 +125,24 @@ export default function QuickActionRail() {
           : "pointer-events-none translate-x-full opacity-0"
         }`}
     >
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-0 bg-black/60 backdrop-blur-md [clip-path:url(#quick-action-rail-shape)]"
-      />
+      {/* Fixed 56px end caps plus a flexible center. Keeping the caps in
+          pixel-space prevents their trapezoid curves from stretching when
+          actions are added or removed; only this middle segment grows. */}
+      <span aria-hidden className="pointer-events-none absolute inset-0 z-0">
+        <span
+          className="absolute right-0 top-0 h-14 w-20 bg-black/60 backdrop-blur-md"
+          style={{
+            clipPath: "path('M 80 0 L 80 56 L 0 56 C 0 45.6 6.65 36.1 17.57 30.7 L 80 0 Z')",
+          }}
+        />
+        <span className="absolute bottom-14 right-0 top-14 w-20 bg-black/60 backdrop-blur-md" />
+        <span
+          className="absolute bottom-0 right-0 h-14 w-20 -scale-y-100 bg-black/60 backdrop-blur-md"
+          style={{
+            clipPath: "path('M 80 0 L 80 56 L 0 56 C 0 45.6 6.65 36.1 17.57 30.7 L 80 0 Z')",
+          }}
+        />
+      </span>
       <div className="relative z-10 flex flex-col">
         {actions.map((action, index) => {
           const shape = index === 0 ? "top" : index === actions.length - 1 ? "bottom" : undefined;
@@ -132,18 +199,8 @@ export default function QuickActionRail() {
           );
         })}
       </div>
-
-      {/* Same rounded trapezoid as BackToTop, rotated for a right-edge rail.
-          Object-bounding-box units let the 52×218 source shape stretch to the
-          rail's height without relying on a fixed viewport size. */}
-      <svg width="0" height="0" className="absolute" aria-hidden>
-        <defs>
-          <clipPath id="quick-action-rail-shape" clipPathUnits="objectBoundingBox">
-            <path d="M.21965 .88545C.08315 .86542 0 .82992 0 .79169V.2083C0 .17008 .08315 .13458 .21965 .11455L1 0V1Z" />
-          </clipPath>
-        </defs>
-      </svg>
     </aside>
+    </>
   );
 }
 

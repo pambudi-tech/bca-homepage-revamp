@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import SlideDots, { DOT_CIRCUMFERENCE } from "./SlideDots";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useIsLive } from "@/lib/useIsLive";
 
@@ -15,6 +14,7 @@ const EVENT_SLIDES: EventSlide[] = [
 ];
 
 const SLIDE_DURATION_MS = 6000;
+const INDICATOR_LENGTH = 40;
 const count = EVENT_SLIDES.length;
 
 const mod = (n: number, m: number) => ((n % m) + m) % m;
@@ -56,7 +56,7 @@ export default function EventSlider() {
   const [paused, setPaused] = useState(false);
   const [hoveringActive, setHoveringActive] = useState(false);
   const pausedRef = useRef(false);
-  const progressCircleRef = useRef<SVGCircleElement>(null);
+  const progressLineRef = useRef<SVGLineElement>(null);
   const touchStartX = useRef<number | null>(null);
   // Follow-cursor "Pelajari" badge on the active banner — same treatment as
   // the product cards (see ProductSection's ProductCard): native cursor is
@@ -105,8 +105,8 @@ export default function EventSlider() {
     activeIndex,
     count,
     durationMs: SLIDE_DURATION_MS,
-    circumference: DOT_CIRCUMFERENCE,
-    progressRef: progressCircleRef,
+    circumference: INDICATOR_LENGTH,
+    progressRef: progressLineRef,
     pausedRef,
     live,
     onAdvance: () => setStep((s) => s + 1),
@@ -235,19 +235,29 @@ export default function EventSlider() {
       </div>
 
       <div className="mt-5 flex justify-center xl:mt-6">
-        <SlideDots
-          count={count}
-          activeIndex={activeIndex}
-          paused={paused}
-          onSelect={goTo}
-          onTogglePause={() => setPaused((p) => !p)}
-          onActiveHoverChange={setHoveringActive}
-          progressRef={progressCircleRef}
-          activeColor="#00b5f0"
-          inactiveColor="rgba(0,92,170,0.3)"
-          inactiveHoverColor="rgba(0,92,170,0.6)"
-          showPill={false}
-        />
+        <div className="flex items-center gap-3">
+          {Array.from({ length: count }).map((_, index) =>
+            index === activeIndex ? (
+              <button
+                key={index}
+                onClick={() => setPaused((value) => !value)}
+                onMouseEnter={() => setHoveringActive(true)}
+                onMouseLeave={() => setHoveringActive(false)}
+                aria-label={paused ? t("playSlide") : t("pauseSlide")}
+                className="relative flex h-2 w-12 items-center after:absolute after:-inset-y-3 after:inset-x-0 after:content-['']"
+              >
+                <svg viewBox="0 0 48 8" className="h-2 w-12 overflow-visible" aria-hidden>
+                  <line x1="4" y1="4" x2="44" y2="4" stroke="rgba(0,92,170,0.25)" strokeWidth="8" strokeLinecap="round" />
+                  <line ref={progressLineRef} x1="4" y1="4" x2="44" y2="4" stroke="#00b5f0" strokeWidth="8" strokeLinecap="round" strokeDasharray={INDICATOR_LENGTH} strokeDashoffset={INDICATOR_LENGTH} />
+                </svg>
+              </button>
+            ) : (
+              <button key={index} onClick={() => goTo(index)} aria-label={`Slide ${index + 1}`} className="group relative flex size-2 items-center justify-center after:absolute after:-inset-y-3 after:-inset-x-1 after:content-['']">
+                <span className="size-2 rounded-full bg-blue-500/25 transition-colors group-hover:bg-blue-500/60" />
+              </button>
+            )
+          )}
+        </div>
       </div>
     </div>
   );

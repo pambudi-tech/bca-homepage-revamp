@@ -338,8 +338,7 @@
     }
   },
   "scrollCue": {
-    "keepGoing": "继续探索",
-    "exploreBca": "BCA的世界"
+    "label": "滚动查看更多"
   },
   "backToTop": {
     "label": "返回顶部"
@@ -365,11 +364,15 @@
     "mobileCtaHint": "为您找到合适的产品与服务"
   },
   "promo": {
-    "eyebrow": "活动与项目",
-    "heading": "最好的回馈，伴您度过每一个珍贵时刻",
+    "eyebrow": "优惠",
+    "heading": "为您献上最佳礼遇",
+    "eventEyebrow": "活动",
+    "eventHeading": "精彩时刻，随时相伴",
     "viewMore": "查看200+更多优惠",
     "prevSlide": "上一个活动",
     "nextSlide": "下一个活动",
+    "playSlide": "播放轮播",
+    "pauseSlide": "暂停轮播",
     "badge": {
       "almostEnd": "即将结束！",
       "popular": "热门"
@@ -393,6 +396,7 @@
       "Solitaire": "尊尚",
       "Prioritas": "优先"
     },
+    "produk": "产品",
     "promo": "优惠",
     "login": "登录",
     "tentangBca": "关于BCA",
@@ -400,7 +404,7 @@
     "search": "搜索",
     "searchPlaceholder": "开立 BCA 账户",
     "lokasiBca": "BCA网点位置",
-    "haloBca": "帮助",
+    "haloBca": "HaloBCA",
     "quickActions": "快捷操作",
     "pengajuan": "申请",
     "andaBerada": "您正在浏览 BCA",

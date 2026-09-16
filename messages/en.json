@@ -338,8 +338,7 @@
     }
   },
   "scrollCue": {
-    "keepGoing": "Keep exploring",
-    "exploreBca": "the world of BCA"
+    "label": "Scroll to see more"
   },
   "backToTop": {
     "label": "Back to top"
@@ -365,11 +364,15 @@
     "mobileCtaHint": "Find the right product & service for you"
   },
   "promo": {
-    "eyebrow": "Events & Programs",
-    "heading": "The Best Rewards for Every Precious Moment",
+    "eyebrow": "Promos",
+    "heading": "The Best Rewards for You",
+    "eventEyebrow": "Events",
+    "eventHeading": "Exciting Moments, Anytime",
     "viewMore": "View 200+ More Promos",
     "prevSlide": "Previous event",
     "nextSlide": "Next event",
+    "playSlide": "Play carousel",
+    "pauseSlide": "Pause carousel",
     "badge": {
       "almostEnd": "Ending Soon!",
       "popular": "Popular"
@@ -393,6 +396,7 @@
       "Solitaire": "Solitaire",
       "Prioritas": "Priority"
     },
+    "produk": "Products",
     "promo": "Promo",
     "login": "Log in",
     "tentangBca": "About BCA",
@@ -400,7 +404,7 @@
     "search": "Search",
     "searchPlaceholder": "Open a BCA account",
     "lokasiBca": "BCA Location",
-    "haloBca": "Help",
+    "haloBca": "HaloBCA",
     "quickActions": "Quick actions",
     "pengajuan": "Apply",
     "andaBerada": "You are in BCA",

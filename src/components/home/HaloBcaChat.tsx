@@ -305,7 +305,7 @@ export default function HaloBcaChat() {
     // instead of the viewport, shrinking the panel to this div's own
     // button-sized box. The reveal transform lives on the button itself
     // instead, a few lines down.
-    <div inert={!(ready && !hidden)} className={`fixed right-4 bottom-4 z-[70] transition-opacity duration-500 ease-out xl:right-8 xl:bottom-8 ${ready && !hidden ? "opacity-100" : "pointer-events-none opacity-0"}`}>
+    <div inert={!(ready && !hidden)} className={`fixed right-4 bottom-[calc(86px+env(safe-area-inset-bottom)+12px)] z-[70] transition-opacity duration-500 ease-out xl:right-8 xl:bottom-8 ${ready && !hidden ? "opacity-100" : "pointer-events-none opacity-0"}`}>
 
       {open || closing ? (
         <>
