@@ -8,7 +8,7 @@ export default function HeroArea({ kurs, banners }: { kurs: KursEntry[]; banners
   return (
     <div className="relative z-10">
       <HeroSection slides={banners} />
-      <div className="absolute inset-x-0 top-[400px] z-20 overflow-hidden xl:left-1/2 xl:right-auto xl:w-[1280px] xl:-translate-x-1/2 xl:overflow-visible">
+      <div className="absolute inset-x-0 bottom-4 z-20 overflow-hidden xl:bottom-auto xl:left-1/2 xl:right-auto xl:top-[400px] xl:w-[1280px] xl:-translate-x-1/2 xl:overflow-visible">
         <HeroCompactWidget kurs={kurs} />
       </div>
     </div>

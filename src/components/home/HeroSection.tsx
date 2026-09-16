@@ -120,7 +120,7 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
   return (
     <div
       ref={rootRef}
-      className="relative h-[560px] overflow-clip bg-blue-500 xl:h-[600px]"
+      className="relative h-[min(640px,calc(90svh-48px))] overflow-clip bg-blue-500 xl:h-[600px]"
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
@@ -129,7 +129,7 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
           — the desktop 620px section shows it in full. */}
       <div
         ref={parallaxRef}
-        className="absolute inset-x-0 bottom-0 h-[620px] origin-top will-change-transform"
+        className="absolute inset-x-0 bottom-0 h-full origin-top will-change-transform xl:h-[620px]"
         style={{ transform: "translate3d(0, 0, 0) scale(1.1)" }}
       >
         {/* Slide 0 is the LCP element on essentially every visit, so it's flagged
