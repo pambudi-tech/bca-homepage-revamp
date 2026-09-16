@@ -143,17 +143,19 @@ export default async function MyBcaSection() {
               }}
             >
               {/* Capped at the Figma text width so the heading keeps its 3-line wrap. */}
-              <div className="flex w-full max-w-80 flex-col items-center gap-4">
+              <div className="flex w-full max-w-80 flex-col items-center">
                 <p className="text-heading text-white text-shadow-hero">
                   {t("heading")}
                 </p>
-                <p className="w-64 max-w-full text-sm leading-5 text-neutral-500 opacity-80">
-                  {t("description")}
-                </p>
               </div>
-              <a href={myBcaPageUrl} className="btn-base border border-white bg-transparent text-white hover:bg-white/10">
-                <span className="text-base font-semibold text-neutral-100">{t("downloadMobile")}</span>
-              </a>
+              <div className="flex w-full items-center gap-2">
+                <a href={myBcaPageUrl} className="btn-base btn-primary min-w-0 flex-1 px-4">
+                  <span className="whitespace-nowrap text-base font-semibold">{t("downloadMobile")}</span>
+                </a>
+                <a href={myBcaPageUrl} className="btn-base min-w-0 flex-1 border border-neutral-100 bg-transparent px-4 text-neutral-100 hover:bg-white/10">
+                  <span className="whitespace-nowrap text-base font-semibold">{t("detail")}</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>

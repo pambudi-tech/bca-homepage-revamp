@@ -24,69 +24,6 @@ const AUTO_ADVANCE_MS = 6000;
 const RING_RADIUS = 13;
 const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 
-/** Blanket scale applied to every glass badge, on top of each category's own
- *  `scale` tweak below. */
-const GLASS_ICON_SCALE = 1.1;
-
-/**
- * Glass-badge icon shown on a collapsed accordion card, keyed by category.
- * Every category now has an asset.
- *
- * `offsetX`/`offsetY`/`scale` are one-off nudges per category while the
- * assets are still being fitted by eye — not derived from anything, just
- * tweaked until each badge sits right against its own art. Remove once the
- * badges settle.
- */
-const CATEGORY_GLASS_ICONS: Record<
-  string,
-  {
-    src: string;
-    offsetX?: number;
-    offsetY?: number;
-    scale?: number;
-    mirrorX?: boolean;
-    rotate?: number;
-  }
-> = {
-  Simpanan: {
-    src: "/assets/product/simpanan-glass.webp",
-    offsetX: -40 + 24 + 64,
-    mirrorX: true,
-  },
-  "Kartu Kredit": {
-    src: "/assets/product/kartu-kredit-glass.webp",
-    offsetX: 24,
-  },
-  Pinjaman: {
-    src: "/assets/product/pinjaman-glass.webp",
-    offsetX: -16 + 32 - 16,
-    offsetY: 24 - 8 + 8,
-    scale: 1.1 * 1.1,
-  },
-  "e-Banking": {
-    src: "/assets/product/ebanking-glass.webp",
-    offsetX: 12 - 4 + 16 + 16,
-  },
-  Asuransi: {
-    src: "/assets/product/asuransi-glass.webp",
-    offsetX: -24,
-    offsetY: 16,
-    scale: 0.9,
-  },
-  Investasi: { src: "/assets/product/investasi-glass.webp", offsetX: 8 },
-  "Wealth Management": {
-    src: "/assets/product/investasi-glass.webp",
-    offsetX: 8 + 12,
-    mirrorX: true,
-  },
-  Transaksi: {
-    src: "/assets/product/transaksi-glass.webp",
-    offsetX: 32,
-    rotate: 90,
-  },
-  "Reward BCA": { src: "/assets/product/reward-glass.webp" },
-};
-
 /**
  * Category swaps animate the card *contents* only — the cards themselves keep
  * their current size/position, so the accordion layout never jumps.
@@ -179,7 +116,6 @@ function ProductCard({
   entered,
   enterDelayMs,
   swap,
-  glassIcon,
 }: {
   product: Product;
   /** The photos being swiped away, drawn over `product` for the swap only. */
@@ -193,16 +129,6 @@ function ProductCard({
   entered: boolean;
   enterDelayMs: number;
   swap: ReturnType<typeof swapStyles>;
-  /** Glass-badge icon shown top-left while the card is collapsed; not every
-   *  category has one yet. */
-  glassIcon?: {
-    src: string;
-    offsetX?: number;
-    offsetY?: number;
-    scale?: number;
-    mirrorX?: boolean;
-    rotate?: number;
-  };
 }) {
   const t = useTranslations("common");
   const router = useRouter();
@@ -295,7 +221,6 @@ function ProductCard({
         product={product}
         copy={copy}
         swap={swap}
-        glassIcon={glassIcon}
         isHovered={isHovered}
         progressRef={progressRef}
         cursorRef={cursorRef}
@@ -311,7 +236,6 @@ function CardContent({
   product,
   copy,
   swap,
-  glassIcon,
   isHovered,
   progressRef,
   cursorRef,
@@ -322,14 +246,6 @@ function CardContent({
   product: Product;
   copy: Product;
   swap: ReturnType<typeof swapStyles>;
-  glassIcon?: {
-    src: string;
-    offsetX?: number;
-    offsetY?: number;
-    scale?: number;
-    mirrorX?: boolean;
-    rotate?: number;
-  };
   isHovered: boolean;
   progressRef: React.Ref<SVGCircleElement> | undefined;
   cursorRef: React.RefObject<HTMLDivElement | null>;
@@ -337,51 +253,15 @@ function CardContent({
 }) {
   return (
     <>
-      {/* Inactive cards show a flat gradient fill instead of their photo — the
-          image only appears once the card is active. */}
+      {/* The category photo remains visible in both collapsed and active states.
+          Collapsed cards only receive a subtle dark wash for title contrast. */}
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-t from-blue-500 to-cyan-500 transition-opacity duration-300 ease-out"
+        className="absolute inset-0 z-[1] bg-gradient-to-t from-black/70 via-black/15 to-transparent transition-opacity duration-300 ease-out"
         style={{ opacity: active ? 0 : 1 }}
       />
 
-      {/* Glass badge — top-left of the collapsed card, cropped by the card's
-          own overflow-clip so 32px of its 200px bleeds off the left edge. */}
-      {glassIcon && (
-        <img loading="lazy" decoding="async"
-          aria-hidden
-          src={glassIcon.src}
-          alt=""
-          className="absolute top-4 size-[200px] max-w-none origin-center object-contain transition-[opacity,transform] duration-500 ease-in-out"
-          style={{
-            left: -32 + (glassIcon.offsetX ?? 0),
-            top: 16 + (glassIcon.offsetY ?? 0),
-            // Selecting the card shrinks the badge out as it fades (down to
-            // half size); deselecting grows it back in from that half size —
-            // one scale drives both, since the CSS transition above already
-            // interpolates whichever direction `active` just flipped.
-            transform: `rotate(${glassIcon.rotate ?? 0}deg) scaleX(${(glassIcon.mirrorX ? -1 : 1) *
-              GLASS_ICON_SCALE *
-              (glassIcon.scale ?? 1) *
-              (isHovered && !active ? 1.1 : 1) *
-              (active ? 0.5 : 1)
-              }) scaleY(${GLASS_ICON_SCALE *
-              (glassIcon.scale ?? 1) *
-              (isHovered && !active ? 1.1 : 1) *
-              (active ? 0.5 : 1)
-              })`,
-            opacity: active ? 0 : 1,
-          }}
-        />
-      )}
-
-      <div
-        className="absolute inset-y-0 right-0 w-[566px] transition-[transform,opacity] duration-500 ease-in-out"
-        style={{
-          transform: active ? "translateX(0)" : "translateX(96px)",
-          opacity: active ? 1 : 0,
-        }}
-      >
+      <div className="absolute inset-0">
         {/* Each layer carries the category-swap slide, so it composes with the
             active/inactive shift on the wrapper above and the hover zooms
             inside. The outgoing set sits on top and clears the card, revealing
@@ -405,7 +285,7 @@ function CardContent({
           becoming active slides this one up into place from just below while
           it fades in from 0 to full opacity; losing active reverses it. */}
       <div
-        className="hero-search absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[transform,opacity] duration-500 ease-in-out"
+        className="hero-search absolute bottom-2 left-2 z-10 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[transform,opacity] duration-500 ease-in-out"
         style={{
           width: 280,
           backgroundColor: "rgba(0,0,0,0.3)",
@@ -445,7 +325,7 @@ function CardContent({
           styles with the active panel above — just its own rotated title with
           a plain 16px pad on every side. */}
       <div
-        className="absolute bottom-2 left-2 flex overflow-clip rounded-2xl p-4 transition-[transform,opacity] duration-500 ease-in-out"
+        className="absolute bottom-2 left-2 z-10 flex overflow-clip rounded-2xl p-4 transition-[transform,opacity] duration-500 ease-in-out"
         style={{
           transform: active ? "translateY(20px)" : "translateY(0)",
           opacity: active ? 0 : 1,
@@ -465,7 +345,7 @@ function CardContent({
       </div>
 
       <div
-        className={`absolute bottom-6 right-6 transition-opacity duration-300 ${active ? "opacity-100" : "opacity-0"
+        className={`absolute bottom-6 right-6 z-10 transition-opacity duration-300 ${active ? "opacity-100" : "opacity-0"
           }`}
       >
         <svg viewBox="0 0 32 32" className="size-8 -rotate-90">
@@ -563,11 +443,8 @@ function MobileCardContent({
 }) {
   return (
     <>
-      {/* Same idea as the desktop card: the photo frame is wider than the card
-          and anchored to its right edge, so the card acts as a window and the
-          88px that spill past the left edge get clipped — the photo reads as
-          shifted left rather than squeezed. */}
-      <div className="absolute inset-y-0 right-0 w-[368px]">
+      {/* The category photo fills the whole mobile card in every direction. */}
+      <div className="absolute inset-0">
         <PhotoLayer product={product} style={swap.incoming} />
         {outgoing && <PhotoLayer product={outgoing} style={swap.outgoing} />}
       </div>
@@ -1466,7 +1343,7 @@ export default function ProductSection({
     <section
       ref={sectionRef}
       id="products"
-      className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-[120px] pt-0 xl:pb-40 xl:pt-0"
+      className="relative isolate bg-gradient-to-b from-blue-100 to-cyan-100 pb-[120px] pt-10 xl:pb-40 xl:pt-20"
     >
       {/* Clove pattern — mobile only, right side. The fluted glass overlay
           below is desktop-only (`hidden xl:block`), so under xl the section
@@ -1604,7 +1481,6 @@ export default function ProductSection({
                     entered={entered}
                     enterDelayMs={250 + i * 80}
                     swap={swapStyles(false, 1, 0, false)}
-                    glassIcon={CATEGORY_GLASS_ICONS[categories[i].key]}
                   />
                 ))}
               </div>

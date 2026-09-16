@@ -61,9 +61,9 @@ const SIMPANAN_3 = asset("card-simpanan-3");
 export const PRODUCT_CATEGORIES: ProductCategory[] = [
   {
     key: "Simpanan",
-    label: "Simpanan",
-    image: SAMPLE_CATEGORY_PHOTOS[0],
-    description: "Tabungan & deposito untuk setiap kebutuhan",
+    label: "Tabungan",
+    image: "/assets/category/tabungan.webp",
+    description: "Pilihan tabungan untuk berbagai kebutuhan finansial.",
     products: withFeaturedDefaults([
       { title: "Tahapan BCA", subtitle: "Tabungan andalan untuk transaksi sehari-hari", ...SIMPANAN_1 },
       { title: "Tahapan Xpresi", subtitle: "Tabungan anak muda dengan kartu custom", ...SIMPANAN_2 },
@@ -80,7 +80,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     key: "Kartu Kredit",
     label: "Kartu Kredit",
     image: SAMPLE_CATEGORY_PHOTOS[1],
-    description: "Kartu untuk gaya hidup dan setiap transaksi",
+    description: "Beragam kartu kredit untuk transaksi dan kebutuhan pembayaran.",
     products: withFeaturedDefaults([
       { title: "BCA Everyday Card", subtitle: "Tiap hari belanja, tiap hari untung", ...EVERYDAY },
       { title: "BCA Mastercard Black", subtitle: "Experience the ultimate privilege", ...MASTERCARD },
@@ -103,7 +103,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     key: "Pinjaman",
     label: "Pinjaman",
     image: SAMPLE_CATEGORY_PHOTOS[2],
-    description: "Solusi pembiayaan rumah, kendaraan, dan usaha",
+    description: "Solusi pinjaman untuk kebutuhan rumah, usaha, dan kendaraan.",
     products: withFeaturedDefaults([
       { title: "Kredit Pemilikan Rumah", subtitle: "Makin mudah mendapatkan rumah idaman", ...EVERYDAY },
       { title: "Kredit Kendaraan Bermotor", subtitle: "Kenyamanan untuk mewujudkan kendaraan idaman", ...MASTERCARD },
@@ -116,7 +116,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     key: "e-Banking",
     label: "e-Banking",
     image: SAMPLE_CATEGORY_PHOTOS[3],
-    description: "Perbankan digital dalam satu genggaman",
+    description: "Layanan e-banking untuk transaksi digital yang lebih praktis.",
     products: withFeaturedDefaults([
       { title: "myBCA", subtitle: "#NyamannyaDunia myBCA untuk nyamannya transaksi hingga investasi", ...SIMPANAN_1 },
       { title: "BCA mobile", subtitle: "Semua transaksi perbankan #DibikinSimpel", ...SIMPANAN_2 },
@@ -134,41 +134,35 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     ]),
   },
   {
-    key: "Wealth Management",
-    label: "Wealth Management",
-    image: SAMPLE_CATEGORY_PHOTOS[4],
-    description: "Investasi dan proteksi untuk masa depan finansial Anda",
-    // Matches bca.co.id/id/individu/produk/investasi-dan-asuransi: 4 named
-    // investment products, then "Asuransi" as a single link out to the
-    // bancassurance page — not a list of named insurance products.
+    key: "Investasi",
+    label: "Investasi",
+    image: "/assets/category/investasi.webp",
+    description: "Pilihan investasi untuk mendukung rencana finansial.",
     products: withFeaturedDefaults([
       { title: "Reksa Dana", subtitle: "Investasi terjangkau untuk rencana masa depanmu", ...EVERYDAY },
       { title: "Obligasi", subtitle: "Berbagai macam pilihan obligasi dari BCA", ...MASTERCARD },
-      { title: "Asuransi", subtitle: "Cari tahu tentang Asuransi", ...AMEX },
       { title: "Rekening Dana Nasabah (RDN)", subtitle: "Rekening dana untuk transaksi investasi lebih aman", ...EVERYDAY },
       { title: "Rekening Dana Lender (RDL) BCA", subtitle: "Fasilitas rekening untuk transaksi pendanaan P2P lending", ...MASTERCARD },
+    ]),
+  },
+  {
+    key: "Asuransi",
+    label: "Asuransi",
+    image: "/assets/category/asuransi.webp",
+    description: "Perlindungan asuransi untuk diri, keluarga, dan aset.",
+    products: withFeaturedDefaults([
+      { title: "Asuransi", subtitle: "Cari tahu tentang Asuransi", ...AMEX },
     ]),
   },
   {
     key: "Transaksi",
     label: "Transaksi",
     image: SAMPLE_CATEGORY_PHOTOS[0],
-    description: "Bayar, transfer, dan kirim uang lebih praktis",
+    description: "Layanan transaksi untuk transfer, pembayaran, dan kebutuhan sehari-hari.",
     products: withFeaturedDefaults([
       { title: "Flazz", subtitle: "Kartu prabayar untuk transaksi cepat sehari-hari", ...SIMPANAN_3 },
       { title: "Firecash", subtitle: "Setor tarik tunai tanpa kartu di jaringan mitra", ...SIMPANAN_2 },
       { title: "Remittance", subtitle: "Kirim dan terima uang dari luar negeri", ...SIMPANAN_1 },
     ]),
-  },
-  {
-    // A single loyalty-points program (bca.co.id/id/individu/produk/reward-bca),
-    // not a catalog of named products — no `products` to list, so this
-    // category card renders but never gets the mega menu's expand chevron
-    // (see `Navbar.tsx`, where chevron is derived from `products.length`).
-    key: "Reward BCA",
-    label: "Reward BCA",
-    image: "/assets/category/kartu-kredit.webp",
-    description: "Kumpulkan dan tukar poin dari setiap transaksi",
-    products: [],
   },
 ];
