@@ -1,85 +1,101 @@
 /* eslint-disable @next/next/no-img-element */
 
 type KartuKreditHeroCopy = {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   applyCta: string;
   cardsCta: string;
-  scrollCue: string;
+  supportingText: string;
   imageAlt: string;
+  cardsHref?: string;
+  backAction?: {
+    label: string;
+    href: string;
+  };
 };
 
-export default function KartuKreditHero({ copy }: { copy: KartuKreditHeroCopy }) {
+export default function KartuKreditHero({
+  copy,
+  imageSrc,
+}: {
+  copy: KartuKreditHeroCopy;
+  imageSrc: string;
+}) {
   return (
-    <section className="relative h-[620px] overflow-clip bg-blue-500" aria-labelledby="kartu-kredit-title">
+    <section
+      className="relative h-[min(640px,calc(90svh-48px))] min-h-[560px] overflow-clip bg-blue-700 xl:h-[80svh] xl:min-h-0"
+      aria-labelledby="kartu-kredit-title"
+    >
       <img
-        src="/assets/kartu-kredit/kartu-kredit-hero.webp"
+        src={imageSrc}
         alt={copy.imageAlt}
         fetchPriority="high"
         decoding="sync"
-        className="absolute inset-0 size-full object-cover object-[62%_center] xl:object-center"
+        className="absolute inset-0 size-full origin-left scale-[1.08] object-cover object-[58%_center] xl:scale-[1.14] xl:object-center"
       />
 
       <div
         aria-hidden
-        className="absolute inset-0 bg-neutral-900/45 xl:hidden"
+        className="absolute inset-0 bg-neutral-900/50 xl:hidden"
       />
       <div
         aria-hidden
-        className="absolute inset-y-0 left-0 hidden w-2/3 bg-gradient-to-r from-neutral-900/75 via-neutral-900/45 to-transparent xl:block"
+        className="absolute inset-0 hidden bg-gradient-to-r from-neutral-900/80 via-neutral-900/45 to-neutral-900/10 xl:block"
       />
       <div
         aria-hidden
-        className="absolute left-0 right-0 top-0 hidden h-[160px] bg-gradient-to-b from-neutral-900/70 to-transparent xl:block"
+        className="absolute inset-x-0 top-0 hidden h-40 bg-gradient-to-b from-neutral-900/60 to-transparent xl:block"
       />
 
-      <div className="absolute inset-x-0 top-[178px] px-4 xl:left-1/2 xl:right-auto xl:top-[232px] xl:w-[1280px] xl:-translate-x-1/2 xl:px-0">
-        <div className="flex max-w-[420px] flex-col items-start gap-8">
-          <div className="flex flex-col gap-4 text-white text-shadow-hero">
-            <p className="text-base font-semibold leading-6 xl:text-lg xl:leading-7">
-              {copy.eyebrow}
-            </p>
+      {copy.backAction ? (
+        <div className="absolute inset-x-0 top-24 mx-auto w-full max-w-[1280px] px-4 xl:px-10">
+          <a
+            href={copy.backAction.href}
+            className="inline-flex items-center gap-2 text-sm font-semibold text-white text-shadow-hero transition-opacity hover:opacity-80"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+            {copy.backAction.label}
+          </a>
+        </div>
+      ) : null}
+
+      <div className="absolute inset-x-0 bottom-8 top-auto mx-auto w-full max-w-[1280px] px-4 xl:bottom-auto xl:top-[220px] xl:px-10">
+        <div className="flex max-w-[520px] flex-col items-start gap-7 xl:max-w-[560px]">
+          <div className="flex flex-col gap-3 text-white text-shadow-hero">
+            {copy.eyebrow ? <p className="text-base font-semibold leading-6 xl:text-lg xl:leading-7">{copy.eyebrow}</p> : null}
             <h1
               id="kartu-kredit-title"
-              className="text-[30px] font-semibold leading-[38px] tracking-normal xl:text-[36px] xl:leading-[44px]"
+              className="text-[32px] font-semibold leading-10 tracking-[-0.02em] xl:max-w-[480px] xl:text-[36px] xl:leading-[44px]"
             >
               {copy.title}
             </h1>
           </div>
 
-          <div className="flex flex-col items-start gap-3 sm:flex-row">
-            <a
-              href="https://mybca.bca.co.id/auth/login"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group/credit-cta flex h-12 items-center justify-center gap-1 rounded-full bg-white px-8 text-base font-semibold text-blue-500 transition-[background-color,box-shadow,transform] duration-300 active:scale-95 xl:hover:bg-blue-500 xl:hover:text-white xl:hover:shadow-[0_0_22px_-6px_rgba(125,211,252,0.75)]"
-            >
-              <span className="whitespace-nowrap">{copy.applyCta}</span>
-              <img
-                src="/assets/navbar/icon-arrow-blue.svg"
-                alt=""
-                className="size-5 transition-[filter] duration-300 xl:group-hover/credit-cta:brightness-0 xl:group-hover/credit-cta:invert"
-              />
-            </a>
-            <a
-              href="#pilihan-kartu"
-              className="flex h-12 items-center justify-center rounded-full bg-neutral-900/25 px-8 text-base font-semibold text-white backdrop-blur-[8px] transition-[background-color,transform] duration-300 active:scale-95 xl:hover:bg-neutral-900/40"
-            >
-              <span className="whitespace-nowrap">{copy.cardsCta}</span>
-            </a>
+          <div className="flex flex-col items-start gap-4">
+            <div className="flex w-full flex-row items-stretch gap-3">
+              <a
+                href="https://mybca.bca.co.id/auth/login"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-base btn-primary min-w-0 flex-1 px-3 text-sm active:scale-95"
+              >
+                <span className="text-sm">{copy.applyCta}</span>
+              </a>
+              <a
+                href={copy.cardsHref ?? "#pilihan-kartu"}
+                className="btn-base min-w-0 flex-1 px-3 text-sm border border-white/40 bg-neutral-900/25 text-white backdrop-blur-lg transition-[background-color,border-color,color,transform] duration-200 active:scale-95 xl:hover:border-white/60 xl:hover:bg-neutral-900/45"
+              >
+                <span className="text-sm">{copy.cardsCta}</span>
+              </a>
+            </div>
+            <p className="max-w-[520px] text-sm leading-5 text-white/85 text-shadow-hero xl:max-w-none xl:whitespace-nowrap xl:text-base xl:leading-6">
+              {copy.supportingText}
+            </p>
           </div>
         </div>
       </div>
-
-      <a
-        href="#pilihan-kartu"
-        className="absolute bottom-7 left-4 flex items-center gap-4 px-2 py-2 text-sm font-semibold text-white opacity-80 transition-opacity hover:opacity-100 xl:left-1/2 xl:w-[1280px] xl:-translate-x-1/2 xl:text-base"
-      >
-        <span className="flex h-9 w-6 shrink-0 items-start justify-center rounded-full border-2 border-white/50 pt-1.5">
-          <span className="animate-scroll-cue-dot size-1.5 rounded-full bg-white" />
-        </span>
-        <span>{copy.scrollCue}</span>
-      </a>
     </section>
   );
 }

@@ -1,4 +1,8 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { ArrowRight } from "./SoliprioCard";
+import { SOLIPRIO_SEGMENT_EVENT } from "./SoliprioSegmentSelector";
 
 export type SoliprioBenefit = {
   key: string;
@@ -9,14 +13,32 @@ export type SoliprioBenefit = {
 
 export default function SoliprioBenefitCards({
   benefits,
+  prioritasBenefits,
+  solitaireBenefits,
   className = "",
 }: {
-  benefits: readonly SoliprioBenefit[];
+  benefits?: readonly SoliprioBenefit[];
+  prioritasBenefits?: readonly SoliprioBenefit[];
+  solitaireBenefits?: readonly SoliprioBenefit[];
   className?: string;
 }) {
+  const [segment, setSegment] = useState<"prioritas" | "solitaire">("prioritas");
+
+  useEffect(() => {
+    const onSegment = (event: Event) => {
+      setSegment((event as CustomEvent<"prioritas" | "solitaire">).detail);
+    };
+    window.addEventListener(SOLIPRIO_SEGMENT_EVENT, onSegment);
+    return () => window.removeEventListener(SOLIPRIO_SEGMENT_EVENT, onSegment);
+  }, []);
+
+  const visibleBenefits = prioritasBenefits && solitaireBenefits
+    ? segment === "solitaire" ? solitaireBenefits : prioritasBenefits
+    : benefits ?? [];
+
   return (
     <div className={`hide-scrollbar flex gap-4 overflow-x-auto ${className}`}>
-      {benefits.map((benefit) => (
+      {visibleBenefits.map((benefit) => (
         <a
           key={benefit.key}
           href="#"

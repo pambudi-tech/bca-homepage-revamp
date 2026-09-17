@@ -20,7 +20,7 @@ const PHOTO_DRIFT = 32;
 
 export default async function SoliprioSection() {
   const t = await getTranslations("soliprio");
-  const benefits = [
+  const prioritasBenefits = [
     {
       key: "lounge",
       image: "/assets/soliprio/prioritas-lounge.webp",
@@ -39,6 +39,21 @@ export default async function SoliprioSection() {
       title: t("benefits.event.title"),
       cta: t("benefits.event.cta"),
     },
+  ] as const;
+  const solitaireBenefits = [
+    {
+      key: "personal-banker",
+      image: "/assets/soliprio/personal-banker.png",
+      title: t("solitaireBenefits.personalBanker.title"),
+      cta: t("solitaireBenefits.personalBanker.cta"),
+    },
+    {
+      key: "exclusive-community",
+      image: "/assets/soliprio/exclusive-community.png",
+      title: t("solitaireBenefits.exclusiveCommunity.title"),
+      cta: t("solitaireBenefits.exclusiveCommunity.cta"),
+    },
+    prioritasBenefits[2],
   ] as const;
 
   return (
@@ -95,7 +110,11 @@ export default async function SoliprioSection() {
             </div>
             <SoliprioSegmentSelector />
           </div>
-          <SoliprioBenefitCards benefits={benefits} className="mt-auto overflow-visible" />
+          <SoliprioBenefitCards
+            prioritasBenefits={prioritasBenefits}
+            solitaireBenefits={solitaireBenefits}
+            className="mt-auto overflow-visible"
+          />
         </div>
       </div>
 
@@ -103,7 +122,8 @@ export default async function SoliprioSection() {
       <SoliprioMobile
         title={t("title")}
         description={t("description")}
-        benefits={benefits}
+        prioritasBenefits={prioritasBenefits}
+        solitaireBenefits={solitaireBenefits}
       />
     </section>
   );

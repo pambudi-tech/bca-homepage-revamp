@@ -89,9 +89,112 @@
       "title": "A Range of Choices to Complement Your Lifestyle",
       "applyCta": "Apply in myBCA",
       "cardsCta": "View Card Options",
+      "supportingText": "Cards for every need • Apply in 5 minutes • Instant review",
       "scrollCue": "Scroll down",
       "cardsSection": "Credit card options",
-      "imageAlt": "BCA Credit Card and myBCA app screen in a living room"
+      "imageAlt": "A man holding a BCA Credit Card above his wallet",
+      "sectionNav": {
+        "label": "Credit Card page navigation",
+        "cards": "Card Options",
+        "benefits": "Benefits",
+        "features": "Features",
+        "promos": "Promos",
+        "tutorials": "Tutorials",
+        "news": "News",
+        "help": "Help"
+      }
+    },
+    "comparisonPage": {
+      "eyebrow": "Credit Cards",
+      "backCta": "Back to Credit Cards",
+      "title": "Find the Card That Fits You Best",
+      "applyCta": "Apply on myBCA",
+      "cardsCta": "View Comparison",
+      "supportingText": "Compare up to 3 cards at once and find the one that best fits your needs.",
+      "imageAlt": "Various BCA Credit Cards"
+    },
+    "detailPage": {
+      "back": "Back to Credit Cards",
+      "apply": "Apply",
+      "navigationLabel": "Credit card detail navigation",
+      "tabs": {
+        "benefits": "Benefits",
+        "features": "Key Features",
+        "fees": "Fees",
+        "requirements": "Application Requirements",
+        "limit": "Limit",
+        "payments": "Interest & Payment"
+      }
+    },
+    "tutorial": {
+      "heading": "Apply for a credit card more easily with myBCA",
+      "description": "Tap Apply for Credit Card, review the benefits and requirements, choose a card, then verify your details.",
+      "previewAlt": "myBCA screen illustration showing the credit card application feature",
+      "carouselLabel": "myBCA credit card application steps",
+      "showTutorial": "View Tutorial",
+      "applyMyBca": "Apply in myBCA",
+      "applyWeb": "Apply online",
+      "stepLabel": "Step {current}",
+      "previousStep": "Previous step",
+      "nextStep": "Next step",
+      "seeFullSteps": "View Full Steps",
+      "steps": [
+        { "title": "Open myBCA", "description": "Open the myBCA app, then tap Apply for Credit Card." },
+        { "title": "Review the credit card benefits", "description": "Review BCA Credit Card benefits, then tap Continue." },
+        { "title": "Review the application requirements", "description": "Check the BCA Credit Card application requirements, then tap Start." },
+        { "title": "Choose a credit card", "description": "Choose a BCA Credit Card that suits your needs." },
+        { "title": "Choose an additional card", "description": "Choose another credit card with a shared credit limit." }
+      ]
+    },
+    "help": {
+      "eyebrow": "Help",
+      "heading": "Frequently asked questions about BCA Credit Cards",
+      "notFound": "Can't find the answer you're looking for?",
+      "edukatipsCta": "Search Edukatips",
+      "haloBcaCta": "Halo BCA",
+      "category": {
+        "key": "credit-card",
+        "label": "Credit Card",
+        "items": [
+          {
+            "question": "What if I forget my BCA Credit Card PIN?",
+            "answer": "You can reactivate your BCA Credit Card PIN through myBCA, BCA mobile, a BCA ATM, or bca.co.id/creditcard under e-Statement & PIN Activation."
+          },
+          {
+            "question": "What should I do if my BCA Credit Card is lost or stolen?",
+            "answer": "Block the card immediately through myBCA, BCA mobile, or Halo BCA at 1500888. A card blocked due to loss or theft needs to be replaced before it can be used again."
+          },
+          {
+            "question": "How do I pay my BCA Credit Card bill?",
+            "answer": "In myBCA, choose Pay & Top Up, then Credit Card & Paylater. Select the card and funding source, enter the payment amount, review the details, then confirm with your PIN."
+          }
+        ]
+      }
+    },
+    "benefitsFeatures": {
+      "benefitEyebrow": "Benefits",
+      "benefitHeading": "Maximum Benefits for All Your Needs",
+      "featureEyebrow": "Features",
+      "featureHeading": "Complete Features for Every Need",
+      "learnMore": "Learn more",
+      "appPlaceholder": "Placeholder for credit card features in the app",
+      "benefits": [
+        { "key": "installment", "title": "BCA Installments", "description": "Convert transactions into BCA Installments with interest starting at 0% and tenors of up to 36 months." },
+        { "key": "reward", "title": "BCA Rewards", "description": "BCA loyalty points earned from Credit Card transactions in Indonesia and abroad.", "featured": true },
+        { "key": "autopay", "title": "BCA Autopay", "description": "A solution for recurring bill payments, automatically paid through direct debit from your BCA Credit Card." },
+        { "key": "travel-insurance", "title": "Travel Insurance", "description": "Stay protected from risks throughout every journey." },
+        { "key": "credit-life", "title": "Credit Life Insurance", "description": "Protect yourself and your loved ones from unexpected risks." }
+      ],
+      "features": [
+        { "key": "application", "title": "Apply for a Credit Card", "description": "Choose the right card and apply online." },
+        { "key": "add-card", "title": "Add a Card", "description": "Add a card to share needs with a combined limit." },
+        { "key": "installment", "title": "Convert Transactions to Installments", "description": "Installments from 0% interest for up to 36 months." },
+        { "key": "miles", "title": "Convert BCA Rewards to Miles", "description": "Convert your rewards into selected airline miles." },
+        { "key": "reward", "title": "Check BCA Rewards Balance", "description": "Track collected points and their validity period." },
+        { "key": "limit", "title": "Request a Limit Increase", "description": "Increase your credit card limit directly in the app." },
+        { "key": "control", "title": "Credit Card Controls", "description": "Block and manage your card anytime through the app." },
+        { "key": "contactless", "title": "Set Contactless Limit", "description": "Set a contactless transaction limit to suit your needs.", "badge": "New" }
+      ]
     },
     "cardList": {
       "eyebrow": "Card Options",
@@ -99,7 +202,10 @@
       "compare": "Compare",
       "detail": "Card Details",
       "apply": "Apply",
-      "showAll": "Show All 14 Cards",
+      "showMore": "See {count} more cards",
+      "showLess": "Show fewer cards",
+      "previewAria": "Enlarge image of {title}",
+      "closePreview": "Close card preview",
       "comparisonPanel": {
         "title": "Compare Cards",
         "count": "{count} of up to {max} cards",
@@ -117,6 +223,64 @@
         "minimizeAria": "Minimize comparison panel",
         "expandAria": "Open comparison panel",
         "removeAria": "Remove {title} from comparison"
+      },
+      "comparisonView": {
+        "back": "Back to card options",
+        "eyebrow": "Card comparison",
+        "heading": "Compare Credit Cards",
+        "apply": "Apply",
+        "navigationLabel": "Credit card comparison navigation",
+        "selectedCards": "Cards being compared",
+        "cardClusters": {
+          "bca-card": "BCA Card",
+          "visa": "Visa",
+          "mastercard": "Mastercard",
+          "jcb": "JCB",
+          "unionpay": "UnionPay",
+          "american-express": "American Express"
+        },
+        "tabs": {
+          "benefits": "Benefits",
+          "features": "Key Features",
+          "fees": "Fees",
+          "requirements": "Application Requirements",
+          "limit": "Limit",
+          "payments": "Interest & Payments"
+        },
+        "benefitLabel": "Benefit {index}",
+        "category": "Category",
+        "annualFee": "Annual fee",
+        "application": "Application",
+        "applicationValue": "Apply through myBCA",
+        "noData": "Details are not available yet",
+        "sections": [
+          { "key": "benefits", "groups": [{ "title": "", "points": [
+            { "label": "BCA Rewards", "bullets": ["1% for tiket.com transactions; 0.5% for other merchants", "from 1 May 2026, a 0.4% scheme applies to Blibli merchant transactions"] },
+            { "label": "Welcome Bonus", "bullets": ["1% for tiket.com transactions; 0.5% for other merchants"] },
+            { "label": "Travel Points / Miles", "description": "from 1 May 2026, a 0.4% scheme applies to Blibli merchant transactions" }
+          ] }] },
+          { "key": "features", "groups": [{ "title": "", "points": [
+            { "label": "Contactless" }, { "label": "BCA Installment" }, { "label": "Travel Insurance" }, { "label": "Credit Life Insurance" },
+            { "label": "BCA Travel Services" }, { "label": "AutoPay BCA" }, { "label": "BCA Rewards" }, { "label": "Credit Card Control" }
+          ] }] },
+          { "key": "fees", "groups": [{ "title": "", "points": [
+            { "label": "Annual Fee", "description": "Rp125,000/year" },
+            { "label": "Late Payment Fee", "bullets": ["1% of the bill, up to Rp100,000", "Rp100,000**"] },
+            { "label": "Card Replacement Fee", "description": "Rp50,000" }
+          ] }] },
+          { "key": "requirements", "groups": [
+            { "title": "", "points": [
+              { "label": "Age", "description": "minimum 21 years old" },
+              { "label": "Minimum Income", "description": "Minimum monthly income Rp3 million (state-owned companies / civil servants) or Rp5 million (private sector)" }
+            ] },
+            { "title": "Limit", "points": [
+              { "label": "Minimum credit card limit", "description": "Rp3,000,000" }, { "label": "Minimum credit card limit", "description": "Rp1,000,000" }, { "label": "EDC limit", "description": "Based on the available card" }
+            ] },
+            { "title": "Interest & Payments", "points": [
+              { "label": "Purchase interest rate", "description": "1.75% per month" }, { "label": "Cash advance interest rate", "description": "1.75% per month" }
+            ] }
+          ] }
+        ]
       },
       "filters": [
         { "key": "all", "label": "All" },
@@ -160,6 +324,18 @@
             { "icon": "voucher", "label": "E-voucher up to Rp1 million" },
             { "icon": "cashback", "label": "1% Blibli Tiket Points at tiket.com" },
             { "icon": "fee", "label": "Annual fee Rp125 thousand" }
+          ]
+        },
+        {
+          "id": "pps-club-infinite",
+          "title": "BCA Singapore Airlines PPS Club Visa Infinite",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-SQ-PPS-Visa-Infinite-Front.png?v=1",
+          "imageAlt": "BCA Singapore Airlines PPS Club Visa Infinite",
+          "category": "travel",
+          "benefits": [
+            { "icon": "miles", "label": "Rp5,000 = 1 KrisFlyer mile" },
+            { "icon": "voucher", "label": "4,000 KrisFlyer miles welcome bonus" },
+            { "icon": "fee", "label": "Annual fee Rp2 million" }
           ]
         },
         {
@@ -213,6 +389,18 @@
           ]
         },
         {
+          "id": "visa-black",
+          "title": "BCA Visa Black",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-Visa-Black-2-Front.png?v=1",
+          "imageAlt": "BCA Visa Black",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "0.2% BCA Reward" },
+            { "icon": "travel", "label": "Travel Accident Insurance" },
+            { "icon": "fee", "label": "Annual fee Rp450 thousand" }
+          ]
+        },
+        {
           "id": "blibli-mastercard",
           "title": "BCA Blibli Mastercard",
           "image": "/assets/kartu-kredit/blibli-mastercard.png",
@@ -222,6 +410,66 @@
             { "icon": "reward", "label": "BCA Reward 0.3%" },
             { "icon": "installment", "label": "BCA Installment available" },
             { "icon": "fee", "label": "Annual fee Rp125 thousand" }
+          ]
+        },
+        {
+          "id": "mastercard-globe",
+          "title": "BCA Mastercard Globe",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-Mastercard-Platinum-Front.png?v=1",
+          "imageAlt": "BCA Mastercard Globe",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward" },
+            { "icon": "travel", "label": "Lifestyle merchant offers" },
+            { "icon": "fee", "label": "Annual fee per BCA terms" }
+          ]
+        },
+        {
+          "id": "mastercard-world",
+          "title": "BCA Mastercard World",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-Mastercard-World-Front.png?v=1",
+          "imageAlt": "BCA Mastercard World",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward" },
+            { "icon": "travel", "label": "Lifestyle and travel partners" },
+            { "icon": "fee", "label": "Annual fee per BCA terms" }
+          ]
+        },
+        {
+          "id": "jcb-black",
+          "title": "BCA JCB Black",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/Kartu-Kredit/JCB/BCA-Black-JCB.png?v=1",
+          "imageAlt": "BCA JCB Black",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward" },
+            { "icon": "travel", "label": "JCB benefits and services" },
+            { "icon": "fee", "label": "Annual fee per BCA terms" }
+          ]
+        },
+        {
+          "id": "unionpay",
+          "title": "BCA UnionPay",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-Union-Pay-Card-Final-Front.png?v=1",
+          "imageAlt": "BCA UnionPay",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward" },
+            { "icon": "travel", "label": "UnionPay benefits and services" },
+            { "icon": "fee", "label": "Annual fee per BCA terms" }
+          ]
+        },
+        {
+          "id": "american-express-platinum",
+          "title": "BCA American Express Platinum",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-AMEX-contactless.png?v=1",
+          "imageAlt": "BCA American Express Platinum",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward" },
+            { "icon": "travel", "label": "American Express benefits and services" },
+            { "icon": "fee", "label": "Annual fee per BCA terms" }
           ]
         }
       ]
@@ -388,6 +636,8 @@
     "description": "Exclusive for select customers through official BCA invitation,",
     "solitaire": "Explore BCA Solitaire",
     "prioritas": "Explore BCA Prioritas",
+    "visitSolitaire": "Visit Solitaire",
+    "visitPrioritas": "Visit Prioritas",
     "benefits": {
       "lounge": {
         "title": "Access 200+ Airport Lounges Worldwide",
@@ -400,6 +650,16 @@
       "event": {
         "title": "Priority Access to Renowned Events",
         "cta": "View All Events"
+      }
+    },
+    "solitaireBenefits": {
+      "personalBanker": {
+        "title": "Personal Banker for a more personal service",
+        "cta": "Learn More"
+      },
+      "exclusiveCommunity": {
+        "title": "An exclusive BCA community for relationships and collaboration",
+        "cta": "Learn More"
       }
     }
   },
@@ -531,7 +791,7 @@
   "news": {
     "eyebrow": "News & Insights",
     "heading": "Latest BCA Updates",
-    "seeMore": "See More"
+    "seeMore": "All News & Insights"
   },
   "faq": {
     "eyebrow": "FREQUENTLY ASKED QUESTION",

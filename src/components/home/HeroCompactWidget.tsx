@@ -84,7 +84,7 @@ export default function HeroCompactWidget({ kurs }: { kurs: KursEntry[] }) {
   };
 
   return (
-    <div ref={rootRef} className="hide-scrollbar flex gap-2 overflow-x-auto px-4 [scrollbar-width:none] xl:gap-4 xl:overflow-visible xl:px-0">
+    <div ref={rootRef} className="hide-scrollbar -mx-4 flex w-[calc(100%+2rem)] gap-2 overflow-x-auto px-4 [scrollbar-width:none] xl:mx-0 xl:w-auto xl:gap-4 xl:overflow-visible xl:px-0">
       {LOGIN_CARDS.map((destination) => (
         <a
           key={destination.label}

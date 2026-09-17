@@ -12,39 +12,51 @@ function PlusIcon({ className }: { className?: string }) {
   );
 }
 
+function ChevronIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+      <path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function AccordionRow({
   question,
   answer,
   open,
   onToggle,
   glass,
+  simple = false,
 }: {
   question: string;
   answer: string;
   open: boolean;
   onToggle: () => void;
   glass?: boolean;
+  simple?: boolean;
 }) {
   return (
     <div
-      className={`group w-full shrink-0 rounded-xl transition-colors ${
-        glass
+      className={`group w-full shrink-0 transition-colors ${simple
+        ? "border-b border-neutral-300"
+        : `rounded-xl ${glass
           ? open
             ? "bg-white/15"
             : "hover:bg-white/10"
           : open
             ? "bg-neutral-100"
             : "hover:bg-cyan-100"
-      }`}
+        }`
+        }`}
     >
       <button
         type="button"
         onClick={onToggle}
         aria-expanded={open}
-        className="flex w-full cursor-pointer items-center gap-8 p-4 text-left"
+        className={`flex w-full cursor-pointer items-center gap-8 text-left ${simple ? "px-4 py-5 sm:py-6" : "p-4"}`}
       >
         <span
-          className={`flex-1 text-base leading-6 transition-[color,opacity] ${
+          className={`flex-1 transition-[color,opacity] ${simple ? "text-lg leading-7 text-neutral-700 sm:text-xl" : "text-base leading-6"} ${
             glass
               ? open
                 ? "font-bold text-white opacity-100"
@@ -56,15 +68,19 @@ function AccordionRow({
         >
           {question}
         </span>
-        <PlusIcon
-          className={`size-6 shrink-0 transition-[transform,color] duration-300 ${
-            open
-              ? `rotate-45 ${glass ? "text-white" : "text-blue-700"}`
-              : glass
-                ? "text-cyan-300"
-                : "text-blue-500"
-          }`}
-        />
+        {simple ? (
+          <ChevronIcon className={`size-6 shrink-0 text-neutral-700 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
+        ) : (
+          <PlusIcon
+            className={`size-6 shrink-0 transition-[transform,color] duration-300 ${
+              open
+                ? `rotate-45 ${glass ? "text-white" : "text-blue-700"}`
+                : glass
+                  ? "text-cyan-300"
+                  : "text-blue-500"
+            }`}
+          />
+        )}
       </button>
       {/* Height animates via the CSS grid 0fr → 1fr trick — no JS measurement,
           and the row stays in the DOM (rather than conditionally rendered) so
@@ -75,7 +91,7 @@ function AccordionRow({
         }`}
       >
         <div className="overflow-hidden">
-          <p className={`px-4 pb-4 text-base leading-[1.5] ${glass ? "text-neutral-100" : "text-neutral-800"}`}>
+          <p className={`px-4 pb-5 text-base leading-[1.5] ${glass ? "text-neutral-100" : "text-neutral-800"}`}>
             {answer}
           </p>
         </div>
@@ -93,9 +109,18 @@ type FaqSectionProps = {
   /** Loaded from Supabase (falls back to bundled FAQ_CATEGORIES) by the page,
    *  same pattern as ProductSection/NewsSection. */
   categories?: FaqCategory[];
+  sectionId?: string;
+  standardHeading?: { eyebrow: string; heading: string };
+  footer?: {
+    prompt: string;
+    actions: [
+      { label: string; href: string; appearance: "primary" | "outline"; haloBrand?: boolean },
+      { label: string; href: string; appearance: "primary" | "outline"; haloBrand?: boolean },
+    ];
+  };
 };
 
-export default function FaqSection({ variant: initialVariant = "glass", categories = FAQ_CATEGORIES }: FaqSectionProps) {
+export default function FaqSection({ variant: initialVariant = "glass", categories = FAQ_CATEGORIES, sectionId = "faq-section", standardHeading, footer }: FaqSectionProps) {
   const t = useTranslations("faq");
   const desktopGlass = initialVariant === "glass";
   const mobileGlass = initialVariant === "glass";
@@ -168,7 +193,7 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
           once the accordion below has been scrolled away from its top, so
           the tab list reads as sitting above the (now partially hidden)
           content rather than just a static header. */}
-      <div
+      {categories.length > 1 ? <div
         ref={tabListRef}
         className={`hide-scrollbar relative z-10 flex items-center gap-4 overflow-x-auto border-b px-4 pt-2 [scrollbar-width:none] transition-shadow duration-200 xl:gap-4 xl:px-6 ${
           glass ? "border-white/20 bg-black/60 backdrop-blur-md" : "border-neutral-300 bg-white"
@@ -205,7 +230,7 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
             </button>
           );
         })}
-      </div>
+      </div> : null}
 
       {/* Accordion list — fixed height so more than 3 questions scroll internally.
           `data-lenis-prevent` keeps Lenis from hijacking wheel/touch input here,
@@ -218,7 +243,7 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
         }}
         onScroll={(e) => updateScrollShadows(e.currentTarget)}
         data-lenis-prevent
-        className={`h-[360px] overflow-y-auto px-2 py-2 ${
+        className={`h-[360px] overflow-y-auto ${standardHeading ? "px-0 py-0" : "px-2 py-2"} ${
           glass ? "scrollbar-glass bg-black/50 backdrop-blur-md" : "bg-white"
         }`}
       >
@@ -231,6 +256,7 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
               open={openIndex === i}
               onToggle={() => setOpenIndex(openIndex === i ? -1 : i)}
               glass={glass}
+              simple={Boolean(standardHeading)}
             />
           ))}
         </div>
@@ -240,7 +266,27 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
           Gains an upward shadow while the accordion above still has more
           content below the fold, so it reads as sitting on top of that
           hidden content instead of just a static footer. */}
-      <div
+      {footer ? <div className={`relative z-10 flex flex-col items-center gap-6 border-t border-neutral-300 bg-white pb-0 pt-4 transition-shadow duration-200 ${showBottomShadow ? "shadow-scroll-top" : ""}`}>
+        <p className="text-center text-lg font-semibold text-neutral-800">{footer.prompt}</p>
+        <div className="grid w-full grid-cols-2 gap-3">
+          {footer.actions.map((action) => (
+            <a
+              key={action.appearance + action.href}
+              href={action.href}
+              aria-label={action.label}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={action.appearance === "primary"
+                ? "btn-base btn-primary w-full justify-center px-3 text-sm sm:text-base"
+                : "btn-base btn-secondary w-full justify-center gap-2 border-blue-500 bg-white px-2 text-sm sm:text-base"
+              }
+            >
+              {action.haloBrand ? <><span aria-hidden className="text-sm font-semibold italic text-blue-500 sm:text-base">halo</span><img src="/assets/navbar/bca-logo-blue.svg" alt="" className="h-5 w-auto sm:h-6" /></> : null}
+              <span className={`${action.appearance === "primary" ? "font-semibold" : "font-semibold text-blue-500"} ${action.haloBrand ? "hidden sm:inline" : ""}`}>{action.label}</span>
+            </a>
+          ))}
+        </div>
+      </div> : <div
         className={`relative z-10 flex flex-col items-center justify-center gap-4 border-t px-6 py-6 transition-shadow duration-200 xl:flex-row xl:justify-between xl:py-0 xl:h-24 ${
           glass ? "border-white/20 bg-black/60 backdrop-blur-md" : "border-neutral-300"
         } ${showBottomShadow ? "shadow-scroll-top" : ""}`}
@@ -269,7 +315,7 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
             className="size-5"
           />
         </a>
-      </div>
+      </div>}
     </>
   );
 
@@ -295,8 +341,24 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
     </div>
   );
 
+  if (standardHeading) {
+    return (
+      <section id={sectionId} className="bg-white py-10 sm:py-14 xl:py-20" aria-labelledby={`${sectionId}-heading`}>
+        <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-6 px-4 xl:px-8">
+          <div data-reveal-group className="flex flex-col gap-3">
+            <p data-reveal className="text-eyebrow uppercase text-blue-500 xl:text-eyebrow-lg">{standardHeading.eyebrow}</p>
+            <h2 id={`${sectionId}-heading`} data-reveal="blur-up" className="text-heading text-blue-700 xl:text-display">{standardHeading.heading}</h2>
+          </div>
+          <div data-reveal className="w-full bg-white">
+            {renderCardBody(false)}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section id="faq-section" className="relative">
+    <section id={sectionId} className="relative">
       {/* ===== Desktop (>= xl): bg photo + dark overlay behind a floating card,
            fixed 640px section — matches the Figma spec. Heading lives over the
            photo, bottom-left, instead of inside the panel — styled like the

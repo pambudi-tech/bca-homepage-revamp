@@ -5,56 +5,11 @@ import {
   getPromoBadge,
   getPromoTimestamp,
   type Promo,
-  type PromoBadgeKey,
 } from "@/components/home/promo-data";
-
-const RIBBON_STYLE: Record<
-  Exclude<PromoBadgeKey, "default">,
-  { from: string; to: string; shadow: string; shadowDark: string; text: string; border: string }
-> = {
-  popular: { from: "#fe924d", to: "#fe6706", shadow: "#b24906", shadowDark: "#762e00", text: "#ffffff", border: "#b24906" },
-  almostEnd: { from: "#ffd31c", to: "#ffba00", shadow: "#b28301", shadowDark: "#745501", text: "#4c3801", border: "rgba(0,0,0,0.3)" },
-};
+import PromoRibbon from "@/components/PromoRibbon";
 
 const CARD_SHADOW =
   "0 1px 2px 0 rgba(204,204,204,0.14), 0 5px 5px 0 rgba(204,204,204,0.12), 0 10px 6px 0 rgba(204,204,204,0.10), 0 18px 20px -8px rgba(0,92,170,0.18)";
-
-function PromoRibbon({ badgeKey, label }: { badgeKey: Exclude<PromoBadgeKey, "default">; label: string }) {
-  const style = RIBBON_STYLE[badgeKey];
-
-  return (
-    <div className="absolute right-[-8px] top-40 flex items-center">
-      <div className="absolute right-0 top-[22px] flex h-[22px] w-2 items-center justify-center">
-        <div className="rotate-90">
-          <svg width="22" height="8" viewBox="0 0 22 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 8C0 3.58172 3.58172 0 8 0L17.1111 0C19.8112 0 22 2.18883 22 4.88889V8L0 8Z" fill={style.to} />
-          </svg>
-        </div>
-      </div>
-      <div className="absolute right-0 top-[34px] flex h-[10px] w-2 items-center justify-center">
-        <div className="rotate-90">
-          <div className="h-2 w-[10px] rounded-t-[40px]" style={{ backgroundColor: style.shadow }} />
-        </div>
-      </div>
-      <div className="absolute right-[2px] top-9 flex h-2 w-1.5 items-center justify-center">
-        <div className="rotate-90">
-          <div className="h-1.5 w-2 rounded-t-[40px]" style={{ backgroundColor: style.shadowDark }} />
-        </div>
-      </div>
-      <div
-        className="relative flex h-9 shrink-0 items-center justify-end overflow-clip rounded-bl-3xl rounded-tr-lg border-b-2 py-3 pl-4 pr-6"
-        style={{
-          backgroundImage: `linear-gradient(to bottom, ${style.from}, ${style.to})`,
-          borderColor: style.border,
-        }}
-      >
-        <p className="whitespace-nowrap text-sm font-semibold leading-5" style={{ color: style.text }}>
-          {label}
-        </p>
-      </div>
-    </div>
-  );
-}
 
 export default function PromoCard({ promo, now, reveal = true }: { promo: Promo; now: Date; reveal?: boolean }) {
   const t = useTranslations("promo");

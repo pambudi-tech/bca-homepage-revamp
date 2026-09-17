@@ -29,7 +29,7 @@ export default function ScrollCue() {
   return (
     <div
       ref={ref}
-      className="flex w-full items-center justify-start gap-4 px-1 pb-10 pt-8 transition-opacity duration-300 ease-out xl:pt-10"
+      className="flex w-full items-center justify-start gap-4 px-1 transition-opacity duration-300 ease-out"
     >
       <div className="flex h-9 w-6 shrink-0 items-start justify-center rounded-full border-2 border-white/60 pt-1.5">
         <span className="animate-scroll-cue-dot size-2 rounded-full bg-neutral-100" />

@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useScrollLock } from "@/components/SmoothScroll";
 import type { MegaMenuContent } from "@/lib/megamenu";
 import type { ProductCategory } from "./product-data";
 import type { MegaMenuTool } from "./megamenu-data";
 import { useMegaMenu } from "./use-megamenu";
+import { Link } from "@/i18n/navigation";
 
 function ArrowRight({ className = "size-5" }: { className?: string }) {
   return (
@@ -74,17 +75,45 @@ export default function ProductMegaMenuOverlay({
   const [selectedKey, setSelectedKey] = useState(categories[0]?.key ?? "Simpanan");
   const [mobileDetailOpen, setMobileDetailOpen] = useState(false);
   const [mobileEntered, setMobileEntered] = useState(false);
+  const [mobileDrawerHeight, setMobileDrawerHeight] = useState<number | null>(null);
+  const mobileNavRef = useRef<HTMLElement>(null);
+  const mobileDetailRef = useRef<HTMLDivElement>(null);
   const selected = categories.find((category) => category.key === selectedKey) ?? categories[0];
   useScrollLock(open);
 
+  useLayoutEffect(() => {
+    if (!open) return;
+
+    const measure = () => {
+      const contentHeight = mobileDetailOpen
+        ? mobileDetailRef.current?.scrollHeight ?? 0
+        : mobileNavRef.current?.scrollHeight ?? 0;
+      if (!contentHeight) return;
+
+      const drawerHeight = Math.min(
+        window.innerHeight * 0.8,
+        contentHeight + 16 + 86,
+      );
+      setMobileDrawerHeight(Math.ceil(drawerHeight));
+    };
+
+    measure();
+    const frame = window.requestAnimationFrame(measure);
+    return () => window.cancelAnimationFrame(frame);
+  }, [mobileDetailOpen, open, selectedKey, categories.length]);
+
   useEffect(() => {
     if (!open) {
-      const closeFrame = window.requestAnimationFrame(() => setMobileEntered(false));
+      const closeFrame = window.requestAnimationFrame(() => {
+        setMobileEntered(false);
+        setMobileDrawerHeight(null);
+      });
       return () => window.cancelAnimationFrame(closeFrame);
     }
     let secondFrame = 0;
     const firstFrame = window.requestAnimationFrame(() => {
       setMobileDetailOpen(false);
+      setMobileDrawerHeight(null);
       setMobileEntered(false);
       secondFrame = window.requestAnimationFrame(() => setMobileEntered(true));
     });
@@ -115,7 +144,7 @@ export default function ProductMegaMenuOverlay({
         type="button"
         aria-label={tMobileMenu("tutupMenu")}
         onClick={onClose}
-        className="absolute inset-0 bg-black/60 backdrop-blur-[4px]"
+        className="absolute inset-0 bg-black/60 backdrop-blur-[4px] transition-opacity duration-500 ease-[var(--ease-entrance)]"
       />
 
       <div
@@ -124,16 +153,18 @@ export default function ProductMegaMenuOverlay({
       />
 
       <section
-        className={`absolute inset-x-0 bottom-[calc(86px+env(safe-area-inset-bottom))] z-20 flex max-h-[90dvh] flex-col overflow-hidden rounded-t-3xl bg-neutral-100 shadow-panel transition-[height,transform,opacity] duration-500 ease-[var(--ease-entrance)] xl:hidden ${mobileDetailOpen ? "h-[min(90dvh,calc(100dvh-86px-env(safe-area-inset-bottom)))]" : "h-[280px]"} ${mobileEntered ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}
+        style={mobileDrawerHeight ? { height: `${mobileDrawerHeight}px` } : undefined}
+        className={`absolute inset-x-0 bottom-0 z-20 flex max-h-[80dvh] origin-bottom flex-col overflow-hidden rounded-t-3xl bg-neutral-100 pb-[calc(86px+env(safe-area-inset-bottom))] shadow-panel transition-[height,transform,opacity] duration-500 ease-[var(--ease-entrance)] will-change-transform xl:hidden ${mobileEntered ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}
       >
         <div className="mx-auto mt-3 h-1 w-12 shrink-0 rounded-full bg-neutral-300" />
 
         <div className="relative min-h-0 flex-1 overflow-hidden">
           <nav
+            ref={mobileNavRef}
             aria-label={tNav("produk")}
             aria-hidden={mobileDetailOpen}
             data-lenis-prevent
-            className={`absolute inset-0 overflow-y-auto overscroll-contain px-4 pt-5 pb-6 transition-[transform,opacity] duration-300 ease-[var(--ease-entrance)] ${mobileDetailOpen ? "pointer-events-none -translate-x-8 opacity-0" : "translate-x-0 opacity-100"}`}
+            className={`${mobileDetailOpen ? "pointer-events-none absolute inset-0 -translate-x-8 opacity-0" : "relative translate-x-0 opacity-100"} overflow-y-auto overscroll-contain px-4 pt-5 pb-6 transition-[transform,opacity] duration-400 ease-[var(--ease-entrance)] will-change-transform`}
           >
             <div className="grid grid-cols-4 gap-x-2 gap-y-6">
               {categories.map((category) => (
@@ -156,8 +187,9 @@ export default function ProductMegaMenuOverlay({
           </nav>
 
           <div
+            ref={mobileDetailRef}
             aria-hidden={!mobileDetailOpen}
-            className={`absolute inset-0 flex min-h-0 flex-col transition-[transform,opacity] duration-300 ease-[var(--ease-entrance)] ${mobileDetailOpen ? "translate-x-0 opacity-100" : "pointer-events-none translate-x-8 opacity-0"}`}
+            className={`${mobileDetailOpen ? "relative translate-x-0 opacity-100" : "pointer-events-none absolute inset-0 translate-x-8 opacity-0"} flex min-h-0 flex-col transition-[transform,opacity] duration-400 ease-[var(--ease-entrance)] will-change-transform`}
           >
             <header className="flex shrink-0 items-center gap-3 px-4 py-5">
               <button
@@ -184,9 +216,15 @@ export default function ProductMegaMenuOverlay({
                     <ArrowRight className="size-5 shrink-0 text-blue-500" />
                   </button>
                 ))}
-                <button type="button" className="mt-2 flex items-center gap-1 px-2 py-3 text-sm font-semibold text-blue-500">
-                  {selected.ctaLabel}<ArrowRight className="size-4" />
-                </button>
+                {selected.key === "Kartu Kredit" ? (
+                  <Link href="/kartu-kredit" className="mt-2 flex items-center gap-1 px-2 py-3 text-sm font-semibold text-blue-500">
+                    {selected.ctaLabel}<ArrowRight className="size-4" />
+                  </Link>
+                ) : (
+                  <button type="button" className="mt-2 flex items-center gap-1 px-2 py-3 text-sm font-semibold text-blue-500">
+                    {selected.ctaLabel}<ArrowRight className="size-4" />
+                  </button>
+                )}
               </div>
 
               <div className="border-t border-neutral-300 bg-neutral-200 px-4 py-4">
@@ -234,9 +272,15 @@ export default function ProductMegaMenuOverlay({
         <div className="hide-scrollbar order-2 min-h-0 flex-1 overflow-y-auto px-4 pb-6 xl:order-1 xl:flex xl:flex-col xl:p-5">
           <div className="flex items-center justify-between gap-4 pb-3">
             <h2 className="text-title text-neutral-800">{selected.label}</h2>
-            <button type="button" className="flex shrink-0 items-center gap-1 text-sm font-semibold text-blue-500">
-              {selected.ctaLabel}<ArrowRight />
-            </button>
+            {selected.key === "Kartu Kredit" ? (
+              <Link href="/kartu-kredit" className="flex shrink-0 items-center gap-1 text-sm font-semibold text-blue-500">
+                {selected.ctaLabel}<ArrowRight />
+              </Link>
+            ) : (
+              <button type="button" className="flex shrink-0 items-center gap-1 text-sm font-semibold text-blue-500">
+                {selected.ctaLabel}<ArrowRight />
+              </button>
+            )}
           </div>
 
           <div className="relative h-[220px] shrink-0 overflow-hidden rounded-2xl xl:h-[320px]">

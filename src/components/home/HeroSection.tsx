@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useLenis } from "@/components/SmoothScroll";
@@ -10,14 +11,13 @@ import { SLIDES, SLIDE_DURATION_MS, type Slide, type SlideCta } from "./hero-sli
 const PARALLAX_SPEED = 0.45;
 const INDICATOR_LENGTH = 40;
 
-/** Hero CTA — one button sized responsively. The desktop-only hover treatment
- *  (blue fill + glow + inverted icon) is gated behind `xl:`, so on touch the
- *  button stays the plain white pill with an `active:scale` press. */
+/** Hero CTA — a text action on mobile; the configured filled treatment remains
+ *  on desktop where the hero has more room for a prominent CTA. */
 function HeroCta({ label, icon, variant }: SlideCta) {
   return (
     <div className="group/cta relative inline-flex items-start gap-3">
       <button
-        className={`relative flex h-10 items-center justify-center gap-0.5 rounded-full border border-transparent px-5 text-white transition-[background-color,box-shadow,transform] duration-200 active:scale-95 xl:h-12 xl:gap-1 xl:px-6 xl:duration-300 xl:active:scale-100 ${variant === "primary" ? "bg-primary hover:bg-primary-hover" : "bg-black/50 hover:bg-black/70"}`}
+        className={`relative flex h-10 items-center justify-center gap-1 px-0 text-sm font-semibold text-white underline-offset-4 transition-[color,transform] duration-200 hover:underline active:scale-95 xl:h-12 xl:gap-1 xl:rounded-full xl:border-transparent xl:px-6 xl:text-base xl:no-underline xl:duration-300 xl:active:scale-100 ${variant === "primary" ? "xl:bg-primary xl:hover:bg-primary-hover" : "xl:bg-black/50 xl:hover:bg-black/70"}`}
       >
         <span className="px-0.5 text-sm font-semibold text-white xl:text-base">
           {label}
@@ -25,14 +25,20 @@ function HeroCta({ label, icon, variant }: SlideCta) {
         <img
           src={icon}
           alt=""
-          className="hidden size-5 brightness-0 invert xl:block"
+          className="size-5 brightness-0 invert"
         />
       </button>
     </div>
   );
 }
 
-export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
+export default function HeroSection({
+  slides = SLIDES,
+  mobileStack,
+}: {
+  slides?: Slide[];
+  mobileStack?: ReactNode;
+}) {
   const t = useTranslations("hero");
   const count = slides.length;
   const [activeSlide, setActiveSlide] = useState(0);
@@ -120,7 +126,7 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
   return (
     <div
       ref={rootRef}
-      className="relative h-[min(640px,calc(90svh-48px))] min-h-[560px] overflow-clip bg-blue-500 xl:h-[80svh] xl:min-h-0"
+      className="relative h-[min(640px,calc(90svh-48px))] min-h-[560px] overflow-x-visible overflow-y-clip bg-blue-500 xl:h-[80svh] xl:min-h-0"
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
@@ -168,13 +174,13 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
         }}
       />
 
-      <div className="absolute bottom-[304px] left-4 w-[328px] xl:left-1/2 xl:right-auto xl:top-32 xl:bottom-auto xl:w-[1280px] xl:-translate-x-1/2">
-        <div className="flex flex-col items-start gap-6 xl:gap-8">
+      <div className="absolute inset-x-4 bottom-8 xl:left-1/2 xl:right-auto xl:top-32 xl:bottom-auto xl:w-[1280px] xl:-translate-x-1/2">
+        <div className="flex flex-col items-start gap-5 xl:gap-8">
           <div
             key={activeSlide}
-            className="flex w-[280px] flex-col items-start gap-4 xl:w-[560px] xl:gap-6"
+            className="flex w-[280px] flex-col items-start gap-2 xl:w-[560px] xl:gap-6"
           >
-            <h1 className="animate-hero-title max-w-[240px] text-xl font-semibold leading-7 tracking-[-0.4px] text-white text-shadow-hero xl:line-clamp-2 xl:max-w-none xl:text-[clamp(36px,5svh,40px)] xl:leading-[clamp(44px,6svh,48px)] xl:tracking-[-0.8px] xl:text-shadow-none">
+            <h1 className="animate-hero-title max-w-[240px] text-2xl font-semibold leading-7 tracking-[-0.4px] text-white text-shadow-hero xl:line-clamp-2 xl:max-w-none xl:text-[clamp(36px,5svh,40px)] xl:leading-[clamp(44px,6svh,48px)] xl:tracking-[-0.8px] xl:text-shadow-none">
               {slides[activeSlide].title}
             </h1>
             <div className="animate-hero-cta">
@@ -212,6 +218,12 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
             </button>
             </div>
           </div>
+
+          {mobileStack ? (
+            <div className="flex w-full flex-col gap-5 xl:hidden">
+              {mobileStack}
+            </div>
+          ) : null}
         </div>
       </div>
     </div>

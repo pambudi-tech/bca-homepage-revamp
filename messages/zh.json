@@ -89,9 +89,112 @@
       "title": "多种选择，满足您的生活方式",
       "applyCta": "在 myBCA 申请",
       "cardsCta": "查看卡片选择",
+      "supportingText": "多种卡片满足不同需求 • 5分钟即可申请 • 即时审核",
       "scrollCue": "向下滚动",
       "cardsSection": "信用卡选择",
-      "imageAlt": "客厅中的 BCA 信用卡和 myBCA 应用界面"
+      "imageAlt": "一名男子在钱包上方手持 BCA 信用卡",
+      "sectionNav": {
+        "label": "信用卡页面导航",
+        "cards": "卡片选择",
+        "benefits": "权益",
+        "features": "功能",
+        "promos": "优惠",
+        "tutorials": "教程",
+        "news": "资讯",
+        "help": "帮助"
+      }
+    },
+    "comparisonPage": {
+      "eyebrow": "信用卡",
+      "backCta": "返回信用卡",
+      "title": "找到最适合您的卡片",
+      "applyCta": "在 myBCA 申请",
+      "cardsCta": "查看比较",
+      "supportingText": "一次比较最多 3 张卡片，找到最适合您需求的卡片。",
+      "imageAlt": "多种 BCA 信用卡"
+    },
+    "detailPage": {
+      "back": "返回信用卡",
+      "apply": "申请",
+      "navigationLabel": "信用卡详情导航",
+      "tabs": {
+        "benefits": "权益",
+        "features": "主要功能",
+        "fees": "费用",
+        "requirements": "申请条件",
+        "limit": "额度",
+        "payments": "利率与还款"
+      }
+    },
+    "tutorial": {
+      "heading": "通过 myBCA 轻松申请信用卡",
+      "description": "点击“申请信用卡”，查看权益与申请条件，选择卡片后完成验证。",
+      "previewAlt": "myBCA 信用卡申请功能界面示意图",
+      "carouselLabel": "myBCA 信用卡申请步骤",
+      "showTutorial": "查看教程",
+      "applyMyBca": "通过 myBCA 申请",
+      "applyWeb": "在线申请",
+      "stepLabel": "第 {current} 步",
+      "previousStep": "上一步",
+      "nextStep": "下一步",
+      "seeFullSteps": "查看完整步骤",
+      "steps": [
+        { "title": "打开 myBCA", "description": "打开 myBCA 应用，然后点击申请信用卡。" },
+        { "title": "查看信用卡权益", "description": "查看 BCA 信用卡权益，然后点击继续。" },
+        { "title": "确认申请条件", "description": "确认 BCA 信用卡申请条件，然后点击开始。" },
+        { "title": "选择信用卡", "description": "选择符合您需求的 BCA 信用卡。" },
+        { "title": "选择附属卡", "description": "选择另一张共享额度的信用卡。" }
+      ]
+    },
+    "help": {
+      "eyebrow": "帮助",
+      "heading": "BCA 信用卡常见问题",
+      "notFound": "没有找到您想要的答案？",
+      "edukatipsCta": "搜索 Edukatips",
+      "haloBcaCta": "Halo BCA",
+      "category": {
+        "key": "credit-card",
+        "label": "信用卡",
+        "items": [
+          {
+            "question": "如果忘记 BCA 信用卡 PIN 码怎么办？",
+            "answer": "您可以通过 myBCA、BCA mobile、BCA ATM，或访问 bca.co.id/creditcard 的电子账单与 PIN 激活菜单重新激活信用卡 PIN 码。"
+          },
+          {
+            "question": "如果 BCA 信用卡遗失或被盗，该怎么办？",
+            "answer": "请立即通过 myBCA、BCA mobile 或拨打 1500888 联系 Halo BCA 挂失。因遗失或被盗而挂失的卡片需要更换后才能继续使用。"
+          },
+          {
+            "question": "如何支付 BCA 信用卡账单？",
+            "answer": "在 myBCA 中选择账单与充值，然后选择信用卡与 Paylater。选择卡片和扣款账户，输入付款金额，核对信息后输入 PIN 确认。"
+          }
+        ]
+      }
+    },
+    "benefitsFeatures": {
+      "benefitEyebrow": "权益",
+      "benefitHeading": "满足各种需求的丰富权益",
+      "featureEyebrow": "功能",
+      "featureHeading": "满足各种需求的完整功能",
+      "learnMore": "了解更多",
+      "appPlaceholder": "应用内信用卡功能界面占位图",
+      "benefits": [
+        { "key": "installment", "title": "BCA 分期", "description": "将交易转为 BCA 分期，利率低至 0%，期限最长 36 个月。" },
+        { "key": "reward", "title": "BCA 积分", "description": "在印度尼西亚及海外使用信用卡交易均可获得 BCA 积分。", "featured": true },
+        { "key": "autopay", "title": "BCA 自动付款", "description": "定期账单支付方案，可通过 BCA 信用卡自动扣款完成支付。" },
+        { "key": "travel-insurance", "title": "旅行保险", "description": "每一次旅程都能安心应对各种风险。" },
+        { "key": "credit-life", "title": "信用人寿保险", "description": "为您和所爱之人抵御意外风险。" }
+      ],
+      "features": [
+        { "key": "application", "title": "申请信用卡", "description": "选择适合您需求的卡片并在线申请。" },
+        { "key": "add-card", "title": "添加卡片", "description": "通过共享额度添加卡片，满足不同需求。" },
+        { "key": "installment", "title": "将交易转为分期", "description": "分期利率低至0%，期限最长36个月。" },
+        { "key": "miles", "title": "将 BCA 积分兑换为里程", "description": "将积分兑换为指定航空公司的里程。" },
+        { "key": "reward", "title": "查看 BCA 积分余额", "description": "追踪累计积分及其有效期。" },
+        { "key": "limit", "title": "申请提高额度", "description": "直接在应用中提高您的信用卡额度。" },
+        { "key": "control", "title": "信用卡管理", "description": "随时通过应用冻结和管理您的卡片。" },
+        { "key": "contactless", "title": "设置非接触式额度", "description": "根据需求设置非接触式交易额度。", "badge": "新功能" }
+      ]
     },
     "cardList": {
       "eyebrow": "卡片选择",
@@ -99,7 +202,10 @@
       "compare": "比较",
       "detail": "卡片详情",
       "apply": "申请",
-      "showAll": "显示全部14张卡片",
+      "showMore": "查看另外 {count} 张卡片",
+      "showLess": "收起卡片",
+      "previewAria": "放大查看 {title}",
+      "closePreview": "关闭卡片预览",
       "comparisonPanel": {
         "title": "比较卡片",
         "count": "已选 {count} 张，最多 {max} 张",
@@ -117,6 +223,64 @@
         "minimizeAria": "最小化比较面板",
         "expandAria": "打开比较面板",
         "removeAria": "从比较中移除 {title}"
+      },
+      "comparisonView": {
+        "back": "返回卡片选择",
+        "eyebrow": "卡片比较",
+        "heading": "比较信用卡",
+        "apply": "Apply",
+        "navigationLabel": "信用卡比较导航",
+        "selectedCards": "正在比较的卡片",
+        "cardClusters": {
+          "bca-card": "BCA Card",
+          "visa": "Visa",
+          "mastercard": "Mastercard",
+          "jcb": "JCB",
+          "unionpay": "UnionPay",
+          "american-express": "American Express"
+        },
+        "tabs": {
+          "benefits": "权益",
+          "features": "主要功能",
+          "fees": "费用",
+          "requirements": "申请条件",
+          "limit": "额度",
+          "payments": "利率与还款"
+        },
+        "benefitLabel": "权益 {index}",
+        "category": "类别",
+        "annualFee": "年费",
+        "application": "申请",
+        "applicationValue": "通过 myBCA 申请",
+        "noData": "暂无详细信息",
+        "sections": [
+          { "key": "benefits", "groups": [{ "title": "", "points": [
+            { "label": "BCA 奖赏", "bullets": ["tiket.com 交易 1%；其他商户交易 0.5%", "自 2026 年 5 月 1 日起，Blibli 商户交易适用 0.4% 方案"] },
+            { "label": "首刷奖励", "bullets": ["tiket.com 交易 1%；其他商户交易 0.5%"] },
+            { "label": "旅行积分 / 里程", "description": "自 2026 年 5 月 1 日起，Blibli 商户交易适用 0.4% 方案" }
+          ] }] },
+          { "key": "features", "groups": [{ "title": "", "points": [
+            { "label": "非接触式支付" }, { "label": "BCA 分期" }, { "label": "旅行保险" }, { "label": "信用卡寿险" },
+            { "label": "BCA 旅行服务" }, { "label": "BCA 自动还款" }, { "label": "BCA 奖赏" }, { "label": "信用卡管理" }
+          ] }] },
+          { "key": "fees", "groups": [{ "title": "", "points": [
+            { "label": "年费", "description": "Rp125,000/年" },
+            { "label": "逾期付款费用", "bullets": ["账单金额的 1%，最高 Rp100,000", "Rp100,000**"] },
+            { "label": "补卡费用", "description": "Rp50,000" }
+          ] }] },
+          { "key": "requirements", "groups": [
+            { "title": "", "points": [
+              { "label": "年龄", "description": "至少 21 岁" },
+              { "label": "最低收入", "description": "每月最低收入：国企 / 公务员 Rp3 百万，私营部门 Rp5 百万" }
+            ] },
+            { "title": "额度", "points": [
+              { "label": "最低信用卡额度", "description": "Rp3,000,000" }, { "label": "最低信用卡额度", "description": "Rp1,000,000" }, { "label": "EDC 额度", "description": "根据可用卡片而定" }
+            ] },
+            { "title": "利率与还款", "points": [
+              { "label": "消费利率", "description": "每月 1.75%" }, { "label": "取现利率", "description": "每月 1.75%" }
+            ] }
+          ] }
+        ]
       },
       "filters": [
         { "key": "all", "label": "全部" },
@@ -160,6 +324,18 @@
             { "icon": "voucher", "label": "电子优惠券最高Rp1百万" },
             { "icon": "cashback", "label": "在tiket.com获1% Blibli Tiket积分" },
             { "icon": "fee", "label": "年费Rp125千" }
+          ]
+        },
+        {
+          "id": "pps-club-infinite",
+          "title": "BCA Singapore Airlines PPS Club Visa Infinite",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-SQ-PPS-Visa-Infinite-Front.png?v=1",
+          "imageAlt": "BCA Singapore Airlines PPS Club Visa Infinite",
+          "category": "travel",
+          "benefits": [
+            { "icon": "miles", "label": "Rp5,000 = 1 KrisFlyer里程" },
+            { "icon": "voucher", "label": "4,000 KrisFlyer里程迎新奖励" },
+            { "icon": "fee", "label": "年费Rp2百万" }
           ]
         },
         {
@@ -213,6 +389,18 @@
           ]
         },
         {
+          "id": "visa-black",
+          "title": "BCA Visa Black",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-Visa-Black-2-Front.png?v=1",
+          "imageAlt": "BCA Visa Black",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "0.2% BCA Reward" },
+            { "icon": "travel", "label": "旅行意外保险" },
+            { "icon": "fee", "label": "年费Rp450千" }
+          ]
+        },
+        {
           "id": "blibli-mastercard",
           "title": "BCA Blibli Mastercard",
           "image": "/assets/kartu-kredit/blibli-mastercard.png",
@@ -222,6 +410,66 @@
             { "icon": "reward", "label": "BCA Reward 0.3%" },
             { "icon": "installment", "label": "支持BCA分期" },
             { "icon": "fee", "label": "年费Rp125千" }
+          ]
+        },
+        {
+          "id": "mastercard-globe",
+          "title": "BCA Mastercard Globe",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-Mastercard-Platinum-Front.png?v=1",
+          "imageAlt": "BCA Mastercard Globe",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward" },
+            { "icon": "travel", "label": "生活方式商户优惠" },
+            { "icon": "fee", "label": "按BCA规定收取年费" }
+          ]
+        },
+        {
+          "id": "mastercard-world",
+          "title": "BCA Mastercard World",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-Mastercard-World-Front.png?v=1",
+          "imageAlt": "BCA Mastercard World",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward" },
+            { "icon": "travel", "label": "生活方式及旅行合作商户" },
+            { "icon": "fee", "label": "按BCA规定收取年费" }
+          ]
+        },
+        {
+          "id": "jcb-black",
+          "title": "BCA JCB Black",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/Kartu-Kredit/JCB/BCA-Black-JCB.png?v=1",
+          "imageAlt": "BCA JCB Black",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward" },
+            { "icon": "travel", "label": "JCB优惠与服务" },
+            { "icon": "fee", "label": "按BCA规定收取年费" }
+          ]
+        },
+        {
+          "id": "unionpay",
+          "title": "BCA UnionPay",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-Union-Pay-Card-Final-Front.png?v=1",
+          "imageAlt": "BCA UnionPay",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward" },
+            { "icon": "travel", "label": "UnionPay优惠与服务" },
+            { "icon": "fee", "label": "按BCA规定收取年费" }
+          ]
+        },
+        {
+          "id": "american-express-platinum",
+          "title": "BCA American Express Platinum",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-AMEX-contactless.png?v=1",
+          "imageAlt": "BCA American Express Platinum",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "BCA Reward" },
+            { "icon": "travel", "label": "American Express优惠与服务" },
+            { "icon": "fee", "label": "按BCA规定收取年费" }
           ]
         }
       ]
@@ -388,6 +636,8 @@
     "description": "通过 BCA 官方邀请提供给特选客户的专属服务，",
     "solitaire": "了解 BCA Solitaire",
     "prioritas": "了解 BCA Prioritas",
+    "visitSolitaire": "访问 Solitaire",
+    "visitPrioritas": "访问 Prioritas",
     "benefits": {
       "lounge": {
         "title": "尊享全球 200 多家机场贵宾室",
@@ -400,6 +650,16 @@
       "event": {
         "title": "优先参与知名活动",
         "cta": "查看所有活动"
+      }
+    },
+    "solitaireBenefits": {
+      "personalBanker": {
+        "title": "专属私人银行家，提供更个性化的服务",
+        "cta": "了解更多"
+      },
+      "exclusiveCommunity": {
+        "title": "专属 BCA 社群，拓展关系与合作",
+        "cta": "了解更多"
       }
     }
   },
@@ -531,7 +791,7 @@
   "news": {
     "eyebrow": "新闻与洞察",
     "heading": "BCA 最新动态",
-    "seeMore": "查看更多"
+    "seeMore": "全部新闻与洞察"
   },
   "faq": {
     "eyebrow": "常见问题",

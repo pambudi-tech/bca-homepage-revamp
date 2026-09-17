@@ -148,11 +148,11 @@ export default async function MyBcaSection() {
                   {t("heading")}
                 </p>
               </div>
-              <div className="flex flex-col items-center gap-2">
+              <div className="flex flex-row items-center gap-2">
                 <a href={myBcaPageUrl} className="btn-base btn-primary w-fit">
-                  <span className="whitespace-nowrap text-base font-semibold">{t("downloadMobile")}</span>
+                  <span className="whitespace-nowrap text-sm font-semibold">{t("downloadMobile")}</span>
                 </a>
-                <a href={myBcaPageUrl} className="px-4 py-2 text-base font-semibold text-neutral-100 hover:underline">
+                <a href={myBcaPageUrl} className="rounded-full border border-white px-4 py-2 text-sm font-semibold text-neutral-100 transition-colors hover:bg-white/10">
                   {t("detail")}
                 </a>
               </div>

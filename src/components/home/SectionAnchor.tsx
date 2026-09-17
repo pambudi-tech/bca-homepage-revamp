@@ -5,24 +5,36 @@ import { useTranslations } from "next-intl";
 import { useLenis } from "@/components/SmoothScroll";
 import { NAVBAR_ANCHOR_LOCK_EVENT, NAVBAR_VISIBILITY_EVENT } from "./Navbar";
 
-const ANCHORS = [
+export type SectionAnchorItem = {
+  key: string;
+  target: string;
+  label?: string;
+};
+
+const HOMEPAGE_ANCHORS = [
   { key: "products", target: "#products" },
   { key: "promo", target: "#promo" },
   { key: "soliprio", target: "#soliprio" },
   { key: "news", target: "#news-section" },
   { key: "faq", target: "#faq-section" },
-] as const;
+] satisfies SectionAnchorItem[];
 
-export default function SectionAnchor() {
+export default function SectionAnchor({
+  items = HOMEPAGE_ANCHORS,
+  label,
+}: {
+  items?: SectionAnchorItem[];
+  label?: string;
+} = {}) {
   const t = useTranslations("hero.sectionAnchor");
   const lenis = useLenis();
-  const [activeKey, setActiveKey] = useState<(typeof ANCHORS)[number]["key"]>("products");
+  const [activeKey, setActiveKey] = useState(items[0]?.key ?? "");
   const [navbarHidden, setNavbarHidden] = useState(false);
   const tabListRef = useRef<HTMLElement>(null);
   const tabRefs = useRef(new Map<string, HTMLButtonElement>());
-  const activeKeyRef = useRef<(typeof ANCHORS)[number]["key"]>("products");
+  const activeKeyRef = useRef(items[0]?.key ?? "");
 
-  const centerTab = useCallback((key: (typeof ANCHORS)[number]["key"]) => {
+  const centerTab = useCallback((key: string) => {
     const list = tabListRef.current;
     const tab = tabRefs.current.get(key);
     if (!list || !tab) return;
@@ -39,10 +51,10 @@ export default function SectionAnchor() {
   }, []);
 
   useEffect(() => {
-    const sections = ANCHORS.map((anchor) => ({
+    const sections = items.map((anchor) => ({
       ...anchor,
       element: document.querySelector<HTMLElement>(anchor.target),
-    })).filter((item): item is (typeof ANCHORS)[number] & { element: HTMLElement } => Boolean(item.element));
+    })).filter((item): item is SectionAnchorItem & { element: HTMLElement } => Boolean(item.element));
     let frame = 0;
 
     const updateActiveSection = () => {
@@ -82,18 +94,19 @@ export default function SectionAnchor() {
       window.removeEventListener("resize", scheduleUpdate);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, [centerTab]);
+  }, [centerTab, items]);
 
   const navigate = (target: string) => {
+    const element = document.querySelector<HTMLElement>(target);
+    if (!element) return;
+
     window.dispatchEvent(new CustomEvent<boolean>(NAVBAR_ANCHOR_LOCK_EVENT, { detail: true }));
-    const anchor = ANCHORS.find((item) => item.target === target);
+    const anchor = items.find((item) => item.target === target);
     if (anchor) {
       activeKeyRef.current = anchor.key;
       setActiveKey(anchor.key);
       centerTab(anchor.key);
     }
-    const element = document.querySelector<HTMLElement>(target);
-    if (!element) return;
     const navigationHeight = window.matchMedia("(min-width: 80rem)").matches ? 60 : 48;
     if (lenis) lenis.scrollTo(element, { offset: -navigationHeight, duration: 1 });
     else {
@@ -107,11 +120,11 @@ export default function SectionAnchor() {
   return (
     <nav
       ref={tabListRef}
-      aria-label={t("label")}
+      aria-label={label ?? t("label")}
       className={`hide-scrollbar sticky z-30 h-12 overflow-x-auto bg-blue-200/90 px-4 [scrollbar-width:none] backdrop-blur-md transition-[top] duration-300 xl:h-[60px] xl:px-20 ${navbarHidden ? "top-0" : "top-16 xl:top-[72px]"}`}
     >
       <div className="flex h-full w-max xl:mx-auto xl:w-full xl:min-w-[720px] xl:max-w-[1280px]">
-        {ANCHORS.map((anchor) => (
+        {items.map((anchor) => (
           <button
             key={anchor.key}
             ref={(element) => {
@@ -119,9 +132,9 @@ export default function SectionAnchor() {
               else tabRefs.current.delete(anchor.key);
             }}
             onClick={() => navigate(anchor.target)}
-            className={`group relative flex shrink-0 items-center justify-center whitespace-nowrap px-3 text-sm leading-[14px] text-blue-500 xl:flex-1 xl:px-5 xl:text-base xl:leading-normal ${activeKey === anchor.key ? "font-bold" : "font-semibold"}`}
+            className={`group relative flex shrink-0 items-center justify-center whitespace-nowrap px-3 text-sm leading-[14px] text-blue-500 transition-opacity xl:flex-1 xl:px-5 xl:text-base xl:leading-normal ${activeKey === anchor.key ? "font-bold opacity-100" : "font-semibold opacity-50"}`}
           >
-            {t(anchor.key)}
+            {anchor.label ?? t(anchor.key)}
             <span className={`absolute inset-x-0 bottom-0 h-1 rounded-t-xl bg-blue-500 transition-opacity ${activeKey === anchor.key ? "opacity-100" : "opacity-0 group-hover:opacity-40"}`} />
           </button>
         ))}

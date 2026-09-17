@@ -1588,3 +1588,114 @@ export default function ProductSection({
     </section>
   );
 }
+
+export type ProductAccordionItem = {
+  key: string;
+  title: string;
+  description: string;
+  image: string;
+};
+
+/**
+ * Shared accordion/card experience from Produk & Layanan for other page
+ * sections that need the same visual and interaction language. It deliberately
+ * composes the exact desktop `ProductCard` and mobile `MobileProductCarousel`
+ * implementations above, so hover, cursor-follow, expansion, autoplay,
+ * progress, touch scrolling and reduced background work cannot drift.
+ */
+export function ProductAccordion({
+  items,
+  defaultKey,
+}: {
+  items: ProductAccordionItem[];
+  defaultKey?: string;
+}) {
+  const initialIndex = Math.max(0, items.findIndex((item) => item.key === defaultKey));
+  const [activeIndex, setActiveIndex] = useState(initialIndex);
+  const [entered, setEntered] = useState(false);
+  const pausedRef = useRef(false);
+  const progressRef = useRef<SVGCircleElement>(null);
+  const mobileProgressRef = useRef<SVGCircleElement>(null);
+  const progressRefs = useMemo(() => [progressRef, mobileProgressRef], []);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const live = useIsLive(rootRef);
+  const products = useMemo<Product[]>(
+    () => items.map((item) => ({ title: item.title, subtitle: item.description, image: item.image })),
+    [items]
+  );
+
+  useEffect(() => {
+    const element = rootRef.current;
+    if (!element) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setEntered(true);
+        observer.disconnect();
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  useAutoplayProgress({
+    activeIndex,
+    count: products.length,
+    durationMs: AUTO_ADVANCE_MS,
+    circumference: RING_CIRCUMFERENCE,
+    progressRef: progressRefs,
+    pausedRef,
+    live,
+    onAdvance: () => setActiveIndex((index) => (index + 1) % products.length),
+  });
+
+  return (
+    <div
+      ref={rootRef}
+      className="w-full"
+      onMouseEnter={() => (pausedRef.current = true)}
+      onMouseLeave={() => (pausedRef.current = false)}
+    >
+      <div className="hidden justify-center gap-3 xl:flex">
+        {products.map((product, index) => (
+          <ProductCard
+            key={items[index].key}
+            product={product}
+            outgoing={null}
+            copy={product}
+            active={index === activeIndex}
+            onSelect={() => setActiveIndex(index)}
+            progressRef={index === activeIndex ? progressRef : undefined}
+            entered={entered}
+            enterDelayMs={250 + index * 80}
+            swap={swapStyles(false, 1, 0, false)}
+          />
+        ))}
+      </div>
+
+      <MobileProductCarousel
+        products={products}
+        outgoingProducts={null}
+        copyProducts={products}
+        activeIndex={activeIndex}
+        onSelect={setActiveIndex}
+        swapping={false}
+        swapDir={1}
+        swapAlt={false}
+        progressRef={mobileProgressRef}
+        entered={entered}
+        pausedRef={pausedRef}
+      />
+
+      <div className="mt-6 flex justify-center xl:hidden">
+        <div className="h-2 w-16 overflow-hidden rounded-full bg-blue-300">
+          <div
+            className="h-full rounded-full bg-cyan-500 transition-[width] duration-300"
+            style={{ width: `${((activeIndex + 1) / products.length) * 100}%` }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -79,7 +79,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   {
     key: "Kartu Kredit",
     label: "Kartu Kredit",
-    image: SAMPLE_CATEGORY_PHOTOS[1],
+    image: "/assets/category/kartu-kredit.webp",
     description: "Beragam kartu kredit untuk transaksi dan kebutuhan pembayaran.",
     products: withFeaturedDefaults([
       { title: "BCA Everyday Card", subtitle: "Tiap hari belanja, tiap hari untung", ...EVERYDAY },

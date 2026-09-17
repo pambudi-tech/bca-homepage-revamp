@@ -13,7 +13,6 @@ import Footer from "@/components/home/Footer";
 import BackToTop from "@/components/home/BackToTop";
 import QuickActionRail from "@/components/home/QuickActionRail";
 import CookieBanner from "@/components/home/CookieBanner";
-import HaloBcaChat from "@/components/home/HaloBcaChat";
 import ScrollReveal from "@/components/ScrollReveal";
 import { getKursHariIni } from "@/lib/kurs";
 import { getBanners } from "@/lib/banners";
@@ -77,7 +76,6 @@ export default async function Home({
       <BackToTop />
       <QuickActionRail productCategories={produk.categories} megamenuContent={megamenu} />
       <CookieBanner />
-      <HaloBcaChat />
       {/* Orchestrates every [data-reveal] entrance below the hero — one
           observer pair for the whole page, sections stay server components. */}
       <ScrollReveal />

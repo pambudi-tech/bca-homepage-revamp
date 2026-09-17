@@ -20,7 +20,7 @@ import PromoCard from "@/components/promo/PromoCard";
  * wholesale rather than recolouring the confetti, so each occasion gets motion
  * that actually belongs to it.
  */
-const PROMO_THEMES = ["confetti", "christmas", "cny", "lebaran"] as const;
+const PROMO_THEMES = ["none", "confetti", "christmas", "cny", "lebaran"] as const;
 type PromoTheme = (typeof PROMO_THEMES)[number];
 
 function MorePromoCard({ reveal = true }: { reveal?: boolean }) {
@@ -151,7 +151,7 @@ function MobilePromoCarousel({ promos, now }: { promos: Promo[]; now: Date }) {
 
 export default function PromoSection({ promos, now }: { promos: Promo[]; now: Date }) {
   const t = useTranslations("promo");
-  const [theme, setTheme] = useLayoutVariant<PromoTheme>("promo-theme", "confetti", PROMO_THEMES);
+  const [theme, setTheme] = useLayoutVariant<PromoTheme>("promo-theme", "none", PROMO_THEMES);
   const [switched] = useState(false);
   const visiblePromos = promos.slice(0, 7);
 
@@ -176,6 +176,7 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
           </svg>
         }
         options={[
+          { value: "none", name: "Mati", description: "Tanpa ornamen tematik." },
           { value: "confetti", name: "Confetti", description: "Animasi default sepanjang tahun." },
           { value: "christmas", name: "Natal", description: "Salju, garland cemara berlampu hangat, dan pita merah (WebGL)." },
           { value: "cny", name: "Imlek", description: "Kelopak mei hua, ranting berbunga, lampion, dan petasan (WebGL)." },
@@ -187,18 +188,22 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
           as desktop at every breakpoint; mobile just scales it down 0.8x from
           its anchor corner (max-w-none guards against the img preflight's
           max-width:100%, which would otherwise clamp the explicit width). */}
-      <img loading="lazy" decoding="async"
-        src="/assets/promo/bg-clove-product-1.svg"
-        alt=""
-        aria-hidden
-        className="pointer-events-none absolute left-[-380px] top-36 h-[896px] w-[770px] max-w-none origin-top-left scale-[0.8] opacity-100 sm:scale-100 xl:bottom-[-256px] xl:left-[-256px] xl:top-auto xl:h-[1634px] xl:w-[1344px]"
-      />
-      <img loading="lazy" decoding="async"
-        src="/assets/promo/bg-clove-product-2.svg"
-        alt=""
-        aria-hidden
-        className="pointer-events-none absolute bottom-[-368px] right-[-380px] h-[896px] w-[770px] max-w-none origin-bottom-right scale-[0.8] opacity-60 sm:scale-100 xl:bottom-[-720px] xl:right-[-720px] xl:h-[1634px] xl:w-[1344px]"
-      />
+      {theme !== "none" && (
+        <>
+          <img loading="lazy" decoding="async"
+            src="/assets/promo/bg-clove-product-1.svg"
+            alt=""
+            aria-hidden
+            className="pointer-events-none absolute left-[-380px] top-36 h-[896px] w-[770px] max-w-none origin-top-left scale-[0.8] opacity-100 sm:scale-100 xl:bottom-[-256px] xl:left-[-256px] xl:top-auto xl:h-[1634px] xl:w-[1344px]"
+          />
+          <img loading="lazy" decoding="async"
+            src="/assets/promo/bg-clove-product-2.svg"
+            alt=""
+            aria-hidden
+            className="pointer-events-none absolute bottom-[-368px] right-[-380px] h-[896px] w-[770px] max-w-none origin-bottom-right scale-[0.8] opacity-60 sm:scale-100 xl:bottom-[-720px] xl:right-[-720px] xl:h-[1634px] xl:w-[1344px]"
+          />
+        </>
+      )}
       {/* seasonal dressing — confetti by default (pure JS + CSS), or a WebGL
           holiday scene. Both sit behind the content at z-0. */}
       {theme === "christmas" ? (
@@ -207,30 +212,41 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
         <CnyDecor />
       ) : theme === "lebaran" ? (
         <LebaranDecor />
-      ) : (
+      ) : theme === "confetti" ? (
         <Confetti />
-      )}
+      ) : null}
 
       <div className="relative z-10 mx-auto flex w-full max-w-[560px] flex-col gap-10 px-4 xl:w-[1280px] xl:max-w-none xl:gap-20 xl:px-0">
         {/* Promo comes first: heading plus the existing eight-card composition
             (seven CMS promos and the view-more card on desktop). */}
         <div className="flex flex-col gap-10">
-          <div data-reveal-group className="relative flex flex-col xl:gap-3">
+          <div className="relative flex flex-col xl:gap-3">
             <div className="flex items-center py-4 xl:w-60 xl:shrink-0">
-              <p data-reveal className="text-eyebrow uppercase text-blue-500 xl:text-eyebrow-lg">
+              <p className="text-eyebrow uppercase text-blue-500 xl:text-eyebrow-lg">
                 {t("eyebrow")}
               </p>
             </div>
-            <h2 data-reveal="blur-up" className="w-full text-heading text-blue-700 xl:w-[560px] xl:text-display">
-              {t("heading")}
-            </h2>
+            <div className="flex items-center gap-3 xl:block">
+              <h2 className="w-full text-heading text-blue-700 xl:w-[560px] xl:text-display">
+                {t("heading")}
+              </h2>
+              <Link
+                href="/promo"
+                aria-label={t("viewMore")}
+                className="flex size-8 shrink-0 items-center justify-center rounded-full text-blue-500 transition-colors hover:bg-blue-200 xl:hidden"
+              >
+                <svg viewBox="0 0 24 24" fill="none" className="size-5" aria-hidden>
+                  <path d="m9 5 7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </Link>
+            </div>
           </div>
 
           {/* Cards, mobile — endlessly looping swipe row (full-bleeding out of the
               padded column), shared by both variants since neither desktop layout
               fits below xl. No "show more" card here: the CTA button below the
               row already carries it. */}
-          <div {...(switched ? {} : { "data-reveal": "" })} className="xl:hidden">
+          <div className="xl:hidden">
             <MobilePromoCarousel promos={visiblePromos} now={now} />
           </div>
 
@@ -250,17 +266,17 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
         {/* Event is a separate block and intentionally contains only its
             heading and the database-independent banner carousel. */}
         <div className="flex flex-col gap-10">
-          <div data-reveal-group className="relative flex flex-col xl:gap-3">
+          <div className="relative flex flex-col xl:gap-3">
             <div className="flex items-center py-4 xl:w-60 xl:shrink-0">
-              <p data-reveal className="text-eyebrow uppercase text-blue-500 xl:text-eyebrow-lg">
+              <p className="text-eyebrow uppercase text-blue-500 xl:text-eyebrow-lg">
                 {t("eventEyebrow")}
               </p>
             </div>
-            <h2 data-reveal="blur-up" className="w-[320px] text-heading text-blue-700 xl:w-[560px] xl:text-display">
+            <h2 className="w-[320px] text-heading text-blue-700 xl:w-[560px] xl:text-display">
               {t("eventHeading")}
             </h2>
           </div>
-          <div data-reveal>
+          <div>
             <EventSlider />
           </div>
         </div>

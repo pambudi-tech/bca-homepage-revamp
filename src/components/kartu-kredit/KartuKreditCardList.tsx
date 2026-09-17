@@ -3,7 +3,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
+import PromoRibbon from "@/components/PromoRibbon";
 
 const MAX_TILT = 10;
 const MAX_COMPARE_CARDS = 3;
@@ -156,31 +158,6 @@ function PlusIcon() {
   );
 }
 
-function CreditRibbon({ label }: { label: string }) {
-  return (
-    <div className="pointer-events-none absolute left-[-6px] bottom-3 z-20 flex items-center">
-      <div className="absolute left-0 top-[22px] flex h-[18px] w-2 items-center justify-center">
-        <div className="-rotate-90">
-          <svg width="18" height="8" viewBox="0 0 18 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 8C0 3.58172 3.58172 0 8 0H14C16.2091 0 18 1.79086 18 4V8H0Z" fill="#fe6706" />
-          </svg>
-        </div>
-      </div>
-      <div className="absolute left-0 top-[31px] flex h-[10px] w-2 items-center justify-center">
-        <div className="-rotate-90">
-          <div className="h-2 w-[10px] rounded-t-[40px] bg-[#b24906]" />
-        </div>
-      </div>
-      <div
-        className="relative flex h-8 shrink-0 items-center overflow-clip rounded-br-3xl rounded-tl-lg border-b-2 border-[#b24906] py-2 pl-4 pr-5"
-        style={{ backgroundImage: "linear-gradient(to bottom, #fe924d, #fe6706)" }}
-      >
-        <p className="whitespace-nowrap text-sm font-semibold leading-5 text-white">{label}</p>
-      </div>
-    </div>
-  );
-}
-
 function CompareCheckbox({
   label,
   checked,
@@ -228,18 +205,23 @@ function CreditCardTile({
   compareLabel,
   detailLabel,
   applyLabel,
+  previewLabel,
   checked,
   compareDisabled,
   onCompareChange,
+  onPreview,
 }: {
   card: CreditCardCopy;
   compareLabel: string;
   detailLabel: string;
   applyLabel: string;
+  previewLabel: string;
   checked: boolean;
   compareDisabled: boolean;
   onCompareChange: (checked: boolean) => void;
+  onPreview: () => void;
 }) {
+  const locale = useLocale();
   const cardRef = useRef<HTMLElement>(null);
   const artRef = useRef<HTMLDivElement>(null);
   const rect = useRef<DOMRect | null>(null);
@@ -276,38 +258,55 @@ function CreditCardTile({
       ref={cardRef}
       onPointerMove={handleMove}
       onPointerLeave={handleLeave}
-      className={`group/card relative flex h-full min-h-[440px] flex-col justify-between rounded-2xl border p-5 shadow-card transition-[background-color,border-color,box-shadow] duration-300 hover:shadow-panel ${
+      className={`group/card relative flex h-full flex-col justify-between rounded-2xl border p-4 shadow-card transition-[background-color,border-color,box-shadow] duration-300 hover:shadow-panel xl:p-5 ${
+        card.badge ? "min-h-[368px] xl:min-h-[488px]" : "min-h-[320px] xl:min-h-[440px]"
+      } ${
         checked
           ? "border-cyan-500 bg-neutral-100"
           : "border-neutral-300 bg-white hover:border-cyan-500"
       }`}
     >
-        <div className="relative z-10 flex flex-col gap-5">
-          <div
-            className="credit-art-stage relative h-[126px] w-[200px]"
-          >
-            <div ref={artRef} className="credit-art-shell relative size-full">
-              <img
-                src={card.image}
-                alt={card.imageAlt}
-                loading="lazy"
-                decoding="async"
-                className="size-full object-contain object-left"
-              />
-              <span
-                aria-hidden
-                className="credit-art-glare pointer-events-none absolute inset-0 rounded-lg transition-opacity group-hover/card:opacity-100"
-              />
-            </div>
-            {card.badge && (
-              <CreditRibbon label={card.badge} />
-            )}
+        <div className="relative z-10 flex flex-col gap-4">
+          <div className="flex items-center gap-4 xl:block">
+            <div className="credit-art-stage relative h-[70px] w-[110px] shrink-0 xl:h-[126px] xl:w-[200px]">
+              <div ref={artRef} className="credit-art-shell relative size-full">
+                <button
+                  type="button"
+                  onClick={onPreview}
+                  aria-label={previewLabel}
+                  className="relative block size-full cursor-zoom-in xl:cursor-default"
+                >
+                  <img
+                    src={card.image}
+                    alt={card.imageAlt}
+                    loading="lazy"
+                    decoding="async"
+                    className="size-full object-contain object-left"
+                  />
+                  <span
+                    aria-hidden
+                    className="credit-art-glare pointer-events-none absolute inset-0 rounded-lg transition-opacity group-hover/card:opacity-100"
+                  />
+                  <span className="absolute bottom-1 left-1 flex size-6 items-center justify-center rounded-full bg-white/90 text-blue-500 shadow-card" aria-hidden>
+                    <svg viewBox="0 0 20 20" fill="none" className="size-4">
+                      <circle cx="8.25" cy="8.25" r="4.75" stroke="currentColor" strokeWidth="1.6" />
+                      <path d="m11.75 11.75 3.5 3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                    </svg>
+                  </span>
+                </button>
+              </div>
           </div>
 
+            <div className="min-w-0 flex-1">
+              <h3 className={`text-base font-bold leading-6 transition-colors group-hover/card:text-blue-500 xl:w-[240px] ${checked ? "text-blue-500" : "text-neutral-800"}`}>
+                {card.title}
+              </h3>
+            </div>
+          </div>
+
+          {card.badge && <PromoRibbon badgeKey="popular" label={card.badge} side="left" flow />}
+
           <div className="flex flex-col gap-4">
-            <h3 className={`w-[240px] text-base font-bold leading-6 transition-colors group-hover/card:text-blue-500 ${checked ? "text-blue-500" : "text-neutral-800"}`}>
-              {card.title}
-            </h3>
             <ul className="flex flex-col gap-3">
               {card.benefits.map((benefit) => (
                 <li key={benefit.label} className="flex items-center gap-2 text-sm leading-5 text-neutral-700">
@@ -327,7 +326,7 @@ function CreditCardTile({
               disabled={compareDisabled}
               onChange={onCompareChange}
             />
-            <a href="#" className="flex shrink-0 items-center gap-0.5 text-sm font-semibold leading-5 text-blue-500">
+            <a href={`/${locale}/kartu-kredit/${card.id}`} className="flex shrink-0 items-center gap-0.5 text-sm font-semibold leading-5 text-blue-500">
               {detailLabel}
               <ArrowRight />
             </a>
@@ -408,6 +407,7 @@ function ComparisonPanel({
   onRemove,
   onClear,
   onInteract,
+  onCompare,
 }: {
   cards: CreditCardCopy[];
   mode: ComparisonPanelMode;
@@ -416,6 +416,7 @@ function ComparisonPanel({
   onRemove: (id: string) => void;
   onClear: () => void;
   onInteract: () => void;
+  onCompare: () => void;
 }) {
   const t = useTranslations("creditCardDetail.cardList.comparisonPanel");
   const count = cards.length;
@@ -507,6 +508,7 @@ function ComparisonPanel({
               <button
                 type="button"
                 disabled={!canCompare}
+                onClick={onCompare}
                 className="btn-base btn-primary h-11 w-full text-sm font-semibold disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:text-neutral-700 xl:h-10 xl:w-auto"
               >
                 {expandedCtaLabel}
@@ -528,7 +530,10 @@ function ComparisonPanel({
             <button
               type="button"
               data-comparison-cta
-              onClick={(event) => event.stopPropagation()}
+              onClick={(event) => {
+                event.stopPropagation();
+                onCompare();
+              }}
               disabled={!canCompare}
               className="btn-base btn-primary h-10 shrink-0 px-4 text-sm font-semibold disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:text-neutral-700 xl:px-5"
             >
@@ -552,9 +557,12 @@ function ComparisonPanel({
 
 export default function KartuKreditCardList() {
   const t = useTranslations("creditCardDetail.cardList");
+  const router = useRouter();
   const cards = t.raw("cards") as CreditCardCopy[];
   const filters = t.raw("filters") as { key: FilterKey; label: string }[];
   const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
+  const [showAllCards, setShowAllCards] = useState(false);
+  const [previewCard, setPreviewCard] = useState<CreditCardCopy | null>(null);
   const [compared, setCompared] = useState<Set<string>>(() => new Set());
   const [comparisonMode, setComparisonMode] = useState<ComparisonPanelMode>("expanded");
   const [comparisonPhase, setComparisonPhase] = useState<ComparisonPanelPhase>("hidden");
@@ -563,10 +571,20 @@ export default function KartuKreditCardList() {
   const enterTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  useEffect(() => {
+    if (!previewCard) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setPreviewCard(null);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [previewCard]);
+
   const visibleCards = useMemo(
     () => cards.filter((card) => activeFilter === "all" || card.category === activeFilter),
     [activeFilter, cards]
   );
+  const displayedCards = showAllCards ? visibleCards : visibleCards.slice(0, 3);
   const comparedCards = useMemo(
     () => cards.filter((card) => compared.has(card.id)),
     [cards, compared]
@@ -665,10 +683,15 @@ export default function KartuKreditCardList() {
     setIdleKey((value) => value + 1);
   };
 
+  const openComparison = () => {
+    if (comparedCards.length < 2) return;
+    router.push(`/kartu-kredit/bandingkan?cards=${comparedCards.map((card) => card.id).join(",")}`);
+  };
+
   return (
     <section
       id="pilihan-kartu"
-      className="relative isolate overflow-hidden bg-gradient-to-b from-blue-100 to-cyan-100 py-16 xl:py-20"
+      className="relative isolate overflow-hidden bg-gradient-to-b from-blue-100 to-cyan-100 pb-16 pt-8 xl:py-20"
       aria-labelledby="pilihan-kartu-title"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
@@ -701,14 +724,17 @@ export default function KartuKreditCardList() {
             </h2>
           </div>
 
-          <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1 xl:mx-0 xl:flex-wrap xl:justify-end xl:overflow-visible xl:px-0 xl:pb-0">
+          <div className="hide-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] xl:mx-0 xl:flex-wrap xl:justify-end xl:overflow-visible xl:px-0 xl:pb-0">
             {filters.map((filter) => {
               const active = activeFilter === filter.key;
               return (
                 <button
                   key={filter.key}
                   type="button"
-                  onClick={() => setActiveFilter(filter.key)}
+                  onClick={() => {
+                    setActiveFilter(filter.key);
+                    setShowAllCards(false);
+                  }}
                   className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-sm transition-colors xl:h-14 xl:px-4 xl:text-base ${
                     active
                       ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500"
@@ -723,13 +749,15 @@ export default function KartuKreditCardList() {
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
-          {visibleCards.map((card) => (
+          {displayedCards.map((card) => (
             <CreditCardTile
               key={card.id}
               card={card}
               compareLabel={t("compare")}
               detailLabel={t("detail")}
               applyLabel={t("apply")}
+              previewLabel={t("previewAria", { title: card.title })}
+              onPreview={() => setPreviewCard(card)}
               checked={compared.has(card.id)}
               compareDisabled={!compared.has(card.id) && compared.size >= MAX_COMPARE_CARDS}
               onCompareChange={(checked) => setComparedCard(card.id, checked)}
@@ -737,14 +765,48 @@ export default function KartuKreditCardList() {
           ))}
         </div>
 
-        <a
-          href="#"
-          className="mx-auto flex h-12 items-center justify-center gap-1 rounded-full border border-blue-500 bg-white px-6 text-base font-semibold text-blue-500 transition-[background-color,border-color,color,transform] duration-200 hover:bg-blue-100 hover:text-[var(--color-primary-hover)] active:translate-y-px"
-        >
-          <span>{t("showAll")}</span>
-          <ArrowRight />
-        </a>
+        {visibleCards.length > 3 ? (
+          <button
+            type="button"
+            onClick={() => setShowAllCards((current) => !current)}
+            aria-expanded={showAllCards}
+            className="mx-auto flex min-h-11 items-center justify-center gap-1 px-3 text-sm font-semibold text-blue-500 transition-colors hover:text-[var(--color-primary-hover)] active:translate-y-px"
+          >
+            <span>{showAllCards ? t("showLess") : t("showMore", { count: visibleCards.length - 3 })}</span>
+            <ChevronIcon direction={showAllCards ? "up" : "down"} />
+          </button>
+        ) : null}
       </div>
+
+      {previewCard && typeof document !== "undefined"
+        ? createPortal(
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-label={previewCard.title}
+              tabIndex={-1}
+              autoFocus
+              onClick={() => setPreviewCard(null)}
+              className="fixed inset-0 z-[70] flex items-center justify-center bg-neutral-900/80 p-6 backdrop-blur-sm"
+            >
+              <button
+                type="button"
+                onClick={() => setPreviewCard(null)}
+                aria-label={t("closePreview")}
+                className="absolute right-5 top-5 flex size-11 items-center justify-center rounded-full bg-white text-neutral-800 shadow-panel"
+              >
+                <CloseIcon />
+              </button>
+              <img
+                src={previewCard.image}
+                alt={previewCard.imageAlt}
+                onClick={(event) => event.stopPropagation()}
+                className="max-h-[70vh] w-full max-w-[min(82vw,460px)] object-contain"
+              />
+            </div>,
+            document.body
+          )
+        : null}
 
       {typeof document !== "undefined" && comparisonPhase !== "hidden"
         ? createPortal(
@@ -756,6 +818,7 @@ export default function KartuKreditCardList() {
               onRemove={(id) => setComparedCard(id, false)}
               onClear={clearCompared}
               onInteract={() => setIdleKey((value) => value + 1)}
+              onCompare={openComparison}
             />,
             document.body
           )

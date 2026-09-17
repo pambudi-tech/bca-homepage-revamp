@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import type { MegaMenuCategory, MegaMenuLink } from "./megamenu-data";
+import { Link } from "@/i18n/navigation";
 
 /* Icons are inlined so hover states can recolour them via `currentColor`. */
 
@@ -81,13 +82,24 @@ export default function MegaMenuPanel({
               ))}
             </div>
           </div>
-          <button
-            style={{ "--mm-i": category.products.length + 1 } as CSSProperties}
-            className="mm-item flex w-fit items-center gap-0.5 px-4 text-base font-semibold text-blue-500 transition-transform duration-200 hover:translate-x-0.5"
-          >
-            {category.ctaLabel}
-            <ArrowRight />
-          </button>
+          {category.key === "Kartu Kredit" ? (
+            <Link
+              href="/kartu-kredit"
+              style={{ "--mm-i": category.products.length + 1 } as CSSProperties}
+              className="mm-item flex w-fit items-center gap-0.5 px-4 text-base font-semibold text-blue-500 transition-transform duration-200 hover:translate-x-0.5"
+            >
+              {category.ctaLabel}
+              <ArrowRight />
+            </Link>
+          ) : (
+            <button
+              style={{ "--mm-i": category.products.length + 1 } as CSSProperties}
+              className="mm-item flex w-fit items-center gap-0.5 px-4 text-base font-semibold text-blue-500 transition-transform duration-200 hover:translate-x-0.5"
+            >
+              {category.ctaLabel}
+              <ArrowRight />
+            </button>
+          )}
         </div>
 
         <div className="h-full w-px shrink-0 bg-neutral-200" />

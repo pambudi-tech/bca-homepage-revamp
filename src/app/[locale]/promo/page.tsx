@@ -3,7 +3,6 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import BackToTop from "@/components/home/BackToTop";
 import CookieBanner from "@/components/home/CookieBanner";
 import Footer from "@/components/home/Footer";
-import HaloBcaChat from "@/components/home/HaloBcaChat";
 import Navbar from "@/components/home/Navbar";
 import QuickActionRail from "@/components/home/QuickActionRail";
 import { PROMO_CATEGORY_KEYS, type PromoCategory } from "@/components/home/promo-data";
@@ -161,7 +160,6 @@ export default async function PromoPage({
       <BackToTop />
       <QuickActionRail productCategories={produk.categories} megamenuContent={megamenu} />
       <CookieBanner />
-      <HaloBcaChat />
     </main>
   );
 }

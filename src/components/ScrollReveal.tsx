@@ -38,6 +38,19 @@ export default function ScrollReveal() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const setup = () => {
+      // Older/embedded browsers may not expose IntersectionObserver. The
+      // reveal CSS intentionally hides opted-in content only while scripting
+      // is active, so remove the marker and show everything when the runtime
+      // cannot orchestrate the entrance.
+      if (typeof IntersectionObserver === "undefined") {
+        document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => {
+          el.removeAttribute("data-reveal");
+          el.removeAttribute("data-inview");
+          el.style.removeProperty("--rv-delay");
+        });
+        return () => {};
+      }
+
       const groups = Array.from(
         document.querySelectorAll<HTMLElement>("[data-reveal-group]")
       );

@@ -89,9 +89,112 @@
       "title": "Berbagai Pilihan Untuk Melengkapi Gaya Hidupmu",
       "applyCta": "Apply di myBCA",
       "cardsCta": "Lihat Pilihan Kartu",
+      "supportingText": "Berbagai kartu sesuai kebutuhan • Apply dalam 5mnt • Dicek instan",
       "scrollCue": "Scroll kebawah",
       "cardsSection": "Pilihan kartu kredit",
-      "imageAlt": "Kartu Kredit BCA dan tampilan aplikasi myBCA di ruang keluarga"
+      "imageAlt": "Seorang pria memegang Kartu Kredit BCA di atas dompet",
+      "sectionNav": {
+        "label": "Navigasi halaman Kartu Kredit",
+        "cards": "Pilihan Kartu",
+        "benefits": "Manfaat",
+        "features": "Fitur",
+        "promos": "Promo",
+        "tutorials": "Tutorial",
+        "news": "Berita",
+        "help": "Bantuan"
+      }
+    },
+    "comparisonPage": {
+      "eyebrow": "Kartu Kredit",
+      "backCta": "Kembali ke Kartu Kredit",
+      "title": "Temukan Kartu yang Paling Tepat",
+      "applyCta": "Apply di myBCA",
+      "cardsCta": "Lihat Perbandingan",
+      "supportingText": "Bandingkan hingga 3 kartu sekaligus dan pahami mana yang paling cocok untuk kebutuhanmu.",
+      "imageAlt": "Berbagai Kartu Kredit BCA"
+    },
+    "detailPage": {
+      "back": "Kembali ke Kartu Kredit",
+      "apply": "Apply",
+      "navigationLabel": "Navigasi detail kartu kredit",
+      "tabs": {
+        "benefits": "Manfaat",
+        "features": "Fitur Utama",
+        "fees": "Biaya",
+        "requirements": "Syarat Pengajuan",
+        "limit": "Limit",
+        "payments": "Suku Bunga & Pembayaran"
+      }
+    },
+    "tutorial": {
+      "heading": "Apply kartu kredit lebih mudah di myBCA",
+      "description": "Klik Ajukan Kartu Kredit, baca manfaat & syarat, pilih jenis Kartu Kredit, lalu verifikasi.",
+      "previewAlt": "Ilustrasi layar myBCA dengan fitur pengajuan Kartu Kredit",
+      "carouselLabel": "Langkah pengajuan Kartu Kredit di myBCA",
+      "showTutorial": "Lihat Tutorial",
+      "applyMyBca": "Apply di myBCA",
+      "applyWeb": "Apply di web",
+      "stepLabel": "Langkah {current}",
+      "previousStep": "Langkah sebelumnya",
+      "nextStep": "Langkah berikutnya",
+      "seeFullSteps": "Lihat Step Lengkap",
+      "steps": [
+        { "title": "Buka myBCA", "description": "Buka aplikasi myBCA, lalu klik Ajukan Kartu Kredit." },
+        { "title": "Baca manfaat Kartu Kredit", "description": "Baca manfaat Kartu Kredit BCA, lalu klik Lanjut." },
+        { "title": "Periksa syarat pengajuan", "description": "Periksa kembali syarat pengajuan Kartu Kredit BCA, lalu klik Mulai." },
+        { "title": "Pilih Kartu Kredit", "description": "Pilih Kartu Kredit BCA sesuai dengan kebutuhan." },
+        { "title": "Pilih kartu tambahan", "description": "Pilih Kartu Kredit lainnya dengan limit gabungan." }
+      ]
+    },
+    "help": {
+      "eyebrow": "Bantuan",
+      "heading": "Pertanyaan umum seputar Kartu Kredit BCA",
+      "notFound": "Tidak menemukan yang Anda cari?",
+      "edukatipsCta": "Cari di Edukatips",
+      "haloBcaCta": "Halo BCA",
+      "category": {
+        "key": "kartu-kredit",
+        "label": "Kartu Kredit",
+        "items": [
+          {
+            "question": "Bagaimana kalau saya lupa PIN ATM kartu kredit BCA?",
+            "answer": "Anda dapat melakukan aktivasi ulang PIN Kartu Kredit BCA melalui myBCA, BCA mobile, ATM BCA, atau bca.co.id/creditcard pada menu e-Statement & Aktivasi PIN."
+          },
+          {
+            "question": "Apa yang harus dilakukan jika Kartu Kredit BCA hilang atau dicuri?",
+            "answer": "Segera blokir kartu melalui myBCA, BCA mobile, atau Halo BCA di 1500888. Kartu yang diblokir karena hilang atau dicuri perlu diganti agar dapat digunakan kembali."
+          },
+          {
+            "question": "Bagaimana cara membayar tagihan Kartu Kredit BCA?",
+            "answer": "Di myBCA, pilih Bayar & Isi Ulang lalu Kartu Kredit & Paylater. Pilih kartu dan sumber dana, masukkan nominal pembayaran, periksa rinciannya, lalu konfirmasi dengan PIN."
+          }
+        ]
+      }
+    },
+    "benefitsFeatures": {
+      "benefitEyebrow": "Manfaat",
+      "benefitHeading": "Manfaat Maksimal untuk semua Kebutuhan kamu",
+      "featureEyebrow": "Fitur",
+      "featureHeading": "Fitur Lengkap Untuk Setiap Kebutuhan",
+      "learnMore": "Pelajari",
+      "appPlaceholder": "Placeholder tampilan fitur kartu kredit di aplikasi",
+      "benefits": [
+        { "key": "installment", "title": "Cicilan BCA", "description": "Ubah transaksi jadi Cicilan BCA dengan bunga mulai 0% dan tenor hingga 36 bulan." },
+        { "key": "reward", "title": "Reward BCA", "description": "Loyalty point BCA yang didapat dengan transaksi menggunakan Kartu Kredit di Indonesia dan luar negeri.", "featured": true },
+        { "key": "autopay", "title": "Autopay BCA", "description": "Solusi pembayaran tagihan rutin. Dibayar otomatis dengan Autodebet dari Kartu Kredit BCA" },
+        { "key": "travel-insurance", "title": "Asuransi Perjalanan", "description": "Selalu aman dari setiap resiko di setiap perjalanan" },
+        { "key": "credit-life", "title": "Asuransi Credit Life", "description": "Lindungi diri dan orang terkasih dari risiko tak terduga" }
+      ],
+      "features": [
+        { "key": "application", "title": "Ajukan Kartu Kredit", "description": "Pilih kartu sesuai kebutuhanmu dan daftar secara online." },
+        { "key": "add-card", "title": "Tambah Kartu", "description": "Tambah kartu untuk berbagi kebutuhan dengan limit gabungan." },
+        { "key": "installment", "title": "Ubah transaksi jadi Cicilan", "description": "Cicilan bunga mulai 0%, tenor hingga 36 bulan." },
+        { "key": "miles", "title": "Tukar Reward BCA jadi miles", "description": "Konversi reward menjadi miles maskapai pilihan." },
+        { "key": "reward", "title": "Cek saldo Reward BCA", "description": "Pantau poin yang terkumpul dan masa berlakunya." },
+        { "key": "limit", "title": "Request naik limit", "description": "Naikkan limit kartu kreditmu langsung dari aplikasi." },
+        { "key": "control", "title": "Kontrol Kartu Kredit", "description": "Blokir dan atur kartu kapan saja melalui aplikasi." },
+        { "key": "contactless", "title": "Atur Limit Contactless", "description": "Atur batas transaksi contactless sesuai kebutuhan.", "badge": "Baru" }
+      ]
     },
     "cardList": {
       "eyebrow": "Pilihan Kartu",
@@ -99,7 +202,10 @@
       "compare": "Bandingkan",
       "detail": "Detail Kartu",
       "apply": "Apply",
-      "showAll": "Tampilkan Semua 14 Kartu",
+      "showMore": "Lihat {count} kartu lainnya",
+      "showLess": "Lihat lebih sedikit",
+      "previewAria": "Perbesar gambar {title}",
+      "closePreview": "Tutup preview kartu",
       "comparisonPanel": {
         "title": "Bandingkan Kartu",
         "count": "{count} dari maksimal {max} kartu",
@@ -118,6 +224,94 @@
         "expandAria": "Buka panel perbandingan",
         "removeAria": "Hapus {title} dari perbandingan"
       },
+      "comparisonView": {
+        "back": "Kembali ke pilihan kartu",
+        "eyebrow": "Perbandingan kartu",
+        "heading": "Bandingkan Kartu Kredit",
+        "apply": "Apply",
+        "navigationLabel": "Navigasi perbandingan kartu",
+        "selectedCards": "Kartu yang sedang dibandingkan",
+        "cardClusters": {
+          "bca-card": "BCA Card",
+          "visa": "Visa",
+          "mastercard": "Mastercard",
+          "jcb": "JCB",
+          "unionpay": "UnionPay",
+          "american-express": "American Express"
+        },
+        "tabs": {
+          "benefits": "Manfaat",
+          "features": "Fitur Utama",
+          "fees": "Biaya",
+          "requirements": "Syarat Pengajuan",
+          "limit": "Limit",
+          "payments": "Suku Bunga & Pembayaran"
+        },
+        "benefitLabel": "Manfaat {index}",
+        "category": "Kategori",
+        "annualFee": "Biaya tahunan",
+        "application": "Pengajuan",
+        "applicationValue": "Ajukan melalui myBCA",
+        "noData": "Detail ini belum tersedia",
+        "sections": [
+          {
+            "key": "benefits",
+            "groups": [
+              {
+                "title": "",
+                "points": [
+                  { "label": "Reward BCA", "bullets": ["1% transaksi di tiket.com; 0,5% transaksi merchant lainnya", "mulai 1 Mei 2026 terdapat skema 0,4% untuk transaksi merchant Blibli"] },
+                  { "label": "Bonus Awal", "bullets": ["1% transaksi di tiket.com; 0,5% transaksi merchant lainnya"] },
+                  { "label": "Travel Point / Miles", "description": "mulai 1 Mei 2026 terdapat skema 0,4% untuk transaksi merchant Blibli" }
+                ]
+              }
+            ]
+          },
+          {
+            "key": "features",
+            "groups": [
+              { "title": "", "points": [
+                { "label": "Contactless" },
+                { "label": "Cicilan BCA" },
+                { "label": "Asuransi Perjalanan" },
+                { "label": "Asuransi Credit Life" },
+                { "label": "BCA Travel Services" },
+                { "label": "AutoPay BCA" },
+                { "label": "Reward BCA" },
+                { "label": "Kontrol Kartu Kredit" }
+              ] }
+            ]
+          },
+          {
+            "key": "fees",
+            "groups": [
+              { "title": "", "points": [
+                { "label": "Annual Fee", "description": "Rp125.000/Tahun" },
+                { "label": "Denda Keterlambatan", "bullets": ["1% dari jumlah tagihan maksimum Rp100.000,-", "Rp100.000,-**"] },
+                { "label": "Biaya Pergantian Kartu", "description": "Rp50.000." }
+              ] }
+            ]
+          },
+          {
+            "key": "requirements",
+            "groups": [
+              { "title": "", "points": [
+                { "label": "Usia", "description": "minimal 21 tahun" },
+                { "label": "Pendapatan Minimum", "description": "Minimum pendapatan perbulan Rp. 3 Juta/bulan (BUMN / PNS) atau Rp. 5 Juta/bulan (Swasta)" }
+              ] },
+              { "title": "Limit", "points": [
+                { "label": "Minimum limit kartu kredit", "description": "Rp3.000.000" },
+                { "label": "Minimum limit kartu kredit", "description": "Rp1.000.000" },
+                { "label": "Limit EDC", "description": "Sesuai kartu yang tersedia" }
+              ] },
+              { "title": "Suku Bunga & Pembayaran", "points": [
+                { "label": "Suku bunga belanja", "description": "1,75% per bulan" },
+                { "label": "Suku bunga tarik tunai", "description": "1,75% per bulan" }
+              ] }
+            ]
+          }
+        ]
+      },
       "filters": [
         { "key": "all", "label": "Semua" },
         { "key": "travel", "label": "Travel" },
@@ -135,6 +329,38 @@
             { "icon": "miles", "label": "Bonus s.d 10.000 KrisFlyer miles" },
             { "icon": "spend", "label": "1 KrisFlyer miles tiap Rp13.500" },
             { "icon": "fee", "label": "Biaya tahunan Rp500 ribu" }
+          ],
+          "comparison": [
+            { "key": "benefits", "groups": [{ "title": "", "points": [
+              { "label": "Reward KrisFlyer", "bullets": ["1 KrisFlyer mile tiap transaksi Rp13.500"] },
+              { "label": "Bonus Awal", "description": "Bonus hingga 10.000 KrisFlyer miles" },
+              { "label": "Fasilitas Perjalanan", "description": "Travel Accident Insurance dan BCA Travel Services" }
+            ] }] },
+            { "key": "features", "groups": [{ "title": "", "points": [
+              { "label": "Contactless" }, { "label": "Cicilan BCA" }, { "label": "KrisFlyer miles" }, { "label": "BCA Travel Services" }, { "label": "BCA Credit Life" }, { "label": "AutoPay BCA" }
+            ] }] },
+            { "key": "fees", "groups": [{ "title": "", "points": [
+              { "label": "Annual Fee", "description": "Rp500.000 kartu utama; Rp300.000 kartu tambahan" },
+              { "label": "Denda Keterlambatan", "description": "1% dari total tagihan, maksimum Rp100.000" },
+              { "label": "Cash Advance", "description": "4% dari nominal tarikan atau minimum Rp40.000" }
+            ] }] },
+            { "key": "requirements", "groups": [
+              { "title": "", "points": [
+                { "label": "Usia", "description": "Minimum 21 tahun atau sudah menikah; maksimum 65 tahun" },
+                { "label": "Pendapatan Minimum", "description": "Rp3.000.000 per bulan" },
+                { "label": "Keanggotaan KrisFlyer", "description": "Nomor keanggotaan KrisFlyer dapat dicantumkan saat pengajuan" }
+              ] },
+              { "title": "Limit", "points": [
+                { "label": "Limit Minimum", "description": "Rp10.000.000 kartu utama; Rp5.000.000 kartu tambahan" },
+                { "label": "Limit EDC dan e-commerce", "description": "Sesuai limit kredit yang tersedia" },
+                { "label": "Cash Advance ATM", "description": "20% dari limit kredit" }
+              ] },
+              { "title": "Suku Bunga & Pembayaran", "points": [
+                { "label": "Suku Bunga", "description": "1,75% per bulan untuk transaksi belanja dan tarik tunai" },
+                { "label": "Pembayaran Minimum", "description": "5% dari total tagihan" },
+                { "label": "Jatuh Tempo", "description": "Mengikuti tanggal jatuh tempo pada tagihan" }
+              ] }
+            ] }
           ]
         },
         {
@@ -147,6 +373,38 @@
             { "icon": "miles", "label": "Bonus s.d 12.500 KrisFlyer miles" },
             { "icon": "spend", "label": "1 KrisFlyer miles tiap Rp10.800" },
             { "icon": "fee", "label": "Biaya tahunan Rp1 juta" }
+          ],
+          "comparison": [
+            { "key": "benefits", "groups": [{ "title": "", "points": [
+              { "label": "Reward KrisFlyer", "bullets": ["1 KrisFlyer mile tiap transaksi Rp10.800"] },
+              { "label": "Bonus Awal", "description": "Bonus hingga 12.500 KrisFlyer miles" },
+              { "label": "Fasilitas Perjalanan", "description": "Travel Accident Insurance dan BCA Travel Services" }
+            ] }] },
+            { "key": "features", "groups": [{ "title": "", "points": [
+              { "label": "Contactless" }, { "label": "Cicilan BCA" }, { "label": "KrisFlyer miles" }, { "label": "BCA Travel Services" }, { "label": "BCA Credit Life" }, { "label": "AutoPay BCA" }
+            ] }] },
+            { "key": "fees", "groups": [{ "title": "", "points": [
+              { "label": "Annual Fee", "description": "Rp1.000.000 kartu utama; Rp500.000 kartu tambahan (efektif 3 Juni 2026)" },
+              { "label": "Denda Keterlambatan", "description": "1% dari total tagihan, maksimum Rp100.000" },
+              { "label": "Cash Advance", "description": "4% dari nominal tarikan atau minimum Rp40.000" }
+            ] }] },
+            { "key": "requirements", "groups": [
+              { "title": "", "points": [
+                { "label": "Usia", "description": "Minimum 21 tahun atau sudah menikah; maksimum 65 tahun" },
+                { "label": "Pendapatan Minimum", "description": "Rp3.000.000 per bulan" },
+                { "label": "Keanggotaan KrisFlyer", "description": "Nomor keanggotaan KrisFlyer dapat dicantumkan saat pengajuan" }
+              ] },
+              { "title": "Limit", "points": [
+                { "label": "Limit Minimum", "description": "Rp50.000.000 kartu utama; Rp5.000.000 kartu tambahan" },
+                { "label": "Limit EDC dan e-commerce", "description": "Sesuai limit kredit yang tersedia" },
+                { "label": "Cash Advance ATM", "description": "20% dari limit kredit" }
+              ] },
+              { "title": "Suku Bunga & Pembayaran", "points": [
+                { "label": "Suku Bunga", "description": "1,75% per bulan untuk transaksi belanja dan tarik tunai" },
+                { "label": "Pembayaran Minimum", "description": "5% dari total tagihan" },
+                { "label": "Jatuh Tempo", "description": "Mengikuti tanggal jatuh tempo pada tagihan" }
+              ] }
+            ] }
           ]
         },
         {
@@ -160,6 +418,50 @@
             { "icon": "voucher", "label": "E-voucher hingga Rp1 juta" },
             { "icon": "cashback", "label": "1% Blibli Tiket Points di tiket.com" },
             { "icon": "fee", "label": "Biaya tahunan Rp125 ribu" }
+          ],
+          "comparison": [
+            { "key": "benefits", "groups": [{ "title": "", "points": [
+              { "label": "Blibli Tiket Points", "bullets": ["1% di Blibli, tiket.com, Blibli Elektronik, Dekoruma, Ranch Market, dan Farmers Market", "0,25% di merchant lainnya"] },
+              { "label": "Welcome Bonus", "bullets": ["E-voucher tiket.com Rp600.000 setelah kartu diaktifkan", "Bonus tambahan e-voucher tiket.com Rp400.000 untuk nasabah baru"] },
+              { "label": "Fasilitas Tambahan", "description": "Autopay, Autodebet, BCA Credit Life, Travel Accident Insurance, dan BCA Travel Service" }
+            ] }] },
+            { "key": "features", "groups": [{ "title": "", "points": [
+              { "label": "Contactless" }, { "label": "Cicilan BCA" }, { "label": "Transaksi Mastercard" }, { "label": "BCA Travel Services" }, { "label": "BCA Credit Life" }, { "label": "AutoPay BCA" }
+            ] }] },
+            { "key": "fees", "groups": [{ "title": "", "points": [
+              { "label": "Annual Fee", "description": "Rp125.000 kartu utama; Rp100.000 kartu tambahan" },
+              { "label": "Denda Keterlambatan", "description": "1% dari total tagihan, maksimum Rp100.000" },
+              { "label": "Cash Advance", "description": "4% dari nominal tarikan atau minimum Rp40.000" }
+            ] }] },
+            { "key": "requirements", "groups": [
+              { "title": "", "points": [
+                { "label": "Usia", "description": "Minimum 21 tahun atau sudah menikah; maksimum 65 tahun" },
+                { "label": "Pendapatan Minimum", "description": "Rp3.000.000 per bulan" },
+                { "label": "Status Pemohon", "description": "WNI atau WNA yang menetap di Indonesia" }
+              ] },
+              { "title": "Limit", "points": [
+                { "label": "Limit Minimum", "description": "Rp3.000.000 kartu utama; Rp1.000.000 kartu tambahan" },
+                { "label": "Limit EDC dan e-commerce", "description": "Sesuai limit kredit yang tersedia" },
+                { "label": "Cash Advance ATM", "description": "20% dari limit kredit" }
+              ] },
+              { "title": "Suku Bunga & Pembayaran", "points": [
+                { "label": "Suku Bunga", "description": "1,75% per bulan untuk transaksi belanja dan tarik tunai" },
+                { "label": "Pembayaran Minimum", "description": "5% dari total tagihan" },
+                { "label": "Jatuh Tempo", "description": "Mengikuti tanggal jatuh tempo pada tagihan" }
+              ] }
+            ] }
+          ]
+        },
+        {
+          "id": "pps-club-infinite",
+          "title": "BCA Singapore Airlines PPS Club Visa Infinite",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-SQ-PPS-Visa-Infinite-Front.png?v=1",
+          "imageAlt": "BCA Singapore Airlines PPS Club Visa Infinite",
+          "category": "travel",
+          "benefits": [
+            { "icon": "miles", "label": "Rp5.000 = 1 KrisFlyer miles" },
+            { "icon": "voucher", "label": "Bonus awal 4.000 KrisFlyer miles" },
+            { "icon": "fee", "label": "Biaya tahunan Rp2 juta" }
           ]
         },
         {
@@ -213,6 +515,18 @@
           ]
         },
         {
+          "id": "visa-black",
+          "title": "BCA Visa Black",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-Visa-Black-2-Front.png?v=1",
+          "imageAlt": "BCA Visa Black",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "Reward BCA 0,2%" },
+            { "icon": "travel", "label": "Travel Accident Insurance" },
+            { "icon": "fee", "label": "Biaya tahunan Rp450 ribu" }
+          ]
+        },
+        {
           "id": "blibli-mastercard",
           "title": "BCA Blibli Mastercard",
           "image": "/assets/kartu-kredit/blibli-mastercard.png",
@@ -222,6 +536,66 @@
             { "icon": "reward", "label": "Reward BCA 0,3%" },
             { "icon": "installment", "label": "Tersedia Cicilan BCA" },
             { "icon": "fee", "label": "Biaya tahunan Rp125 ribu" }
+          ]
+        },
+        {
+          "id": "mastercard-globe",
+          "title": "BCA Mastercard Globe",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-Mastercard-Platinum-Front.png?v=1",
+          "imageAlt": "BCA Mastercard Globe",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "Reward BCA" },
+            { "icon": "travel", "label": "Penawaran merchant lifestyle" },
+            { "icon": "fee", "label": "Biaya tahunan sesuai ketentuan BCA" }
+          ]
+        },
+        {
+          "id": "mastercard-world",
+          "title": "BCA Mastercard World",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-Mastercard-World-Front.png?v=1",
+          "imageAlt": "BCA Mastercard World",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "Reward BCA" },
+            { "icon": "travel", "label": "Partner lifestyle dan travel" },
+            { "icon": "fee", "label": "Biaya tahunan sesuai ketentuan BCA" }
+          ]
+        },
+        {
+          "id": "jcb-black",
+          "title": "BCA JCB Black",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/Kartu-Kredit/JCB/BCA-Black-JCB.png?v=1",
+          "imageAlt": "BCA JCB Black",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "Reward BCA" },
+            { "icon": "travel", "label": "Keuntungan dan layanan JCB" },
+            { "icon": "fee", "label": "Biaya tahunan sesuai ketentuan BCA" }
+          ]
+        },
+        {
+          "id": "unionpay",
+          "title": "BCA UnionPay",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-Union-Pay-Card-Final-Front.png?v=1",
+          "imageAlt": "BCA UnionPay",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "Reward BCA" },
+            { "icon": "travel", "label": "Keuntungan dan layanan UnionPay" },
+            { "icon": "fee", "label": "Biaya tahunan sesuai ketentuan BCA" }
+          ]
+        },
+        {
+          "id": "american-express-platinum",
+          "title": "BCA American Express Platinum",
+          "image": "https://www.bca.co.id/-/media/Feature/Card/List-Card/2022/BCA-AMEX-contactless.png?v=1",
+          "imageAlt": "BCA American Express Platinum",
+          "category": "lifestyle",
+          "benefits": [
+            { "icon": "reward", "label": "Reward BCA" },
+            { "icon": "travel", "label": "Keuntungan dan layanan American Express" },
+            { "icon": "fee", "label": "Biaya tahunan sesuai ketentuan BCA" }
           ]
         }
       ]
@@ -388,6 +762,8 @@
     "description": "Eksklusif bagi nasabah terpilih melalui undangan resmi BCA,",
     "solitaire": "Pelajari BCA Solitaire",
     "prioritas": "Pelajari BCA Prioritas",
+    "visitSolitaire": "Kunjungi Solitaire",
+    "visitPrioritas": "Kunjungi Prioritas",
     "benefits": {
       "lounge": {
         "title": "Akses 200+ Airport Lounge di Seluruh Dunia",
@@ -400,6 +776,16 @@
       "event": {
         "title": "Akses Prioritas ke Beragam Event Ternama",
         "cta": "Lihat Semua Event"
+      }
+    },
+    "solitaireBenefits": {
+      "personalBanker": {
+        "title": "Personal Banker khusus untuk layanan lebih personal",
+        "cta": "Lihat Selengkapnya"
+      },
+      "exclusiveCommunity": {
+        "title": "Komunitas eksklusif BCA untuk relasi & kolaborasi",
+        "cta": "Lihat Selengkapnya"
       }
     }
   },
@@ -531,7 +917,7 @@
   "news": {
     "eyebrow": "Kabar & Wawasan",
     "heading": "Update Seputar BCA",
-    "seeMore": "Lihat Lebih Banyak"
+    "seeMore": "Semua Kabar & Wawasan"
   },
   "faq": {
     "eyebrow": "FREQUENTLY ASKED QUESTION",
