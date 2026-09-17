@@ -132,7 +132,8 @@ export default function ProductMegaMenuOverlay({
           <nav
             aria-label={tNav("produk")}
             aria-hidden={mobileDetailOpen}
-            className={`absolute inset-0 overflow-y-auto px-4 pt-5 pb-6 transition-[transform,opacity] duration-300 ease-[var(--ease-entrance)] ${mobileDetailOpen ? "pointer-events-none -translate-x-8 opacity-0" : "translate-x-0 opacity-100"}`}
+            data-lenis-prevent
+            className={`absolute inset-0 overflow-y-auto overscroll-contain px-4 pt-5 pb-6 transition-[transform,opacity] duration-300 ease-[var(--ease-entrance)] ${mobileDetailOpen ? "pointer-events-none -translate-x-8 opacity-0" : "translate-x-0 opacity-100"}`}
           >
             <div className="grid grid-cols-4 gap-x-2 gap-y-6">
               {categories.map((category) => (
@@ -172,7 +173,7 @@ export default function ProductMegaMenuOverlay({
               <h2 className="min-w-0 flex-1 truncate text-xl font-semibold text-neutral-900">{selected.label}</h2>
             </header>
 
-            <div className="min-h-0 flex-1 overflow-y-auto">
+            <div data-lenis-prevent className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
               <div className="px-4 pb-5">
                 {selected.products.map((product) => (
                   <button key={product.title} type="button" className="flex w-full items-center gap-3 rounded-xl px-2 py-3 text-left transition-colors active:bg-cyan-100">
