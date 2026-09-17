@@ -19,6 +19,7 @@ const LOCALE_META: Record<AppLocale, { flag: string }> = {
 
 export const NAVBAR_VISIBILITY_EVENT = "bca:navbar-hidden";
 export const NAVBAR_ANCHOR_LOCK_EVENT = "bca:navbar-anchor-lock";
+export const OPEN_SEARCH_EVENT = "bca:open-search";
 
 function SearchButton({ label, placeholders, onClick, expanded }: { label: string; placeholders: string[]; onClick: () => void; expanded: boolean }) {
   return (
@@ -70,6 +71,12 @@ export default function Navbar({ productCategories, megamenuContent, variant = "
   const [anchorLocked, setAnchorLocked] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const openSearch = () => setSearchOpen(true);
+    window.addEventListener(OPEN_SEARCH_EVENT, openSearch);
+    return () => window.removeEventListener(OPEN_SEARCH_EVENT, openSearch);
+  }, []);
 
   useEffect(() => {
     let raf = 0;
