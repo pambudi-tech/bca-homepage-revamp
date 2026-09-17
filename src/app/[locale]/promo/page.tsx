@@ -159,7 +159,7 @@ export default async function PromoPage({
       </div>
 
       <BackToTop />
-      <QuickActionRail />
+      <QuickActionRail productCategories={produk.categories} megamenuContent={megamenu} />
       <CookieBanner />
       <HaloBcaChat />
     </main>

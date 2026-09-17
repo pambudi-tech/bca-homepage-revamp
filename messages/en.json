@@ -461,6 +461,7 @@
   },
   "footer": {
     "allSocialMedia": "See all BCA social media",
+    "mediaSocialHeading": "Social Media",
     "kantorPusat": "Head Office",
     "alamat": "Menara BCA, Grand Indonesia,\nJl. MH Thamrin No. 1\nJakarta 10310",
     "copyright": "Copyrights © 2026 PT Bank Central Asia Tbk, All Rights Reserved",
@@ -535,6 +536,7 @@
         "View All Savings"
       ],
       "ctaLabel": "Compare Savings Products",
+      "tools": ["Calculate Your Savings Potential", "Open an Account Online"],
       "links": [
         {
           "label": "How to top up & transfer between accounts",
@@ -562,6 +564,7 @@
         "View All Credit Cards"
       ],
       "ctaLabel": "Compare Credit Cards",
+      "tools": ["Credit Card Installment Simulator", "Check BCA Rewards"],
       "links": [
         {
           "label": "How to apply for a credit card via website",
@@ -589,6 +592,7 @@
         "View All Loans"
       ],
       "ctaLabel": "Calculate Estimated Installments",
+      "tools": ["Calculate Your Installment", "Check Paylater BCA Limit"],
       "links": [
         {
           "label": "The application process from start to disbursement",
@@ -616,6 +620,7 @@
         "View All e-Banking"
       ],
       "ctaLabel": "Compare e-Banking Options",
+      "tools": ["Register & Activate myBCA", "Compare BCA Digital Services"],
       "links": [
         {
           "label": "How to activate myBCA for new users",
@@ -643,6 +648,7 @@
         "View All Wealth Management"
       ],
       "ctaLabel": "Calculate Investment & Protection Potential",
+      "tools": ["Calculate Your Investment Potential", "Check Your Investment Risk Profile"],
       "links": [
         {
           "label": "A guide to choosing investments that match your risk profile",
@@ -660,6 +666,32 @@
       ],
       "editorialTitle": "Investment and protection in one app, starting from Rp10,000"
     },
+    "Investasi": {
+      "label": "Investments",
+      "products": ["Mutual Funds", "Bonds", "Customer Fund Account (RDN)", "View All Investments"],
+      "ctaLabel": "View All Investments",
+      "tools": ["Calculate Your Investment Potential", "Check Your Investment Risk Profile"],
+      "links": [
+        { "label": "Choosing investments that match your risk profile", "type": "video" },
+        { "label": "How to buy Mutual Funds via myBCA" },
+        { "label": "Explore BCA investment products" },
+        { "label": "Tips for starting your financial plan" }
+      ],
+      "editorialTitle": "Start Investing for Your Financial Goals"
+    },
+    "Asuransi": {
+      "label": "Insurance",
+      "products": ["Life Insurance", "Health Insurance", "Vehicle Insurance", "View All Insurance"],
+      "ctaLabel": "View All Insurance",
+      "tools": ["Calculate Insurance Premium", "Find Insurance That Suits Your Needs"],
+      "links": [
+        { "label": "Choosing protection that suits your needs", "type": "video" },
+        { "label": "Choosing the right insurance for your family" },
+        { "label": "The difference between life and health insurance" },
+        { "label": "How to apply for BCA insurance products" }
+      ],
+      "editorialTitle": "Protection for You, Your Family, and Your Assets"
+    },
     "Transaksi": {
       "label": "Transactions",
       "products": [
@@ -669,6 +701,7 @@
         "View All Transactions"
       ],
       "ctaLabel": "Calculate Estimated Premium",
+      "tools": ["BCA Exchange Rate Calculator", "Check Transaction Status"],
       "links": [
         {
           "label": "The easy way to top up Flazz directly from myBCA",

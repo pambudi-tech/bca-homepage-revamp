@@ -98,7 +98,7 @@ type FaqSectionProps = {
 export default function FaqSection({ variant: initialVariant = "glass", categories = FAQ_CATEGORIES }: FaqSectionProps) {
   const t = useTranslations("faq");
   const desktopGlass = initialVariant === "glass";
-  const mobileGlass = false;
+  const mobileGlass = initialVariant === "glass";
   const [activeKey, setActiveKey] = useState(categories[0].key);
   const [openIndex, setOpenIndex] = useState(-1);
   const active = categories.find((c) => c.key === activeKey) ?? categories[0];
@@ -344,13 +344,27 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
            pulled up to overlap its bottom edge — same trick as MyBcaSection's
            mobile layout, the photo sits behind the panel rather than just
            stacked above it. ===== */}
-      <div className="relative xl:hidden">
-        <div className="relative w-full overflow-clip">
+      <div className="relative overflow-hidden xl:hidden">
+        {/* Instagram Stories-style backdrop: reuse the hero photo behind the
+            entire mobile section, enlarge it past the edges, then heavily
+            blur and darken it. The sharp 320px hero remains above this layer,
+            while the glass FAQ panel keeps sampling image colour instead of
+            falling onto an empty background. */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+          <img
+            src="/assets/faq-bg.webp"
+            alt=""
+            className="absolute inset-0 size-full scale-125 object-cover object-center opacity-90 blur-3xl saturate-150"
+          />
+          <div className="absolute inset-0 bg-black/20" />
+        </div>
+
+        <div className="relative z-10 w-full overflow-clip">
           <img loading="lazy" decoding="async"
             src="/assets/faq-bg.webp"
             alt=""
             aria-hidden
-            className="h-[480px] w-full object-cover object-[calc(50%+160px)_top]"
+            className="h-[320px] w-full origin-top-left scale-110 object-cover object-[calc(50%+160px)_top]"
           />
           {/* Eyebrow + heading now live over the photo instead of inside a
               blue wrapper — left-aligned, matching the desktop treatment.

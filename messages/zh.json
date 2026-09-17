@@ -461,6 +461,7 @@
   },
   "footer": {
     "allSocialMedia": "查看BCA所有社交媒体",
+    "mediaSocialHeading": "社交媒体",
     "kantorPusat": "总部",
     "alamat": "Menara BCA, Grand Indonesia,\nJl. MH Thamrin No. 1\nJakarta 10310",
     "copyright": "版权所有 © 2026 PT Bank Central Asia Tbk，保留所有权利",
@@ -535,6 +536,7 @@
         "查看全部储蓄产品"
       ],
       "ctaLabel": "比较储蓄产品",
+      "tools": ["计算储蓄潜力", "在线开户"],
       "links": [
         {
           "label": "如何在账户间充值和转账",
@@ -562,6 +564,7 @@
         "查看全部信用卡"
       ],
       "ctaLabel": "比较信用卡",
+      "tools": ["信用卡分期模拟", "查询BCA奖励"],
       "links": [
         {
           "label": "如何通过网站申请信用卡",
@@ -589,6 +592,7 @@
         "查看全部贷款"
       ],
       "ctaLabel": "计算预估分期还款",
+      "tools": ["计算分期付款", "查询Paylater BCA额度"],
       "links": [
         {
           "label": "从申请到放款的完整流程",
@@ -616,6 +620,7 @@
         "查看全部网上银行服务"
       ],
       "ctaLabel": "比较网上银行服务",
+      "tools": ["注册并激活myBCA", "比较BCA数字服务"],
       "links": [
         {
           "label": "新用户如何激活myBCA",
@@ -643,6 +648,7 @@
         "查看全部财富管理产品"
       ],
       "ctaLabel": "计算投资与保障潜力",
+      "tools": ["计算投资潜力", "查看投资风险偏好"],
       "links": [
         {
           "label": "根据风险偏好选择投资产品指南",
@@ -660,6 +666,32 @@
       ],
       "editorialTitle": "投资与保障一站式服务，最低1万印尼盾起"
     },
+    "Investasi": {
+      "label": "投资",
+      "products": ["共同基金", "债券", "客户资金账户（RDN）", "查看全部投资产品"],
+      "ctaLabel": "查看全部投资产品",
+      "tools": ["计算投资潜力", "查看投资风险偏好"],
+      "links": [
+        { "label": "根据风险偏好选择投资产品", "type": "video" },
+        { "label": "如何通过myBCA购买共同基金" },
+        { "label": "了解BCA投资产品" },
+        { "label": "为财务目标开始投资的技巧" }
+      ],
+      "editorialTitle": "为您的财务目标开启投资"
+    },
+    "Asuransi": {
+      "label": "保险",
+      "products": ["人寿保险", "健康保险", "车辆保险", "查看全部保险产品"],
+      "ctaLabel": "查看全部保险产品",
+      "tools": ["计算保险保费", "查找适合您需求的保险"],
+      "links": [
+        { "label": "选择适合需求的保障方案", "type": "video" },
+        { "label": "为家人选择合适的保险" },
+        { "label": "人寿保险与健康保险的区别" },
+        { "label": "如何申请BCA保险产品" }
+      ],
+      "editorialTitle": "守护您、家人与珍贵资产"
+    },
     "Transaksi": {
       "label": "交易",
       "products": [
@@ -669,6 +701,7 @@
         "查看全部交易服务"
       ],
       "ctaLabel": "计算预估保费",
+      "tools": ["BCA汇率计算器", "查询交易状态"],
       "links": [
         {
           "label": "通过myBCA直接为Flazz充值的便捷方式",

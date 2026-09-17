@@ -1,8 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { onPreloaderDone } from "@/components/Preloader";
+import type { MegaMenuContent } from "@/lib/megamenu";
+import { NAVBAR_VISIBILITY_EVENT } from "./Navbar";
+import ProductMegaMenuOverlay from "./ProductMegaMenuOverlay";
+import type { ProductCategory } from "./product-data";
+
+export const MOBILE_QUICK_NAV_VISIBILITY_EVENT = "bca:mobile-quick-nav-hidden";
 
 type RailAction = {
   label: string;
@@ -16,13 +22,48 @@ type RailAction = {
  * background reuses BackToTop's trapezoid language, rotated vertically, while
  * the 64px cells keep each shortcut equally easy to target.
  */
-export default function QuickActionRail() {
+export default function QuickActionRail({
+  productCategories,
+  megamenuContent,
+}: {
+  productCategories?: ProductCategory[];
+  megamenuContent?: MegaMenuContent;
+}) {
   const tNav = useTranslations("nav");
   const [ready, setReady] = useState(false);
   const [tooltipSuppressed, setTooltipSuppressed] = useState(false);
   const [hoveredAction, setHoveredAction] = useState<string | null>(null);
+  const [navbarHidden, setNavbarHidden] = useState(false);
+  const [footerVisible, setFooterVisible] = useState(false);
+  const [productMenuOpen, setProductMenuOpen] = useState(false);
+  const closeProductMenu = useCallback(() => setProductMenuOpen(false), []);
 
   useEffect(() => onPreloaderDone(() => setReady(true)), []);
+
+  useEffect(() => {
+    const onNavbarVisibility = (event: Event) => {
+      setNavbarHidden((event as CustomEvent<boolean>).detail);
+    };
+    window.addEventListener(NAVBAR_VISIBILITY_EVENT, onNavbarVisibility);
+    return () => window.removeEventListener(NAVBAR_VISIBILITY_EVENT, onNavbarVisibility);
+  }, []);
+
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+    const observer = new IntersectionObserver(([entry]) => setFooterVisible(entry.isIntersecting), {
+      threshold: 0,
+      rootMargin: "0px 0px 80px 0px",
+    });
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
+
+  const mobileHidden = navbarHidden && !footerVisible && !productMenuOpen;
+
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent<boolean>(MOBILE_QUICK_NAV_VISIBILITY_EVENT, { detail: mobileHidden }));
+  }, [mobileHidden]);
 
   useEffect(() => {
     const resetRail = () => {
@@ -38,17 +79,15 @@ export default function QuickActionRail() {
     };
   }, []);
 
-  const scrollToSection = (id: string) => {
-    setTooltipSuppressed(true);
-    setHoveredAction(null);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
   const actions: RailAction[] = [
     {
       label: tNav("produk"),
       icon: "/assets/quick-action/product.svg",
-      onClick: () => scrollToSection("products"),
+      onClick: () => {
+        setTooltipSuppressed(true);
+        setHoveredAction(null);
+        setProductMenuOpen((current) => !current);
+      },
     },
     {
       label: tNav("pengajuan"),
@@ -75,9 +114,15 @@ export default function QuickActionRail() {
 
   return (
     <>
+    <ProductMegaMenuOverlay
+      open={productMenuOpen}
+      onClose={closeProductMenu}
+      productCategories={productCategories}
+      megamenuContent={megamenuContent}
+    />
     <nav
       aria-label={tNav("quickActions")}
-      className={`fixed inset-x-0 bottom-0 z-40 flex h-[calc(86px+env(safe-area-inset-bottom))] items-stretch overflow-hidden rounded-t-[20px] bg-blue-500 pb-[env(safe-area-inset-bottom)] transition-transform duration-300 xl:hidden ${ready ? "translate-y-0" : "translate-y-full"}`}
+      className={`fixed inset-x-0 bottom-0 z-[70] flex h-[calc(86px+env(safe-area-inset-bottom))] items-stretch overflow-hidden rounded-t-[20px] bg-blue-500 pb-[env(safe-area-inset-bottom)] transition-transform duration-300 ease-out xl:hidden ${ready && !mobileHidden ? "translate-y-0" : "translate-y-full"}`}
     >
       {mobileActions.map((action) => {
         const content = (
@@ -93,7 +138,7 @@ export default function QuickActionRail() {
               key={action.label}
               type="button"
               onClick={action.onClick}
-              className="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 transition-colors active:bg-white/10"
+              className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-1 transition-colors active:bg-white/10 ${productMenuOpen ? "bg-white/10" : ""}`}
             >
               {content}
             </button>
@@ -120,7 +165,7 @@ export default function QuickActionRail() {
         setHoveredAction(null);
         setTooltipSuppressed(false);
       }}
-      className={`fixed top-1/2 right-0 z-20 hidden w-20 -translate-y-1/2 px-2 py-[18px] transition-[opacity,transform] duration-300 xl:block ${ready
+      className={`fixed top-1/2 right-0 ${productMenuOpen ? "z-[70]" : "z-20"} hidden w-20 -translate-y-1/2 px-2 py-[18px] transition-[opacity,transform] duration-300 xl:block ${ready
           ? "pointer-events-auto opacity-100"
           : "pointer-events-none translate-x-full opacity-0"
         }`}
@@ -146,7 +191,8 @@ export default function QuickActionRail() {
       <div className="relative z-10 flex flex-col">
         {actions.map((action, index) => {
           const shape = index === 0 ? "top" : index === actions.length - 1 ? "bottom" : undefined;
-          const isHovered = !tooltipSuppressed && hoveredAction === action.label;
+          const isProductActive = index === 0 && productMenuOpen;
+          const isHovered = isProductActive || (!tooltipSuppressed && hoveredAction === action.label);
           const content = (
             <>
               {shape && (

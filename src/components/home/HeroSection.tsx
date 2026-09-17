@@ -120,7 +120,7 @@ export default function HeroSection({ slides = SLIDES }: { slides?: Slide[] }) {
   return (
     <div
       ref={rootRef}
-      className="relative h-[min(640px,calc(90svh-48px))] overflow-clip bg-blue-500 xl:h-[80svh]"
+      className="relative h-[min(640px,calc(90svh-48px))] min-h-[560px] overflow-clip bg-blue-500 xl:h-[80svh] xl:min-h-0"
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >

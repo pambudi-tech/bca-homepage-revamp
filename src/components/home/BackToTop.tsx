@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useLenis } from "@/components/SmoothScroll";
+import { MOBILE_QUICK_NAV_VISIBILITY_EVENT } from "./QuickActionRail";
 
 // Custom shape from Figma (node 1470:6337) — a 218×52 trapezoid with rounded
 // top corners, sitting flush against the bottom edge (y=52 spans the full width).
@@ -15,6 +16,7 @@ export default function BackToTop() {
   const [visible, setVisible] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [atBottom, setAtBottom] = useState(false);
+  const [mobileQuickNavHidden, setMobileQuickNavHidden] = useState(false);
   const rafRef = useRef(0);
   const lastScrollY = useRef(0);
 
@@ -62,6 +64,14 @@ export default function BackToTop() {
     };
   }, []);
 
+  useEffect(() => {
+    const onQuickNavVisibility = (event: Event) => {
+      setMobileQuickNavHidden((event as CustomEvent<boolean>).detail);
+    };
+    window.addEventListener(MOBILE_QUICK_NAV_VISIBILITY_EVENT, onQuickNavVisibility);
+    return () => window.removeEventListener(MOBILE_QUICK_NAV_VISIBILITY_EVENT, onQuickNavVisibility);
+  }, []);
+
   const shown = visible && (!hidden || atBottom);
 
   useEffect(() => {
@@ -83,7 +93,7 @@ export default function BackToTop() {
       type="button"
       onClick={scrollToTop}
       aria-label={t("label")}
-      className={`group fixed bottom-[calc(86px+env(safe-area-inset-bottom)+12px)] left-1/2 z-30 h-11 w-auto px-5 -translate-x-1/2 transition-all duration-300 ease-out md:h-[52px] md:w-[218px] md:px-0 xl:bottom-0 ${
+      className={`group fixed left-1/2 z-30 h-11 w-auto px-5 -translate-x-1/2 transition-all duration-300 ease-out md:h-[52px] md:w-[218px] md:px-0 xl:bottom-0 ${mobileQuickNavHidden ? "bottom-[calc(16px+env(safe-area-inset-bottom))]" : "bottom-[calc(86px+env(safe-area-inset-bottom)+12px)]"} ${
         shown
           ? "pointer-events-auto translate-y-0 opacity-100"
           : "pointer-events-none translate-y-[150%] opacity-0 md:translate-y-full"

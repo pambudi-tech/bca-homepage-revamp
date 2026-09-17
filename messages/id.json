@@ -403,7 +403,7 @@
     "karir": "Karir",
     "search": "Cari",
     "searchPlaceholder": "Buka rekening BCA",
-    "lokasiBca": "Lokasi BCA",
+    "lokasiBca": "Lokasi",
     "haloBca": "HaloBCA",
     "quickActions": "Akses cepat",
     "pengajuan": "Pengajuan",
@@ -461,6 +461,7 @@
   },
   "footer": {
     "allSocialMedia": "Lihat semua media sosial BCA",
+    "mediaSocialHeading": "Media Sosial",
     "kantorPusat": "Kantor Pusat",
     "alamat": "Menara BCA, Grand Indonesia,\nJl. MH Thamrin No. 1\nJakarta 10310",
     "copyright": "Copyrights © 2026 PT Bank Central Asia Tbk, All Rights Reserved",
@@ -526,7 +527,7 @@
   },
   "megamenu": {
     "Simpanan": {
-      "label": "Simpanan",
+      "label": "Tabungan",
       "products": [
         "Tahapan",
         "Tahapan Xpresi",
@@ -535,6 +536,7 @@
         "Lihat Semua Simpanan"
       ],
       "ctaLabel": "Bandingkan Antar Simpanan",
+      "tools": ["Hitung Potensi Simpanan Anda", "Buka Rekening Secara Online"],
       "links": [
         {
           "label": "Cara top up & transfer antar rekening",
@@ -562,6 +564,7 @@
         "Lihat Semua Kartu Kredit"
       ],
       "ctaLabel": "Bandingkan Antar Kartu Kredit",
+      "tools": ["Simulasi Cicilan Kartu Kredit", "Cek Reward BCA"],
       "links": [
         {
           "label": "Cara ajukan kartu kredit via website",
@@ -589,6 +592,7 @@
         "Lihat Semua Pinjaman"
       ],
       "ctaLabel": "Hitung Estimasi Cicilan",
+      "tools": ["Hitung Estimasi Cicilanmu", "Cek Limit Paylater BCA"],
       "links": [
         {
           "label": "Proses pengajuan dari awal hingga cair",
@@ -616,6 +620,7 @@
         "Lihat Semua e-Banking"
       ],
       "ctaLabel": "Bandingkan Antar e-Banking",
+      "tools": ["Registrasi & Aktivasi myBCA", "Bandingkan Layanan Digital BCA"],
       "links": [
         {
           "label": "Cara aktivasi myBCA untuk pengguna baru",
@@ -643,6 +648,7 @@
         "Lihat Semua Wealth Management"
       ],
       "ctaLabel": "Hitung Potensi Investasi & Proteksi",
+      "tools": ["Hitung Potensi Investasi Anda", "Cek Profil Risiko Investasimu"],
       "links": [
         {
           "label": "Panduan memilih produk investasi sesuai profil risiko",
@@ -660,6 +666,32 @@
       ],
       "editorialTitle": "Investasi dan Proteksi dalam Satu Genggaman, Mulai dari Rp10 Ribu"
     },
+    "Investasi": {
+      "label": "Investasi",
+      "products": ["Reksa Dana", "Obligasi", "Rekening Dana Nasabah (RDN)", "Lihat Semua Investasi"],
+      "ctaLabel": "Lihat Semua Investasi",
+      "tools": ["Hitung Potensi Investasi Anda", "Cek Profil Risiko Investasimu"],
+      "links": [
+        { "label": "Panduan memilih produk investasi sesuai profil risiko", "type": "video" },
+        { "label": "Cara beli Reksa Dana lewat myBCA" },
+        { "label": "Mengenal ragam produk investasi BCA" },
+        { "label": "Tips memulai investasi untuk tujuan finansial" }
+      ],
+      "editorialTitle": "Mulai Investasi untuk Rencana Finansial Anda"
+    },
+    "Asuransi": {
+      "label": "Asuransi",
+      "products": ["Asuransi Jiwa", "Asuransi Kesehatan", "Asuransi Kendaraan", "Lihat Semua Asuransi"],
+      "ctaLabel": "Lihat Semua Asuransi",
+      "tools": ["Hitung Estimasi Premi Asuransi", "Temukan Asuransi yang Sesuai Kebutuhanmu"],
+      "links": [
+        { "label": "Panduan memilih perlindungan yang sesuai kebutuhan", "type": "video" },
+        { "label": "Memilih asuransi yang tepat untuk keluarga" },
+        { "label": "Perbedaan asuransi jiwa dan kesehatan" },
+        { "label": "Cara mengajukan produk asuransi BCA" }
+      ],
+      "editorialTitle": "Perlindungan untuk Diri, Keluarga, dan Aset"
+    },
     "Transaksi": {
       "label": "Transaksi",
       "products": [
@@ -669,6 +701,7 @@
         "Lihat Semua Transaksi"
       ],
       "ctaLabel": "Hitung Estimasi Premi Asuransi",
+      "tools": ["Kalkulator Kurs BCA", "Cek Status Transaksi"],
       "links": [
         {
           "label": "Cara Praktis Top-Up Flazz Langsung dari myBCA",

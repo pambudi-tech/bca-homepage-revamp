@@ -56,7 +56,7 @@ function HighlightArticle({ article }: { article: NewsArticle }) {
       href={article.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative block h-[320px] w-full shrink-0 overflow-clip rounded-xl border border-transparent text-left shadow-card xl:h-[464px] xl:w-full xl:transition-transform xl:duration-300 xl:ease-out xl:hover:-translate-y-1.5 xl:hover:border-cyan-500">
+      className="group relative block h-[320px] w-[320px] shrink-0 overflow-clip rounded-xl border border-transparent text-left shadow-card xl:h-[464px] xl:w-full xl:transition-transform xl:duration-300 xl:ease-out xl:hover:-translate-y-1.5 xl:hover:border-cyan-500">
       <img loading="lazy" decoding="async"
         src={article.image}
         alt=""
@@ -71,7 +71,7 @@ function HighlightArticle({ article }: { article: NewsArticle }) {
           top-border over a reactive blurred fill, rather than a flat grey
           stroke. `isolation` keeps the backdrop sampling the photo behind it. */}
       <div
-        className="hero-search absolute inset-x-2 bottom-2 flex flex-col items-start gap-6 overflow-clip rounded-[10px] px-5 pb-6 pt-5"
+        className="hero-search absolute inset-x-2 bottom-2 flex flex-col items-start gap-4 overflow-clip rounded-[10px] p-4 xl:gap-6 xl:px-5 xl:pb-6 xl:pt-5"
         style={{
           backgroundColor: "rgba(0,0,0,0.3)",
           backdropFilter: "blur(16px) saturate(1.25)",
@@ -91,7 +91,7 @@ function HighlightArticle({ article }: { article: NewsArticle }) {
   );
 }
 
-/** Card flips axis: image on top (mobile carousel card) → image on the left (desktop list row). */
+/** Compact list row used by both the mobile two-row stack and desktop columns. */
 function ArticleItem({ article }: { article: NewsArticle }) {
   return (
     <a
@@ -99,18 +99,18 @@ function ArticleItem({ article }: { article: NewsArticle }) {
       href={article.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex h-[264px] w-[307px] shrink-0 snap-start flex-col overflow-clip rounded-xl border border-neutral-300 bg-white text-left shadow-card transition-colors xl:h-36 xl:w-full xl:flex-row xl:items-center xl:transition-transform xl:duration-300 xl:ease-out xl:hover:-translate-y-1.5 xl:hover:border-cyan-500">
-      <div className="h-[120px] w-full shrink-0 overflow-clip bg-white xl:h-full xl:w-[142px]">
+      className="group flex h-[152px] w-full shrink-0 flex-row items-center overflow-clip rounded-xl border border-neutral-300 bg-white text-left shadow-card transition-colors xl:h-36 xl:transition-transform xl:duration-300 xl:ease-out xl:hover:-translate-y-1.5 xl:hover:border-cyan-500">
+      <div className="h-full w-28 shrink-0 overflow-clip bg-white xl:w-[142px]">
         <img loading="lazy" decoding="async"
           src={article.image}
           alt=""
           className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         />
       </div>
-      <div className="flex min-w-0 flex-1 flex-col justify-between px-5 pb-5 pt-4 xl:h-full">
+      <div className="flex h-full min-w-0 flex-1 flex-col justify-between p-4 xl:px-5 xl:pb-5 xl:pt-4">
         <p
           title={article.title}
-          className="line-clamp-3 w-full text-base font-semibold leading-6 text-neutral-800 transition-colors duration-200 group-hover:text-blue-500 xl:line-clamp-2 xl:text-base xl:leading-6 xl:group-hover:font-bold"
+          className="line-clamp-2 w-full text-sm font-semibold leading-5 text-neutral-800 transition-colors duration-200 group-hover:text-blue-500 xl:text-base xl:leading-6 xl:group-hover:font-bold"
         >
           {article.title}
         </p>
@@ -293,27 +293,30 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
             grid are alternates by breakpoint, plus the mobile-only CTA that
             closes out the section. */}
         <div>
-          {/* Mobile — highlight card above a horizontal carousel of 3 cards. */}
-          <div ref={mobileContentRef} className="xl:hidden">
-            <HighlightArticle article={active.highlight} />
-            <div
-              // `overflow-y-hidden overscroll-none`: `overflow-x: auto` alone
-              // computes `overflow-y` to `auto` too, making this row a
-              // vertical scroller as well — an off-axis touch drags it a few
-              // px down/up before it springs back. Same fix as SoliprioMobile's
-              // carousel rail.
-              className="hide-scrollbar -mx-4 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden overscroll-none scroll-pl-4 px-4 [scrollbar-width:none]"
-            >
-              {/* Keyed by slot, not by article: `data-reveal` is wired up once on
-                  mount by ScrollReveal, so a remount on tab switch would hand
-                  back fresh nodes that nothing ever reveals — stuck at opacity
-                  0. Reusing the same three nodes keeps them revealed and just
-                  swaps their contents. Safe here because the cards hold no
-                  internal state. */}
-              {active.articles.slice(0, NEWS_LIST_SIZE_DESKTOP).map((article, i) => (
-                <ArticleItem key={i} article={article} />
-              ))}
+          {/* Mobile — a single 320px-tall rail: featured card, then a column
+              of two compact list rows, matching the desktop composition at a
+              smaller scale. */}
+          <div
+            ref={mobileContentRef}
+            className="hide-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden overscroll-none scroll-pl-4 px-4 [scrollbar-width:none] xl:hidden"
+          >
+            <div className="shrink-0 snap-start">
+              <HighlightArticle article={active.highlight} />
             </div>
+            {Array.from({ length: Math.ceil(NEWS_LIST_SIZE_DESKTOP / 2) }, (_, columnIndex) => (
+              <div
+                key={columnIndex}
+                className="flex h-[320px] w-[calc(100vw-32px)] max-w-[528px] shrink-0 snap-start flex-col gap-4"
+              >
+                {/* Keys stay slot-based because ScrollReveal only scans once;
+                    category switches reuse these nodes and swap their content. */}
+                {active.articles
+                  .slice(columnIndex * 2, columnIndex * 2 + 2)
+                  .map((article, rowIndex) => (
+                    <ArticleItem key={rowIndex} article={article} />
+                  ))}
+              </div>
+            ))}
           </div>
 
           {/* Desktop — 3-column grid: highlight card, then two columns of 3

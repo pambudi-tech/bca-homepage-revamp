@@ -7,6 +7,7 @@ type MegaMenuText = {
   label: string;
   products: string[];
   ctaLabel: string;
+  tools: string[];
   links: { label: string; type?: "article" | "video" }[];
   editorialTitle: string;
 };
@@ -33,27 +34,38 @@ export function useMegaMenu(
     const bundledCategory = PRODUCT_CATEGORIES.find((c) => c.key === structure.key);
     const sourceCategory = liveCategory ?? bundledCategory;
     const liveProducts = liveCategory
-      ? liveCategory.products.filter((p) => p.featured)
+      ? [
+          ...liveCategory.products.filter((product) => product.featured),
+          ...liveCategory.products.filter((product) => !product.featured),
+        ]
       : [];
     const liveLinks = megamenuContent?.linksByKey[structure.key];
     const liveEditorial = megamenuContent?.editorialByKey[structure.key];
     return {
       key: structure.key,
       label: text.label,
+      icon: structure.icon,
       width: structure.width,
       // The restored desktop layout shows individual products in the middle
       // column and reserves its final row for the "view all" CTA. Keep that
       // CTA separate rather than treating it as a fifth product.
       products: sourceCategory
-        ? (liveProducts.length ? liveProducts : sourceCategory.products)
-            .slice(0, 4)
+          ? (liveCategory ? liveProducts : sourceCategory.products)
+            .slice(0, 5)
             .map((product) => ({ title: product.title, description: product.subtitle }))
-        : text.products.slice(0, -1).map((title) => ({ title })),
+        : text.products.slice(0, -1).slice(0, 5).map((title) => ({ title })),
       ctaLabel: `${tSearch("viewAll")} ${text.label}`,
+      tools: text.tools.map((label, index) => ({
+        label,
+        icon: structure.toolIcons[index] ?? "document",
+      })),
       links: liveLinks?.length ? liveLinks : text.links,
-      editorial: liveEditorial ?? {
-        title: text.editorialTitle,
-        image: liveCategory?.image || structure.image,
+      editorial: {
+        ...(liveEditorial ?? {
+          title: text.editorialTitle,
+          image: liveCategory?.image || structure.image,
+        }),
+        fallbackImage: structure.image,
       },
     };
   });

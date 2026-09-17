@@ -75,7 +75,7 @@ export default async function Home({
       </div>
 
       <BackToTop />
-      <QuickActionRail />
+      <QuickActionRail productCategories={produk.categories} megamenuContent={megamenu} />
       <CookieBanner />
       <HaloBcaChat />
       {/* Orchestrates every [data-reveal] entrance below the hero — one

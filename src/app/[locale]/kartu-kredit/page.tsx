@@ -64,7 +64,7 @@ export default async function KartuKreditPage({
       </div>
 
       <BackToTop />
-      <QuickActionRail />
+      <QuickActionRail productCategories={produk.categories} megamenuContent={megamenu} />
       <CookieBanner />
       <HaloBcaChat />
     </main>

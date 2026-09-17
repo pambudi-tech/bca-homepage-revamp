@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import TextField from "@/components/ui/TextField";
 import { MOBILE_MENU_EVENT } from "./MobileNav";
+import { MOBILE_QUICK_NAV_VISIBILITY_EVENT } from "./QuickActionRail";
 
 /** Lets other chrome (the desktop navbar's "Halo BCA" icon) open this panel
     without lifting its state up — dispatch this event from anywhere. */
@@ -143,6 +144,7 @@ export default function HaloBcaChat() {
   // z-[60], but this button sits at z-[70] so it can float over page content —
   // that same z-index otherwise leaves it floating over the menu too.
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileQuickNavHidden, setMobileQuickNavHidden] = useState(false);
   // Kept off-screen until the preloader curtain starts lifting, then fades up —
   // otherwise the button flashes in over the loading page on slow loads.
   const [ready, setReady] = useState(false);
@@ -214,6 +216,14 @@ export default function HaloBcaChat() {
     };
     window.addEventListener(MOBILE_MENU_EVENT, onMenuToggle);
     return () => window.removeEventListener(MOBILE_MENU_EVENT, onMenuToggle);
+  }, []);
+
+  useEffect(() => {
+    const onQuickNavVisibility = (event: Event) => {
+      setMobileQuickNavHidden((event as CustomEvent<boolean>).detail);
+    };
+    window.addEventListener(MOBILE_QUICK_NAV_VISIBILITY_EVENT, onQuickNavVisibility);
+    return () => window.removeEventListener(MOBILE_QUICK_NAV_VISIBILITY_EVENT, onQuickNavVisibility);
   }, []);
 
   useEffect(() => {
@@ -305,7 +315,7 @@ export default function HaloBcaChat() {
     // instead of the viewport, shrinking the panel to this div's own
     // button-sized box. The reveal transform lives on the button itself
     // instead, a few lines down.
-    <div inert={!(ready && !hidden)} className={`fixed right-4 bottom-[calc(86px+env(safe-area-inset-bottom)+12px)] z-[70] transition-opacity duration-500 ease-out xl:right-8 xl:bottom-8 ${ready && !hidden ? "opacity-100" : "pointer-events-none opacity-0"}`}>
+    <div inert={!(ready && !hidden)} className={`fixed right-4 z-[70] transition-[bottom,opacity] duration-300 ease-out xl:right-8 xl:bottom-8 ${mobileQuickNavHidden ? "bottom-[calc(16px+env(safe-area-inset-bottom))]" : "bottom-[calc(86px+env(safe-area-inset-bottom)+12px)]"} ${ready && !hidden ? "opacity-100" : "pointer-events-none opacity-0"}`}>
 
       {open || closing ? (
         <>
