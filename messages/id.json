@@ -387,7 +387,21 @@
     "title": "Layanan Prestisius dan Personal, Hanya untuk Anda.",
     "description": "Eksklusif bagi nasabah terpilih melalui undangan resmi BCA,",
     "solitaire": "Pelajari BCA Solitaire",
-    "prioritas": "Pelajari BCA Prioritas"
+    "prioritas": "Pelajari BCA Prioritas",
+    "benefits": {
+      "lounge": {
+        "title": "Akses 200+ Airport Lounge di Seluruh Dunia",
+        "cta": "Lihat RS Partner"
+      },
+      "healthcare": {
+        "title": "Cek Kesehatan Eksklusif di Rumah Sakit Premium Pilihan",
+        "cta": "Akses Lounge"
+      },
+      "event": {
+        "title": "Akses Prioritas ke Beragam Event Ternama",
+        "cta": "Lihat Semua Event"
+      }
+    }
   },
   "nav": {
     "segments": {

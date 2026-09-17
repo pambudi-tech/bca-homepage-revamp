@@ -387,7 +387,21 @@
     "title": "Prestigious, Personal Service — Made Only for You.",
     "description": "Exclusive for select customers through official BCA invitation,",
     "solitaire": "Explore BCA Solitaire",
-    "prioritas": "Explore BCA Prioritas"
+    "prioritas": "Explore BCA Prioritas",
+    "benefits": {
+      "lounge": {
+        "title": "Access 200+ Airport Lounges Worldwide",
+        "cta": "View Hospital Partners"
+      },
+      "healthcare": {
+        "title": "Exclusive Health Checks at Selected Premium Hospitals",
+        "cta": "Access Lounge"
+      },
+      "event": {
+        "title": "Priority Access to Renowned Events",
+        "cta": "View All Events"
+      }
+    }
   },
   "nav": {
     "segments": {

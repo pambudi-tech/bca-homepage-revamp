@@ -10,6 +10,7 @@ import LebaranDecor from "./LebaranDecor";
 import EventSlider from "./EventSlider";
 import LayoutSwitcher from "./LayoutSwitcher";
 import { useLayoutVariant } from "@/lib/useLayoutVariant";
+import { Link } from "@/i18n/navigation";
 import PromoCard from "@/components/promo/PromoCard";
 // import PercentGlass from "./PercentGlass"; // temporarily hidden
 
@@ -21,6 +22,34 @@ import PromoCard from "@/components/promo/PromoCard";
  */
 const PROMO_THEMES = ["confetti", "christmas", "cny", "lebaran"] as const;
 type PromoTheme = (typeof PROMO_THEMES)[number];
+
+function MorePromoCard({ reveal = true }: { reveal?: boolean }) {
+  const t = useTranslations("promo");
+
+  return (
+    <Link
+      href="/promo"
+      {...(reveal ? { "data-reveal": "" } : {})}
+      className="group relative block h-[360px] w-[302px] shrink-0 overflow-clip rounded-3xl border border-white transition-transform duration-300 ease-out hover:-translate-y-1.5"
+      style={{ backgroundImage: "linear-gradient(180deg, #005caa 0%, #00b5f0 100%)" }}
+    >
+      <p className="absolute left-6 top-6 w-[157px] text-2xl leading-[1.3] tracking-[-0.48px] text-white">
+        {t("viewMore")}
+      </p>
+      <svg viewBox="0 0 24 24" fill="none" className="absolute right-[19px] top-6 size-8 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+        <path d="M8 16 16 8M16 8H9M16 8V15" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <img
+        loading="lazy"
+        decoding="async"
+        src="/assets/promo/showmore-icons.webp"
+        alt=""
+        aria-hidden
+        className="absolute left-6 right-6 top-[86px] h-[242px] object-cover mix-blend-soft-light"
+      />
+    </Link>
+  );
+}
 
 /** Horizontal gap between the mobile carousel's cards, px. */
 const MOBILE_GAP = 16;
@@ -214,6 +243,7 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
             {visiblePromos.map((promo) => (
               <PromoCard key={promo.id} promo={promo} now={now} reveal={!switched} />
             ))}
+            <MorePromoCard reveal={!switched} />
           </div>
         </div>
 

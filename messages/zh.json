@@ -387,7 +387,21 @@
     "title": "尊崇专属的礼遇，只为您而设。",
     "description": "通过 BCA 官方邀请提供给特选客户的专属服务，",
     "solitaire": "了解 BCA Solitaire",
-    "prioritas": "了解 BCA Prioritas"
+    "prioritas": "了解 BCA Prioritas",
+    "benefits": {
+      "lounge": {
+        "title": "尊享全球 200 多家机场贵宾室",
+        "cta": "查看合作医院"
+      },
+      "healthcare": {
+        "title": "于精选高端医院享受专属健康检查",
+        "cta": "进入贵宾室"
+      },
+      "event": {
+        "title": "优先参与知名活动",
+        "cta": "查看所有活动"
+      }
+    }
   },
   "nav": {
     "segments": {

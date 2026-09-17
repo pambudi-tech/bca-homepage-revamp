@@ -122,7 +122,7 @@ export default function QuickActionRail({
     />
     <nav
       aria-label={tNav("quickActions")}
-      className={`fixed inset-x-0 bottom-0 z-[70] flex h-[calc(86px+env(safe-area-inset-bottom))] items-stretch overflow-hidden rounded-t-[20px] bg-blue-500 pb-[env(safe-area-inset-bottom)] transition-transform duration-300 ease-out xl:hidden ${ready && !mobileHidden ? "translate-y-0" : "translate-y-full"}`}
+      className={`fixed inset-x-0 bottom-0 z-[80] flex h-[calc(86px+env(safe-area-inset-bottom))] items-stretch overflow-hidden rounded-t-[20px] bg-blue-500 pb-[env(safe-area-inset-bottom)] transition-transform duration-300 ease-out xl:hidden ${ready && !mobileHidden ? "translate-y-0" : "translate-y-full"}`}
     >
       {mobileActions.map((action) => {
         const content = (
@@ -165,7 +165,7 @@ export default function QuickActionRail({
         setHoveredAction(null);
         setTooltipSuppressed(false);
       }}
-      className={`fixed top-1/2 right-0 ${productMenuOpen ? "z-[70]" : "z-20"} hidden w-20 -translate-y-1/2 px-2 py-[18px] transition-[opacity,transform] duration-300 xl:block ${ready
+      className={`fixed top-1/2 right-0 ${productMenuOpen ? "z-[80]" : "z-20"} hidden w-20 -translate-y-1/2 px-2 py-[18px] transition-[opacity,transform] duration-300 xl:block ${ready
           ? "pointer-events-auto opacity-100"
           : "pointer-events-none translate-x-full opacity-0"
         }`}

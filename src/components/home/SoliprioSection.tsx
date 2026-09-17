@@ -1,8 +1,8 @@
 import { getTranslations } from "next-intl/server";
-import { getBeamColor } from "@/lib/image-color";
-import SoliprioCard from "./SoliprioCard";
+import SoliprioBenefitCards from "./SoliprioBenefitCards";
 import SoliprioMobile from "./SoliprioMobile";
 import SoliprioPhoto from "./SoliprioPhoto";
+import SoliprioSegmentSelector from "./SoliprioSegmentSelector";
 import { Glow, Logos } from "./soliprio-parts";
 
 /* Geometry mirrors Figma "Soliprio Section" (node 1669-6585). The desktop art
@@ -18,37 +18,35 @@ import { Glow, Logos } from "./soliprio-parts";
  *  means the parallax never uncovers an edge. */
 const PHOTO_DRIFT = 32;
 
-/* `swapsPhoto` marks the card that owns the band's alternate backdrop: the
-   default is the Prioritas photo, and Solitaire brings its own. */
-const CARDS = [
-  {
-    key: "solitaire",
-    src: "/assets/soliprio/bca-solitaire-card.webp",
-    beamDelay: "0s",
-    swapsPhoto: true,
-  },
-  {
-    key: "prioritas",
-    src: "/assets/soliprio/bca-prioritas-card.webp",
-    // Half a lap behind, so the two beams never sweep in lockstep.
-    beamDelay: "-2.25s",
-    swapsPhoto: false,
-  },
-] as const;
-
 export default async function SoliprioSection() {
   const t = await getTranslations("soliprio");
-  // Sampled from the artwork at request time (and cached), so the beams stay
-  // in step with the cards if the images are ever reshot.
-  const beams = await Promise.all(CARDS.map((card) => getBeamColor(card.src)));
-  const swapKey = CARDS.find((card) => card.swapsPhoto)?.key ?? "";
+  const benefits = [
+    {
+      key: "lounge",
+      image: "/assets/soliprio/prioritas-lounge.webp",
+      title: t("benefits.lounge.title"),
+      cta: t("benefits.lounge.cta"),
+    },
+    {
+      key: "healthcare",
+      image: "/assets/soliprio/prioritas-healthcare.webp",
+      title: t("benefits.healthcare.title"),
+      cta: t("benefits.healthcare.cta"),
+    },
+    {
+      key: "event",
+      image: "/assets/soliprio/prioritas-event.webp",
+      title: t("benefits.event.title"),
+      cta: t("benefits.event.cta"),
+    },
+  ] as const;
 
   return (
     <section id="soliprio" className="relative">
       {/* ===== Desktop (>= xl) ===== */}
       <div
         data-reveal-group
-        className="soliprio-band relative hidden h-[640px] overflow-clip bg-[#0f0f0f] xl:block"
+        className="soliprio-band relative hidden h-[720px] overflow-clip bg-[#0f0f0f] xl:block"
       >
         {/* Photo is pinned 92px from the left edge and bleeds 60px past the
             right one, so it grows with the viewport instead of re-cropping.
@@ -59,6 +57,7 @@ export default async function SoliprioSection() {
           className="absolute left-[92px] top-1/2 h-[722px] w-[calc(100%-32px)] -translate-y-1/2"
           imgClassName="absolute inset-0 size-full max-w-none object-cover"
           drift={PHOTO_DRIFT}
+          controlledBySegment
         />
 
         <Glow
@@ -83,7 +82,7 @@ export default async function SoliprioSection() {
             exactly there). The full-bleed background layers above (photo,
             glow, pattern) are untouched siblings, so this only ever
             repositions the text/cards. */}
-        <div className="absolute inset-0 mx-auto flex w-full max-w-[1216px] flex-col justify-between py-16">
+        <div className="absolute inset-0 mx-auto flex w-full max-w-[1216px] flex-col py-12">
           <div data-reveal className="flex w-[464px] flex-col gap-8">
             <Logos variant="desktop" />
             <div className="flex flex-col gap-3">
@@ -94,20 +93,9 @@ export default async function SoliprioSection() {
                 {t("description")}
               </p>
             </div>
+            <SoliprioSegmentSelector />
           </div>
-
-          <div data-reveal className="flex items-start gap-8">
-            {CARDS.map((card, i) => (
-              <SoliprioCard
-                key={card.key}
-                src={card.src}
-                label={t(card.key)}
-                beam={beams[i]}
-                beamDelay={card.beamDelay}
-                swapsPhoto={card.swapsPhoto}
-              />
-            ))}
-          </div>
+          <SoliprioBenefitCards benefits={benefits} className="mt-auto overflow-visible" />
         </div>
       </div>
 
@@ -115,12 +103,7 @@ export default async function SoliprioSection() {
       <SoliprioMobile
         title={t("title")}
         description={t("description")}
-        swapKey={swapKey}
-        cards={CARDS.map((card) => ({
-          key: card.key,
-          src: card.src,
-          label: t(card.key),
-        }))}
+        benefits={benefits}
       />
     </section>
   );

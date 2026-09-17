@@ -72,16 +72,31 @@ export default function ProductMegaMenuOverlay({
   const tNav = useTranslations("nav");
   const tMobileMenu = useTranslations("mobileMenu");
   const [selectedKey, setSelectedKey] = useState(categories[0]?.key ?? "Simpanan");
+  const [mobileDetailOpen, setMobileDetailOpen] = useState(false);
+  const [mobileEntered, setMobileEntered] = useState(false);
   const selected = categories.find((category) => category.key === selectedKey) ?? categories[0];
   useScrollLock(open);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      const closeFrame = window.requestAnimationFrame(() => setMobileEntered(false));
+      return () => window.cancelAnimationFrame(closeFrame);
+    }
+    let secondFrame = 0;
+    const firstFrame = window.requestAnimationFrame(() => {
+      setMobileDetailOpen(false);
+      setMobileEntered(false);
+      secondFrame = window.requestAnimationFrame(() => setMobileEntered(true));
+    });
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      window.cancelAnimationFrame(firstFrame);
+      window.cancelAnimationFrame(secondFrame);
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, [onClose, open]);
 
   if (!selected) return null;
@@ -94,17 +109,110 @@ export default function ProductMegaMenuOverlay({
       role="dialog"
       aria-modal="true"
       aria-label={tNav("produk")}
-      className={`fixed inset-0 z-[60] transition-opacity duration-200 ${open ? "opacity-100" : "pointer-events-none invisible opacity-0 delay-200"}`}
+      className={`fixed inset-0 z-[75] transition-opacity duration-300 ${open ? "opacity-100" : "pointer-events-none invisible opacity-0 delay-300"}`}
     >
       <button
         type="button"
         aria-label={tMobileMenu("tutupMenu")}
         onClick={onClose}
-        className="absolute inset-0 hidden bg-black/60 backdrop-blur-[4px] xl:block"
+        className="absolute inset-0 bg-black/60 backdrop-blur-[4px]"
+      />
+
+      <div
+        aria-hidden
+        className={`absolute inset-x-0 bottom-0 z-10 h-[calc(86px+env(safe-area-inset-bottom))] bg-neutral-100 transition-opacity duration-300 xl:hidden ${open ? "opacity-100" : "opacity-0"}`}
       />
 
       <section
-        className={`absolute inset-x-0 top-0 bottom-[calc(86px+env(safe-area-inset-bottom))] flex flex-col overflow-hidden bg-neutral-100 transition-transform duration-300 ease-[var(--ease-entrance)] xl:inset-auto xl:top-1/2 xl:right-[104px] xl:h-[90vh] xl:w-[840px] xl:-translate-y-1/2 xl:flex-row xl:rounded-3xl xl:shadow-panel ${open ? "translate-x-0" : "translate-x-6"}`}
+        className={`absolute inset-x-0 bottom-[calc(86px+env(safe-area-inset-bottom))] z-20 flex max-h-[90dvh] flex-col overflow-hidden rounded-t-3xl bg-neutral-100 shadow-panel transition-[height,transform,opacity] duration-500 ease-[var(--ease-entrance)] xl:hidden ${mobileDetailOpen ? "h-[min(90dvh,calc(100dvh-86px-env(safe-area-inset-bottom)))]" : "h-[280px]"} ${mobileEntered ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}
+      >
+        <div className="mx-auto mt-3 h-1 w-12 shrink-0 rounded-full bg-neutral-300" />
+
+        <div className="relative min-h-0 flex-1 overflow-hidden">
+          <nav
+            aria-label={tNav("produk")}
+            aria-hidden={mobileDetailOpen}
+            className={`absolute inset-0 overflow-y-auto px-4 pt-5 pb-6 transition-[transform,opacity] duration-300 ease-[var(--ease-entrance)] ${mobileDetailOpen ? "pointer-events-none -translate-x-8 opacity-0" : "translate-x-0 opacity-100"}`}
+          >
+            <div className="grid grid-cols-4 gap-x-2 gap-y-6">
+              {categories.map((category) => (
+                <button
+                  key={category.key}
+                  type="button"
+                  onClick={() => {
+                    setSelectedKey(category.key);
+                    setMobileDetailOpen(true);
+                  }}
+                  className="flex min-w-0 flex-col items-center gap-2 text-center text-neutral-700"
+                >
+                  <span className="flex size-14 items-center justify-center rounded-full bg-cyan-100">
+                    <img src={category.icon} alt="" className="size-10" />
+                  </span>
+                  <span className="text-xs font-semibold leading-4">{category.label}</span>
+                </button>
+              ))}
+            </div>
+          </nav>
+
+          <div
+            aria-hidden={!mobileDetailOpen}
+            className={`absolute inset-0 flex min-h-0 flex-col transition-[transform,opacity] duration-300 ease-[var(--ease-entrance)] ${mobileDetailOpen ? "translate-x-0 opacity-100" : "pointer-events-none translate-x-8 opacity-0"}`}
+          >
+            <header className="flex shrink-0 items-center gap-3 px-4 py-5">
+              <button
+                type="button"
+                aria-label={tMobileMenu("kembali")}
+                onClick={() => setMobileDetailOpen(false)}
+                className="flex size-10 shrink-0 items-center justify-center text-blue-500"
+              >
+                <svg viewBox="0 0 24 24" className="size-6" aria-hidden>
+                  <path d="m15 5-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <h2 className="min-w-0 flex-1 truncate text-xl font-semibold text-neutral-900">{selected.label}</h2>
+            </header>
+
+            <div className="min-h-0 flex-1 overflow-y-auto">
+              <div className="px-4 pb-5">
+                {selected.products.map((product) => (
+                  <button key={product.title} type="button" className="flex w-full items-center gap-3 rounded-xl px-2 py-3 text-left transition-colors active:bg-cyan-100">
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-base font-semibold leading-6 text-neutral-900">{product.title}</span>
+                      {product.description ? <span className="mt-0.5 block text-sm leading-5 text-neutral-600">{product.description}</span> : null}
+                    </span>
+                    <ArrowRight className="size-5 shrink-0 text-blue-500" />
+                  </button>
+                ))}
+                <button type="button" className="mt-2 flex items-center gap-1 px-2 py-3 text-sm font-semibold text-blue-500">
+                  {selected.ctaLabel}<ArrowRight className="size-4" />
+                </button>
+              </div>
+
+              <div className="border-t border-neutral-300 bg-neutral-200 px-4 py-4">
+                <div className="grid grid-cols-2 gap-2">
+                  {tools.map((tool) => (
+                    <button key={tool.label} type="button" className="flex min-h-20 items-center gap-3 rounded-xl border border-neutral-300 bg-neutral-100 p-3 text-left text-blue-500">
+                      <span className="shrink-0"><UtilityIcon type={tool.icon} /></span>
+                      <span className="text-sm font-semibold leading-5 text-neutral-800">{tool.label}</span>
+                    </button>
+                  ))}
+                </div>
+                <div className="mt-3 flex flex-col">
+                  {supportingLinks.map((link) => (
+                    <button key={link.label} type="button" className="flex items-center gap-3 py-3 text-left text-sm font-semibold leading-5 text-neutral-800">
+                      <span className="min-w-0 flex-1">{link.label}</span>
+                      <ArrowRight className="size-5 shrink-0 text-neutral-600" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        className={`absolute top-1/2 right-[104px] hidden h-[90vh] w-[840px] -translate-y-1/2 flex-row overflow-hidden rounded-3xl bg-neutral-100 shadow-panel transition-transform duration-300 ease-[var(--ease-entrance)] xl:flex ${open ? "translate-x-0" : "translate-x-6"}`}
       >
         <span aria-hidden className="absolute top-1/2 -right-2.5 hidden size-5 -translate-y-1/2 rotate-45 rounded-sm bg-white xl:block" />
 

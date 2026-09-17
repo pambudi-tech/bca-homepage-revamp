@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useLenis } from "@/components/SmoothScroll";
+import { SOLIPRIO_SEGMENT_EVENT } from "./SoliprioSegmentSelector";
 
 /**
  * The Soliprio band's backdrop: the Prioritas photo, with the Solitaire one
@@ -21,6 +22,7 @@ export default function SoliprioPhoto({
   imgClassName,
   drift,
   swapShown,
+  controlledBySegment = false,
 }: {
   /** Positions the stack inside the band. */
   className: string;
@@ -32,9 +34,23 @@ export default function SoliprioPhoto({
   /** Controlled swap (mobile carousel). Leave undefined to let CSS decide
    *  from hover (desktop). */
   swapShown?: boolean;
+  /** Changes the photo from the Solitaire/Prioritas segment selector. */
+  controlledBySegment?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const lenis = useLenis();
+  const segmentSwapShown = useRef(false);
+
+  useEffect(() => {
+    if (!controlledBySegment) return;
+    const handleSegment = (event: Event) => {
+      const segment = (event as CustomEvent<"solitaire" | "prioritas">).detail;
+      segmentSwapShown.current = segment === "solitaire";
+      ref.current?.setAttribute("data-swap-shown", segmentSwapShown.current ? "true" : "false");
+    };
+    window.addEventListener(SOLIPRIO_SEGMENT_EVENT, handleSegment);
+    return () => window.removeEventListener(SOLIPRIO_SEGMENT_EVENT, handleSegment);
+  }, [controlledBySegment]);
 
   useEffect(() => {
     const el = ref.current;
@@ -87,7 +103,9 @@ export default function SoliprioPhoto({
     <div
       ref={ref}
       className={`pointer-events-none ${className}`}
-      {...(swapShown === undefined
+      {...(controlledBySegment
+        ? { "data-swap-shown": "false" }
+        : swapShown === undefined
         ? {}
         : { "data-swap-shown": swapShown ? "true" : "false" })}
     >

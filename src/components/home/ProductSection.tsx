@@ -206,11 +206,10 @@ function ProductCard({
       className={`group relative h-[420px] shrink-0 overflow-clip rounded-3xl bg-white text-left ${active ? "cursor-none" : "cursor-pointer"
         }`}
       style={{
-        // Inactive cards sit at a fixed 128px; the active card grows to
-        // fill whatever space is left in the row (so this still works as
-        // the category count changes).
-        flexGrow: active ? 1 : 0,
-        flexBasis: active ? 0 : 128,
+        // Desktop accordion uses explicit widths so the active card remains
+        // visually consistent as the category count changes.
+        flexGrow: 0,
+        flexBasis: active ? 400 : 128,
         clipPath: entered ? "inset(0 0 0 0)" : "inset(0 100% 0 0)",
         transition: `flex-grow 500ms var(--ease-in-out), flex-basis 500ms var(--ease-in-out), clip-path 700ms var(--ease-entrance) ${enterDelayMs}ms`,
       }}
@@ -319,27 +318,22 @@ function CardContent({
         </div>
       </div>
 
-      {/* Collapsed (default) content — rotated vertical title. Slides down
-          and fades out as the card becomes active; fades back in as it
-          returns to default. No shared width, background, or swap-animation
-          styles with the active panel above — just its own rotated title with
-          a plain 16px pad on every side. */}
+      {/* Collapsed (default) content — the title keeps its normal left-to-right
+          reading direction inside the same glass language as the active card.
+          It slides down and fades out as the card becomes active. */}
       <div
-        className="absolute bottom-2 left-2 z-10 flex overflow-clip rounded-2xl p-4 transition-[transform,opacity] duration-500 ease-in-out"
+        className="hero-search absolute inset-x-2 bottom-2 z-10 flex overflow-clip rounded-2xl p-4 transition-[transform,opacity] duration-500 ease-in-out"
         style={{
+          backgroundColor: "rgba(0,0,0,0.3)",
+          backdropFilter: "blur(16px) saturate(1.25)",
+          WebkitBackdropFilter: "blur(16px) saturate(1.25)",
+          isolation: "isolate",
           transform: active ? "translateY(20px)" : "translateY(0)",
           opacity: active ? 0 : 1,
           pointerEvents: active ? "none" : "auto",
         }}
       >
-        <p
-          className="w-max whitespace-nowrap text-title text-white text-shadow-hero"
-          style={{
-            writingMode: "vertical-rl",
-            textOrientation: "sideways",
-            transform: "rotate(180deg)",
-          }}
-        >
+        <p className="text-base leading-6 font-semibold text-white text-shadow-hero">
           {copy.title}
         </p>
       </div>
@@ -1467,7 +1461,7 @@ export default function ProductSection({
               /* Desktop accordion — one card per category; the active card
                  expands. Six cards span the full 1280px row. No photo swap: each
                  card owns its own photo and just expands/collapses. */
-              <div className="hidden gap-4 xl:flex">
+              <div className="hidden gap-3 xl:flex">
                 {categoryCards.map((card, i) => (
                   <ProductCard
                     key={categories[i].key}
