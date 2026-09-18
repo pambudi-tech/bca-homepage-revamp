@@ -141,7 +141,7 @@ export default function Navbar({ productCategories, megamenuContent, variant = "
 
   return (
     <>
-      <MobileNav scrolled={scrolled} hidden={shouldHide} productCategories={productCategories} megamenuContent={megamenuContent} searchOpen={searchOpen} onOpenSearch={() => setSearchOpen(true)} />
+      <MobileNav scrolled={scrolled} hidden={shouldHide} productCategories={productCategories} megamenuContent={megamenuContent} searchOpen={searchOpen} onOpenSearch={() => setSearchOpen(true)} variant={variant} />
 
       <nav
         aria-label={tNav("primary")}

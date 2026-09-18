@@ -14,6 +14,19 @@
       "cta": "Explore All Promotions",
       "imageAlt": "A couple enjoying a range of activities and BCA lifestyle offers"
     },
+    "categoryRail": {
+      "kuliner": "Culinary",
+      "hobby": "Hobby",
+      "entertainment": "Entertainment",
+      "health": "Health",
+      "travel": "Travel",
+      "telco": "Telco",
+      "ecommerce": "E-commerce",
+      "fashion": "Fashion",
+      "retail": "Retail",
+      "home": "Home",
+      "groceries": "Groceries"
+    },
     "search": {
       "prompt": "Find the Best Promotion for You",
       "label": "Search promotions",

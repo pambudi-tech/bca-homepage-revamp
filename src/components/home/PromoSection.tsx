@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import type { Promo } from "./promo-data";
 import Confetti from "./Confetti";
@@ -12,6 +12,7 @@ import LayoutSwitcher from "./LayoutSwitcher";
 import { useLayoutVariant } from "@/lib/useLayoutVariant";
 import { Link } from "@/i18n/navigation";
 import PromoCard from "@/components/promo/PromoCard";
+import PromoCarousel from "@/components/promo/PromoCarousel";
 // import PercentGlass from "./PercentGlass"; // temporarily hidden
 
 /**
@@ -48,104 +49,6 @@ function MorePromoCard({ reveal = true }: { reveal?: boolean }) {
         className="absolute left-6 right-6 top-[86px] h-[242px] object-cover mix-blend-soft-light"
       />
     </Link>
-  );
-}
-
-/** Horizontal gap between the mobile carousel's cards, px. */
-const MOBILE_GAP = 16;
-
-/**
- * Mobile-only promo carousel — a centre-snapping swipe row that never runs out
- * of cards. Same trick the product carousel uses: the set is rendered three
- * times and the viewport rides the middle copy, so landing on an outer copy
- * can be answered by hopping to its twin one set away. Every copy is
- * pixel-identical, so the hop is invisible; the row just keeps going in both
- * directions.
- *
- * The hop waits until the gesture has come to rest. Correcting mid-fling is
- * what used to read as a glitch a few cards in — the write would land in the
- * middle of the browser's own momentum and snap animation.
- *
- * Gaps are per-card margin (not flex `gap`, and not padding, which would sit
- * inside the snap area and throw the centring off) so the card's border box —
- * what snapping actually measures — is exactly the card.
- */
-function MobilePromoCarousel({ promos, now }: { promos: Promo[]; now: Date }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const n = promos.length;
-
-  useEffect(() => {
-    const container = scrollRef.current;
-    if (!container || n === 0) return;
-
-    const cardAt = (slot: number) => container.children[slot] as HTMLElement | undefined;
-
-    // Park on the middle copy's first card, so there is a whole set of runway
-    // in either direction before the first hop is ever needed.
-    const start = cardAt(n);
-    if (start) {
-      container.scrollLeft = start.offsetLeft - (container.clientWidth - start.offsetWidth) / 2;
-    }
-
-    let raf = 0;
-    let settle: ReturnType<typeof setTimeout> | undefined;
-
-    const update = () => {
-      raf = 0;
-      const centre = container.scrollLeft + container.clientWidth / 2;
-      let nearest = 0;
-      let best = Infinity;
-      for (let slot = 0; slot < container.children.length; slot++) {
-        const card = cardAt(slot)!;
-        const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - centre);
-        if (distance < best) {
-          best = distance;
-          nearest = slot;
-        }
-      }
-
-      clearTimeout(settle);
-      const twin = n + (nearest % n);
-      if (twin === nearest) return;
-      settle = setTimeout(() => {
-        const from = cardAt(nearest);
-        const to = cardAt(twin);
-        if (!from || !to) return;
-        // Scroll-snap would animate a correction of its own on top of this
-        // write, which is what shows up as a hitch right at the seam. Off for
-        // the jump, back on the next frame.
-        container.style.scrollSnapType = "none";
-        container.scrollLeft += to.offsetLeft - from.offsetLeft;
-        requestAnimationFrame(() => {
-          container.style.scrollSnapType = "";
-        });
-      }, 80);
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-
-    container.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      container.removeEventListener("scroll", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-      clearTimeout(settle);
-    };
-  }, [n]);
-
-  if (n === 0) return null;
-
-  return (
-    <div
-      ref={scrollRef}
-      className="hide-scrollbar -mx-4 flex snap-x snap-mandatory items-start overflow-x-auto px-4 [scrollbar-width:none]"
-    >
-      {[...promos, ...promos, ...promos].map((promo, i) => (
-        <div key={`${promo.id}-${i}`} className="snap-center" style={{ marginRight: MOBILE_GAP }}>
-          <PromoCard promo={promo} now={now} reveal={false} />
-        </div>
-      ))}
-    </div>
   );
 }
 
@@ -247,7 +150,7 @@ export default function PromoSection({ promos, now }: { promos: Promo[]; now: Da
               fits below xl. No "show more" card here: the CTA button below the
               row already carries it. */}
           <div className="xl:hidden">
-            <MobilePromoCarousel promos={visiblePromos} now={now} />
+            <PromoCarousel promos={visiblePromos} now={now} />
           </div>
 
           {/* Cards, desktop — wrapping grid. Tighter 60ms stagger: eight

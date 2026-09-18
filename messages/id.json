@@ -14,6 +14,19 @@
       "cta": "Jelajahi Semua Promo",
       "imageAlt": "Pasangan menikmati beragam aktivitas dan penawaran gaya hidup BCA"
     },
+    "categoryRail": {
+      "kuliner": "Kuliner",
+      "hobby": "Hobi",
+      "entertainment": "Hiburan",
+      "health": "Kesehatan",
+      "travel": "Travel",
+      "telco": "Telco",
+      "ecommerce": "E-commerce",
+      "fashion": "Fashion",
+      "retail": "Retail",
+      "home": "Home",
+      "groceries": "Groceries"
+    },
     "search": {
       "prompt": "Cari Promo Terbaik Buatmu",
       "label": "Cari promo",

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { onPreloaderDone } from "@/components/Preloader";
+import { Link } from "@/i18n/navigation";
 import type { MegaMenuContent } from "@/lib/megamenu";
 import { NAVBAR_VISIBILITY_EVENT } from "./Navbar";
 import ProductMegaMenuOverlay from "./ProductMegaMenuOverlay";
@@ -97,7 +98,7 @@ export default function QuickActionRail({
     {
       label: tNav("promo"),
       icon: "/assets/quick-action/discount-shape.svg",
-      href: "https://promo.bca.co.id/",
+      href: "/promo",
     },
     {
       label: tNav("haloBca"),
@@ -142,6 +143,18 @@ export default function QuickActionRail({
             >
               {content}
             </button>
+          );
+        }
+
+        if (action.href === "/promo") {
+          return (
+            <Link
+              key={action.label}
+              href="/promo"
+              className="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 transition-colors active:bg-white/10"
+            >
+              {content}
+            </Link>
           );
         }
 
@@ -231,15 +244,19 @@ export default function QuickActionRail({
 
           return (
             <div key={action.label} onPointerEnter={() => { setTooltipSuppressed(false); setHoveredAction(action.label); }} className={`group/rail relative ${wrapperClass}`}>
-              <a
-                href={action.href}
-                aria-label={action.label}
-                target={action.href?.startsWith("http") ? "_blank" : undefined}
-                rel={action.href?.startsWith("http") ? "noopener noreferrer" : undefined}
-                className={className}
-              >
-                {content}
-              </a>
+              {action.href === "/promo" ? (
+                <Link href="/promo" aria-label={action.label} className={className}>{content}</Link>
+              ) : (
+                <a
+                  href={action.href}
+                  aria-label={action.label}
+                  target={action.href?.startsWith("http") ? "_blank" : undefined}
+                  rel={action.href?.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className={className}
+                >
+                  {content}
+                </a>
+              )}
               {!tooltipSuppressed && hoveredAction === action.label && <RailTooltip label={action.label} positionClass={tooltipPosition} />}
             </div>
           );

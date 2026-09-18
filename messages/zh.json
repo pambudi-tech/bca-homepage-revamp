@@ -14,6 +14,19 @@
       "cta": "探索所有优惠",
       "imageAlt": "一对情侣享受多种活动和 BCA 生活方式优惠"
     },
+    "categoryRail": {
+      "kuliner": "餐饮",
+      "hobby": "爱好",
+      "entertainment": "娱乐",
+      "health": "健康",
+      "travel": "旅行",
+      "telco": "通信",
+      "ecommerce": "电商",
+      "fashion": "时尚",
+      "retail": "零售",
+      "home": "家居",
+      "groceries": "日常用品"
+    },
     "search": {
       "prompt": "寻找最适合您的优惠",
       "label": "搜索优惠",
