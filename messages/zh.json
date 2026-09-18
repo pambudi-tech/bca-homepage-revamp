@@ -151,7 +151,7 @@
     },
     "detailPage": {
       "back": "返回信用卡",
-      "apply": "申请",
+      "apply": "在 myBCA 申请",
       "navigationLabel": "信用卡详情导航",
       "informationTitle": "其他信息",
       "informationType": "信息类型",
@@ -411,7 +411,7 @@
       "heading": "找到适合您需求的卡片",
       "compare": "比较",
       "detail": "卡片详情",
-      "apply": "申请",
+      "apply": "在 myBCA 申请",
       "showMore": "查看另外 {count} 张卡片",
       "showLess": "收起卡片",
       "previewAria": "放大查看 {title}",
@@ -438,7 +438,7 @@
         "back": "返回卡片选择",
         "eyebrow": "卡片比较",
         "heading": "比较信用卡",
-        "apply": "Apply",
+        "apply": "在 myBCA 申请",
         "navigationLabel": "信用卡比较导航",
         "selectedCards": "正在比较的卡片",
         "cardClusters": {

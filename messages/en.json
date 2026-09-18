@@ -151,7 +151,7 @@
     },
     "detailPage": {
       "back": "Back to Credit Cards",
-      "apply": "Apply",
+      "apply": "Apply in myBCA",
       "navigationLabel": "Credit card detail navigation",
       "informationTitle": "Other Information",
       "informationType": "Information Type",
@@ -411,7 +411,7 @@
       "heading": "Find the Card That Fits Your Needs",
       "compare": "Compare",
       "detail": "Card Details",
-      "apply": "Apply",
+      "apply": "Apply in myBCA",
       "showMore": "See {count} more cards",
       "showLess": "Show fewer cards",
       "previewAria": "Enlarge image of {title}",
@@ -438,7 +438,7 @@
         "back": "Back to card options",
         "eyebrow": "Card comparison",
         "heading": "Compare Credit Cards",
-        "apply": "Apply",
+        "apply": "Apply in myBCA",
         "navigationLabel": "Credit card comparison navigation",
         "selectedCards": "Cards being compared",
         "cardClusters": {

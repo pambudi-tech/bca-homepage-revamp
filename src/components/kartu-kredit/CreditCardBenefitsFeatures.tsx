@@ -31,6 +31,31 @@ const FEATURE_ICONS: Record<string, string> = {
   contactless: "/assets/kartu-kredit/contactless.svg",
 };
 
+const BENEFIT_IMAGES: Record<string, string> = {
+  installment: "/assets/kartu-kredit/benefit-installment.png",
+  reward: "/assets/kartu-kredit/benefit-reward.png",
+  autopay: "/assets/kartu-kredit/benefit-autopay.png",
+  "travel-insurance": "/assets/kartu-kredit/benefit-travel-insurance.png",
+  "credit-life": "/assets/kartu-kredit/benefit-credit-life.png",
+  "krisflyer-reward": "/assets/kartu-kredit/benefit-reward.png",
+  "krisflyer-welcome-bonus": "/assets/kartu-kredit/benefit-reward.png",
+  "krisflyer-monthly-bonus": "/assets/kartu-kredit/benefit-reward.png",
+  "krisflyer-merchant-offers": "/assets/kartu-kredit/benefit-reward.png",
+  "krisflyer-travel-services": "/assets/kartu-kredit/benefit-travel-insurance.png",
+};
+
+function getBenefitImage(item: BenefitItem) {
+  if (BENEFIT_IMAGES[item.key]) return BENEFIT_IMAGES[item.key];
+
+  const descriptor = `${item.key} ${item.title}`.toLowerCase();
+  if (/cicil|install|instal|raten|分期/.test(descriptor)) return BENEFIT_IMAGES.installment;
+  if (/autopay|auto pay|autodebet|direct debit|自动/.test(descriptor)) return BENEFIT_IMAGES.autopay;
+  if (/credit life|life insurance|credit-life|信用人寿/.test(descriptor)) return BENEFIT_IMAGES["credit-life"];
+  if (/travel|perjalanan|miles|point|flight|insurance|asuransi|保险|旅行/.test(descriptor)) return BENEFIT_IMAGES["travel-insurance"];
+
+  return BENEFIT_IMAGES.reward;
+}
+
 const FEATURE_COPY = {
   bca: [
     { key: "transactions", title: "Transaksi di Merchant dan ATM BCA", description: "Dapat bertransaksi di merchant online dan offline serta ATM BCA." },
@@ -111,7 +136,7 @@ export default function CreditCardBenefitsFeatures({ card }: { card?: Comparison
     key: item.key,
     title: item.title,
     description: item.description ?? "",
-    image: "/assets/kartu-kredit/benefit-placeholder.svg",
+    image: getBenefitImage(item),
   }));
   const featureRailRef = useRef<HTMLDivElement>(null);
 

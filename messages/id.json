@@ -151,7 +151,7 @@
     },
     "detailPage": {
       "back": "Kembali ke Kartu Kredit",
-      "apply": "Apply",
+      "apply": "Apply di myBCA",
       "navigationLabel": "Navigasi detail kartu kredit",
       "informationTitle": "Informasi Lainnya",
       "informationType": "Jenis Informasi",
@@ -411,7 +411,7 @@
       "heading": "Temukan Kartu yang Sesuai dengan Kebutuhanmu",
       "compare": "Bandingkan",
       "detail": "Detail Kartu",
-      "apply": "Apply",
+      "apply": "Apply di myBCA",
       "showMore": "Lihat {count} kartu lainnya",
       "showLess": "Lihat lebih sedikit",
       "previewAria": "Perbesar gambar {title}",
@@ -438,7 +438,7 @@
         "back": "Kembali ke pilihan kartu",
         "eyebrow": "Perbandingan kartu",
         "heading": "Bandingkan Kartu Kredit",
-        "apply": "Apply",
+        "apply": "Apply di myBCA",
         "navigationLabel": "Navigasi perbandingan kartu",
         "selectedCards": "Kartu yang sedang dibandingkan",
         "cardClusters": {

@@ -8,6 +8,7 @@ import { useRouter } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
 import PromoRibbon from "@/components/PromoRibbon";
 import { ApplyInMyBcaLink } from "@/components/ui/MyBcaLinks";
+import { MOBILE_QUICK_NAV_VISIBILITY_EVENT } from "@/components/home/QuickActionRail";
 
 const MAX_TILT = 10;
 const MAX_COMPARE_CARDS = 3;
@@ -421,6 +422,18 @@ function ComparisonPanel({
   const isExpanded = mode === "expanded";
   const isEntering = phase === "entering";
   const canCompare = count >= 2;
+  const [mobileQuickNavShown, setMobileQuickNavShown] = useState(
+    () => typeof document !== "undefined" && document.documentElement.dataset.mobileQuickNavShown === "true",
+  );
+
+  useEffect(() => {
+    const syncQuickNav = (event: Event) => {
+      const hidden = (event as CustomEvent<boolean>).detail;
+      setMobileQuickNavShown(!hidden && window.innerWidth < 1280);
+    };
+    window.addEventListener(MOBILE_QUICK_NAV_VISIBILITY_EVENT, syncQuickNav);
+    return () => window.removeEventListener(MOBILE_QUICK_NAV_VISIBILITY_EVENT, syncQuickNav);
+  }, []);
   const statusLabel =
     count === MAX_COMPARE_CARDS
       ? t("maxSelected", { max: MAX_COMPARE_CARDS })
@@ -442,6 +455,7 @@ function ComparisonPanel({
           ? "max-w-[560px] xl:max-w-[1040px]"
           : "max-w-[560px] cursor-pointer"
       } ${isEntering ? "opacity-0 translate-y-6" : "opacity-100 translate-y-0"}`}
+      style={mobileQuickNavShown ? { bottom: "calc(110px + env(safe-area-inset-bottom))" } : undefined}
     >
       <div
         data-mode={mode}
