@@ -25,11 +25,13 @@ function ChevronRight() {
 export default function MobileMenu({
   open,
   onClose,
+  variant = "default",
 }: {
   open: boolean;
   onClose: () => void;
   productCategories?: ProductCategory[];
   megamenuContent?: MegaMenuContent;
+  variant?: "default" | "about" | "promo";
 }) {
   const locale = useLocale() as AppLocale;
   const router = useRouter();
@@ -97,8 +99,8 @@ export default function MobileMenu({
     ...SEGMENTS.map((segment) => ({
       key: segment,
       label: tNav(`segments.${segment}`),
-      href: segment === "Individu" ? null : SEGMENT_EXTERNAL_LINKS[segment],
-      active: segment === "Individu",
+      href: segment === "Individu" ? "/" : SEGMENT_EXTERNAL_LINKS[segment],
+      active: variant === "default" && segment === "Individu",
     })),
     { key: "Tentang BCA", label: tNav("tentangBca"), href: "/tentang-bca", active: false },
     { key: "Karir", label: tNav("karir"), href: "https://karir.bca.co.id/", active: false },
@@ -160,6 +162,7 @@ export default function MobileMenu({
 
             if (item.key === "Tentang BCA") return <Link key={item.key} href="/tentang-bca" onClick={closeMenu} className={className}>{content}</Link>;
             if (item.active) return <div key={item.key} className={className}>{content}</div>;
+            if (item.href === "/") return <Link key={item.key} href="/" onClick={closeMenu} className={className}>{content}</Link>;
             return <a key={item.key} href={item.href ?? "#"} target="_blank" rel="noopener noreferrer" onClick={closeMenu} className={className}>{content}</a>;
           })}
         </nav>

@@ -6,6 +6,7 @@ import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { routing, type AppLocale } from "@/i18n/routing";
 import type { ProductCategory } from "./product-data";
 import type { MegaMenuContent } from "@/lib/megamenu";
+import type { Promo } from "./promo-data";
 import MobileNav from "./MobileNav";
 import SearchOverlay from "./SearchOverlay";
 import SearchPlaceholderCarousel from "./SearchPlaceholderCarousel";
@@ -20,6 +21,7 @@ const LOCALE_META: Record<AppLocale, { flag: string }> = {
 export const NAVBAR_VISIBILITY_EVENT = "bca:navbar-hidden";
 export const NAVBAR_ANCHOR_LOCK_EVENT = "bca:navbar-anchor-lock";
 export const OPEN_SEARCH_EVENT = "bca:open-search";
+const PROMO_NAV_REVEAL_OFFSET = 64;
 
 function SearchButton({ label, placeholders, onClick, expanded }: { label: string; placeholders: string[]; onClick: () => void; expanded: boolean }) {
   return (
@@ -53,7 +55,7 @@ function LoginIcon({ className = "size-6 shrink-0" }: { className?: string }) {
   );
 }
 
-export default function Navbar({ productCategories, megamenuContent, variant = "default" }: { productCategories?: ProductCategory[]; megamenuContent?: MegaMenuContent; variant?: "default" | "about" | "promo" }) {
+export default function Navbar({ productCategories, megamenuContent, promoSearchItems, variant = "default" }: { productCategories?: ProductCategory[]; megamenuContent?: MegaMenuContent; /** Passed only by the Promo page, so its navbar search never falls back to the site-wide index. */ promoSearchItems?: Promo[]; variant?: "default" | "about" | "promo" }) {
   const locale = useLocale() as AppLocale;
   const router = useRouter();
   const pathname = usePathname();
@@ -61,13 +63,17 @@ export default function Navbar({ productCategories, megamenuContent, variant = "
   const tHero = useTranslations("hero");
   const tLang = useTranslations("languages");
   const segments = Object.keys(tNav.raw("segments")) as string[];
-  const searchPlaceholders = tHero.raw("placeholders") as string[];
+  const tPromo = useTranslations("promoPage");
+  const searchPlaceholders = variant === "promo"
+    ? tPromo.raw("search.placeholders") as string[]
+    : tHero.raw("placeholders") as string[];
   const otherLocales = routing.locales.filter((item) => item !== locale);
   const [searchOpen, setSearchOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [langHover, setLangHover] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [navHidden, setNavHidden] = useState(false);
+  const [nearPromoSection, setNearPromoSection] = useState(false);
   const [anchorLocked, setAnchorLocked] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
@@ -84,6 +90,11 @@ export default function Navbar({ productCategories, megamenuContent, variant = "
       raf = 0;
       const y = window.scrollY;
       setScrolled(y > 8);
+      if (variant === "promo") {
+        const promoSection = document.getElementById("semua-promo");
+        const promoTop = promoSection ? promoSection.getBoundingClientRect().top + y : Number.POSITIVE_INFINITY;
+        setNearPromoSection(y + PROMO_NAV_REVEAL_OFFSET >= promoTop);
+      }
       if (y < 80) setNavHidden(false);
       else if (y > lastScrollY.current + 4) setNavHidden(true);
       else if (y < lastScrollY.current - 4) setNavHidden(false);
@@ -98,7 +109,7 @@ export default function Navbar({ productCategories, megamenuContent, variant = "
       window.removeEventListener("scroll", onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [variant]);
 
   useEffect(() => {
     const lockForAnchor = (event: Event) => {
@@ -123,7 +134,7 @@ export default function Navbar({ productCategories, megamenuContent, variant = "
     };
   }, []);
 
-  const shouldHide = (navHidden || anchorLocked) && !langOpen && !searchOpen;
+  const shouldHide = ((navHidden && !(variant === "promo" && nearPromoSection)) || anchorLocked) && !langOpen && !searchOpen;
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent<boolean>(NAVBAR_VISIBILITY_EVENT, { detail: shouldHide }));
@@ -176,7 +187,7 @@ export default function Navbar({ productCategories, megamenuContent, variant = "
         </div>
       </nav>
 
-      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} promoSearchItems={promoSearchItems} />
     </>
   );
 }

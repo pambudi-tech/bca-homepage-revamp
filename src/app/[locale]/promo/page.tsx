@@ -25,13 +25,13 @@ export default async function PromoPage({ params }: { params: Promise<{ locale: 
   const [produk, megamenu, promos] = await Promise.all([
     getProductCategories(locale as AppLocale),
     getMegaMenuContent(locale as AppLocale),
-    getPromos(now, locale as AppLocale),
+    getPromos(now),
   ]);
 
   return (
     <main id="main-content" className="flex flex-1 flex-col overflow-x-clip bg-neutral-100">
       <div className="page-stack relative z-10">
-        <Navbar productCategories={produk.categories} megamenuContent={megamenu} variant="promo" />
+        <Navbar productCategories={produk.categories} megamenuContent={megamenu} promoSearchItems={promos} variant="promo" />
         <PromoMobileExperience promos={promos} now={now} />
       </div>
       <div className="relative z-0 w-full xl:sticky xl:bottom-0"><Footer /></div>

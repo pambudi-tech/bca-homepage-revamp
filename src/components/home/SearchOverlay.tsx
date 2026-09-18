@@ -7,6 +7,8 @@ import { useScrollLock } from "@/components/SmoothScroll";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 import SearchPlaceholderCarousel from "./SearchPlaceholderCarousel";
 import SearchRecommendation, { panelMaxHeight } from "./SearchRecommendation";
+import PromoCard from "@/components/promo/PromoCard";
+import type { Promo } from "./promo-data";
 import {
   addRecentSearch,
   bcaSearchResultUrl,
@@ -64,17 +66,75 @@ function CloseIcon({ className }: { className?: string }) {
  * measure.
  */
 const PANEL_TOP_OFFSET = 240;
+
+function PromoSearchResults({ promos, keyword }: { promos: Promo[]; keyword: string }) {
+  const tPromo = useTranslations("promoPage");
+  const normalizedKeyword = keyword.trim().toLocaleLowerCase();
+  const now = useMemo(() => new Date(), []);
+  const resultsRef = useRef<HTMLElement>(null);
+  const matchingPromos = useMemo(() => promos.filter((promo) => {
+    if (!normalizedKeyword) return true;
+    const searchableText = [
+      promo.title,
+      promo.brand,
+      tPromo(`categories.${promo.category}`),
+      promo.details,
+      ...(promo.eligibleProducts ?? []),
+    ].filter(Boolean).join(" ").toLocaleLowerCase();
+    return searchableText.includes(normalizedKeyword);
+  }), [normalizedKeyword, promos, tPromo]);
+
+  // Returning from a long list of search hits must not leave the rail's title
+  // or card tops hidden above the scrollable result viewport.
+  useEffect(() => {
+    resultsRef.current?.scrollTo({ top: 0 });
+  }, [normalizedKeyword]);
+
+  return (
+    <section ref={resultsRef} aria-label={tPromo("search.results")} className="min-h-0 overflow-y-auto px-4 pb-8 pt-4 xl:px-0">
+      <p className="mb-3 text-sm font-bold text-neutral-800 xl:text-white">
+        {normalizedKeyword ? tPromo("search.results") : tPromo("search.popularPromos")}
+      </p>
+      {!normalizedKeyword ? (
+        <div data-lenis-prevent className="hide-scrollbar -mx-4 -my-4 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-4 px-4 py-4 [scrollbar-width:none] xl:mx-0 xl:px-0 xl:scroll-px-0">
+          {promos.slice(0, 5).map((promo) => (
+            <div key={promo.id} className="w-[200px] shrink-0 snap-start">
+              <PromoCard promo={promo} now={now} reveal={false} compact />
+            </div>
+          ))}
+        </div>
+      ) : matchingPromos.length ? (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {matchingPromos.map((promo) => <PromoCard key={promo.id} promo={promo} now={now} reveal={false} compact />)}
+        </div>
+      ) : (
+        <div className="rounded-3xl bg-white px-5 py-8 text-center shadow-card">
+          <p className="font-semibold text-neutral-800">{tPromo("search.noResults")}</p>
+          <p className="mt-1 text-sm text-neutral-600">{tPromo("search.noResultsHint")}</p>
+        </div>
+      )}
+    </section>
+  );
+}
+
 export default function SearchOverlay({
   open,
   onClose,
+  promoSearchItems,
 }: {
   open: boolean;
   onClose: () => void;
+  /** Its presence makes this a Promo-data-only search. */
+  promoSearchItems?: Promo[];
 }) {
   const t = useTranslations("hero");
   const tNav = useTranslations("nav");
   const tSearch = useTranslations("search");
-  const placeholders = t.raw("placeholders") as string[];
+  const tPromo = useTranslations("promoPage");
+  const isPromoSearch = promoSearchItems !== undefined;
+  const placeholders = isPromoSearch
+    ? tPromo.raw("search.placeholders") as string[]
+    : t.raw("placeholders") as string[];
   // Which of the dropdown's two layouts to render. CSS can't decide this one:
   // `compact` is a prop that restructures the panel, not a set of classes.
   const isDesktop = useIsDesktop();
@@ -155,6 +215,9 @@ export default function SearchOverlay({
   const submitSearch = (term: string) => {
     const trimmed = term.trim();
     if (!trimmed) return;
+    // Promo search filters the already-loaded Promo dataset in place. It must
+    // never hand the same term to BCA's site-wide search-result page.
+    if (isPromoSearch) return;
     setRecent((r) => addRecentSearch(r, trimmed));
     window.open(bcaSearchResultUrl(trimmed), "_blank", "noopener,noreferrer");
     onClose();
@@ -220,22 +283,24 @@ export default function SearchOverlay({
             </div>
           </header>
           <div className="min-h-0 flex-1">
-            <SearchRecommendation
-              recommendations={recommendations}
-              keyword={searchValue}
-              recent={recent}
-              onSelectQuery={selectQuery}
-              onRemoveRecent={removeRecent}
-              onClearRecent={clearRecent}
-              onMouseDown={(e) => e.preventDefault()}
-              compact
-              screen
-            />
+            {isPromoSearch ? <PromoSearchResults promos={promoSearchItems} keyword={searchValue} /> : (
+              <SearchRecommendation
+                recommendations={recommendations}
+                keyword={searchValue}
+                recent={recent}
+                onSelectQuery={selectQuery}
+                onRemoveRecent={removeRecent}
+                onClearRecent={clearRecent}
+                onMouseDown={(e) => e.preventDefault()}
+                compact
+                screen
+              />
+            )}
           </div>
         </div>
       ) : (
         <div ref={contentRef} className="flex w-full max-w-[960px] flex-col px-10 pt-[104px]">
-          <p className="mb-4 text-center text-lg font-semibold text-white text-shadow-hero">{t("searchPrompt")}</p>
+          <p className="mb-4 text-center text-lg font-semibold text-white text-shadow-hero">{isPromoSearch ? tPromo("search.prompt") : t("searchPrompt")}</p>
           <div
             className="soft-light-border relative h-14 w-full rounded-[50px]"
             style={{
@@ -262,21 +327,23 @@ export default function SearchOverlay({
               <img src="/assets/cycle1/outline-search-1.svg" alt="" className="size-6" />
             </button>
           </div>
-          <div className="mt-2">
-          <SearchRecommendation
-            recommendations={recommendations}
-            keyword={searchValue}
-            recent={recent}
-            onSelectQuery={selectQuery}
-            onRemoveRecent={removeRecent}
-            onClearRecent={clearRecent}
-            // Keeps the caret in the field while clicking a chip or a recent term.
-            onMouseDown={(e) => e.preventDefault()}
-            // Below xl this is the mobile hero widget's dropdown, unchanged —
-            // same compact layout, same 70dvh ceiling from the card itself, so
-            // no height override here.
-            maxHeight={panelMaxHeight(PANEL_TOP_OFFSET)}
-          />
+          <div className="mt-2 min-h-0 flex-1">
+            {isPromoSearch ? <PromoSearchResults promos={promoSearchItems} keyword={searchValue} /> : (
+              <SearchRecommendation
+                recommendations={recommendations}
+                keyword={searchValue}
+                recent={recent}
+                onSelectQuery={selectQuery}
+                onRemoveRecent={removeRecent}
+                onClearRecent={clearRecent}
+                // Keeps the caret in the field while clicking a chip or a recent term.
+                onMouseDown={(e) => e.preventDefault()}
+                // Below xl this is the mobile hero widget's dropdown, unchanged —
+                // same compact layout, same 70dvh ceiling from the card itself, so
+                // no height override here.
+                maxHeight={panelMaxHeight(PANEL_TOP_OFFSET)}
+              />
+            )}
           </div>
         </div>
       )}

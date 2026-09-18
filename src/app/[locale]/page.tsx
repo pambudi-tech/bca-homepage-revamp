@@ -39,7 +39,7 @@ export default async function Home({
     getBanners(locale as AppLocale),
     getProductCategories(locale as AppLocale),
     getMegaMenuContent(locale as AppLocale),
-    getPromos(now, locale as AppLocale),
+    getPromos(now),
     getNewsCategories(locale as AppLocale),
     getFaqCategories(locale as AppLocale),
   ]);

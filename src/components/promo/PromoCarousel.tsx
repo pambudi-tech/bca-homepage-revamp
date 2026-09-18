@@ -13,6 +13,7 @@ export default function PromoCarousel({
   campaignCover,
   campaignAlt,
   bleed = true,
+  compact = false,
 }: {
   promos: Promo[];
   now: Date;
@@ -20,6 +21,8 @@ export default function PromoCarousel({
   campaignAlt?: string;
   /** Keep the default homepage edge bleed, or align to a padded section column. */
   bleed?: boolean;
+  /** Match the denser two-column cards used by the Promo discovery grid. */
+  compact?: boolean;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const itemsCount = promos.length + (campaignCover ? 1 : 0);
@@ -82,13 +85,13 @@ export default function PromoCarousel({
   return (
     <div ref={scrollRef} className={`hide-scrollbar -my-6 flex snap-x snap-mandatory items-start overflow-x-auto py-6 [scrollbar-width:none] ${bleed ? "-mx-4 px-4" : "px-8"}`}>
       {slots.map((item, index) => (
-        <div key={`${item}-${index}`} className="snap-center" style={{ marginRight: CARD_GAP }}>
+        <div key={`${item}-${index}`} className={`snap-center ${compact ? "w-[200px] shrink-0" : ""}`} style={{ marginRight: CARD_GAP }}>
           {campaignCover && item === 0 ? (
-            <a href="#semua-promo" aria-label={campaignAlt} className="block h-[360px] w-[280px] shrink-0 overflow-clip rounded-3xl border border-neutral-300 bg-white xl:w-[302px]">
+            <a href="#semua-promo" aria-label={campaignAlt} className={`block shrink-0 overflow-clip rounded-3xl border border-neutral-300 bg-white ${compact ? "h-[268px] w-full" : "h-[360px] w-[280px] xl:w-[302px]"}`}>
               <img src={campaignCover} alt={campaignAlt ?? ""} className="size-full object-cover" />
             </a>
           ) : (
-            <PromoCard promo={promos[item - (campaignCover ? 1 : 0)]} now={now} reveal={false} />
+            <PromoCard promo={promos[item - (campaignCover ? 1 : 0)]} now={now} reveal={false} compact={compact} />
           )}
         </div>
       ))}

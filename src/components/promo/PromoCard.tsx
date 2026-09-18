@@ -7,6 +7,7 @@ import {
   type Promo,
 } from "@/components/home/promo-data";
 import PromoRibbon from "@/components/PromoRibbon";
+import { Link } from "@/i18n/navigation";
 
 const CARD_SHADOW =
   "0 1px 2px 0 rgba(204,204,204,0.14), 0 5px 5px 0 rgba(204,204,204,0.12), 0 10px 6px 0 rgba(204,204,204,0.10), 0 18px 20px -8px rgba(0,92,170,0.18)";
@@ -32,8 +33,8 @@ export default function PromoCard({
   });
 
   return (
-    <a
-      href="#"
+    <Link
+      href={`/promo/${promo.id}`}
       {...(reveal ? { "data-reveal": "" } : {})}
       className={`group relative block shrink-0 cursor-pointer transition-transform duration-300 ease-out hover:-translate-y-1.5 ${compact ? "h-[268px] w-full min-w-0" : "h-[360px] w-[280px] xl:w-[302px]"}`}
     >
@@ -50,7 +51,7 @@ export default function PromoCard({
             <p className={`line-clamp-2 w-full font-semibold tracking-normal text-neutral-800 transition-colors duration-300 group-hover:font-bold group-hover:text-blue-500 ${compact ? "text-sm leading-5" : "text-base leading-6 xl:text-[18px] xl:leading-[1.2]"}`}>
               {promo.title}
             </p>
-            <p className={`w-full font-semibold text-neutral-600 ${compact ? "text-xs leading-4" : "text-sm leading-5 xl:text-base"}`}>{promo.brand}</p>
+            <p className={`line-clamp-2 w-full font-semibold text-neutral-600 ${compact ? "text-xs leading-4" : "text-sm leading-5 xl:text-base"}`}>{promo.brand}</p>
           </div>
           <div className={`absolute flex items-center gap-1.5 ${compact ? "bottom-3 left-3" : "bottom-5 left-5 gap-2"}`}>
             <img loading="lazy" decoding="async" src="/assets/promo/icon-clock.svg" alt="" className={`${compact ? "size-4" : "size-5"} shrink-0`} />
@@ -66,6 +67,6 @@ export default function PromoCard({
       </div>
 
       {badge.key !== "default" && <PromoRibbon badgeKey={badge.key} label={t(`badge.${badge.key}`)} />}
-    </a>
+    </Link>
   );
 }

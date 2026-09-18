@@ -49,7 +49,7 @@
     },
     "allPromos": {
       "title": "All Promos",
-      "showCount": "Showing {shown} of {total} promos",
+      "showCount": "Showing {from}-{to} of {total} promos",
       "sort": "Sort by",
       "relevance": "Relevance",
       "endingSoon": "Ending Soon",
@@ -62,6 +62,7 @@
       "searchProduct": "Search BCA Products",
       "reset": "Reset",
       "apply": "Apply",
+      "viewPromos": "View {count} promos",
       "closeAdvanced": "Close filter panel",
       "filter": "Filter",
       "filterTitle": "Filter Promos",
@@ -99,6 +100,18 @@
       "groceries": "Groceries",
       "loyalty-reward": "Reward BCA",
       "others": "Others"
+    },
+    "detail": {
+      "until": "Until {date}",
+      "eligibleTitle": "Eligible For",
+      "termsTitle": "Terms & Conditions",
+      "locationTitle": "Location",
+      "termsFallback": "This promotion is subject to the terms and conditions set by the merchant and BCA.",
+      "locationContent": "This promotion is available at participating merchants. Please confirm availability at the location before making a transaction.",
+      "backToPromos": "Back to Promotions",
+      "defaultProduct": "BCA Product",
+      "relatedTitle": "Similar Promotions",
+      "downloadCta": "Download myBCA"
     }
   },
   "creditCardDetail": {

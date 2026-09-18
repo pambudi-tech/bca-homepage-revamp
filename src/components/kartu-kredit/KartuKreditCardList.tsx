@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
 import PromoRibbon from "@/components/PromoRibbon";
+import { ApplyInMyBcaLink } from "@/components/ui/MyBcaLinks";
 
 const MAX_TILT = 10;
 const MAX_COMPARE_CARDS = 3;
@@ -331,14 +332,11 @@ function CreditCardTile({
               <ArrowRight />
             </Link>
           </div>
-          <a
-            href="https://mybca.bca.co.id/auth/login"
-            target="_blank"
-            rel="noopener noreferrer"
+          <ApplyInMyBcaLink
             className="btn-base btn-primary h-10 w-full text-sm"
           >
             {applyLabel}
-          </a>
+          </ApplyInMyBcaLink>
         </div>
       </article>
   );

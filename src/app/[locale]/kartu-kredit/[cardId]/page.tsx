@@ -42,7 +42,7 @@ export default async function CreditCardDetailPage({ params }: { params: Promise
     getTranslations({ locale, namespace: "creditCardDetail.cardList" }),
     getTranslations({ locale, namespace: "creditCardDetail.detailPage" }),
     getTranslations({ locale, namespace: "creditCardDetail.hero" }),
-    getPromos(now, locale as AppLocale),
+    getPromos(now),
     getNewsCategories(locale as AppLocale),
   ]);
   const card = (cardsT.raw("cards") as ComparisonCard[]).find((item) => item.id === cardId);

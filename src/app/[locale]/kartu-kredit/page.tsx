@@ -47,7 +47,7 @@ export default async function KartuKreditPage({
     getProductCategories(locale as AppLocale),
     getMegaMenuContent(locale as AppLocale),
     getTranslations({ locale, namespace: "creditCardDetail.hero" }),
-    getPromos(now, locale as AppLocale),
+    getPromos(now),
     getNewsCategories(locale as AppLocale),
   ]);
   const creditCardImage =

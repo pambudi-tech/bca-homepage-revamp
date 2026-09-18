@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useLenis } from "@/components/SmoothScroll";
 import EventSlider from "@/components/home/EventSlider";
 import type { Promo, PromoCategory } from "@/components/home/promo-data";
 import PromoCard from "./PromoCard";
@@ -127,12 +128,12 @@ function FilterCheckbox({ checked, label, onClick, compact = false }: { checked:
       aria-checked={checked}
       onClick={onClick}
       className={compact
-        ? `flex min-h-12 items-center gap-3 rounded-2xl border px-3 py-2 text-left text-sm font-semibold transition-colors ${checked ? "border-blue-500 bg-blue-100 text-blue-700" : "border-neutral-300 bg-white text-neutral-700 hover:bg-blue-100"}`
+        ? `flex h-12 max-w-full shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-sm transition-colors ${checked ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500" : "border-neutral-300 bg-white font-semibold text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100 hover:text-blue-500"}`
         : "flex w-full items-center gap-4 py-2 text-left text-base text-neutral-800"}
     >
-      <span className={`flex size-6 shrink-0 items-center justify-center rounded border-2 ${checked ? "border-blue-500 bg-blue-500 text-white" : "border-blue-500 bg-white"}`}>
+      {!compact && <span className={`flex size-6 shrink-0 items-center justify-center rounded border-2 ${checked ? "border-blue-500 bg-blue-500 text-white" : "border-blue-500 bg-white"}`}>
         {checked && <svg aria-hidden viewBox="0 0 16 16" className="size-4" fill="none"><path d="m3 8 3 3 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>}
-      </span>
+      </span>}
       <span>{label}</span>
     </button>
   );
@@ -140,10 +141,11 @@ function FilterCheckbox({ checked, label, onClick, compact = false }: { checked:
 
 export default function PromoMobileExperience({ promos, now }: { promos: Promo[]; now: Date }) {
   const t = useTranslations("promoPage");
+  const lenis = useLenis();
   const categories = Object.keys(t.raw("categories")) as PromoCategory[];
   const locations = t.raw("locationPromo.locations") as string[];
   const [selectedLocation, setSelectedLocation] = useState(locations[0] ?? t("locationPromo.defaultLocation"));
-  const [selectedCategories, setSelectedCategories] = useState<PromoCategory[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<PromoCategory[]>(["fnb"]);
   const [draftCategories, setDraftCategories] = useState<PromoCategory[]>([]);
   const [selectedCities, setSelectedCities] = useState<CityFilter[]>([]);
   const [draftCities, setDraftCities] = useState<CityFilter[]>([]);
@@ -153,7 +155,9 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
   const [productQuery, setProductQuery] = useState("");
   const [citySearchOpen, setCitySearchOpen] = useState(false);
   const [productSearchOpen, setProductSearchOpen] = useState(false);
+  const [showAllCategories, setShowAllCategories] = useState(false);
   const [showAllCities, setShowAllCities] = useState(false);
+  const [showAllProducts, setShowAllProducts] = useState(false);
   const [sort, setSort] = useState<SortOption>("relevance");
   const [draftSort, setDraftSort] = useState<SortOption>("relevance");
   const [drawerMode, setDrawerMode] = useState<DrawerMode>(null);
@@ -185,8 +189,22 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
     return filtered;
   }, [promos, selectedCategories, selectedCities, selectedProducts, sort]);
 
+  const draftFilteredPromoCount = useMemo(
+    () => promos.filter((promo) => {
+      const facets = getPromoFilterFacets(promo);
+      const matchesCategory = !draftCategories.length || draftCategories.includes(promo.category);
+      const matchesCity = !draftCities.length || draftCities.some((city) => facets.cities.includes(city));
+      const matchesProduct = !draftProducts.length || draftProducts.some((product) => facets.products.includes(product));
+      return matchesCategory && matchesCity && matchesProduct;
+    }).length,
+    [promos, draftCategories, draftCities, draftProducts]
+  );
+  const hasDraftFilters = draftCategories.length + draftCities.length + draftProducts.length > 0;
+
   const totalPages = Math.max(1, Math.ceil(filteredPromos.length / PROMOS_PER_PAGE));
   const visiblePromos = filteredPromos.slice((page - 1) * PROMOS_PER_PAGE, page * PROMOS_PER_PAGE);
+  const visibleFrom = filteredPromos.length === 0 ? 0 : (page - 1) * PROMOS_PER_PAGE + 1;
+  const visibleTo = Math.min(page * PROMOS_PER_PAGE, filteredPromos.length);
   const heroCategories = [
     ["fnb", "kuliner"],
     ["hobby", "hobby"],
@@ -209,6 +227,8 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
     setProductQuery("");
     setCitySearchOpen(false);
     setProductSearchOpen(false);
+    setShowAllCategories(false);
+    setShowAllProducts(false);
     setDrawerMode("filter");
   };
 
@@ -218,50 +238,52 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
   };
 
   const toggleDraftCategory = (category: PromoCategory) => {
-    setDraftCategories((current) => current.includes(category)
-      ? current.filter((item) => item !== category)
-      : [...current, category]);
+    setDraftCategories((current) => current.includes(category) ? [] : [category]);
   };
 
   const toggleDraftCity = (city: CityFilter) => {
-    setDraftCities((current) => current.includes(city)
-      ? current.filter((item) => item !== city)
-      : [...current, city]);
+    setDraftCities((current) => current.includes(city) ? [] : [city]);
   };
 
   const toggleDraftProduct = (product: ProductFilter) => {
-    setDraftProducts((current) => current.includes(product)
-      ? current.filter((item) => item !== product)
-      : [...current, product]);
+    setDraftProducts((current) => current.includes(product) ? [] : [product]);
   };
 
   const normalizedCityQuery = cityQuery.trim().toLocaleLowerCase();
   const filteredCityOptions = CITY_OPTIONS.filter(([, label]) => label.toLocaleLowerCase().includes(normalizedCityQuery));
   const visibleCityOptions = normalizedCityQuery || showAllCities ? filteredCityOptions : filteredCityOptions.slice(0, 5);
+  const collapsedCategoryOptions = categories.slice(0, 6);
+  const activeCategory = selectedCategories[0];
+  const visibleCategoryOptions = showAllCategories || !activeCategory || collapsedCategoryOptions.includes(activeCategory)
+    ? (showAllCategories ? categories : collapsedCategoryOptions)
+    : [...categories.slice(0, 5), activeCategory];
   const normalizedProductQuery = productQuery.trim().toLocaleLowerCase();
   const filteredProductOptions = BCA_PRODUCT_OPTIONS.filter(([, label]) => label.toLocaleLowerCase().includes(normalizedProductQuery));
+  const visibleProductOptions = normalizedProductQuery || showAllProducts ? filteredProductOptions : filteredProductOptions.slice(0, 6);
   const activeFilterCount = selectedCategories.length + selectedCities.length + selectedProducts.length;
-  const activeFilterChips = [
-    ...selectedCategories.map((key) => ({
-      id: `category-${key}`,
-      label: t(`categories.${key}`),
-      remove: () => setSelectedCategories((current) => current.filter((item) => item !== key)),
-    })),
-    ...selectedCities.map((key) => ({
-      id: `city-${key}`,
-      label: CITY_OPTIONS.find(([option]) => option === key)?.[1] ?? key,
-      remove: () => setSelectedCities((current) => current.filter((item) => item !== key)),
-    })),
-    ...selectedProducts.map((key) => ({
-      id: `product-${key}`,
-      label: BCA_PRODUCT_OPTIONS.find(([option]) => option === key)?.[1] ?? key,
-      remove: () => setSelectedProducts((current) => current.filter((item) => item !== key)),
-    })),
-  ];
-
+  const quickProduct = selectedProducts[0] ?? "mybca";
+  const quickCity = selectedCities[0] ?? "jabodetabek";
+  const quickCategory = selectedCategories[0] ?? "fnb";
+  const quickCategoryActive = selectedCategories.includes(quickCategory);
+  const quickProductLabel = BCA_PRODUCT_OPTIONS.find(([option]) => option === quickProduct)?.[1] ?? "myBCA";
+  const quickCityLabel = CITY_OPTIONS.find(([option]) => option === quickCity)?.[1] ?? "Jabodetabek";
+  const quickCategoryRailLabel = heroCategories.find(([key]) => key === quickCategory)?.[1] ?? "kuliner";
+  const scrollToPromoSection = () => {
+    const element = document.querySelector<HTMLElement>("#semua-promo");
+    if (!element) return;
+    const navigationHeight = window.matchMedia("(min-width: 80rem)").matches ? 72 : 64;
+    if (lenis) {
+      lenis.scrollTo(element, { offset: -navigationHeight, duration: 1 });
+    } else {
+      window.scrollTo({
+        top: window.scrollY + element.getBoundingClientRect().top - navigationHeight,
+        behavior: "smooth",
+      });
+    }
+  };
   const goToPage = (nextPage: number) => {
     setPage(nextPage);
-    document.querySelector("#semua-promo")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToPromoSection();
   };
 
   return (
@@ -291,7 +313,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
                 onClick={() => {
                   setSelectedCategories([key]);
                   setPage(1);
-                  document.querySelector("#semua-promo")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  scrollToPromoSection();
                 }}
                 className="flex size-[72px] shrink-0 flex-col items-center gap-2 text-center"
               >
@@ -309,13 +331,14 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
               now={now}
               campaignCover="/assets/promo-page/campaigns/ramadan-diskon-besar.png"
               campaignAlt={t("seasonal.discount")}
+              compact
             />
           </div>
         </section>
       </div>
 
       <section className="bg-blue-100 py-6">
-        <div className="px-6">
+        <div className="px-4">
           <p className="text-sm font-normal tracking-normal text-neutral-800">{t("locationPromo.eyebrow")}</p>
           <div className="relative mt-1 w-fit">
             <label htmlFor="popular-promo-location" className="sr-only">{t("locationPromo.selectLabel")}</label>
@@ -332,26 +355,58 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
             </svg>
           </div>
         </div>
-        <div data-lenis-prevent className="hide-scrollbar -mb-3 mt-1 flex snap-x snap-mandatory gap-4 overflow-x-auto px-8 py-3 [scrollbar-width:none]">
-          {promos.slice(3, 6).map((promo) => <div key={`${selectedLocation}-${promo.id}`} className="snap-start"><PromoCard promo={promo} now={now} reveal={false} /></div>)}
+        <div data-lenis-prevent className="hide-scrollbar -mb-3 mt-1 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-pl-4 px-4 py-3 [scrollbar-width:none]">
+          {promos.slice(3, 6).map((promo) => <div key={`${selectedLocation}-${promo.id}`} className="snap-start w-[200px] shrink-0"><PromoCard promo={promo} now={now} reveal={false} compact /></div>)}
         </div>
       </section>
 
-      <section id="semua-promo" className="scroll-mt-20 bg-neutral-100 px-4 py-12">
+      <section id="semua-promo" className="scroll-mt-0 bg-neutral-100 px-4 py-8">
         <div className="mx-auto max-w-6xl">
           <h2 className="text-heading text-blue-700">{t("allPromos.title")}</h2>
 
-          <div className="mt-6 flex gap-3">
+          <div className="relative -mx-4 mt-6 flex items-center gap-2 overflow-hidden px-4 pb-1">
+            <div data-lenis-prevent className="hide-scrollbar flex min-w-0 flex-1 gap-2 overflow-x-auto [scrollbar-width:none]">
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedCategories((current) => current.includes(quickCategory) ? [] : [quickCategory]);
+                  setPage(1);
+                }}
+                className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-sm transition-colors ${quickCategoryActive ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500" : "border-neutral-300 bg-white font-semibold text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100 hover:text-blue-500"}`}
+              >
+                {t(`categoryRail.${quickCategoryRailLabel}`)}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedProducts((current) => current.includes("mybca") ? [] : ["mybca"]);
+                  setPage(1);
+                }}
+                className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-sm font-semibold transition-colors ${selectedProducts.includes("mybca") ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500" : "border-neutral-300 bg-white text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100 hover:text-blue-500"}`}
+              >
+                {quickProductLabel}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedCities((current) => current.includes("jabodetabek") ? [] : ["jabodetabek"]);
+                  setPage(1);
+                }}
+                className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-sm font-semibold transition-colors ${selectedCities.includes("jabodetabek") ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500" : "border-neutral-300 bg-white text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100 hover:text-blue-500"}`}
+              >
+                {quickCityLabel}
+              </button>
+            </div>
             <button
               type="button"
               onClick={openFilter}
               aria-haspopup="dialog"
-              className="flex h-14 min-w-0 flex-1 items-center justify-center gap-3 rounded-[20px] border border-neutral-300 bg-white px-5 text-lg font-semibold text-neutral-700 shadow-card transition-[border-color,background-color,transform] active:scale-[0.98] hover:border-neutral-500 hover:bg-blue-100 sm:max-w-[260px]"
+              aria-label={t("allPromos.filter")}
+              className="relative flex size-10 shrink-0 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-700 transition-[border-color,background-color,transform] active:scale-[0.98] hover:border-neutral-500 hover:bg-blue-100"
             >
               <FilterIcon />
-              <span>{t("allPromos.filter")}</span>
-              {activeFilterCount > 0 && (
-                <span className="flex size-6 items-center justify-center rounded-full bg-blue-500 text-xs font-bold text-white" aria-label={t("allPromos.activeFilters", { count: activeFilterCount })}>
+              {activeFilterCount > 1 && (
+                <span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-blue-500 text-[10px] font-bold text-white" aria-label={t("allPromos.activeFilters", { count: activeFilterCount })}>
                   {activeFilterCount}
                 </span>
               )}
@@ -361,36 +416,13 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
               onClick={openSort}
               aria-haspopup="dialog"
               aria-label={t("allPromos.sort")}
-              className="flex size-14 shrink-0 items-center justify-center rounded-[20px] border border-neutral-300 bg-white text-neutral-700 shadow-card transition-[border-color,background-color,transform] active:scale-[0.98] hover:border-neutral-500 hover:bg-blue-100"
+              className="flex size-10 shrink-0 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-700 transition-[border-color,background-color,transform] active:scale-[0.98] hover:border-neutral-500 hover:bg-blue-100"
             >
               <SortIcon />
             </button>
           </div>
 
-          {activeFilterChips.length > 0 && (
-            <div data-lenis-prevent className="hide-scrollbar -mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none]" aria-label={t("allPromos.activeFilterList")}>
-              {activeFilterChips.map((chip) => (
-                <span key={chip.id} className="flex h-9 shrink-0 items-center gap-2 rounded-full bg-blue-100 pl-4 pr-2 text-sm font-semibold text-blue-700">
-                  <span>{chip.label}</span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      chip.remove();
-                      setPage(1);
-                    }}
-                    aria-label={t("allPromos.removeFilter", { filter: chip.label })}
-                    className="flex size-6 items-center justify-center rounded-full text-blue-500 transition-colors hover:bg-blue-200"
-                  >
-                    <svg aria-hidden viewBox="0 0 16 16" fill="none" className="size-3.5">
-                      <path d="m4 4 8 8m0-8-8 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                    </svg>
-                  </button>
-                </span>
-              ))}
-            </div>
-          )}
-
-          <p className="mt-5 text-sm text-neutral-600">{t("allPromos.showCount", { shown: filteredPromos.length, total: promos.length })}</p>
+          <p className="mt-5 text-sm text-neutral-600">{t("allPromos.showCount", { from: visibleFrom, to: visibleTo, total: filteredPromos.length })}</p>
           {visiblePromos.length ? (
             <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5">
               {visiblePromos.map((promo) => <PromoCard key={promo.id} promo={promo} now={now} reveal={false} compact />)}
@@ -401,7 +433,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
               <button
                 type="button"
                 onClick={() => {
-                  setSelectedCategories([]);
+                  setSelectedCategories(["fnb"]);
                   setSelectedCities([]);
                   setSelectedProducts([]);
                   setPage(1);
@@ -472,8 +504,8 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
         {drawerMode === "filter" ? (
           <div data-lenis-prevent className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 pb-5">
             <p className="mb-3 text-sm font-semibold text-neutral-700">{t("allPromos.category")}</p>
-            <div className="grid grid-cols-2 gap-2">
-              {categories.map((category) => {
+            <div className="flex flex-wrap gap-2">
+              {visibleCategoryOptions.map((category) => {
                 const checked = draftCategories.includes(category);
                 return (
                   <FilterCheckbox
@@ -486,6 +518,11 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
                 );
               })}
             </div>
+            {categories.length > collapsedCategoryOptions.length && (
+              <button type="button" onClick={() => setShowAllCategories((shown) => !shown)} className="mt-2 text-sm font-semibold text-blue-500">
+                {t(showAllCategories ? "allPromos.showLess" : "allPromos.showMore")}
+              </button>
+            )}
 
             <section className="mt-6 border-t border-neutral-300 pt-5">
               <div className="flex items-center gap-3 text-blue-500">
@@ -513,13 +550,13 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
                   />
                 </label>
               )}
-              <div className="mt-2">
+              <div className="mt-2 flex flex-wrap gap-2">
                 {visibleCityOptions.map(([key, label]) => (
-                  <FilterCheckbox key={key} checked={draftCities.includes(key)} label={label} onClick={() => toggleDraftCity(key)} />
+                  <FilterCheckbox key={key} checked={draftCities.includes(key)} label={label} onClick={() => toggleDraftCity(key)} compact />
                 ))}
               </div>
               {!normalizedCityQuery && filteredCityOptions.length > 5 && (
-                <button type="button" onClick={() => setShowAllCities((shown) => !shown)} className="mt-2 pl-10 text-sm font-semibold text-blue-500">
+                  <button type="button" onClick={() => setShowAllCities((shown) => !shown)} className="mt-2 text-sm font-semibold text-blue-500">
                   {t(showAllCities ? "allPromos.showLess" : "allPromos.showMore")}
                 </button>
               )}
@@ -551,11 +588,16 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
                   />
                 </label>
               )}
-              <div className="mt-2">
-                {filteredProductOptions.map(([key, label]) => (
-                  <FilterCheckbox key={key} checked={draftProducts.includes(key)} label={label} onClick={() => toggleDraftProduct(key)} />
+              <div className="mt-2 flex flex-wrap gap-2">
+                {visibleProductOptions.map(([key, label]) => (
+                  <FilterCheckbox key={key} checked={draftProducts.includes(key)} label={label} onClick={() => toggleDraftProduct(key)} compact />
                 ))}
               </div>
+              {!normalizedProductQuery && filteredProductOptions.length > 6 && (
+                <button type="button" onClick={() => setShowAllProducts((shown) => !shown)} className="mt-2 text-sm font-semibold text-blue-500">
+                  {t(showAllProducts ? "allPromos.showLess" : "allPromos.showMore")}
+                </button>
+              )}
             </section>
           </div>
         ) : (
@@ -578,12 +620,12 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
           </div>
         )}
 
-        <div className="flex shrink-0 gap-3 border-t border-neutral-300 bg-white px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] pt-4 shadow-panel-footer">
+        {(drawerMode === "sort" || hasDraftFilters) && <div className="flex shrink-0 gap-3 border-t border-neutral-300 bg-white px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] pt-4 shadow-panel-footer">
           <button
             type="button"
             onClick={() => {
               if (drawerMode === "filter") {
-                setDraftCategories([]);
+                setDraftCategories(["fnb"]);
                 setDraftCities([]);
                 setDraftProducts([]);
               } else {
@@ -608,9 +650,9 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
             }}
             className="btn-base btn-primary flex-1"
           >
-            {t("allPromos.apply")}
+            {drawerMode === "filter" ? t("allPromos.viewPromos", { count: draftFilteredPromoCount }) : t("allPromos.apply")}
           </button>
-        </div>
+        </div>}
       </dialog>
     </>
   );

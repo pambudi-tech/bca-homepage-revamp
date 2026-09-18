@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { getAverageColor, rgbToCss } from "@/lib/image-color";
 import MyBcaParallax from "./MyBcaParallax";
+import { DownloadMyBcaLink } from "@/components/ui/MyBcaLinks";
 
 export default async function MyBcaSection() {
   const locale = await getLocale();
@@ -149,9 +150,9 @@ export default async function MyBcaSection() {
                 </p>
               </div>
               <div className="flex flex-row items-center gap-2">
-                <a href={myBcaPageUrl} className="btn-base btn-primary w-fit">
+                <DownloadMyBcaLink className="btn-base btn-primary w-fit">
                   <span className="whitespace-nowrap text-sm font-semibold">{t("downloadMobile")}</span>
-                </a>
+                </DownloadMyBcaLink>
                 <a href={myBcaPageUrl} className="rounded-full border border-white px-4 py-2 text-sm font-semibold text-neutral-100 transition-colors hover:bg-white/10">
                   {t("detail")}
                 </a>

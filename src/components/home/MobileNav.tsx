@@ -99,6 +99,7 @@ export default function MobileNav({
       onClose={() => setMenuOpen(false)}
       productCategories={productCategories}
       megamenuContent={megamenuContent}
+      variant={variant}
     />
     </>
   );

@@ -4,6 +4,7 @@
 import { useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import TextField from "@/components/ui/TextField";
+import { ApplyInMyBcaLink } from "@/components/ui/MyBcaLinks";
 
 const AMOUNT_OPTIONS = [500_000, 1_000_000, 5_000_000, 7_000_000, 10_000_000];
 
@@ -99,7 +100,7 @@ export default function KrisflyerMileageSection({ cards, initialCardId }: { card
               <p className="mt-2 text-sm font-semibold">{t("equivalent", { progress: progress.toFixed(1) })}</p>
               <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/20"><div className="h-full rounded-full bg-cyan-400" style={{ width: `${Math.max(progress, 2)}%` }} /></div>
             </div>
-            <a href="https://mybca.bca.co.id/auth/login" className="btn-base btn-primary mt-6 w-full justify-center bg-white font-semibold text-blue-500 hover:bg-cyan-100">{t("apply")}</a>
+            <ApplyInMyBcaLink className="btn-base btn-primary mt-6 w-full justify-center bg-white font-semibold text-blue-500 hover:bg-cyan-100">{t("apply")}</ApplyInMyBcaLink>
           </div>
         </div>
       </div>

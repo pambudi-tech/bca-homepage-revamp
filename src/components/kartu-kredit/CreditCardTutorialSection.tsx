@@ -3,6 +3,7 @@
 
 import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { ApplyInMyBcaLink } from "@/components/ui/MyBcaLinks";
 
 const TUTORIAL_IMAGE_BASE = "https://pustaka.bca.co.id/images/assets-mybca/tutorial-mybca/2026";
 const TUTORIAL_IMAGES = [
@@ -167,9 +168,9 @@ export default function CreditCardTutorialSection() {
             ) : null}
 
             <div className="mt-5 grid w-full grid-cols-2 gap-3 border-t border-white/30 pt-6 sm:mx-auto sm:max-w-[440px]">
-              <a href="https://mybca.bca.co.id/auth/login" className="btn-base btn-primary justify-center whitespace-nowrap px-3 text-sm sm:text-base">
+              <ApplyInMyBcaLink className="btn-base btn-primary justify-center whitespace-nowrap px-3 text-sm sm:text-base">
                 {t("applyMyBca")}
-              </a>
+              </ApplyInMyBcaLink>
               <a href="https://webform.bca.co.id/applycc" className="btn-base btn-secondary !border-white justify-center whitespace-nowrap bg-transparent px-3 text-sm text-white hover:bg-white/10 sm:text-base">
                 {t("applyWeb")}
               </a>

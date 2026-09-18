@@ -3,6 +3,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { ApplyInMyBcaLink } from "@/components/ui/MyBcaLinks";
 import SectionAnchor from "@/components/home/SectionAnchor";
 import { NAVBAR_VISIBILITY_EVENT } from "@/components/home/Navbar";
 import { splitComparisonSections, type ComparisonGroup, type ComparisonSection, type ComparisonTab } from "@/components/kartu-kredit/comparison-utils";
@@ -194,9 +195,9 @@ function ComparisonCardControls({
                 </div>
               ) : null}
             </div>
-            <a href="https://mybca.bca.co.id/auth/login" target="_blank" rel="noopener noreferrer" className="btn-base btn-primary h-10 w-full text-sm font-semibold">
+            <ApplyInMyBcaLink className="btn-base btn-primary h-10 w-full text-sm font-semibold">
               {applyLabel}
-            </a>
+            </ApplyInMyBcaLink>
           </article>
         ))}
       </div>

@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useIsLive } from "@/lib/useIsLive";
-import { useLenis } from "@/components/SmoothScroll";
 
 type EventSlide = { id: string; image: string; alt: string };
 
@@ -16,7 +15,6 @@ const EVENT_SLIDES: EventSlide[] = [
 
 const SLIDE_DURATION_MS = 6000;
 const INDICATOR_LENGTH = 40;
-const PARALLAX_SPEED = 0.45;
 const count = EVENT_SLIDES.length;
 
 const mod = (n: number, m: number) => ((n % m) + m) % m;
@@ -66,11 +64,9 @@ export default function EventSlider() {
   // instead. Idle peeks aren't interactive, so they keep the normal cursor.
   const activeCardRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
-  const parallaxRef = useRef<HTMLDivElement>(null);
   const lastMouseRef = useRef({ x: -1000, y: -1000 });
   const rootRef = useRef<HTMLDivElement>(null);
   const live = useIsLive(rootRef);
-  const lenis = useLenis();
 
   const activeIndex = mod(step, count);
 
@@ -104,30 +100,6 @@ export default function EventSlider() {
       window.removeEventListener("mousemove", onWindowMouseMove);
     };
   }, [hoveringActive]);
-
-  // Keep the promo banners in the same spatial system as the homepage hero:
-  // the imagery drifts with Lenis while the carousel controls stay anchored.
-  // The scale prevents the banner from exposing an edge as it translates.
-  useEffect(() => {
-    if (!lenis || !live) return;
-
-    let raf = 0;
-    const write = () => {
-      raf = 0;
-      if (!parallaxRef.current) return;
-      parallaxRef.current.style.transform = `translate3d(0, ${window.scrollY * PARALLAX_SPEED}px, 0)`;
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(write);
-    };
-
-    lenis.on("scroll", onScroll);
-    write();
-    return () => {
-      lenis.off("scroll", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, [lenis, live]);
 
   useAutoplayProgress({
     activeIndex,
@@ -185,7 +157,6 @@ export default function EventSlider() {
 
   return (
     <div className="relative" ref={rootRef}>
-      <div ref={parallaxRef} className="origin-top will-change-transform" style={{ transform: "translate3d(0, 0, 0)" }}>
       {/* Full-bleed to the viewport at xl (not just the 1280px section column)
           so the 1126px idle banners have room to peek beside the 1280px
           active one, matching the Figma canvas. Mobile bleeds only to the
@@ -287,7 +258,6 @@ export default function EventSlider() {
             )
           )}
         </div>
-      </div>
       </div>
     </div>
   );

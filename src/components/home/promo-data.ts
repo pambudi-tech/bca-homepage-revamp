@@ -26,8 +26,12 @@ export type Promo = {
   brand: string;
   cover: string;
   logo: string;
+  listingCover?: string;
+  sourceUrl?: string;
+  eligibleProducts?: string[];
+  details?: string;
   category: PromoCategory;
-  /** Absolute period, as stored in Supabase (`start_at` / `end_at`). */
+  /** Absolute period for the current local prototype snapshot. */
   startAt: Date;
   endAt: Date;
   /**

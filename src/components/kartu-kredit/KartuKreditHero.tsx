@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { Link } from "@/i18n/navigation";
+import { ApplyInMyBcaLink } from "@/components/ui/MyBcaLinks";
 
 type KartuKreditHeroCopy = {
   eyebrow?: string;
@@ -77,14 +78,11 @@ export default function KartuKreditHero({
 
           <div className="flex flex-col items-start gap-4">
             <div className="flex w-full flex-row items-stretch gap-3">
-              <a
-                href="https://mybca.bca.co.id/auth/login"
-                target="_blank"
-                rel="noopener noreferrer"
+              <ApplyInMyBcaLink
                 className="btn-base btn-primary min-w-0 flex-1 px-3 text-sm active:scale-95"
               >
                 <span className="text-sm">{copy.applyCta}</span>
-              </a>
+              </ApplyInMyBcaLink>
               <a
                 href={copy.cardsHref ?? "#pilihan-kartu"}
                 className="btn-base min-w-0 flex-1 px-3 text-sm border border-white/40 bg-neutral-900/25 text-white backdrop-blur-lg transition-[background-color,border-color,color,transform] duration-200 active:scale-95 xl:hover:border-white/60 xl:hover:bg-neutral-900/45"
