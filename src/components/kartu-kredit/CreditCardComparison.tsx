@@ -10,6 +10,15 @@ import { splitComparisonSections, type ComparisonGroup, type ComparisonSection, 
 type Benefit = { icon: string; label: string };
 type CardClusterKey = "bca-card" | "visa" | "mastercard" | "jcb" | "unionpay" | "american-express";
 
+const comparisonValuePattern = /(Rp\.?\s?[\d.,]+(?:\s?(?:juta|Juta|jt|rb|ribu))?|\b\d[\d.,]*%?)/g;
+
+function highlightComparisonValues(text: string) {
+  return text.split(comparisonValuePattern).map((part, index) => {
+    if (!part || !/\d/.test(part)) return part;
+    return <strong key={`${part}-${index}`} className="font-bold text-neutral-800">{part}</strong>;
+  });
+}
+
 export type ComparisonCard = {
   id: string;
   title: string;
@@ -227,9 +236,9 @@ function ComparisonTableSection({
                     return (
                     <td key={`${point.label}-${card.id}`} className="break-words px-4 py-3 leading-5 text-neutral-700">
                       <div className="flex flex-col gap-1.5">
-                        <strong className="font-bold text-neutral-800">{cardPoint.label}</strong>
-                        {cardPoint.description ? <span>{cardPoint.description}</span> : null}
-                        {cardPoint.bullets ? <ul className="list-disc space-y-1 pl-4">{cardPoint.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul> : null}
+                        <strong className="font-bold text-neutral-900">{cardPoint.label}</strong>
+                        {cardPoint.description ? <span>{highlightComparisonValues(cardPoint.description)}</span> : null}
+                        {cardPoint.bullets ? <ul className="list-disc space-y-1 pl-4">{cardPoint.bullets.map((bullet) => <li key={bullet}>{highlightComparisonValues(bullet)}</li>)}</ul> : null}
                       </div>
                     </td>
                     );
