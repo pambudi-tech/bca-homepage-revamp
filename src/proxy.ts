@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import {
   AUTH_COOKIE_NAME,
+  getPreviewPassword,
   LOGIN_PATHS,
   loginPathForRequest,
 } from "@/lib/preview-auth";
@@ -16,7 +17,7 @@ const intlMiddleware = createMiddleware(routing);
 const isStaticFile = (pathname: string) => /\.[^/]+$/.test(pathname);
 
 export function proxy(request: NextRequest) {
-  const password = process.env.PREVIEW_PASSWORD;
+  const password = getPreviewPassword();
   const { pathname } = request.nextUrl;
 
   // Allow the social share thumbnail to be fetched without the gate,

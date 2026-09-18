@@ -3,6 +3,13 @@ import { routing } from "@/i18n/routing";
 export const AUTH_COOKIE_NAME = "preview_auth";
 export const PREVIEW_IDLE_TIMEOUT_MS = 8 * 60 * 60 * 1000;
 
+/** Password protection is opt-in so preview environments stay public unless
+ * both the password and the explicit enable flag are configured. */
+export function getPreviewPassword(): string | undefined {
+  if (process.env.PREVIEW_PASSWORD_ENABLED !== "true") return undefined;
+  return process.env.PREVIEW_PASSWORD || undefined;
+}
+
 /**
  * Where the preview gate lives for a given locale. `localePrefix: "as-needed"`
  * means the default locale is unprefixed, so this is `/login` for `id` and

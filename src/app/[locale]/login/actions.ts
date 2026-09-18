@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { AUTH_COOKIE_NAME } from "@/lib/preview-auth";
+import { AUTH_COOKIE_NAME, getPreviewPassword } from "@/lib/preview-auth";
 
 export type LoginState = "idle" | "error" | "success";
 
@@ -10,7 +10,7 @@ export async function login(
   formData: FormData,
 ): Promise<LoginState> {
   const password = formData.get("password");
-  const expected = process.env.PREVIEW_PASSWORD;
+  const expected = getPreviewPassword();
 
   if (typeof password !== "string" || password !== expected) {
     return "error";

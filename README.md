@@ -96,12 +96,13 @@ Three locales — `id` (default, unprefixed), `en`, `zh` — configured in
 
 ## The preview gate
 
-Setting `PREVIEW_PASSWORD` gates every route behind `/login` (see
-`src/proxy.ts`). **Leaving it unset makes the site fully public** — there is
-no gate at all in that case. This matters for anyone deploying a preview: an
-unset `NEXT_PUBLIC_SITE_URL` also defaults Open Graph/canonical URLs to
-`http://localhost:3000` rather than the real bank's domain — see
-`.env.example` for details on both.
+Setting `PREVIEW_PASSWORD_ENABLED=true` together with `PREVIEW_PASSWORD` gates
+every route behind `/login` (see `src/proxy.ts`). **The wall is disabled by
+default** so a preview is fully public unless the enable flag is explicitly
+turned on. This matters for anyone deploying a preview: an unset
+`NEXT_PUBLIC_SITE_URL` also defaults Open Graph/canonical URLs to
+`http://localhost:3000` rather than the real bank's domain — see `.env.example`
+for details on both.
 
 ## Conventions
 

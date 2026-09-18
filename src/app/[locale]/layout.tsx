@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 import SmoothScroll from "@/components/SmoothScroll";
 import Preloader, { PRELOADER_COOKIE_NAME } from "@/components/Preloader";
 import PreviewIdleLogout from "@/components/PreviewIdleLogout";
-import { AUTH_COOKIE_NAME } from "@/lib/preview-auth";
+import { AUTH_COOKIE_NAME, getPreviewPassword } from "@/lib/preview-auth";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
@@ -89,7 +89,7 @@ export default async function LocaleLayout({
   }
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "nav" });
-  const password = process.env.PREVIEW_PASSWORD;
+  const password = getPreviewPassword();
   const requestCookies = await cookies();
   const hasPreviewSession = !password || requestCookies.get(AUTH_COOKIE_NAME)?.value === password;
   const hasPreloaderSeen = requestCookies.get(PRELOADER_COOKIE_NAME)?.value === "1";
