@@ -117,6 +117,157 @@
       "back": "返回信用卡",
       "apply": "申请",
       "navigationLabel": "信用卡详情导航",
+      "informationTitle": "其他信息",
+      "informationType": "信息类型",
+      "primaryCard": "主卡",
+      "mileageTitle": "里程模拟",
+      "mileageSimulator": {
+        "eyebrow": "里程计算器",
+        "heading": "计算您的 KrisFlyer 里程",
+        "description": "KrisFlyer 里程是您使用 BCA Singapore Airlines 信用卡交易时获得的奖励。",
+        "learnMore": "了解更多",
+        "learnMoreHref": "https://www.bca.co.id/id/Individu/produk/Kartu-Kredit/Sq-Visa-Signature",
+        "cardSelectionLabel": "里程模拟卡片选择",
+        "cardName": "BCA Singapore Airlines KrisFlyer Visa Signature",
+        "mileageRate": "1 里程 / {amount}",
+        "transactionAmount": "交易金额",
+        "amountOptionsLabel": "交易金额选项",
+        "resultLabel": "获得的里程",
+        "miles": "KrisFlyer 里程",
+        "calculation": "来自 {amount} 交易",
+        "equivalentLabel": "相当于",
+        "equivalent": "约为前往雅加达–新加坡机票所需里程的 {progress}%",
+        "apply": "在 myBCA 申请"
+      },
+      "simulationTool": {
+        "transactionOne": "交易 I",
+        "transactionTwo": "交易 II",
+        "payment": "2024 年 4 月 17 日付款",
+        "assumption": "本示例遵循 BCA 官方模拟：每月利率 1.75%、最低付款额 5%，并使用相同的交易期间。",
+        "newBill": "新账单",
+        "minimumPayment": "5% 最低付款",
+        "interest": "预计利息",
+        "nextBill": "下一期账单",
+        "firstStatementIntro": "结算日为 {statementDate}、到期日为 {paymentDate} 的账单计算。",
+        "secondStatementIntro": "结算周期日：{statementDate}，按最低付款额计算利息（付款日：{paymentDate}）。",
+        "interestCalculation": "利息计算：",
+        "postingDate": "入账日期",
+        "description": "说明",
+        "amount": "金额",
+        "date": "日期",
+        "statementDates": "结算日期",
+        "statementDate": "当前结算日",
+        "nextStatementDate": "下一结算日",
+        "days": "天",
+        "previousPostingDate": "2024 年 3 月 1 日",
+        "previousBill": "上一期账单",
+        "transactionOneDate": "2024 年 3 月 5 日",
+        "transactionTwoDate": "2024 年 3 月 16 日",
+        "secondStatementDate": "2024 年 4 月 1 日",
+        "previousBalance": "上一期余额",
+        "secondTransactionOneDate": "2024 年 4 月 8 日",
+        "secondTransactionTwoDate": "2024 年 4 月 24 日",
+        "paymentDate": "2024 年 4 月 17 日",
+        "transactionType": "交易类型",
+        "period": "期间（交易日至账单打印日）",
+        "transactionAmount": "交易金额",
+        "rate": "利率",
+        "formula": "计算公式",
+        "interestTotal": "利息总额",
+        "transactionOnePeriod": "2024 年 3 月 5 日 – 2024 年 4 月 16 日（43 天）",
+        "transactionTwoPeriod": "2024 年 3 月 16 日 – 2024 年 4 月 16 日（32 天）",
+        "remainingPayment": "上月剩余付款",
+        "remainingPaymentPeriod": "2024 年 4 月 17 日 – 2024 年 5 月 1 日（15 天）",
+        "interestFormula": "{amount} × 1.75% × 12 × {days}/365",
+        "total": "总计"
+      },
+      "cardSpecificInformation": {
+        "krisflyer-signature": {
+          "topics": [
+            { "key": "fees", "label": "费用", "columns": ["费用类型", "主卡", "附属卡"], "rows": [
+              { "label": "年费", "cells": [{ "text": "Rp500,000" }, { "text": "Rp300,000" }] },
+              { "label": "逾期付款费用", "cells": [{ "text": "账单总额的 1%，最高 Rp100,000", "colSpan": 2 }] },
+              { "label": "一年交易摘要申请", "cells": [{ "text": "Rp100,000", "colSpan": 2 }] },
+              { "label": "账单副本申请", "cells": [{ "text": "Rp30,000", "colSpan": 2 }] },
+              { "label": "遗失或损坏卡片更换", "cells": [{ "text": "免费", "colSpan": 2 }] },
+              { "label": "账单打印与寄送", "cells": [{ "text": "Rp10,000", "colSpan": 2 }] },
+              { "label": "超额费用", "cells": [{ "text": "免费", "colSpan": 2 }] },
+              { "label": "国内及国际现金预借", "cells": [{ "text": "提款金额的 4%，或最低 Rp40,000", "colSpan": 2 }] },
+              { "label": "柜台现金预借管理费", "cells": [{ "text": "每笔 Rp20,000", "colSpan": 2 }] },
+              { "label": "取消分期付款", "cells": [{ "text": "Rp100,000", "colSpan": 2 }] },
+              { "label": "印花税", "cells": [{ "text": "账单付款超过 Rp5,000,000 时收取 Rp10,000", "colSpan": 2 }] }
+            ] },
+            { "key": "limit-risk", "label": "额度、利率与风险", "columns": ["信息类型", "主卡", "附属卡"], "blocks": [
+              { "type": "text", "heading": "额度", "bullets": ["主卡与附属卡的最低信用额度"] },
+              { "type": "table", "columns": ["额度类型", "主卡", "附属卡"], "rows": [{ "label": "BCA Singapore Airlines KrisFlyer Visa Signature", "cells": [{ "text": "Rp10,000,000" }, { "text": "Rp5,000,000" }] }] },
+              { "type": "text", "body": "说明：信用额度将根据 BCA 的分析结果确定。" },
+              { "type": "text", "heading": "交易额度", "bullets": ["BCA Singapore Airlines KrisFlyer Visa Signature 的交易额度"] },
+              { "type": "table", "columns": ["交易类型", "额度"], "rows": [
+                { "label": "Contact（EDC）", "cells": [{ "text": "根据可用信用额度" }] },
+                { "label": "使用 PIN 的非接触式交易", "cells": [{ "text": "根据可用信用额度" }] },
+                { "label": "无需 PIN 的非接触式交易", "cells": [{ "text": "最高交易额度遵循当地规定；在印度尼西亚最高 Rp1,000,000。可通过 myBCA/BCA mobile 设置每日额度，最高 Rp200,000,000 或可用信用额度。" }] },
+                { "label": "网上交易", "cells": [{ "text": "根据可用信用额度" }] },
+                { "label": "ATM 现金预借", "cells": [{ "text": "信用额度的 20%" }] }
+              ] },
+              { "type": "text", "heading": "利率", "body": "现金预借和消费交易的利率为每月 1.75%，具体以印度尼西亚银行现行规定为准。" },
+              { "type": "text", "heading": "风险", "bullets": ["逾期支付账单可能产生逾期费用并影响债务人信用记录。", "提前结清分期交易可能产生费用。", "因客户疏忽，卡片、PIN/Password/OTP 或 User ID/BCA ID 可能被滥用。"] }
+            ], "rows": [
+              { "label": "最低信用额度", "cells": [{ "text": "Rp10,000,000" }, { "text": "Rp5,000,000" }] },
+              { "label": "EDC 额度", "cells": [{ "text": "根据可用信用额度", "colSpan": 2 }] },
+              { "label": "使用 PIN 的非接触式交易", "cells": [{ "text": "根据可用信用额度", "colSpan": 2 }] },
+              { "label": "无需 PIN 的非接触式交易", "cells": [{ "text": "遵循当地规定；在印度尼西亚最高 Rp1,000,000", "colSpan": 2 }] },
+              { "label": "网上交易", "cells": [{ "text": "根据可用信用额度", "colSpan": 2 }] },
+              { "label": "ATM 现金预借", "cells": [{ "text": "信用额度的 20%", "colSpan": 2 }] },
+              { "label": "消费及现金预借利率", "cells": [{ "text": "每月 1.75%", "colSpan": 2 }] },
+              { "label": "逾期付款风险", "cells": [{ "text": "可能产生逾期费用并影响债务人信用记录", "colSpan": 2 }] },
+              { "label": "提前结清分期风险", "cells": [{ "text": "提前结清分期交易可能产生费用", "colSpan": 2 }] },
+              { "label": "卡片滥用风险", "cells": [{ "text": "因客户疏忽导致卡片、PIN/Password/OTP 或 User ID/BCA ID 被滥用", "colSpan": 2 }] }
+            ] },
+            { "key": "simulation", "label": "模拟", "columns": ["过账日期", "说明", "金额"], "blocks": [
+              { "type": "text", "body": "账单日为 2024 年 4 月 1 日、付款到期日为 2024 年 4 月 17 日的账单计算。" },
+              { "type": "table", "columns": ["过账日期", "说明", "金额"], "rows": [
+                { "label": "2024 年 3 月 1 日", "cells": [{ "text": "上一期账单" }, { "text": "Rp0" }] },
+                { "label": "2024 年 3 月 5 日", "cells": [{ "text": "交易 I" }, { "text": "Rp1,250,000" }] },
+                { "label": "2024 年 3 月 16 日", "cells": [{ "text": "交易 II" }, { "text": "Rp1,750,000" }] },
+                { "label": "新账单", "labelColSpan": 2, "cells": [{ "text": "Rp3,000,000" }] }
+              ] },
+              { "type": "text", "body": "账单周期为 2024 年 5 月 1 日，按最低付款计算利息（付款日期：2024 年 4 月 17 日）。" },
+              { "type": "table", "columns": ["过账日期", "说明", "金额"], "rows": [
+                { "label": "2024 年 4 月 1 日", "cells": [{ "text": "上一期余额" }, { "text": "Rp3,000,000" }] },
+                { "label": "2024 年 4 月 8 日", "cells": [{ "text": "交易 I" }, { "text": "Rp1,250,000" }] },
+                { "label": "2024 年 4 月 24 日", "cells": [{ "text": "交易 II" }, { "text": "Rp1,750,000" }] },
+                { "label": "2024 年 4 月 17 日", "cells": [{ "text": "付款（最低 5% x Rp3,000,000）" }, { "text": "(Rp150,000)" }] },
+                { "label": "利息", "labelColSpan": 2, "cells": [{ "text": "Rp87,740" }] },
+                { "label": "新账单", "labelColSpan": 2, "cells": [{ "text": "Rp4,187,740" }] }
+              ] },
+              { "type": "text", "heading": "利息计算：" },
+              { "type": "table", "columns": ["交易类型", "期间", "交易金额", "利率", "计算公式", "利息总额"], "columnTooltips": { "期间": "从交易日期到账单打印日期的时间间隔。" }, "rows": [
+                { "label": "交易 I", "cells": [{ "text": "2024 年 3 月 5 日 – 2024 年 4 月 16 日（43 天）" }, { "text": "Rp1,250,000" }, { "text": "1.75%", "rowSpan": 3 }, { "text": "交易金额 x 利率 x 12 个月 x（期间/365 天）", "rowSpan": 3 }, { "text": "Rp30,925" }] },
+                { "label": "交易 II", "cells": [{ "text": "2024 年 3 月 16 日 – 2024 年 4 月 16 日（32 天）" }, { "text": "Rp1,750,000" }, { "text": "Rp32,219" }] },
+                { "label": "上月剩余付款", "cells": [{ "text": "2024 年 4 月 17 日 – 2024 年 5 月 1 日（15 天）" }, { "text": "Rp2,850,000" }, { "text": "Rp24,596" }] },
+                { "label": "总计", "labelColSpan": 5, "cells": [{ "text": "Rp87,740" }] }
+              ] }
+            ] }
+          ]
+        }
+      },
+      "subtitles": {
+        "krisflyer-signature": "Faster way to earn KrisFlyer miles",
+        "krisflyer-infinite": "Faster way to earn KrisFlyer miles",
+        "tiket-mastercard": "每日购物，假日更省心",
+        "pps-club-infinite": "Faster way to earn KrisFlyer miles",
+        "everyday-card": "每日消费，每日精彩。",
+        "card-platinum": "为特别的您打造的特别卡片",
+        "visa-batman": "My Card My Superhero",
+        "mastercard-black": "Experience the ultimate privilege",
+        "visa-black": "Experience the ultimate privilege",
+        "blibli-mastercard": "与 Blibli 一起享受更优惠的网上购物",
+        "mastercard-globe": "My Card My Lifestyle Partner",
+        "mastercard-world": "适合全球生活方式的高端信用卡",
+        "jcb-black": "Style specially for you",
+        "unionpay": "Let's Live It Up!",
+        "american-express-platinum": "For the finest things in life"
+      },
       "tabs": {
         "benefits": "权益",
         "features": "主要功能",
@@ -178,6 +329,12 @@
       "featureHeading": "满足各种需求的完整功能",
       "learnMore": "了解更多",
       "appPlaceholder": "应用内信用卡功能界面占位图",
+      "cardSpecificHeadings": {
+        "krisflyer-signature": "更快累积 KrisFlyer 里程",
+        "features": {
+          "krisflyer-signature": "消费与旅行主要功能"
+        }
+      },
       "benefits": [
         { "key": "installment", "title": "BCA 分期", "description": "将交易转为 BCA 分期，利率低至 0%，期限最长 36 个月。" },
         { "key": "reward", "title": "BCA 积分", "description": "在印度尼西亚及海外使用信用卡交易均可获得 BCA 积分。", "featured": true },
@@ -185,6 +342,15 @@
         { "key": "travel-insurance", "title": "旅行保险", "description": "每一次旅程都能安心应对各种风险。" },
         { "key": "credit-life", "title": "信用人寿保险", "description": "为您和所爱之人抵御意外风险。" }
       ],
+      "cardSpecificBenefits": {
+        "krisflyer-signature": [
+          { "key": "krisflyer-reward", "title": "KrisFlyer 奖赏", "description": "每消费 Rp13,500 可获得 1 KrisFlyer 里程。" },
+          { "key": "krisflyer-welcome-bonus", "title": "最高 10,000 里程迎新奖励", "description": "激活并完成首次交易后获得 3,000 里程；获批后 2 个月内消费至少 Rp5,000,000，再获得额外 7,000 里程。" },
+          { "key": "krisflyer-monthly-bonus", "title": "每月额外奖励", "description": "每月消费至少 Rp20,000,000，可获得额外 1,000 KrisFlyer 里程。" },
+          { "key": "krisflyer-merchant-offers", "title": "商户优惠", "description": "在餐厅、时装、网上旅游和市场平台等线上线下商户享受优惠。" },
+          { "key": "krisflyer-travel-services", "title": "旅行设施", "description": "享有自动扣款、BCA Credit Life、旅行意外保险和 BCA Travel Service 等额外设施。" }
+        ]
+      },
       "features": [
         { "key": "application", "title": "申请信用卡", "description": "选择适合您需求的卡片并在线申请。" },
         { "key": "add-card", "title": "添加卡片", "description": "通过共享额度添加卡片，满足不同需求。" },
@@ -194,7 +360,15 @@
         { "key": "limit", "title": "申请提高额度", "description": "直接在应用中提高您的信用卡额度。" },
         { "key": "control", "title": "信用卡管理", "description": "随时通过应用冻结和管理您的卡片。" },
         { "key": "contactless", "title": "设置非接触式额度", "description": "根据需求设置非接触式交易额度。", "badge": "新功能" }
-      ]
+      ],
+      "cardSpecificFeatures": {
+        "krisflyer-signature": [
+          { "key": "transactions", "title": "Visa 商户与 ATM 交易", "description": "可在网上和线下商户、BCA ATM 或带有 Visa 标志的 ATM 使用卡片。" },
+          { "key": "contactless", "title": "非接触式交易", "description": "使用具备非接触式功能的卡片进行非接触式付款。" },
+          { "key": "installment", "title": "BCA 分期", "description": "将符合条件的交易转换为 BCA 分期。" },
+          { "key": "miles", "title": "更快累积 KrisFlyer 里程", "description": "使用卡片进行交易即可获得 KrisFlyer 里程。" }
+        ]
+      }
     },
     "cardList": {
       "eyebrow": "卡片选择",

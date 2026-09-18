@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
 import { useLenis, useScrollLock } from "@/components/SmoothScroll";
 import { usePathname } from "@/i18n/navigation";
@@ -29,6 +29,8 @@ import { usePathname } from "@/i18n/navigation";
  */
 
 export const PRELOADER_DONE_EVENT = "bca:preloader-done";
+export const PRELOADER_COOKIE_NAME = "bca_preloader_seen";
+const PRELOADER_SESSION_KEY = "bca:preloader-seen";
 
 // The event above fires exactly once and is gone — a listener attached after
 // that (e.g. a client component that mounts during the ~1.35s exit window,
@@ -37,6 +39,27 @@ export const PRELOADER_DONE_EVENT = "bca:preloader-done";
 // already fire?" instead of only being able to subscribe to "will it fire?".
 let preloaderHasFinished = false;
 export const hasPreloaderFinished = () => preloaderHasFinished;
+
+function hasSeenPreloader() {
+  try {
+    return window.sessionStorage.getItem(PRELOADER_SESSION_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function markPreloaderSeen() {
+  try {
+    window.sessionStorage.setItem(PRELOADER_SESSION_KEY, "1");
+  } catch {
+    // Storage can be unavailable in privacy-restricted browser contexts.
+  }
+  try {
+    document.cookie = `${PRELOADER_COOKIE_NAME}=1; Path=/; SameSite=Lax`;
+  } catch {
+    // Cookies can be unavailable in privacy-restricted browser contexts.
+  }
+}
 
 /**
  * Runs `callback` once the intro preloader has finished — immediately if it
@@ -150,11 +173,12 @@ function TaglineWords({ timings }: { timings: WordTiming[] }) {
 
 export default function Preloader() {
   const pathname = usePathname();
+  const seen = useSyncExternalStore(() => () => {}, hasSeenPreloader, () => false);
 
   // A successful password action sets the session cookie before its client
   // toast has time to complete. Keep the preloader off this route even after
   // that re-render, otherwise it covers the confirmation immediately.
-  if (pathname.endsWith("/login")) return null;
+  if (pathname.endsWith("/login") || seen || preloaderHasFinished) return null;
 
   return <PreloaderContent />;
 }
@@ -196,6 +220,7 @@ function PreloaderContent() {
       // cascading render. One extra frame of an element the gate already
       // keeps at display:none costs nothing.
       const teardown = window.setTimeout(() => {
+        markPreloaderSeen();
         preloaderHasFinished = true;
         window.dispatchEvent(new Event(PRELOADER_DONE_EVENT));
         setPhase("done");
@@ -285,6 +310,7 @@ function PreloaderContent() {
       finished = true;
       timers.push(
         window.setTimeout(() => {
+          markPreloaderSeen();
           setPhase("exit");
           preloaderHasFinished = true;
         window.dispatchEvent(new Event(PRELOADER_DONE_EVENT));

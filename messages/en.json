@@ -117,6 +117,157 @@
       "back": "Back to Credit Cards",
       "apply": "Apply",
       "navigationLabel": "Credit card detail navigation",
+      "informationTitle": "Other Information",
+      "informationType": "Information Type",
+      "primaryCard": "Primary Card",
+      "mileageTitle": "Mileage Simulation",
+      "mileageSimulator": {
+        "eyebrow": "Mileage Calculator",
+        "heading": "Calculate your KrisFlyer miles",
+        "description": "KrisFlyer Miles are rewards you earn from transactions using the BCA Singapore Airlines Credit Card.",
+        "learnMore": "Read more",
+        "learnMoreHref": "https://www.bca.co.id/id/Individu/produk/Kartu-Kredit/Sq-Visa-Signature",
+        "cardSelectionLabel": "Card selection for mileage simulation",
+        "cardName": "BCA Singapore Airlines KrisFlyer Visa Signature",
+        "mileageRate": "1 mile / {amount}",
+        "transactionAmount": "Transaction Amount",
+        "amountOptionsLabel": "Transaction amount options",
+        "resultLabel": "Miles earned",
+        "miles": "KrisFlyer miles",
+        "calculation": "from a {amount} transaction",
+        "equivalentLabel": "Equivalent to",
+        "equivalent": "~{progress}% towards a Jakarta–Singapore ticket",
+        "apply": "Apply in myBCA"
+      },
+      "simulationTool": {
+        "transactionOne": "Transaction I",
+        "transactionTwo": "Transaction II",
+        "payment": "Payment on 17 April 2024",
+        "assumption": "This example follows BCA's official simulation: 1.75% monthly interest, 5% minimum payment, and the same transaction periods.",
+        "newBill": "New bill",
+        "minimumPayment": "5% minimum payment",
+        "interest": "Estimated interest",
+        "nextBill": "Next bill",
+        "firstStatementIntro": "Statement calculation for the {statementDate} statement date and {paymentDate} payment due date.",
+        "secondStatementIntro": "Statement cycle date: {statementDate}, interest calculation with minimum payment (payment date: {paymentDate}).",
+        "interestCalculation": "Interest calculation:",
+        "postingDate": "Posting Date",
+        "description": "Description",
+        "amount": "Amount",
+        "date": "Date",
+        "statementDates": "Statement Dates",
+        "statementDate": "Current statement",
+        "nextStatementDate": "Next statement",
+        "days": "days",
+        "previousPostingDate": "1 March 2024",
+        "previousBill": "Previous Bill",
+        "transactionOneDate": "5 March 2024",
+        "transactionTwoDate": "16 March 2024",
+        "secondStatementDate": "1 April 2024",
+        "previousBalance": "Previous Balance",
+        "secondTransactionOneDate": "8 April 2024",
+        "secondTransactionTwoDate": "24 April 2024",
+        "paymentDate": "17 April 2024",
+        "transactionType": "Transaction Type",
+        "period": "Period (transaction date to statement date)",
+        "transactionAmount": "Transaction Amount",
+        "rate": "Interest Rate",
+        "formula": "Calculation Formula",
+        "interestTotal": "Total Interest",
+        "transactionOnePeriod": "5 March 2024 – 16 April 2024 (43 days)",
+        "transactionTwoPeriod": "16 March 2024 – 16 April 2024 (32 days)",
+        "remainingPayment": "Previous month's remaining payment",
+        "remainingPaymentPeriod": "17 April 2024 – 1 May 2024 (15 days)",
+        "interestFormula": "{amount} × 1.75% × 12 × {days}/365",
+        "total": "Total"
+      },
+      "cardSpecificInformation": {
+        "krisflyer-signature": {
+          "topics": [
+            { "key": "fees", "label": "Fees", "columns": ["Fee Type", "Primary Card", "Additional Card"], "rows": [
+              { "label": "Annual Fee", "cells": [{ "text": "Rp500,000" }, { "text": "Rp300,000" }] },
+              { "label": "Late Payment Fee", "cells": [{ "text": "1% of total bill, maximum Rp100,000", "colSpan": 2 }] },
+              { "label": "One-year Transaction Summary Request", "cells": [{ "text": "Rp100,000", "colSpan": 2 }] },
+              { "label": "Invoice Copy Request", "cells": [{ "text": "Rp30,000", "colSpan": 2 }] },
+              { "label": "Lost or Damaged Card Replacement", "cells": [{ "text": "Free of charge", "colSpan": 2 }] },
+              { "label": "Bill Printing and Delivery", "cells": [{ "text": "Rp10,000", "colSpan": 2 }] },
+              { "label": "Overlimit Fee", "cells": [{ "text": "Free of charge", "colSpan": 2 }] },
+              { "label": "Domestic and International Cash Advance", "cells": [{ "text": "4% of withdrawal amount or minimum Rp40,000", "colSpan": 2 }] },
+              { "label": "Counter Cash Advance Administration", "cells": [{ "text": "Rp20,000 per transaction", "colSpan": 2 }] },
+              { "label": "Installment Cancellation", "cells": [{ "text": "Rp100,000", "colSpan": 2 }] },
+              { "label": "Stamp Duty", "cells": [{ "text": "Rp10,000 for bill payments above Rp5,000,000", "colSpan": 2 }] }
+            ] },
+            { "key": "limit-risk", "label": "Limit, Interest Rate, & Risk", "columns": ["Information Type", "Primary Card", "Additional Card"], "blocks": [
+              { "type": "text", "heading": "Limit", "bullets": ["Minimum Credit Limit for Primary and Additional Cards"] },
+              { "type": "table", "columns": ["Limit Type", "Primary Card", "Additional Card"], "rows": [{ "label": "BCA Singapore Airlines KrisFlyer Visa Signature", "cells": [{ "text": "Rp10,000,000" }, { "text": "Rp5,000,000" }] }] },
+              { "type": "text", "body": "Note: The credit limit is determined based on BCA's analysis." },
+              { "type": "text", "heading": "Transaction Limit", "bullets": ["Transaction Limits for the BCA Singapore Airlines KrisFlyer Visa Signature"] },
+              { "type": "table", "columns": ["Transaction Type", "Limit"], "rows": [
+                { "label": "Contact (EDC)", "cells": [{ "text": "According to available credit limit" }] },
+                { "label": "Contactless with PIN", "cells": [{ "text": "According to available credit limit" }] },
+                { "label": "Contactless without PIN", "cells": [{ "text": "Maximum transaction follows local rules; in Indonesia, maximum Rp1,000,000. Daily limit can be set through myBCA/BCA mobile up to Rp200,000,000 or the available credit limit." }] },
+                { "label": "E-commerce", "cells": [{ "text": "According to available credit limit" }] },
+                { "label": "Cash Advance (ATM)", "cells": [{ "text": "20% of credit limit" }] }
+              ] },
+              { "type": "text", "heading": "Interest Rate", "body": "Cash withdrawals and shopping transactions are charged interest at 1.75% per month, subject to applicable Bank Indonesia regulations." },
+              { "type": "text", "heading": "Risk", "bullets": ["Late bill payments may incur a late fee and affect the debtor's collectability.", "A fee may apply when settling an installment transaction early.", "The card, PIN/Password/OTP, or User ID/BCA ID may be misused due to customer negligence."] }
+            ], "rows": [
+              { "label": "Minimum Credit Limit", "cells": [{ "text": "Rp10,000,000" }, { "text": "Rp5,000,000" }] },
+              { "label": "EDC Limit", "cells": [{ "text": "According to available credit limit", "colSpan": 2 }] },
+              { "label": "Contactless with PIN", "cells": [{ "text": "According to available credit limit", "colSpan": 2 }] },
+              { "label": "Contactless without PIN", "cells": [{ "text": "Subject to local rules; maximum Rp1,000,000 in Indonesia", "colSpan": 2 }] },
+              { "label": "E-commerce", "cells": [{ "text": "According to available credit limit", "colSpan": 2 }] },
+              { "label": "ATM Cash Advance", "cells": [{ "text": "20% of credit limit", "colSpan": 2 }] },
+              { "label": "Shopping and Cash Advance Interest Rate", "cells": [{ "text": "1.75% per month", "colSpan": 2 }] },
+              { "label": "Late Payment Risk", "cells": [{ "text": "May incur a late fee and affect the debtor's collectability", "colSpan": 2 }] },
+              { "label": "Early Installment Settlement Risk", "cells": [{ "text": "A fee may apply when settling an installment early", "colSpan": 2 }] },
+              { "label": "Card Misuse Risk", "cells": [{ "text": "Misuse of the card, PIN/Password/OTP, or User ID/BCA ID due to customer negligence", "colSpan": 2 }] }
+            ] },
+            { "key": "simulation", "label": "Simulation", "columns": ["Posting Date", "Description", "Amount"], "blocks": [
+              { "type": "text", "body": "Statement calculation for the account statement date of 1 April 2024 and payment due date of 17 April 2024." },
+              { "type": "table", "columns": ["Posting Date", "Description", "Amount"], "rows": [
+                { "label": "1 March 2024", "cells": [{ "text": "Previous Bill" }, { "text": "Rp0" }] },
+                { "label": "5 March 2024", "cells": [{ "text": "Transaction I" }, { "text": "Rp1,250,000" }] },
+                { "label": "16 March 2024", "cells": [{ "text": "Transaction II" }, { "text": "Rp1,750,000" }] },
+                { "label": "New bill", "labelColSpan": 2, "cells": [{ "text": "Rp3,000,000" }] }
+              ] },
+              { "type": "text", "body": "Account statement cycle of 1 May 2024, interest calculation with minimum payment (payment date: 17 April 2024)." },
+              { "type": "table", "columns": ["Posting Date", "Description", "Amount"], "rows": [
+                { "label": "1 April 2024", "cells": [{ "text": "Previous Balance" }, { "text": "Rp3,000,000" }] },
+                { "label": "8 April 2024", "cells": [{ "text": "Transaction I" }, { "text": "Rp1,250,000" }] },
+                { "label": "24 April 2024", "cells": [{ "text": "Transaction II" }, { "text": "Rp1,750,000" }] },
+                { "label": "17 April 2024", "cells": [{ "text": "Payment (Min. 5% x Rp3,000,000)" }, { "text": "(Rp150,000)" }] },
+                { "label": "Interest", "labelColSpan": 2, "cells": [{ "text": "Rp87,740" }] },
+                { "label": "New bill", "labelColSpan": 2, "cells": [{ "text": "Rp4,187,740" }] }
+              ] },
+              { "type": "text", "heading": "Interest calculation:" },
+              { "type": "table", "columns": ["Transaction Type", "Period", "Transaction Amount", "Interest Rate", "Calculation Formula", "Total Interest"], "columnTooltips": { "Period": "Time between the transaction date and the statement print date." }, "rows": [
+                { "label": "Transaction I", "cells": [{ "text": "5 March 2024 – 16 April 2024 (43 days)" }, { "text": "Rp1,250,000" }, { "text": "1.75%", "rowSpan": 3 }, { "text": "Transaction amount x interest rate x 12 months x (period/365 days)", "rowSpan": 3 }, { "text": "Rp30,925" }] },
+                { "label": "Transaction II", "cells": [{ "text": "16 March 2024 – 16 April 2024 (32 days)" }, { "text": "Rp1,750,000" }, { "text": "Rp32,219" }] },
+                { "label": "Previous month's remaining payment", "cells": [{ "text": "17 April 2024 – 1 May 2024 (15 days)" }, { "text": "Rp2,850,000" }, { "text": "Rp24,596" }] },
+                { "label": "Total", "labelColSpan": 5, "cells": [{ "text": "Rp87,740" }] }
+              ] }
+            ] }
+          ]
+        }
+      },
+      "subtitles": {
+        "krisflyer-signature": "Faster way to earn KrisFlyer miles",
+        "krisflyer-infinite": "Faster way to earn KrisFlyer miles",
+        "tiket-mastercard": "Shop every day, make every holiday more affordable",
+        "pps-club-infinite": "Faster way to earn KrisFlyer miles",
+        "everyday-card": "Shop every day, get more every day.",
+        "card-platinum": "A special card for a special person",
+        "visa-batman": "My Card My Superhero",
+        "mastercard-black": "Experience the ultimate privilege",
+        "visa-black": "Experience the ultimate privilege",
+        "blibli-mastercard": "Shop online and get more with Blibli",
+        "mastercard-globe": "My Card My Lifestyle Partner",
+        "mastercard-world": "A premium credit card for a global lifestyle",
+        "jcb-black": "Style specially for you",
+        "unionpay": "Let's Live It Up!",
+        "american-express-platinum": "For the finest things in life"
+      },
       "tabs": {
         "benefits": "Benefits",
         "features": "Key Features",
@@ -178,6 +329,12 @@
       "featureHeading": "Complete Features for Every Need",
       "learnMore": "Learn more",
       "appPlaceholder": "Placeholder for credit card features in the app",
+      "cardSpecificHeadings": {
+        "krisflyer-signature": "Earn KrisFlyer Miles Faster",
+        "features": {
+          "krisflyer-signature": "Key Features for Spending and Travel"
+        }
+      },
       "benefits": [
         { "key": "installment", "title": "BCA Installments", "description": "Convert transactions into BCA Installments with interest starting at 0% and tenors of up to 36 months." },
         { "key": "reward", "title": "BCA Rewards", "description": "BCA loyalty points earned from Credit Card transactions in Indonesia and abroad.", "featured": true },
@@ -185,6 +342,15 @@
         { "key": "travel-insurance", "title": "Travel Insurance", "description": "Stay protected from risks throughout every journey." },
         { "key": "credit-life", "title": "Credit Life Insurance", "description": "Protect yourself and your loved ones from unexpected risks." }
       ],
+      "cardSpecificBenefits": {
+        "krisflyer-signature": [
+          { "key": "krisflyer-reward", "title": "KrisFlyer Rewards", "description": "Earn 1 KrisFlyer mile for every Rp13,500 transaction." },
+          { "key": "krisflyer-welcome-bonus", "title": "Welcome bonus up to 10,000 miles", "description": "Get 3,000 miles after activation and your first transaction, plus 7,000 additional miles after spending at least Rp5,000,000 within 2 months of approval." },
+          { "key": "krisflyer-monthly-bonus", "title": "Monthly reward bonus", "description": "Earn an additional 1,000 KrisFlyer miles every month with minimum spending of Rp20,000,000." },
+          { "key": "krisflyer-merchant-offers", "title": "Merchant offers", "description": "Enjoy attractive offers at offline and online merchants, including restaurants, fashion, online travel, and marketplaces." },
+          { "key": "krisflyer-travel-services", "title": "Travel facilities", "description": "Enjoy additional facilities including Autodebit, BCA Credit Life, Travel Accident Insurance, and BCA Travel Service." }
+        ]
+      },
       "features": [
         { "key": "application", "title": "Apply for a Credit Card", "description": "Choose the right card and apply online." },
         { "key": "add-card", "title": "Add a Card", "description": "Add a card to share needs with a combined limit." },
@@ -194,7 +360,15 @@
         { "key": "limit", "title": "Request a Limit Increase", "description": "Increase your credit card limit directly in the app." },
         { "key": "control", "title": "Credit Card Controls", "description": "Block and manage your card anytime through the app." },
         { "key": "contactless", "title": "Set Contactless Limit", "description": "Set a contactless transaction limit to suit your needs.", "badge": "New" }
-      ]
+      ],
+      "cardSpecificFeatures": {
+        "krisflyer-signature": [
+          { "key": "transactions", "title": "Visa Merchant and ATM Transactions", "description": "Use the card at online and offline merchants, BCA ATMs, or ATMs displaying the Visa logo." },
+          { "key": "contactless", "title": "Contactless Transactions", "description": "Make contactless payments with cards that have the Contactless feature." },
+          { "key": "installment", "title": "BCA Installments", "description": "Convert eligible transactions into BCA Installments." },
+          { "key": "miles", "title": "Earn KrisFlyer Miles Faster", "description": "Earn KrisFlyer miles from transactions made with the card." }
+        ]
+      }
     },
     "cardList": {
       "eyebrow": "Card Options",

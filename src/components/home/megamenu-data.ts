@@ -6,6 +6,7 @@ export type MegaMenuLink = {
 export type MegaMenuProduct = {
   title: string;
   description?: string;
+  href?: string;
 };
 
 export type MegaMenuTool = {

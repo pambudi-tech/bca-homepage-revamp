@@ -66,20 +66,28 @@ export default function MegaMenuPanel({
               {category.label}
             </p>
             <div className="flex flex-col">
-              {category.products.map((product, i) => (
-                <button
-                  key={product.title}
-                  style={{ "--mm-i": i + 1 } as CSSProperties}
-                  className="mm-item group flex w-full flex-col items-start gap-0.5 rounded-xl px-4 pb-4 pt-3 text-left transition-colors duration-200 hover:bg-cyan-100"
-                >
-                  <span className="text-base font-semibold leading-6 text-neutral-800 transition-colors duration-200 group-hover:text-blue-500">
-                    {product.title}
-                  </span>
-                  {product.description && (
-                    <span className="text-sm leading-5 text-neutral-600">{product.description}</span>
-                  )}
-                </button>
-              ))}
+              {category.products.map((product, i) => {
+                const content = (
+                  <>
+                    <span className="text-base font-semibold leading-6 text-neutral-800 transition-colors duration-200 group-hover:text-blue-500">
+                      {product.title}
+                    </span>
+                    {product.description && (
+                      <span className="text-sm leading-5 text-neutral-600">{product.description}</span>
+                    )}
+                  </>
+                );
+                const className = "mm-item group flex w-full flex-col items-start gap-0.5 rounded-xl px-4 pb-4 pt-3 text-left transition-colors duration-200 hover:bg-cyan-100";
+                return product.href ? (
+                  <Link key={product.title} href={product.href} style={{ "--mm-i": i + 1 } as CSSProperties} className={className}>
+                    {content}
+                  </Link>
+                ) : (
+                  <button key={product.title} type="button" style={{ "--mm-i": i + 1 } as CSSProperties} className={className}>
+                    {content}
+                  </button>
+                );
+              })}
             </div>
           </div>
           {category.key === "Kartu Kredit" ? (

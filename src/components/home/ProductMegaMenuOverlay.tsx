@@ -17,6 +17,8 @@ function ArrowRight({ className = "size-5" }: { className?: string }) {
   );
 }
 
+const MOBILE_CATEGORY_DRAWER_HEIGHT = 360;
+
 function UtilityIcon({ type }: { type: MegaMenuTool["icon"] }) {
   if (type === "calculator") {
     return (
@@ -78,6 +80,8 @@ export default function ProductMegaMenuOverlay({
   const [mobileDrawerHeight, setMobileDrawerHeight] = useState<number | null>(null);
   const mobileNavRef = useRef<HTMLElement>(null);
   const mobileDetailRef = useRef<HTMLDivElement>(null);
+  const mobileDetailHeaderRef = useRef<HTMLElement>(null);
+  const mobileDetailScrollRef = useRef<HTMLDivElement>(null);
   const selected = categories.find((category) => category.key === selectedKey) ?? categories[0];
   useScrollLock(open);
 
@@ -86,8 +90,13 @@ export default function ProductMegaMenuOverlay({
 
     const measure = () => {
       const contentHeight = mobileDetailOpen
-        ? mobileDetailRef.current?.scrollHeight ?? 0
-        : mobileNavRef.current?.scrollHeight ?? 0;
+        ? (mobileDetailHeaderRef.current?.offsetHeight ?? 0) + (mobileDetailScrollRef.current?.scrollHeight ?? 0)
+        : 0;
+
+      if (!mobileDetailOpen) {
+        setMobileDrawerHeight(Math.min(window.innerHeight * 0.8, MOBILE_CATEGORY_DRAWER_HEIGHT));
+        return;
+      }
       if (!contentHeight) return;
 
       const drawerHeight = Math.min(
@@ -132,6 +141,7 @@ export default function ProductMegaMenuOverlay({
 
   const tools = selected.tools;
   const supportingLinks = selected.links.slice(0, 3);
+  const drawerHeight = mobileDrawerHeight ?? (!mobileDetailOpen ? MOBILE_CATEGORY_DRAWER_HEIGHT : undefined);
 
   return (
     <div
@@ -153,18 +163,18 @@ export default function ProductMegaMenuOverlay({
       />
 
       <section
-        style={mobileDrawerHeight ? { height: `${mobileDrawerHeight}px` } : undefined}
-        className={`absolute inset-x-0 bottom-0 z-20 flex max-h-[80dvh] origin-bottom flex-col overflow-hidden rounded-t-3xl bg-neutral-100 pb-[calc(86px+env(safe-area-inset-bottom))] shadow-panel transition-[height,transform,opacity] duration-500 ease-[var(--ease-entrance)] will-change-transform xl:hidden ${mobileEntered ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}
+        style={drawerHeight ? { height: `${drawerHeight}px` } : undefined}
+        className={`absolute inset-x-0 bottom-0 z-20 flex min-h-0 max-h-[80dvh] origin-bottom flex-col overflow-hidden rounded-t-3xl bg-neutral-100 pb-[calc(86px+env(safe-area-inset-bottom))] shadow-panel transition-[height,transform,opacity] duration-500 ease-[var(--ease-entrance)] will-change-transform xl:hidden ${mobileEntered ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}
       >
         <div className="mx-auto mt-3 h-1 w-12 shrink-0 rounded-full bg-neutral-300" />
 
-        <div className="relative min-h-0 flex-1 overflow-hidden">
+        <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
           <nav
             ref={mobileNavRef}
             aria-label={tNav("produk")}
             aria-hidden={mobileDetailOpen}
             data-lenis-prevent
-            className={`${mobileDetailOpen ? "pointer-events-none absolute inset-0 -translate-x-8 opacity-0" : "relative translate-x-0 opacity-100"} overflow-y-auto overscroll-contain px-4 pt-5 pb-6 transition-[transform,opacity] duration-400 ease-[var(--ease-entrance)] will-change-transform`}
+            className={`${mobileDetailOpen ? "pointer-events-none absolute inset-0 -translate-x-8 opacity-0" : "relative translate-x-0 opacity-100"} min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pt-5 pb-6 transition-[transform,opacity] duration-400 ease-[var(--ease-entrance)] will-change-transform`}
           >
             <div className="grid grid-cols-4 gap-x-2 gap-y-6">
               {categories.map((category) => (
@@ -189,9 +199,9 @@ export default function ProductMegaMenuOverlay({
           <div
             ref={mobileDetailRef}
             aria-hidden={!mobileDetailOpen}
-            className={`${mobileDetailOpen ? "relative translate-x-0 opacity-100" : "pointer-events-none absolute inset-0 translate-x-8 opacity-0"} flex min-h-0 flex-col transition-[transform,opacity] duration-400 ease-[var(--ease-entrance)] will-change-transform`}
+            className={`${mobileDetailOpen ? "relative translate-x-0 opacity-100" : "pointer-events-none absolute inset-0 translate-x-8 opacity-0"} flex h-full min-h-0 flex-col overflow-hidden transition-[transform,opacity] duration-400 ease-[var(--ease-entrance)] will-change-transform`}
           >
-            <header className="flex shrink-0 items-center gap-3 px-4 py-5">
+            <header ref={mobileDetailHeaderRef} className="flex shrink-0 items-center gap-3 px-4 py-5">
               <button
                 type="button"
                 aria-label={tMobileMenu("kembali")}
@@ -205,17 +215,28 @@ export default function ProductMegaMenuOverlay({
               <h2 className="min-w-0 flex-1 truncate text-xl font-semibold text-neutral-900">{selected.label}</h2>
             </header>
 
-            <div data-lenis-prevent className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+            <div ref={mobileDetailScrollRef} data-lenis-prevent className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
               <div className="px-4 pb-5">
-                {selected.products.map((product) => (
-                  <button key={product.title} type="button" className="flex w-full items-center gap-3 rounded-xl px-2 py-3 text-left transition-colors active:bg-cyan-100">
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-base font-semibold leading-6 text-neutral-900">{product.title}</span>
-                      {product.description ? <span className="mt-0.5 block text-sm leading-5 text-neutral-600">{product.description}</span> : null}
-                    </span>
-                    <ArrowRight className="size-5 shrink-0 text-blue-500" />
-                  </button>
-                ))}
+                {selected.products.map((product) => {
+                  const content = (
+                    <>
+                      <span className="min-w-0 flex-1">
+                        <span className="block text-base font-semibold leading-6 text-neutral-900">{product.title}</span>
+                        {product.description ? <span className="mt-0.5 block text-sm leading-5 text-neutral-600">{product.description}</span> : null}
+                      </span>
+                      <ArrowRight className="size-5 shrink-0 text-blue-500" />
+                    </>
+                  );
+                  return product.href ? (
+                    <Link key={product.title} href={product.href} onClick={onClose} className="flex w-full items-center gap-3 rounded-xl px-2 py-3 text-left transition-colors active:bg-cyan-100">
+                      {content}
+                    </Link>
+                  ) : (
+                    <button key={product.title} type="button" className="flex w-full items-center gap-3 rounded-xl px-2 py-3 text-left transition-colors active:bg-cyan-100">
+                      {content}
+                    </button>
+                  );
+                })}
                 {selected.key === "Kartu Kredit" ? (
                   <Link href="/kartu-kredit" className="mt-2 flex items-center gap-1 px-2 py-3 text-sm font-semibold text-blue-500">
                     {selected.ctaLabel}<ArrowRight className="size-4" />
@@ -298,12 +319,23 @@ export default function ProductMegaMenuOverlay({
           <div className="grid gap-5 pt-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[1fr_1fr]">
             <div className="flex min-h-0 min-w-0 flex-col pb-4">
               <div className="flex flex-col xl:min-h-0 xl:flex-1 xl:overflow-y-auto">
-                {selected.products.map((product) => (
-                  <button key={product.title} type="button" className="group w-full rounded-xl p-3 text-left transition-colors hover:bg-cyan-100">
-                    <span className="block text-base font-semibold leading-6 text-neutral-900 transition-colors group-hover:text-blue-500">{product.title}</span>
-                    {product.description ? <span className="mt-0.5 block text-xs leading-[18px] text-neutral-600">{product.description}</span> : null}
-                  </button>
-                ))}
+                {selected.products.map((product) => {
+                  const content = (
+                    <>
+                      <span className="block text-base font-semibold leading-6 text-neutral-900 transition-colors group-hover:text-blue-500">{product.title}</span>
+                      {product.description ? <span className="mt-0.5 block text-xs leading-[18px] text-neutral-600">{product.description}</span> : null}
+                    </>
+                  );
+                  return product.href ? (
+                    <Link key={product.title} href={product.href} onClick={onClose} className="group w-full rounded-xl p-3 text-left transition-colors hover:bg-cyan-100">
+                      {content}
+                    </Link>
+                  ) : (
+                    <button key={product.title} type="button" className="group w-full rounded-xl p-3 text-left transition-colors hover:bg-cyan-100">
+                      {content}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 

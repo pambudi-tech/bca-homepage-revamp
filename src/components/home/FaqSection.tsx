@@ -12,14 +12,6 @@ function PlusIcon({ className }: { className?: string }) {
   );
 }
 
-function ChevronIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
 function AccordionRow({
   question,
   answer,
@@ -38,7 +30,7 @@ function AccordionRow({
   return (
     <div
       className={`group w-full shrink-0 transition-colors ${simple
-        ? "border-b border-neutral-300"
+        ? `rounded-xl ${open ? "bg-neutral-100" : "bg-transparent"}`
         : `rounded-xl ${glass
           ? open
             ? "bg-white/15"
@@ -56,7 +48,7 @@ function AccordionRow({
         className={`flex w-full cursor-pointer items-center gap-8 text-left ${simple ? "px-4 py-5 sm:py-6" : "p-4"}`}
       >
         <span
-          className={`flex-1 transition-[color,opacity] ${simple ? "text-lg leading-7 text-neutral-700 sm:text-xl" : "text-base leading-6"} ${
+          className={`flex-1 transition-[color,opacity] ${simple ? "text-base leading-6 text-neutral-700" : "text-base leading-6"} ${
             glass
               ? open
                 ? "font-bold text-white opacity-100"
@@ -68,19 +60,15 @@ function AccordionRow({
         >
           {question}
         </span>
-        {simple ? (
-          <ChevronIcon className={`size-6 shrink-0 text-neutral-700 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
-        ) : (
-          <PlusIcon
-            className={`size-6 shrink-0 transition-[transform,color] duration-300 ${
-              open
-                ? `rotate-45 ${glass ? "text-white" : "text-blue-700"}`
-                : glass
-                  ? "text-cyan-300"
-                  : "text-blue-500"
-            }`}
-          />
-        )}
+        <PlusIcon
+          className={`size-6 shrink-0 transition-[transform,color] duration-300 ${
+            open
+              ? `rotate-45 ${glass ? "text-white" : "text-blue-700"}`
+              : glass
+                ? "text-cyan-300"
+                : "text-blue-500"
+          }`}
+        />
       </button>
       {/* Height animates via the CSS grid 0fr → 1fr trick — no JS measurement,
           and the row stays in the DOM (rather than conditionally rendered) so
@@ -243,7 +231,7 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
         }}
         onScroll={(e) => updateScrollShadows(e.currentTarget)}
         data-lenis-prevent
-        className={`h-[360px] overflow-y-auto ${standardHeading ? "px-0 py-0" : "px-2 py-2"} ${
+        className={`${standardHeading ? "-mx-4 w-[calc(100%+2rem)] px-0 py-0 xl:-mx-8 xl:w-[calc(100%+4rem)]" : "px-2 py-2"} h-[360px] overflow-y-auto ${
           glass ? "scrollbar-glass bg-black/50 backdrop-blur-md" : "bg-white"
         }`}
       >
@@ -266,8 +254,8 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
           Gains an upward shadow while the accordion above still has more
           content below the fold, so it reads as sitting on top of that
           hidden content instead of just a static footer. */}
-      {footer ? <div className={`relative z-10 flex flex-col items-center gap-6 border-t border-neutral-300 bg-white pb-0 pt-4 transition-shadow duration-200 ${showBottomShadow ? "shadow-scroll-top" : ""}`}>
-        <p className="text-center text-lg font-semibold text-neutral-800">{footer.prompt}</p>
+      {footer ? <div className={`${standardHeading ? "-mx-4 w-[calc(100%+2rem)] px-4 xl:-mx-8 xl:w-[calc(100%+4rem)]" : ""} relative z-10 flex flex-col items-center gap-6 border-t border-neutral-300 bg-white pb-0 pt-4 transition-shadow duration-200 ${showBottomShadow ? "shadow-scroll-top" : ""}`}>
+        <p className={`${standardHeading ? "text-base" : "text-lg"} text-center font-semibold text-neutral-800`}>{footer.prompt}</p>
         <div className="grid w-full grid-cols-2 gap-3">
           {footer.actions.map((action) => (
             <a

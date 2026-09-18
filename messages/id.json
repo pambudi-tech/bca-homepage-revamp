@@ -117,6 +117,157 @@
       "back": "Kembali ke Kartu Kredit",
       "apply": "Apply",
       "navigationLabel": "Navigasi detail kartu kredit",
+      "informationTitle": "Informasi Lainnya",
+      "informationType": "Jenis Informasi",
+      "primaryCard": "Kartu Utama",
+      "mileageTitle": "Simulasi Mileage",
+      "mileageSimulator": {
+        "eyebrow": "Mileage Calculator",
+        "heading": "Hitung KrisFlyer miles kamu",
+        "description": "KrisFlyer Miles adalah reward yang kamu dapatkan dari setiap transaksi menggunakan Kartu Kredit BCA Singapore Airlines.",
+        "learnMore": "Baca lebih lengkap",
+        "learnMoreHref": "https://www.bca.co.id/id/Individu/produk/Kartu-Kredit/Sq-Visa-Signature",
+        "cardSelectionLabel": "Pilihan kartu untuk simulasi mileage",
+        "cardName": "BCA Singapore Airlines KrisFlyer Visa Signature",
+        "mileageRate": "1 mile / {amount}",
+        "transactionAmount": "Nominal Transaksi",
+        "amountOptionsLabel": "Pilihan nominal transaksi",
+        "resultLabel": "Miles yang diperoleh",
+        "miles": "KrisFlyer miles",
+        "calculation": "dari transaksi {amount}",
+        "equivalentLabel": "Setara dengan",
+        "equivalent": "~{progress}% menuju tiket Jakarta–Singapura",
+        "apply": "Apply di myBCA"
+      },
+      "simulationTool": {
+        "transactionOne": "Transaksi I",
+        "transactionTwo": "Transaksi II",
+        "payment": "Pembayaran pada 17 April 2024",
+        "assumption": "Contoh mengikuti simulasi resmi BCA: bunga 1,75% per bulan, pembayaran minimum 5%, dan periode transaksi yang sama dengan contoh.",
+        "newBill": "Tagihan baru",
+        "minimumPayment": "Pembayaran minimum 5%",
+        "interest": "Estimasi bunga",
+        "nextBill": "Tagihan berikutnya",
+        "firstStatementIntro": "Perhitungan statement tanggal rekening {statementDate} dan tanggal jatuh tempo {paymentDate}.",
+        "secondStatementIntro": "Tanggal rekening (statement cycle) {statementDate}, perhitungan bunga bila melakukan pembayaran minimum (tanggal bayar: {paymentDate}).",
+        "interestCalculation": "Perhitungan interest:",
+        "postingDate": "Tanggal Posting",
+        "description": "Keterangan",
+        "amount": "Jumlah",
+        "date": "Tanggal",
+        "statementDates": "Tanggal Statement",
+        "statementDate": "Statement saat ini",
+        "nextStatementDate": "Statement berikutnya",
+        "days": "hari",
+        "previousPostingDate": "1 Maret 2024",
+        "previousBill": "Tagihan Sebelumnya",
+        "transactionOneDate": "5 Maret 2024",
+        "transactionTwoDate": "16 Maret 2024",
+        "secondStatementDate": "1 April 2024",
+        "previousBalance": "Previous Balance",
+        "secondTransactionOneDate": "8 April 2024",
+        "secondTransactionTwoDate": "24 April 2024",
+        "paymentDate": "17 April 2024",
+        "transactionType": "Jenis Transaksi",
+        "period": "Periode waktu (jarak tgl transaksi s.d tgl cetak tagihan)",
+        "transactionAmount": "Jumlah Transaksi",
+        "rate": "Suku Bunga",
+        "formula": "Rumus Perhitungan",
+        "interestTotal": "Total Bunga",
+        "transactionOnePeriod": "5 Maret 2024 – 16 April 2024 (43 hari)",
+        "transactionTwoPeriod": "16 Maret 2024 – 16 April 2024 (32 hari)",
+        "remainingPayment": "Sisa pembayaran bulan lalu",
+        "remainingPaymentPeriod": "17 April 2024 – 1 Mei 2024 (15 hari)",
+        "interestFormula": "{amount} × 1,75% × 12 × {days}/365",
+        "total": "Total"
+      },
+      "cardSpecificInformation": {
+        "krisflyer-signature": {
+          "topics": [
+            { "key": "fees", "label": "Biaya", "columns": ["Jenis Biaya", "Kartu Utama", "Kartu Tambahan"], "rows": [
+              { "label": "Annual Fee", "cells": [{ "text": "Rp500.000" }, { "text": "Rp300.000" }] },
+              { "label": "Denda Keterlambatan", "cells": [{ "text": "1% dari total tagihan, maksimum Rp100.000", "colSpan": 2 }] },
+              { "label": "Permintaan ringkasan transaksi 1 tahun berjalan", "cells": [{ "text": "Rp100.000", "colSpan": 2 }] },
+              { "label": "Permintaan copy faktur", "cells": [{ "text": "Rp30.000", "colSpan": 2 }] },
+              { "label": "Penggantian kartu hilang atau rusak", "cells": [{ "text": "Bebas biaya", "colSpan": 2 }] },
+              { "label": "Cetak dan pengiriman tagihan", "cells": [{ "text": "Rp10.000", "colSpan": 2 }] },
+              { "label": "Biaya overlimit", "cells": [{ "text": "Bebas biaya", "colSpan": 2 }] },
+              { "label": "Cash Advance domestik dan luar negeri", "cells": [{ "text": "4% dari nominal tarikan atau minimum Rp40.000", "colSpan": 2 }] },
+              { "label": "Administrasi Cash Advance di counter", "cells": [{ "text": "Rp20.000 per transaksi", "colSpan": 2 }] },
+              { "label": "Pembatalan cicilan/angsuran", "cells": [{ "text": "Rp100.000", "colSpan": 2 }] },
+              { "label": "Biaya meterai", "cells": [{ "text": "Rp10.000 untuk pembayaran tagihan di atas Rp5.000.000", "colSpan": 2 }] }
+            ] },
+            { "key": "limit-risk", "label": "Limit, Suku Bunga, & Risiko", "columns": ["Jenis Informasi", "Kartu Utama", "Kartu Tambahan"], "blocks": [
+              { "type": "text", "heading": "Limit", "bullets": ["Limit Kredit Minimum untuk Kartu Utama dan Kartu Tambahan"] },
+              { "type": "table", "columns": ["Jenis Limit", "Kartu Utama", "Kartu Tambahan"], "rows": [{ "label": "BCA Singapore Airlines KrisFlyer Visa Signature", "cells": [{ "text": "Rp10.000.000" }, { "text": "Rp5.000.000" }] }] },
+              { "type": "text", "body": "Keterangan: Limit kredit akan diberikan sesuai hasil Analisis dari BCA." },
+              { "type": "text", "heading": "Limit Transaksi", "bullets": ["Limit Transaksi untuk Kartu Kredit BCA Singapore Airlines KrisFlyer Visa Signature"] },
+              { "type": "table", "columns": ["Jenis Transaksi", "Limit"], "rows": [
+                { "label": "Contact (EDC)", "cells": [{ "text": "Sesuai limit kredit yang tersedia" }] },
+                { "label": "Contactless dengan PIN", "cells": [{ "text": "Sesuai limit kredit yang tersedia" }] },
+                { "label": "Contactless tanpa PIN", "cells": [{ "text": "Nominal transaksi maksimum mengikuti ketentuan negara; di Indonesia maksimum Rp1.000.000. Limit harian dapat diatur melalui myBCA/BCA mobile hingga Rp200.000.000 atau sesuai limit kartu kredit." }] },
+                { "label": "e-commerce", "cells": [{ "text": "Sesuai limit kredit yang tersedia" }] },
+                { "label": "Cash Advance (ATM)", "cells": [{ "text": "20% dari limit kredit" }] }
+              ] },
+              { "type": "text", "heading": "Suku bunga", "body": "Transaksi penarikan tunai dan belanja dikenakan suku bunga 1,75% per bulan. Suku bunga yang dikenakan sesuai dengan ketentuan Bank Indonesia yang berlaku." },
+              { "type": "text", "heading": "Risiko", "bullets": ["Keterlambatan dalam pembayaran tagihan menimbulkan denda keterlambatan dan mempengaruhi kolektibilitas debitur.", "Nasabah dikenakan biaya apabila mempercepat pelunasan cicilan transaksi.", "Penyalahgunaan kartu, PIN/Password/OTP, dan User ID/BCA ID akibat kelalaian dari nasabah."] }
+            ], "rows": [
+              { "label": "Limit Kredit Minimum", "cells": [{ "text": "Rp10.000.000" }, { "text": "Rp5.000.000" }] },
+              { "label": "Limit EDC", "cells": [{ "text": "Sesuai limit kredit yang tersedia", "colSpan": 2 }] },
+              { "label": "Contactless dengan PIN", "cells": [{ "text": "Sesuai limit kredit yang tersedia", "colSpan": 2 }] },
+              { "label": "Contactless tanpa PIN", "cells": [{ "text": "Maksimum mengikuti ketentuan negara; di Indonesia maksimum Rp1.000.000", "colSpan": 2 }] },
+              { "label": "E-commerce", "cells": [{ "text": "Sesuai limit kredit yang tersedia", "colSpan": 2 }] },
+              { "label": "Cash Advance ATM", "cells": [{ "text": "20% dari limit kredit", "colSpan": 2 }] },
+              { "label": "Suku bunga transaksi belanja dan tarik tunai", "cells": [{ "text": "1,75% per bulan", "colSpan": 2 }] },
+              { "label": "Risiko keterlambatan pembayaran", "cells": [{ "text": "Menimbulkan denda keterlambatan dan mempengaruhi kolektibilitas debitur", "colSpan": 2 }] },
+              { "label": "Risiko pelunasan cicilan lebih awal", "cells": [{ "text": "Dapat dikenakan biaya apabila mempercepat pelunasan cicilan transaksi", "colSpan": 2 }] },
+              { "label": "Risiko penyalahgunaan kartu", "cells": [{ "text": "Penyalahgunaan kartu, PIN/Password/OTP, dan User ID/BCA ID akibat kelalaian nasabah", "colSpan": 2 }] }
+            ] },
+            { "key": "simulation", "label": "Simulasi", "columns": ["Tanggal Posting", "Keterangan", "Jumlah"], "blocks": [
+              { "type": "text", "body": "Perhitungan statement tanggal rekening 1 April 2024 dan tanggal jatuh tempo 17 April 2024." },
+              { "type": "table", "columns": ["Tanggal Posting", "Keterangan", "Jumlah"], "rows": [
+                { "label": "1 Maret 2024", "cells": [{ "text": "Tagihan Sebelumnya" }, { "text": "Rp0" }] },
+                { "label": "5 Maret 2024", "cells": [{ "text": "Transaksi I" }, { "text": "Rp1.250.000" }] },
+                { "label": "16 Maret 2024", "cells": [{ "text": "Transaksi II" }, { "text": "Rp1.750.000" }] },
+                { "label": "Tagihan baru", "labelColSpan": 2, "cells": [{ "text": "Rp3.000.000" }] }
+              ] },
+              { "type": "text", "body": "Tanggal rekening (statement cycle) 1 Mei 2024, perhitungan bunga bila melakukan pembayaran minimum (tanggal bayar: 17 April 2024)." },
+              { "type": "table", "columns": ["Tanggal Posting", "Keterangan", "Jumlah"], "rows": [
+                { "label": "1 April 2024", "cells": [{ "text": "Previous Balance" }, { "text": "Rp3.000.000" }] },
+                { "label": "8 April 2024", "cells": [{ "text": "Transaksi I" }, { "text": "Rp1.250.000" }] },
+                { "label": "24 April 2024", "cells": [{ "text": "Transaksi II" }, { "text": "Rp1.750.000" }] },
+                { "label": "17 April 2024", "cells": [{ "text": "Payment (Min. 5% x Rp3.000.000)" }, { "text": "(Rp150.000)" }] },
+                { "label": "Interest", "labelColSpan": 2, "cells": [{ "text": "Rp87.740" }] },
+                { "label": "Tagihan baru", "labelColSpan": 2, "cells": [{ "text": "Rp4.187.740" }] }
+              ] },
+              { "type": "text", "heading": "Perhitungan interest:" },
+              { "type": "table", "columns": ["Jenis Transaksi", "Periode Waktu", "Jumlah Transaksi", "Suku Bunga", "Rumus perhitungan", "Total interest"], "columnTooltips": { "Periode Waktu": "Jarak tanggal transaksi sampai tanggal cetak tagihan." }, "rows": [
+                { "label": "Transaksi I", "cells": [{ "text": "5 Maret 2024 – 16 April 2024 (43 hari)" }, { "text": "Rp1.250.000" }, { "text": "1.75%", "rowSpan": 3 }, { "text": "Jumlah transaksi x suku bunga x 12 bulan x (periode waktu/365 hari)", "rowSpan": 3 }, { "text": "Rp30.925" }] },
+                { "label": "Transaksi II", "cells": [{ "text": "16 Maret 2024 – 16 April 2024 (32 hari)" }, { "text": "Rp1.750.000" }, { "text": "Rp32.219" }] },
+                { "label": "Sisa pembayaran bulan lalu", "cells": [{ "text": "17 April 2024 – 1 Mei 2024 (15 hari)" }, { "text": "Rp2.850.000" }, { "text": "Rp24.596" }] },
+                { "label": "Total", "labelColSpan": 5, "cells": [{ "text": "Rp87.740" }] }
+              ] }
+            ] }
+          ]
+        }
+      },
+      "subtitles": {
+        "krisflyer-signature": "Faster way to earn KrisFlyer miles",
+        "krisflyer-infinite": "Faster way to earn KrisFlyer miles",
+        "tiket-mastercard": "Belanja Every Day, Bikin Hemat Holiday",
+        "pps-club-infinite": "Faster way to earn KrisFlyer miles",
+        "everyday-card": "Tiap hari belanja, tiap hari untung.",
+        "card-platinum": "Kartu istimewa untuk pribadi istimewa",
+        "visa-batman": "My Card My Superhero",
+        "mastercard-black": "Experience the ultimate privilege",
+        "visa-black": "Experience the ultimate privilege",
+        "blibli-mastercard": "Belanja online lebih untung bersama Blibli",
+        "mastercard-globe": "My Card My Lifestyle Partner",
+        "mastercard-world": "Kartu kredit premium untuk gaya hidup global",
+        "jcb-black": "Style specially for you",
+        "unionpay": "Let's Live It Up!",
+        "american-express-platinum": "For the finest things in life"
+      },
       "tabs": {
         "benefits": "Manfaat",
         "features": "Fitur Utama",
@@ -178,6 +329,12 @@
       "featureHeading": "Fitur Lengkap Untuk Setiap Kebutuhan",
       "learnMore": "Pelajari",
       "appPlaceholder": "Placeholder tampilan fitur kartu kredit di aplikasi",
+      "cardSpecificHeadings": {
+        "krisflyer-signature": "Kumpulkan KrisFlyer Miles Lebih Cepat",
+        "features": {
+          "krisflyer-signature": "Fitur Utama untuk Transaksi dan Perjalanan"
+        }
+      },
       "benefits": [
         { "key": "installment", "title": "Cicilan BCA", "description": "Ubah transaksi jadi Cicilan BCA dengan bunga mulai 0% dan tenor hingga 36 bulan." },
         { "key": "reward", "title": "Reward BCA", "description": "Loyalty point BCA yang didapat dengan transaksi menggunakan Kartu Kredit di Indonesia dan luar negeri.", "featured": true },
@@ -185,6 +342,15 @@
         { "key": "travel-insurance", "title": "Asuransi Perjalanan", "description": "Selalu aman dari setiap resiko di setiap perjalanan" },
         { "key": "credit-life", "title": "Asuransi Credit Life", "description": "Lindungi diri dan orang terkasih dari risiko tak terduga" }
       ],
+      "cardSpecificBenefits": {
+        "krisflyer-signature": [
+          { "key": "krisflyer-reward", "title": "Reward KrisFlyer", "description": "Dapatkan 1 KrisFlyer miles untuk setiap transaksi senilai Rp13.500." },
+          { "key": "krisflyer-welcome-bonus", "title": "Bonus awal hingga 10.000 miles", "description": "Dapatkan 3.000 miles setelah aktivasi dan transaksi pertama, lalu tambahan 7.000 miles setelah transaksi minimal Rp5.000.000 dalam 2 bulan sejak kartu disetujui." },
+          { "key": "krisflyer-monthly-bonus", "title": "Bonus reward setiap bulan", "description": "Dapatkan tambahan 1.000 KrisFlyer miles setiap bulan dengan minimum transaksi Rp20.000.000." },
+          { "key": "krisflyer-merchant-offers", "title": "Penawaran merchant", "description": "Nikmati penawaran menarik di merchant offline dan online seperti restoran, fashion, online travel, dan marketplace." },
+          { "key": "krisflyer-travel-services", "title": "Fasilitas perjalanan", "description": "Nikmati fasilitas tambahan berupa Autodebet, BCA Credit Life, Travel Accident Insurance, dan BCA Travel Service." }
+        ]
+      },
       "features": [
         { "key": "application", "title": "Ajukan Kartu Kredit", "description": "Pilih kartu sesuai kebutuhanmu dan daftar secara online." },
         { "key": "add-card", "title": "Tambah Kartu", "description": "Tambah kartu untuk berbagi kebutuhan dengan limit gabungan." },
@@ -194,7 +360,15 @@
         { "key": "limit", "title": "Request naik limit", "description": "Naikkan limit kartu kreditmu langsung dari aplikasi." },
         { "key": "control", "title": "Kontrol Kartu Kredit", "description": "Blokir dan atur kartu kapan saja melalui aplikasi." },
         { "key": "contactless", "title": "Atur Limit Contactless", "description": "Atur batas transaksi contactless sesuai kebutuhan.", "badge": "Baru" }
-      ]
+      ],
+      "cardSpecificFeatures": {
+        "krisflyer-signature": [
+          { "key": "transactions", "title": "Transaksi di Merchant dan ATM Visa", "description": "Gunakan kartu untuk bertransaksi di merchant online, offline, dan ATM BCA atau ATM berlogo Visa." },
+          { "key": "contactless", "title": "Transaksi Contactless", "description": "Lakukan pembayaran secara contactless untuk kartu yang sudah memiliki fitur Contactless." },
+          { "key": "installment", "title": "Cicilan BCA", "description": "Ubah transaksi yang memenuhi syarat menjadi Cicilan BCA." },
+          { "key": "miles", "title": "KrisFlyer Miles Lebih Cepat", "description": "Dapatkan KrisFlyer miles dari transaksi menggunakan kartu." }
+        ]
+      }
     },
     "cardList": {
       "eyebrow": "Pilihan Kartu",

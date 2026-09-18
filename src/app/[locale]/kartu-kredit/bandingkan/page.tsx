@@ -57,7 +57,7 @@ export default async function CreditCardComparisonPage({
             supportingText: hero("supportingText"),
             imageAlt: hero("imageAlt"),
             cardsHref: "#comparison-cards",
-            backAction: { label: hero("backCta"), href: `/${locale}/kartu-kredit` },
+            backAction: { label: hero("backCta"), href: "/kartu-kredit" },
           }}
           imageSrc={creditCardImage}
         />

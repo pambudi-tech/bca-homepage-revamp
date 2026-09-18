@@ -3,8 +3,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import PromoRibbon from "@/components/PromoRibbon";
 
 const MAX_TILT = 10;
@@ -221,7 +222,6 @@ function CreditCardTile({
   onCompareChange: (checked: boolean) => void;
   onPreview: () => void;
 }) {
-  const locale = useLocale();
   const cardRef = useRef<HTMLElement>(null);
   const artRef = useRef<HTMLDivElement>(null);
   const rect = useRef<DOMRect | null>(null);
@@ -326,10 +326,10 @@ function CreditCardTile({
               disabled={compareDisabled}
               onChange={onCompareChange}
             />
-            <a href={`/${locale}/kartu-kredit/${card.id}`} className="flex shrink-0 items-center gap-0.5 text-sm font-semibold leading-5 text-blue-500">
+            <Link href={`/kartu-kredit/${card.id}`} className="flex shrink-0 items-center gap-0.5 text-sm font-semibold leading-5 text-blue-500">
               {detailLabel}
               <ArrowRight />
-            </a>
+            </Link>
           </div>
           <a
             href="https://mybca.bca.co.id/auth/login"

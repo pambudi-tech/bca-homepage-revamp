@@ -12,6 +12,12 @@ type MegaMenuText = {
   editorialTitle: string;
 };
 
+type CreditCardRoute = { id: string; title: string };
+
+function normalizeProductTitle(title: string) {
+  return title.trim().replace(/\s+/g, " ").toLocaleLowerCase();
+}
+
 /** Merges the static layout data (`MEGAMENU_STRUCTURE`) with the active
     locale's translated copy, keyed by category key. When `productCategories`
     (from Supabase via `getProductCategories`, same source as `ProductSection`)
@@ -27,6 +33,10 @@ export function useMegaMenu(
 ): MegaMenuCategory[] {
   const t = useTranslations("megamenu");
   const tSearch = useTranslations("search");
+  const tCards = useTranslations("creditCardDetail.cardList");
+  const creditCardRoutes = new Map(
+    (tCards.raw("cards") as CreditCardRoute[]).map((card) => [normalizeProductTitle(card.title), `/kartu-kredit/${card.id}`]),
+  );
 
   return MEGAMENU_STRUCTURE.map((structure) => {
     const text = t.raw(structure.key) as MegaMenuText;
@@ -41,6 +51,12 @@ export function useMegaMenu(
       : [];
     const liveLinks = megamenuContent?.linksByKey[structure.key];
     const liveEditorial = megamenuContent?.editorialByKey[structure.key];
+    const toMenuProduct = (title: string, description?: string) => ({
+      title,
+      description,
+      href: creditCardRoutes.get(normalizeProductTitle(title)),
+    });
+
     return {
       key: structure.key,
       label: text.label,
@@ -52,8 +68,8 @@ export function useMegaMenu(
       products: sourceCategory
           ? (liveCategory ? liveProducts : sourceCategory.products)
             .slice(0, 5)
-            .map((product) => ({ title: product.title, description: product.subtitle }))
-        : text.products.slice(0, -1).slice(0, 5).map((title) => ({ title })),
+            .map((product) => toMenuProduct(product.title, product.subtitle))
+        : text.products.slice(0, -1).slice(0, 5).map((title) => toMenuProduct(title)),
       ctaLabel: `${tSearch("viewAll")} ${text.label}`,
       tools: text.tools.map((label, index) => ({
         label,

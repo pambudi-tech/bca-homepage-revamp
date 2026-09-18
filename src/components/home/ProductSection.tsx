@@ -387,6 +387,7 @@ function MobileProductCard({
   copy,
   active,
   onSelect,
+  href,
   swap,
   progressRef,
 }: {
@@ -395,13 +396,24 @@ function MobileProductCard({
   copy: Product;
   active: boolean;
   onSelect: () => void;
+  href?: string;
   swap: ReturnType<typeof swapStyles>;
   progressRef: React.Ref<SVGCircleElement> | undefined;
 }) {
   const t = useTranslations("common");
+  const router = useRouter();
+
+  const handleSelect = () => {
+    if (href) {
+      router.push(href);
+      return;
+    }
+    onSelect();
+  };
+
   return (
     <button
-      onClick={onSelect}
+      onClick={handleSelect}
       className="relative shrink-0 snap-center overflow-clip rounded-3xl bg-white text-left transition-[height] duration-500 ease-in-out"
       style={{ width: 280, height: active ? 360 : 328 }}
     >
@@ -531,6 +543,7 @@ function MobileProductCarousel({
   products,
   outgoingProducts,
   copyProducts,
+  hrefs,
   activeIndex,
   onSelect,
   swapping,
@@ -543,6 +556,7 @@ function MobileProductCarousel({
   products: Product[];
   outgoingProducts: Product[] | null;
   copyProducts: Product[];
+  hrefs?: Array<string | undefined>;
   activeIndex: number;
   onSelect: (index: number) => void;
   swapping: boolean;
@@ -714,6 +728,7 @@ function MobileProductCarousel({
           copy={copyProducts[real] ?? products[real]}
           active={real === activeIndex}
           onSelect={() => onSelect(real)}
+          href={hrefs?.[real]}
           swap={swapStyles(swapping, swapDir, real * SWAP_STAGGER_MS, swapAlt)}
           // Exactly one node may own the ring — the copy actually on screen.
           progressRef={slot === activeSlot ? progressRef : undefined}
@@ -1470,7 +1485,7 @@ export default function ProductSection({
                     copy={card}
                     active={i === activeCategoryIndex}
                     onSelect={() => selectCategoryCard(categories[i].key)}
-                    href={i === activeCategoryIndex && categories[i].key === "Kartu Kredit" ? "/kartu-kredit" : undefined}
+                    href={categories[i].key === "Kartu Kredit" ? "/kartu-kredit" : undefined}
                     progressRef={i === activeCategoryIndex ? progressRef : undefined}
                     entered={entered}
                     enterDelayMs={250 + i * 80}
@@ -1490,6 +1505,7 @@ export default function ProductSection({
               products={categoryCards}
               outgoingProducts={null}
               copyProducts={categoryCards}
+              hrefs={categories.map((category) => category.key === "Kartu Kredit" ? "/kartu-kredit" : undefined)}
               activeIndex={activeCategoryIndex}
               onSelect={(i) => selectCategoryCard(categories[i].key)}
               swapping={false}

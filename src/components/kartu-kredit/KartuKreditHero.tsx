@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
+import { Link } from "@/i18n/navigation";
+
 type KartuKreditHeroCopy = {
   eyebrow?: string;
   title: string;
@@ -49,7 +51,7 @@ export default function KartuKreditHero({
 
       {copy.backAction ? (
         <div className="absolute inset-x-0 top-24 mx-auto w-full max-w-[1280px] px-4 xl:px-10">
-          <a
+          <Link
             href={copy.backAction.href}
             className="inline-flex items-center gap-2 text-sm font-semibold text-white text-shadow-hero transition-opacity hover:opacity-80"
           >
@@ -57,7 +59,7 @@ export default function KartuKreditHero({
               <path d="m15 18-6-6 6-6" />
             </svg>
             {copy.backAction.label}
-          </a>
+          </Link>
         </div>
       ) : null}
 

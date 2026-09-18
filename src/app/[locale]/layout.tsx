@@ -6,7 +6,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import SmoothScroll from "@/components/SmoothScroll";
-import Preloader from "@/components/Preloader";
+import Preloader, { PRELOADER_COOKIE_NAME } from "@/components/Preloader";
 import PreviewIdleLogout from "@/components/PreviewIdleLogout";
 import { AUTH_COOKIE_NAME } from "@/lib/preview-auth";
 import { routing } from "@/i18n/routing";
@@ -90,8 +90,9 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "nav" });
   const password = process.env.PREVIEW_PASSWORD;
-  const hasPreviewSession =
-    !password || (await cookies()).get(AUTH_COOKIE_NAME)?.value === password;
+  const requestCookies = await cookies();
+  const hasPreviewSession = !password || requestCookies.get(AUTH_COOKIE_NAME)?.value === password;
+  const hasPreloaderSeen = requestCookies.get(PRELOADER_COOKIE_NAME)?.value === "1";
 
   return (
     <html lang={locale} className={`${bcaSans.variable} h-full antialiased overscroll-none bg-blue-100`}>
@@ -113,7 +114,7 @@ export default async function LocaleLayout({
             {/* Do not show the loading page over the password gate. Once the
                 preview session is established, the redirected site request
                 mounts it normally from the first paint. */}
-            {hasPreviewSession && <Preloader />}
+            {hasPreviewSession && !hasPreloaderSeen && <Preloader />}
             {children}
           </SmoothScroll>
         </NextIntlClientProvider>
