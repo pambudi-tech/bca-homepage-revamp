@@ -54,7 +54,7 @@
       "relevance": "相关性",
       "endingSoon": "即将结束",
       "popular": "最受欢迎",
-      "location": "地点",
+      "location": "城市",
       "product": "BCA 产品",
       "showMore": "查看更多",
       "showLess": "收起",
@@ -64,13 +64,22 @@
       "apply": "应用",
       "closeAdvanced": "关闭筛选面板",
       "filter": "筛选",
+      "filterTitle": "筛选优惠",
+      "sortTitle": "优惠排序",
+      "category": "优惠类别",
+      "activeFilters": "已启用 {count} 个筛选条件",
+      "activeFilterList": "当前筛选条件",
+      "removeFilter": "移除 {filter} 筛选条件",
+      "paginationLabel": "优惠页面导航",
+      "page": "第 {page} 页",
       "noResults": "暂时没有符合搜索条件的优惠。",
       "clearFilters": "清除筛选"
     },
     "locationPromo": {
       "eyebrow": "特别优惠地点",
       "defaultLocation": "Grand Indonesia",
-      "locations": ["Grand Indonesia", "Plaza Indonesia", "Mall Kelapa Gading", "Kota Kasablanka"]
+      "selectLabel": "选择优惠地点",
+      "locations": ["Grand Indonesia", "Plaza Indonesia", "Senayan City", "Plaza Senayan", "Pacific Place", "Kota Kasablanka", "Pondok Indah Mall", "Mall Kelapa Gading", "Central Park", "Lippo Mall Puri"]
     },
     "endingSoon": {
       "title": "即将结束",

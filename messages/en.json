@@ -54,7 +54,7 @@
       "relevance": "Relevance",
       "endingSoon": "Ending Soon",
       "popular": "Most Popular",
-      "location": "Location",
+      "location": "City",
       "product": "BCA Products",
       "showMore": "Show More",
       "showLess": "Show Less",
@@ -64,13 +64,22 @@
       "apply": "Apply",
       "closeAdvanced": "Close filter panel",
       "filter": "Filter",
+      "filterTitle": "Filter Promos",
+      "sortTitle": "Sort Promos",
+      "category": "Promo Categories",
+      "activeFilters": "{count} active filters",
+      "activeFilterList": "Active filters",
+      "removeFilter": "Remove {filter} filter",
+      "paginationLabel": "Promo page navigation",
+      "page": "Page {page}",
       "noResults": "No promos match your search yet.",
       "clearFilters": "Clear Filters"
     },
     "locationPromo": {
       "eyebrow": "Special Promos at",
       "defaultLocation": "Grand Indonesia",
-      "locations": ["Grand Indonesia", "Plaza Indonesia", "Mall Kelapa Gading", "Kota Kasablanka"]
+      "selectLabel": "Choose a promo location",
+      "locations": ["Grand Indonesia", "Plaza Indonesia", "Senayan City", "Plaza Senayan", "Pacific Place", "Kota Kasablanka", "Pondok Indah Mall", "Mall Kelapa Gading", "Central Park", "Lippo Mall Puri"]
     },
     "endingSoon": {
       "title": "Ending Soon",

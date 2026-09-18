@@ -54,7 +54,7 @@
       "relevance": "Relevansi",
       "endingSoon": "Segera Berakhir",
       "popular": "Terpopuler",
-      "location": "Lokasi",
+      "location": "Kota",
       "product": "Produk BCA",
       "showMore": "Lihat Selengkapnya",
       "showLess": "Tampilkan Lebih Sedikit",
@@ -64,13 +64,22 @@
       "apply": "Terapkan",
       "closeAdvanced": "Tutup panel filter",
       "filter": "Filter",
+      "filterTitle": "Filter Promo",
+      "sortTitle": "Urutkan Promo",
+      "category": "Kategori Promo",
+      "activeFilters": "{count} filter aktif",
+      "activeFilterList": "Filter yang sedang aktif",
+      "removeFilter": "Hapus filter {filter}",
+      "paginationLabel": "Navigasi halaman promo",
+      "page": "Halaman {page}",
       "noResults": "Belum ada promo yang sesuai dengan pencarianmu.",
       "clearFilters": "Hapus Filter"
     },
     "locationPromo": {
       "eyebrow": "Promo Spesial di",
       "defaultLocation": "Grand Indonesia",
-      "locations": ["Grand Indonesia", "Plaza Indonesia", "Mall Kelapa Gading", "Kota Kasablanka"]
+      "selectLabel": "Pilih lokasi promo",
+      "locations": ["Grand Indonesia", "Plaza Indonesia", "Senayan City", "Plaza Senayan", "Pacific Place", "Kota Kasablanka", "Pondok Indah Mall", "Mall Kelapa Gading", "Central Park", "Lippo Mall Puri"]
     },
     "endingSoon": {
       "title": "Berakhir Sebentar Lagi",

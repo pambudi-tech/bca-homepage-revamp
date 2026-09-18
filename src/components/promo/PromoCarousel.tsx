@@ -12,11 +12,14 @@ export default function PromoCarousel({
   now,
   campaignCover,
   campaignAlt,
+  bleed = true,
 }: {
   promos: Promo[];
   now: Date;
   campaignCover?: string;
   campaignAlt?: string;
+  /** Keep the default homepage edge bleed, or align to a padded section column. */
+  bleed?: boolean;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const itemsCount = promos.length + (campaignCover ? 1 : 0);
@@ -77,7 +80,7 @@ export default function PromoCarousel({
   const slots = Array.from({ length: itemsCount * 3 }, (_, index) => index % itemsCount);
 
   return (
-    <div ref={scrollRef} className="hide-scrollbar -mx-4 -my-6 flex snap-x snap-mandatory items-start overflow-x-auto px-4 py-6 [scrollbar-width:none]">
+    <div ref={scrollRef} className={`hide-scrollbar -my-6 flex snap-x snap-mandatory items-start overflow-x-auto py-6 [scrollbar-width:none] ${bleed ? "-mx-4 px-4" : "px-8"}`}>
       {slots.map((item, index) => (
         <div key={`${item}-${index}`} className="snap-center" style={{ marginRight: CARD_GAP }}>
           {campaignCover && item === 0 ? (
