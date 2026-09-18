@@ -33,11 +33,12 @@ export default async function PromoDetailPage({ params }: { params: Promise<Prom
   if (!promo) notFound();
   const relatedPromos = promos.filter((item) => item.id !== promo.id && item.category === promo.category).slice(0, 3);
   const fallbackRelatedPromos = relatedPromos.length === 3 ? relatedPromos : promos.filter((item) => item.id !== promo.id).slice(0, 3);
+  const otherPromos = promos.filter((item) => item.id !== promo.id && item.category !== promo.category).slice(0, 6);
 
   return (
     <main id="main-content" className="flex min-h-screen flex-1 flex-col overflow-x-clip bg-neutral-100">
       <Navbar productCategories={produk.categories} megamenuContent={megamenu} variant="promo" />
-      <PromoDetailExperience promo={promo} relatedPromos={fallbackRelatedPromos} now={now} />
+      <PromoDetailExperience promo={promo} relatedPromos={fallbackRelatedPromos} otherPromos={otherPromos} now={now} />
       <BackToTop />
       <CookieBanner />
       <ScrollReveal />

@@ -48,7 +48,7 @@ function ProductPill({ product }: { product: string }) {
   );
 }
 
-export default function PromoDetailExperience({ promo, relatedPromos, now }: { promo: Promo; relatedPromos: Promo[]; now: Date }) {
+export default function PromoDetailExperience({ promo, relatedPromos, otherPromos, now }: { promo: Promo; relatedPromos: Promo[]; otherPromos: Promo[]; now: Date }) {
   const t = useTranslations("promoPage.detail");
   const [openPanel, setOpenPanel] = useState<"terms" | "location" | null>(null);
   const period = new Intl.DateTimeFormat(undefined, { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Jakarta" }).format(promo.endAt);
@@ -134,6 +134,17 @@ export default function PromoDetailExperience({ promo, relatedPromos, now }: { p
             </div>
           </div>
         </section>
+
+        {otherPromos.length > 0 && (
+          <section className="bg-neutral-100 px-4 py-8 xl:py-12">
+            <div className="mx-auto max-w-[1200px]">
+              <h2 className="text-title text-blue-700">{t("otherTitle")}</h2>
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5">
+                {otherPromos.map((otherPromo) => <PromoCard key={otherPromo.id} promo={otherPromo} now={now} reveal={false} compact />)}
+              </div>
+            </div>
+          </section>
+        )}
       </article>
 
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-neutral-300 bg-white/95 px-4 py-3 backdrop-blur xl:hidden">

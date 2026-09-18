@@ -322,7 +322,7 @@ export const SCRAPED_PROMOS: ScrapedPromo[] = [
     endAt: "2026-10-06T23:59:59+07:00",
     cover: "https://pustaka.bca.co.id/Promo/A2C31A68-BC10-4CBD-AB51-85474A36CC50/Detail/ImageCover/20260904_chatime-banner.webp",
     listingCover: "https://pustaka.bca.co.id/Promo/A2C31A68-BC10-4CBD-AB51-85474A36CC50/Detail/ImageCover/20260904_chatime-banner.webp",
-    logo: "https://pustaka.bca.co.id/Promo/A2C31A68-BC10-4CBD-AB51-85474A36CC50/Detail/ImageCover/20260904_chatime-banner.webp",
+    logo: "/assets/promo-page/chatime-logo.png",
     sourceUrl: "https://promo.bca.co.id/id/all/2026/09/04/19/chatime",
     eligibleProducts: ["myBCA", "BCA mobile", "QRIS", "Sakuku", "Kartu Kredit BCA", "Kartu Debit BCA"],
     details: "Harga spesial Rp45 ribu untuk bundling 2 minuman ukuran reguler: Chatime Milk Tea, Hazelnut Chocolate Milk Tea, Mango Green Tea, atau Brown Sugar Milk Tea. Tambahan Rp8 ribu di zona WIT; tidak berlaku Bandara dan Dufan.",

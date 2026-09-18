@@ -66,9 +66,66 @@ function CloseIcon({ className }: { className?: string }) {
  * measure.
  */
 const PANEL_TOP_OFFSET = 240;
+const PROMO_RECENT_SEARCH_KEY = "bca:promo-recent-searches";
+const PROMO_RECENT_SEARCH_MAX = 6;
 
-function PromoSearchResults({ promos, keyword }: { promos: Promo[]; keyword: string }) {
+function getPromoRecentSearches(): string[] {
+  try {
+    const stored = window.localStorage.getItem(PROMO_RECENT_SEARCH_KEY);
+    const parsed: unknown = stored ? JSON.parse(stored) : [];
+    return Array.isArray(parsed)
+      ? parsed.filter((term): term is string => typeof term === "string").slice(0, PROMO_RECENT_SEARCH_MAX)
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+function persistPromoRecentSearches(terms: string[]) {
+  try {
+    window.localStorage.setItem(PROMO_RECENT_SEARCH_KEY, JSON.stringify(terms.slice(0, PROMO_RECENT_SEARCH_MAX)));
+  } catch {
+    // Private browsing or unavailable storage should not prevent searching.
+  }
+}
+
+function addPromoRecentSearch(terms: string[], term: string) {
+  const trimmed = term.trim();
+  if (!trimmed) return terms;
+  const next = [trimmed, ...terms.filter((item) => item.toLocaleLowerCase() !== trimmed.toLocaleLowerCase())]
+    .slice(0, PROMO_RECENT_SEARCH_MAX);
+  persistPromoRecentSearches(next);
+  return next;
+}
+
+function removePromoRecentSearch(terms: string[], term: string) {
+  const next = terms.filter((item) => item.toLocaleLowerCase() !== term.toLocaleLowerCase());
+  persistPromoRecentSearches(next);
+  return next;
+}
+
+function clearPromoRecentSearches() {
+  persistPromoRecentSearches([]);
+  return [];
+}
+
+function PromoSearchResults({
+  promos,
+  keyword,
+  recent,
+  onSelectRecent,
+  onRemoveRecent,
+  onClearRecent,
+}: {
+  promos: Promo[];
+  keyword: string;
+  recent: string[];
+  onSelectRecent: (term: string) => void;
+  onRemoveRecent: (term: string) => void;
+  onClearRecent: () => void;
+}) {
   const tPromo = useTranslations("promoPage");
+  const tSearch = useTranslations("search");
   const normalizedKeyword = keyword.trim().toLocaleLowerCase();
   const now = useMemo(() => new Date(), []);
   const resultsRef = useRef<HTMLElement>(null);
@@ -92,26 +149,47 @@ function PromoSearchResults({ promos, keyword }: { promos: Promo[]; keyword: str
 
   return (
     <section ref={resultsRef} aria-label={tPromo("search.results")} className="min-h-0 overflow-y-auto px-4 pb-8 pt-4 xl:px-0">
-      <p className="mb-3 text-sm font-bold text-neutral-800 xl:text-white">
-        {normalizedKeyword ? tPromo("search.results") : tPromo("search.popularPromos")}
-      </p>
-      {!normalizedKeyword ? (
-        <div data-lenis-prevent className="hide-scrollbar -mx-4 -my-4 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-4 px-4 py-4 [scrollbar-width:none] xl:mx-0 xl:px-0 xl:scroll-px-0">
-          {promos.slice(0, 5).map((promo) => (
-            <div key={promo.id} className="w-[200px] shrink-0 snap-start">
-              <PromoCard promo={promo} now={now} reveal={false} compact />
+      {normalizedKeyword ? (
+        <>
+          <p className="mb-3 text-sm font-bold text-neutral-800 xl:text-white">{tPromo("search.results")}</p>
+          {matchingPromos.length ? (
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {matchingPromos.map((promo) => <PromoCard key={promo.id} promo={promo} now={now} reveal={false} compact />)}
             </div>
-          ))}
-        </div>
-      ) : matchingPromos.length ? (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {matchingPromos.map((promo) => <PromoCard key={promo.id} promo={promo} now={now} reveal={false} compact />)}
-        </div>
+          ) : (
+            <div className="rounded-3xl bg-white px-5 py-8 text-center shadow-card">
+              <p className="font-semibold text-neutral-800">{tPromo("search.noResults")}</p>
+              <p className="mt-1 text-sm text-neutral-600">{tPromo("search.noResultsHint")}</p>
+            </div>
+          )}
+        </>
       ) : (
-        <div className="rounded-3xl bg-white px-5 py-8 text-center shadow-card">
-          <p className="font-semibold text-neutral-800">{tPromo("search.noResults")}</p>
-          <p className="mt-1 text-sm text-neutral-600">{tPromo("search.noResultsHint")}</p>
-        </div>
+        <>
+          {recent.length > 0 && (
+            <section className="mb-5">
+              <div className="mb-2 flex items-center justify-between">
+                <p className="text-sm font-bold text-neutral-800 xl:text-white">{tSearch("recentSearches")}</p>
+                <button type="button" onClick={onClearRecent} className="text-sm font-semibold text-blue-500 hover:underline">{tSearch("clearAll")}</button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {recent.map((term) => (
+                  <span key={term} className="inline-flex items-center gap-1 rounded-full border border-neutral-300 bg-white py-1.5 pl-3 pr-1.5 xl:bg-white/95">
+                    <button type="button" onClick={() => onSelectRecent(term)} className="text-sm font-semibold text-neutral-800">{term}</button>
+                    <button type="button" onClick={() => onRemoveRecent(term)} aria-label={tSearch("removeTerm", { term })} className="flex size-5 items-center justify-center rounded-full text-neutral-600 hover:bg-neutral-200 hover:text-neutral-800">×</button>
+                  </span>
+                ))}
+              </div>
+            </section>
+          )}
+          <p className="mb-3 text-sm font-bold text-neutral-800 xl:text-white">{tPromo("search.popularPromos")}</p>
+          <div data-lenis-prevent className="hide-scrollbar -mx-4 -my-4 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-4 px-4 py-4 [scrollbar-width:none] xl:mx-0 xl:px-0 xl:scroll-px-0">
+            {promos.slice(0, 5).map((promo) => (
+              <div key={promo.id} className="w-[200px] shrink-0 snap-start">
+                <PromoCard promo={promo} now={now} reveal={false} compact />
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </section>
   );
@@ -162,9 +240,9 @@ export default function SearchOverlay({
     if (!open) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- reads localStorage, unavailable during server render
     setSearchValue("");
-    setRecent(getRecentSearches());
+    setRecent(isPromoSearch ? getPromoRecentSearches() : getRecentSearches());
     inputRef.current?.focus();
-  }, [open]);
+  }, [isPromoSearch, open]);
 
   useEffect(() => {
     if (!open) return;
@@ -207,8 +285,8 @@ export default function SearchOverlay({
   }, [open]);
 
   const selectQuery = (term: string) => setSearchValue(term);
-  const removeRecent = (term: string) => setRecent((r) => removeRecentSearch(r, term));
-  const clearRecent = () => setRecent(clearRecentSearches());
+  const removeRecent = (term: string) => setRecent((r) => isPromoSearch ? removePromoRecentSearch(r, term) : removeRecentSearch(r, term));
+  const clearRecent = () => setRecent(isPromoSearch ? clearPromoRecentSearches() : clearRecentSearches());
 
   // A committed search leaves for BCA's real result page, so the overlay has
   // nothing left to show — close it behind the new tab.
@@ -217,7 +295,10 @@ export default function SearchOverlay({
     if (!trimmed) return;
     // Promo search filters the already-loaded Promo dataset in place. It must
     // never hand the same term to BCA's site-wide search-result page.
-    if (isPromoSearch) return;
+    if (isPromoSearch) {
+      setRecent((r) => addPromoRecentSearch(r, trimmed));
+      return;
+    }
     setRecent((r) => addRecentSearch(r, trimmed));
     window.open(bcaSearchResultUrl(trimmed), "_blank", "noopener,noreferrer");
     onClose();
@@ -283,7 +364,7 @@ export default function SearchOverlay({
             </div>
           </header>
           <div className="min-h-0 flex-1">
-            {isPromoSearch ? <PromoSearchResults promos={promoSearchItems} keyword={searchValue} /> : (
+            {isPromoSearch ? <PromoSearchResults promos={promoSearchItems} keyword={searchValue} recent={recent} onSelectRecent={selectQuery} onRemoveRecent={removeRecent} onClearRecent={clearRecent} /> : (
               <SearchRecommendation
                 recommendations={recommendations}
                 keyword={searchValue}
@@ -328,7 +409,7 @@ export default function SearchOverlay({
             </button>
           </div>
           <div className="mt-2 min-h-0 flex-1">
-            {isPromoSearch ? <PromoSearchResults promos={promoSearchItems} keyword={searchValue} /> : (
+            {isPromoSearch ? <PromoSearchResults promos={promoSearchItems} keyword={searchValue} recent={recent} onSelectRecent={selectQuery} onRemoveRecent={removeRecent} onClearRecent={clearRecent} /> : (
               <SearchRecommendation
                 recommendations={recommendations}
                 keyword={searchValue}
