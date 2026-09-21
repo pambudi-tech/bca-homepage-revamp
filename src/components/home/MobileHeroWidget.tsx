@@ -395,14 +395,10 @@ export default function MobileHeroWidget({
         ]}
       />
 
-      {/* 1. Search panel — same glass treatment as the desktop hero search:
-             `.hero-search` gradient top-border + reactive backdrop blur. */}
+      {/* 1. Search panel — shared glass treatment with the desktop hero search. */}
       <div
-        className="hero-search relative flex h-[152px] items-start justify-center overflow-clip rounded-t-3xl p-4"
-        style={{
-          backdropFilter: "blur(16px) saturate(1.25)",
-          WebkitBackdropFilter: "blur(16px) saturate(1.25)",
-        }}
+        className="glass-panel relative flex h-[152px] items-start justify-center overflow-clip rounded-t-3xl p-4"
+        style={{ backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)" }}
       >
         <div
           aria-hidden

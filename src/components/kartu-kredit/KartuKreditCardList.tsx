@@ -11,8 +11,6 @@ import { ApplyInMyBcaLink } from "@/components/ui/MyBcaLinks";
 import { MOBILE_QUICK_NAV_VISIBILITY_EVENT } from "@/components/home/QuickActionRail";
 
 const MAX_TILT = 10;
-const MAX_COMPARE_CARDS = 3;
-
 type BenefitIconKey =
   | "cashback"
   | "fee"
@@ -400,6 +398,7 @@ function EmptyComparisonSlot({ label }: { label: string }) {
 
 function ComparisonPanel({
   cards,
+  maxCompareCards,
   mode,
   phase,
   onModeChange,
@@ -409,6 +408,7 @@ function ComparisonPanel({
   onCompare,
 }: {
   cards: CreditCardCopy[];
+  maxCompareCards: number;
   mode: ComparisonPanelMode;
   phase: ComparisonPanelPhase;
   onModeChange: (mode: ComparisonPanelMode) => void;
@@ -435,9 +435,9 @@ function ComparisonPanel({
     return () => window.removeEventListener(MOBILE_QUICK_NAV_VISIBILITY_EVENT, syncQuickNav);
   }, []);
   const statusLabel =
-    count === MAX_COMPARE_CARDS
-      ? t("maxSelected", { max: MAX_COMPARE_CARDS })
-      : t("count", { count, max: MAX_COMPARE_CARDS });
+    count === maxCompareCards
+      ? t("maxSelected", { max: maxCompareCards })
+      : t("count", { count, max: maxCompareCards });
   const expandedCtaLabel = count === 1 ? t("selectOneMore") : t("compareCards", { count });
   const minimizedCtaLabel = count === 1 ? t("selectOneMoreCta") : t("compare");
 
@@ -475,12 +475,12 @@ function ComparisonPanel({
                     {t("title")}
                   </h3>
                   <p className="hidden text-sm font-semibold leading-5 text-blue-500 sm:block xl:hidden">
-                    {t("countMobile", { count, max: MAX_COMPARE_CARDS })}
+                    {t("countMobile", { count, max: maxCompareCards })}
                   </p>
                 </div>
                 <p className="mt-1 text-sm leading-5 text-neutral-700 xl:mt-0.5">
                   <span className="hidden xl:inline">{statusLabel}</span>
-                  <span className="xl:hidden">{count === MAX_COMPARE_CARDS ? t("maxSelected", { max: MAX_COMPARE_CARDS }) : t("countMobile", { count, max: MAX_COMPARE_CARDS })}</span>
+                  <span className="xl:hidden">{count === maxCompareCards ? t("maxSelected", { max: maxCompareCards }) : t("countMobile", { count, max: maxCompareCards })}</span>
                 </p>
               </div>
               <button
@@ -495,7 +495,7 @@ function ComparisonPanel({
               </button>
             </div>
 
-            <div className="grid grid-cols-3 gap-2 xl:gap-3">
+            <div className="grid grid-cols-2 gap-2 xl:grid-cols-3 xl:gap-3">
               {cards.map((card) => (
                 <SelectedComparisonSlot
                   key={card.id}
@@ -504,7 +504,7 @@ function ComparisonPanel({
                   onRemove={() => onRemove(card.id)}
                 />
               ))}
-              {Array.from({ length: MAX_COMPARE_CARDS - count }).map((_, index) => (
+              {Array.from({ length: maxCompareCards - count }).map((_, index) => (
                 <EmptyComparisonSlot key={`empty-${index}`} label={t("chooseCard")} />
               ))}
             </div>
@@ -580,8 +580,30 @@ export default function KartuKreditCardList() {
   const [comparisonPhase, setComparisonPhase] = useState<ComparisonPanelPhase>("hidden");
   const [panelCards, setPanelCards] = useState<CreditCardCopy[]>([]);
   const [idleKey, setIdleKey] = useState(0);
+  const [maxCompareCards, setMaxCompareCards] = useState(3);
   const enterTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const syncCompareLimit = () => {
+      const nextMax = window.innerWidth < 768 ? 2 : 3;
+      setMaxCompareCards(nextMax);
+      if (nextMax === 2) {
+        setCompared((current) => {
+          if (current.size <= nextMax) return current;
+          const nextIds = new Set(Array.from(current).slice(0, nextMax));
+          setPanelCards(cards.filter((card) => nextIds.has(card.id)));
+          return nextIds;
+        });
+      }
+    };
+    const initialSync = window.requestAnimationFrame(syncCompareLimit);
+    window.addEventListener("resize", syncCompareLimit);
+    return () => {
+      window.cancelAnimationFrame(initialSync);
+      window.removeEventListener("resize", syncCompareLimit);
+    };
+  }, []);
 
   useEffect(() => {
     if (!previewCard) return;
@@ -666,7 +688,7 @@ export default function KartuKreditCardList() {
   const setComparedCard = (id: string, checked: boolean) => {
     const next = new Set(compared);
     if (checked) {
-      if (next.size >= MAX_COMPARE_CARDS && !next.has(id)) return;
+      if (next.size >= maxCompareCards && !next.has(id)) return;
       next.add(id);
     } else {
       next.delete(id);
@@ -771,7 +793,7 @@ export default function KartuKreditCardList() {
               previewLabel={t("previewAria", { title: card.title })}
               onPreview={() => setPreviewCard(card)}
               checked={compared.has(card.id)}
-              compareDisabled={!compared.has(card.id) && compared.size >= MAX_COMPARE_CARDS}
+              compareDisabled={!compared.has(card.id) && compared.size >= maxCompareCards}
               onCompareChange={(checked) => setComparedCard(card.id, checked)}
             />
           ))}
@@ -824,6 +846,7 @@ export default function KartuKreditCardList() {
         ? createPortal(
             <ComparisonPanel
               cards={panelCards}
+              maxCompareCards={maxCompareCards}
               mode={comparisonMode}
               phase={comparisonPhase}
               onModeChange={setComparisonMode}

@@ -22,9 +22,13 @@ const HOMEPAGE_ANCHORS = [
 export default function SectionAnchor({
   items = HOMEPAGE_ANCHORS,
   label,
+  variant = "default",
+  sticky = true,
 }: {
   items?: SectionAnchorItem[];
   label?: string;
+  variant?: "default" | "prioritas" | "solitaire";
+  sticky?: boolean;
 } = {}) {
   const t = useTranslations("hero.sectionAnchor");
   const lenis = useLenis();
@@ -117,11 +121,19 @@ export default function SectionAnchor({
     }
   };
 
+  const prioritas = variant === "prioritas";
+  const solitaire = variant === "solitaire";
+  const stickyPosition = !sticky
+    ? "relative"
+    : navbarHidden
+      ? "top-0"
+      : "top-16 xl:top-[72px]";
+
   return (
     <nav
       ref={tabListRef}
       aria-label={label ?? t("label")}
-      className={`hide-scrollbar sticky z-30 h-12 overflow-x-auto bg-blue-200/90 px-4 [scrollbar-width:none] backdrop-blur-md transition-[top] duration-300 xl:h-[60px] xl:px-20 ${navbarHidden ? "top-0" : "top-16 xl:top-[72px]"}`}
+      className={`hide-scrollbar ${sticky ? "sticky" : "relative"} ${stickyPosition} z-30 h-12 overflow-x-auto px-4 [scrollbar-width:none] backdrop-blur-md transition-[top] duration-300 xl:h-[60px] ${prioritas ? "bg-pbrown-800/95" : solitaire ? "bg-neutral-900/95" : "bg-blue-200/90"}`}
     >
       <div className="flex h-full w-max xl:mx-auto xl:w-full xl:min-w-[720px] xl:max-w-[1280px]">
         {items.map((anchor) => (
@@ -132,10 +144,10 @@ export default function SectionAnchor({
               else tabRefs.current.delete(anchor.key);
             }}
             onClick={() => navigate(anchor.target)}
-            className={`group relative flex shrink-0 items-center justify-center whitespace-nowrap px-3 text-sm leading-[14px] text-blue-500 transition-opacity xl:flex-1 xl:px-5 xl:text-base xl:leading-normal ${activeKey === anchor.key ? "font-bold opacity-100" : "font-semibold opacity-50"}`}
+            className={`group relative flex shrink-0 items-center justify-center whitespace-nowrap px-3 text-sm leading-[14px] transition-opacity xl:flex-1 xl:px-5 xl:text-base xl:leading-normal ${prioritas ? "text-pbrown-200" : solitaire ? "text-neutral-100" : "text-blue-500"} ${activeKey === anchor.key ? "font-bold opacity-100" : "font-semibold opacity-50"}`}
           >
             {anchor.label ?? t(anchor.key)}
-            <span className={`absolute inset-x-0 bottom-0 h-1 rounded-t-xl bg-blue-500 transition-opacity ${activeKey === anchor.key ? "opacity-100" : "opacity-0 group-hover:opacity-40"}`} />
+            <span className={`absolute inset-x-0 bottom-0 h-1 rounded-t-xl transition-opacity ${prioritas ? "bg-pgold-500" : solitaire ? "bg-neutral-100" : "bg-blue-500"} ${activeKey === anchor.key ? "opacity-100" : "opacity-0 group-hover:opacity-40"}`} />
           </button>
         ))}
       </div>

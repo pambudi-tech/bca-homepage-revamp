@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { onPreloaderDone } from "@/components/Preloader";
 
 /**
  * Global scroll-reveal controller — the runtime half of the `[data-reveal]`
@@ -66,28 +65,6 @@ export default function ScrollReveal() {
         return { el, delayMs };
       };
 
-      for (const group of groups) {
-        const stagger =
-          Number(group.getAttribute("data-reveal-group")) || DEFAULT_STAGGER_MS;
-        let step = 0;
-        members.set(
-          group,
-          Array.from(group.querySelectorAll<HTMLElement>("[data-reveal]")).map(
-            (el) => {
-              const explicit = el.getAttribute("data-reveal-delay");
-              const delay =
-                explicit !== null
-                  ? Number(explicit)
-                  : Math.min(step++ * stagger, MAX_STAGGER_DELAY_MS);
-              return register(el, delay);
-            }
-          )
-        );
-      }
-      for (const el of standalone) {
-        members.set(el, [register(el, Number(el.getAttribute("data-reveal-delay")) || 0)]);
-      }
-
       // Once an entrance settles, drop `data-reveal` so the element's own
       // utility transitions (hover lifts, color fades) take over again — the
       // reveal transition is unlayered CSS and would override them forever.
@@ -120,9 +97,85 @@ export default function ScrollReveal() {
         { rootMargin: ENTER_ROOT_MARGIN }
       );
 
-      for (const target of members.keys()) enterIO.observe(target);
+      let visibilityFrame = 0;
+      const revealVisible = () => {
+        visibilityFrame = 0;
+        const revealLine = window.innerHeight * 0.88;
+        for (const target of members.keys()) {
+          if (target.hasAttribute("data-inview")) continue;
+          const rect = target.getBoundingClientRect();
+          if (rect.height <= 0 || rect.bottom <= 0 || rect.top >= revealLine) continue;
+          enterIO.unobserve(target);
+          reveal(target);
+        }
+      };
+      const scheduleVisibilityCheck = () => {
+        if (!visibilityFrame) visibilityFrame = requestAnimationFrame(revealVisible);
+      };
+
+      const syncGroup = (group: HTMLElement) => {
+        const existing = members.get(group) ?? [];
+        const known = new Set(existing.map((member) => member.el));
+        const stagger =
+          Number(group.getAttribute("data-reveal-group")) || DEFAULT_STAGGER_MS;
+        let step = existing.length;
+        for (const el of Array.from(group.querySelectorAll<HTMLElement>("[data-reveal]"))) {
+          if (known.has(el)) continue;
+          const explicit = el.getAttribute("data-reveal-delay");
+          const delay =
+            explicit !== null
+              ? Number(explicit)
+              : Math.min(step++ * stagger, MAX_STAGGER_DELAY_MS);
+          existing.push(register(el, delay));
+        }
+        members.set(group, existing);
+      };
+
+      const registerGroup = (group: HTMLElement) => {
+        const isNew = !members.has(group);
+        syncGroup(group);
+        if (isNew) {
+          enterIO.observe(group);
+        }
+      };
+
+      const registerStandalone = (el: HTMLElement) => {
+        if (el.closest("[data-reveal-group]") || members.has(el)) return;
+        members.set(el, [register(el, Number(el.getAttribute("data-reveal-delay")) || 0)]);
+        enterIO.observe(el);
+      };
+
+      for (const group of groups) registerGroup(group);
+      for (const el of standalone) registerStandalone(el);
+
+      // Client sections such as Promo and News can mount after the initial
+      // scan finishes. Keep the same one-shot reveal behavior for those late
+      // nodes instead of leaving their [data-reveal] opacity at zero forever.
+      const lateMountObserver = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+          for (const node of mutation.addedNodes) {
+            if (!(node instanceof HTMLElement)) continue;
+            if (node.matches("[data-reveal-group]")) registerGroup(node);
+            node.querySelectorAll<HTMLElement>("[data-reveal-group]").forEach(registerGroup);
+            const parentGroup = node.closest<HTMLElement>("[data-reveal-group]");
+            if (parentGroup) syncGroup(parentGroup);
+            if (node.matches("[data-reveal]")) registerStandalone(node);
+            node.querySelectorAll<HTMLElement>("[data-reveal]").forEach(registerStandalone);
+          }
+        }
+      });
+      lateMountObserver.observe(document.body, { childList: true, subtree: true });
+      window.addEventListener("scroll", scheduleVisibilityCheck, { passive: true });
+      window.addEventListener("resize", scheduleVisibilityCheck);
+      document.documentElement.classList.add("reveal-ready");
+      scheduleVisibilityCheck();
 
       return () => {
+        lateMountObserver.disconnect();
+        window.removeEventListener("scroll", scheduleVisibilityCheck);
+        window.removeEventListener("resize", scheduleVisibilityCheck);
+        if (visibilityFrame) cancelAnimationFrame(visibilityFrame);
+        document.documentElement.classList.remove("reveal-ready");
         enterIO.disconnect();
         for (const timer of cleanupTimers.values()) clearTimeout(timer);
         // Nothing orchestrates reveals after unmount, so leave everything
@@ -137,22 +190,10 @@ export default function ScrollReveal() {
       };
     };
 
-    // While the intro preloader holds the page, defer observing until its
-    // curtain starts lifting — otherwise anything sitting in the first
-    // viewport (e.g. after a mid-page reload) would play its entrance behind
-    // the opaque overlay and be long settled by the time it is visible.
-    let teardown: (() => void) | undefined;
-    const arm = () => {
-      teardown = setup();
-    };
-    // Armed once the preloader is out of the way — or immediately if it already
-    // finished or never ran (reduced motion).
-    const stop = onPreloaderDone(arm);
+    const teardown = setup();
     return () => {
-      stop();
-      teardown?.();
+      teardown();
     };
-    return () => teardown?.();
   }, []);
 
   return null;

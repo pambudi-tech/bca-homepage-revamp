@@ -761,6 +761,14 @@
     }
   },
   "search": {
+    "segmentLabel": "Content segment",
+    "segments": {
+      "Semua": "All",
+      "Individu": "Individual",
+      "Bisnis": "Business",
+      "Prioritas": "Prioritas",
+      "Solitaire": "Solitaire"
+    },
     "recentSearches": "Recent Searches",
     "clearAll": "Clear all",
     "removeTerm": "Remove {term}",
@@ -807,12 +815,6 @@
   },
   "common": {
     "learnMore": "Learn more"
-  },
-  "preloader": {
-    "tagline": [
-      "Always",
-      "by Your Side"
-    ]
   },
   "product": {
     "eyebrow": "Products & Services",
@@ -1231,5 +1233,192 @@
       "captcha": "Please complete the \"I'm not a robot\" verification"
     },
     "close": "Close HaloBCA"
+  },
+  "prioritasHero": {
+    "title": "Your Life Journey is Our Priority.",
+    "cta": "Learn More",
+    "bannerAlt": "A family enjoying time together in a living room",
+    "prioritasLogoAlt": "BCA Prioritas",
+    "sectionNavLabel": "BCA Prioritas page navigation",
+    "sections": {
+      "privilege": "Privilege",
+      "eventPromo": "Event & Promo",
+      "bankingSolution": "Banking Solution",
+      "magazine": "e-Magazine",
+      "financialReport": "Financial Report"
+    },
+    "privilege": {
+      "eyebrow": "Privilege",
+      "heading": "Exclusive Access for Every Step of Your Journey",
+      "cards": {
+        "lounge": { "title": "Access Hundreds of Exclusive Airport Lounges Across Indonesia", "action": "Make a Reservation", "alt": "Exclusive airport lounge" },
+        "health": { "title": "Exclusive Health Checks at Selected Premium Hospitals", "action": "View Hospital Partners", "alt": "Premium hospital room" },
+        "event": { "title": "Priority Access to Notable Events", "action": "View All Events", "alt": "Exclusive seating at an event" }
+      },
+      "viewMore": "See More Privileges Available to You"
+    },
+    "eventPromo": {
+      "eyebrow": "EVENT & PROMO",
+      "heading": "Exclusive Offers and Experiences Just for You",
+      "featuredTitles": {
+        "javaJazz": "Complimentary Ticket to Java Jazz Festival for BCA Prioritas Customers",
+        "theWeeknd": "Complimentary Ticket to The Weeknd Concert for the First 3 Customers",
+        "brightspot": "Get VIP Tickets to Brightspot Opening Night"
+      },
+      "featuredCta": "Learn More",
+      "viewMore": "See All Events & Promos"
+    },
+    "card": {
+      "eyebrow": "CARD",
+      "heading": "One Card for Thousands of Exclusive Benefits",
+      "description": "Available by special invitation only. Contact your Personal Banker for more information.",
+      "action": "Learn More",
+      "imageAlt": "BCA Prioritas platinum debit card"
+    },
+    "kartu": {
+      "eyebrow": "BANKING SOLUTION",
+      "heading": "Dedicated Banking Services for Your Life Journey",
+      "label": "Banking Privilege",
+      "viewMore": "View All",
+      "action": "Learn More",
+      "cards": {
+        "branch": { "title": "Specialized Services at BCA Branches", "alt": "Specialized services at BCA branches" },
+        "vehicle": { "title": "Motor Vehicle Loan (KKB)", "alt": "Motor vehicle loan" },
+        "transaction": { "title": "Special Transaction Features & Services", "alt": "Special transaction features and services" },
+        "credit": { "title": "BCA Credit Cards", "alt": "BCA Credit Cards" },
+        "home": { "title": "Home Ownership Loan", "alt": "Home ownership loan" },
+        "deposit": { "title": "Safe Deposit Box", "alt": "Safe Deposit Box" }
+      }
+    },
+    "bankingSolution": {
+      "eyebrow": "BANKING SOLUTION",
+      "heading": "Dedicated Banking Services for Your Life Journey",
+      "bankingPrivilege": "Banking Privilege",
+      "wealthInsight": "Wealth Insight",
+      "kurs": "Today's Exchange Rates",
+      "viewMore": "View All",
+      "action": "Learn More",
+      "buy": "Buy",
+      "sell": "Sell",
+      "updatedAt": "Last updated 03 June 2026 12.47 WIB",
+      "cards": {
+        "branch": { "title": "Specialized Services at BCA Branches", "alt": "Specialized services at BCA branches" },
+        "vehicle": { "title": "Motor Vehicle Loan (KKB)", "alt": "Motor vehicle loan" },
+        "transaction": { "title": "Special Transaction Features & Services", "alt": "Special transaction features and services" },
+        "credit": { "title": "BCA Credit Cards", "alt": "BCA credit cards" },
+        "home": { "title": "Home Ownership Loan", "alt": "Home ownership loan" },
+        "deposit": { "title": "Safe Deposit Box", "alt": "Safe deposit box" }
+      },
+      "wealthCards": {
+        "houseView": {
+          "title": "House View June 2025 - Portfolio Strategy Amid the Rate-Cutting Cycle",
+          "date": "Wednesday, 16 June 2025 · 14.00 WIB",
+          "channel": "Live on YouTube",
+          "action": "Add to Calendar",
+          "alt": "BCA Prioritas House View event"
+        },
+        "market": {
+          "title": "Weekly Market Overview: Between De-escalation and Stagflation",
+          "date": "2 June 2026",
+          "action": "Download Report",
+          "alt": "BCA Prioritas Weekly Market Overview"
+        }
+      }
+    },
+    "magazine": {
+      "eyebrow": "E-MAGAZINE",
+      "heading": "Here for Those Who Never Stop Growing",
+      "viewMore": "View All",
+      "cards": {
+        "property": { "title": "Issue 104-XXI/2025", "action": "Read Now", "alt": "Prioritas magazine about Indonesia's property industry" },
+        "food": { "title": "Issue 105-XXII/2026", "action": "Read Now", "alt": "Prioritas magazine about the food and beverage industry" },
+        "chess": { "title": "Issue 103-XX/2025", "action": "Read Now", "alt": "Prioritas magazine about young entrepreneurs" }
+      }
+    },
+    "financialReport": {
+      "eyebrow": "FINANCIAL REPORT",
+      "heading": "Your Complete Portfolio Overview, in One View",
+      "features": {
+        "centralized": "Centralized data from all your BCA products",
+        "reporting": "Ready to use for various reports",
+        "updated": "Always updated whenever you access it"
+      },
+      "action": "Access Your Report"
+    }
+  },
+  "signaturePrivilege": {
+    "subNavLabel": "Prioritas navigation",
+    "subNav": { "privilege": "Privilege", "banking": "Banking Solution", "magazine": "e-Magazine" },
+    "breadcrumb": "Signature Privilege",
+    "title": "Exceptional Access Present at Every Step of Your Journey",
+    "tabLabel": "Privilege categories",
+    "tabs": { "signature": "Signature Privilege", "lifestyle": "Lifestyle Privilege", "event": "Event", "promo": "Promo" },
+    "description": "Exclusive services and benefits designed for your every need.",
+    "more": "Learn more",
+    "signature": {
+      "lounge": { "title": "Executive Airport Lounge" },
+      "transfer": { "title": "Domestic Airport Transfer" },
+      "transferFee": { "title": "Free Transfer Fee" },
+      "medical": { "title": "International Medical Check Up" }
+    },
+    "complimentary": {
+      "title": "Complimentary",
+      "subtitle": "Limited availability. Simply show your Prioritas card.",
+      "birthday": "Birthday Gift",
+      "cards": {
+        "valet": { "title": "Complimentary Valet Parking", "brand": "Han Palace Restaurant" },
+        "inpatient": { "title": "Complimentary meal for VVIP inpatient companion", "brand": "Altos Hospital" },
+        "facial": { "title": "Snow White Facial valued at Rp1.2 million", "brand": "Dermatology Clinic" },
+        "laser": { "title": "Pico Dermabrasion Laser valued at Rp9.5 million", "brand": "EternaMoore Clinic" },
+        "treatment": { "title": "Hand Treatment valued at Rp200 thousand", "brand": "Molton Brown" },
+        "restaurant": { "title": "Complimentary 1 Pax Americano / Cappuccino", "brand": "Social Spoon" },
+        "glow": { "title": "Red Carpet Glow Treatment", "brand": "Amala Clinic" },
+        "dessert": { "title": "Complimentary Dessert", "brand": "Greenleaf Steak & More" },
+        "jewelry": { "title": "Exclusive Jewelry Box valued at Rp500 thousand", "brand": "Semar Nusantara" }
+      }
+    },
+    "categories": { "all": "All", "beauty": "Beauty", "culinary": "Culinary", "health": "Health", "lifestyle": "Lifestyle" },
+    "searchLabel": "Search benefits",
+    "searchPlaceholder": "Search brand/partner",
+    "showing": "Showing {count} offers",
+    "empty": "No matching offers.",
+    "paginationLabel": "Benefit pages"
+  },
+  "lifestylePrivilegeDetail": {
+    "subNavLabel": "Prioritas navigation",
+    "subNav": { "privilege": "Privilege", "banking": "Banking Solution", "magazine": "e-Magazine" },
+    "breadcrumb": { "home": "Prioritas", "category": "Lifestyle Privilege", "current": "Beauty" },
+    "title": "Hand Treatment Discount Valued at Rp200 Thousand",
+    "brand": "Molton Brown",
+    "detail": { "title": "Privilege Details", "content": "Molton Brown Hand Treatment discount valued at Rp200 thousand." },
+    "terms": {
+      "title": "Terms & Conditions",
+      "items": [
+        "Present a physical BCA Solitaire/Prioritas card or the digital card in the myBCA/BCA mobile application.",
+        "Pay using a BCA Solitaire/Prioritas Card, BCA Credit Card, or QRIS BCA mobile/myBCA.",
+        "RSVP one day in advance through Molton Brown Customer Service at 0816 1807 088 (WhatsApp Chat).",
+        "This privilege cannot be exchanged for cash or transferred.",
+        "Valid at all Molton Brown branches."
+      ]
+    },
+    "contact": { "title": "Profile & Contact", "content": "Contact Molton Brown Customer Service for treatment information and reservations." },
+    "location": { "title": "Location", "content": "Valid at all Molton Brown branches." },
+    "recommendations": {
+      "title": "More Privilege Recommendations",
+      "viewMore": "See More",
+      "action": "Learn More",
+      "cards": {
+        "sisley": { "title": "Experience an Exclusive Signature Facial Treatment, Enjoy Up to 20% Off", "brand": "Sisley Paris", "alt": "Sisley Paris skincare products" },
+        "skii": { "title": "Red Carpet Glow Treatment (Rp1.8 million) + Welcoming Massage + Light Extraction", "brand": "SK-II Boutique Spa", "alt": "SK-II Boutique Spa facial treatment" },
+        "shiseido": { "title": "Enjoy a Complimentary Skin Analysis with Ultimune Serum", "brand": "Shiseido", "alt": "Shiseido Ultimune Serum" }
+      }
+    }
+  },
+  "solitaireHero": {
+    "title": "Prestigious and Personal Services, Exclusively for You.",
+    "cta": "Learn More",
+    "viewMore": "View All",
+    "bannerAlt": "A family enjoying time together in a living room",
+    "solitaireLogoAlt": "BCA Solitaire"
   }
 }

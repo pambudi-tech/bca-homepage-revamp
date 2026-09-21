@@ -21,6 +21,9 @@
 
 import { rankBySearchScored, type Searchable } from "./search-engine";
 
+export const SEARCH_SEGMENTS = ["Semua", "Individu", "Bisnis", "Prioritas", "Solitaire"] as const;
+export type SearchSegment = (typeof SEARCH_SEGMENTS)[number];
+
 export type ProductIcon =
   | "mybca"
   | "wallet"
@@ -1319,6 +1322,28 @@ const MAX_INFORMATION = 4;
 
 const DEFAULT_SECTION_ORDER: SearchSectionKey[] = ["products", "information", "program"];
 
+const SEGMENT_MARKERS: Record<Exclude<SearchSegment, "Semua" | "Individu">, string[]> = {
+  Bisnis: ["bisnis", "business", "merchant", "perusahaan", "korporasi", "umkm", "usaha"],
+  Prioritas: ["prioritas", "priority", "premium", "eksklusif", "wealth", "lounge", "nasabah terpilih"],
+  Solitaire: ["solitaire", "private banking", "wealth", "premium", "eksklusif", "investasi", "reksa dana", "obligasi"],
+};
+
+function matchesSegment(item: Searchable, segment: SearchSegment): boolean {
+  if (segment === "Semua") return true;
+  const searchableText = [item.title, item.description, ...(item.tags ?? [])]
+    .filter(Boolean)
+    .join(" ")
+    .toLocaleLowerCase();
+  if (segment === "Individu") {
+    return !Object.values(SEGMENT_MARKERS).some((markers) => markers.some((marker) => searchableText.includes(marker)));
+  }
+  return SEGMENT_MARKERS[segment].some((marker) => searchableText.includes(marker));
+}
+
+function filterBySegment<T extends Searchable>(items: T[], segment: SearchSegment): T[] {
+  return items.filter((item) => matchesSegment(item, segment));
+}
+
 function byWeight<T extends { weight?: number }>(a: T, b: T): number {
   return (b.weight ?? 0) - (a.weight ?? 0);
 }
@@ -1332,8 +1357,11 @@ function byWeight<T extends { weight?: number }>(a: T, b: T): number {
  * Ranking, synonym expansion and typo tolerance live in search-engine.ts.
  * This is the swap point for a real backend later — see the file header.
  */
-export function getSearchRecommendations(keyword: string): SearchRecommendations {
+export function getSearchRecommendations(keyword: string, segment: SearchSegment = "Semua"): SearchRecommendations {
   const q = keyword.trim();
+  const products = filterBySegment(PRODUCTS, segment);
+  const information = filterBySegment(INFORMATION, segment);
+  const programs = filterBySegment(PROGRAMS, segment);
 
   if (!q) {
     // Default set is ordered by `weight` so the empty state leads with the
@@ -1341,16 +1369,16 @@ export function getSearchRecommendations(keyword: string): SearchRecommendations
     // Program cards don't have a generic "default" — they only show up when
     // a query actually matches one, so the empty state skips them.
     return {
-      products: [...PRODUCTS].sort(byWeight).slice(0, MAX_PRODUCTS),
-      information: [...INFORMATION].sort(byWeight).slice(0, MAX_INFORMATION),
+      products: [...products].sort(byWeight).slice(0, MAX_PRODUCTS),
+      information: [...information].sort(byWeight).slice(0, MAX_INFORMATION),
       program: [],
       order: DEFAULT_SECTION_ORDER,
     };
   }
 
-  const productsScored = rankBySearchScored(PRODUCTS, q, MAX_PRODUCTS);
-  const informationScored = rankBySearchScored(INFORMATION, q, MAX_INFORMATION);
-  const programScored = rankBySearchScored(PROGRAMS, q, MAX_PROGRAM);
+  const productsScored = rankBySearchScored(products, q, MAX_PRODUCTS);
+  const informationScored = rankBySearchScored(information, q, MAX_INFORMATION);
+  const programScored = rankBySearchScored(programs, q, MAX_PROGRAM);
 
   // Whichever group's best match is strongest leads the dropdown — this is
   // what lets a campaign-shaped query (an artist name, an event) surface

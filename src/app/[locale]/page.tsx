@@ -52,11 +52,7 @@ export default async function Home({
           lihat `.hero-search-open` di globals.css. */}
       <div className="page-stack relative z-10 bg-blue-100">
         <Navbar productCategories={produk.categories} megamenuContent={megamenu} />
-        {/* .pre-stage — held invisible by the intro preloader, fades up as
-            its curtain lifts (see the preloader rules in globals.css). */}
-        <div className="pre-stage">
-          <HeroArea kurs={kurs} banners={banners} />
-        </div>
+        <HeroArea kurs={kurs} banners={banners} />
         <SectionAnchor />
         <ProductSection categories={produk.categories} defaultKey={produk.defaultKey} />
 

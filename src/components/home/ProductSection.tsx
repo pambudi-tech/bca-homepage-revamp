@@ -116,6 +116,7 @@ function ProductCard({
   entered,
   enterDelayMs,
   swap,
+  layout = "default",
 }: {
   product: Product;
   /** The photos being swiped away, drawn over `product` for the swap only. */
@@ -129,6 +130,7 @@ function ProductCard({
   entered: boolean;
   enterDelayMs: number;
   swap: ReturnType<typeof swapStyles>;
+  layout?: "default" | "solitaire";
 }) {
   const t = useTranslations("common");
   const router = useRouter();
@@ -203,13 +205,13 @@ function ProductCard({
       onMouseMove={handleCardMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group relative h-[420px] shrink-0 overflow-clip rounded-3xl bg-white text-left ${active ? "cursor-none" : "cursor-pointer"
+      className={`group relative shrink-0 overflow-clip rounded-3xl bg-white text-left ${layout === "solitaire" ? "h-[560px] rounded-xl" : "h-[420px] rounded-3xl"} ${active ? "cursor-none" : "cursor-pointer"
         }`}
       style={{
         // Desktop accordion uses explicit widths so the active card remains
         // visually consistent as the category count changes.
-        flexGrow: 0,
-        flexBasis: active ? 400 : 128,
+        flexGrow: layout === "solitaire" && active ? 1 : 0,
+        flexBasis: layout === "solitaire" ? (active ? 0 : 160) : active ? 400 : 128,
         clipPath: entered ? "inset(0 0 0 0)" : "inset(0 100% 0 0)",
         transition: `flex-grow 500ms var(--ease-in-out), flex-basis 500ms var(--ease-in-out), clip-path 700ms var(--ease-entrance) ${enterDelayMs}ms`,
       }}
@@ -224,6 +226,7 @@ function ProductCard({
         progressRef={progressRef}
         cursorRef={cursorRef}
         t={t}
+        layout={layout}
       />
     </button>
   );
@@ -239,6 +242,7 @@ function CardContent({
   progressRef,
   cursorRef,
   t,
+  layout = "default",
 }: {
   active: boolean;
   outgoing: Product | null;
@@ -249,6 +253,7 @@ function CardContent({
   progressRef: React.Ref<SVGCircleElement> | undefined;
   cursorRef: React.RefObject<HTMLDivElement | null>;
   t: (key: string) => string;
+  layout?: "default" | "solitaire";
 }) {
   return (
     <>
@@ -269,7 +274,7 @@ function CardContent({
         {outgoing && <PhotoLayer product={outgoing} style={swap.outgoing} />}
       </div>
 
-      {active && (
+      {active && layout !== "solitaire" && (
         <div
           aria-hidden
           className="absolute inset-x-0 bottom-0 h-60 transition-[height] duration-300 ease-out group-hover:h-72"
@@ -284,9 +289,9 @@ function CardContent({
           becoming active slides this one up into place from just below while
           it fades in from 0 to full opacity; losing active reverses it. */}
       <div
-        className="hero-search absolute bottom-2 left-2 z-10 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[transform,opacity] duration-500 ease-in-out"
+        className={`glass-panel absolute bottom-2 left-2 z-10 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[transform,opacity] duration-500 ease-in-out ${layout === "solitaire" ? "w-[400px] max-w-[calc(100%-2rem)]" : ""}`}
         style={{
-          width: 280,
+          width: layout === "solitaire" ? 400 : 280,
           backgroundColor: "rgba(0,0,0,0.3)",
           backdropFilter: "blur(16px) saturate(1.25)",
           WebkitBackdropFilter: "blur(16px) saturate(1.25)",
@@ -305,8 +310,8 @@ function CardContent({
               <p className="w-full pt-2 text-base leading-6 text-white/80">
                 {copy.subtitle}
               </p>
-              <div className="flex items-center gap-0.5 pt-8 text-base font-semibold text-blue-100 md:hidden">
-                {t("learnMore")}
+              <div className={`items-center gap-0.5 pt-8 text-base font-semibold ${layout === "solitaire" ? "flex text-white" : "flex text-blue-100 md:hidden"}`}>
+                {copy.action ?? t("learnMore")}
                 <img loading="lazy" decoding="async"
                   src="/assets/cycle1/pelajari-icon.svg"
                   alt=""
@@ -322,7 +327,7 @@ function CardContent({
           reading direction inside the same glass language as the active card.
           It slides down and fades out as the card becomes active. */}
       <div
-        className="hero-search absolute inset-x-2 bottom-2 z-10 flex overflow-clip rounded-2xl p-4 transition-[transform,opacity] duration-500 ease-in-out"
+        className={`glass-panel absolute inset-x-2 bottom-2 z-10 flex overflow-clip rounded-2xl p-4 transition-[transform,opacity] duration-500 ease-in-out ${layout === "solitaire" ? "hidden" : ""}`}
         style={{
           backgroundColor: "rgba(0,0,0,0.3)",
           backdropFilter: "blur(16px) saturate(1.25)",
@@ -491,7 +496,7 @@ function MobileCardContent({
       />
 
       <div
-        className="hero-search absolute inset-x-2 bottom-2 flex flex-col items-start overflow-clip rounded-2xl px-4 pb-5 pt-4"
+        className="glass-panel absolute inset-x-2 bottom-2 flex flex-col items-start overflow-clip rounded-2xl px-4 pb-5 pt-4"
         style={{
           backgroundColor: "rgba(0,0,0,0.3)",
           backdropFilter: "blur(10px) saturate(1.2)",
@@ -868,7 +873,7 @@ function CurvedProductCard({
       />
 
       <div
-        className="hero-search absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[width] duration-500 ease-in-out"
+        className="glass-panel absolute bottom-2 left-2 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[width] duration-500 ease-in-out"
         style={{
           width: active ? 280 : 184,
           backgroundColor: "rgba(0,0,0,0.3)",
@@ -1610,6 +1615,7 @@ export type ProductAccordionItem = {
   title: string;
   description: string;
   image: string;
+  action?: string;
 };
 
 /**
@@ -1622,9 +1628,13 @@ export type ProductAccordionItem = {
 export function ProductAccordion({
   items,
   defaultKey,
+  layout = "default",
+  controls = false,
 }: {
   items: ProductAccordionItem[];
   defaultKey?: string;
+  layout?: "default" | "solitaire";
+  controls?: boolean;
 }) {
   const initialIndex = Math.max(0, items.findIndex((item) => item.key === defaultKey));
   const [activeIndex, setActiveIndex] = useState(initialIndex);
@@ -1636,7 +1646,7 @@ export function ProductAccordion({
   const rootRef = useRef<HTMLDivElement>(null);
   const live = useIsLive(rootRef);
   const products = useMemo<Product[]>(
-    () => items.map((item) => ({ title: item.title, subtitle: item.description, image: item.image })),
+    () => items.map((item) => ({ title: item.title, subtitle: item.description, image: item.image, action: item.action })),
     [items]
   );
 
@@ -1673,7 +1683,7 @@ export function ProductAccordion({
       onMouseEnter={() => (pausedRef.current = true)}
       onMouseLeave={() => (pausedRef.current = false)}
     >
-      <div className="hidden justify-center gap-3 xl:flex">
+      <div className={`hidden gap-3 xl:flex ${layout === "solitaire" ? "items-end" : "justify-center"}`}>
         {products.map((product, index) => (
           <ProductCard
             key={items[index].key}
@@ -1686,9 +1696,31 @@ export function ProductAccordion({
             entered={entered}
             enterDelayMs={250 + index * 80}
             swap={swapStyles(false, 1, 0, false)}
+            layout={layout}
           />
         ))}
       </div>
+
+      {controls ? (
+        <div className="mt-8 hidden justify-end gap-4 xl:flex">
+          <button
+            type="button"
+            onClick={() => setActiveIndex((index) => (index - 1 + products.length) % products.length)}
+            aria-label="Sebelumnya"
+            className="flex size-[72px] items-center justify-center rounded-full bg-black/30 transition-colors hover:bg-black/45"
+          >
+            <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-8" />
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveIndex((index) => (index + 1) % products.length)}
+            aria-label="Berikutnya"
+            className="flex size-[72px] items-center justify-center rounded-full bg-black/30 transition-colors hover:bg-black/45"
+          >
+            <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-8" />
+          </button>
+        </div>
+      ) : null}
 
       <MobileProductCarousel
         products={products}

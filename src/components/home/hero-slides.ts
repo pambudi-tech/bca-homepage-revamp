@@ -2,8 +2,15 @@ export type SlideCta = {
   label: string;
   icon: string;
   variant: "primary" | "secondary";
+  tone?: "default" | "solitaire";
 };
-export type Slide = { image: string; alt: string; title: string; cta: SlideCta };
+export type Slide = {
+  image: string;
+  alt: string;
+  title: string;
+  cta: SlideCta;
+  brandMark?: { src: string; alt: string };
+};
 
 export const SLIDES: Slide[] = [
   {

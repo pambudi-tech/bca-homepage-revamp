@@ -31,8 +31,8 @@ export default function ScrollCue() {
       ref={ref}
       className="flex w-full items-center justify-start gap-4 px-1 transition-opacity duration-300 ease-out"
     >
-      <div className="flex h-9 w-6 shrink-0 items-start justify-center rounded-full border-2 border-white/60 pt-1.5">
-        <span className="animate-scroll-cue-dot size-2 rounded-full bg-neutral-100" />
+      <div className="flex h-[27px] w-[18px] shrink-0 items-start justify-center rounded-full border-2 border-white/60 pt-1.5 xl:h-9 xl:w-6">
+        <span className="animate-scroll-cue-dot size-1.5 rounded-full bg-neutral-100 [--scroll-cue-dot-travel:8px] xl:size-2 xl:[--scroll-cue-dot-travel:12px]" />
       </div>
       <span className="text-left text-sm font-normal text-white/70 xl:text-base">{t("label")}</span>
     </div>

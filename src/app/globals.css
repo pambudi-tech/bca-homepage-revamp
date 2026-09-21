@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Prioritas palette utilities are used by route-level components that can be
+   loaded after the initial homepage scan. Keep these explicit so the compiler
+   emits the shared utilities in both the dev and production bundles. */
+@source inline("bg-pbrown-600 bg-pbrown-800 bg-pbrown-900/30 text-pgold-100 text-pgold-300 border-pgold-100/25 border-pgold-300/25 backdrop-saturate-125 backdrop-saturate-[1.2]");
+
 :root {
   --background: #ffffff;
   --foreground: #26292c;
@@ -27,7 +32,33 @@
   --color-neutral-600: #868e96;
   --color-neutral-700: #495057;
   --color-neutral-800: #26292c;
-  --color-prioritas-gold: #b29050;
+  --color-pgold-100: #fbf8f1;
+  --color-pgold-200: #f5eedf;
+  --color-pgold-300: #e9d9b8;
+  --color-pgold-400: #d5bd91;
+  --color-pgold-500: #b29050;
+  --color-pgold-600: #98783f;
+  --color-pgold-700: #785d2f;
+  --color-pgold-800: #59451f;
+  --color-pgold-900: #3b2d16;
+  --color-pbrown-100: #f2e8e0;
+  --color-pbrown-200: #ddc8b8;
+  --color-pbrown-300: #ae9079;
+  --color-pbrown-400: #885e3f;
+  --color-pbrown-500: #67442a;
+  --color-pbrown-600: #46290b;
+  --color-pbrown-700: #351e08;
+  --color-pbrown-800: #281706;
+  --color-pbrown-900: #1c1004;
+  /* Legacy aliases retained while Prioritas components migrate to the
+     project palette names from Figma. */
+  --color-prioritas-gold: var(--color-pgold-500);
+  --color-prioritas-brown-600: var(--color-pbrown-600);
+  --color-prioritas-brown-800: var(--color-pbrown-800);
+  --color-prioritas-gold-100: var(--color-pgold-100);
+  --color-prioritas-gold-300: var(--color-pgold-300);
+  --color-prioritas-gold-400: var(--color-pgold-400);
+  --color-prioritas-gold-500: var(--color-pgold-500);
   --color-neutral-900: #121417;
 
   --color-blue-100: #f4f8fc;
@@ -129,9 +160,13 @@
      source order, so the reversed copy in SearchRecommendation and the
      two-layer copy in PromoSection did not composite identically. */
   --shadow-card:
-    0px 1px 2px 0px rgba(204, 204, 204, 0.14),
-    0px 5px 5px 0px rgba(204, 204, 204, 0.12),
-    0px 10px 6px 0px rgba(204, 204, 204, 0.07);
+    0px 1px 1px hsl(var(--shadow-color) / 0.045),
+    0px 2px 2px hsl(var(--shadow-color) / 0.04),
+    0px 4px 4px hsl(var(--shadow-color) / 0.035),
+    0px 8px 8px hsl(var(--shadow-color) / 0.03),
+    0px 16px 16px hsl(var(--shadow-color) / 0.025);
+  --shadow-prioritas: 0px 0px 2.5px rgba(217, 208, 194, 0.4), 0px 1px 1px rgba(217, 208, 194, 0.4);
+  --shadow-color: 220 12% 40%;
 
   /* Floating chrome that sits over the page: the hero widget's dropdowns and
      the navbar's search panel. */
@@ -167,12 +202,11 @@
 
      --ease-entrance is the house curve: a fast start settling into a long,
      soft tail. It drives every arrival on the page — scroll reveals, the hero
-     entrance, the mega-menu unfurl, the HaloBCA panel, the Soliprio card
-     settle, the preloader handoff. If an element enters, it uses this.
+     entrance, the mega-menu unfurl, the HaloBCA panel and the Soliprio card
+     settle. If an element enters, it uses this.
 
      --ease-emphasis is symmetric in-out, used where something travels a fixed
-     distance and stops rather than arriving: the preloader's per-word rise and
-     the product photo swap. */
+     distance and stops rather than arriving: the product photo swap. */
   --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-emphasis: cubic-bezier(0.65, 0, 0.35, 1);
 }
@@ -243,10 +277,8 @@
    systems fighting over the same job. */
 html {
   -webkit-overflow-scrolling: touch;
-  /* Reserves the scrollbar's gutter permanently so the preloader's
-     `overflow: hidden` (below) never toggles the viewport width — without
-     this, desktop briefly loses/regains its scrollbar across the loading
-     handoff and the whole page visibly shifts sideways. */
+  /* Reserves the scrollbar's gutter permanently so transient UI never toggles
+     the viewport width and causes the page to shift sideways. */
   scrollbar-gutter: stable;
 }
 
@@ -594,8 +626,8 @@ a:focus-visible > .soliprio-card .soliprio-glare {
       ),
     transparent calc(18% + var(--beam-grow) * 2%)
   );
-  /* Same padding-box XOR trick as .hero-search::before: paint the gradient
-     only in the padding ring, so the card art underneath stays untouched. */
+  /* Paint the beam only in the padding ring, so the card art underneath stays
+     untouched. */
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
@@ -716,10 +748,12 @@ a:focus-visible > .soliprio-card .soliprio-beam {
   }
 }
 
-/* No `position` rule here on purpose — this is unlayered CSS, so it would beat
-   Tailwind's `.absolute`/`.relative` utilities in the cascade regardless of
-   source order. Callers must supply their own `relative`/`absolute` class. */
-.hero-search::before {
+@utility glass-panel-prioritas {
+  background-color: color-mix(in srgb, var(--color-pbrown-900) 30%, transparent);
+}
+
+/* The shared panel name is the former hero-search surface. */
+.glass-panel::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -769,7 +803,7 @@ a:focus-visible > .soliprio-card .soliprio-beam {
    this rule is unlayered and would otherwise beat them for good. Keep the
    700ms duration in sync with REVEAL_DURATION_MS in ScrollReveal.tsx. */
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  [data-reveal] {
+  html.reveal-ready [data-reveal] {
     opacity: 0;
     /* `transform`, not `translate` — Tailwind's translate/scale utilities use
        the native properties, so both can live on one element and compose. */
@@ -781,19 +815,19 @@ a:focus-visible > .soliprio-card .soliprio-beam {
   }
 
   /* Opacity only — for glows/backdrops where movement would look detached. */
-  [data-reveal="fade"] {
+  html.reveal-ready [data-reveal="fade"] {
     transform: none;
   }
 
   /* Headline treatment: shorter rise plus a blur that resolves into focus.
      Text and small blocks only — `filter` on a container turns it into a
      backdrop root, which would blank any backdrop-filter glass inside it. */
-  [data-reveal="blur-up"] {
+  html.reveal-ready [data-reveal="blur-up"] {
     transform: translateY(16px);
     filter: blur(8px);
   }
 
-  [data-reveal][data-inview] {
+  html.reveal-ready [data-reveal][data-inview] {
     opacity: 1;
     transform: none;
     filter: none;
@@ -812,7 +846,7 @@ a:focus-visible > .soliprio-card .soliprio-beam {
 }
 
 /* Password gate success confirmation. Kept outside the gate card so it reads
-   as a brief system toast before the authenticated route starts its preloader. */
+   as a brief system toast after the password gate succeeds. */
 @keyframes login-success-toast-in {
   from {
     opacity: 0;
@@ -856,7 +890,7 @@ a:focus-visible > .soliprio-card .soliprio-beam {
   }
   100% {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(var(--scroll-cue-dot-travel, 12px));
   }
 }
 
@@ -864,239 +898,6 @@ a:focus-visible > .soliprio-card .soliprio-beam {
   animation: scroll-cue-dot 1.6s var(--ease-in-out) infinite;
 }
 
-/* ---------- Intro loading page (Preloader.tsx) ----------
-   Figma "Loading Page" (BCA.co.id Design Exploration, node 1586-8385), with
-   the desktop (1512) and mobile (393) artboards as the two anchors of every
-   clamp() below. Layout lives here rather than in Tailwind utilities because
-   the fluid interpolation between those artboards is the whole point and
-   needs to stay readable.
-
-   Showing the loading page is the DEFAULT here, driven entirely by the
-   `data-phase` React state on .pre-root. Nothing mutates <html> and there is
-   no pre-paint inline script, so the server markup already renders the
-   loading state and hydration has nothing to reconcile.
-
-   The gate below is what keeps it safe: `(scripting: enabled)` means a no-JS
-   visitor never sees a curtain nothing would lift, and the reduced-motion
-   half sends those visitors straight to the page. Outside the gate .pre-root
-   stays display:none. */
-
-.pre-root {
-  /* Figma artboard interpolation: mobile 393px -> desktop 1512px. */
-  --pre-pad-x: clamp(24px, 9.95px + 3.575vw, 64px);
-  --pre-pad-t: clamp(56px, 50.38px + 1.43vw, 72px);
-  --pre-pad-b: clamp(72px, 55.14px + 4.29vw, 120px);
-  --pre-logo-w: clamp(112px, 100.63px + 6.84vw, 204px);
-  --pre-tagline: clamp(40px, 39.57px + 2.15vw, 72px);
-
-  /* Opened by the gated block at the end of this section. */
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 80;
-  /* Nothing in here is interactive, and the element keeps covering the
-     viewport for the whole exit — without this it swallows the first wheel
-     events after the loader finishes. */
-  pointer-events: none;
-  /* The exit layers travel past the viewport edges; without this they would
-     briefly extend the scrollable area. */
-  overflow: hidden;
-}
-
-/* Fallback beneath the artwork, so a letterboxed edge on an extreme aspect
-   ratio still reads as the same gradient the SVG carries (#005caa -> #00335e). */
-.pre-shell {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, var(--color-blue-500), var(--color-blue-700));
-}
-
-.pre-bg {
-  position: absolute;
-  inset: 0;
-}
-
-.pre-bg img {
-  width: 100%;
-  height: 100%;
-  /* No object-fit: each SVG carries preserveAspectRatio="xMidYMax slice", so
-     it cover-crops itself against the bottom edge where the clove motif sits. */
-  display: block;
-}
-
-/* Full-bleed overlay pinning the logo + tagline to the top of the padding
-   box; the progress bar below is positioned independently. */
-.pre-layer {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: var(--pre-pad-t) var(--pre-pad-x) var(--pre-pad-b);
-  pointer-events: none;
-}
-
-/* bca-logo.svg is preserveAspectRatio="none" at width/height 100%, so it has
-   no intrinsic ratio to infer from — `height: auto` collapses and the mark
-   stretches. Derive it from the viewBox (114.75 / 36 = 3.1875) the same way
-   the navbar pins both dimensions. */
-.pre-logo {
-  width: var(--pre-logo-w);
-  height: calc(var(--pre-logo-w) / 3.1875);
-}
-
-.pre-tagline {
-  margin-top: 32px;
-  font-size: var(--pre-tagline);
-  font-weight: 400;
-  /* BCA Sans's natural ascent+descent is ~1.3em; anything tighter starves the
-     per-word clip box below (.pre-word-clip is sized off this line-height)
-     and shaves the tails off descenders like "g"/"y". */
-  line-height: 1.3;
-  color: var(--color-neutral-100);
-}
-
-/* The mobile artboard breaks the tagline after "Senantiasa"; the desktop one
-   sets it on a single line. Matches the .pre-bg source switch. */
-@media (min-width: 768px) {
-  .pre-br {
-    display: none;
-  }
-}
-
-/* Per-word reveal: each word sits in a clipped box exactly its own line
-   height (auto, from normal flow) and rises into it from below. `top` on a
-   relatively-positioned element is used rather than `transform`, on
-   purpose — it offsets paint the same way without touching layout, but as a
-   plain paint property (like margin) it's not dependent on a compositor
-   layer, unlike transform. animation-fill-mode: both holds the word below
-   the clip line before its delay elapses and holds it settled afterward. */
-.pre-word-clip {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: top;
-}
-
-.pre-word-inner {
-  display: inline-block;
-  position: relative;
-  animation-name: pre-word-rise;
-  animation-timing-function: var(--ease-emphasis);
-  animation-fill-mode: both;
-}
-
-@keyframes pre-word-rise {
-  from {
-    top: 1.1em;
-  }
-  to {
-    top: 0;
-  }
-}
-
-.pre-bar {
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  height: clamp(8px, 6.6px + 0.36vw, 12px);
-}
-
-.pre-bar-fill {
-  width: 100%;
-  height: 100%;
-  transform-origin: left center;
-  background: var(--color-cyan-500);
-}
-
-/* ---- exit: the whole loading page slides up as one piece ----
-   Only the shell moves; artwork, type and bar are its children and ride along
-   at the same speed. Keep the duration in sync with EXIT_MS in Preloader.tsx. */
-.pre-shell {
-  transition: transform 1200ms cubic-bezier(0.76, 0, 0.24, 1);
-  will-change: transform;
-}
-
-.pre-root[data-phase="exit"] .pre-shell {
-  transform: translate3d(0, -100%, 0);
-}
-
-/* .pre-root sits at z-index 80 while loading, above everything, on purpose.
-   Once the exit starts the curtain is only ever meant to travel off the TOP
-   of the viewport — but its clove motif in .pre-bg is bottom-anchored, so as
-   it slides up its trailing edge sweeps across whatever sits near the bottom
-   of the viewport (the hero's kurs ticker included) before it fully clears.
-   Dropping the stacking order below the hero widget (z-40 in HeroArea) the
-   moment the exit begins means the curtain is instantly rendered *behind* the
-   hero instead of on top of it, so that sweep is never visible at all. */
-.pre-root[data-phase="exit"] {
-  z-index: 20;
-}
-
-/* ---- intro: the loading page assembling itself ---- */
-@keyframes pre-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-}
-
-.pre-logo {
-  animation: pre-fade-up 800ms var(--ease-entrance) 80ms both;
-}
-
-/* ---- gate ----
-   Whether the loading page is shown at all stays pure CSS, so the server
-   markup and the hydrated markup agree and nothing has to run before paint. */
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  .pre-root {
-    display: block;
-  }
-}
-
-/* ---- handoff to the homepage underneath ----
-   Driven by two classes the preloader puts on <html> from an effect — so
-   after hydration, which is fine because the curtain covers the frames before
-   they land, and it keeps the server markup free of them.
-
-   These were `html:has(.pre-root[data-phase="…"])` selectors, and they broke:
-   once the phase flipped, `matches()` reported the parking selector as no
-   longer applying while the computed style stayed parked, stranding the hero
-   56px down at opacity 0 — the page read as having loaded slightly scrolled.
-   Invalidating a whole document from a descendant's attribute is the fragile
-   corner of `:has()`; a plain class on the styled element is both reliable
-   and far cheaper.
-
-   `.preloading` carries the parked values and no transition — they are the
-   initial state and must not animate while hidden. `.pre-revealing` supplies
-   the transitions and is landed one frame *before* `.preloading` is dropped,
-   because a transition declared in the same style recalc as the value change
-   never runs. It is removed once the reveal settles, so .pre-nav's
-   hide-on-scroll doesn't inherit an 800ms delay for the rest of the session. */
-html.preloading {
-  overflow: hidden;
-}
-
-html.preloading .pre-nav {
-  translate: 0 -110%;
-}
-
-/* Opacity only — no offset. The hero used to start 56px low and rise into
-   place, which left a band of page background above it for the length of the
-   handoff and read as the page having loaded slightly scrolled down. The page
-   now sits at its final position from the first frame and simply fades up. */
-html.preloading .pre-stage {
-  opacity: 0;
-}
-
-/* Timed against the exit: the hero fades up while the loading page is still
-   clearing, and the navbar drops in once it is off the top. */
-html.pre-revealing .pre-stage {
-  transition: opacity 900ms var(--ease-entrance) 200ms;
-}
-
-html.pre-revealing .pre-nav {
-  transition: translate 500ms var(--ease-entrance) 800ms;
-}
 
 /* Promo confetti — pure CSS motion; pieces are generated in Confetti.tsx.
    Three nested animations compose per piece: the outer element falls + fades,

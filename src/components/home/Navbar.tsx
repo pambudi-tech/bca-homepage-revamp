@@ -10,7 +10,8 @@ import type { Promo } from "./promo-data";
 import MobileNav from "./MobileNav";
 import SearchOverlay from "./SearchOverlay";
 import SearchPlaceholderCarousel from "./SearchPlaceholderCarousel";
-import { SEGMENT_EXTERNAL_LINKS } from "./segment-links";
+import { SEGMENT_EXTERNAL_LINKS, SEGMENT_INTERNAL_LINKS } from "./segment-links";
+import type { SearchSegment } from "./search-data";
 
 const LOCALE_META: Record<AppLocale, { flag: string }> = {
   id: { flag: "/assets/cycle1/flag-id.svg" },
@@ -55,7 +56,7 @@ function LoginIcon({ className = "size-6 shrink-0" }: { className?: string }) {
   );
 }
 
-export default function Navbar({ productCategories, megamenuContent, promoSearchItems, variant = "default" }: { productCategories?: ProductCategory[]; megamenuContent?: MegaMenuContent; /** Passed only by the Promo page, so its navbar search never falls back to the site-wide index. */ promoSearchItems?: Promo[]; variant?: "default" | "about" | "promo" }) {
+export default function Navbar({ productCategories, megamenuContent, promoSearchItems, variant = "default" }: { productCategories?: ProductCategory[]; megamenuContent?: MegaMenuContent; /** Passed only by the Promo page, so its navbar search never falls back to the site-wide index. */ promoSearchItems?: Promo[]; variant?: "default" | "about" | "promo" | "prioritas" | "solitaire" }) {
   const locale = useLocale() as AppLocale;
   const router = useRouter();
   const pathname = usePathname();
@@ -148,7 +149,9 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
     return () => document.removeEventListener("mousedown", close);
   }, []);
 
-  const activeSegment = variant === "default" ? segments[0] : null;
+  const activeSegment = variant === "prioritas" ? "Prioritas" : variant === "solitaire" ? "Solitaire" : variant === "default" ? segments[0] : null;
+  const prioritas = variant === "prioritas";
+  const solitaire = variant === "solitaire";
 
   return (
     <>
@@ -159,15 +162,18 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
         data-hidden={shouldHide}
         className={`pre-nav fixed inset-x-0 top-0 z-40 hidden h-[72px] transition-transform duration-300 xl:block ${shouldHide ? "-translate-y-full" : "translate-y-0"}`}
       >
-        <div className={`flex h-full w-full items-center justify-center px-10 transition-[background-color,box-shadow] duration-200 ${scrolled ? "bg-blue-500 shadow-lg" : "bg-transparent"}`}>
+        <div className={`flex h-full w-full items-center justify-center px-10 transition-[background-color,box-shadow] duration-200 ${scrolled ? (prioritas ? "bg-pbrown-800 shadow-lg" : solitaire ? "bg-neutral-900 shadow-lg" : "bg-blue-500 shadow-lg") : "bg-transparent"}`}>
         <div className="mx-auto flex w-full max-w-[1280px] items-center justify-between">
           <div className="flex items-center gap-5">
             <Link href="/" aria-label="BCA" className="inline-flex"><img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-9 w-[115px]" /></Link>
             <div className="flex h-10 items-center rounded-full border border-white/15 bg-black/20 p-1 backdrop-blur-[40px]">
               {segments.map((segment) => {
                 const active = segment === activeSegment;
-                const className = `flex h-8 min-w-24 items-center justify-center rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${active ? "bg-neutral-100 text-blue-500" : "text-white/80 hover:bg-white/10 hover:text-white"}`;
-                if (segment === "Individu") return <Link key={segment} href="/" className={className} style={active ? ({ viewTransitionName: "nav-segment-pill" } as CSSProperties) : undefined}>{tNav(`segments.${segment}`)}</Link>;
+                const className = `flex h-8 min-w-24 items-center justify-center rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${active ? (prioritas ? "bg-pgold-500 text-white" : solitaire ? "bg-neutral-500 text-white" : "bg-neutral-100 text-blue-500") : "text-white/80 hover:bg-white/10 hover:text-white"}`;
+                const internalHref = SEGMENT_INTERNAL_LINKS[segment];
+                if (internalHref) {
+                  return <Link key={segment} href={internalHref} className={className} style={active ? ({ viewTransitionName: "nav-segment-pill" } as CSSProperties) : undefined}>{tNav(`segments.${segment}`)}</Link>;
+                }
                 return <a key={segment} href={SEGMENT_EXTERNAL_LINKS[segment]} target="_blank" rel="noopener noreferrer" className={className}>{tNav(`segments.${segment}`)}</a>;
               })}
               <Link href="/tentang-bca" className={`flex h-8 items-center rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${variant === "about" ? "bg-neutral-100 text-blue-500" : "text-white/80 hover:bg-white/10 hover:text-white"}`}>{tNav("tentangBca")}</Link>
@@ -178,16 +184,21 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
           <div className="flex items-center gap-3">
             <SearchButton label={tNav("search")} placeholders={searchPlaceholders} expanded={searchOpen} onClick={() => setSearchOpen(true)} />
             <div ref={langRef} className="relative">
-              <button onClick={() => setLangOpen((open) => !open)} onMouseEnter={() => setLangHover(true)} onMouseLeave={() => setLangHover(false)} className={`flex h-10 items-center gap-0.5 rounded-full border px-2 transition-colors ${langHover || langOpen ? "border-neutral-300 bg-white" : "border-white/25 bg-[rgba(5,13,25,0.1)]"}`}><img src={LOCALE_META[locale].flag} alt="" className="size-6 rounded-full object-cover" /><span className={`w-8 text-center text-base font-bold ${langHover || langOpen ? "text-neutral-900" : "text-white"}`}>{locale.toUpperCase()}</span></button>
+              <button onClick={() => setLangOpen((open) => !open)} onMouseEnter={() => setLangHover(true)} onMouseLeave={() => setLangHover(false)} className={`flex h-10 items-center gap-0.5 rounded-full border px-2 backdrop-blur-[40px] transition-colors ${langHover || langOpen ? "border-neutral-300 bg-white" : "border-white/15 bg-[rgba(5,13,25,0.2)]"}`}><img src={LOCALE_META[locale].flag} alt="" className="size-6 rounded-full object-cover" /><span className={`w-8 text-center text-base font-bold ${langHover || langOpen ? "text-neutral-900" : "text-white"}`}>{locale.toUpperCase()}</span></button>
               {langOpen ? <div className="absolute right-0 top-12 overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-menu">{otherLocales.map((code) => <button key={code} onClick={() => { setLangOpen(false); router.replace(pathname, { locale: code }); }} className="flex w-36 items-center gap-2 p-4 text-left text-neutral-900 hover:bg-blue-100"><img src={LOCALE_META[code].flag} alt="" className="size-6 rounded-full object-cover" /><span className="font-semibold">{tLang(code)}</span></button>)}</div> : null}
             </div>
-            <a href="https://mybca.bca.co.id/auth/login" target="_blank" rel="noopener noreferrer" className="flex h-10 items-center justify-center gap-2 rounded-full border border-white/25 bg-[rgba(5,13,25,0.1)] px-4 text-sm font-semibold text-white transition-colors duration-300 hover:border-white/20 hover:bg-[rgba(18,20,23,0.5)]"><LoginIcon className="size-6 text-white/80" />{tNav("login")}</a>
+            <a href="https://mybca.bca.co.id/auth/login" target="_blank" rel="noopener noreferrer" className="group flex h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 text-sm font-semibold text-white backdrop-blur-[40px] transition-colors duration-300 hover:border-blue-500 hover:bg-white hover:text-blue-500"><LoginIcon className="size-6 text-white/80 transition-colors group-hover:text-blue-500" />{tNav("login")}</a>
           </div>
         </div>
         </div>
       </nav>
 
-      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} promoSearchItems={promoSearchItems} />
+      <SearchOverlay
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        promoSearchItems={promoSearchItems}
+        initialSegment={variant === "prioritas" ? ("Prioritas" satisfies SearchSegment) : "Semua"}
+      />
     </>
   );
 }

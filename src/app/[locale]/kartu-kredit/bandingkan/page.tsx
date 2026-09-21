@@ -48,8 +48,7 @@ export default async function CreditCardComparisonPage({
   return (
     <main id="main-content" className="flex min-h-screen flex-1 flex-col bg-blue-100">
       <Navbar productCategories={produk.categories} megamenuContent={megamenu} />
-      <div className="pre-stage">
-        <KartuKreditHero
+      <KartuKreditHero
           copy={{
             title: hero("title"),
             applyCta: hero("applyCta"),
@@ -60,8 +59,7 @@ export default async function CreditCardComparisonPage({
             backAction: { label: hero("backCta"), href: "/kartu-kredit" },
           }}
           imageSrc={creditCardImage}
-        />
-      </div>
+      />
       <CreditCardComparison cards={cards} availableCards={allCards} />
       <div className="bg-neutral-100 pt-12">
         <CreditCardTutorialSection />

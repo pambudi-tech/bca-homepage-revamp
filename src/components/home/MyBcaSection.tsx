@@ -42,7 +42,7 @@ export default async function MyBcaSection() {
             className="absolute left-[589px] top-1/2 h-[536px] w-auto -translate-y-1/2 object-cover"
           />
 
-          <div data-reveal className="absolute bottom-0 left-0 flex h-[428px] w-[480px] flex-col items-center justify-between rounded-t-3xl border-2 border-white/15 bg-gradient-to-b from-[rgba(18,20,23,0.25)] to-[rgba(18,20,23,0.5)] px-8 pb-8 pt-6 text-center shadow-edge-left backdrop-blur-[14px]">
+          <div data-reveal className="glass-panel absolute bottom-0 left-0 flex h-[428px] w-[480px] flex-col items-center justify-between rounded-t-3xl px-8 pb-8 pt-6 text-center shadow-edge-left" style={{ backgroundColor: "rgba(0,0,0,0.3)", backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)", isolation: "isolate" }}>
             <div className="flex w-full flex-col items-start gap-4 text-white">
               <p className="w-full text-[28px] font-semibold leading-10 tracking-[-0.64px] text-shadow-hero">
                 {t("heading")}
@@ -128,20 +128,13 @@ export default async function MyBcaSection() {
           </MyBcaParallax>
 
           {/* Glass card — pulled up to overlap the phone-woman's lower edge.
-              data-reveal sits on this wrapper (not the .hero-search card) so
+              data-reveal sits on this wrapper (not the glass panel) so
               the entrance never touches the backdrop-filter element. */}
           <div data-reveal className="relative -mt-[calc(17.6%+48px)] px-2.5">
-            {/* Fill + outline reuse the product-card glass treatment: flat black 30%
-                over a saturating backdrop filter, with `hero-search` painting the 2px
-                top-lit gradient outline. */}
+            {/* Shared glass surface used by the product and editorial cards. */}
             <div
-              className="hero-search relative flex flex-col items-center gap-6 overflow-clip rounded-t-3xl px-6 pb-8 pt-6 text-center shadow-edge-left"
-              style={{
-                backgroundColor: "rgba(0,0,0,0.3)",
-                backdropFilter: "blur(16px) saturate(1.25)",
-                WebkitBackdropFilter: "blur(16px) saturate(1.25)",
-                isolation: "isolate",
-              }}
+              className="glass-panel relative flex flex-col items-center gap-6 overflow-clip rounded-t-3xl px-6 pb-8 pt-6 text-center shadow-edge-left"
+              style={{ backgroundColor: "rgba(0,0,0,0.3)", backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)", isolation: "isolate" }}
             >
               {/* Capped at the Figma text width so the heading keeps its 3-line wrap. */}
               <div className="flex w-full max-w-80 flex-col items-center">

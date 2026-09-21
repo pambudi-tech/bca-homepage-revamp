@@ -67,8 +67,7 @@ export default async function KartuKreditPage({
     <main id="main-content" className="flex flex-1 flex-col overflow-x-clip bg-blue-100">
       <div className="page-stack relative z-10 bg-blue-100">
         <Navbar productCategories={produk.categories} megamenuContent={megamenu} />
-        <div className="pre-stage">
-          <KartuKreditHero
+        <KartuKreditHero
             copy={{
               eyebrow: hero("eyebrow"),
               title: hero("title"),
@@ -78,8 +77,7 @@ export default async function KartuKreditPage({
               imageAlt: hero("imageAlt"),
             }}
             imageSrc={creditCardImage}
-          />
-        </div>
+        />
         <SectionAnchor label={hero("sectionNav.label")} items={sectionAnchors} />
         <KartuKreditCardList />
         <CreditCardBenefitsFeatures />

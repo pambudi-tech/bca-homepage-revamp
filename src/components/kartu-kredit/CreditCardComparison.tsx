@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { useTranslations } from "next-intl";
 import { ApplyInMyBcaLink } from "@/components/ui/MyBcaLinks";
 import SectionAnchor from "@/components/home/SectionAnchor";
@@ -43,6 +43,16 @@ export default function CreditCardComparison({ cards, availableCards }: { cards:
   const t = useTranslations("creditCardDetail.cardList.comparisonView");
   const [navbarHidden, setNavbarHidden] = useState(false);
   const [selectedCards, setSelectedCards] = useState(cards);
+  const [comparisonLimit, setComparisonLimit] = useState(3);
+  const artworkScrollRef = useRef<HTMLDivElement>(null);
+  const controlsScrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const syncComparisonLimit = () => setComparisonLimit(window.innerWidth < 768 ? 2 : 3);
+    syncComparisonLimit();
+    window.addEventListener("resize", syncComparisonLimit);
+    return () => window.removeEventListener("resize", syncComparisonLimit);
+  }, []);
 
   useEffect(() => {
     const syncNavbar = (event: Event) => setNavbarHidden((event as CustomEvent<boolean>).detail);
@@ -51,7 +61,8 @@ export default function CreditCardComparison({ cards, availableCards }: { cards:
   }, []);
 
   const fallbackSections = splitComparisonSections(t.raw("sections") as ComparisonSection[]);
-  const sections = splitComparisonSections(selectedCards[0]?.comparison ?? fallbackSections);
+  const comparisonCards = selectedCards.slice(0, comparisonLimit);
+  const sections = splitComparisonSections(comparisonCards[0]?.comparison ?? fallbackSections);
 
   const navItems = sections.map((section) => ({
     key: section.key,
@@ -61,26 +72,36 @@ export default function CreditCardComparison({ cards, availableCards }: { cards:
 
   return (
     <section id="comparison-content" className="bg-blue-100 pb-0">
-      <ComparisonCardSelector cards={selectedCards} />
-      <div className={`sticky z-30 transition-[top] duration-300 ${navbarHidden ? "top-0" : "top-16 xl:top-[72px]"}`}>
+      <ComparisonCardSelector
+        cards={comparisonCards}
+        scrollRef={artworkScrollRef}
+        onScroll={() => {
+          if (artworkScrollRef.current && controlsScrollRef.current) controlsScrollRef.current.scrollLeft = artworkScrollRef.current.scrollLeft;
+        }}
+      />
+      <div className={`sticky z-30 transition-[top] duration-300 ${navbarHidden ? "top-0" : "top-[calc(4rem+env(safe-area-inset-top))] xl:top-[72px]"}`}>
         <ComparisonCardControls
-          cards={selectedCards}
+          cards={comparisonCards}
           availableCards={availableCards}
           applyLabel={t("apply")}
+          scrollRef={controlsScrollRef}
+          onScroll={() => {
+            if (artworkScrollRef.current && controlsScrollRef.current) artworkScrollRef.current.scrollLeft = controlsScrollRef.current.scrollLeft;
+          }}
           onCardChange={(index, id) => {
             const nextCard = availableCards.find((card) => card.id === id);
             if (!nextCard) return;
             setSelectedCards((current) => current.map((card, cardIndex) => cardIndex === index ? nextCard : card));
           }}
         />
-        <SectionAnchor label={t("navigationLabel")} items={navItems} />
+        <SectionAnchor label={t("navigationLabel")} items={navItems} sticky={false} />
       </div>
       <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-0 px-0 pt-0">
         {sections.map((section) => (
           <ComparisonTableSection
             key={section.key}
             tab={section.key}
-            cards={selectedCards}
+            cards={comparisonCards}
             groups={section.groups}
             title={t(`tabs.${section.key}`)}
           />
@@ -90,11 +111,11 @@ export default function CreditCardComparison({ cards, availableCards }: { cards:
   );
 }
 
-function ComparisonCardSelector({ cards }: { cards: ComparisonCard[] }) {
+function ComparisonCardSelector({ cards, scrollRef, onScroll }: { cards: ComparisonCard[]; scrollRef: RefObject<HTMLDivElement | null>; onScroll: () => void }) {
   const t = useTranslations("creditCardDetail.cardList.comparisonView");
   return (
     <section id="comparison-cards" className="bg-white" aria-label={t("selectedCards")}>
-      <div className="mx-auto flex w-full max-w-[1280px] gap-4 overflow-x-auto px-4 pb-0 pt-4 [scrollbar-width:none] xl:gap-4 xl:pb-0 xl:pt-4">
+      <div ref={scrollRef} onScroll={onScroll} className="mx-auto flex w-full max-w-[1280px] gap-4 overflow-x-auto px-4 pb-0 pt-4 [scrollbar-width:none] xl:gap-4 xl:pb-0 xl:pt-4">
         {cards.map((card) => (
           <article key={card.id} className="flex min-w-[176px] flex-1 flex-col gap-2 xl:min-w-0">
             <div className="flex aspect-[1.6] items-center justify-center rounded-xl bg-neutral-50">
@@ -111,11 +132,15 @@ function ComparisonCardControls({
   cards,
   availableCards,
   applyLabel,
+  scrollRef,
+  onScroll,
   onCardChange,
 }: {
   cards: ComparisonCard[];
   availableCards: ComparisonCard[];
   applyLabel: string;
+  scrollRef: RefObject<HTMLDivElement | null>;
+  onScroll: () => void;
   onCardChange: (index: number, id: string) => void;
 }) {
   const t = useTranslations("creditCardDetail.cardList.comparisonView");
@@ -140,7 +165,7 @@ function ComparisonCardControls({
 
   return (
     <div className={`relative border-b border-neutral-200 bg-white shadow-card ${openIndex === null ? "z-30" : "z-40"}`}>
-      <div className={`mx-auto flex w-full max-w-[1280px] gap-4 px-4 pb-4 pt-4 [scrollbar-width:none] xl:gap-4 xl:px-4 xl:pb-4 xl:pt-4 ${openIndex === null ? "overflow-x-auto" : "overflow-visible"}`}>
+      <div ref={scrollRef} onScroll={onScroll} className="mx-auto flex w-full max-w-[1280px] gap-4 overflow-x-auto px-4 pb-4 pt-4 [scrollbar-width:none] xl:gap-4 xl:px-4 xl:pb-4 xl:pt-4">
         {cards.map((card, index) => (
           <article key={card.id} className="flex min-w-[176px] flex-1 flex-col gap-3">
             <div className="relative">

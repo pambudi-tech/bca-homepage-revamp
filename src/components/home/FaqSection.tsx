@@ -312,7 +312,7 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
       data-reveal
       className={`relative w-full max-w-[560px] overflow-clip rounded-3xl ${
         desktopGlass
-          ? "hero-search isolate"
+          ? "glass-panel"
           : "bg-white shadow-card"
       }`}
     >
@@ -323,7 +323,7 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
   const mobileCard = (
     <div
       data-reveal
-      className={`relative w-full overflow-clip rounded-t-3xl ${mobileGlass ? "hero-search isolate" : "bg-white"}`}
+        className={`relative w-full overflow-clip rounded-t-3xl ${mobileGlass ? "glass-panel" : "bg-white"}`}
     >
       {renderCardBody(mobileGlass)}
     </div>

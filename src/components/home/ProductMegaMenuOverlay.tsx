@@ -311,7 +311,7 @@ export default function ProductMegaMenuOverlay({
               className="size-full object-cover"
             />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/50 to-transparent" />
-            <div className="absolute bottom-2 left-2 w-[calc(100%-16px)] max-w-[320px] rounded-2xl border border-white/35 bg-black/30 px-5 py-4 backdrop-blur-[16px]">
+            <div className="absolute bottom-2 left-2 w-[calc(100%-16px)] max-w-[320px] rounded-2xl bg-black/30 px-5 py-4 backdrop-blur-[16px]">
               <p className="text-subtitle text-white text-shadow-hero">{selected.editorial.title}</p>
             </div>
           </div>

@@ -67,17 +67,10 @@ function HighlightArticle({ article }: { article: NewsArticle }) {
         className="absolute inset-x-0 bottom-0 h-[180px] mix-blend-multiply xl:h-[264px]"
         style={{ background: "linear-gradient(to top, #121417 0%, rgba(18,20,23,0) 100%)", opacity: 0.8 }}
       />
-      {/* Same glass treatment as the product cards: `.hero-search` gradient
-          top-border over a reactive blurred fill, rather than a flat grey
-          stroke. `isolation` keeps the backdrop sampling the photo behind it. */}
+      {/* Shared glass treatment used by the product cards and other editorial panels. */}
       <div
-        className="hero-search absolute inset-x-2 bottom-2 flex flex-col items-start gap-4 overflow-clip rounded-[10px] p-4 xl:gap-6 xl:px-5 xl:pb-6 xl:pt-5"
-        style={{
-          backgroundColor: "rgba(0,0,0,0.3)",
-          backdropFilter: "blur(16px) saturate(1.25)",
-          WebkitBackdropFilter: "blur(16px) saturate(1.25)",
-          isolation: "isolate",
-        }}
+        className="glass-panel absolute inset-x-2 bottom-2 flex flex-col items-start gap-4 overflow-clip rounded-[10px] p-4 xl:gap-6 xl:px-5 xl:pb-6 xl:pt-5"
+        style={{ backgroundColor: "rgba(0,0,0,0.3)", backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)", isolation: "isolate" }}
       >
         <p className="w-full text-subtitle text-white text-shadow-hero transition-[font-weight] duration-300 xl:text-title xl:group-hover:font-bold">
           {article.title}

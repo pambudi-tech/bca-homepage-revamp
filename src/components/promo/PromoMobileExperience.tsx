@@ -332,6 +332,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
               campaignCover="/assets/promo-page/campaigns/ramadan-diskon-besar.png"
               campaignAlt={t("seasonal.discount")}
               compact
+              promoPage
             />
           </div>
         </section>
@@ -356,7 +357,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
           </div>
         </div>
         <div data-lenis-prevent className="hide-scrollbar -mb-3 mt-1 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-pl-4 px-4 py-3 [scrollbar-width:none]">
-          {promos.slice(3, 6).map((promo) => <div key={`${selectedLocation}-${promo.id}`} className="snap-start w-[200px] shrink-0"><PromoCard promo={promo} now={now} reveal={false} compact /></div>)}
+          {promos.slice(3, 6).map((promo) => <div key={`${selectedLocation}-${promo.id}`} className="snap-start w-[200px] shrink-0"><PromoCard promo={promo} now={now} reveal={false} compact promoPage /></div>)}
         </div>
       </section>
 
@@ -425,7 +426,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
           <p className="mt-5 text-sm text-neutral-600">{t("allPromos.showCount", { from: visibleFrom, to: visibleTo, total: filteredPromos.length })}</p>
           {visiblePromos.length ? (
             <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5">
-              {visiblePromos.map((promo) => <PromoCard key={promo.id} promo={promo} now={now} reveal={false} compact />)}
+              {visiblePromos.map((promo) => <PromoCard key={promo.id} promo={promo} now={now} reveal={false} compact promoPage />)}
             </div>
           ) : (
             <div className="mt-4 rounded-3xl bg-white px-5 py-8 text-center shadow-card">

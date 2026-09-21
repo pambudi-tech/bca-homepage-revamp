@@ -52,7 +52,7 @@ function AccordionChevron() {
   );
 }
 
-export default function Footer() {
+export default function Footer({ variant = "default" }: { variant?: "default" | "prioritas" }) {
   const t = useTranslations("footer");
   const parallaxRef = useRef<HTMLDivElement>(null);
   const lenis = useLenis();
@@ -93,7 +93,7 @@ export default function Footer() {
   );
 
   return (
-    <footer className="relative overflow-clip bg-blue-500 pb-[184px] pt-10 xl:pb-8 xl:pt-14">
+    <footer className={`relative overflow-clip pb-[184px] pt-10 xl:pb-8 xl:pt-14 ${variant === "prioritas" ? "bg-pbrown-600" : "bg-blue-500"}`}>
       <div ref={parallaxRef} className="pointer-events-none absolute inset-0 z-0 overflow-visible mix-blend-multiply" style={{ isolation: "isolate" }}>
         <img loading="lazy" decoding="async" src="/assets/footer/footer-clove-pattern.svg" alt="" aria-hidden className="absolute bottom-[-512px] left-1/2 h-[1879px] w-[2568px] max-w-none -translate-x-[calc(50%+300px)]" />
       </div>

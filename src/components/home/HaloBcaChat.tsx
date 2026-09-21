@@ -9,7 +9,6 @@ import { MOBILE_QUICK_NAV_VISIBILITY_EVENT } from "./QuickActionRail";
 /** Lets other chrome (the desktop navbar's "Halo BCA" icon) open this panel
     without lifting its state up — dispatch this event from anywhere. */
 export const HALO_BCA_OPEN_EVENT = "bca:halo-bca-open";
-import { onPreloaderDone } from "@/components/Preloader";
 
 // Google's published test key — always renders and always validates, but is
 // explicitly not for production traffic. Real deployments must set
@@ -145,9 +144,7 @@ export default function HaloBcaChat() {
   // that same z-index otherwise leaves it floating over the menu too.
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileQuickNavHidden, setMobileQuickNavHidden] = useState(false);
-  // Kept off-screen until the preloader curtain starts lifting, then fades up —
-  // otherwise the button flashes in over the loading page on slow loads.
-  const [ready, setReady] = useState(false);
+  const ready = true;
   // Hides the floating button once the user scrolls past the News section
   // (and back into the footer) — the footer itself is always in the DOM
   // below the fold, so observing it directly would keep the button hidden
@@ -181,21 +178,6 @@ export default function HaloBcaChat() {
     );
     observer.observe(newsSection);
     return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    // The done event fires the instant the curtain *starts* sliding away, not
-    // once it's gone — revealing immediately would show the button fading in
-    // while the curtain is still exiting. This delay lines it up with the
-    // curtain actually clearing (matches CookieBanner's own post-event wait).
-    let id: ReturnType<typeof setTimeout>;
-    const stop = onPreloaderDone(() => {
-      id = setTimeout(() => setReady(true), 400);
-    });
-    return () => {
-      stop();
-      clearTimeout(id);
-    };
   }, []);
 
   // `instant` skips the exit animation — used when the drag itself already

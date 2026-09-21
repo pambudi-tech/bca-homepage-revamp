@@ -8,7 +8,7 @@ import { routing, type AppLocale } from "@/i18n/routing";
 import { useScrollLock } from "@/components/SmoothScroll";
 import type { ProductCategory } from "./product-data";
 import type { MegaMenuContent } from "@/lib/megamenu";
-import { SEGMENT_EXTERNAL_LINKS } from "./segment-links";
+import { SEGMENT_EXTERNAL_LINKS, SEGMENT_INTERNAL_LINKS } from "./segment-links";
 
 const LOCALE_META: Record<AppLocale, { flag: string }> = {
   id: { flag: "/assets/cycle1/flag-id.svg" },
@@ -31,7 +31,7 @@ export default function MobileMenu({
   onClose: () => void;
   productCategories?: ProductCategory[];
   megamenuContent?: MegaMenuContent;
-  variant?: "default" | "about" | "promo";
+  variant?: "default" | "about" | "promo" | "prioritas" | "solitaire";
 }) {
   const locale = useLocale() as AppLocale;
   const router = useRouter();
@@ -99,8 +99,8 @@ export default function MobileMenu({
     ...SEGMENTS.map((segment) => ({
       key: segment,
       label: tNav(`segments.${segment}`),
-      href: segment === "Individu" ? "/" : SEGMENT_EXTERNAL_LINKS[segment],
-      active: variant === "default" && segment === "Individu",
+      href: SEGMENT_INTERNAL_LINKS[segment] ?? SEGMENT_EXTERNAL_LINKS[segment],
+      active: (variant === "default" && segment === "Individu") || (variant === "prioritas" && segment === "Prioritas") || (variant === "solitaire" && segment === "Solitaire"),
     })),
     { key: "Tentang BCA", label: tNav("tentangBca"), href: "/tentang-bca", active: false },
     { key: "Karir", label: tNav("karir"), href: "https://karir.bca.co.id/", active: false },
@@ -162,7 +162,7 @@ export default function MobileMenu({
 
             if (item.key === "Tentang BCA") return <Link key={item.key} href="/tentang-bca" onClick={closeMenu} className={className}>{content}</Link>;
             if (item.active) return <div key={item.key} className={className}>{content}</div>;
-            if (item.href === "/") return <Link key={item.key} href="/" onClick={closeMenu} className={className}>{content}</Link>;
+            if (item.href?.startsWith("/")) return <Link key={item.key} href={item.href} onClick={closeMenu} className={className}>{content}</Link>;
             return <a key={item.key} href={item.href ?? "#"} target="_blank" rel="noopener noreferrer" onClick={closeMenu} className={className}>{content}</a>;
           })}
         </nav>

@@ -2,6 +2,7 @@ export type Product = {
   title: string;
   subtitle: string;
   image: string;
+  action?: string;
   /**
    * Tampil di layout accordion, yang hanya punya 3 slot. Curved carousel
    * memutar seluruh produk kategori terlepas dari flag ini. Lihat

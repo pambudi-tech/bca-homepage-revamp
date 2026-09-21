@@ -761,6 +761,14 @@
     }
   },
   "search": {
+    "segmentLabel": "内容分类",
+    "segments": {
+      "Semua": "全部",
+      "Individu": "个人",
+      "Bisnis": "企业",
+      "Prioritas": "优先",
+      "Solitaire": "尊尚"
+    },
     "recentSearches": "最近搜索",
     "clearAll": "清除全部",
     "removeTerm": "删除 {term}",
@@ -807,12 +815,6 @@
   },
   "common": {
     "learnMore": "了解更多"
-  },
-  "preloader": {
-    "tagline": [
-      "始终",
-      "在您身边"
-    ]
   },
   "product": {
     "eyebrow": "产品与服务",
@@ -1231,5 +1233,192 @@
       "captcha": "请完成\"我不是机器人\"验证"
     },
     "close": "关闭 HaloBCA"
+  },
+  "prioritasHero": {
+    "title": "您的人生旅程，是我们的优先考量。",
+    "cta": "了解更多",
+    "bannerAlt": "一家人在客厅共度时光",
+    "prioritasLogoAlt": "BCA Prioritas",
+    "sectionNavLabel": "BCA Prioritas 页面导航",
+    "sections": {
+      "privilege": "尊享礼遇",
+      "eventPromo": "活动与优惠",
+      "bankingSolution": "银行解决方案",
+      "magazine": "电子杂志",
+      "financialReport": "财务报告"
+    },
+    "privilege": {
+      "eyebrow": "尊享礼遇",
+      "heading": "伴随您人生旅程每一步的尊贵礼遇",
+      "cards": {
+        "lounge": { "title": "尊享印度尼西亚数百家机场贵宾休息室", "action": "立即预订", "alt": "机场贵宾休息室" },
+        "health": { "title": "精选高端医院尊享健康检查", "action": "查看合作医院", "alt": "高端医院房间" },
+        "event": { "title": "尊享热门活动优先入场礼遇", "action": "查看所有活动", "alt": "活动现场尊享座位" }
+      },
+      "viewMore": "查看您拥有的更多尊享礼遇"
+    },
+    "eventPromo": {
+      "eyebrow": "活动与优惠",
+      "heading": "为您专属打造的优惠与精彩体验",
+      "featuredTitles": {
+        "javaJazz": "为BCA Prioritas客户赠送Java Jazz音乐节门票",
+        "theWeeknd": "The Weeknd 演唱会赠票，限前三位客户",
+        "brightspot": "获取Brightspot开幕之夜VIP门票"
+      },
+      "featuredCta": "了解更多",
+      "viewMore": "查看所有活动与优惠"
+    },
+    "card": {
+      "eyebrow": "银行卡",
+      "heading": "一张卡片，尊享千项专属礼遇",
+      "description": "仅限特别邀请。请联系您的 Personal Banker 了解更多信息。",
+      "action": "了解更多",
+      "imageAlt": "BCA Prioritas 铂金借记卡"
+    },
+    "kartu": {
+      "eyebrow": "银行解决方案",
+      "heading": "陪伴您人生旅程的专属银行服务",
+      "label": "专属银行礼遇",
+      "viewMore": "查看全部",
+      "action": "了解更多",
+      "cards": {
+        "branch": { "title": "BCA 分行专属服务", "alt": "BCA 分行专属服务" },
+        "vehicle": { "title": "机动车贷款（KKB）", "alt": "机动车贷款" },
+        "transaction": { "title": "专属交易功能与服务", "alt": "专属交易功能与服务" },
+        "credit": { "title": "BCA 信用卡", "alt": "BCA 信用卡" },
+        "home": { "title": "房屋所有权贷款", "alt": "房屋所有权贷款" },
+        "deposit": { "title": "保险箱", "alt": "保险箱" }
+      }
+    },
+    "bankingSolution": {
+      "eyebrow": "银行解决方案",
+      "heading": "陪伴您人生旅程的专属银行服务",
+      "bankingPrivilege": "专属银行礼遇",
+      "wealthInsight": "财富洞察",
+      "kurs": "今日汇率",
+      "viewMore": "查看全部",
+      "action": "了解更多",
+      "buy": "买入",
+      "sell": "卖出",
+      "updatedAt": "最后更新于 2026年6月3日 12.47 WIB",
+      "cards": {
+        "branch": { "title": "BCA 分行专属服务", "alt": "BCA 分行专属服务" },
+        "vehicle": { "title": "机动车贷款（KKB）", "alt": "机动车贷款" },
+        "transaction": { "title": "专属交易功能与服务", "alt": "专属交易功能与服务" },
+        "credit": { "title": "BCA 信用卡", "alt": "BCA 信用卡" },
+        "home": { "title": "房屋所有权贷款", "alt": "房屋所有权贷款" },
+        "deposit": { "title": "保险箱", "alt": "保险箱" }
+      },
+      "wealthCards": {
+        "houseView": {
+          "title": "2025年6月观点：降息周期中的投资组合策略",
+          "date": "2025年6月16日，星期三 · 14.00 WIB",
+          "channel": "YouTube 直播",
+          "action": "添加到日历",
+          "alt": "BCA Prioritas House View 活动"
+        },
+        "market": {
+          "title": "每周市场概览：缓和与滞胀之间",
+          "date": "2026年6月2日",
+          "action": "下载报告",
+          "alt": "BCA Prioritas 每周市场概览"
+        }
+      }
+    },
+    "magazine": {
+      "eyebrow": "电子杂志",
+      "heading": "陪伴每一位不断成长的您",
+      "viewMore": "查看全部",
+      "cards": {
+        "property": { "title": "第104期-XXI/2025", "action": "立即阅读", "alt": "关于印度尼西亚房地产行业的优先杂志" },
+        "food": { "title": "第105期-XXII/2026", "action": "立即阅读", "alt": "关于餐饮行业的优先杂志" },
+        "chess": { "title": "第103期-XX/2025", "action": "立即阅读", "alt": "关于年轻企业家的优先杂志" }
+      }
+    },
+    "financialReport": {
+      "eyebrow": "财务报告",
+      "heading": "一览您的完整投资组合",
+      "features": {
+        "centralized": "集中展示您所有 BCA 产品的数据",
+        "reporting": "可用于各种报告",
+        "updated": "每次访问时都会及时更新"
+      },
+      "action": "查看您的报告"
+    }
+  },
+  "signaturePrivilege": {
+    "subNavLabel": "Prioritas 导航",
+    "subNav": { "privilege": "礼遇", "banking": "银行服务", "magazine": "电子杂志" },
+    "breadcrumb": "尊享礼遇",
+    "title": "每一步旅程，都有尊贵礼遇相伴",
+    "tabLabel": "礼遇类别",
+    "tabs": { "signature": "尊享礼遇", "lifestyle": "生活礼遇", "event": "活动", "promo": "优惠" },
+    "description": "为满足您的多元需求而设计的专属服务与礼遇。",
+    "more": "了解更多",
+    "signature": {
+      "lounge": { "title": "行政机场贵宾厅" },
+      "transfer": { "title": "国内机场接送" },
+      "transferFee": { "title": "免转账手续费" },
+      "medical": { "title": "国际健康检查" }
+    },
+    "complimentary": {
+      "title": "免费礼遇",
+      "subtitle": "名额有限，只需出示您的 Prioritas 卡。",
+      "birthday": "生日礼物",
+      "cards": {
+        "valet": { "title": "免费代客泊车", "brand": "Han Palace Restaurant" },
+        "inpatient": { "title": "VVIP 住院陪护免费餐点", "brand": "Altos Hospital" },
+        "facial": { "title": "价值 120 万印尼盾的 Snow White 面部护理", "brand": "Dermatology Clinic" },
+        "laser": { "title": "价值 950 万印尼盾的 Pico Dermabrasion 激光护理", "brand": "EternaMoore Clinic" },
+        "treatment": { "title": "价值 20 万印尼盾的手部护理", "brand": "Molton Brown" },
+        "restaurant": { "title": "免费一人份美式咖啡或卡布奇诺", "brand": "Social Spoon" },
+        "glow": { "title": "红毯焕亮护理", "brand": "Amala Clinic" },
+        "dessert": { "title": "免费甜点", "brand": "Greenleaf Steak & More" },
+        "jewelry": { "title": "价值 50 万印尼盾的专属珠宝盒", "brand": "Semar Nusantara" }
+      }
+    },
+    "categories": { "all": "全部", "beauty": "美容", "culinary": "餐饮", "health": "健康", "lifestyle": "生活方式" },
+    "searchLabel": "搜索礼遇",
+    "searchPlaceholder": "搜索品牌或合作伙伴",
+    "showing": "显示 {count} 项优惠",
+    "empty": "没有符合条件的优惠。",
+    "paginationLabel": "礼遇页面"
+  },
+  "lifestylePrivilegeDetail": {
+    "subNavLabel": "Prioritas 导航",
+    "subNav": { "privilege": "礼遇", "banking": "银行服务", "magazine": "电子杂志" },
+    "breadcrumb": { "home": "Prioritas", "category": "生活礼遇", "current": "美容" },
+    "title": "价值 20 万印尼盾的手部护理折扣",
+    "brand": "Molton Brown",
+    "detail": { "title": "礼遇详情", "content": "Molton Brown 手部护理折扣，价值 20 万印尼盾。" },
+    "terms": {
+      "title": "条款与条件",
+      "items": [
+        "出示实体 BCA Solitaire/Prioritas 卡，或 myBCA/BCA mobile 应用中的电子卡。",
+        "使用 BCA Solitaire/Prioritas 卡、BCA 信用卡或 QRIS BCA mobile/myBCA 付款。",
+        "请于一天前通过 Molton Brown 客服 0816 1807 088（WhatsApp Chat）预约。",
+        "该礼遇不可兑换现金或转让。",
+        "适用于所有 Molton Brown 门店。"
+      ]
+    },
+    "contact": { "title": "品牌与联系方式", "content": "请联系 Molton Brown 客服了解护理信息及预约。" },
+    "location": { "title": "地点", "content": "适用于所有 Molton Brown 门店。" },
+    "recommendations": {
+      "title": "更多礼遇推荐",
+      "viewMore": "查看更多",
+      "action": "了解更多",
+      "cards": {
+        "sisley": { "title": "体验专属 Signature 面部护理，享受高达 20% 折扣", "brand": "Sisley Paris", "alt": "Sisley Paris 护肤产品" },
+        "skii": { "title": "红毯焕亮护理（180 万印尼盾）+ 欢迎按摩 + 轻度清洁", "brand": "SK-II Boutique Spa", "alt": "SK-II Boutique Spa 面部护理" },
+        "shiseido": { "title": "尊享 Ultimune 精华免费肌肤分析", "brand": "Shiseido", "alt": "资生堂 Ultimune 精华" }
+      }
+    }
+  },
+  "solitaireHero": {
+    "title": "尊贵而专属的服务，只为您而来。",
+    "cta": "了解更多",
+    "viewMore": "查看全部",
+    "bannerAlt": "一家人在客厅共享美好时光",
+    "solitaireLogoAlt": "BCA Solitaire"
   }
 }

@@ -320,14 +320,8 @@ export default function HeroWidget({
       {/* search + quick action */}
       <div className="absolute top-0 h-[184px] w-full">
         <div
-          className="hero-search relative z-0 flex h-34 w-full items-start justify-center overflow-clip rounded-t-3xl p-5"
-          style={{
-            // Reactive glass fill: samples the live banner behind it (works across stacking
-            // contexts), blurs it, then lightly boosts saturation/contrast so the fill picks
-            // up whatever banner colors the content team ships.
-            backdropFilter: "blur(16px) saturate(1.25)",
-            WebkitBackdropFilter: "blur(16px) saturate(1.25)",
-          }}
+          className="glass-panel relative z-0 flex h-34 w-full items-start justify-center overflow-clip rounded-t-3xl p-5"
+          style={{ backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)" }}
         >
           {/* Depth gradient (normal compositing) for text readability — light sheen at
               top, darker toward the quick-actions below. */}

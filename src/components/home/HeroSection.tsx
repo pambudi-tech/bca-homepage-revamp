@@ -6,26 +6,34 @@ import { useTranslations } from "next-intl";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useLenis } from "@/components/SmoothScroll";
 import { useIsLive } from "@/lib/useIsLive";
+import { useLayoutVariant } from "@/lib/useLayoutVariant";
 import { SLIDES, SLIDE_DURATION_MS, type Slide, type SlideCta } from "./hero-slides";
+import ChristmasDecor from "./ChristmasDecor";
+import CnyDecor from "./CnyDecor";
+import LebaranDecor from "./LebaranDecor";
+import LayoutSwitcher from "./LayoutSwitcher";
 
 const PARALLAX_SPEED = 0.45;
 const INDICATOR_LENGTH = 40;
+const HERO_THEMES = ["none", "christmas", "cny", "lebaran"] as const;
+type HeroTheme = (typeof HERO_THEMES)[number];
 
 /** Hero CTA — a text action on mobile; the configured filled treatment remains
  *  on desktop where the hero has more room for a prominent CTA. */
-function HeroCta({ label, icon, variant }: SlideCta) {
+function HeroCta({ label, icon, variant, tone = "default" }: SlideCta) {
+  const solitaire = tone === "solitaire";
   return (
     <div className="group/cta relative inline-flex items-start gap-3">
       <button
-        className={`relative flex h-10 items-center justify-center gap-1 px-0 text-sm font-semibold text-white underline-offset-4 transition-[color,transform] duration-200 hover:underline active:scale-95 xl:h-12 xl:gap-1 xl:rounded-full xl:border-transparent xl:px-6 xl:text-base xl:no-underline xl:duration-300 xl:active:scale-100 ${variant === "primary" ? "xl:bg-primary xl:hover:bg-primary-hover" : "xl:bg-black/50 xl:hover:bg-black/70"}`}
+        className={`relative flex h-10 items-center justify-center gap-1 px-0 text-sm font-semibold underline-offset-4 transition-[color,transform] duration-200 hover:underline active:scale-95 xl:h-12 xl:gap-1 xl:rounded-full xl:border-transparent xl:px-6 xl:text-base xl:no-underline xl:duration-300 xl:active:scale-100 ${solitaire ? "text-white xl:bg-white xl:text-pbrown-600 xl:hover:bg-neutral-100" : `text-white ${variant === "primary" ? "xl:bg-primary xl:hover:bg-primary-hover" : "xl:bg-black/50 xl:hover:bg-black/70"}`}`}
       >
-        <span className="px-0.5 text-sm font-semibold text-white xl:text-base">
+        <span className={`px-0.5 text-sm font-semibold ${solitaire ? "text-pbrown-600" : "text-white"} xl:text-base`}>
           {label}
         </span>
         <img
           src={icon}
           alt=""
-          className="size-5 brightness-0 invert"
+          className={`size-5 ${solitaire ? "brightness-0 invert xl:brightness-0 xl:invert-0" : "brightness-0 invert"}`}
         />
       </button>
     </div>
@@ -35,15 +43,18 @@ function HeroCta({ label, icon, variant }: SlideCta) {
 export default function HeroSection({
   slides = SLIDES,
   mobileStack,
+  desktopStack,
 }: {
   slides?: Slide[];
   mobileStack?: ReactNode;
+  desktopStack?: ReactNode;
 }) {
   const t = useTranslations("hero");
   const count = slides.length;
   const [activeSlide, setActiveSlide] = useState(0);
   const [paused, setPaused] = useState(false);
   const [hoveringActive, setHoveringActive] = useState(false);
+  const [theme, setTheme] = useLayoutVariant<HeroTheme>("promo-theme", "none", HERO_THEMES);
   const pausedRef = useRef(false);
   const progressLineRef = useRef<SVGLineElement>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
@@ -130,6 +141,33 @@ export default function HeroSection({
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
+      <LayoutSwitcher
+        label="Tema Hero"
+        value={theme}
+        onChange={setTheme}
+        visibilityClassName="block"
+        positionClassName="right-6 top-20 xl:right-[max(2.5rem,calc((100vw-1280px)/2))]"
+        menuAlign="right"
+        icon={
+          <svg viewBox="0 0 20 20" fill="none" className="size-[18px]">
+            <g stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M10 2.5v15M3.5 6.25l13 7.5M16.5 6.25l-13 7.5" />
+              <path d="M8 4.4 10 6.2l2-1.8M8 15.6l2-1.8 2 1.8" />
+            </g>
+          </svg>
+        }
+        options={[
+          { value: "none", name: "Mati", description: "Tanpa ornamen tematik." },
+          { value: "christmas", name: "Natal", description: "Salju, garland cemara berlampu hangat, dan pita merah (WebGL)." },
+          { value: "cny", name: "Imlek", description: "Kelopak mei hua, ranting berbunga, lampion, dan petasan (WebGL)." },
+          { value: "lebaran", name: "Lebaran", description: "Rumbai janur, ketupat dan lentera, bintang emas, dan bulan sabit (WebGL)." },
+        ]}
+      />
+
+      <div className="pointer-events-none absolute inset-0 z-10">
+        {theme === "christmas" ? <ChristmasDecor /> : theme === "cny" ? <CnyDecor /> : theme === "lebaran" ? <LebaranDecor /> : null}
+      </div>
+
       {/* The banner follows the responsive section height. */}
       <div
         ref={parallaxRef}
@@ -174,12 +212,19 @@ export default function HeroSection({
         }}
       />
 
-      <div className="absolute inset-x-4 bottom-8 xl:left-1/2 xl:right-auto xl:top-32 xl:bottom-auto xl:w-[1280px] xl:-translate-x-1/2">
+      <div className="absolute inset-x-4 bottom-10 z-20 xl:left-1/2 xl:right-auto xl:top-auto xl:bottom-10 xl:w-[1280px] xl:-translate-x-1/2">
         <div className="flex flex-col items-start gap-5 xl:gap-8">
           <div
             key={activeSlide}
             className="flex w-[280px] flex-col items-start gap-2 xl:w-[560px] xl:gap-6"
           >
+            {slides[activeSlide].brandMark ? (
+              <img
+                src={slides[activeSlide].brandMark.src}
+                alt={slides[activeSlide].brandMark.alt}
+                className="h-12 w-auto animate-hero-title object-contain"
+              />
+            ) : null}
             <h1 className="animate-hero-title max-w-[240px] text-2xl font-semibold leading-7 tracking-[-0.4px] text-white text-shadow-hero xl:line-clamp-2 xl:max-w-none xl:text-[clamp(36px,5svh,40px)] xl:leading-[clamp(44px,6svh,48px)] xl:tracking-[-0.8px] xl:text-shadow-none">
               {slides[activeSlide].title}
             </h1>
@@ -222,6 +267,12 @@ export default function HeroSection({
           {mobileStack ? (
             <div className="flex w-full flex-col gap-5 xl:hidden">
               {mobileStack}
+            </div>
+          ) : null}
+
+          {desktopStack ? (
+            <div className="hidden w-full flex-col gap-8 xl:flex">
+              {desktopStack}
             </div>
           ) : null}
         </div>

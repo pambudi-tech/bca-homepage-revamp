@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { onPreloaderDone } from "@/components/Preloader";
 import { Link } from "@/i18n/navigation";
 import type { MegaMenuContent } from "@/lib/megamenu";
 import { NAVBAR_VISIBILITY_EVENT } from "./Navbar";
@@ -31,15 +30,13 @@ export default function QuickActionRail({
   megamenuContent?: MegaMenuContent;
 }) {
   const tNav = useTranslations("nav");
-  const [ready, setReady] = useState(false);
+  const ready = true;
   const [tooltipSuppressed, setTooltipSuppressed] = useState(false);
   const [hoveredAction, setHoveredAction] = useState<string | null>(null);
   const [navbarHidden, setNavbarHidden] = useState(false);
   const [footerVisible, setFooterVisible] = useState(false);
   const [productMenuOpen, setProductMenuOpen] = useState(false);
   const closeProductMenu = useCallback(() => setProductMenuOpen(false), []);
-
-  useEffect(() => onPreloaderDone(() => setReady(true)), []);
 
   useEffect(() => {
     const onNavbarVisibility = (event: Event) => {

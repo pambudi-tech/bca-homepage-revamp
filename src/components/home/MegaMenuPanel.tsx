@@ -54,7 +54,7 @@ export default function MegaMenuPanel({
             className="size-full object-cover"
           />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[212px] bg-gradient-to-t from-black/50 to-transparent" />
-          <div className="absolute bottom-2 left-2 w-[240px] rounded-2xl border border-white/35 bg-black/30 px-5 py-4 backdrop-blur-[10px]">
+          <div className="absolute bottom-2 left-2 w-[240px] rounded-2xl bg-black/30 px-5 py-4 backdrop-blur-[10px]">
             <p className="text-subtitle text-white text-shadow-hero">{category.editorial.title}</p>
           </div>
         </div>

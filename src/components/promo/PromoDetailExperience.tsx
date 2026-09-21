@@ -78,13 +78,8 @@ export default function PromoDetailExperience({ promo, relatedPromos, otherPromo
               {t("backToPromos")}
             </Link>
             <div
-              className="hero-search absolute inset-x-0 bottom-0 flex flex-col items-start gap-3 px-4 pb-5 pt-4 text-white"
-              style={{
-                backgroundColor: "rgba(0,0,0,0.3)",
-                backdropFilter: "blur(16px) saturate(1.25)",
-                WebkitBackdropFilter: "blur(16px) saturate(1.25)",
-                isolation: "isolate",
-              }}
+              className="glass-panel absolute inset-x-0 bottom-0 flex flex-col items-start gap-3 px-4 pb-5 pt-4 text-white"
+              style={{ backgroundColor: "rgba(0,0,0,0.3)", backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)", isolation: "isolate" }}
             >
               <div className="flex items-center gap-3">
                 <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/30 bg-white shadow-card">
@@ -128,7 +123,7 @@ export default function PromoDetailExperience({ promo, relatedPromos, otherPromo
             <div data-lenis-prevent className="hide-scrollbar -mb-3 -mx-4 mt-1 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-pl-4 px-4 py-3 [scrollbar-width:none] xl:mx-0 xl:mt-4 xl:grid xl:grid-cols-3 xl:overflow-visible xl:px-0 xl:py-0">
               {relatedPromos.map((relatedPromo) => (
                 <div key={relatedPromo.id} className="w-[200px] shrink-0 snap-start xl:w-auto">
-                  <PromoCard promo={relatedPromo} now={now} reveal={false} compact />
+                  <PromoCard promo={relatedPromo} now={now} reveal={false} compact promoPage />
                 </div>
               ))}
             </div>
@@ -140,7 +135,7 @@ export default function PromoDetailExperience({ promo, relatedPromos, otherPromo
             <div className="mx-auto max-w-[1200px]">
               <h2 className="text-title text-blue-700">{t("otherTitle")}</h2>
               <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5">
-                {otherPromos.map((otherPromo) => <PromoCard key={otherPromo.id} promo={otherPromo} now={now} reveal={false} compact />)}
+                {otherPromos.map((otherPromo) => <PromoCard key={otherPromo.id} promo={otherPromo} now={now} reveal={false} compact promoPage />)}
               </div>
             </div>
           </section>

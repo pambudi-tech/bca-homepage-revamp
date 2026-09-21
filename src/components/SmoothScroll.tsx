@@ -12,9 +12,8 @@ let lockCount = 0;
 /**
  * Ref-counted page-scroll lock. Lenis has no notion of nested locks, so a bare
  * `lenis.start()` from one component silently cancels another component's
- * `stop()` — the preloader's lock used to be undone by the mobile menu's
- * effect on first mount. Acquire while you need scrolling frozen; the last
- * release is the only one that restarts Lenis.
+ * `stop()`. Acquire while you need scrolling frozen; the last release is the
+ * only one that restarts Lenis.
  */
 export function useScrollLock(locked: boolean) {
   const lenis = useLenis();

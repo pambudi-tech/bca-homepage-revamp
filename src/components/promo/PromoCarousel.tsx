@@ -14,6 +14,9 @@ export default function PromoCarousel({
   campaignAlt,
   bleed = true,
   compact = false,
+  loop = true,
+  variant = "default",
+  promoPage = false,
 }: {
   promos: Promo[];
   now: Date;
@@ -23,13 +26,17 @@ export default function PromoCarousel({
   bleed?: boolean;
   /** Match the denser two-column cards used by the Promo discovery grid. */
   compact?: boolean;
+  /** Keep the looping rail, or render only the provided items once. */
+  loop?: boolean;
+  variant?: "default" | "prioritas";
+  promoPage?: boolean;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const itemsCount = promos.length + (campaignCover ? 1 : 0);
 
   useEffect(() => {
     const container = scrollRef.current;
-    if (!container || itemsCount === 0) return;
+    if (!container || itemsCount === 0 || !loop) return;
 
     const cardAt = (slot: number) => container.children[slot] as HTMLElement | undefined;
     const start = cardAt(itemsCount);
@@ -77,10 +84,10 @@ export default function PromoCarousel({
       if (raf) cancelAnimationFrame(raf);
       clearTimeout(settle);
     };
-  }, [itemsCount]);
+  }, [itemsCount, loop]);
 
   if (itemsCount === 0) return null;
-  const slots = Array.from({ length: itemsCount * 3 }, (_, index) => index % itemsCount);
+  const slots = Array.from({ length: loop ? itemsCount * 3 : itemsCount }, (_, index) => loop ? index % itemsCount : index);
 
   return (
     <div ref={scrollRef} className={`hide-scrollbar -my-6 flex snap-x snap-mandatory items-start overflow-x-auto py-6 [scrollbar-width:none] ${bleed ? "-mx-4 px-4" : "px-8"}`}>
@@ -91,7 +98,7 @@ export default function PromoCarousel({
               <img src={campaignCover} alt={campaignAlt ?? ""} className="size-full object-cover" />
             </a>
           ) : (
-            <PromoCard promo={promos[item - (campaignCover ? 1 : 0)]} now={now} reveal={false} compact={compact} />
+            <PromoCard promo={promos[item - (campaignCover ? 1 : 0)]} now={now} reveal={false} compact={compact} variant={variant} promoPage={promoPage} />
           )}
         </div>
       ))}

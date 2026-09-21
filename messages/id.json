@@ -887,6 +887,14 @@
     }
   },
   "search": {
+    "segmentLabel": "Segment konten",
+    "segments": {
+      "Semua": "Semua",
+      "Individu": "Individu",
+      "Bisnis": "Bisnis",
+      "Prioritas": "Prioritas",
+      "Solitaire": "Solitaire"
+    },
     "recentSearches": "Pencarian Terakhir",
     "clearAll": "Hapus semua",
     "removeTerm": "Hapus {term}",
@@ -933,12 +941,6 @@
   },
   "common": {
     "learnMore": "Pelajari"
-  },
-  "preloader": {
-    "tagline": [
-      "Senantiasa",
-      "di Sisi Anda"
-    ]
   },
   "product": {
     "eyebrow": "Produk & Layanan",
@@ -1357,5 +1359,192 @@
       "captcha": "Verifikasi \"saya bukan robot\" wajib diselesaikan"
     },
     "close": "Tutup HaloBCA"
+  },
+  "prioritasHero": {
+    "title": "Perjalanan Hidup Anda adalah Prioritas Kami.",
+    "cta": "Pelajari Lebih Lanjut",
+    "bannerAlt": "Keluarga menikmati waktu bersama di ruang keluarga",
+    "prioritasLogoAlt": "BCA Prioritas",
+    "sectionNavLabel": "Navigasi halaman BCA Prioritas",
+    "sections": {
+      "privilege": "Privilege",
+      "eventPromo": "Event & Promo",
+      "bankingSolution": "Banking Solution",
+      "magazine": "e-Magazine",
+      "financialReport": "Laporan Finansial"
+    },
+    "privilege": {
+      "eyebrow": "Privilege",
+      "heading": "Beragam Akses Istimewa yang Hadir di Setiap Langkah Perjalanan Anda",
+      "cards": {
+        "lounge": { "title": "Akses ke Ratusan Airport Lounge Eksklusif di Seluruh Indonesia", "action": "Reservasi Sekarang", "alt": "Airport lounge eksklusif" },
+        "health": { "title": "Pemeriksaan Kesehatan Eksklusif di Rumah Sakit Premium Pilihan", "action": "Lihat RS Partner", "alt": "Kamar rumah sakit premium" },
+        "event": { "title": "Akses Prioritas ke Beragam Event Ternama", "action": "Lihat Semua Event", "alt": "Tempat duduk eksklusif di sebuah event" }
+      },
+      "viewMore": "Lihat Privilege Lainnya yang Anda Miliki"
+    },
+    "eventPromo": {
+      "eyebrow": "EVENT & PROMO",
+      "heading": "Penawaran dan Pengalaman Eksklusif Hanya untuk Anda",
+      "featuredTitles": {
+        "javaJazz": "Complimentary Ticket Java Jazz Festival untuk Nasabah Prioritas",
+        "theWeeknd": "Complimentary Ticket Konser The Weeknd untuk 3 Nasabah Tercepat",
+        "brightspot": "Dapatkan Tiket VIP Brightspot di Opening Night"
+      },
+      "featuredCta": "Selengkapnya",
+      "viewMore": "Lihat Semua Event & Promo"
+    },
+    "card": {
+      "eyebrow": "CARD",
+      "heading": "Satu Kartu untuk Ribuan Akses Eksklusif",
+      "description": "Tersedia hanya melalui undangan khusus. Hubungi Personal Banker Anda untuk informasi lebih lanjut.",
+      "action": "Pelajari Lebih Lanjut",
+      "imageAlt": "Kartu debit platinum BCA Prioritas"
+    },
+    "kartu": {
+      "eyebrow": "BANKING SOLUTION",
+      "heading": "Layanan Perbankan Khusus untuk Perjalanan Hidup Anda",
+      "label": "Banking Privilege",
+      "viewMore": "Lihat Semua",
+      "action": "Selengkapnya",
+      "cards": {
+        "branch": { "title": "Layanan khusus di Cabang BCA", "alt": "Layanan khusus di Cabang BCA" },
+        "vehicle": { "title": "Kredit Kendaraan Bermotor (KKB)", "alt": "Kredit kendaraan bermotor" },
+        "transaction": { "title": "Fitur & Layanan Transaksi Khusus", "alt": "Fitur dan layanan transaksi khusus" },
+        "credit": { "title": "Kartu Kredit BCA", "alt": "Kartu Kredit BCA" },
+        "home": { "title": "Kredit Pemilikan Rumah", "alt": "Kredit pemilikan rumah" },
+        "deposit": { "title": "Safe Deposit Box", "alt": "Safe Deposit Box" }
+      }
+    },
+    "bankingSolution": {
+      "eyebrow": "BANKING SOLUTION",
+      "heading": "Layanan Perbankan Khusus untuk Perjalanan Hidup Anda",
+      "bankingPrivilege": "Banking Privilege",
+      "wealthInsight": "Wealth Insight",
+      "kurs": "Kurs Hari Ini",
+      "viewMore": "Lihat Semua",
+      "action": "Selengkapnya",
+      "buy": "Beli",
+      "sell": "Jual",
+      "updatedAt": "Terakhir diperbarui pada 03 Juni 2026 12.47 WIB",
+      "cards": {
+        "branch": { "title": "Layanan khusus di Cabang BCA", "alt": "Layanan khusus di Cabang BCA" },
+        "vehicle": { "title": "Kredit Kendaraan Bermotor (KKB)", "alt": "Kredit kendaraan bermotor" },
+        "transaction": { "title": "Fitur & Layanan Transaksi Khusus", "alt": "Fitur dan layanan transaksi khusus" },
+        "credit": { "title": "Kartu Kredit BCA", "alt": "Kartu kredit BCA" },
+        "home": { "title": "Kredit Pemilikan Rumah", "alt": "Kredit pemilikan rumah" },
+        "deposit": { "title": "Safe Deposit Box", "alt": "Safe Deposit Box" }
+      },
+      "wealthCards": {
+        "houseView": {
+          "title": "House View Juni 2025 - Strategi Portofolio di Tengah Siklus Pemangkasan Rate",
+          "date": "Rabu, 16 Juni 2025 · 14.00 WIB",
+          "channel": "Live di YouTube",
+          "action": "Tambahkan ke Kalender",
+          "alt": "Acara House View BCA Prioritas"
+        },
+        "market": {
+          "title": "Weekly Market Overview Antara De-eskalasi dan Stagflasi: Pasar Global di Persimpangan, Indonesia Hadapi Tekanan Ganda",
+          "date": "2 Juni 2026",
+          "action": "Unduh Laporan",
+          "alt": "Weekly Market Overview BCA Prioritas"
+        }
+      }
+    },
+    "magazine": {
+      "eyebrow": "E-MAGAZINE",
+      "heading": "Hadir untuk Mereka yang Tidak Berhenti Bertumbuh",
+      "viewMore": "Lihat Semua",
+      "cards": {
+        "property": { "title": "Edisi 104-XXI/2025", "action": "Baca Sekarang", "alt": "Majalah Prioritas tentang industri properti Indonesia" },
+        "food": { "title": "Edisi 105-XXII/2026", "action": "Baca Sekarang", "alt": "Majalah Prioritas tentang industri makanan dan minuman" },
+        "chess": { "title": "Edisi 103-XX/2025", "action": "Baca Sekarang", "alt": "Majalah Prioritas tentang wirausaha muda" }
+      }
+    },
+    "financialReport": {
+      "eyebrow": "LAPORAN FINANSIAL",
+      "heading": "Gambaran Lengkap Portofolio Anda, dalam Satu Tampilan",
+      "features": {
+        "centralized": "Data terpusat dari seluruh produk BCA Anda",
+        "reporting": "Siap digunakan untuk beragam pelaporan",
+        "updated": "Selalu diperbarui setiap kali Anda mengakses"
+      },
+      "action": "Akses Laporan Anda"
+    }
+  },
+  "signaturePrivilege": {
+    "subNavLabel": "Navigasi Prioritas",
+    "subNav": { "privilege": "Privilege", "banking": "Banking Solution", "magazine": "e-Magazine" },
+    "breadcrumb": "Signature Privilege",
+    "title": "Beragam Akses Istimewa yang Hadir di Setiap Langkah Perjalanan Anda",
+    "tabLabel": "Kategori privilege",
+    "tabs": { "signature": "Signature Privilege", "lifestyle": "Lifestyle Privilege", "event": "Event", "promo": "Promo" },
+    "description": "Keistimewaan eksklusif berupa layanan dan manfaat khusus untuk berbagai kebutuhan Anda.",
+    "more": "Selengkapnya",
+    "signature": {
+      "lounge": { "title": "Executive Airport Lounge" },
+      "transfer": { "title": "Airport Transfer Domestik" },
+      "transferFee": { "title": "Bebas Biaya Transfer" },
+      "medical": { "title": "Medical Check Up International" }
+    },
+    "complimentary": {
+      "title": "Complimentary",
+      "subtitle": "Tayang terbatas, cukup tunjukkan kartu Prioritas Anda",
+      "birthday": "Birthday Gift",
+      "cards": {
+        "valet": { "title": "Complimentary Valet Parking", "brand": "Han Palace Restaurant" },
+        "inpatient": { "title": "Complimentary makanan untuk pendamping pasien rawat inap VVIP", "brand": "Altos Hospital" },
+        "facial": { "title": "Facial Snow White senilai Rp1,2 juta", "brand": "Dermatology Clinic" },
+        "laser": { "title": "Laser Pico Dermabrasion senilai Rp9,5 juta", "brand": "EternaMoore Clinic" },
+        "treatment": { "title": "Hand Treatment senilai Rp200 ribu", "brand": "Molton Brown" },
+        "restaurant": { "title": "Complimentary 1 Pax Americano / Cappuccino", "brand": "Social Spoon" },
+        "glow": { "title": "Red Carpet Glow Treatment", "brand": "Amala Clinic" },
+        "dessert": { "title": "Complimentary Dessert", "brand": "Greenleaf Steak & More" },
+        "jewelry": { "title": "Exclusive Jewelry Box senilai Rp500 ribu", "brand": "Semar Nusantara" }
+      }
+    },
+    "categories": { "all": "Semua", "beauty": "Kecantikan", "culinary": "Kuliner", "health": "Kesehatan", "lifestyle": "Gaya Hidup" },
+    "searchLabel": "Cari benefit",
+    "searchPlaceholder": "Cari nama brand/partner",
+    "showing": "Menampilkan {count} penawaran",
+    "empty": "Tidak ada penawaran yang sesuai.",
+    "paginationLabel": "Halaman benefit"
+  },
+  "lifestylePrivilegeDetail": {
+    "subNavLabel": "Navigasi Prioritas",
+    "subNav": { "privilege": "Privilege", "banking": "Banking Solution", "magazine": "e-Magazine" },
+    "breadcrumb": { "home": "Prioritas", "category": "Lifestyle Privilege", "current": "Kecantikan" },
+    "title": "Diskon Hand Treatment senilai Rp200 ribu",
+    "brand": "Molton Brown",
+    "detail": { "title": "Detail Privilege", "content": "Diskon Molton Brown Hand Treatment senilai Rp200 ribu." },
+    "terms": {
+      "title": "Syarat & Ketentuan",
+      "items": [
+        "Menunjukkan kartu fisik BCA Solitaire/Prioritas atau digital pada aplikasi myBCA/BCA mobile.",
+        "Melakukan pembayaran menggunakan Kartu BCA Solitaire/Prioritas, Kartu Kredit BCA, QRIS BCA mobile/myBCA.",
+        "RSVP H-1 melalui Customer Service Molton Brown di 0816 1807 088 (Whatsapp Chat).",
+        "Privilege tidak dapat diuangkan dan dipindahtangankan.",
+        "Berlaku di seluruh cabang Molton Brown."
+      ]
+    },
+    "contact": { "title": "Profil & Kontak", "content": "Hubungi Customer Service Molton Brown untuk informasi dan reservasi treatment." },
+    "location": { "title": "Lokasi", "content": "Berlaku di seluruh cabang Molton Brown." },
+    "recommendations": {
+      "title": "Rekomendasi Privilege Lainnya",
+      "viewMore": "Lihat Lebih Banyak",
+      "action": "Selengkapnya",
+      "cards": {
+        "sisley": { "title": "Rasakan Signature Facial Treatment Eksklusif, Nikmati Diskon hingga 20%", "brand": "Sisley Paris", "alt": "Produk perawatan Sisley Paris" },
+        "skii": { "title": "Red Carpet Glow Treatment (Rp1,8 juta) + Welcoming Massage + Light Extraction", "brand": "SK-II Boutique Spa", "alt": "Perawatan wajah SK-II Boutique Spa" },
+        "shiseido": { "title": "Rasakan Analisis Kulit Gratis dengan Ultimune Serum", "brand": "Shiseido", "alt": "Shiseido Ultimune Serum" }
+      }
+    }
+  },
+  "solitaireHero": {
+    "title": "Layanan Prestisius dan Personal, Hanya untuk Anda.",
+    "cta": "Pelajari Lebih Lanjut",
+    "viewMore": "Lihat Semua",
+    "bannerAlt": "Keluarga menikmati waktu bersama di ruang keluarga",
+    "solitaireLogoAlt": "BCA Solitaire"
   }
 }

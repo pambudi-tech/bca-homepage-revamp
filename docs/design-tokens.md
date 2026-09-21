@@ -20,6 +20,14 @@ no pre-existing Figma-synced ramp to preserve underneath them.
 
 ## Color
 
+The Prioritas palette uses the Figma project names `pgold-*` and `pbrown-*`.
+These are available as Tailwind color utilities for the Prioritas experience.
+
+| Token family | Values |
+|---|---|
+| `pgold-100` … `pgold-900` | `#FBF8F1`, `#F5EEDF`, `#E9D9B8`, `#D5BD91`, `#B29050`, `#98783F`, `#785D2F`, `#59451F`, `#3B2D16` |
+| `pbrown-100` … `pbrown-900` | `#F2E8E0`, `#DDC8B8`, `#AE9079`, `#885E3F`, `#67442A`, `#46290B`, `#351E08`, `#281706`, `#1C1004` |
+
 | Token | Value | For |
 |---|---|---|
 | `--color-primary` | `var(--color-blue-500)` (`#005caa`) | Primary fill — buttons, active states |
@@ -89,8 +97,8 @@ If one of them gains a second user, promote it then.
 
 | Token | Curve | Used for |
 |---|---|---|
-| `--ease-entrance` | `cubic-bezier(0.16, 1, 0.3, 1)` | Anything arriving — scroll reveals, hero entrance, mega-menu unfurl, HaloBCA panel, Soliprio card settle, preloader handoff |
-| `--ease-emphasis` | `cubic-bezier(0.65, 0, 0.35, 1)` | Travelling a fixed distance and stopping — preloader per-word rise, product photo swap |
+| `--ease-entrance` | `cubic-bezier(0.16, 1, 0.3, 1)` | Anything arriving — scroll reveals, hero entrance, mega-menu unfurl, HaloBCA panel, Soliprio card settle |
+| `--ease-emphasis` | `cubic-bezier(0.65, 0, 0.35, 1)` | Travelling a fixed distance and stopping — product photo swap |
 
 Tailwind's stock `ease-in` / `ease-out` / `ease-in-out` utilities are used
 as-is for everything else (closing/exiting motion mostly uses `ease-in`).

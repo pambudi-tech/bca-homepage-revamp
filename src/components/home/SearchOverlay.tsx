@@ -16,6 +16,8 @@ import {
   getRecentSearches,
   getSearchRecommendations,
   removeRecentSearch,
+  SEARCH_SEGMENTS,
+  type SearchSegment,
 } from "./search-data";
 
 /** `outline-close.svg` hardcodes its fill to BCA blue (for the white-card
@@ -68,6 +70,53 @@ function CloseIcon({ className }: { className?: string }) {
 const PANEL_TOP_OFFSET = 240;
 const PROMO_RECENT_SEARCH_KEY = "bca:promo-recent-searches";
 const PROMO_RECENT_SEARCH_MAX = 6;
+
+function SegmentPicker({
+  value,
+  onChange,
+  dark = false,
+}: {
+  value: SearchSegment;
+  onChange: (segment: SearchSegment) => void;
+  dark?: boolean;
+}) {
+  const tSearch = useTranslations("search");
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="relative shrink-0">
+      <button
+        type="button"
+        aria-label={tSearch("segmentLabel")}
+        aria-expanded={open}
+        onClick={() => setOpen((current) => !current)}
+        className={`flex h-[34px] w-[120px] items-center justify-between rounded-full border px-3 text-sm font-semibold transition-colors xl:h-10 ${open ? "border-cyan-500" : dark ? "border-white/20" : "border-neutral-300"} ${dark ? "bg-white/10 text-white hover:border-cyan-500 hover:bg-white/20" : "bg-white text-neutral-800 hover:border-cyan-500"}`}
+      >
+        <span className="truncate">{tSearch(`segments.${value}`)}</span>
+        <svg viewBox="0 0 20 20" fill="none" className="size-3.5 shrink-0" aria-hidden>
+          <path d="m5 7.5 5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      {open && (
+        <div className="absolute left-0 top-full z-30 mt-2 min-w-[142px] overflow-hidden rounded-xl border border-neutral-200 bg-white p-1 shadow-menu">
+          {SEARCH_SEGMENTS.map((segment) => (
+            <button
+              key={segment}
+              type="button"
+              onClick={() => {
+                onChange(segment);
+                setOpen(false);
+              }}
+              className={`block w-full rounded-lg px-3 py-2 text-left text-sm font-semibold transition-colors hover:bg-blue-100 ${segment === value ? "bg-blue-100 text-blue-500" : "text-neutral-800"}`}
+            >
+              {tSearch(`segments.${segment}`)}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function getPromoRecentSearches(): string[] {
   try {
@@ -199,11 +248,13 @@ export default function SearchOverlay({
   open,
   onClose,
   promoSearchItems,
+  initialSegment = "Semua",
 }: {
   open: boolean;
   onClose: () => void;
   /** Its presence makes this a Promo-data-only search. */
   promoSearchItems?: Promo[];
+  initialSegment?: SearchSegment;
 }) {
   const t = useTranslations("hero");
   const tNav = useTranslations("nav");
@@ -218,6 +269,7 @@ export default function SearchOverlay({
   const isDesktop = useIsDesktop();
 
   const [searchValue, setSearchValue] = useState("");
+  const [segment, setSegment] = useState<SearchSegment>(initialSegment);
   const [recent, setRecent] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
   const portalRef = useRef<HTMLDivElement>(null);
@@ -225,7 +277,7 @@ export default function SearchOverlay({
   const closeRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const recommendations = useMemo(() => getSearchRecommendations(searchValue), [searchValue]);
+  const recommendations = useMemo(() => getSearchRecommendations(searchValue, segment), [searchValue, segment]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- portals need a client-only mount gate
@@ -240,9 +292,10 @@ export default function SearchOverlay({
     if (!open) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- reads localStorage, unavailable during server render
     setSearchValue("");
+    setSegment(initialSegment);
     setRecent(isPromoSearch ? getPromoRecentSearches() : getRecentSearches());
     inputRef.current?.focus();
-  }, [isPromoSearch, open]);
+  }, [initialSegment, isPromoSearch, open]);
 
   useEffect(() => {
     if (!open) return;
@@ -343,12 +396,14 @@ export default function SearchOverlay({
 
       {!isDesktop ? (
         <div ref={contentRef} className="flex h-full w-full max-w-[440px] flex-col bg-neutral-100">
-          <header className="flex h-[calc(4rem+env(safe-area-inset-top))] shrink-0 items-center gap-2 px-4 pt-[env(safe-area-inset-top)]">
+          <header className="relative z-30 flex h-[calc(4rem+env(safe-area-inset-top))] shrink-0 items-center gap-2 px-4 pt-[env(safe-area-inset-top)]">
             <button type="button" onClick={onClose} aria-label={tSearch("close")} className="flex size-6 shrink-0 items-center justify-center">
               <img src="/assets/navbar/chevron-right-blue.svg" alt="" className="size-6 rotate-90" />
             </button>
-            <div className="relative h-10 min-w-0 flex-1 overflow-hidden rounded-full border border-cyan-500 bg-neutral-200 backdrop-blur-[28px]">
-              <img src="/assets/cycle1/outline-search-1.svg" alt="" className="absolute left-3 top-2 size-6" />
+            <div className="relative h-10 min-w-0 flex-1 overflow-visible rounded-full border border-cyan-500 bg-neutral-200 backdrop-blur-[28px]">
+              <div className="absolute left-0.5 top-0.5 z-20">
+                <SegmentPicker value={segment} onChange={setSegment} />
+              </div>
               <input
                 ref={inputRef}
                 type="text"
@@ -358,9 +413,9 @@ export default function SearchOverlay({
                 onKeyDown={(e) => {
                   if (e.key === "Enter") submitSearch(searchValue);
                 }}
-                className="relative z-10 h-full w-full bg-transparent pl-11 pr-3 text-base text-neutral-800 focus:outline-none"
+                className="relative z-10 h-full w-full bg-transparent pl-[132px] pr-3 text-base text-neutral-800 focus:outline-none"
               />
-              <SearchPlaceholderCarousel placeholders={placeholders} visible={!searchValue} live={open} lineHeight={40} className="inset-y-0 left-11 right-3 text-sm" />
+              <SearchPlaceholderCarousel placeholders={placeholders} visible={!searchValue} live={open} lineHeight={40} className="inset-y-0 left-[132px] right-3 text-sm" />
             </div>
           </header>
           <div className="min-h-0 flex-1">
@@ -392,6 +447,9 @@ export default function SearchOverlay({
               "--slb-gradient": "rgba(255,255,255,0.15)",
             } as CSSProperties}
           >
+            <div className="absolute left-2 top-2 z-20">
+              <SegmentPicker value={segment} onChange={setSegment} dark />
+            </div>
             <input
               ref={inputRef}
               type="text"
@@ -401,9 +459,9 @@ export default function SearchOverlay({
               onKeyDown={(e) => {
                 if (e.key === "Enter") submitSearch(searchValue);
               }}
-              className="relative z-10 h-full w-full bg-transparent pl-8 pr-[72px] text-base font-semibold text-white focus:outline-none"
+              className="relative z-10 h-full w-full bg-transparent pl-36 pr-[72px] text-base font-semibold text-white focus:outline-none"
             />
-            <SearchPlaceholderCarousel placeholders={placeholders} visible={!searchValue} live={open} className="inset-y-0 left-8 right-[72px] text-base" />
+            <SearchPlaceholderCarousel placeholders={placeholders} visible={!searchValue} live={open} className="inset-y-0 left-36 right-[72px] text-base" />
             <button type="button" aria-label={tNav("search")} onClick={() => submitSearch(searchValue)} className="absolute right-2 top-1/2 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white transition-transform hover:scale-105">
               <img src="/assets/cycle1/outline-search-1.svg" alt="" className="size-6" />
             </button>

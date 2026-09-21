@@ -37,7 +37,7 @@ export default function MobileNav({
    *  itself. See Navbar for why there is exactly one overlay instance. */
   searchOpen: boolean;
   onOpenSearch: () => void;
-  variant?: "default" | "about" | "promo";
+  variant?: "default" | "about" | "promo" | "prioritas" | "solitaire";
 }) {
   const t = useTranslations("mobileMenu");
   const tNav = useTranslations("nav");
@@ -52,9 +52,9 @@ export default function MobileNav({
     <>
     <nav
       aria-label={tNav("primary")}
-      className={`pre-nav fixed left-0 right-0 top-0 z-30 flex h-[calc(4rem+env(safe-area-inset-top))] items-center px-4 py-3 pt-[calc(0.75rem+env(safe-area-inset-top))] transition-[transform,translate,background-color] duration-300 xl:hidden ${variant === "promo" ? "gap-3" : "justify-between"} ${
+      className={`pre-nav fixed left-0 right-0 top-0 z-40 flex h-[calc(4rem+env(safe-area-inset-top))] items-center px-4 py-3 pt-[calc(0.75rem+env(safe-area-inset-top))] transition-[transform,translate,background-color] duration-300 xl:hidden ${variant === "promo" ? "gap-3" : "justify-between"} ${
         hidden && !menuOpen ? "-translate-y-full" : "translate-y-0"
-      } ${menuOpen ? "bg-[rgba(18,20,23,0.95)]" : scrolled ? "bg-blue-500" : "bg-transparent"}`}
+      } ${menuOpen ? "bg-[rgba(18,20,23,0.95)]" : scrolled ? (variant === "prioritas" ? "bg-pbrown-800" : variant === "solitaire" ? "bg-neutral-900" : "bg-blue-500") : "bg-transparent"}`}
     >
       <Link href="/" aria-label="BCA" className="inline-flex">
         <img
@@ -69,7 +69,7 @@ export default function MobileNav({
           onClick={onOpenSearch}
           aria-label={tNav("search")}
           aria-expanded={searchOpen}
-          className={`relative flex items-center justify-center rounded-full bg-[rgba(18,20,23,0.5)] transition-transform active:scale-95 ${variant === "promo" ? "h-10 min-w-0 flex-1 justify-start px-3" : "size-10"}`}
+          className={`relative flex items-center justify-center rounded-full border border-white/15 bg-[rgba(5,13,25,0.2)] backdrop-blur-[40px] transition-transform active:scale-95 ${variant === "promo" ? "h-10 min-w-0 flex-1 justify-start px-3" : "size-10"}`}
         >
           <img src="/assets/cycle1/outline-search.svg" alt="" className="size-6" />
           {variant === "promo" ? (
@@ -86,9 +86,9 @@ export default function MobileNav({
           onClick={() => setMenuOpen((v) => !v)}
           aria-label={menuOpen ? t("tutupMenu") : t("bukaMenu")}
           aria-expanded={menuOpen}
-          className={`flex items-center gap-2 rounded-full bg-[rgba(18,20,23,0.5)] transition-transform active:scale-95 ${variant === "promo" ? "size-10 justify-center" : "h-10 py-1 pl-1 pr-3"}`}
+          className={`flex items-center gap-2 rounded-full border border-white/15 bg-[rgba(5,13,25,0.2)] backdrop-blur-[40px] transition-transform active:scale-95 ${variant === "promo" ? "size-10 justify-center" : "h-10 py-1 pl-1 pr-3"}`}
         >
-          {variant !== "promo" ? <span className="flex h-8 w-24 items-center justify-center rounded-full bg-neutral-100 px-5 text-sm font-semibold text-blue-500">{tNav("segments.Individu")}</span> : null}
+          {variant !== "promo" ? <span className={`flex h-8 w-24 items-center justify-center rounded-full px-5 text-sm font-semibold ${variant === "prioritas" ? "bg-pgold-500 text-white" : variant === "solitaire" ? "bg-neutral-500 text-white" : "bg-neutral-100 text-blue-500"}`}>{variant === "prioritas" ? tNav("segments.Prioritas") : variant === "solitaire" ? tNav("segments.Solitaire") : tNav("segments.Individu")}</span> : null}
           <img src="/assets/cycle1/outline-menu.svg" alt="" className="size-6" />
         </button>
       </div>
