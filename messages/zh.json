@@ -976,6 +976,27 @@
       }
     }
   },
+  "prioritasAbout": {
+    "title": "关于我们",
+    "relatedTitle": "相关信息",
+    "introTitle": "BCA Solitaire 与 Prioritas",
+    "intro": "BCA Solitaire 与 Prioritas 为获邀的 BCA 客户提供尊贵的银行服务。",
+    "effectiveDate": "最新会员条款自 2025 年 11 月 10 日起生效。",
+    "solitaireHeading": "BCA Solitaire 会员资格",
+    "prioritasHeading": "BCA Prioritas 会员资格",
+    "invitation": "须获得 BCA 正式邀请（仅限受邀客户）。",
+    "solitairePortfolio": "过去 3 个月的存款（储蓄、往来账户和定期存款）及投资平均总资产须至少达到 50 亿印尼盾，其中储蓄和往来账户至少 5 亿印尼盾。",
+    "prioritasPortfolioIntro": "过去 3 个月的平均资产须满足以下任一条件：",
+    "prioritasPortfolioOptionOne": "存款（储蓄、往来账户和定期存款）及投资合计 10 亿印尼盾，其中储蓄和往来账户至少 2.5 亿印尼盾。",
+    "prioritasPortfolioOptionTwo": "储蓄和往来账户合计 5 亿印尼盾。"
+  },
+  "prioritasRiplay": {
+    "title": "产品与服务信息摘要",
+    "relatedTitle": "相关信息",
+    "solitaireTitle": "BCA Solitaire 一般 RIPLAY",
+    "prioritasTitle": "BCA Prioritas 一般 RIPLAY",
+    "safeDepositBoxTitle": "保险箱服务一般 RIPLAY"
+  },
   "footer": {
     "allSocialMedia": "查看BCA所有社交媒体",
     "mediaSocialHeading": "社交媒体",
@@ -1014,6 +1035,26 @@
         ]
       }
     },
+    "prioritasLinkColumns": {
+      "Perusahaan": {
+        "heading": "公司",
+        "links": ["关于我们", "联系我们", "查找分行", "RIPLAY"]
+      },
+      "Layanan": {
+        "heading": "服务",
+        "links": ["专属礼遇", "优先银行服务"]
+      },
+      "Wawasan": {
+        "heading": "资讯",
+        "links": ["电子杂志", "House View", "每周市场洞察"]
+      }
+    },
+    "prioritasBottomLinks": [
+      "SBDK",
+      "隐私政策",
+      "条款与条件",
+      "bca.co.id"
+    ],
     "bottomLinks": [
       "SBDK",
       "隐私政策",
@@ -1432,14 +1473,16 @@
     "paginationSummary": "第 {from}-{to} 项，共 {total} 项",
     "paginationPrevious": "上一页",
     "paginationNext": "下一页",
+    "paginationJumpBackward": "向后跳转 {count} 页",
+    "paginationJumpForward": "向前跳转 {count} 页",
     "eventDateExpired": "活动已结束",
     "eventDirectory": {
       "paginationLabel": "活动页面",
       "categories": { "lifestyle": "生活方式与运动", "networking": "研讨会与社交", "arts": "艺术与文化", "culinary": "餐饮与美食" },
-      "period": "所有时间",
-      "upcoming": "即将举办的活动",
-      "sort": "最新日期",
-      "oldest": "最早日期",
+      "period": "活动时间",
+      "all": "全部活动",
+      "upcoming": "即将举行",
+      "ended": "已结束",
       "showing": "显示 {count} 个活动",
       "empty": "没有符合条件的活动。"
     }
@@ -1498,6 +1541,7 @@
   },
   "lifestylePrivilegeDetail": {
     "subNavLabel": "Prioritas 导航",
+    "validUntil": "有效期",
     "subNav": { "privilege": "礼遇", "banking": "银行服务", "magazine": "电子杂志" },
     "breadcrumb": { "home": "Prioritas", "category": "生活礼遇", "current": "美容" },
     "title": "价值 20 万印尼盾的手部护理折扣",

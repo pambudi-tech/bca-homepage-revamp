@@ -1,5 +1,6 @@
 /** Keys into the `footer.linkColumns` translation namespace, in display order. */
 export const FOOTER_LINK_COLUMN_KEYS = ["Tentang BCA", "Layanan", "Wawasan"] as const;
+export const PRIORITAS_FOOTER_LINK_COLUMN_KEYS = ["Perusahaan", "Layanan", "Wawasan"] as const;
 
 export type SocialLink = {
   label: string;
@@ -24,8 +25,24 @@ export const FOOTER_LINK_HREFS: Record<(typeof FOOTER_LINK_COLUMN_KEYS)[number],
   Wawasan: [null, null, null, null],
 };
 
+export const PRIORITAS_FOOTER_LINK_HREFS: Record<(typeof PRIORITAS_FOOTER_LINK_COLUMN_KEYS)[number], (string | null)[]> = {
+  Perusahaan: [
+    "/prioritas/tentang-kami",
+    "https://prioritas.bca.co.id/en/Hubungi-Kami",
+    "https://prioritas.bca.co.id/en/Temukan-Kami",
+    "/prioritas/riplay",
+  ],
+  Layanan: ["/prioritas/privilege", "/prioritas/banking-solution"],
+  Wawasan: [
+    "/prioritas/e-magazine",
+    "/prioritas/banking-solution/wealth-insight",
+    "/prioritas/banking-solution/wealth-insight",
+  ],
+};
+
 export const BOTTOM_LINK_HREFS = [
   "https://www.bca.co.id/id/informasi/Suku-Bunga-Dasar-Kredit",
   "https://www.bca.co.id/id/informasi/Kebijakan",
   "https://www.bca.co.id/id/Syarat-dan-Ketentuan",
+  "https://www.bca.co.id/",
 ] as const;

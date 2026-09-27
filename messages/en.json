@@ -976,6 +976,27 @@
       }
     }
   },
+  "prioritasAbout": {
+    "title": "About Us",
+    "relatedTitle": "Related information",
+    "introTitle": "BCA Solitaire & Prioritas",
+    "intro": "BCA Solitaire & Prioritas offers prestigious banking services to selected BCA customers.",
+    "effectiveDate": "The latest membership terms and conditions are effective from 10 November 2025.",
+    "solitaireHeading": "BCA Solitaire Membership",
+    "prioritasHeading": "BCA Prioritas Membership",
+    "invitation": "Receive an official invitation from BCA (invitation only).",
+    "solitairePortfolio": "Maintain an average total portfolio of savings (savings, current accounts, and time deposits) and investments of at least IDR 5 billion over the past 3 months, including at least IDR 500 million in savings and current accounts.",
+    "prioritasPortfolioIntro": "Maintain one of the following minimum average portfolios over the past 3 months:",
+    "prioritasPortfolioOptionOne": "IDR 1 billion in deposits (savings, current accounts, and time deposits) and investments, including at least IDR 250 million in savings and current accounts.",
+    "prioritasPortfolioOptionTwo": "IDR 500 million in savings and current accounts."
+  },
+  "prioritasRiplay": {
+    "title": "Product and Service Information Summary",
+    "relatedTitle": "Related information",
+    "solitaireTitle": "General RIPLAY: BCA Solitaire",
+    "prioritasTitle": "General RIPLAY: BCA Prioritas",
+    "safeDepositBoxTitle": "General RIPLAY: Safe Deposit Box"
+  },
   "footer": {
     "allSocialMedia": "See all BCA social media",
     "mediaSocialHeading": "Social Media",
@@ -1014,6 +1035,26 @@
         ]
       }
     },
+    "prioritasLinkColumns": {
+      "Perusahaan": {
+        "heading": "Company",
+        "links": ["About Us", "Contact Us", "Find a Branch", "RIPLAY"]
+      },
+      "Layanan": {
+        "heading": "Services",
+        "links": ["Privilege", "Banking Privilege"]
+      },
+      "Wawasan": {
+        "heading": "Insights",
+        "links": ["e-Magazine", "House View", "Weekly Market Insight"]
+      }
+    },
+    "prioritasBottomLinks": [
+      "SBDK",
+      "Privacy Policy",
+      "Terms & Conditions",
+      "bca.co.id"
+    ],
     "bottomLinks": [
       "SBDK",
       "Privacy Policy",
@@ -1432,14 +1473,16 @@
     "paginationSummary": "Data {from}-{to} of {total}",
     "paginationPrevious": "Previous page",
     "paginationNext": "Next page",
+    "paginationJumpBackward": "Jump back {count} pages",
+    "paginationJumpForward": "Jump forward {count} pages",
     "eventDateExpired": "Event ended",
     "eventDirectory": {
       "paginationLabel": "Event pages",
       "categories": { "lifestyle": "Lifestyle & Sports", "networking": "Seminar & Networking", "arts": "Arts & Culture", "culinary": "Culinary & Dining" },
-      "period": "All Time",
-      "upcoming": "Upcoming Events",
-      "sort": "Newest Date",
-      "oldest": "Oldest Date",
+      "period": "Event Time",
+      "all": "All Events",
+      "upcoming": "Upcoming",
+      "ended": "Past Events",
       "showing": "Showing {count} events",
       "empty": "No matching events."
     }
@@ -1498,6 +1541,7 @@
   },
   "lifestylePrivilegeDetail": {
     "subNavLabel": "Prioritas navigation",
+    "validUntil": "Validity period",
     "subNav": { "privilege": "Privilege", "banking": "Banking Solution", "magazine": "e-Magazine" },
     "breadcrumb": { "home": "Prioritas", "category": "Lifestyle Privilege", "current": "Beauty" },
     "title": "Hand Treatment Discount Valued at Rp200 Thousand",

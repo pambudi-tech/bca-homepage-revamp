@@ -12,8 +12,26 @@ const DIRECTORY_GRID_CLASS = "relative z-0 mt-5 grid md:grid-cols-3";
 
 type PaginationItem = number | "start-ellipsis" | "end-ellipsis";
 
-function getPaginationItems(current: number, total: number): PaginationItem[] {
-  if (total <= 7) return Array.from({ length: total }, (_, index) => index + 1);
+function getPaginationItems(current: number, total: number, maxItems: number): PaginationItem[] {
+  if (total <= maxItems) return Array.from({ length: total }, (_, index) => index + 1);
+  if (maxItems < 5) {
+    const start = Math.max(1, Math.min(current - Math.floor(maxItems / 2), total - maxItems + 1));
+    return Array.from({ length: maxItems }, (_, index) => start + index);
+  }
+  if (maxItems < 8) {
+    if (current <= 3) {
+      const visiblePages = maxItems - 2;
+      return [...Array.from({ length: visiblePages }, (_, index) => index + 1), "end-ellipsis", total];
+    }
+    if (current >= total - 2) {
+      const visiblePages = maxItems - 2;
+      return [1, "start-ellipsis", ...Array.from({ length: visiblePages }, (_, index) => total - visiblePages + index + 1)];
+    }
+
+    const visibleCurrentPages = maxItems - 4;
+    const start = current - Math.floor((visibleCurrentPages - 1) / 2);
+    return [1, "start-ellipsis", ...Array.from({ length: visibleCurrentPages }, (_, index) => start + index), "end-ellipsis", total];
+  }
   if (current <= 4) return [1, 2, 3, 4, 5, 6, "end-ellipsis", total];
   if (current >= total - 3) return [1, "start-ellipsis", ...Array.from({ length: 6 }, (_, index) => total - 5 + index)];
   return [1, "start-ellipsis", current - 1, current, current + 1, "end-ellipsis", total];
@@ -93,15 +111,34 @@ function PrioritasDirectoryPagination({ page, total, pageSize, onPageChange, lab
 }) {
   const t = useTranslations("signaturePrivilege");
   const pageCount = Math.max(1, Math.ceil(total / pageSize));
+  const paginationRef = useRef<HTMLDivElement>(null);
+  const [maxPageItems, setMaxPageItems] = useState(6);
   const from = total === 0 ? 0 : (page - 1) * pageSize + 1;
   const to = Math.min(page * pageSize, total);
 
+  useEffect(() => {
+    const pagination = paginationRef.current;
+    if (!pagination) return;
+
+    const update = () => {
+      // Keep the 48px navigation arrows and 40px page controls intact. Each
+      // page item plus its 8px gap uses 48px; the arrows and outer gaps use 112px.
+      const availablePageWidth = pagination.clientWidth - 112;
+      setMaxPageItems(Math.max(1, Math.floor((availablePageWidth + 8) / 48)));
+    };
+
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(pagination);
+    return () => observer.disconnect();
+  }, []);
+
   return <nav aria-label={label ?? t("paginationLabel")} className={placement === "top" ? "mx-auto flex w-fit items-center justify-center gap-3 xl:mx-0 xl:w-full xl:justify-between" : "mt-6 -mx-4 flex flex-col items-start xl:mx-0 xl:h-24 xl:flex-row xl:items-center xl:justify-between xl:gap-0"}>
     <p className="hidden text-sm font-semibold text-neutral-600 xl:block">{t("paginationSummary", { from, to, total })}</p>
-    <div className={`flex items-center justify-center gap-2 ${placement === "top" ? "w-fit xl:ml-auto" : "w-full xl:w-auto xl:self-auto xl:justify-start"}`}>
-      <button type="button" disabled={page === 1} onClick={() => onPageChange(page - 1)} className="flex size-12 items-center justify-center rounded-full bg-white text-pbrown-200 transition-colors hover:bg-pgold-100 disabled:opacity-40" aria-label={t("paginationPrevious")}><span aria-hidden className="size-5 rotate-180 bg-pgold-500 [mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]" /></button>
-      {getPaginationItems(page, pageCount).map((item) => typeof item === "number" ? <button key={item} type="button" onClick={() => onPageChange(item)} aria-current={item === page ? "page" : undefined} className={`flex size-10 items-center justify-center rounded-lg border text-sm font-semibold transition-colors ${item === page ? "border-pgold-500 bg-pgold-200 text-pbrown-600" : "border-neutral-300 bg-white text-neutral-800 hover:border-pgold-500"}`}>{item}</button> : <span key={item} aria-hidden className="flex size-10 items-center justify-center rounded-full bg-neutral-200 text-sm font-semibold text-neutral-600">•••</span>)}
-      <button type="button" disabled={page === pageCount} onClick={() => onPageChange(page + 1)} className="flex size-12 items-center justify-center rounded-full bg-white text-pbrown-200 transition-colors hover:bg-pgold-100 disabled:opacity-40" aria-label={t("paginationNext")}><span aria-hidden className="size-5 bg-pgold-500 [mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]" /></button>
+    <div ref={paginationRef} className={`flex min-w-0 items-center justify-center gap-2 ${placement === "top" ? "w-fit xl:ml-auto" : "w-full xl:w-auto xl:self-auto xl:justify-start"}`}>
+      <button type="button" disabled={page === 1} onClick={() => onPageChange(page - 1)} className="flex size-12 shrink-0 items-center justify-center rounded-full bg-white text-pbrown-200 transition-colors hover:bg-pgold-100 disabled:opacity-40" aria-label={t("paginationPrevious")}><span aria-hidden className="size-5 rotate-180 bg-pgold-500 [mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]" /></button>
+      {getPaginationItems(page, pageCount, maxPageItems).map((item) => typeof item === "number" ? <button key={item} type="button" onClick={() => onPageChange(item)} aria-current={item === page ? "page" : undefined} className={`flex size-10 shrink-0 items-center justify-center rounded-lg border text-sm font-semibold transition-colors ${item === page ? "border-pgold-500 bg-pgold-200 text-pbrown-600" : "border-neutral-300 bg-white text-neutral-800 hover:border-pgold-500"}`}>{item}</button> : <button key={item} type="button" onClick={() => onPageChange(Math.max(1, Math.min(pageCount, page + (item === "start-ellipsis" ? -5 : 5))))} aria-label={t(item === "start-ellipsis" ? "paginationJumpBackward" : "paginationJumpForward", { count: 5 })} className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-neutral-100 text-sm font-semibold text-neutral-600 transition-colors hover:bg-neutral-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pgold-500">•••</button>)}
+      <button type="button" disabled={page === pageCount} onClick={() => onPageChange(page + 1)} className="flex size-12 shrink-0 items-center justify-center rounded-full bg-white text-pbrown-200 transition-colors hover:bg-pgold-100 disabled:opacity-40" aria-label={t("paginationNext")}><span aria-hidden className="size-5 bg-pgold-500 [mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]" /></button>
     </div>
   </nav>;
 }

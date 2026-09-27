@@ -1102,6 +1102,27 @@
       }
     }
   },
+  "prioritasAbout": {
+    "title": "Tentang Kami",
+    "relatedTitle": "Informasi terkait",
+    "introTitle": "BCA Solitaire & Prioritas",
+    "intro": "BCA Solitaire & Prioritas hadir sebagai layanan perbankan prestisius bagi para nasabah BCA terpilih.",
+    "effectiveDate": "Syarat dan ketentuan keanggotaan terbaru berlaku mulai 10 November 2025.",
+    "solitaireHeading": "Keanggotaan BCA Solitaire",
+    "prioritasHeading": "Keanggotaan BCA Prioritas",
+    "invitation": "Mendapatkan undangan resmi dari BCA (invitation only).",
+    "solitairePortfolio": "Memiliki minimal total rata-rata portofolio simpanan (tabungan, giro, dan deposito) serta investasi selama 3 bulan terakhir senilai Rp5 miliar, dengan komposisi tabungan dan giro sebesar Rp500 juta.",
+    "prioritasPortfolioIntro": "Memiliki minimal total rata-rata portofolio dalam 3 bulan terakhir berupa salah satu pilihan berikut:",
+    "prioritasPortfolioOptionOne": "Simpanan (tabungan, giro, dan deposito) serta investasi sebesar Rp1 miliar, dengan komposisi tabungan dan giro sebesar Rp250 juta.",
+    "prioritasPortfolioOptionTwo": "Tabungan dan giro sebesar Rp500 juta."
+  },
+  "prioritasRiplay": {
+    "title": "Ringkasan Informasi Produk dan Layanan",
+    "relatedTitle": "Informasi terkait",
+    "solitaireTitle": "RIPLAY Umum BCA Solitaire",
+    "prioritasTitle": "RIPLAY Umum BCA Prioritas",
+    "safeDepositBoxTitle": "RIPLAY Umum Safe Deposit Box"
+  },
   "footer": {
     "allSocialMedia": "Lihat semua media sosial BCA",
     "mediaSocialHeading": "Media Sosial",
@@ -1140,6 +1161,26 @@
         ]
       }
     },
+    "prioritasLinkColumns": {
+      "Perusahaan": {
+        "heading": "Perusahaan",
+        "links": ["Tentang Kami", "Hubungi Kami", "Temukan Cabang", "RIPLAY"]
+      },
+      "Layanan": {
+        "heading": "Layanan",
+        "links": ["Privilege", "Banking Privilege"]
+      },
+      "Wawasan": {
+        "heading": "Wawasan",
+        "links": ["e-Magazine", "House View", "Weekly Market Insight"]
+      }
+    },
+    "prioritasBottomLinks": [
+      "SBDK",
+      "Kebijakan Privasi",
+      "Syarat & Ketentuan",
+      "bca.co.id"
+    ],
     "bottomLinks": [
       "SBDK",
       "Kebijakan Privasi",
@@ -1558,14 +1599,16 @@
     "paginationSummary": "Data {from}-{to} dari {total}",
     "paginationPrevious": "Halaman sebelumnya",
     "paginationNext": "Halaman berikutnya",
+    "paginationJumpBackward": "Lompat mundur {count} halaman",
+    "paginationJumpForward": "Lompat maju {count} halaman",
     "eventDateExpired": "Event berakhir",
     "eventDirectory": {
       "paginationLabel": "Halaman event",
       "categories": { "lifestyle": "Gaya Hidup & Olahraga", "networking": "Seminar & Networking", "arts": "Seni & Budaya", "culinary": "Kuliner & Dining" },
-      "period": "Semua Waktu",
-      "upcoming": "Event Mendatang",
-      "sort": "Tanggal Terbaru",
-      "oldest": "Tanggal Terlama",
+      "period": "Waktu Event",
+      "all": "Semua Event",
+      "upcoming": "Akan Datang",
+      "ended": "Sudah Berakhir",
       "showing": "Menampilkan {count} event",
       "empty": "Tidak ada event yang sesuai."
     }
@@ -1624,6 +1667,7 @@
   },
   "lifestylePrivilegeDetail": {
     "subNavLabel": "Navigasi Prioritas",
+    "validUntil": "Masa berlaku",
     "subNav": { "privilege": "Privilege", "banking": "Banking Solution", "magazine": "e-Magazine" },
     "breadcrumb": { "home": "Prioritas", "category": "Lifestyle Privilege", "current": "Kecantikan" },
     "title": "Diskon Hand Treatment senilai Rp200 ribu",

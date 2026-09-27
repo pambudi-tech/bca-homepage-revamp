@@ -1,6 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import SignaturePrivilegeExperience from "@/components/prioritas/SignaturePrivilegeExperience";
-import { getPromos } from "@/lib/promos";
+import { getPrivilegePromos } from "@/lib/partner-privileges";
 
 export default async function LifestylePrivilegePage({
   params,
@@ -13,7 +13,7 @@ export default async function LifestylePrivilegePage({
   const { category } = await searchParams;
   setRequestLocale(locale);
   const now = new Date();
-  const promos = await getPromos(now);
+  const promos = getPrivilegePromos("lifestyle");
   const initialCategories = Array.isArray(category) ? category : category ? [category] : [];
 
   return (

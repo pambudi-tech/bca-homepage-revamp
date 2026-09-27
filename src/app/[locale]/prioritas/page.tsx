@@ -13,7 +13,7 @@ import BankingSolutionSection from "@/components/prioritas/BankingSolutionSectio
 import MagazineSection from "@/components/prioritas/MagazineSection";
 import FinancialReportSection from "@/components/prioritas/FinancialReportSection";
 import PrioritasContactSection from "@/components/prioritas/PrioritasContactSection";
-import { getPromos } from "@/lib/promos";
+import { getPrioritasSourceEvents } from "@/lib/prioritas-source-data";
 import { formatKursUpdatedAt, getKursHariIni } from "@/lib/kurs";
 
 const HERO_IMAGE = "/assets/prioritas/hero-banner.webp";
@@ -28,7 +28,10 @@ export default async function PrioritasPage({
   setRequestLocale(locale);
   const t = await getTranslations("prioritasHero");
   const now = new Date();
-  const [promos, kurs] = await Promise.all([getPromos(now), getKursHariIni()]);
+  const kurs = await getKursHariIni();
+  const allEvents = getPrioritasSourceEvents(now);
+  const upcomingEvents = allEvents.filter((event) => event.endAt >= now).toSorted((a, b) => a.startAt.getTime() - b.startAt.getTime());
+  const events = upcomingEvents.length ? upcomingEvents : allEvents.toSorted((a, b) => b.startAt.getTime() - a.startAt.getTime());
   const kursUpdatedAt = kurs[0]?.updatedAt ?? 0;
 
   const sectionAnchors: SectionAnchorItem[] = [
@@ -79,7 +82,7 @@ export default async function PrioritasPage({
         }}
       />
       <EventPromoSection
-        promos={promos}
+        promos={events}
         now={now}
         copy={{
           eyebrow: t("eventPromo.eyebrow"),

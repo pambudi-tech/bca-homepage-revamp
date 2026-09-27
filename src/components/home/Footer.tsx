@@ -2,19 +2,23 @@
 
 import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import {
   ALL_SOCIAL_MEDIA_LINK,
   BOTTOM_LINK_HREFS,
   FOOTER_LINK_COLUMN_KEYS,
   FOOTER_LINK_HREFS,
+  PRIORITAS_FOOTER_LINK_COLUMN_KEYS,
+  PRIORITAS_FOOTER_LINK_HREFS,
   SOCIAL_LINKS,
 } from "./footer-data";
 import { useLenis } from "@/components/SmoothScroll";
 
 type FooterColumn = {
-  key: (typeof FOOTER_LINK_COLUMN_KEYS)[number];
+  key: string;
   heading: string;
   links: string[];
+  hrefs: (string | null)[];
 };
 
 function ContactRow({ icon, label, iconSizeClassName = "size-5" }: { icon: string; label: string; iconSizeClassName?: string }) {
@@ -30,8 +34,11 @@ function FooterLinks({ column, align = "start" }: { column: FooterColumn; align?
   return (
     <div className={`flex flex-col gap-4 ${align === "end" ? "items-end gap-6" : "items-start"}`}>
       {column.links.map((link, index) => {
-        const href = FOOTER_LINK_HREFS[column.key][index];
+        const href = column.hrefs[index];
         const className = `text-sm text-white/70 transition-colors hover:text-white ${align === "end" ? "text-right" : "text-left"}`;
+        if (href?.startsWith("/")) {
+          return <Link key={link} href={href} className={className}>{link}</Link>;
+        }
         return href ? (
           <a key={link} href={href} target="_blank" rel="noopener noreferrer" className={className}>
             {link}
@@ -57,11 +64,16 @@ export default function Footer({ variant = "default" }: { variant?: "default" | 
   const parallaxRef = useRef<HTMLDivElement>(null);
   const lenis = useLenis();
   const copyright = t("copyright");
-  const bottomLinks = t.raw("bottomLinks") as string[];
-  const linkColumns = FOOTER_LINK_COLUMN_KEYS.map((key) => {
-    const column = t.raw(`linkColumns.${key}`) as { heading: string; links: string[] };
-    return { key, ...column };
-  });
+  const bottomLinks = t.raw(variant === "prioritas" ? "prioritasBottomLinks" : "bottomLinks") as string[];
+  const linkColumns: FooterColumn[] = variant === "prioritas"
+    ? PRIORITAS_FOOTER_LINK_COLUMN_KEYS.map((key) => {
+        const column = t.raw(`prioritasLinkColumns.${key}`) as { heading: string; links: string[] };
+        return { key, ...column, hrefs: PRIORITAS_FOOTER_LINK_HREFS[key] };
+      })
+    : FOOTER_LINK_COLUMN_KEYS.map((key) => {
+        const column = t.raw(`linkColumns.${key}`) as { heading: string; links: string[] };
+        return { key, ...column, hrefs: FOOTER_LINK_HREFS[key] };
+      });
 
   useEffect(() => {
     if (!lenis) return;

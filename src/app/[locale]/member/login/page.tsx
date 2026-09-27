@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import MemberLoginExperience from "@/components/member/MemberLoginExperience";
+import magazineIssues from "@/components/prioritas/magazine-issues.json";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("memberLogin");
@@ -10,10 +11,13 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function MemberLoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ from?: string }>;
+  searchParams: Promise<{ from?: string; magazine?: string }>;
 }) {
-  const { from } = await searchParams;
+  const { from, magazine: requestedMagazine } = await searchParams;
   const brand = from === "solitaire" ? "solitaire" : "prioritas";
+  const magazineSlug = magazineIssues.some((issue) => issue.slug === requestedMagazine)
+    ? requestedMagazine
+    : undefined;
 
-  return <MemberLoginExperience brand={brand} />;
+  return <MemberLoginExperience brand={brand} magazineSlug={magazineSlug} />;
 }

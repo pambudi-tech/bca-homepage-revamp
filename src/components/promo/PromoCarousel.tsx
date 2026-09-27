@@ -19,6 +19,7 @@ export default function PromoCarousel({
   promoPage = false,
   detail = false,
   detailHrefBase,
+  partnerPrivilege = false,
   showEventDate = false,
 }: {
   promos: Promo[];
@@ -35,6 +36,7 @@ export default function PromoCarousel({
   promoPage?: boolean;
   detail?: boolean;
   detailHrefBase?: string;
+  partnerPrivilege?: boolean;
   showEventDate?: boolean;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -112,6 +114,7 @@ export default function PromoCarousel({
               variant={variant}
               promoPage={promoPage}
               detail={detail}
+              partnerPrivilege={partnerPrivilege}
               detailHref={detailHrefBase ? `${detailHrefBase}/${promos[item - (campaignCover ? 1 : 0)].id}` : undefined}
               eventDate={showEventDate ? (promos[item - (campaignCover ? 1 : 0)] as Promo & { dateTile?: React.ComponentProps<typeof PromoCard>["eventDate"] }).dateTile : undefined}
             />

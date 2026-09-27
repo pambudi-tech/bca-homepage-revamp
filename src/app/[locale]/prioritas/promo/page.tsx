@@ -1,7 +1,6 @@
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import SignaturePrivilegeExperience from "@/components/prioritas/SignaturePrivilegeExperience";
-import { buildPrioritasPromoSamples } from "@/components/prioritas/prioritas-promo-data";
-import { getPromos } from "@/lib/promos";
+import { getPrioritasSourcePromos } from "@/lib/prioritas-source-data";
 
 export default async function PrioritasPromoPage({ params, searchParams }: {
   params: Promise<{ locale: string }>;
@@ -10,20 +9,13 @@ export default async function PrioritasPromoPage({ params, searchParams }: {
   const { locale } = await params;
   const { category } = await searchParams;
   setRequestLocale(locale);
-  const t = await getTranslations("prioritasContentDetail");
   const now = new Date();
-  const promos = await getPromos(now);
-  const samples = buildPrioritasPromoSamples({
-    porsche: { title: t("promo.samples.porsche.title"), brand: t("promo.samples.porsche.brand") },
-    mercedes: { title: t("promo.samples.mercedes.title"), brand: t("promo.samples.mercedes.brand") },
-    landRover: { title: t("promo.samples.landRover.title"), brand: t("promo.samples.landRover.brand") },
-    audi: { title: t("promo.samples.audi.title"), brand: t("promo.samples.audi.brand") },
-  });
+  const promos = getPrioritasSourcePromos();
   const initialCategories = Array.isArray(category) ? category : category ? [category] : [];
 
   return (
     <SignaturePrivilegeExperience
-      promos={[...samples, ...promos]}
+      promos={promos}
       now={now}
       directoryOnly
       activeTab="promo"

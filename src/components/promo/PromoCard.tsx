@@ -21,6 +21,7 @@ export default function PromoCard({
   detail = false,
   eventDate,
   detailHref,
+  partnerPrivilege = false,
 }: {
   promo: Promo;
   now: Date;
@@ -39,8 +40,10 @@ export default function PromoCard({
     expiredLabel?: string;
   };
   detailHref?: string;
+  partnerPrivilege?: boolean;
 }) {
   const t = useTranslations("promo");
+  const privilegeT = useTranslations("signaturePrivilege");
   const badge = getPromoBadge(promo, now);
   const ts = getPromoTimestamp(promo, now, badge);
   const timestamp = t(`timestamp.${ts.kind}`, {
@@ -49,6 +52,8 @@ export default function PromoCard({
   });
   const prioritasCompact = variant === "prioritas" && compact;
   const detailTone = variant === "prioritas" && detail;
+  const brandFallback = promo.brand.split(/\s+/).slice(0, 2).join(" ");
+  const darkLogoBackground = "partnerLogoBackground" in promo && promo.partnerLogoBackground === "dark";
 
   return (
     <Link
@@ -59,7 +64,7 @@ export default function PromoCard({
     >
       <div className={`absolute inset-0 flex flex-col items-start overflow-clip rounded-3xl border transition-colors duration-300 ${detailTone ? "border-neutral-300 bg-neutral-100 group-hover:border-pgold-600" : variant === "prioritas" ? "border-pbrown-500 bg-pbrown-500 group-hover:border-pgold-500" : "border-neutral-300 bg-white group-hover:border-cyan-500"}`}>
         <div className={`relative w-full shrink-0 overflow-clip ${prioritasCompact ? "h-20" : compact ? "h-24" : "h-40"}`}>
-          <img loading="lazy" decoding="async" src={promo.cover} alt="" className="absolute inset-0 size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105" />
+          {promo.cover ? <img loading="lazy" decoding="async" src={promo.cover} alt="" className="absolute inset-0 size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105" /> : <div aria-hidden className="absolute inset-0 bg-pgold-200" />}
           {eventDate ? <PrioritasEventDateTile date={eventDate} /> : null}
           <div aria-hidden className={`absolute inset-x-0 bottom-0 h-[120px] bg-gradient-to-b from-transparent ${variant === "prioritas" ? "to-pgold-500" : "to-blue-500"} opacity-0 transition-opacity duration-300 group-hover:opacity-100`} />
           <svg viewBox="0 0 24 24" fill="none" className="absolute bottom-2 right-4 size-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -76,7 +81,7 @@ export default function PromoCard({
           <div className={`absolute flex items-center gap-1.5 ${prioritasCompact ? "bottom-3 left-3" : compact ? "bottom-3 left-3" : "bottom-5 left-5 gap-2"}`}>
             {(variant !== "prioritas" || promoPage) && <img loading="lazy" decoding="async" src="/assets/promo/icon-clock.svg" alt="" className={`${compact ? "size-4" : "size-5"} shrink-0`} />}
             <span className={`whitespace-nowrap font-semibold ${promoPage ? "text-neutral-700" : detailTone ? "text-pgold-600" : variant === "prioritas" ? "text-pgold-300" : "text-neutral-700"} ${promoPage ? "text-sm leading-5" : detailTone ? "text-sm leading-5 xl:text-base xl:leading-6" : compact ? "text-[11px] leading-4" : "text-sm leading-5"}`}>
-              {variant === "prioritas" && !promoPage ? "Selengkapnya" : timestamp}
+              {variant === "prioritas" && !promoPage ? privilegeT("more") : timestamp}
             </span>
             {detailTone && !promoPage ? <img src="/assets/prioritas/detail/molton-brown/arrow-right.svg" alt="" aria-hidden="true" className="size-5 shrink-0" /> : variant === "prioritas" && !promoPage ? <img src="/assets/prioritas/privilege/arrow-small.svg" alt="" aria-hidden="true" className="size-5 shrink-0" /> : null}
           </div>
@@ -85,11 +90,11 @@ export default function PromoCard({
 
       <div aria-hidden className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ boxShadow: "var(--shadow-card)" }} />
 
-      <div className={`absolute overflow-clip rounded-xl border border-neutral-300 bg-white shadow-card ${prioritasCompact ? "left-3 top-[56px] size-12" : compact ? "left-3 top-[72px] size-12" : "left-5 top-[124px] size-[72px]"}`}>
-        <img loading="lazy" decoding="async" src={promo.logo} alt="" className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded object-cover ${compact ? "size-9" : "size-14"}`} />
+      <div className={`absolute overflow-clip rounded-xl border border-neutral-300 shadow-card ${darkLogoBackground ? "bg-pbrown-500" : "bg-white"} ${prioritasCompact ? "left-3 top-[56px] size-12" : compact ? "left-3 top-[72px] size-12" : "left-5 top-[124px] size-[72px]"}`}>
+        {promo.logo ? <img loading="lazy" decoding="async" src={promo.logo} alt="" className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded object-contain ${compact ? "size-9" : "size-14"}`} /> : <span aria-hidden className="absolute inset-1 flex items-center justify-center text-center text-xs font-semibold leading-tight text-pbrown-700"><span className="line-clamp-3 break-words">{brandFallback}</span></span>}
       </div>
 
-      {!eventDate && badge.key !== "default" && <PromoRibbon badgeKey={badge.key} label={t(`badge.${badge.key}`)} />}
+      {!partnerPrivilege && !eventDate && badge.key !== "default" && <PromoRibbon badgeKey={badge.key} label={t(`badge.${badge.key}`)} />}
     </Link>
   );
 }

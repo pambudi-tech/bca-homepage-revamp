@@ -24,7 +24,7 @@ export default function TextField({
 }: {
   label: string;
   hideLabel?: boolean;
-  fieldSize?: "default" | "large";
+  fieldSize?: "default" | "medium" | "large";
   error?: string;
   as?: "input" | "select";
   options?: string[];
@@ -36,7 +36,7 @@ export default function TextField({
   const id = useId();
   const errorId = `${id}-error`;
   const box = [
-    `${fieldSize === "large" ? "h-14 text-base leading-6" : "h-12 text-sm leading-5"} w-full rounded-xl border bg-neutral-200 px-3.5 text-neutral-700`,
+    `${fieldSize === "large" ? "h-14" : "h-12"} ${fieldSize === "default" ? "text-sm leading-5" : "text-base leading-6"} w-full rounded-xl border bg-neutral-200 px-3.5 text-neutral-700`,
     "outline-none transition-colors placeholder:text-neutral-600",
     "disabled:text-neutral-500",
     leadingIcon ? "pl-11" : "",
@@ -49,7 +49,7 @@ export default function TextField({
       <div className="flex items-center gap-1">
         <label
           htmlFor={id}
-          className={hideLabel ? "sr-only" : `${fieldSize === "large" ? "text-base leading-6" : "text-sm leading-5"} font-bold text-neutral-800`}
+          className={hideLabel ? "sr-only" : `${fieldSize === "default" ? "text-sm leading-5" : "text-base leading-6"} font-bold text-neutral-800`}
         >
           {label}
         </label>

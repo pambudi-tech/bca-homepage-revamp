@@ -5,6 +5,7 @@ import PrioritasDetailExperience from "@/components/prioritas/PrioritasDetailExp
 import { buildPrioritasPromoSamples } from "@/components/prioritas/prioritas-promo-data";
 import type { PromoCategory } from "@/components/home/promo-data";
 import { getPromos } from "@/lib/promos";
+import { getPrioritasSourcePromos } from "@/lib/prioritas-source-data";
 
 type PromoParams = { locale: string; promoId: string };
 
@@ -32,7 +33,9 @@ export default async function PrioritasPromoDetailPage({ params }: { params: Pro
     landRover: { title: t("promo.samples.landRover.title"), brand: t("promo.samples.landRover.brand") },
     audi: { title: t("promo.samples.audi.title"), brand: t("promo.samples.audi.brand") },
   });
-  const promos = [...samples, ...await getPromos(now)];
+  const sourcePromos = getPrioritasSourcePromos();
+  const promos = [...sourcePromos, ...samples, ...await getPromos(now)];
+  const sourcePromo = sourcePromos.find((item) => item.id === promoId);
   const promo = promos.find((item) => item.id === promoId);
   if (!promo) notFound();
 
@@ -69,15 +72,15 @@ export default async function PrioritasPromoDetailPage({ params }: { params: Pro
         },
         terms: {
           title: detailT("terms.title"),
-          items: isPorsche ? t.raw("promo.porsche.terms") as string[] : [t("fallback.terms")],
+          items: isPorsche ? t.raw("promo.porsche.terms") as string[] : sourcePromo?.sourceTerms.length ? sourcePromo.sourceTerms : [t("fallback.terms")],
         },
         contact: {
           title: detailT("contact.title"),
-          content: isPorsche ? t("promo.porsche.contact") : t("fallback.contact"),
+          content: isPorsche ? t("promo.porsche.contact") : sourcePromo ? sourcePromo.sourceContact : t("fallback.contact"),
         },
         location: {
           title: detailT("location.title"),
-          content: isPorsche ? t("promo.porsche.location") : t("fallback.location"),
+          content: isPorsche ? t("promo.porsche.location") : sourcePromo ? sourcePromo.sourceLocation : t("fallback.location"),
         },
         recommendations: { title: t("promo.recommendations"), viewMore: detailT("recommendations.viewMore") },
       }}

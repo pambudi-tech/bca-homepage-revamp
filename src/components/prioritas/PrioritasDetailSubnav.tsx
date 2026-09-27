@@ -7,7 +7,7 @@ type PrioritasDetailSubnavProps = {
   privilege: string;
   banking: string;
   magazine: string;
-  active?: "privilege" | "banking" | "magazine";
+  active?: "privilege" | "banking" | "magazine" | null;
 };
 
 export default function PrioritasDetailSubnav({ label, privilege, banking, magazine, active = "privilege" }: PrioritasDetailSubnavProps) {

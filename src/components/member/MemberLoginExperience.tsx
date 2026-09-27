@@ -47,7 +47,7 @@ function LoginAlert({
   );
 }
 
-export default function MemberLoginExperience({ brand }: { brand: Brand }) {
+export default function MemberLoginExperience({ brand, magazineSlug }: { brand: Brand; magazineSlug?: string }) {
   const t = useTranslations("memberLogin");
   const tFooter = useTranslations("footer");
   const [method, setMethod] = useState<LoginMethod>("bcaId");
@@ -86,16 +86,16 @@ export default function MemberLoginExperience({ brand }: { brand: Brand }) {
     <main id="main-content" className="member-login relative isolate flex min-h-dvh flex-col overflow-hidden bg-neutral-200 text-neutral-800">
       <div aria-hidden className="member-login-light pointer-events-none absolute inset-0 -z-10" />
 
-      <header className="member-login-header relative mx-auto grid w-full max-w-[1512px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-6 lg:px-10 lg:py-10">
-        <Link href={backHref} className={`member-login-back inline-flex w-fit items-center gap-2 text-base leading-6 ${TEXT_BUTTON_CLASS}`}>
+      <header className="member-login-header relative mx-auto grid w-full max-w-[1512px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-4 lg:px-10 lg:py-10">
+        <Link href={backHref} className={`member-login-back inline-flex w-fit items-center gap-2 text-sm leading-5 ${TEXT_BUTTON_CLASS}`}>
           <img aria-hidden src="/assets/member-login/arrow-left.svg" alt="" className="size-5" /> <span>{t("backHome")}</span>
         </Link>
         <div className="member-login-brands flex items-center justify-center gap-5 sm:gap-8" aria-label={t("brandsLabel")}>
-          <img src="/assets/soliprio/solitaire-logo.svg" alt="BCA Solitaire" className="member-login-solitaire h-14 w-auto" />
-          <img src="/assets/prioritas/logo.svg" alt="BCA Prioritas" className="h-14 w-auto" />
+          <img src="/assets/soliprio/solitaire-logo.svg" alt="BCA Solitaire" className="member-login-solitaire h-11 w-auto" />
+          <img src="/assets/prioritas/logo.svg" alt="BCA Prioritas" className="h-11 w-auto" />
         </div>
         <div className="member-login-language justify-self-end">
-          <LocaleSwitcher label={t("language")} appearance="surface" onLocaleChange={(code: AppLocale) => { window.location.href = `/${code}/member/login?from=${brand}`; }} />
+          <LocaleSwitcher label={t("language")} appearance="surface" onLocaleChange={(code: AppLocale) => { window.location.href = `/${code}/member/login?from=${brand}${magazineSlug ? `&magazine=${encodeURIComponent(magazineSlug)}` : ""}`; }} />
         </div>
       </header>
 
@@ -109,9 +109,9 @@ export default function MemberLoginExperience({ brand }: { brand: Brand }) {
               onViewDetails={() => setNotice(t("prototypeNotice"))}
             />
           ) : null}
-        <section className="member-login-card w-full max-w-[392px] rounded-xl border border-neutral-300/70 bg-white p-6 shadow-card sm:p-7" aria-label={t("pageTitle")}>
+        <section className="member-login-card w-full max-w-[392px] rounded-xl border border-neutral-300/70 bg-white p-4 pb-6 shadow-card sm:p-7" aria-label={t("pageTitle")}>
           <h1 className="sr-only">{t("pageTitle")}</h1>
-          <div role="tablist" aria-label={t("methodLabel")} className="relative grid h-14 grid-cols-2 rounded-xl border border-neutral-300 bg-neutral-200 p-1">
+          <div role="tablist" aria-label={t("methodLabel")} className="relative grid h-12 grid-cols-2 rounded-xl border border-neutral-300 bg-neutral-200 p-1">
             <span aria-hidden className={`pointer-events-none absolute bottom-1 left-1 top-1 z-0 w-[calc(50%-4px)] rounded-lg bg-white shadow-sm transition-transform duration-300 ease-emphasis motion-reduce:transition-none ${method === "email" ? "translate-x-full" : "translate-x-0"}`} />
             <button type="button" role="tab" aria-selected={method === "bcaId"} onClick={() => selectMethod("bcaId")} className={`relative z-10 h-full rounded-lg text-base font-semibold leading-6 transition-colors focus-visible:outline-2 focus-visible:outline-blue-500 ${method === "bcaId" ? "text-neutral-900" : "text-neutral-700 hover:text-blue-500"}`}>{t("bcaId")}</button>
             <button type="button" role="tab" aria-selected={method === "email"} onClick={() => selectMethod("email")} className={`relative z-10 h-full rounded-lg text-base font-semibold leading-6 transition-colors focus-visible:outline-2 focus-visible:outline-blue-500 ${method === "email" ? "text-neutral-900" : "text-neutral-700 hover:text-blue-500"}`}>{t("email")}</button>
@@ -121,7 +121,7 @@ export default function MemberLoginExperience({ brand }: { brand: Brand }) {
           <form onSubmit={submitPreview} className="mt-6">
             <TextField
               key={method}
-              fieldSize="large"
+              fieldSize="medium"
               label={t(method)}
               labelAdornment={method === "bcaId" ? <InfoTip label={t("bcaIdHelpLabel")} message={t("bcaIdHelp")} /> : undefined}
               type={method === "email" ? "email" : "text"}
@@ -142,7 +142,7 @@ export default function MemberLoginExperience({ brand }: { brand: Brand }) {
 
             <div className="mt-5">
               <TextField
-                fieldSize="large"
+                fieldSize="medium"
                 label={t("password")}
                 type={passwordVisible ? "text" : "password"}
                 autoComplete="current-password"

@@ -1,0 +1,530 @@
+{
+  "amala-clinic": {
+    "logo": "/assets/prioritas/partner-logos/amala-clinic.png",
+    "sourceUrl": "https://amalaclinic.com/",
+    "originImageUrl": "https://amalaclinic.com/logo-identity-02-gold-11@2x.png"
+  },
+  "augustinus-bader": {
+    "logo": "/assets/prioritas/partner-logos/augustinus-bader.svg",
+    "sourceUrl": "https://augustinusbader.com/en-int",
+    "originImageUrl": "https://augustinusbader.com/cdn/shop/files/Logo.svg?v=1786041989"
+  },
+  "sensai": {
+    "logo": "/assets/prioritas/partner-logos/sensai.svg",
+    "sourceUrl": "https://www.sensai-cosmetics.com/global/en/",
+    "originImageUrl": "https://www.sensai-cosmetics.com/content/dam/sites/kanebo/www-sensai-cosmetics-com/common/ec/common/icons/header-footer/LOGO.svg"
+  },
+  "kanebo-cosmetics": {
+    "logo": "/assets/prioritas/partner-logos/kanebo-cosmetics.png",
+    "sourceUrl": "https://www.kanebo.com/about-us/world/",
+    "originImageUrl": "https://kao-h.assetsadobe3.com/is/image/content/dam/sites/kanebo/www-kanebo-com/inc-common/logo.png?fmt=png-alpha"
+  },
+  "nanoglow-aesthetic-clinic": {
+    "logo": "/assets/prioritas/partner-logos/nanoglow-aesthetic-clinic.svg",
+    "sourceUrl": "https://nanoglow.co.id/",
+    "originImageUrl": "https://nanoglow.co.id/wp-content/uploads/2024/06/Logo.svg"
+  },
+  "foreverskin-clinic": {
+    "logo": "/assets/prioritas/partner-logos/foreverskin-clinic.png",
+    "sourceUrl": "https://foreverskin.id/",
+    "originImageUrl": "https://cdn.prod.website-files.com/660916089296b283f0873a24/69ed94e11f5cec291e8655ef_foreverskin-logo.png"
+  },
+  "seven-the-salon": {
+    "logo": "/assets/prioritas/partner-logos/seven-the-salon.svg",
+    "sourceUrl": "https://seventhesalon.com/",
+    "originImageUrl": "https://seventhesalon.com/seven_logo.svg"
+  },
+  "jade-aesthetic-clinic": {
+    "logo": "/assets/prioritas/partner-logos/jade-aesthetic-clinic.png",
+    "sourceUrl": "https://jadeaestheticindonesia.com/",
+    "originImageUrl": "https://jadeaestheticindonesia.com/wp-content/uploads/2021/12/cropped-LOGO-cklt-2.png"
+  },
+  "beart-korean-skin-clinic": {
+    "logo": "/assets/prioritas/partner-logos/beart-korean-skin-clinic.png",
+    "sourceUrl": "https://beartclinicindonesia.com/",
+    "originImageUrl": "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,fit=crop,q=95/A0xv9qzZqRs6noaN/asset-1-300x-dJoPWL9a9zu0jBOP.png"
+  },
+  "c-derma": {
+    "logo": "/assets/prioritas/partner-logos/c-derma.png",
+    "sourceUrl": "https://www.cderma.id/",
+    "originImageUrl": "https://www.cderma.id/wp-content/themes/cderma/assets/images/logo-header.png"
+  },
+  "aarti-wellness-and-beauty": {
+    "logo": "/assets/prioritas/partner-logos/aarti-wellness-and-beauty.png",
+    "sourceUrl": "https://aartiwellness.com/",
+    "originImageUrl": "https://aartiwellness.com/wp-content/uploads/2025/10/Logo-aarti-white.png",
+    "background": "dark"
+  },
+  "natasha-skin-clinic-center": {
+    "logo": "/assets/prioritas/partner-logos/natasha-skin-clinic-center.png",
+    "sourceUrl": "https://natasha.co.id/",
+    "originImageUrl": "https://natasha.co.id/wp-content/uploads/2026/06/natasha-logo-new.png"
+  },
+  "miracle-aesthetic-clinic-malang": {
+    "logo": "/assets/prioritas/partner-logos/miracle-aesthetic-clinic-malang.svg",
+    "sourceUrl": "https://www.miracle-clinic.com/",
+    "originImageUrl": "https://www.miracle-clinic.com/miracle-theme/assets/img/logo_miracle_30.svg"
+  },
+  "dr-belle-aesthetic-clinic": {
+    "logo": "/assets/prioritas/partner-logos/dr-belle-aesthetic-clinic.png",
+    "sourceUrl": "https://drbelleaestheticclinic.co.id/",
+    "originImageUrl": "https://drbelleaestheticclinic.co.id/wp-content/uploads/2025/03/Brand-Guidelines.pdf-image-007.png"
+  },
+  "sava-beauty-and-wellness": {
+    "logo": "/assets/prioritas/partner-logos/sava-beauty-and-wellness.jpg",
+    "sourceUrl": "https://savaindonesia.com/",
+    "originImageUrl": "https://savaindonesia.com/wp-content/uploads/2024/01/cropped-Logo-Sava-Gold-1.jpg"
+  },
+  "clinic-de-votre-peau": {
+    "logo": "/assets/prioritas/partner-logos/clinic-de-votre-peau.png",
+    "sourceUrl": "https://clinicdevotrepeau.com/",
+    "originImageUrl": "https://clinicdevotrepeau.com/wp-content/uploads/2023/12/logocdpvLs.png"
+  },
+  "may-may-salon": {
+    "logo": "/assets/prioritas/partner-logos/may-may-salon.png",
+    "sourceUrl": "https://maymay.co.id/",
+    "originImageUrl": "https://maymay.co.id/cdn/shop/files/logo_may_may_hitam_500x.png?v=1683778369"
+  },
+  "central-department-store-indonesia": {
+    "logo": "/assets/prioritas/partner-logos/central-department-store-indonesia.png",
+    "sourceUrl": "https://www.centralindonesia.co.id/",
+    "originImageUrl": "https://www.centralindonesia.co.id/wp-content/uploads/2022/08/central-logo-Horizontal-NEW-14-1.png"
+  },
+  "nespresso": {
+    "logo": "/assets/prioritas/partner-logos/nespresso.svg",
+    "sourceUrl": "https://www.nespresso.co.id/id/id",
+    "originImageUrl": "https://www.nespresso.co.id/media/logo/stores/2/IMG_5294.svg"
+  },
+  "semar-nusantara": {
+    "logo": "/assets/prioritas/partner-logos/semar-nusantara.png",
+    "sourceUrl": "https://shop.semar.co.id/",
+    "originImageUrl": "https://shop.semar.co.id/media/logo/stores/1/semarnusantara_logo1.png"
+  },
+  "autoglaze": {
+    "logo": "/assets/prioritas/partner-logos/autoglaze.webp",
+    "sourceUrl": "https://www.autoglaze.co.id/",
+    "originImageUrl": "https://www.autoglaze.co.id/~img/logo_auto_glaze_small_aktif_baru-02d29-2656_693-twebp80.webp"
+  },
+  "lino-and-sons-jewellery": {
+    "logo": "/assets/prioritas/partner-logos/lino-and-sons-jewellery.png",
+    "sourceUrl": "https://www.linoandsons.com/",
+    "originImageUrl": "https://www.linoandsons.com/cdn/shop/files/logo_lino_header.png?v=1755496028&width=503"
+  },
+  "billstone": {
+    "logo": "/assets/prioritas/partner-logos/billstone.png",
+    "sourceUrl": "https://billstoneofficial.com/",
+    "originImageUrl": "https://billstoneofficial.com/wp-content/uploads/2024/08/BS-Logo-V2-White-1-1024x415.png",
+    "background": "dark"
+  },
+  "passion-jewelry": {
+    "logo": "/assets/prioritas/partner-logos/passion-jewelry.png",
+    "sourceUrl": "https://www.passionjewelry.co.id/",
+    "originImageUrl": "https://www.passionjewelry.co.id/uploads/logo-passion-360x145.png"
+  },
+  "physioactive-indonesia": {
+    "logo": "/assets/prioritas/partner-logos/physioactive-indonesia.png",
+    "sourceUrl": "https://www.physioactive.id/id/",
+    "originImageUrl": "https://www.physioactive.id/wp-content/uploads/2025/05/logo-menu-fit.png"
+  },
+  "tosca-aesthetic-clinic": {
+    "logo": "/assets/prioritas/partner-logos/tosca-aesthetic-clinic.png",
+    "sourceUrl": "https://www.toscaclinic.com/id",
+    "originImageUrl": "https://www.toscaclinic.com/themes/clinic/images/logotosca.png"
+  },
+  "pathlab": {
+    "logo": "/assets/prioritas/partner-logos/pathlab.svg",
+    "sourceUrl": "https://pathlabindonesia.co.id/",
+    "originImageUrl": "https://pathlabindonesia.co.id/images/svg/logo-pathlab.svg?id=abdb0975c9f3c0b27933d4424f0e4484"
+  },
+  "soundlife-hearing-center": {
+    "logo": "/assets/prioritas/partner-logos/soundlife-hearing-center.png",
+    "sourceUrl": "https://soundlife.id/",
+    "originImageUrl": "https://soundlife.id/cdn/shop/files/soundlife-logo-512.png?v=1750601800&width=140"
+  },
+  "putih-dental-center": {
+    "logo": "/assets/prioritas/partner-logos/putih-dental-center.webp",
+    "sourceUrl": "https://putihdental.com/",
+    "originImageUrl": "https://putihdental.com/wp-content/uploads/2026/03/putih_logo_web-1024x385.webp"
+  },
+  "physio-medical-clinic": {
+    "logo": "/assets/prioritas/partner-logos/physio-medical-clinic.png",
+    "sourceUrl": "https://www.physiomedicalclinic.com/",
+    "originImageUrl": "https://static.wixstatic.com/media/d8d484_0331962371e940e3aabb73a1f3024911~mv2.png/v1/fill/w_173,h_80,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/PMC%20Logo_Final.png"
+  },
+  "ciputra-smg-eye-clinic": {
+    "logo": "/assets/prioritas/partner-logos/ciputra-smg-eye-clinic.webp",
+    "sourceUrl": "https://ciputrasmgeyeclinic.com/",
+    "originImageUrl": "https://ciputrasmgeyeclinic.com/wp-content/uploads/2020/11/CSEC-HORISONTAL-2.png"
+  },
+  "yong-kang-tcm": {
+    "logo": "/assets/prioritas/partner-logos/yong-kang-tcm.png",
+    "sourceUrl": "https://www.yongkangtcm.co.id/",
+    "originImageUrl": "https://static.wixstatic.com/media/0d8f4c_2695061930b34b45af837f5171f13a76~mv2.png/v1/fill/w_129,h_129,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/logp%20220%20px.png"
+  },
+  "ciputra-medical-center": {
+    "logo": "/assets/prioritas/partner-logos/ciputra-medical-center.png",
+    "sourceUrl": "https://www.ciputramedicalcenter.com/",
+    "originImageUrl": "https://ciputramedicalcenter.com/wp-content/uploads/2017/05/Logo-CMC-CW1J-0.52x-Exist-No-tag-No09Loc-Width-450px.png"
+  },
+  "flying-doctor-indonesia": {
+    "logo": "/assets/prioritas/partner-logos/flying-doctor-indonesia.png",
+    "sourceUrl": "https://www.flyingdoctorindonesia.com/",
+    "originImageUrl": "https://www.flyingdoctorindonesia.com/wp-content/themes/flyingdoctor/images/logo.png"
+  },
+  "klinik-medifit": {
+    "logo": "/assets/prioritas/partner-logos/klinik-medifit.webp",
+    "sourceUrl": "https://medifit.id/",
+    "originImageUrl": "https://medifit.id/wp-content/uploads/2025/08/Copy-of-FA-FIX-LOGO-GR-KUNCI-copy-2.webp"
+  },
+  "columbia-asia-hospital": {
+    "logo": "/assets/prioritas/partner-logos/columbia-asia-hospital.png",
+    "sourceUrl": "https://columbiaasia.co.id/",
+    "originImageUrl": "https://columbiaasia.co.id/wp-content/uploads/2025/09/columbia-asia.png"
+  },
+  "rs-orthopedi-dan-traumatologi-surabaya": {
+    "logo": "/assets/prioritas/partner-logos/rs-orthopedi-dan-traumatologi-surabaya.png",
+    "sourceUrl": "https://surabayaorthopedi.com/",
+    "originImageUrl": "https://surabayaorthopedi.com/wp-content/uploads/2026/06/logo-atas-baru.png"
+  },
+  "rs-jih-yogyakarta": {
+    "logo": "/assets/prioritas/partner-logos/rs-jih-yogyakarta.png",
+    "sourceUrl": "https://rs-jih.co.id/rsjih/",
+    "originImageUrl": "https://media.rs-jih.co.id/media-rsjih/jogja/logo/img_ytczu3G.png"
+  },
+  "smc-rs-telogorejo": {
+    "logo": "/assets/prioritas/partner-logos/smc-rs-telogorejo.png",
+    "sourceUrl": "https://www.smc-hospital.com/",
+    "originImageUrl": "https://www.smc-hospital.com/img/logo-dark.png"
+  },
+  "emc-healthcare": {
+    "logo": "/assets/prioritas/partner-logos/emc-healthcare.png",
+    "sourceUrl": "https://www.emc.id/id/",
+    "originImageUrl": "https://www.emc.id/assets/img/logo-emc-tagline.png"
+  },
+  "rs-pondok-indah": {
+    "logo": "/assets/prioritas/partner-logos/rs-pondok-indah.svg",
+    "sourceUrl": "https://www.rspondokindah.co.id/id",
+    "originImageUrl": "https://www.rspondokindah.co.id/images/logo_rspi.svg"
+  },
+  "eka-hospital-group": {
+    "logo": "/assets/prioritas/partner-logos/eka-hospital-group.png",
+    "sourceUrl": "https://www.ekahospital.com/",
+    "originImageUrl": "https://www.ekahospital.com/_ipx/s_207x40/_img/eka-logo.png"
+  },
+  "ciputra-hospital-surabaya": {
+    "logo": "/assets/prioritas/partner-logos/ciputra-hospital-surabaya.webp",
+    "sourceUrl": "https://ciputrahospital.com/",
+    "originImageUrl": "https://ciputrahospital.com/wp-content/uploads/2026/04/Ciputra-Hospital-Logo-Horizontal-Shifted.webp"
+  },
+  "rs-immanuel-bandung": {
+    "logo": "/assets/prioritas/partner-logos/rs-immanuel-bandung.png",
+    "sourceUrl": "https://www.rsimmanuel.com/",
+    "originImageUrl": "https://www.rsimmanuel.com/images/logo%20rsi%20transp139x141.png?crc=250339352"
+  },
+  "altius-hospitals": {
+    "logo": "/assets/prioritas/partner-logos/altius-hospitals.svg",
+    "sourceUrl": "https://altiushospitals.id/",
+    "originImageUrl": "https://altiushospitals.id/storage/media/ae208ab3-44aa-4480-aeae-9a464729ac2e.svg"
+  },
+  "rs-panti-nirmala": {
+    "logo": "/assets/prioritas/partner-logos/rs-panti-nirmala.png",
+    "sourceUrl": "https://www.rspantinirmala.com/",
+    "originImageUrl": "https://www.rspantinirmala.com/storage/profile/HoAICzDFc1MA4j2tN1InX3sUSIAZsoMSo6xjCTru.png"
+  },
+  "rs-premier-jatinegara": {
+    "logo": "/assets/prioritas/partner-logos/rs-premier-jatinegara.png",
+    "sourceUrl": "https://www.rspremierjatinegara.com/",
+    "originImageUrl": "https://www.rspremierjatinegara.com/assets/source/images/prod/jatinegara/image/logo-rs-premier-jatinegara-150x60.png"
+  },
+  "rs-premier-surabaya": {
+    "logo": "/assets/prioritas/partner-logos/rs-premier-surabaya.png",
+    "sourceUrl": "https://www.rspremiersurabaya.com/",
+    "originImageUrl": "https://www.rspremiersurabaya.com/assets/source/images/prod/surabaya/image/logo-rs-premier-surabaya-150x60.png"
+  },
+  "rs-panti-waluya-sawahan-rkz": {
+    "logo": "/assets/prioritas/partner-logos/rs-panti-waluya-sawahan-rkz.png",
+    "sourceUrl": "https://pantiwaluya.or.id/",
+    "originImageUrl": "https://pantiwaluya.or.id/assets/upload/image/Logo-RKZ_Malang_yayasan.png"
+  },
+  "rs-triharsi": {
+    "logo": "/assets/prioritas/partner-logos/rs-triharsi.png",
+    "sourceUrl": "https://rstriharsi.com/",
+    "originImageUrl": "https://rstriharsi.com/wp-content/uploads/2020/01/Logo-Ths-Png.png"
+  },
+  "persada-hospital": {
+    "logo": "/assets/prioritas/partner-logos/persada-hospital.png",
+    "sourceUrl": "https://persadahospital.co.id/",
+    "originImageUrl": "https://persadahospital.co.id/assets/img/logo.png"
+  },
+  "rs-bsh-bogor": {
+    "logo": "/assets/prioritas/partner-logos/rs-bsh-bogor.png",
+    "sourceUrl": "https://rsbsh.com/",
+    "originImageUrl": "https://rsbsh.com/wp-content/uploads/2023/11/Logo.png"
+  },
+  "rs-dr-oen-solo-baru": {
+    "logo": "/assets/prioritas/partner-logos/rs-dr-oen-solo-baru.jpg",
+    "sourceUrl": "https://droensolobaru.com/",
+    "originImageUrl": "https://droensolobaru.com/wp-content/uploads/2021/10/LOGO-RSDOSB-PNJNG-.jpg"
+  },
+  "rs-dr-oen-kandang-sapi-solo": {
+    "logo": "/assets/prioritas/partner-logos/rs-dr-oen-kandang-sapi-solo.png",
+    "sourceUrl": "https://droenska.com/",
+    "originImageUrl": "https://droenska.com/wp-content/uploads/2024/01/LOGO-DROENSKA-MOBILE-300x94.png"
+  },
+  "jec-eye-hospitals-and-clinics": {
+    "logo": "/assets/prioritas/partner-logos/jec-eye-hospitals-and-clinics.png",
+    "sourceUrl": "https://jec.co.id/id",
+    "originImageUrl": "https://jec.co.id/assets/img/jec-logo.png"
+  },
+  "healthway-medical": {
+    "logo": "/assets/prioritas/partner-logos/healthway-medical.png",
+    "sourceUrl": "https://healthwaymedical.com:443/",
+    "originImageUrl": "https://healthwaymedical.com/assets/source/images/logo-c9m2lm2m.png"
+  },
+  "raffles-hospital": {
+    "logo": "/assets/prioritas/partner-logos/raffles-hospital.svg",
+    "sourceUrl": "https://www.rafflesmedicalgroup.com/",
+    "originImageUrl": "https://www.rafflesmedicalgroup.com/wp-content/uploads/2024/04/raffles-medical-group-singapore-logo.svg"
+  },
+  "mandaya-royal-hospital-puri": {
+    "logo": "/assets/prioritas/partner-logos/mandaya-royal-hospital-puri.png",
+    "sourceUrl": "https://mandayahospitalgroup.com/",
+    "originImageUrl": "https://mandayahospitalgroup.com/wp-content/uploads/2021/01/logo-m.png"
+  },
+  "tzu-chi-hospital": {
+    "logo": "/assets/prioritas/partner-logos/tzu-chi-hospital.webp",
+    "sourceUrl": "https://tzuchihospital.co.id/",
+    "originImageUrl": "https://tzuchihospital.co.id/_next/image?url=%2Fassets%2Flogo%2Flogo_dark.webp&w=640&q=75"
+  },
+  "jnj-specialist-dental-centre": {
+    "logo": "/assets/prioritas/partner-logos/jnj-specialist-dental-centre.webp",
+    "sourceUrl": "https://healthwaymedical.com:443/",
+    "originImageUrl": "https://healthwaymedical.com/assets/source/assets/thumbs/images/brand/contain_210_124_jnj-specialist-dental-centre-logo.webp"
+  },
+  "diamond-pavilion": {
+    "logo": "/assets/prioritas/partner-logos/diamond-pavilion.png",
+    "sourceUrl": "https://diamondpavilion.id/",
+    "originImageUrl": "https://diamondpavilion.id/wp-content/uploads/2023/08/logo-diamond-pavilion.png"
+  },
+  "nod": {
+    "logo": "/assets/prioritas/partner-logos/nod.png",
+    "sourceUrl": "https://linktr.ee/whynod",
+    "originImageUrl": "https://ugc.production.linktr.ee/73bff2b3-e31a-4f94-8f4d-addb72728667_NOD-Logo-Cokelat-BG-Hitam.png"
+  },
+  "gsi-lab": {
+    "logo": "/assets/prioritas/partner-logos/gsi-lab.png",
+    "sourceUrl": "https://gsilab.id/id/",
+    "originImageUrl": "https://gsil.sgp1.digitaloceanspaces.com/gsilab/static/optimasi/images/logo.png"
+  },
+  "sunsetfalls-gardens-and-resort": {
+    "logo": "/assets/prioritas/partner-logos/sunsetfalls-gardens-and-resort.png",
+    "sourceUrl": "https://sunsetfallsgardensandresort.com/",
+    "originImageUrl": "https://sunsetfallsgardensandresort.com/wp-content/uploads/2024/04/SF-_-Logo-Hitam-01-150x42.png"
+  },
+  "salaya-yachts": {
+    "logo": "/assets/prioritas/partner-logos/salaya-yachts.png",
+    "sourceUrl": "https://salayayacht.com/",
+    "originImageUrl": "https://salayayacht.com/wp-content/uploads/2026/04/Salaya-Jeanneau-Prestige-Yachts-scaled.png"
+  },
+  "hotel-indonesia-kempinski-jakarta": {
+    "logo": "/assets/prioritas/partner-logos/hotel-indonesia-kempinski-jakarta.svg",
+    "sourceUrl": "https://www.kempinski.com/en/jakarta",
+    "originImageUrl": "https://www.kempinski.com/en/content/download/2737/29610?version=213&inline=1"
+  },
+  "molton-brown": {
+    "logo": "/assets/prioritas/partner-logos/molton-brown.png",
+    "sourceUrl": "https://www.moltonbrown.co.jp/",
+    "originImageUrl": "https://www.moltonbrown.co.jp/cdn/shop/files/Molton_Brown_One_Line_Logotype_Blk_RGB_grande.png?v=1783407667"
+  },
+  "aprez-cafe-the-energy": {
+    "logo": "/assets/prioritas/partner-logos/aprez-cafe-the-energy.png",
+    "sourceUrl": "https://aprez.id/aprez-cafe/",
+    "originImageUrl": "https://aprez.id/wp-content/uploads/2019/08/logo-aprez.png"
+  },
+  "the-coach-restaurant": {
+    "logo": "/assets/prioritas/partner-logos/the-coach-restaurant.jpg",
+    "sourceUrl": "https://id.coach.com/thecoachrestaurant",
+    "originImageUrl": "https://id.coach.com/media/logo/stores/25/coach_logo.jpeg"
+  },
+  "the-coach-coffee-shop": {
+    "logo": "/assets/prioritas/partner-logos/the-coach-coffee-shop.jpg",
+    "sourceUrl": "https://id.coach.com/thecoachrestaurant",
+    "originImageUrl": "https://id.coach.com/media/logo/stores/25/coach_logo.jpeg"
+  },
+  "honzen": {
+    "logo": "/assets/prioritas/partner-logos/honzen.jpg",
+    "sourceUrl": "https://www.kawanointernational.com/",
+    "originImageUrl": "https://www.kawanointernational.com/assets/restaurant/logo/desktop/1556074599-desktop-132x169px_honzen-2.jpg"
+  },
+  "siloam-international-hospitals": {
+    "logo": "/assets/prioritas/partner-logos/siloam-international-hospitals.jpg",
+    "sourceUrl": "https://www.siloamhospitals.com/",
+    "originImageUrl": "https://rec-data.kalibrr.com/www.kalibrr.com/logos/MTZS2CNAZGTTVCLV654QCETPTS9EF2CANAXRMFX9-638d54e5.jpg"
+  },
+  "prodia": {
+    "logo": "/assets/prioritas/partner-logos/prodia.jpg",
+    "sourceUrl": "https://www.prodia.co.id/",
+    "originImageUrl": "https://rec-data.kalibrr.com/www.kalibrr.com/logos/X9KJPNMRZQBMGQ9SXX5MX2HD2D8LJP785KKHAVPV-620338f8.jpg"
+  },
+  "mitra-keluarga": {
+    "logo": "/assets/prioritas/partner-logos/mitra-keluarga.webp",
+    "sourceUrl": "https://glints.com/id/companies/mitra-keluarga/2ef060da-8ebd-424c-983a-bf407be08b79",
+    "originImageUrl": "https://images.glints.com/unsafe/glints-dashboard.oss-ap-southeast-1-internal.aliyuncs.com/company-logo/6b6e4fef75d060555cc7407186cc9e28.jpeg"
+  },
+  "kmn-eyecare": {
+    "logo": "/assets/prioritas/partner-logos/kmn-eyecare.jpg",
+    "sourceUrl": "https://x.com/KMNEyeCare",
+    "originImageUrl": "https://pbs.twimg.com/profile_images/1026784118720192512/2lSyGAAr.jpg"
+  },
+  "universitas-ciputra": {
+    "logo": "/assets/prioritas/partner-logos/universitas-ciputra.png",
+    "sourceUrl": "https://enrollment-online.ciputra.ac.id/onlinelearning_admission/",
+    "originImageUrl": "https://enrollment-online.ciputra.ac.id/assets/img/UCO-logo.png"
+  },
+  "dekoruma": {
+    "logo": "/assets/prioritas/partner-logos/dekoruma.jpg",
+    "sourceUrl": "https://www.kalibrr.id/c/dekoruma/jobs",
+    "originImageUrl": "https://rec-data.kalibrr.com/logos/CQWKDZYGD24YBSDTY5ZYRC7LTFMP5GXP8JE4L9C7-5cb479c5.jpg"
+  },
+  "cito-laboratorium-medis": {
+    "logo": "/assets/prioritas/partner-logos/cito-laboratorium-medis.jpg",
+    "sourceUrl": "https://x.com/labcito",
+    "originImageUrl": "https://pbs.twimg.com/profile_images/1605403873044467712/Z41kwPPC_400x400.jpg"
+  },
+  "brawijaya-hospital": {
+    "logo": "/assets/prioritas/partner-logos/brawijaya-hospital.png",
+    "sourceUrl": "https://www.haibunda.com/",
+    "originImageUrl": "https://cdn.haibunda.com/mobile/images/partner/logo_rs_brawijaya.png?v=5.3.6"
+  },
+  "golden-rama": {
+    "logo": "/assets/prioritas/partner-logos/golden-rama.png",
+    "sourceUrl": "https://www.goldenrama.com/page/kebijakan-privasi",
+    "originImageUrl": "https://www.goldenrama.com/data/img/program/logo%20gr%20BOLD%20new.png"
+  },
+  "dwidayatour": {
+    "logo": "/assets/prioritas/partner-logos/dwidayatour.jpg",
+    "sourceUrl": "https://www.centralparkjakarta.com/DetilTenantItem/TenantInfo/DWIDAYA_TOUR",
+    "originImageUrl": "https://www.centralparkjakarta.com/upload/tenant/00dwidaya.jpg"
+  },
+  "wita-tour": {
+    "logo": "/assets/prioritas/partner-logos/wita-tour.png",
+    "sourceUrl": "https://www.witatour.com/corporate/",
+    "originImageUrl": "https://witatour.com/static-images/logo-witabaru.png"
+  },
+  "bca-travel-service": {
+    "logo": "/assets/prioritas/partner-logos/bca-travel-service.jpg",
+    "sourceUrl": "https://www.bca.co.id/en/promo-bca/2023/09/11/07/37/Haryono-travel-fair-2023",
+    "originImageUrl": "https://www.bca.co.id/-/media/Feature/Promo/Icon/2023/01/20230113-bca-travel-service-logo.jpg?h=1000&hash=92D72923EA798CDDFAB079BE38DC2184&w=1000"
+  },
+  "sunway-medical-centre-kl": {
+    "logo": "/assets/prioritas/partner-logos/sunway-medical-centre-kl.jpg",
+    "sourceUrl": "https://www.sunwaymedical.com/",
+    "originImageUrl": "https://malaysia.ahk.de/var/site/storage/images/_aliases/image_1920/1/9/7/3/763791-1-eng-GB/7bdebf1f5c6b-2023-SMC-Logo-Stack-Full-01.jpg"
+  },
+  "mount-elizabeth-hospital": {
+    "logo": "/assets/prioritas/partner-logos/mount-elizabeth-hospital.webp",
+    "sourceUrl": "https://www.mountelizabeth.com.sg/",
+    "originImageUrl": "https://www.cmgassets.com/s3fs-public/styles/article_details_tablet_image/public/2023-01/moutn-elizabeth.png.webp?itok=DC0f4Lft"
+  },
+  "regency-specialist-hospital": {
+    "logo": "/assets/prioritas/partner-logos/regency-specialist-hospital.jpg",
+    "sourceUrl": "https://www.globalhealthandtravel.com/facilities/regency-specialist-hospital",
+    "originImageUrl": "https://www.globalhealthandtravel.com/images/large/0701202112231860dd43361fcc2.jpg"
+  },
+  "mahkota-medical-centre": {
+    "logo": "/assets/prioritas/partner-logos/mahkota-medical-centre.png",
+    "sourceUrl": "https://www.mahkotamedical.com/",
+    "originImageUrl": "https://cdn.sanity.io/images/jcgorcur/production/64a7f0ea01020c4e87b8356b22990ca1f7b84fe3-4250x1700.png?h=600&rect=992%2C0%2C2267%2C1700&w=800"
+  },
+  "sampoerna-academy": {
+    "logo": "/assets/prioritas/partner-logos/sampoerna-academy.png",
+    "sourceUrl": "https://program.sampoernaacademy.sch.id/jakarta-campus/",
+    "originImageUrl": "https://program.sampoernaacademy.sch.id/wp-content/uploads/2023/07/NEW-SA-LOGO_CMYK-02-1536x633.png"
+  },
+  "binus-international": {
+    "logo": "/assets/prioritas/partner-logos/binus-international.png",
+    "sourceUrl": "https://seeklogo.com/free-vector-logos/binus",
+    "originImageUrl": "https://images.seeklogo.com/logo-png/1/1/binus-university-international-logo-png_seeklogo-19581.png"
+  },
+  "jhl-solitaire": {
+    "logo": "/assets/prioritas/partner-logos/jhl-solitaire.png",
+    "sourceUrl": "https://fernandogomulya.com/clients",
+    "originImageUrl": "https://images.squarespace-cdn.com/content/v1/5c3028d44eddeccfff22700e/13169ff7-ef5b-4c35-9baa-d043eaea07ec/jhl%2Bsolitaire%2Bhotel.png"
+  },
+  "vispring": {
+    "logo": "/assets/prioritas/partner-logos/vispring.jpg",
+    "sourceUrl": "https://sangvaruhuset.se/baddmadrasser",
+    "originImageUrl": "https://sangvaruhuset.se/themes/assets/varum/vispring_logo_black.jpg"
+  },
+  "national-hospital": {
+    "logo": "/assets/prioritas/partner-logos/national-hospital.png",
+    "sourceUrl": "https://www.national-hospital.com/",
+    "originImageUrl": "https://national-hospital.com/storage/setting/xqsvQ67oimpbuTUYYmqtsKLAXUH604swH3Gwlv35.png"
+  },
+  "rs-jih-solo": {
+    "logo": "/assets/prioritas/partner-logos/rs-jih-solo.png",
+    "sourceUrl": "https://rs-jih.co.id/rsjih/",
+    "originImageUrl": "https://rs-jih.co.id/rsjih/assets/front/img/og-image.png"
+  },
+  "rs-medistra": {
+    "logo": "/assets/prioritas/partner-logos/rs-medistra.jpg",
+    "sourceUrl": "https://www.meditrans.id/partners/medistra/",
+    "originImageUrl": "https://i0.wp.com/www.meditrans.id/wp-content/uploads/2022/09/Medistra.jpg?fit=536%2C536&ssl=1"
+  },
+  "xrista-skin-lab-malang": {
+    "logo": "/assets/prioritas/partner-logos/xrista-skin-lab-malang.jpg",
+    "sourceUrl": "https://shopee.co.id/xristaskinlab_mlg",
+    "originImageUrl": "https://img.ws.mms.shopee.co.id/id-11134233-7rasl-m62bjrkd7uh237"
+  },
+  "voila-id": {
+    "logo": "/assets/prioritas/partner-logos/voila-id.jpg",
+    "sourceUrl": "https://glints.com/id/opportunities/jobs/store-manager-female-only/c5a781bf-b41c-4ed8-a172-773442c4eb08",
+    "originImageUrl": "https://images.glints.com/unsafe/glints-dashboard.oss-ap-southeast-1-internal.aliyuncs.com/company-logo/181805c6bd4e79bef88b03d44147dcf3.jpeg"
+  },
+  "adelle-jewellery": {
+    "logo": "/assets/prioritas/partner-logos/adelle-jewellery.png",
+    "sourceUrl": "https://adellejewellery.com/",
+    "originImageUrl": "https://adellejewellery.com/images/logo-adelle.png"
+  },
+  "obaja-tour-and-travel": {
+    "logo": "/assets/prioritas/partner-logos/obaja-tour-and-travel.png",
+    "sourceUrl": "https://apps.apple.com/id/app/obaja-tour-travel/id6748330637",
+    "originImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/8e/4e/ac/8e4eac50-a290-5b3d-0185-944e73bbc19f/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/1200x630wa.png"
+  },
+  "jetbay-indonesia": {
+    "logo": "/assets/prioritas/partner-logos/jetbay-indonesia.jpg",
+    "sourceUrl": "https://apps.apple.com/cn/app/jetbay-private-jet-app/id6747158361",
+    "originImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/9d/97/35/9d97355b-bacd-b80c-f7c5-1bcafd3a4d3d/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/1200x630wa.jpg"
+  },
+  "porkville": {
+    "logo": "/assets/prioritas/partner-logos/porkville.png",
+    "sourceUrl": "https://porkville.id/",
+    "originImageUrl": "https://porkville.id/logo-white.png",
+    "background": "dark"
+  },
+  "bumi-aki-signature": {
+    "logo": "/assets/prioritas/partner-logos/bumi-aki-signature.png",
+    "sourceUrl": "https://glints.com/id/opportunities/jobs/kitchen-team-bumi-aki-heritage-bandung/a3658243-be62-437e-923b-539e31b740ba",
+    "originImageUrl": "https://images.glints.com/unsafe/1200x0/glints-dashboard.oss-ap-southeast-1-internal.aliyuncs.com/company-logo/1ee1804ce7a46c0cde67bd27aa5c4a2f.png"
+  },
+  "audy-dental": {
+    "logo": "/assets/prioritas/partner-logos/audy-dental.png",
+    "sourceUrl": "https://www.blibli.com/brand/audy-dental-clinic",
+    "originImageUrl": "https://www.static-src.com/wcsstore/Indraprastha/images/brandlogo/BRD-40184/audy-dental-clinic-logo.png"
+  },
+  "indo-dental-center": {
+    "logo": "/assets/prioritas/partner-logos/indo-dental-center.jpg",
+    "sourceUrl": "https://www.jedcreative.com/indo-dental-center",
+    "originImageUrl": "https://images.squarespace-cdn.com/content/v1/623c8d4091f2190050e67378/61a4b793-3e63-4bde-8d0b-23858419f000/indodentalcenter_logo.jpg"
+  },
+  "abc-cooking-studio": {
+    "logo": "/assets/prioritas/partner-logos/abc-cooking-studio.jpg",
+    "sourceUrl": "https://www.centralparkjakarta.com/DetilTenantItem/TenantInfo/ABC_COOKING_STUDIO",
+    "originImageUrl": "https://www.centralparkjakarta.com/upload/tenant/67a9ac3cd93c5_ABC-logo.jpg"
+  },
+  "menard-indonesia": {
+    "logo": "/assets/prioritas/partner-logos/menard-indonesia.jpg",
+    "sourceUrl": "https://www.blibli.com/brand/menard",
+    "originImageUrl": "https://www.static-src.com/wcsstore/Indraprastha/images/brandlogo/BRD-21386/menard-logo.jpg"
+  }
+}

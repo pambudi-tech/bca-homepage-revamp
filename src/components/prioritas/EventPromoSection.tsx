@@ -28,12 +28,12 @@ export default async function EventPromoSection({ promos, copy, now }: {
         <PrioritasFeaturedBanner titles={copy.featuredTitles} cta={copy.featuredCta} backdrops={backdrops} />
 
         <div className="mt-8 xl:hidden">
-          <PromoCarousel promos={promos.slice(0, 3)} now={now} loop={false} variant="prioritas" />
+          <PromoCarousel promos={promos.slice(0, 3)} now={now} loop={false} variant="prioritas" detailHrefBase="/prioritas/event" showEventDate />
         </div>
 
         <div className="mt-8 hidden gap-8 md:grid md:grid-cols-3 xl:grid">
           {promos.slice(0, 3).map((promo) => (
-            <PromoCard key={promo.id} promo={promo} now={now} reveal={false} variant="prioritas" fill />
+            <PromoCard key={promo.id} promo={promo} now={now} reveal={false} variant="prioritas" fill detailHref={`/prioritas/event/${promo.id}`} eventDate={"dateTile" in promo ? promo.dateTile as React.ComponentProps<typeof PromoCard>["eventDate"] : undefined} />
           ))}
         </div>
 

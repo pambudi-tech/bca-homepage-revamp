@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import PromoCard from "@/components/promo/PromoCard";
 import type { Promo } from "@/components/home/promo-data";
+import type { PrivilegePromo } from "@/lib/partner-privileges";
 import { useTranslations } from "next-intl";
 import type { PrioritasIndexTab } from "@/components/prioritas/PrioritasIndexTabs";
 import { useIsLive } from "@/lib/useIsLive";
@@ -43,7 +44,7 @@ function Arrow() {
 }
 
 type SignaturePrivilegeExperienceProps = {
-  promos: Promo[];
+  promos: Array<Promo | PrivilegePromo>;
   now: Date;
   directoryOnly?: boolean;
   activeTab?: PrioritasIndexTab;
@@ -51,6 +52,10 @@ type SignaturePrivilegeExperienceProps = {
   cardDetail?: boolean;
   initialCategories?: string[];
 };
+
+function isPrivilegePromo(promo: Promo): promo is PrivilegePromo {
+  return "privilegeCategory" in promo;
+}
 
 export default function SignaturePrivilegeExperience({ promos, now, directoryOnly = false, activeTab, cardVariant = "prioritas", cardDetail = true, initialCategories = [] }: SignaturePrivilegeExperienceProps) {
   const t = useTranslations("signaturePrivilege");
@@ -75,13 +80,19 @@ export default function SignaturePrivilegeExperience({ promos, now, directoryOnl
   const signatureCardRefs = useRef<Array<HTMLElement | null>>([]);
   const signatureLive = useIsLive(signatureSectionRef);
   const currentTab = activeTab ?? (directoryOnly ? "lifestyle" : "signature");
+  const availableChipCategories = currentTab === "promo" ? chipCategories : chipCategories.filter((category) => category !== "business");
   const visibleSignatureCards = renderSignatureExtras || mobileSignatureRail ? signatureCards : signatureCards.slice(0, 6);
   const activeSignatureCardCount = signatureExpanded || mobileSignatureRail ? signatureCards.length : Math.min(6, signatureCards.length);
-  const brandOptions = useMemo(() => [...new Set(promos.map((promo) => promo.brand))].slice(0, 8), [promos]);
+  const brandOptions = useMemo(() => {
+    const brands = [...new Set(promos.map((promo) => promo.brand))];
+    return currentTab === "promo" ? brands.slice(0, 8) : brands;
+  }, [currentTab, promos]);
   const filteredPromos = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase();
     return promos.filter((promo) => {
-      const categoryMatch = selectedCategories.length === 0 || selectedCategories.some((category) =>
+      const categoryMatch = isPrivilegePromo(promo)
+        ? selectedCategories.length === 0 || selectedCategories.includes(promo.privilegeCategory)
+        : selectedCategories.length === 0 || selectedCategories.some((category) =>
         (category === "beauty" && promo.category === "health-beauty")
         || (category === "culinary" && promo.category === "fnb")
         || (category === "health" && promo.category === "health-beauty")
@@ -93,10 +104,11 @@ export default function SignaturePrivilegeExperience({ promos, now, directoryOnl
         || (category === "business" && promo.category === "others")
         || (currentTab === "promo" && category === "business" && ["telco", "ecommerce", "loyalty-reward"].includes(promo.category))
       );
+      const birthdayMatch = !birthdayChecked || currentTab !== "signature" || (isPrivilegePromo(promo) && promo.birthdayGift);
       const haystack = `${promo.title} ${promo.brand}`.toLocaleLowerCase();
-      return categoryMatch && (!normalizedQuery || haystack.includes(normalizedQuery));
+      return categoryMatch && birthdayMatch && (!normalizedQuery || haystack.includes(normalizedQuery));
     });
-  }, [currentTab, promos, query, selectedCategories]);
+  }, [birthdayChecked, currentTab, promos, query, selectedCategories]);
   const visiblePromos = filteredPromos.slice((page - 1) * DIRECTORY_PAGE_SIZE, page * DIRECTORY_PAGE_SIZE);
 
   useEffect(() => {
@@ -293,7 +305,7 @@ export default function SignaturePrivilegeExperience({ promos, now, directoryOnl
             {directoryOnly ? null : <header className="flex flex-row items-start justify-between gap-3">
               <div><h2 id="complimentary-title" className="text-xl font-semibold">{t("complimentary.title")}</h2><p className="mt-2 text-sm text-neutral-600">{t("complimentary.subtitle")}</p></div>
               <label className="group/compare mt-0.5 flex shrink-0 cursor-pointer items-center gap-2 text-sm leading-5">
-                <input type="checkbox" checked={birthdayChecked} onChange={(event) => setBirthdayChecked(event.target.checked)} className="peer sr-only" />
+                <input type="checkbox" checked={birthdayChecked} onChange={(event) => { setBirthdayChecked(event.target.checked); setPage(1); }} className="peer sr-only" />
                 <span className="flex size-6 shrink-0 items-center justify-center p-0.5">
                   <span className={`flex size-5 items-center justify-center rounded-md border text-white transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-pgold-500/40 ${birthdayChecked ? "border-pgold-500 bg-pgold-500" : "border-neutral-600 bg-white group-hover/compare:border-pgold-500"}`}>
                     <svg viewBox="0 0 20 20" fill="none" className={`size-3.5 transition-opacity ${birthdayChecked ? "opacity-100" : "opacity-0"}`} aria-hidden>
@@ -305,7 +317,7 @@ export default function SignaturePrivilegeExperience({ promos, now, directoryOnl
               </label>
             </header>}
             <PrioritasDirectoryCategories className={directoryOnly ? "mt-0" : "mt-4"}>
-                {chipCategories.map((key) => <button key={key} type="button" aria-pressed={selectedCategories.includes(key)} onClick={() => selectCategory(key)} className={`flex h-12 shrink-0 items-center gap-3 rounded-xl border px-[18px] text-sm font-semibold transition-colors xl:h-14 xl:px-4 xl:text-base ${selectedCategories.includes(key) ? "border-pgold-500 bg-pgold-200 text-pbrown-600" : "border-neutral-300 bg-white text-neutral-800 hover:border-pgold-500 hover:text-pbrown-600"}`}><span aria-hidden className="size-6 shrink-0 bg-current [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]" style={{ maskImage: `url(/assets/prioritas/privilege/categories/${chipIcons[key]}.svg)`, WebkitMaskImage: `url(/assets/prioritas/privilege/categories/${chipIcons[key]}.svg)` }} /><span>{t(`categories.${key}`)}</span></button>)}
+                {availableChipCategories.map((key) => <button key={key} type="button" aria-pressed={selectedCategories.includes(key)} onClick={() => selectCategory(key)} className={`flex h-12 shrink-0 items-center gap-3 rounded-xl border px-[18px] text-sm font-semibold transition-colors xl:h-14 xl:px-4 xl:text-base ${selectedCategories.includes(key) ? "border-pgold-500 bg-pgold-200 text-pbrown-600" : "border-neutral-300 bg-white text-neutral-800 hover:border-pgold-500 hover:text-pbrown-600"}`}><span aria-hidden className="size-6 shrink-0 bg-current [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]" style={{ maskImage: `url(/assets/prioritas/privilege/categories/${chipIcons[key]}.svg)`, WebkitMaskImage: `url(/assets/prioritas/privilege/categories/${chipIcons[key]}.svg)` }} /><span>{t(`categories.${key}`)}</span></button>)}
             </PrioritasDirectoryCategories>
             <PrioritasDirectoryFilters count={t("showing", { count: filteredPromos.length })}>
               <PrioritasDirectoryDropdown
@@ -325,7 +337,7 @@ export default function SignaturePrivilegeExperience({ promos, now, directoryOnl
             </PrioritasDirectoryFilters>
             </>}
           >
-              {visiblePromos.map((promo) => <PromoCard key={promo.id} promo={promo} now={now} reveal={false} variant={cardVariant} promoPage={currentTab === "promo"} fill detailHref={currentTab === "promo" || currentTab === "lifestyle" ? `/prioritas/promo/${promo.id}` : undefined} {...(cardDetail ? { detail: true } : {})} />)}
+              {visiblePromos.map((promo) => <PromoCard key={promo.id} promo={promo} now={now} reveal={false} variant={cardVariant} promoPage={currentTab === "promo"} partnerPrivilege={isPrivilegePromo(promo)} fill detailHref={currentTab === "promo" ? `/prioritas/promo/${promo.id}` : currentTab === "lifestyle" ? `/prioritas/lifestyle-privilege/${promo.id}` : `/prioritas/privilege/${promo.id}`} {...(cardDetail ? { detail: true } : {})} />)}
           </PrioritasDirectoryPanel>
         </div>
       </section>
