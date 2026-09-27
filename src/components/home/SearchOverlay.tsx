@@ -75,13 +75,17 @@ function SegmentPicker({
   value,
   onChange,
   dark = false,
+  prioritas = false,
 }: {
   value: SearchSegment;
   onChange: (segment: SearchSegment) => void;
   dark?: boolean;
+  prioritas?: boolean;
 }) {
   const tSearch = useTranslations("search");
   const [open, setOpen] = useState(false);
+  const activeBorder = prioritas ? "border-pgold-500" : "border-cyan-500";
+  const hoverBorder = prioritas ? "hover:border-pgold-500" : "hover:border-cyan-500";
 
   return (
     <div className="relative shrink-0">
@@ -90,7 +94,7 @@ function SegmentPicker({
         aria-label={tSearch("segmentLabel")}
         aria-expanded={open}
         onClick={() => setOpen((current) => !current)}
-        className={`flex h-[34px] w-[120px] items-center justify-between rounded-full border px-3 text-sm font-semibold transition-colors xl:h-10 ${open ? "border-cyan-500" : dark ? "border-white/20" : "border-neutral-300"} ${dark ? "bg-white/10 text-white hover:border-cyan-500 hover:bg-white/20" : "bg-white text-neutral-800 hover:border-cyan-500"}`}
+        className={`flex h-[34px] w-[120px] items-center justify-between rounded-full border px-3 text-sm font-semibold transition-colors xl:h-10 ${open ? activeBorder : dark ? "border-white/20" : "border-neutral-300"} ${dark ? `bg-white/10 text-white ${hoverBorder} hover:bg-white/20` : `bg-white text-neutral-800 ${hoverBorder}`}`}
       >
         <span className="truncate">{tSearch(`segments.${value}`)}</span>
         <svg viewBox="0 0 20 20" fill="none" className="size-3.5 shrink-0" aria-hidden>
@@ -107,7 +111,7 @@ function SegmentPicker({
                 onChange(segment);
                 setOpen(false);
               }}
-              className={`block w-full rounded-lg px-3 py-2 text-left text-sm font-semibold transition-colors hover:bg-blue-100 ${segment === value ? "bg-blue-100 text-blue-500" : "text-neutral-800"}`}
+              className={`block w-full rounded-lg px-3 py-2 text-left text-sm font-semibold transition-colors hover:bg-blue-100 ${segment === value ? `bg-blue-100 ${prioritas ? "text-pbrown-500" : "text-blue-500"}` : "text-neutral-800"}`}
             >
               {tSearch(`segments.${segment}`)}
             </button>
@@ -165,6 +169,7 @@ function PromoSearchResults({
   onSelectRecent,
   onRemoveRecent,
   onClearRecent,
+  prioritas = false,
 }: {
   promos: Promo[];
   keyword: string;
@@ -172,6 +177,7 @@ function PromoSearchResults({
   onSelectRecent: (term: string) => void;
   onRemoveRecent: (term: string) => void;
   onClearRecent: () => void;
+  prioritas?: boolean;
 }) {
   const tPromo = useTranslations("promoPage");
   const tSearch = useTranslations("search");
@@ -218,7 +224,7 @@ function PromoSearchResults({
             <section className="mb-5">
               <div className="mb-2 flex items-center justify-between">
                 <p className="text-sm font-bold text-neutral-800 xl:text-white">{tSearch("recentSearches")}</p>
-                <button type="button" onClick={onClearRecent} className="text-sm font-semibold text-blue-500 hover:underline">{tSearch("clearAll")}</button>
+                <button type="button" onClick={onClearRecent} className={`text-sm font-semibold ${prioritas ? "text-pbrown-500" : "text-blue-500"} hover:underline`}>{tSearch("clearAll")}</button>
               </div>
               <div className="flex flex-wrap gap-2">
                 {recent.map((term) => (
@@ -261,6 +267,7 @@ export default function SearchOverlay({
   const tSearch = useTranslations("search");
   const tPromo = useTranslations("promoPage");
   const isPromoSearch = promoSearchItems !== undefined;
+  const prioritas = initialSegment === "Prioritas";
   const placeholders = isPromoSearch
     ? tPromo.raw("search.placeholders") as string[]
     : t.raw("placeholders") as string[];
@@ -398,11 +405,11 @@ export default function SearchOverlay({
         <div ref={contentRef} className="flex h-full w-full max-w-[440px] flex-col bg-neutral-100">
           <header className="relative z-30 flex h-[calc(4rem+env(safe-area-inset-top))] shrink-0 items-center gap-2 px-4 pt-[env(safe-area-inset-top)]">
             <button type="button" onClick={onClose} aria-label={tSearch("close")} className="flex size-6 shrink-0 items-center justify-center">
-              <img src="/assets/navbar/chevron-right-blue.svg" alt="" className="size-6 rotate-90" />
+              <svg aria-hidden viewBox="0 0 24 24" fill="none" className="size-6 text-pbrown-500"><path d="m14.5 5-7 7 7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </button>
-            <div className="relative h-10 min-w-0 flex-1 overflow-visible rounded-full border border-cyan-500 bg-neutral-200 backdrop-blur-[28px]">
+            <div className={`relative h-10 min-w-0 flex-1 overflow-visible rounded-full border ${prioritas ? "border-pgold-500" : "border-cyan-500"} bg-neutral-200 backdrop-blur-[28px]`}>
               <div className="absolute left-0.5 top-0.5 z-20">
-                <SegmentPicker value={segment} onChange={setSegment} />
+                <SegmentPicker value={segment} onChange={setSegment} prioritas={prioritas} />
               </div>
               <input
                 ref={inputRef}
@@ -419,7 +426,7 @@ export default function SearchOverlay({
             </div>
           </header>
           <div className="min-h-0 flex-1">
-            {isPromoSearch ? <PromoSearchResults promos={promoSearchItems} keyword={searchValue} recent={recent} onSelectRecent={selectQuery} onRemoveRecent={removeRecent} onClearRecent={clearRecent} /> : (
+            {isPromoSearch ? <PromoSearchResults promos={promoSearchItems} keyword={searchValue} recent={recent} onSelectRecent={selectQuery} onRemoveRecent={removeRecent} onClearRecent={clearRecent} prioritas={prioritas} /> : (
               <SearchRecommendation
                 recommendations={recommendations}
                 keyword={searchValue}
@@ -430,6 +437,7 @@ export default function SearchOverlay({
                 onMouseDown={(e) => e.preventDefault()}
                 compact
                 screen
+                prioritas={prioritas}
               />
             )}
           </div>
@@ -448,7 +456,7 @@ export default function SearchOverlay({
             } as CSSProperties}
           >
             <div className="absolute left-2 top-2 z-20">
-              <SegmentPicker value={segment} onChange={setSegment} dark />
+              <SegmentPicker value={segment} onChange={setSegment} dark prioritas={prioritas} />
             </div>
             <input
               ref={inputRef}
@@ -463,11 +471,11 @@ export default function SearchOverlay({
             />
             <SearchPlaceholderCarousel placeholders={placeholders} visible={!searchValue} live={open} className="inset-y-0 left-36 right-[72px] text-base" />
             <button type="button" aria-label={tNav("search")} onClick={() => submitSearch(searchValue)} className="absolute right-2 top-1/2 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white transition-transform hover:scale-105">
-              <img src="/assets/cycle1/outline-search-1.svg" alt="" className="size-6" />
+              <span aria-hidden className="size-6 bg-pbrown-500 [mask-image:url('/assets/cycle1/outline-search-1.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/cycle1/outline-search-1.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]" />
             </button>
           </div>
           <div className="mt-2 min-h-0 flex-1">
-            {isPromoSearch ? <PromoSearchResults promos={promoSearchItems} keyword={searchValue} recent={recent} onSelectRecent={selectQuery} onRemoveRecent={removeRecent} onClearRecent={clearRecent} /> : (
+            {isPromoSearch ? <PromoSearchResults promos={promoSearchItems} keyword={searchValue} recent={recent} onSelectRecent={selectQuery} onRemoveRecent={removeRecent} onClearRecent={clearRecent} prioritas={prioritas} /> : (
               <SearchRecommendation
                 recommendations={recommendations}
                 keyword={searchValue}
@@ -481,6 +489,7 @@ export default function SearchOverlay({
                 // same compact layout, same 70dvh ceiling from the card itself, so
                 // no height override here.
                 maxHeight={panelMaxHeight(PANEL_TOP_OFFSET)}
+                prioritas={prioritas}
               />
             )}
           </div>

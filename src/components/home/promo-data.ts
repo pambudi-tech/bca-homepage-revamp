@@ -187,7 +187,7 @@ const PROMO_DATE_FORMAT = new Intl.DateTimeFormat("id-ID", {
 export function getPromoTimestamp(promo: Promo, now: Date, badge: PromoBadge): PromoTimestamp {
   const { end } = resolvePeriod(promo);
 
-  if (now.getTime() > end.getTime()) return { kind: "expired" };
+  if (now.getTime() >= end.getTime()) return { kind: "expired" };
 
   if (badge.key === "almostEnd") {
     // Ceil (not round) so a few minutes left still reads as "1 jam" rather than

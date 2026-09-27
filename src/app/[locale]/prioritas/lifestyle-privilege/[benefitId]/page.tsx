@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import Navbar from "@/components/home/Navbar";
+import BackToTop from "@/components/home/BackToTop";
 import PrioritasDetailExperience from "@/components/prioritas/PrioritasDetailExperience";
-import PrioritasDetailSubnav from "@/components/prioritas/PrioritasDetailSubnav";
 import { getPromos } from "@/lib/promos";
 
 type DetailParams = { locale: string; benefitId: string };
@@ -28,17 +27,16 @@ export default async function LifestylePrivilegeDetailPage({ params }: { params:
 
   return (
     <main id="main-content" className="flex min-h-screen flex-1 flex-col overflow-x-clip bg-pgold-200">
-      <Navbar variant="prioritas" />
-      <PrioritasDetailSubnav
-        label={t("subNavLabel")}
-        privilege={t("subNav.privilege")}
-        banking={t("subNav.banking")}
-        magazine={t("subNav.magazine")}
-      />
       <PrioritasDetailExperience
         promos={promos}
         now={now.toISOString()}
         copy={{
+          subNav: {
+            label: t("subNavLabel"),
+            privilege: t("subNav.privilege"),
+            banking: t("subNav.banking"),
+            magazine: t("subNav.magazine"),
+          },
           breadcrumb: { home: t("breadcrumb.home"), category: t("breadcrumb.category"), current: t("breadcrumb.current") },
           title: t("title"),
           brand: t("brand"),
@@ -52,6 +50,7 @@ export default async function LifestylePrivilegeDetailPage({ params }: { params:
           },
         }}
       />
+      <BackToTop bottomInset="24px" revealAtBottom />
     </main>
   );
 }

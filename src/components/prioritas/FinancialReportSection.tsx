@@ -41,13 +41,13 @@ export default function FinancialReportSection({ copy }: { copy: Copy }) {
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-[600px] w-full max-w-[1280px] flex-col px-4 py-10 xl:min-h-[640px] xl:px-0 xl:py-20">
+      <div className="relative z-10 mx-auto flex min-h-[600px] w-full max-w-[1280px] flex-col px-4 py-12 xl:min-h-[640px] xl:px-0 xl:py-20">
         <header className="flex flex-col gap-6 xl:flex-row xl:items-start xl:gap-10">
-          <p className="text-eyebrow uppercase text-pgold-300 xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-lg">{copy.eyebrow}</p>
+          <p className="text-eyebrow uppercase leading-[120%] text-pgold-300 xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-lg">{copy.eyebrow}</p>
           <h2 className="text-heading max-w-[560px] text-pgold-100 xl:text-display">{copy.heading}</h2>
         </header>
 
-        <div className="mx-auto mt-auto flex w-full max-w-[752px] flex-col items-start gap-6 xl:mt-40 xl:gap-12">
+        <div className="mx-auto mt-auto flex w-full max-w-[752px] flex-col items-start gap-6 xl:ml-[220px] xl:mr-0 xl:mt-40 xl:gap-12">
           <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3">
             {copy.features.map((feature, index) => (
               <div

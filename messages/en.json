@@ -685,6 +685,37 @@
       ]
     }
   },
+  "memberLogin": {
+    "pageTitle": "BCA Solitaire and Prioritas Login",
+    "backHome": "Back to Homepage",
+    "brandsLabel": "BCA Solitaire and BCA Prioritas",
+    "language": "Choose language",
+    "methodLabel": "Login method",
+    "bcaId": "BCA ID",
+    "email": "Email",
+    "intro": "Enter your BCA ID and password to access BCA Solitaire / Prioritas services",
+    "bcaIdHelpLabel": "BCA ID information",
+    "bcaIdHelp": "Enter the BCA ID registered with BCA services.",
+    "bcaIdLengthError": "BCA ID must be 6-21 characters long.",
+    "emailFormatError": "Enter a valid email address.",
+    "credentialsError": "The email or password you entered is incorrect.",
+    "systemError": "Login could not be processed. Please try again in a few moments.",
+    "viewDetails": "View Details",
+    "bcaIdPlaceholder": "Enter your BCA ID",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "forgotPassword": "Forgot Password",
+    "submit": "Sign in",
+    "noAccount": "Don't have an account?",
+    "register": "Register",
+    "registerEmail": "Register with email",
+    "noBcaId": "Don't have a BCA ID?",
+    "tutorial": "View Tutorial",
+    "prototypeNotice": "This is a design preview. Sign in and account help are not connected yet."
+  },
   "login": {
     "heading": "BCA Homepage Revamp",
     "subheading": "Enter the password to continue",
@@ -1247,6 +1278,13 @@
       "magazine": "e-Magazine",
       "financialReport": "Financial Report"
     },
+    "contact": {
+      "heading": "We're ready to support your next steps.",
+      "riplayTitle": "Product and Service Information Summary (RIPLAY)",
+      "download": "Download Document",
+      "contactTitle": "Contact Us",
+      "phone": "Call 150022"
+    },
     "privilege": {
       "eyebrow": "Privilege",
       "heading": "Exclusive Access for Every Step of Your Journey",
@@ -1300,7 +1338,10 @@
       "action": "Learn More",
       "buy": "Buy",
       "sell": "Sell",
-      "updatedAt": "Last updated 03 June 2026 12.47 WIB",
+      "updatedAt": "Last updated {date}",
+      "refresh": "Refresh exchange rates",
+      "previous": "Previous exchange rate",
+      "next": "Next exchange rate",
       "cards": {
         "branch": { "title": "Specialized Services at BCA Branches", "alt": "Specialized services at BCA branches" },
         "vehicle": { "title": "Motor Vehicle Loan (KKB)", "alt": "Motor vehicle loan" },
@@ -1351,10 +1392,14 @@
     "subNav": { "privilege": "Privilege", "banking": "Banking Solution", "magazine": "e-Magazine" },
     "breadcrumb": "Signature Privilege",
     "title": "Exceptional Access Present at Every Step of Your Journey",
+    "eventPromoTitle": "Hundreds of Experiences & Exclusive Offers for You",
     "tabLabel": "Privilege categories",
     "tabs": { "signature": "Signature Privilege", "lifestyle": "Lifestyle Privilege", "event": "Event", "promo": "Promo" },
     "description": "Exclusive services and benefits designed for your every need.",
+    "lifestyleDescription": "Special offers and exclusive benefits to enjoy a variety of lifestyle experiences.",
     "more": "Learn more",
+    "showAllSignature": "View All Privileges",
+    "showLessSignature": "Show Fewer Privileges",
     "signature": {
       "lounge": { "title": "Executive Airport Lounge" },
       "transfer": { "title": "Domestic Airport Transfer" },
@@ -1363,8 +1408,9 @@
     },
     "complimentary": {
       "title": "Complimentary",
-      "subtitle": "Limited availability. Simply show your Prioritas card.",
+      "subtitle": "No additional cost. Simply show your Prioritas card.",
       "birthday": "Birthday Gift",
+      "viewList": "View Complimentary List",
       "cards": {
         "valet": { "title": "Complimentary Valet Parking", "brand": "Han Palace Restaurant" },
         "inpatient": { "title": "Complimentary meal for VVIP inpatient companion", "brand": "Altos Hospital" },
@@ -1377,12 +1423,78 @@
         "jewelry": { "title": "Exclusive Jewelry Box valued at Rp500 thousand", "brand": "Semar Nusantara" }
       }
     },
-    "categories": { "all": "All", "beauty": "Beauty", "culinary": "Culinary", "health": "Health", "lifestyle": "Lifestyle" },
+    "categories": { "all": "All", "beauty": "Beauty", "culinary": "Culinary", "health": "Health", "travel": "Travel", "lifestyle": "Lifestyle", "education": "Education", "home": "Home & Living", "business": "Business" },
     "searchLabel": "Search benefits",
     "searchPlaceholder": "Search brand/partner",
     "showing": "Showing {count} offers",
     "empty": "No matching offers.",
-    "paginationLabel": "Benefit pages"
+    "paginationLabel": "Benefit pages",
+    "paginationSummary": "Data {from}-{to} of {total}",
+    "paginationPrevious": "Previous page",
+    "paginationNext": "Next page",
+    "eventDateExpired": "Event ended",
+    "eventDirectory": {
+      "paginationLabel": "Event pages",
+      "categories": { "lifestyle": "Lifestyle & Sports", "networking": "Seminar & Networking", "arts": "Arts & Culture", "culinary": "Culinary & Dining" },
+      "period": "All Time",
+      "upcoming": "Upcoming Events",
+      "sort": "Newest Date",
+      "oldest": "Oldest Date",
+      "showing": "Showing {count} events",
+      "empty": "No matching events."
+    }
+  },
+  "prioritasContentDetail": {
+    "fallback": {
+      "description": "Details for {title} are not yet available.",
+      "terms": "Terms and conditions are not yet available.",
+      "contact": "Contact information is not yet available.",
+      "location": "Location information is not yet available."
+    },
+    "event": {
+      "breadcrumb": "Event",
+      "recommendations": "More Recommended Events",
+      "sothebys": {
+        "title": "Charity Art Auction for Indonesian Children's Education",
+        "detail": "Enjoy exclusive access to a charity art auction with Sotheby's, featuring world-class artwork while supporting children's education in Indonesia.",
+        "terms": [
+          "Show a physical BCA Solitaire/Prioritas card or a digital card in myBCA/BCA mobile.",
+          "Pay with a BCA Solitaire/Prioritas Card, BCA Credit Card, or QRIS via BCA mobile/myBCA.",
+          "RSVP three days in advance through Sotheby's Indonesia Customer Service at 0812 3456 7890 (WhatsApp Chat). Places are limited and subject to availability.",
+          "This privilege cannot be redeemed for cash or transferred.",
+          "Valid according to the event schedule."
+        ],
+        "contact": "Sotheby's Indonesia Customer Service: 0812 3456 7890 (WhatsApp Chat)."
+      },
+      "recommendationCards": {
+        "christies": { "title": "Private Viewing of Classical Paintings with an Expert Curator", "brand": "Christie's" },
+        "symphony": { "title": "Symphony Gala with International Musicians", "brand": "Jakarta Symphony Orchestra" }
+      }
+    },
+    "promo": {
+      "breadcrumb": "Promo",
+      "recommendations": "More Recommended Promos",
+      "endedOn": "Ended {date}",
+      "porsche": {
+        "detail": "Experience Porsche's iconic design and performance firsthand through an exclusive test drive accompanied by the Porsche Center Jakarta team.",
+        "terms": [
+          "Show a physical BCA Solitaire/Prioritas card or a digital card in myBCA/BCA mobile.",
+          "Reservations must be made three days in advance through Porsche Center Jakarta Customer Service at 0812 3456 7890 (WhatsApp Chat).",
+          "Bring a valid Class A driver's license.",
+          "Test drive places are limited each day and subject to vehicle availability.",
+          "This privilege cannot be redeemed for cash or transferred.",
+          "Valid at Porsche Center Jakarta during the promo period."
+        ],
+        "contact": "Porsche Center Jakarta Customer Service: 0812 3456 7890 (WhatsApp Chat).",
+        "location": "Porsche Center Jakarta"
+      },
+      "samples": {
+        "porsche": { "title": "Experience Porsche: Enjoy an Exclusive Test Drive", "brand": "Porsche" },
+        "mercedes": { "title": "Exclusive Test Drive of the Latest Mercedes-Benz on a Private Circuit", "brand": "Mercedes-Benz" },
+        "landRover": { "title": "Exclusive Preview and Test Drive of the All-New Range Rover in Jakarta", "brand": "Land Rover" },
+        "audi": { "title": "Explore the Latest Audi Performance with an Exclusive Test Drive", "brand": "Audi" }
+      }
+    }
   },
   "lifestylePrivilegeDetail": {
     "subNavLabel": "Prioritas navigation",
@@ -1411,6 +1523,134 @@
         "sisley": { "title": "Experience an Exclusive Signature Facial Treatment, Enjoy Up to 20% Off", "brand": "Sisley Paris", "alt": "Sisley Paris skincare products" },
         "skii": { "title": "Red Carpet Glow Treatment (Rp1.8 million) + Welcoming Massage + Light Extraction", "brand": "SK-II Boutique Spa", "alt": "SK-II Boutique Spa facial treatment" },
         "shiseido": { "title": "Enjoy a Complimentary Skin Analysis with Ultimune Serum", "brand": "Shiseido", "alt": "Shiseido Ultimune Serum" }
+      }
+    }
+  },
+  "magazineIndex": {
+    "breadcrumb": "e-Magazine",
+    "title": "Here for Those Who Never Stop Growing",
+    "paginationLabel": "e-Magazine pages",
+    "readNow": "Read Now",
+    "coverAlt": "Cover of {title}",
+    "empty": "No e-Magazine issues are available yet."
+  },
+  "bankingSolutionIndex": {
+    "breadcrumb": "Banking Solution",
+    "title": "Specialized Banking Services for Your Life Journey",
+    "tabLabel": "Banking Solution categories",
+    "clusters": {"cards":"Cards & Payments","financing":"Financing & Protection","transactions":"Transactions & Foreign Exchange","personal":"Personal Services"},
+    "previousCards": "Previous card in {cluster}",
+    "nextCards": "Next card in {cluster}",
+    "tabs": {
+      "privilege": "Banking Privilege",
+      "wealth": "Wealth Insight"
+    },
+    "more": "Learn More",
+    "groups": {
+      "house": "House View Report",
+      "market": "Weekly Market Overview"
+    },
+    "calendarAction": "Add to Calendar",
+    "downloadAction": "Download PDF",
+    "privilege": {
+      "jcb": "JCB Welcome Bonus",
+      "vehicle": "Vehicle Loan (KKB)",
+      "branch": "Special Services at BCA Branches",
+      "insurance": "Insurance",
+      "fees": "Special Transaction Fees",
+      "transaction": "Special Transaction Features & Services",
+      "media": "Information Media",
+      "advisor": "Special Services at BCA Branches",
+      "family": "Special Services at BCA Branches",
+      "contact": "Contact Center",
+      "credit": "BCA Credit Card",
+      "home": "Home Loan",
+      "motorcycle": "Motorcycle Loan",
+      "merchant": "BCA EDC Merchant",
+      "deposit": "Safe Deposit Box",
+      "forex": "Foreign Exchange"
+    },
+    "insight": {
+      "portfolio": {
+        "title": "June 2025 House View - Portfolio Strategy Amid a Rate-Cutting Cycle",
+        "date": "Wednesday, 16 June 2026 · 14:00 WIB",
+        "channel": "Live on YouTube",
+        "alt": "Ice floating in polar waters"
+      },
+      "inflation": {
+        "title": "June 2025 House View - Impact of the US-Iran War on Inflation and Economic Growth",
+        "date": "16 April 2026",
+        "alt": "Iceberg beneath the sea surface"
+      },
+      "oil": {
+        "title": "May 2025 House View - Impact of US-Iran Talks on Oil Prices and Global Inflation",
+        "date": "16 May 2026",
+        "alt": "Hot air balloons in the sky"
+      },
+      "house0908": {
+        "title": "US Inflation and the Fed’s Hawkish Stance Lift UST Yields",
+        "date": "8 September 2026",
+        "alt": "Autumn leaves in sunlight"
+      },
+      "house0804": {
+        "title": "Cooling US Inflation, Global Risks and China’s Slowdown Weigh on Markets",
+        "date": "4 August 2026",
+        "alt": "A green forest with a stream"
+      },
+      "house0701": {
+        "title": "US Inflation and Iran Conflict Raise Rate-Hike Expectations",
+        "date": "1 July 2026",
+        "alt": "Glacier ice across polar waters"
+      },
+      "house0608": {
+        "title": "US-Iran Conflict Keeps Oil High and Central Banks Turning to Rate Hikes",
+        "date": "8 June 2026",
+        "alt": "Hot air balloons in the sky"
+      },
+      "crossroads": {
+        "title": "Weekly Market Overview: Between De-escalation and Stagflation, Global Markets at a Crossroads",
+        "date": "2 June 2026",
+        "alt": "Red world map"
+      },
+      "global": {
+        "title": "Weekly Market Overview: Stagflation and Strategic Opportunities in Global Markets",
+        "date": "29 May 2026",
+        "alt": "Globe showing world regions"
+      },
+      "insights": {
+        "title": "Weekly Market Insights: Stagflation and De-escalation, Indonesia Faces Dual Challenges",
+        "date": "22 May 2026",
+        "alt": "Binoculars on a table"
+      },
+      "weekly0921": {
+        "title": "The Fed Resumes Rate Hikes, Lifting the Dollar and UST Yields",
+        "date": "21 September 2026",
+        "alt": "An investor analyzing financial market reports"
+      },
+      "weekly0914": {
+        "title": "Oil and Persistent Inflation Push UST Yields Near 5%",
+        "date": "14 September 2026",
+        "alt": "A globe showing a world map"
+      },
+      "weekly0907": {
+        "title": "US-Iran Tensions and Jobs Data Fuel Fed Rate-Hike Bets",
+        "date": "7 September 2026",
+        "alt": "Cargo containers being handled at a port"
+      },
+      "weekly0831": {
+        "title": "Geopolitics and Inflation Lift the Dollar and Short-Term UST Yields",
+        "date": "31 August 2026",
+        "alt": "Documents and reports on a desk"
+      },
+      "weekly0824": {
+        "title": "Middle East and US Fiscal Risks Push UST Yields Higher",
+        "date": "24 August 2026",
+        "alt": "A truck carrying a shipping container"
+      },
+      "weekly0818": {
+        "title": "US Inflation Eases, but UST Auction Yields Hit a 25-Year High",
+        "date": "18 August 2026",
+        "alt": "Binoculars on a table"
       }
     }
   },

@@ -12,7 +12,7 @@ export default function CardSection({
   };
 }) {
   return (
-    <section id="card" className="relative isolate h-[480px] overflow-hidden bg-pbrown-700 text-pgold-100 xl:h-[480px]">
+    <section id="card" className="relative isolate h-[560px] overflow-hidden bg-pbrown-700 text-pgold-100 xl:h-[480px]">
       <div aria-hidden="true" className="absolute bottom-0 left-1/2 -z-10 h-[300px] w-[932px] -translate-x-1/2 xl:bottom-auto xl:top-0 xl:h-full xl:w-[1512px]">
         <img
           src="/assets/prioritas/card/prio-card.webp"
@@ -25,13 +25,13 @@ export default function CardSection({
         <img src="/assets/prioritas/card/prio-glow.png" alt="" className="absolute -right-[390px] -top-[320px] h-[800px] w-[939px] max-w-none xl:-right-[120px] xl:-top-[320px]" />
         <img src="/assets/prioritas/card/prio-glow.png" alt="" className="absolute -bottom-[320px] -left-[390px] h-[800px] w-[939px] max-w-none rotate-180 xl:-bottom-[320px] xl:-left-[120px]" />
       </div>
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1280px] items-start px-4 pt-16 xl:px-10 xl:pt-16">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1280px] items-start px-4 py-12 xl:px-10 xl:pt-16 xl:pb-0">
         <div className="flex w-full max-w-[500px] flex-col items-start gap-6">
           <div className="flex flex-col items-start gap-4">
             <p className="text-heading max-w-[400px] text-pgold-100 xl:text-display">{copy.heading}</p>
-            <p className="max-w-[460px] text-sm leading-5 text-pgold-100/80 xl:text-xl xl:leading-[1.5]">{copy.description}</p>
+            <p className="max-w-[460px] text-base leading-7 text-wrap-pretty text-pgold-100/80">{copy.description}</p>
           </div>
-          <Link href="/prioritas" className="inline-flex items-center gap-0.5 text-sm font-semibold leading-5 text-pgold-300 transition-colors hover:text-pgold-100 xl:text-base xl:leading-4">
+          <Link href="/prioritas" className="inline-flex items-center gap-0.5 text-base font-semibold leading-5 text-pgold-300 transition-colors hover:text-pgold-100 xl:leading-4">
             <span className="px-0.5">{copy.action}</span>
             <img src="/assets/prioritas/card/arrow-right.svg" alt="" aria-hidden="true" className="size-5" />
           </Link>

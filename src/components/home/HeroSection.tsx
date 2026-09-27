@@ -22,19 +22,17 @@ type HeroTheme = (typeof HERO_THEMES)[number];
  *  on desktop where the hero has more room for a prominent CTA. */
 function HeroCta({ label, icon, variant, tone = "default" }: SlideCta) {
   const solitaire = tone === "solitaire";
+  const prioritas = tone === "prioritas";
+  const brandedHero = solitaire || prioritas;
   return (
     <div className="group/cta relative inline-flex items-start gap-3">
       <button
-        className={`relative flex h-10 items-center justify-center gap-1 px-0 text-sm font-semibold underline-offset-4 transition-[color,transform] duration-200 hover:underline active:scale-95 xl:h-12 xl:gap-1 xl:rounded-full xl:border-transparent xl:px-6 xl:text-base xl:no-underline xl:duration-300 xl:active:scale-100 ${solitaire ? "text-white xl:bg-white xl:text-pbrown-600 xl:hover:bg-neutral-100" : `text-white ${variant === "primary" ? "xl:bg-primary xl:hover:bg-primary-hover" : "xl:bg-black/50 xl:hover:bg-black/70"}`}`}
+        className={`relative flex items-center justify-center gap-1 font-semibold transition-[color,transform] duration-300 active:scale-95 ${prioritas ? "h-12 rounded-full bg-neutral-100 px-6 text-base text-pbrown-600 no-underline hover:bg-neutral-200" : solitaire ? "h-12 rounded-full bg-white px-6 text-base text-pbrown-600 no-underline hover:bg-neutral-100" : `h-10 px-0 text-sm text-white underline-offset-4 hover:underline xl:h-12 xl:rounded-full xl:px-6 xl:text-base xl:no-underline ${variant === "primary" ? "xl:bg-primary xl:hover:bg-primary-hover" : "xl:bg-black/50 xl:hover:bg-black/70"}`}`}
       >
-        <span className={`px-0.5 text-sm font-semibold ${solitaire ? "text-pbrown-600" : "text-white"} xl:text-base`}>
+        <span className={`px-0.5 text-base font-semibold ${brandedHero ? "text-pbrown-600" : "text-white"}`}>
           {label}
         </span>
-        <img
-          src={icon}
-          alt=""
-          className={`size-5 ${solitaire ? "brightness-0 invert xl:brightness-0 xl:invert-0" : "brightness-0 invert"}`}
-        />
+        {prioritas ? <span aria-hidden className="size-5 shrink-0 bg-pbrown-600" style={{ maskImage: `url(${icon})`, WebkitMaskImage: `url(${icon})`, maskRepeat: "no-repeat", WebkitMaskRepeat: "no-repeat", maskPosition: "center", WebkitMaskPosition: "center", maskSize: "contain", WebkitMaskSize: "contain" }} /> : <img src={icon} alt="" className={`size-5 ${solitaire ? "brightness-0 invert xl:brightness-0 xl:invert-0" : "brightness-0 invert"}`} />}
       </button>
     </div>
   );
@@ -63,6 +61,8 @@ export default function HeroSection({
   const live = useIsLive(rootRef);
   const touchStartX = useRef<number | null>(null);
   const lenis = useLenis();
+  const solitaireHero = slides[activeSlide].cta.tone === "solitaire";
+  const brandedHero = slides[activeSlide].cta.tone === "prioritas" || solitaireHero;
 
   useEffect(() => {
     pausedRef.current = paused || hoveringActive;
@@ -186,7 +186,7 @@ export default function HeroSection({
             alt={slide.alt}
             fetchPriority={i === 0 ? "high" : "low"}
             decoding={i === 0 ? "sync" : "async"}
-            className="absolute inset-0 size-full object-cover transition-opacity duration-700 ease-in-out"
+            className={`absolute inset-0 size-full object-cover transition-opacity duration-700 ease-in-out ${slide.cta.tone === "prioritas" ? "object-[calc(50%_-_200px)_center] md:object-center" : "object-center"}`}
             style={{ opacity: i === activeSlide ? 1 : 0 }}
           />
         ))}
@@ -213,19 +213,19 @@ export default function HeroSection({
       />
 
       <div className="absolute inset-x-4 bottom-10 z-20 xl:left-1/2 xl:right-auto xl:top-auto xl:bottom-10 xl:w-[1280px] xl:-translate-x-1/2">
-        <div className="flex flex-col items-start gap-5 xl:gap-8">
+        <div className="flex flex-col items-start gap-6 xl:gap-8">
           <div
             key={activeSlide}
-            className="flex w-[280px] flex-col items-start gap-2 xl:w-[560px] xl:gap-6"
+            className="flex w-[280px] flex-col items-start gap-4 xl:w-[560px] xl:gap-6"
           >
             {slides[activeSlide].brandMark ? (
               <img
                 src={slides[activeSlide].brandMark.src}
                 alt={slides[activeSlide].brandMark.alt}
-                className="h-12 w-auto animate-hero-title object-contain"
+                className="h-10 w-auto animate-hero-title object-contain"
               />
             ) : null}
-            <h1 className="animate-hero-title max-w-[240px] text-2xl font-semibold leading-7 tracking-[-0.4px] text-white text-shadow-hero xl:line-clamp-2 xl:max-w-none xl:text-[clamp(36px,5svh,40px)] xl:leading-[clamp(44px,6svh,48px)] xl:tracking-[-0.8px] xl:text-shadow-none">
+            <h1 className={`animate-hero-title ${solitaireHero ? "max-w-[260px]" : "max-w-[240px]"} font-semibold text-white text-shadow-hero ${brandedHero ? (slides[activeSlide].cta.tone === "prioritas" ? "text-hero-title-mobile" : "text-display") : "text-2xl leading-7 tracking-[-0.4px]"} xl:line-clamp-2 xl:max-w-none xl:text-[clamp(36px,5svh,40px)] xl:leading-[clamp(44px,6svh,48px)] xl:tracking-[-0.8px] xl:text-shadow-none`}>
               {slides[activeSlide].title}
             </h1>
             <div className="animate-hero-cta">

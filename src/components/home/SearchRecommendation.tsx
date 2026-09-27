@@ -237,6 +237,7 @@ type Props = {
    */
   maxHeight?: string;
   screen?: boolean;
+  prioritas?: boolean;
 };
 
 export default function SearchRecommendation({
@@ -250,8 +251,11 @@ export default function SearchRecommendation({
   compact = false,
   maxHeight,
   screen = false,
+  prioritas = false,
 }: Props) {
   const t = useTranslations("search");
+  const accentText = prioritas ? "text-pbrown-500" : "text-blue-500";
+  const accentBorder = prioritas ? "hover:border-pbrown-500" : "hover:border-blue-500";
   const { products, information, program, order } = recommendations;
   const isEmpty = keyword.trim() === "";
   const hasResults = products.length > 0 || information.length > 0 || program.length > 0;
@@ -291,7 +295,7 @@ export default function SearchRecommendation({
                 <button
                   type="button"
                   onClick={onClearRecent}
-                  className="text-sm font-semibold text-blue-500 hover:underline"
+                  className={`text-sm font-semibold ${accentText} hover:underline`}
                 >
                   {t("clearAll")}
                 </button>
@@ -300,7 +304,7 @@ export default function SearchRecommendation({
                 {recent.map((term) => (
                   <span
                     key={term}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-neutral-300 py-1.5 pl-3.5 pr-2 transition-colors hover:border-blue-500 hover:bg-blue-100"
+                    className={`inline-flex items-center gap-1.5 rounded-full border border-neutral-300 py-1.5 pl-3.5 pr-2 transition-colors ${accentBorder} hover:bg-blue-100`}
                   >
                     <button
                       type="button"
@@ -332,7 +336,7 @@ export default function SearchRecommendation({
                   key={id}
                   type="button"
                   onClick={() => onSelectQuery(keyword)}
-                  className="inline-flex items-center rounded-full border border-neutral-300 px-3.5 py-1.5 text-sm font-semibold text-neutral-800 transition-colors hover:border-blue-500 hover:bg-blue-100 hover:text-blue-500"
+                  className={`inline-flex items-center rounded-full border border-neutral-300 px-3.5 py-1.5 text-sm font-semibold text-neutral-800 transition-colors ${accentBorder} hover:bg-blue-100 ${prioritas ? "hover:text-pbrown-500" : "hover:text-blue-500"}`}
                 >
                   {t(`popular.${id}`)}
                 </button>
@@ -352,16 +356,17 @@ export default function SearchRecommendation({
                   label={t("relatedProducts")}
                   viewAllLabel={t("viewAll")}
                   seeAllUrl={seeAllUrl}
+                  prioritas={prioritas}
                 />
               ) : null;
             }
             if (sectionKey === "program") {
               return program.length > 0 ? (
-                <ProgramSection key="program" program={program} compact={compact} label={t("relatedProgram")} />
+                <ProgramSection key="program" program={program} compact={compact} label={t("relatedProgram")} prioritas={prioritas} />
               ) : null;
             }
             return information.length > 0 ? (
-              <InfoSection key="information" items={information} compact={compact} label={t("relatedInfo")} t={t} />
+              <InfoSection key="information" items={information} compact={compact} label={t("relatedInfo")} t={t} prioritas={prioritas} />
             ) : null;
           })}
         </div>
@@ -393,7 +398,7 @@ export default function SearchRecommendation({
             href={seeAllUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={`flex flex-1 items-center gap-3 text-sm font-semibold text-blue-500 transition-colors hover:bg-blue-100 ${
+            className={`flex flex-1 items-center gap-3 text-sm font-semibold ${accentText} transition-colors hover:bg-blue-100 ${
               compact ? "p-3.5" : "p-5"
             }`}
           >
@@ -413,7 +418,7 @@ export default function SearchRecommendation({
             <HeadphoneIcon className="size-6 shrink-0 text-neutral-800" />
             <span className={`flex gap-1 ${compact ? "flex-col items-start" : "items-center"}`}>
               <span className="text-sm font-semibold text-neutral-800">{t("needHelp")}</span>
-              <span className="flex items-center gap-0.5 text-sm font-semibold text-blue-500">
+              <span className={`flex items-center gap-0.5 text-sm font-semibold ${accentText}`}>
                 {t("visitHelpCenter")}
                 <ArrowDiagonalIcon className="size-5 shrink-0" />
               </span>
@@ -436,9 +441,11 @@ type ProductsSectionProps = {
   label: string;
   viewAllLabel: string;
   seeAllUrl: string;
+  prioritas: boolean;
 };
 
-function ProductsSection({ products, compact, label, viewAllLabel, seeAllUrl }: ProductsSectionProps) {
+function ProductsSection({ products, compact, label, viewAllLabel, seeAllUrl, prioritas }: ProductsSectionProps) {
+  const accentText = prioritas ? "text-pbrown-500" : "text-blue-500";
   return (
     <section className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
@@ -447,7 +454,7 @@ function ProductsSection({ products, compact, label, viewAllLabel, seeAllUrl }: 
           href={seeAllUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-0.5 text-sm font-semibold text-blue-500 hover:underline"
+          className={`flex items-center gap-0.5 text-sm font-semibold ${accentText} hover:underline`}
         >
           {viewAllLabel}
           <ArrowDiagonalIcon className="size-5" />
@@ -483,7 +490,7 @@ function ProductsSection({ products, compact, label, viewAllLabel, seeAllUrl }: 
                         />
                       ) : (
                         <span
-                          className={`flex shrink-0 items-center justify-center bg-cyan-100 text-blue-500 ${
+                          className={`flex shrink-0 items-center justify-center bg-cyan-100 ${prioritas ? "text-pbrown-500" : "text-blue-500"} ${
                             compact ? "size-8 rounded-lg" : "size-10 rounded-xl"
                           }`}
                         >
@@ -492,7 +499,7 @@ function ProductsSection({ products, compact, label, viewAllLabel, seeAllUrl }: 
                       )}
                       <div className={`flex min-w-0 flex-col ${compact ? "gap-1" : "gap-1.5"}`}>
                         <p
-                          className={`font-semibold text-neutral-800 group-hover:text-blue-500 ${
+                      className={`font-semibold text-neutral-800 ${prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"} ${
                             compact ? "text-sm" : "truncate text-base"
                           }`}
                         >
@@ -518,12 +525,13 @@ type ProgramSectionProps = {
   program: ProgramRec[];
   compact: boolean;
   label: string;
+  prioritas: boolean;
 };
 
 /** Same card layout as ProductsSection, but led by the campaign's own key art
  * instead of a generic category icon — a concert presale reads better with
  * its poster than with a wallet icon. */
-function ProgramSection({ program, compact, label }: ProgramSectionProps) {
+function ProgramSection({ program, compact, label, prioritas }: ProgramSectionProps) {
   return (
     <section className="flex flex-col gap-3">
       <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{label}</p>
@@ -547,7 +555,7 @@ function ProgramSection({ program, compact, label }: ProgramSectionProps) {
             />
             <div className={`flex min-w-0 flex-col gap-1.5 ${compact ? "px-3 pb-3" : "px-4"}`}>
               <p
-                className={`font-semibold text-neutral-800 group-hover:text-blue-500 ${
+                className={`font-semibold text-neutral-800 ${prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"} ${
                   compact ? "text-sm" : "truncate text-base"
                 }`}
               >
@@ -569,9 +577,10 @@ type InfoSectionProps = {
   compact: boolean;
   label: string;
   t: ReturnType<typeof useTranslations>;
+  prioritas: boolean;
 };
 
-function InfoSection({ items, compact, label, t }: InfoSectionProps) {
+function InfoSection({ items, compact, label, t, prioritas }: InfoSectionProps) {
   return (
     <section className="flex flex-col gap-3">
       <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{label}</p>
@@ -587,7 +596,7 @@ function InfoSection({ items, compact, label, t }: InfoSectionProps) {
                 {/* Mobile has no room for the badge, so the title wraps
                     across the full row instead of truncating. */}
                 <span
-                  className={`min-w-0 flex-1 text-sm font-semibold text-neutral-800 transition-colors duration-200 group-hover:text-blue-500 ${
+                  className={`min-w-0 flex-1 text-sm font-semibold text-neutral-800 transition-colors duration-200 ${prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"} ${
                     compact ? "" : "truncate"
                   }`}
                 >

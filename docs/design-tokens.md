@@ -57,6 +57,7 @@ this design those four are never chosen independently.
 | `--text-subtitle` | 18px | 26px | −0.36px (−0.02em) | 600 |
 | `--text-title` | 20px | 28px | −0.4px (−0.02em) | 600 |
 | `--text-heading` | 24px | 32px | −0.48px (−0.02em) | 600 |
+| `--text-hero-title-mobile` | 28px | 36px | −0.56px (−0.02em) | 600 |
 | `--text-display` | 32px | 40px | −0.64px (−0.02em) | 600 |
 
 **The derivation rule** — this is the part worth remembering, because it's

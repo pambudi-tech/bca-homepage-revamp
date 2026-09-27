@@ -2,7 +2,7 @@ export type SlideCta = {
   label: string;
   icon: string;
   variant: "primary" | "secondary";
-  tone?: "default" | "solitaire";
+  tone?: "default" | "solitaire" | "prioritas";
 };
 export type Slide = {
   image: string;

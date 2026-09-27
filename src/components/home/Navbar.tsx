@@ -1,23 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { Link, usePathname, useRouter } from "@/i18n/navigation";
-import { routing, type AppLocale } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import type { ProductCategory } from "./product-data";
 import type { MegaMenuContent } from "@/lib/megamenu";
 import type { Promo } from "./promo-data";
 import MobileNav from "./MobileNav";
 import SearchOverlay from "./SearchOverlay";
 import SearchPlaceholderCarousel from "./SearchPlaceholderCarousel";
+import LocaleSwitcher from "@/components/ui/LocaleSwitcher";
 import { SEGMENT_EXTERNAL_LINKS, SEGMENT_INTERNAL_LINKS } from "./segment-links";
 import type { SearchSegment } from "./search-data";
-
-const LOCALE_META: Record<AppLocale, { flag: string }> = {
-  id: { flag: "/assets/cycle1/flag-id.svg" },
-  en: { flag: "/assets/navbar/flag-en.png" },
-  zh: { flag: "/assets/navbar/flag-zh.png" },
-};
 
 export const NAVBAR_VISIBILITY_EVENT = "bca:navbar-hidden";
 export const NAVBAR_ANCHOR_LOCK_EVENT = "bca:navbar-anchor-lock";
@@ -56,27 +50,21 @@ function LoginIcon({ className = "size-6 shrink-0" }: { className?: string }) {
   );
 }
 
-export default function Navbar({ productCategories, megamenuContent, promoSearchItems, variant = "default" }: { productCategories?: ProductCategory[]; megamenuContent?: MegaMenuContent; /** Passed only by the Promo page, so its navbar search never falls back to the site-wide index. */ promoSearchItems?: Promo[]; variant?: "default" | "about" | "promo" | "prioritas" | "solitaire" }) {
-  const locale = useLocale() as AppLocale;
-  const router = useRouter();
-  const pathname = usePathname();
+export default function Navbar({ productCategories, megamenuContent, promoSearchItems, variant = "default", disableHideShow = false, staticOnMobile = false, keepTransparentOnScroll = false }: { productCategories?: ProductCategory[]; megamenuContent?: MegaMenuContent; /** Passed only by the Promo page, so its navbar search never falls back to the site-wide index. */ promoSearchItems?: Promo[]; variant?: "default" | "about" | "promo" | "prioritas" | "solitaire"; disableHideShow?: boolean; staticOnMobile?: boolean; keepTransparentOnScroll?: boolean }) {
   const tNav = useTranslations("nav");
   const tHero = useTranslations("hero");
-  const tLang = useTranslations("languages");
+  const tLogin = useTranslations("login");
   const segments = Object.keys(tNav.raw("segments")) as string[];
   const tPromo = useTranslations("promoPage");
   const searchPlaceholders = variant === "promo"
     ? tPromo.raw("search.placeholders") as string[]
     : tHero.raw("placeholders") as string[];
-  const otherLocales = routing.locales.filter((item) => item !== locale);
   const [searchOpen, setSearchOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
-  const [langHover, setLangHover] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [navHidden, setNavHidden] = useState(false);
   const [nearPromoSection, setNearPromoSection] = useState(false);
   const [anchorLocked, setAnchorLocked] = useState(false);
-  const langRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
@@ -98,7 +86,7 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
       }
       if (y < 80) setNavHidden(false);
       else if (y > lastScrollY.current + 4) setNavHidden(true);
-      else if (y < lastScrollY.current - 4) setNavHidden(false);
+      else if (disableHideShow || y < lastScrollY.current - 4) setNavHidden(false);
       lastScrollY.current = y;
     };
     const onScroll = () => {
@@ -110,7 +98,7 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
       window.removeEventListener("scroll", onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [variant]);
+  }, [disableHideShow, variant]);
 
   useEffect(() => {
     const lockForAnchor = (event: Event) => {
@@ -135,37 +123,33 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
     };
   }, []);
 
-  const shouldHide = ((navHidden && !(variant === "promo" && nearPromoSection)) || anchorLocked) && !langOpen && !searchOpen;
+  const shouldHide = !disableHideShow && (((navHidden && !(variant === "promo" && nearPromoSection)) || anchorLocked) && !langOpen && !searchOpen);
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent<boolean>(NAVBAR_VISIBILITY_EVENT, { detail: shouldHide }));
   }, [shouldHide]);
 
-  useEffect(() => {
-    const close = (event: MouseEvent) => {
-      if (langRef.current && !langRef.current.contains(event.target as Node)) setLangOpen(false);
-    };
-    document.addEventListener("mousedown", close);
-    return () => document.removeEventListener("mousedown", close);
-  }, []);
-
   const activeSegment = variant === "prioritas" ? "Prioritas" : variant === "solitaire" ? "Solitaire" : variant === "default" ? segments[0] : null;
   const prioritas = variant === "prioritas";
   const solitaire = variant === "solitaire";
+  const logoHref = prioritas ? "/prioritas" : solitaire ? "/solitaire" : "/";
+  const memberLoginHref = prioritas || solitaire ? `/member/login?from=${variant}` : null;
+  const staticPrioritas = prioritas && disableHideShow;
+  const navScrolled = scrolled && !keepTransparentOnScroll;
 
   return (
     <>
-      <MobileNav scrolled={scrolled} hidden={shouldHide} productCategories={productCategories} megamenuContent={megamenuContent} searchOpen={searchOpen} onOpenSearch={() => setSearchOpen(true)} variant={variant} />
+      <MobileNav scrolled={navScrolled} hidden={staticOnMobile ? false : shouldHide} productCategories={productCategories} megamenuContent={megamenuContent} searchOpen={searchOpen} onOpenSearch={() => setSearchOpen(true)} variant={variant} logoHref={logoHref} disableHideShow={disableHideShow || staticOnMobile} />
 
       <nav
         aria-label={tNav("primary")}
         data-hidden={shouldHide}
-        className={`pre-nav fixed inset-x-0 top-0 z-40 hidden h-[72px] transition-transform duration-300 xl:block ${shouldHide ? "-translate-y-full" : "translate-y-0"}`}
+        className={`pre-nav ${staticPrioritas ? "absolute" : "fixed"} inset-x-0 top-0 z-40 hidden h-[72px] transition-transform duration-300 xl:block ${shouldHide ? "-translate-y-full" : "translate-y-0"}`}
       >
-        <div className={`flex h-full w-full items-center justify-center px-10 transition-[background-color,box-shadow] duration-200 ${scrolled ? (prioritas ? "bg-pbrown-800 shadow-lg" : solitaire ? "bg-neutral-900 shadow-lg" : "bg-blue-500 shadow-lg") : "bg-transparent"}`}>
+        <div className={`flex h-full w-full items-center justify-center px-10 transition-[background-color,box-shadow,backdrop-filter] duration-200 ${navScrolled ? (prioritas ? "bg-pbrown-800 shadow-lg" : solitaire ? "bg-neutral-900 shadow-lg" : "bg-blue-500 shadow-lg") : "bg-transparent"}`}>
         <div className="mx-auto flex w-full max-w-[1280px] items-center justify-between">
           <div className="flex items-center gap-5">
-            <Link href="/" aria-label="BCA" className="inline-flex"><img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-9 w-[115px]" /></Link>
+            <Link href={logoHref} aria-label="BCA" className="inline-flex"><img src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-9 w-[115px]" /></Link>
             <div className="flex h-10 items-center rounded-full border border-white/15 bg-black/20 p-1 backdrop-blur-[40px]">
               {segments.map((segment) => {
                 const active = segment === activeSegment;
@@ -183,11 +167,12 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
 
           <div className="flex items-center gap-3">
             <SearchButton label={tNav("search")} placeholders={searchPlaceholders} expanded={searchOpen} onClick={() => setSearchOpen(true)} />
-            <div ref={langRef} className="relative">
-              <button onClick={() => setLangOpen((open) => !open)} onMouseEnter={() => setLangHover(true)} onMouseLeave={() => setLangHover(false)} className={`flex h-10 items-center gap-0.5 rounded-full border px-2 backdrop-blur-[40px] transition-colors ${langHover || langOpen ? "border-neutral-300 bg-white" : "border-white/15 bg-[rgba(5,13,25,0.2)]"}`}><img src={LOCALE_META[locale].flag} alt="" className="size-6 rounded-full object-cover" /><span className={`w-8 text-center text-base font-bold ${langHover || langOpen ? "text-neutral-900" : "text-white"}`}>{locale.toUpperCase()}</span></button>
-              {langOpen ? <div className="absolute right-0 top-12 overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-menu">{otherLocales.map((code) => <button key={code} onClick={() => { setLangOpen(false); router.replace(pathname, { locale: code }); }} className="flex w-36 items-center gap-2 p-4 text-left text-neutral-900 hover:bg-blue-100"><img src={LOCALE_META[code].flag} alt="" className="size-6 rounded-full object-cover" /><span className="font-semibold">{tLang(code)}</span></button>)}</div> : null}
-            </div>
-            <a href="https://mybca.bca.co.id/auth/login" target="_blank" rel="noopener noreferrer" className="group flex h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 text-sm font-semibold text-white backdrop-blur-[40px] transition-colors duration-300 hover:border-blue-500 hover:bg-white hover:text-blue-500"><LoginIcon className="size-6 text-white/80 transition-colors group-hover:text-blue-500" />{tNav("login")}</a>
+            <LocaleSwitcher label={tLogin("languageSwitcher")} onOpenChange={setLangOpen} />
+            {memberLoginHref ? (
+              <Link href={memberLoginHref} className={`group flex h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 text-sm font-semibold text-white backdrop-blur-[40px] transition-colors duration-300 hover:bg-white ${prioritas ? "hover:border-pbrown-500 hover:text-pbrown-500" : "hover:border-blue-500 hover:text-blue-500"}`}><LoginIcon className={`size-6 text-white/80 transition-colors ${prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"}`} />{tNav("login")}</Link>
+            ) : (
+              <a href="https://mybca.bca.co.id/auth/login" target="_blank" rel="noopener noreferrer" className="group flex h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 text-sm font-semibold text-white backdrop-blur-[40px] transition-colors duration-300 hover:border-blue-500 hover:bg-white hover:text-blue-500"><LoginIcon className="size-6 text-white/80 transition-colors group-hover:text-blue-500" />{tNav("login")}</a>
+            )}
           </div>
         </div>
         </div>

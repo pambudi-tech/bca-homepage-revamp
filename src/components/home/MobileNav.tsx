@@ -27,6 +27,8 @@ export default function MobileNav({
   searchOpen,
   onOpenSearch,
   variant = "default",
+  logoHref,
+  disableHideShow = false,
 }: {
   scrolled: boolean;
   hidden: boolean;
@@ -38,6 +40,8 @@ export default function MobileNav({
   searchOpen: boolean;
   onOpenSearch: () => void;
   variant?: "default" | "about" | "promo" | "prioritas" | "solitaire";
+  logoHref: string;
+  disableHideShow?: boolean;
 }) {
   const t = useTranslations("mobileMenu");
   const tNav = useTranslations("nav");
@@ -52,11 +56,11 @@ export default function MobileNav({
     <>
     <nav
       aria-label={tNav("primary")}
-      className={`pre-nav fixed left-0 right-0 top-0 z-40 flex h-[calc(4rem+env(safe-area-inset-top))] items-center px-4 py-3 pt-[calc(0.75rem+env(safe-area-inset-top))] transition-[transform,translate,background-color] duration-300 xl:hidden ${variant === "promo" ? "gap-3" : "justify-between"} ${
-        hidden && !menuOpen ? "-translate-y-full" : "translate-y-0"
+      className={`pre-nav ${variant === "prioritas" && disableHideShow ? "absolute" : "fixed"} left-0 right-0 top-0 z-40 flex h-[calc(4rem+env(safe-area-inset-top))] items-center px-4 py-3 pt-[calc(0.75rem+env(safe-area-inset-top))] transition-[transform,translate,background-color] duration-300 xl:hidden ${variant === "promo" ? "gap-3" : "justify-between"} ${
+        !disableHideShow && hidden && !menuOpen ? "-translate-y-full" : "translate-y-0"
       } ${menuOpen ? "bg-[rgba(18,20,23,0.95)]" : scrolled ? (variant === "prioritas" ? "bg-pbrown-800" : variant === "solitaire" ? "bg-neutral-900" : "bg-blue-500") : "bg-transparent"}`}
     >
-      <Link href="/" aria-label="BCA" className="inline-flex">
+      <Link href={logoHref} aria-label="BCA" className="inline-flex">
         <img
           src="/assets/cycle1/bca-logo.svg"
           alt="BCA"
@@ -100,6 +104,7 @@ export default function MobileNav({
       productCategories={productCategories}
       megamenuContent={megamenuContent}
       variant={variant}
+      logoHref={logoHref}
     />
     </>
   );

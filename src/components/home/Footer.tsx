@@ -93,7 +93,7 @@ export default function Footer({ variant = "default" }: { variant?: "default" | 
   );
 
   return (
-    <footer className={`relative overflow-clip pb-[184px] pt-10 xl:pb-8 xl:pt-14 ${variant === "prioritas" ? "bg-pbrown-600" : "bg-blue-500"}`}>
+    <footer className={`relative overflow-clip ${variant === "prioritas" ? "bg-pbrown-600 pt-12 pb-24 xl:pt-14 xl:pb-16" : "bg-blue-500 pt-10 pb-[184px] xl:pt-14 xl:pb-8"}`}>
       <div ref={parallaxRef} className="pointer-events-none absolute inset-0 z-0 overflow-visible mix-blend-multiply" style={{ isolation: "isolate" }}>
         <img loading="lazy" decoding="async" src="/assets/footer/footer-clove-pattern.svg" alt="" aria-hidden className="absolute bottom-[-512px] left-1/2 h-[1879px] w-[2568px] max-w-none -translate-x-[calc(50%+300px)]" />
       </div>
@@ -103,15 +103,15 @@ export default function Footer({ variant = "default" }: { variant?: "default" | 
         <div className="flex flex-col items-start gap-6">
           <img loading="lazy" decoding="async" src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-8 w-[102px]" />
           <div className="flex flex-col gap-2">
-            <p className="text-sm font-semibold text-white">{t("kantorPusat")}</p>
-            <p className="whitespace-pre-line text-xs leading-[18px] text-white/70">{t("alamat")}</p>
+            <p className="text-base font-semibold text-white">{t("kantorPusat")}</p>
+            <p className="whitespace-pre-line text-sm leading-5 text-white/70">{t("alamat")}</p>
           </div>
         </div>
 
         <div className="mt-10 divide-y divide-white/15 border-y border-white/15">
           {linkColumns.map((column) => (
             <details key={column.key} className="group">
-              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 text-sm font-semibold text-white marker:content-none">
+              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 text-base font-semibold text-white marker:content-none">
                 {column.heading}
                 <AccordionChevron />
               </summary>
@@ -119,7 +119,7 @@ export default function Footer({ variant = "default" }: { variant?: "default" | 
             </details>
           ))}
           <details className="group">
-            <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 text-sm font-semibold text-white marker:content-none">
+            <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 text-base font-semibold text-white marker:content-none">
               {t("mediaSocialHeading")}
               <AccordionChevron />
             </summary>

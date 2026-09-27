@@ -1,0 +1,47 @@
+.member-login-light {
+  background-image: url("/assets/member-login/login-background.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.member-login-solitaire {
+  filter: brightness(0);
+}
+
+@media (min-width: 64rem) {
+  .member-login-card {
+    translate: 0 -4%;
+  }
+}
+
+@media (max-width: 639px) {
+  .member-login-header {
+    grid-template-columns: 1fr auto;
+    row-gap: 28px;
+  }
+
+  .member-login-brands {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .member-login-language {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .member-login-back {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .member-login-center {
+    align-items: flex-start;
+    padding-top: 24px;
+  }
+
+  .member-login-footer {
+    margin-top: 48px;
+  }
+}

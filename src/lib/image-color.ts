@@ -19,6 +19,17 @@ export function rgbToCss([r, g, b]: RGB, alpha = 1): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+/** Dark backdrop matched to the image crop shown above a Wealth Insight card. */
+export const getImageBackdropColor = cache(async (publicPath: string): Promise<string> => {
+  const absolute = path.join(process.cwd(), "public", publicPath);
+  const { dominant } = await sharp(absolute)
+    .resize(410, 270, { fit: "cover", position: "centre" })
+    .stats();
+  const { h, s, l } = rgbToHsl(dominant.r, dominant.g, dominant.b);
+  if (s < 0.18) return `hsl(0 0% ${Math.round(Math.min(0.2, Math.max(0.08, l)) * 100)}%)`;
+  return `hsl(${Math.round(h)} ${Math.round(Math.min(0.65, Math.max(0.35, s)) * 100)}% 23%)`;
+});
+
 /** Hue in degrees, plus the saturation and lightness that produced it. */
 function rgbToHsl(r: number, g: number, b: number) {
   const [rn, gn, bn] = [r / 255, g / 255, b / 255];

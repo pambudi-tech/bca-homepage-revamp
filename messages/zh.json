@@ -685,6 +685,37 @@
       ]
     }
   },
+  "memberLogin": {
+    "pageTitle": "BCA Solitaire 和 Prioritas 登录",
+    "backHome": "返回首页",
+    "brandsLabel": "BCA Solitaire 和 BCA Prioritas",
+    "language": "选择语言",
+    "methodLabel": "登录方式",
+    "bcaId": "BCA ID",
+    "email": "电子邮箱",
+    "intro": "请输入您的 BCA ID 和密码，以使用 BCA Solitaire / Prioritas 服务",
+    "bcaIdHelpLabel": "BCA ID 信息",
+    "bcaIdHelp": "请输入您在 BCA 服务中注册的 BCA ID。",
+    "bcaIdLengthError": "BCA ID 长度必须为 6-21 个字符。",
+    "emailFormatError": "请输入有效的电子邮件地址。",
+    "credentialsError": "您输入的电子邮箱或密码不正确。",
+    "systemError": "暂时无法处理登录。请稍后再试。",
+    "viewDetails": "查看详情",
+    "bcaIdPlaceholder": "请输入您的 BCA ID",
+    "emailPlaceholder": "请输入您的电子邮箱",
+    "password": "密码",
+    "passwordPlaceholder": "请输入您的密码",
+    "showPassword": "显示密码",
+    "hidePassword": "隐藏密码",
+    "forgotPassword": "忘记密码",
+    "submit": "登录",
+    "noAccount": "还没有账户？",
+    "register": "注册",
+    "registerEmail": "使用电子邮箱注册",
+    "noBcaId": "还没有 BCA ID？",
+    "tutorial": "查看教程",
+    "prototypeNotice": "这是设计预览。登录和账户帮助尚未连接。"
+  },
   "login": {
     "heading": "BCA Homepage Revamp",
     "subheading": "请输入密码以访问",
@@ -1247,6 +1278,13 @@
       "magazine": "电子杂志",
       "financialReport": "财务报告"
     },
+    "contact": {
+      "heading": "我们随时准备陪伴您迈向下一段旅程。",
+      "riplayTitle": "产品与服务信息摘要（RIPLAY）",
+      "download": "下载文件",
+      "contactTitle": "联系我们",
+      "phone": "拨打 150022"
+    },
     "privilege": {
       "eyebrow": "尊享礼遇",
       "heading": "伴随您人生旅程每一步的尊贵礼遇",
@@ -1300,7 +1338,10 @@
       "action": "了解更多",
       "buy": "买入",
       "sell": "卖出",
-      "updatedAt": "最后更新于 2026年6月3日 12.47 WIB",
+      "updatedAt": "最后更新于 {date}",
+      "refresh": "刷新汇率",
+      "previous": "上一项汇率",
+      "next": "下一项汇率",
       "cards": {
         "branch": { "title": "BCA 分行专属服务", "alt": "BCA 分行专属服务" },
         "vehicle": { "title": "机动车贷款（KKB）", "alt": "机动车贷款" },
@@ -1351,10 +1392,14 @@
     "subNav": { "privilege": "礼遇", "banking": "银行服务", "magazine": "电子杂志" },
     "breadcrumb": "尊享礼遇",
     "title": "每一步旅程，都有尊贵礼遇相伴",
+    "eventPromoTitle": "为您呈献数百种体验与独家优惠",
     "tabLabel": "礼遇类别",
     "tabs": { "signature": "尊享礼遇", "lifestyle": "生活礼遇", "event": "活动", "promo": "优惠" },
     "description": "为满足您的多元需求而设计的专属服务与礼遇。",
+    "lifestyleDescription": "专属优惠与礼遇，让您尽享多元生活方式体验。",
     "more": "了解更多",
+    "showAllSignature": "查看所有礼遇",
+    "showLessSignature": "收起礼遇",
     "signature": {
       "lounge": { "title": "行政机场贵宾厅" },
       "transfer": { "title": "国内机场接送" },
@@ -1363,8 +1408,9 @@
     },
     "complimentary": {
       "title": "免费礼遇",
-      "subtitle": "名额有限，只需出示您的 Prioritas 卡。",
+      "subtitle": "无需额外费用，只需出示您的 Prioritas 卡。",
       "birthday": "生日礼物",
+      "viewList": "查看免费礼遇列表",
       "cards": {
         "valet": { "title": "免费代客泊车", "brand": "Han Palace Restaurant" },
         "inpatient": { "title": "VVIP 住院陪护免费餐点", "brand": "Altos Hospital" },
@@ -1377,12 +1423,78 @@
         "jewelry": { "title": "价值 50 万印尼盾的专属珠宝盒", "brand": "Semar Nusantara" }
       }
     },
-    "categories": { "all": "全部", "beauty": "美容", "culinary": "餐饮", "health": "健康", "lifestyle": "生活方式" },
+    "categories": { "all": "全部", "beauty": "美容", "culinary": "餐饮", "health": "健康", "travel": "旅行", "lifestyle": "生活方式", "education": "教育", "home": "家居生活", "business": "商业" },
     "searchLabel": "搜索礼遇",
     "searchPlaceholder": "搜索品牌或合作伙伴",
     "showing": "显示 {count} 项优惠",
     "empty": "没有符合条件的优惠。",
-    "paginationLabel": "礼遇页面"
+    "paginationLabel": "礼遇页面",
+    "paginationSummary": "第 {from}-{to} 项，共 {total} 项",
+    "paginationPrevious": "上一页",
+    "paginationNext": "下一页",
+    "eventDateExpired": "活动已结束",
+    "eventDirectory": {
+      "paginationLabel": "活动页面",
+      "categories": { "lifestyle": "生活方式与运动", "networking": "研讨会与社交", "arts": "艺术与文化", "culinary": "餐饮与美食" },
+      "period": "所有时间",
+      "upcoming": "即将举办的活动",
+      "sort": "最新日期",
+      "oldest": "最早日期",
+      "showing": "显示 {count} 个活动",
+      "empty": "没有符合条件的活动。"
+    }
+  },
+  "prioritasContentDetail": {
+    "fallback": {
+      "description": "{title}的详细信息尚未提供。",
+      "terms": "条款与条件尚未提供。",
+      "contact": "联系信息尚未提供。",
+      "location": "地点信息尚未提供。"
+    },
+    "event": {
+      "breadcrumb": "活动",
+      "recommendations": "更多推荐活动",
+      "sothebys": {
+        "title": "支持印尼儿童教育的慈善艺术拍卖晚会",
+        "detail": "尊享苏富比慈善艺术拍卖晚会，欣赏世界级艺术作品，并支持印尼儿童教育项目。",
+        "terms": [
+          "出示BCA Solitaire/Prioritas实体卡，或myBCA/BCA mobile中的电子卡。",
+          "使用BCA Solitaire/Prioritas卡、BCA信用卡或通过BCA mobile/myBCA的QRIS付款。",
+          "请提前三天通过苏富比印尼客户服务预约，电话0812 3456 7890（WhatsApp聊天）。名额有限，视实际情况而定。",
+          "此礼遇不可兑换现金或转让。",
+          "仅在指定活动日期有效。"
+        ],
+        "contact": "苏富比印尼客户服务：0812 3456 7890（WhatsApp聊天）。"
+      },
+      "recommendationCards": {
+        "christies": { "title": "与专业策展人一起私享古典绘画展", "brand": "佳士得" },
+        "symphony": { "title": "与国际音乐家共赏交响乐盛典", "brand": "雅加达交响乐团" }
+      }
+    },
+    "promo": {
+      "breadcrumb": "优惠",
+      "recommendations": "更多推荐优惠",
+      "endedOn": "结束于{date}",
+      "porsche": {
+        "detail": "在雅加达保时捷中心专业团队陪同下，亲身体验保时捷的经典设计与性能，尊享试驾。",
+        "terms": [
+          "出示BCA Solitaire/Prioritas实体卡，或myBCA/BCA mobile中的电子卡。",
+          "请提前三天通过雅加达保时捷中心客户服务预约，电话0812 3456 7890（WhatsApp聊天）。",
+          "请携带有效的A类驾驶执照。",
+          "每日试驾名额有限，具体视车辆供应情况而定。",
+          "此礼遇不可兑换现金或转让。",
+          "优惠期间仅适用于雅加达保时捷中心。"
+        ],
+        "contact": "雅加达保时捷中心客户服务：0812 3456 7890（WhatsApp聊天）。",
+        "location": "雅加达保时捷中心"
+      },
+      "samples": {
+        "porsche": { "title": "感受保时捷驾趣：尊享专属试驾", "brand": "保时捷" },
+        "mercedes": { "title": "在私人赛道尊享全新梅赛德斯-奔驰试驾", "brand": "梅赛德斯-奔驰" },
+        "landRover": { "title": "在雅加达抢先体验并试驾全新揽胜", "brand": "路虎" },
+        "audi": { "title": "尊享试驾，探索全新奥迪性能", "brand": "奥迪" }
+      }
+    }
   },
   "lifestylePrivilegeDetail": {
     "subNavLabel": "Prioritas 导航",
@@ -1411,6 +1523,134 @@
         "sisley": { "title": "体验专属 Signature 面部护理，享受高达 20% 折扣", "brand": "Sisley Paris", "alt": "Sisley Paris 护肤产品" },
         "skii": { "title": "红毯焕亮护理（180 万印尼盾）+ 欢迎按摩 + 轻度清洁", "brand": "SK-II Boutique Spa", "alt": "SK-II Boutique Spa 面部护理" },
         "shiseido": { "title": "尊享 Ultimune 精华免费肌肤分析", "brand": "Shiseido", "alt": "资生堂 Ultimune 精华" }
+      }
+    }
+  },
+  "magazineIndex": {
+    "breadcrumb": "电子杂志",
+    "title": "陪伴每一位不断成长的您",
+    "paginationLabel": "电子杂志页码",
+    "readNow": "立即阅读",
+    "coverAlt": "{title}封面",
+    "empty": "暂无电子杂志。"
+  },
+  "bankingSolutionIndex": {
+    "breadcrumb": "银行解决方案",
+    "title": "陪伴您人生旅程的专属银行服务",
+    "tabLabel": "银行解决方案类别",
+    "clusters": {"cards":"卡片与支付","financing":"融资与保障","transactions":"交易与外汇","personal":"专属服务"},
+    "previousCards": "{cluster}中的上一张卡片",
+    "nextCards": "{cluster}中的下一张卡片",
+    "tabs": {
+      "privilege": "银行礼遇",
+      "wealth": "财富洞察"
+    },
+    "more": "了解更多",
+    "groups": {
+      "house": "市场观点报告",
+      "market": "每周市场概览"
+    },
+    "calendarAction": "添加到日历",
+    "downloadAction": "下载 PDF",
+    "privilege": {
+      "jcb": "JCB 欢迎礼遇",
+      "vehicle": "汽车贷款 (KKB)",
+      "branch": "BCA 分行专属服务",
+      "insurance": "保险",
+      "fees": "专属交易费用",
+      "transaction": "专属交易功能与服务",
+      "media": "资讯服务",
+      "advisor": "BCA 分行专属服务",
+      "family": "BCA 分行专属服务",
+      "contact": "客户服务中心",
+      "credit": "BCA 信用卡",
+      "home": "住房贷款",
+      "motorcycle": "摩托车贷款",
+      "merchant": "BCA EDC 商户服务",
+      "deposit": "保险箱",
+      "forex": "外汇"
+    },
+    "insight": {
+      "portfolio": {
+        "title": "2025 年 6 月市场观点：降息周期中的投资组合策略",
+        "date": "2026 年 6 月 16 日 14:00 WIB",
+        "channel": "YouTube 直播",
+        "alt": "极地水域中的浮冰"
+      },
+      "inflation": {
+        "title": "2025 年 6 月市场观点：美伊战争对通胀及经济增长的影响",
+        "date": "2026 年 4 月 16 日",
+        "alt": "海面下的冰山"
+      },
+      "oil": {
+        "title": "2025 年 5 月市场观点：美伊谈判对油价及全球通胀的影响",
+        "date": "2026 年 5 月 16 日",
+        "alt": "空中的热气球"
+      },
+      "house0908": {
+        "title": "美国通胀与美联储鹰派立场推高美国国债收益率",
+        "date": "2026 年 9 月 8 日",
+        "alt": "阳光下的秋叶"
+      },
+      "house0804": {
+        "title": "美国通胀降温、全球风险与中国经济放缓影响市场",
+        "date": "2026 年 8 月 4 日",
+        "alt": "有溪流的绿色森林"
+      },
+      "house0701": {
+        "title": "美国通胀与伊朗冲突推高加息预期",
+        "date": "2026 年 7 月 1 日",
+        "alt": "极地水域中的冰川"
+      },
+      "house0608": {
+        "title": "美伊冲突令油价居高不下，各国央行转向加息",
+        "date": "2026 年 6 月 8 日",
+        "alt": "空中的热气球"
+      },
+      "crossroads": {
+        "title": "每周市场概览：缓和与滞胀之间的全球市场",
+        "date": "2026 年 6 月 2 日",
+        "alt": "红色世界地图"
+      },
+      "global": {
+        "title": "每周市场概览：全球市场的滞胀与战略机遇",
+        "date": "2026 年 5 月 29 日",
+        "alt": "展示世界地区的地球仪"
+      },
+      "insights": {
+        "title": "每周市场洞察：滞胀与局势缓和带来的双重挑战",
+        "date": "2026 年 5 月 22 日",
+        "alt": "桌上的望远镜"
+      },
+      "weekly0921": {
+        "title": "美联储重启加息，美元与美国国债收益率走强",
+        "date": "2026 年 9 月 21 日",
+        "alt": "投资者分析金融市场报告"
+      },
+      "weekly0914": {
+        "title": "油价上涨与通胀居高不下推动美国国债收益率逼近 5%",
+        "date": "2026 年 9 月 14 日",
+        "alt": "展示世界地图的地球仪"
+      },
+      "weekly0907": {
+        "title": "美伊紧张局势与就业数据推高美联储加息预期",
+        "date": "2026 年 9 月 7 日",
+        "alt": "港口装卸货运集装箱"
+      },
+      "weekly0831": {
+        "title": "地缘政治与通胀推动美元及短期美国国债收益率走高",
+        "date": "2026 年 8 月 31 日",
+        "alt": "桌上的文件与报告"
+      },
+      "weekly0824": {
+        "title": "中东局势与美国财政风险推高美国国债收益率",
+        "date": "2026 年 8 月 24 日",
+        "alt": "运送集装箱的卡车"
+      },
+      "weekly0818": {
+        "title": "美国通胀降温，但美国国债拍卖收益率创 25 年新高",
+        "date": "2026 年 8 月 18 日",
+        "alt": "桌上的望远镜"
       }
     }
   },

@@ -3,6 +3,7 @@ export type KursEntry = {
   flag: string;
   beli: string;
   jual: string;
+  updatedAt: number;
 };
 
 const CURRENCIES: { code: string; flag: string }[] = [
@@ -32,6 +33,7 @@ function formatIDR(value: number) {
 
 export async function getKursHariIni(): Promise<KursEntry[]> {
   let midRates: Record<string, number> = { ...FALLBACK_MID };
+  let updatedAt = Date.now();
 
   try {
     const res = await fetch("https://open.er-api.com/v6/latest/USD", {
@@ -45,6 +47,10 @@ export async function getKursHariIni(): Promise<KursEntry[]> {
         data && typeof data === "object" && "rates" in data && typeof data.rates === "object"
           ? (data.rates as Record<string, unknown>)
           : null;
+      const apiUpdatedAt = data && typeof data === "object" && "time_last_update_unix" in data
+        ? data.time_last_update_unix
+        : null;
+      if (typeof apiUpdatedAt === "number" && Number.isFinite(apiUpdatedAt)) updatedAt = apiUpdatedAt * 1000;
       const idrPerUsd = rates?.IDR;
       if (!rates || !Number.isFinite(idrPerUsd)) {
         console.error("[kurs] unexpected response shape, using bundled fallback");
@@ -74,6 +80,19 @@ export async function getKursHariIni(): Promise<KursEntry[]> {
       flag,
       beli: formatIDR(mid * 0.998),
       jual: formatIDR(mid * 1.002),
+      updatedAt,
     };
   });
+}
+
+export function formatKursUpdatedAt(timestamp: number, locale: string) {
+  return `${new Intl.DateTimeFormat(locale, {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Jakarta",
+  }).format(new Date(timestamp))} WIB`;
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useIsLive } from "@/lib/useIsLive";
+import { Link } from "@/i18n/navigation";
 
 const AUTO_ADVANCE_MS = 6000;
 
@@ -24,7 +25,7 @@ function ArrowAction({ children }: { children: ReactNode }) {
   return (
     <button
       type="button"
-      className="flex items-center gap-0.5 text-left text-sm font-semibold leading-5 text-pgold-300 transition-colors hover:text-pgold-100"
+      className="flex items-center gap-0.5 text-left text-base font-semibold leading-6 text-pgold-300 transition-colors hover:text-pgold-100"
     >
       <span className="px-0.5">{children}</span>
       <img src={`${ASSET_ROOT}/arrow-small.svg`} alt="" className="size-5" />
@@ -77,7 +78,7 @@ function PrivilegeCard({
         className="glass-panel glass-panel-prioritas absolute inset-x-2 bottom-2 z-20 flex h-[160px] w-auto flex-col items-start justify-between overflow-hidden rounded-2xl px-4 pb-5 pt-4 xl:inset-x-auto xl:bottom-4 xl:left-4 xl:h-[180px] xl:w-[360px] xl:max-w-[calc(100%-2rem)]"
         style={{ backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)", isolation: "isolate" }}
       >
-        <h3 className="text-subtitle max-w-full text-white">
+        <h3 className="text-subtitle max-w-full text-white xl:text-heading">
           {copy.title}
         </h3>
         <ArrowAction>{copy.action}</ArrowAction>
@@ -149,7 +150,7 @@ export default function PrivilegeSection({ copy }: { copy: PrivilegeSectionCopy 
   };
 
   return (
-    <section ref={sectionRef} id="privilege" className="relative isolate overflow-hidden bg-pbrown-600 py-16 text-white xl:min-h-[1200px] xl:py-20">
+    <section ref={sectionRef} id="privilege" className="relative isolate overflow-hidden bg-pbrown-600 py-12 text-white xl:min-h-[1200px] xl:py-20">
       <img
         src={`${ASSET_ROOT}/decoration.svg`}
         alt=""
@@ -167,40 +168,50 @@ export default function PrivilegeSection({ copy }: { copy: PrivilegeSectionCopy 
           </h2>
         </header>
 
-        <div
-          ref={railRef}
-          onScroll={handleRailScroll}
-          onMouseEnter={() => (pausedRef.current = true)}
-          onMouseLeave={() => (pausedRef.current = false)}
-          onTouchStart={() => (pausedRef.current = true)}
-          onTouchEnd={() => (pausedRef.current = false)}
-          className="hide-scrollbar -mx-4 flex h-[360px] snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4 [scrollbar-width:none] xl:hidden"
-        >
-          {cards.map((card, index) => (
-            <PrivilegeCard
-              key={card.copy.title}
-              copy={card.copy}
-              image={card.image}
-              active={activeCard === index}
-              progress={activeCard === index ? progress : 0}
-              cardRef={(node) => { cardRefs.current[index] = node; }}
-              onSelect={() => selectMobileCard(index, true)}
-            />
-          ))}
-        </div>
+        <div className="flex flex-col gap-8 xl:block">
+          <div
+            ref={railRef}
+            onScroll={handleRailScroll}
+            onMouseEnter={() => (pausedRef.current = true)}
+            onMouseLeave={() => (pausedRef.current = false)}
+            onTouchStart={() => (pausedRef.current = true)}
+            onTouchEnd={() => (pausedRef.current = false)}
+            className="hide-scrollbar -mx-4 flex h-[360px] snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4 [scrollbar-width:none] xl:hidden"
+          >
+            {cards.map((card, index) => (
+              <PrivilegeCard
+                key={card.copy.title}
+                copy={card.copy}
+                image={card.image}
+                active={activeCard === index}
+                progress={activeCard === index ? progress : 0}
+                cardRef={(node) => { cardRefs.current[index] = node; }}
+                onSelect={() => selectMobileCard(index, true)}
+              />
+            ))}
+          </div>
 
-        <div className="hidden grid-cols-1 gap-8 xl:grid xl:grid-cols-2">
-          <PrivilegeCard copy={cards[0].copy} image={cards[0].image} feature />
-          <PrivilegeCard copy={cards[1].copy} image={cards[1].image} />
-          <PrivilegeCard copy={cards[2].copy} image={cards[2].image} />
-
-          <button
-            type="button"
-            className="text-subtitle col-span-1 flex h-16 items-center justify-center gap-4 rounded-full border border-pgold-100/25 bg-[linear-gradient(24deg,var(--color-pbrown-500)_0%,var(--color-pgold-500)_71%,var(--color-pgold-400)_86%,var(--color-pgold-500)_100%)] px-6 py-6 text-center text-pgold-100 transition-[filter,transform] hover:brightness-110 active:scale-[0.99] xl:col-span-2"
+          <Link
+            href="/prioritas/privilege"
+            className="flex h-16 w-full items-center justify-center gap-4 rounded-full border border-pgold-100/25 bg-[linear-gradient(24deg,var(--color-pbrown-500)_0%,var(--color-pgold-500)_71%,var(--color-pgold-400)_86%,var(--color-pgold-500)_100%)] px-6 py-6 text-center text-base font-semibold text-pgold-100 transition-[filter,transform] hover:brightness-110 active:scale-[0.99] xl:hidden"
           >
             <span>{copy.viewMore}</span>
-            <img src={`${ASSET_ROOT}/arrow-right.svg`} alt="" className="size-8" />
-          </button>
+            <img src={`${ASSET_ROOT}/arrow-right.svg`} alt="" className="size-6" />
+          </Link>
+
+          <div className="hidden grid-cols-1 gap-8 xl:grid xl:grid-cols-2">
+            <PrivilegeCard copy={cards[0].copy} image={cards[0].image} feature />
+            <PrivilegeCard copy={cards[1].copy} image={cards[1].image} />
+            <PrivilegeCard copy={cards[2].copy} image={cards[2].image} />
+
+            <Link
+              href="/prioritas/privilege"
+              className="text-subtitle col-span-1 flex h-16 items-center justify-center gap-4 rounded-full border border-pgold-100/25 bg-[linear-gradient(24deg,var(--color-pbrown-500)_0%,var(--color-pgold-500)_71%,var(--color-pgold-400)_86%,var(--color-pgold-500)_100%)] px-6 py-6 text-center text-pgold-100 transition-[filter,transform] hover:brightness-110 active:scale-[0.99] xl:col-span-2"
+            >
+              <span>{copy.viewMore}</span>
+              <img src={`${ASSET_ROOT}/arrow-right.svg`} alt="" className="size-8" />
+            </Link>
+          </div>
         </div>
       </div>
     </section>

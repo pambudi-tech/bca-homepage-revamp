@@ -811,6 +811,37 @@
       ]
     }
   },
+  "memberLogin": {
+    "pageTitle": "Login BCA Solitaire dan Prioritas",
+    "backHome": "Kembali ke Homepage",
+    "brandsLabel": "BCA Solitaire dan BCA Prioritas",
+    "language": "Pilih bahasa",
+    "methodLabel": "Metode login",
+    "bcaId": "BCA ID",
+    "email": "Email",
+    "intro": "Silakan masukkan BCA ID & password Anda untuk mengakses layanan BCA Solitaire / Prioritas",
+    "bcaIdHelpLabel": "Informasi BCA ID",
+    "bcaIdHelp": "Masukkan BCA ID yang terdaftar pada layanan BCA.",
+    "bcaIdLengthError": "BCA ID harus terdiri dari 6-21 karakter.",
+    "emailFormatError": "Masukkan alamat email yang valid.",
+    "credentialsError": "Email atau password yang Anda masukkan salah.",
+    "systemError": "Login belum dapat diproses. Silakan coba beberapa saat lagi.",
+    "viewDetails": "Lihat Detail",
+    "bcaIdPlaceholder": "Masukkan BCA ID Anda",
+    "emailPlaceholder": "Masukkan email Anda",
+    "password": "Password",
+    "passwordPlaceholder": "Masukkan password Anda",
+    "showPassword": "Tampilkan password",
+    "hidePassword": "Sembunyikan password",
+    "forgotPassword": "Lupa Password",
+    "submit": "Masuk",
+    "noAccount": "Anda belum memiliki akun?",
+    "register": "Daftar",
+    "registerEmail": "Daftar dengan email",
+    "noBcaId": "Belum memiliki BCA ID?",
+    "tutorial": "Lihat Tutorial",
+    "prototypeNotice": "Ini adalah pratinjau desain. Login dan bantuan akun belum terhubung."
+  },
   "login": {
     "heading": "BCA Homepage Revamp",
     "subheading": "Masukkan kata sandi untuk mengakses",
@@ -1373,6 +1404,13 @@
       "magazine": "e-Magazine",
       "financialReport": "Laporan Finansial"
     },
+    "contact": {
+      "heading": "Kami siap mendampingi langkah Anda selanjutnya.",
+      "riplayTitle": "Ringkasan Informasi Produk dan Layanan (RIPLAY)",
+      "download": "Unduh Dokumen",
+      "contactTitle": "Hubungi Kami",
+      "phone": "Telp 150022"
+    },
     "privilege": {
       "eyebrow": "Privilege",
       "heading": "Beragam Akses Istimewa yang Hadir di Setiap Langkah Perjalanan Anda",
@@ -1426,7 +1464,10 @@
       "action": "Selengkapnya",
       "buy": "Beli",
       "sell": "Jual",
-      "updatedAt": "Terakhir diperbarui pada 03 Juni 2026 12.47 WIB",
+      "updatedAt": "Terakhir diperbarui pada {date}",
+      "refresh": "Perbarui kurs",
+      "previous": "Kurs sebelumnya",
+      "next": "Kurs berikutnya",
       "cards": {
         "branch": { "title": "Layanan khusus di Cabang BCA", "alt": "Layanan khusus di Cabang BCA" },
         "vehicle": { "title": "Kredit Kendaraan Bermotor (KKB)", "alt": "Kredit kendaraan bermotor" },
@@ -1477,10 +1518,14 @@
     "subNav": { "privilege": "Privilege", "banking": "Banking Solution", "magazine": "e-Magazine" },
     "breadcrumb": "Signature Privilege",
     "title": "Beragam Akses Istimewa yang Hadir di Setiap Langkah Perjalanan Anda",
+    "eventPromoTitle": "Ratusan Pengalaman & Penawaran Eksklusif untuk Anda",
     "tabLabel": "Kategori privilege",
     "tabs": { "signature": "Signature Privilege", "lifestyle": "Lifestyle Privilege", "event": "Event", "promo": "Promo" },
     "description": "Keistimewaan eksklusif berupa layanan dan manfaat khusus untuk berbagai kebutuhan Anda.",
+    "lifestyleDescription": "Penawaran khusus dan keuntungan eksklusif untuk menikmati berbagai pilihan gaya hidup.",
     "more": "Selengkapnya",
+    "showAllSignature": "Lihat Semua Privilege",
+    "showLessSignature": "Tampilkan Lebih Sedikit",
     "signature": {
       "lounge": { "title": "Executive Airport Lounge" },
       "transfer": { "title": "Airport Transfer Domestik" },
@@ -1489,8 +1534,9 @@
     },
     "complimentary": {
       "title": "Complimentary",
-      "subtitle": "Tayang terbatas, cukup tunjukkan kartu Prioritas Anda",
+      "subtitle": "Tanpa biaya tambahan, cukup tunjukkan kartu Prioritas Anda",
       "birthday": "Birthday Gift",
+      "viewList": "Lihat Daftar Complimentary",
       "cards": {
         "valet": { "title": "Complimentary Valet Parking", "brand": "Han Palace Restaurant" },
         "inpatient": { "title": "Complimentary makanan untuk pendamping pasien rawat inap VVIP", "brand": "Altos Hospital" },
@@ -1503,12 +1549,78 @@
         "jewelry": { "title": "Exclusive Jewelry Box senilai Rp500 ribu", "brand": "Semar Nusantara" }
       }
     },
-    "categories": { "all": "Semua", "beauty": "Kecantikan", "culinary": "Kuliner", "health": "Kesehatan", "lifestyle": "Gaya Hidup" },
+    "categories": { "all": "Semua", "beauty": "Kecantikan", "culinary": "Kuliner", "health": "Kesehatan", "travel": "Travel", "lifestyle": "Gaya Hidup", "education": "Pendidikan", "home": "Home & Living", "business": "Bisnis" },
     "searchLabel": "Cari benefit",
     "searchPlaceholder": "Cari nama brand/partner",
     "showing": "Menampilkan {count} penawaran",
     "empty": "Tidak ada penawaran yang sesuai.",
-    "paginationLabel": "Halaman benefit"
+    "paginationLabel": "Halaman benefit",
+    "paginationSummary": "Data {from}-{to} dari {total}",
+    "paginationPrevious": "Halaman sebelumnya",
+    "paginationNext": "Halaman berikutnya",
+    "eventDateExpired": "Event berakhir",
+    "eventDirectory": {
+      "paginationLabel": "Halaman event",
+      "categories": { "lifestyle": "Gaya Hidup & Olahraga", "networking": "Seminar & Networking", "arts": "Seni & Budaya", "culinary": "Kuliner & Dining" },
+      "period": "Semua Waktu",
+      "upcoming": "Event Mendatang",
+      "sort": "Tanggal Terbaru",
+      "oldest": "Tanggal Terlama",
+      "showing": "Menampilkan {count} event",
+      "empty": "Tidak ada event yang sesuai."
+    }
+  },
+  "prioritasContentDetail": {
+    "fallback": {
+      "description": "Informasi detail untuk {title} belum tersedia.",
+      "terms": "Syarat dan ketentuan belum tersedia.",
+      "contact": "Informasi kontak belum tersedia.",
+      "location": "Informasi lokasi belum tersedia."
+    },
+    "event": {
+      "breadcrumb": "Event",
+      "recommendations": "Rekomendasi Event Lainnya",
+      "sothebys": {
+        "title": "Malam Amal & Lelang Karya Seni untuk Pendidikan Anak Indonesia",
+        "detail": "Nikmati akses eksklusif Malam Amal & Lelang Karya Seni bersama Sotheby's, menampilkan koleksi karya seni kelas dunia sekaligus berkontribusi untuk program pendidikan anak-anak Indonesia.",
+        "terms": [
+          "Menunjukkan kartu fisik BCA Solitaire/Prioritas atau digital pada aplikasi myBCA/BCA mobile.",
+          "Melakukan pembayaran menggunakan Kartu BCA Solitaire/Prioritas, Kartu Kredit BCA, QRIS BCA mobile/myBCA.",
+          "RSVP H-3 melalui Customer Service Sotheby's Indonesia di 0812 3456 7890 (WhatsApp Chat). Kuota terbatas dan berlaku sesuai ketersediaan tempat.",
+          "Privilege tidak dapat diuangkan dan dipindahtangankan.",
+          "Berlaku sesuai jadwal acara yang ditentukan."
+        ],
+        "contact": "Customer Service Sotheby's Indonesia: 0812 3456 7890 (WhatsApp Chat)."
+      },
+      "recommendationCards": {
+        "christies": { "title": "Private Viewing Pameran Lukisan Klasik Bersama Kurator Ahli", "brand": "Christie's" },
+        "symphony": { "title": "Malam Gala Simfoni Orkestra Bersama Musisi Internasional", "brand": "Jakarta Symphony Orchestra" }
+      }
+    },
+    "promo": {
+      "breadcrumb": "Promo",
+      "recommendations": "Rekomendasi Promo Lainnya",
+      "endedOn": "Berakhir {date}",
+      "porsche": {
+        "detail": "Rasakan performa dan desain ikonik Porsche secara langsung melalui sesi test drive eksklusif, didampingi oleh tim profesional Porsche Center Jakarta.",
+        "terms": [
+          "Menunjukkan kartu fisik BCA Solitaire/Prioritas atau digital pada aplikasi myBCA/BCA mobile.",
+          "Reservasi wajib dilakukan H-3 melalui Customer Service Porsche Center Jakarta di 0812 3456 7890 (WhatsApp Chat).",
+          "Membawa SIM A yang masih berlaku.",
+          "Kuota test drive terbatas per hari, sesuai ketersediaan unit.",
+          "Privilege tidak dapat diuangkan dan dipindahtangankan.",
+          "Berlaku di Porsche Center Jakarta selama periode promo."
+        ],
+        "contact": "Customer Service Porsche Center Jakarta: 0812 3456 7890 (WhatsApp Chat).",
+        "location": "Porsche Center Jakarta"
+      },
+      "samples": {
+        "porsche": { "title": "Rasakan Sensasi Berkendara Porsche: Nikmati Test Drive Eksklusif", "brand": "Porsche" },
+        "mercedes": { "title": "Nikmati Test Drive Eksklusif Mercedes-Benz Terbaru di Sirkuit Privat", "brand": "Mercedes-Benz" },
+        "landRover": { "title": "Exclusive Preview & Test Drive All-New Range Rover di Jakarta", "brand": "Land Rover" },
+        "audi": { "title": "Jelajahi Performa Audi Terbaru Melalui Test Drive Eksklusif untuk Nasabah", "brand": "Audi" }
+      }
+    }
   },
   "lifestylePrivilegeDetail": {
     "subNavLabel": "Navigasi Prioritas",
@@ -1537,6 +1649,134 @@
         "sisley": { "title": "Rasakan Signature Facial Treatment Eksklusif, Nikmati Diskon hingga 20%", "brand": "Sisley Paris", "alt": "Produk perawatan Sisley Paris" },
         "skii": { "title": "Red Carpet Glow Treatment (Rp1,8 juta) + Welcoming Massage + Light Extraction", "brand": "SK-II Boutique Spa", "alt": "Perawatan wajah SK-II Boutique Spa" },
         "shiseido": { "title": "Rasakan Analisis Kulit Gratis dengan Ultimune Serum", "brand": "Shiseido", "alt": "Shiseido Ultimune Serum" }
+      }
+    }
+  },
+  "magazineIndex": {
+    "breadcrumb": "e-Magazine",
+    "title": "Hadir untuk Mereka yang Tidak Berhenti Bertumbuh",
+    "paginationLabel": "Halaman e-Magazine",
+    "readNow": "Baca Sekarang",
+    "coverAlt": "Sampul {title}",
+    "empty": "Belum ada edisi e-Magazine."
+  },
+  "bankingSolutionIndex": {
+    "breadcrumb": "Banking Solution",
+    "title": "Layanan Perbankan Khusus untuk Perjalanan Hidup Anda",
+    "tabLabel": "Kategori Banking Solution",
+    "clusters": {"cards":"Kartu & Pembayaran","financing":"Pembiayaan & Proteksi","transactions":"Transaksi & Valas","personal":"Layanan Personal"},
+    "previousCards": "Card sebelumnya di {cluster}",
+    "nextCards": "Card berikutnya di {cluster}",
+    "tabs": {
+      "privilege": "Banking Privilege",
+      "wealth": "Wealth Insight"
+    },
+    "more": "Selengkapnya",
+    "groups": {
+      "house": "House View Report",
+      "market": "Weekly Market Overview"
+    },
+    "calendarAction": "Tambahkan ke Kalender",
+    "downloadAction": "Download PDF",
+    "privilege": {
+      "jcb": "JCB Welcome Bonus",
+      "vehicle": "Kredit Kendaraan Bermotor (KKB)",
+      "branch": "Layanan khusus di Cabang BCA",
+      "insurance": "Asuransi",
+      "fees": "Biaya Transaksi Khusus",
+      "transaction": "Fitur & Layanan Transaksi Khusus",
+      "media": "Media Informasi",
+      "advisor": "Layanan khusus di Cabang BCA",
+      "family": "Layanan khusus di Cabang BCA",
+      "contact": "Contact Center",
+      "credit": "Kartu Kredit BCA",
+      "home": "Kredit Pemilikan Rumah",
+      "motorcycle": "Kredit Sepeda Motor",
+      "merchant": "Merchant EDC BCA",
+      "deposit": "Safe Deposit Box",
+      "forex": "Valuta Asing"
+    },
+    "insight": {
+      "portfolio": {
+        "title": "House View Juni 2025 - Strategi Portofolio di Tengah Siklus Pemangkasan Rate",
+        "date": "Rabu, 16 Juni 2026 · 14.00 WIB",
+        "channel": "Live di YouTube",
+        "alt": "Es terapung di perairan kutub"
+      },
+      "inflation": {
+        "title": "House View Juni 2025 - Dampak Perang AS-Iran terhadap Inflasi dan Pertumbuhan Ekonomi",
+        "date": "16 April 2026",
+        "alt": "Gunung es di bawah permukaan laut"
+      },
+      "oil": {
+        "title": "House View Mei 2025 - Dampak Negosiasi AS-Iran terhadap Harga Minyak dan Inflasi Global",
+        "date": "16 Mei 2026",
+        "alt": "Balon udara di langit"
+      },
+      "house0908": {
+        "title": "Inflasi AS dan Sikap Hawkish The Fed Dorong Kenaikan Yield UST",
+        "date": "8 September 2026",
+        "alt": "Daun musim gugur di bawah cahaya matahari"
+      },
+      "house0804": {
+        "title": "Inflasi AS Melandai, Risiko Global dan Perlambatan Tiongkok Membayangi Pasar",
+        "date": "4 Agustus 2026",
+        "alt": "Hutan hijau dengan aliran sungai"
+      },
+      "house0701": {
+        "title": "Inflasi AS dan Konflik Iran Picu Ekspektasi Kenaikan Suku Bunga",
+        "date": "1 Juli 2026",
+        "alt": "Hamparan es di perairan kutub"
+      },
+      "house0608": {
+        "title": "Konflik AS-Iran Jaga Harga Minyak Tinggi dan Dorong Kenaikan Suku Bunga",
+        "date": "8 Juni 2026",
+        "alt": "Balon udara di langit"
+      },
+      "crossroads": {
+        "title": "Weekly Market Overview Antara De-eskalasi dan Stagflasi: Pasar Global di Persimpangan, Indonesia Hadapi Tekanan Ganda",
+        "date": "2 Juni 2026",
+        "alt": "Peta dunia berwarna merah"
+      },
+      "global": {
+        "title": "Weekly Market Overview: Stagflasi dan Peluang Strategis di Pasar Global, Indonesia Siap Investasi",
+        "date": "29 Mei 2026",
+        "alt": "Globe menampilkan wilayah dunia"
+      },
+      "insights": {
+        "title": "Weekly Market Insights: Stagflasi dan De-eskalasi, Indonesia Menghadapi Tantangan Ganda.",
+        "date": "22 Mei 2026",
+        "alt": "Teropong di atas meja"
+      },
+      "weekly0921": {
+        "title": "The Fed Kembali Naikkan Suku Bunga, Dolar dan Yield UST Menguat",
+        "date": "21 September 2026",
+        "alt": "Investor menganalisis laporan pasar keuangan"
+      },
+      "weekly0914": {
+        "title": "Harga Minyak dan Inflasi Tinggi Dorong Yield UST Mendekati 5%",
+        "date": "14 September 2026",
+        "alt": "Globe dengan peta dunia"
+      },
+      "weekly0907": {
+        "title": "Tensi AS-Iran dan Data Tenaga Kerja Dorong Ekspektasi Kenaikan Suku Bunga",
+        "date": "7 September 2026",
+        "alt": "Kegiatan bongkar muat peti kemas"
+      },
+      "weekly0831": {
+        "title": "Geopolitik dan Inflasi Perkuat Dolar serta Yield UST Jangka Pendek",
+        "date": "31 Agustus 2026",
+        "alt": "Dokumen dan laporan di atas meja"
+      },
+      "weekly0824": {
+        "title": "Risiko Timur Tengah dan Fiskal AS Angkat Yield UST",
+        "date": "24 Agustus 2026",
+        "alt": "Truk pengangkut peti kemas"
+      },
+      "weekly0818": {
+        "title": "Inflasi AS Melandai, tetapi Yield UST Tertinggi dalam 25 Tahun",
+        "date": "18 Agustus 2026",
+        "alt": "Teropong di atas meja"
       }
     }
   },

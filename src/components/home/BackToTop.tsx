@@ -5,12 +5,70 @@ import { useTranslations } from "next-intl";
 import { useLenis } from "@/components/SmoothScroll";
 import { MOBILE_QUICK_NAV_VISIBILITY_EVENT } from "./QuickActionRail";
 
-// Custom shape from Figma (node 1470:6337) — a 218×52 trapezoid with rounded
-// top corners, sitting flush against the bottom edge (y=52 spans the full width).
-const SHAPE_PATH =
-  "M24.9713 11.4217C29.3392 4.32372 37.0768 0 45.4111 0H172.589C180.923 0 188.661 4.32372 193.029 11.4217L218 52H0L24.9713 11.4217Z";
+// BackToTop and QuickActionRail use fixed end caps with a flexible center.
+// A single masked backdrop keeps the desktop blur continuous across the caps.
+const CAP_PATH = "M 0 52 L 24.9713 11.4217 C 29.3392 4.32372 37.0768 0 45.4111 0 H 52 V 52 Z";
+function capMask(mirrored: boolean) {
+  const transform = mirrored ? ' transform="translate(52 0) scale(-1 1)"' : "";
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 52 52"><path fill="white" d="${CAP_PATH}"${transform}/></svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+}
+const BACKGROUND_MASK = `linear-gradient(#000 0 0), ${capMask(false)}, ${capMask(true)}`;
 
-export default function BackToTop() {
+type BackToTopActionProps = {
+  label: string;
+  shown: boolean;
+  onClick: () => void;
+  atBottom?: boolean;
+  mobileQuickNavHidden?: boolean;
+  fitContent?: boolean;
+  direction?: "up" | "down";
+  bottomInset?: "default" | "24px" | "32px";
+  progressiveBackdrop?: boolean;
+};
+
+export function BackToTopAction({ label, shown, onClick, atBottom = false, mobileQuickNavHidden = false, fitContent = false, direction = "up", bottomInset = "default", progressiveBackdrop = false }: BackToTopActionProps) {
+  const backgroundColor = atBottom ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.6)";
+  return (
+    <>
+      {progressiveBackdrop ? <span
+        aria-hidden
+        className={`pointer-events-none fixed inset-x-0 bottom-0 z-20 h-40 bg-gradient-to-t from-pbrown-900/15 via-pbrown-900/5 to-transparent backdrop-blur-md transition-opacity duration-300 ease-out md:h-44 ${shown ? "opacity-100" : "opacity-0"}`}
+        style={{ maskImage: "linear-gradient(to top, #000 0%, #000 25%, transparent 85%)", WebkitMaskImage: "linear-gradient(to top, #000 0%, #000 25%, transparent 85%)" }}
+      /> : null}
+      <button
+        type="button"
+        onClick={onClick}
+        aria-label={label}
+        inert={!shown}
+        className={`group fixed left-1/2 z-30 h-11 -translate-x-1/2 px-5 transition-all duration-300 ease-out md:h-[52px] ${fitContent ? "w-max md:px-[52px]" : "w-auto md:w-[218px] md:px-0"} ${bottomInset === "24px" ? "bottom-[calc(24px+env(safe-area-inset-bottom))] md:bottom-0" : bottomInset === "32px" ? "bottom-[calc(32px+env(safe-area-inset-bottom))] md:bottom-0" : `xl:bottom-0 ${mobileQuickNavHidden ? "bottom-[calc(16px+env(safe-area-inset-bottom))]" : "bottom-[calc(86px+env(safe-area-inset-bottom)+12px)]"}`} ${shown ? "pointer-events-auto translate-y-0 opacity-100" : "pointer-events-none translate-y-[150%] opacity-0 md:translate-y-full"}`}
+      >
+        <span aria-hidden className="pointer-events-none absolute inset-0 rounded-full backdrop-blur-md transition-colors duration-300 ease-out md:hidden" style={{ backgroundColor }} />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 hidden backdrop-blur-md transition-colors duration-300 ease-out md:block"
+          style={{
+            backgroundColor,
+            maskImage: BACKGROUND_MASK,
+            WebkitMaskImage: BACKGROUND_MASK,
+            maskSize: "calc(100% - 100px) 100%, 52px 52px, 52px 52px",
+            WebkitMaskSize: "calc(100% - 100px) 100%, 52px 52px, 52px 52px",
+            maskPosition: "center, left center, right center",
+            WebkitMaskPosition: "center, left center, right center",
+            maskRepeat: "no-repeat",
+            WebkitMaskRepeat: "no-repeat",
+          }}
+        />
+        <span className="relative flex h-full items-center justify-center gap-2 whitespace-nowrap md:pb-0.5">
+          <span className="text-sm font-semibold leading-5 text-white">{label}</span>
+          <img loading="lazy" decoding="async" src="/assets/navbar/arrow-right.svg" alt="" className={`size-5 transition-transform duration-300 ease-out ${direction === "down" ? "rotate-90 group-hover:translate-y-0.5" : "-rotate-90 group-hover:-translate-y-0.5"}`} />
+        </span>
+      </button>
+    </>
+  );
+}
+
+export default function BackToTop({ bottomInset = "default", revealAtBottom = false }: { bottomInset?: "default" | "24px" | "32px"; revealAtBottom?: boolean }) {
   const t = useTranslations("backToTop");
   const lenis = useLenis();
   const [visible, setVisible] = useState(false);
@@ -34,13 +92,13 @@ export default function BackToTop() {
     const update = () => {
       rafRef.current = 0;
       const y = window.scrollY;
-      setVisible(y > window.innerHeight * 0.6);
 
       // When the footer bottom is reached, dim the trapezoid so it recedes,
       // and force the button visible regardless of scroll direction.
       const distanceToBottom = docHeight - (y + window.innerHeight);
       const bottom = distanceToBottom <= 4;
       setAtBottom(bottom);
+      setVisible(y > window.innerHeight * 0.6 || (revealAtBottom && bottom && y > 8));
 
       // Navbar-like behavior: hide on scroll down, reveal on scroll up a bit.
       if (bottom) {
@@ -62,7 +120,7 @@ export default function BackToTop() {
       window.removeEventListener("resize", measure);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [revealAtBottom]);
 
   useEffect(() => {
     const onQuickNavVisibility = (event: Event) => {
@@ -88,46 +146,5 @@ export default function BackToTop() {
     else window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  return (
-    <button
-      type="button"
-      onClick={scrollToTop}
-      aria-label={t("label")}
-      className={`group fixed left-1/2 z-30 h-11 w-auto px-5 -translate-x-1/2 transition-all duration-300 ease-out md:h-[52px] md:w-[218px] md:px-0 xl:bottom-0 ${mobileQuickNavHidden ? "bottom-[calc(16px+env(safe-area-inset-bottom))]" : "bottom-[calc(86px+env(safe-area-inset-bottom)+12px)]"} ${
-        shown
-          ? "pointer-events-auto translate-y-0 opacity-100"
-          : "pointer-events-none translate-y-[150%] opacity-0 md:translate-y-full"
-      }`}
-    >
-      {/* Custom SVG-shaped background: #000000 60% + backdrop blur md, clipped
-          to the trapezoid path (no plain fill on the wrapper). Fades to 10%
-          once the footer bottom is reached. */}
-      <span
-        aria-hidden
-        className="absolute inset-0 rounded-full backdrop-blur-md transition-colors duration-300 ease-out md:rounded-none md:[clip-path:url(#back-to-top-shape)]"
-        style={{
-          backgroundColor: atBottom ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.6)",
-        }}
-      />
-
-      {/* Label + arrow-up icon */}
-      <span className="relative flex h-full items-center justify-center gap-2 whitespace-nowrap md:pb-0.5">
-        <span className="text-sm font-semibold leading-5 text-white">{t("label")}</span>
-        <img loading="lazy" decoding="async"
-          src="/assets/navbar/arrow-right.svg"
-          alt=""
-          className="size-5 -rotate-90 transition-transform duration-300 ease-out group-hover:-translate-y-0.5"
-        />
-      </span>
-
-      {/* clip-path definition — path is in the same 218×52 user space as the layer */}
-      <svg width="0" height="0" className="absolute" aria-hidden>
-        <defs>
-          <clipPath id="back-to-top-shape" clipPathUnits="userSpaceOnUse">
-            <path d={SHAPE_PATH} />
-          </clipPath>
-        </defs>
-      </svg>
-    </button>
-  );
+  return <BackToTopAction label={t("label")} shown={shown} onClick={scrollToTop} atBottom={atBottom} mobileQuickNavHidden={mobileQuickNavHidden} bottomInset={bottomInset} />;
 }

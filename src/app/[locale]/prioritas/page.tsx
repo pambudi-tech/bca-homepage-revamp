@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { CSSProperties } from "react";
 import Navbar from "@/components/home/Navbar";
 import Footer from "@/components/home/Footer";
+import BackToTop from "@/components/home/BackToTop";
 import HeroSection from "@/components/home/HeroSection";
 import SectionAnchor, { type SectionAnchorItem } from "@/components/home/SectionAnchor";
 import ScrollCue from "@/components/home/ScrollCue";
@@ -11,8 +12,9 @@ import CardSection from "@/components/prioritas/CardSection";
 import BankingSolutionSection from "@/components/prioritas/BankingSolutionSection";
 import MagazineSection from "@/components/prioritas/MagazineSection";
 import FinancialReportSection from "@/components/prioritas/FinancialReportSection";
+import PrioritasContactSection from "@/components/prioritas/PrioritasContactSection";
 import { getPromos } from "@/lib/promos";
-import { getKursHariIni } from "@/lib/kurs";
+import { formatKursUpdatedAt, getKursHariIni } from "@/lib/kurs";
 
 const HERO_IMAGE = "/assets/prioritas/hero-banner.webp";
 const PRIORITAS_LOGO = "/assets/prioritas/logo.svg";
@@ -27,6 +29,7 @@ export default async function PrioritasPage({
   const t = await getTranslations("prioritasHero");
   const now = new Date();
   const [promos, kurs] = await Promise.all([getPromos(now), getKursHariIni()]);
+  const kursUpdatedAt = kurs[0]?.updatedAt ?? 0;
 
   const sectionAnchors: SectionAnchorItem[] = [
     { key: "privilege", target: "#privilege", label: t("sections.privilege") },
@@ -49,7 +52,8 @@ export default async function PrioritasPage({
               cta: {
                 label: t("cta"),
                 icon: "/assets/cycle1/chevron-right-1.svg",
-                variant: "primary",
+              variant: "primary",
+              tone: "prioritas",
               },
               brandMark: { src: PRIORITAS_LOGO, alt: t("prioritasLogoAlt") },
             },
@@ -110,7 +114,10 @@ export default async function PrioritasPage({
           action: t("bankingSolution.action"),
           buy: t("bankingSolution.buy"),
           sell: t("bankingSolution.sell"),
-          updatedAt: t("bankingSolution.updatedAt"),
+          updatedAt: t("bankingSolution.updatedAt", { date: formatKursUpdatedAt(kursUpdatedAt, locale) }),
+          refresh: t("bankingSolution.refresh"),
+          previous: t("bankingSolution.previous"),
+          next: t("bankingSolution.next"),
           cards: [
             { title: t("bankingSolution.cards.branch.title"), alt: t("bankingSolution.cards.branch.alt"), image: "/assets/prioritas/banking/privilege-branch.png" },
             { title: t("bankingSolution.cards.vehicle.title"), alt: t("bankingSolution.cards.vehicle.alt"), image: "/assets/prioritas/banking/privilege-vehicle.png" },
@@ -129,6 +136,7 @@ export default async function PrioritasPage({
               action: t("bankingSolution.wealthCards.houseView.action"),
               image: "/assets/prioritas/banking/wealth-house-view.png",
               imageAlt: t("bankingSolution.wealthCards.houseView.alt"),
+              backdrop: "var(--color-neutral-900)",
             },
             {
               title: t("bankingSolution.wealthCards.market.title"),
@@ -137,6 +145,7 @@ export default async function PrioritasPage({
               actionIcon: "download",
               image: "/assets/prioritas/banking/wealth-market-overview.png",
               imageAlt: t("bankingSolution.wealthCards.market.alt"),
+              backdrop: "var(--color-red-500)",
             },
           ],
         }}
@@ -165,10 +174,20 @@ export default async function PrioritasPage({
           action: t("financialReport.action"),
         }}
       />
+      <PrioritasContactSection
+        copy={{
+          heading: t("contact.heading"),
+          riplayTitle: t("contact.riplayTitle"),
+          download: t("contact.download"),
+          contactTitle: t("contact.contactTitle"),
+          phone: t("contact.phone"),
+        }}
+      />
       </div>
       <div className="relative z-0 w-full xl:sticky xl:bottom-0">
         <Footer variant="prioritas" />
       </div>
+      <BackToTop bottomInset="24px" />
     </main>
   );
 }

@@ -18,20 +18,22 @@ const LOCALE_META: Record<AppLocale, { flag: string }> = {
 
 const SEGMENTS = ["Individu", "Bisnis", "Prioritas", "Solitaire"] as const;
 
-function ChevronRight() {
-  return <img src="/assets/navbar/chevron-right-blue.svg" alt="" className="size-6 -rotate-90" />;
+function ChevronRight({ priorityMenu }: { priorityMenu: boolean }) {
+  return <svg aria-hidden viewBox="0 0 24 24" fill="none" className={`size-6 -rotate-90 ${priorityMenu ? "text-pbrown-500" : "text-blue-500"}`}><path d="m5.12 9.12 6 6a1.25 1.25 0 0 0 1.76 0l6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>;
 }
 
 export default function MobileMenu({
   open,
   onClose,
   variant = "default",
+  logoHref,
 }: {
   open: boolean;
   onClose: () => void;
   productCategories?: ProductCategory[];
   megamenuContent?: MegaMenuContent;
   variant?: "default" | "about" | "promo" | "prioritas" | "solitaire";
+  logoHref: string;
 }) {
   const locale = useLocale() as AppLocale;
   const router = useRouter();
@@ -45,6 +47,8 @@ export default function MobileMenu({
   const langRef = useRef<HTMLDivElement>(null);
   const restoreFocusRef = useRef<HTMLElement | null>(null);
   const otherLocales = routing.locales.filter((item) => item !== locale);
+  const priorityMenu = variant === "prioritas";
+  const memberLoginHref = variant === "prioritas" || variant === "solitaire" ? `/member/login?from=${variant}` : null;
   const closeMenu = useCallback(() => {
     setLangOpen(false);
     onClose();
@@ -114,13 +118,13 @@ export default function MobileMenu({
       aria-modal="true"
       aria-label={tMobile("menuLabel")}
       aria-hidden={!open}
-      className="fade-overlay fixed inset-0 z-[60] bg-neutral-100 xl:hidden"
+      className="fade-overlay fixed inset-0 z-[90] bg-neutral-100 xl:hidden"
       style={{ "--fade-ms": "300ms" } as CSSProperties}
     >
       <div className="mx-auto flex h-full w-full max-w-[440px] flex-col bg-neutral-100 text-neutral-800">
         <header className="relative flex h-[calc(4rem+env(safe-area-inset-top))] shrink-0 items-center justify-between border-b border-neutral-300 px-4 pt-[env(safe-area-inset-top)]">
-          <Link href="/" aria-label="BCA" onClick={closeMenu} className="inline-flex">
-            <img src="/assets/navbar/bca-logo-blue.svg" alt="BCA" className="h-8 w-[102px]" />
+          <Link href={logoHref} aria-label="BCA" onClick={closeMenu} className="inline-flex">
+            <span aria-hidden className={`h-8 w-[102px] ${priorityMenu ? "bg-pbrown-500" : "bg-blue-500"} [mask-image:url('/assets/navbar/bca-logo-blue.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/navbar/bca-logo-blue.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]`} />
           </Link>
 
           <div className="flex items-center gap-2">
@@ -141,7 +145,7 @@ export default function MobileMenu({
               ) : null}
             </div>
             <button type="button" onClick={closeMenu} aria-label={tMobile("tutupMenu")} className="flex size-10 items-center justify-center rounded-full active:scale-95">
-              <img src="/assets/cycle1/outline-close.svg" alt="" className="size-6" />
+              <svg aria-hidden viewBox="0 0 32 32" fill="none" className={`size-6 ${priorityMenu ? "text-pbrown-500" : "text-blue-500"}`}><path d="m10 8 14 14M24 8 10 22" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" /></svg>
             </button>
           </div>
         </header>
@@ -150,11 +154,11 @@ export default function MobileMenu({
           {menuItems.map((item) => {
             const content = (
               <>
-                <span className={`text-base leading-6 ${item.active ? "font-bold text-blue-500" : "font-semibold text-neutral-800"}`}>{item.label}</span>
+                <span className={`text-base leading-6 ${item.active ? `font-bold ${priorityMenu ? "text-pbrown-500" : "text-blue-500"}` : "font-semibold text-neutral-800"}`}>{item.label}</span>
                 {item.active ? (
-                  <span className="flex h-8 items-center rounded-xl bg-blue-200 px-4 text-sm font-semibold text-blue-600">{tMobile("sesiAktif")}</span>
+                  <span className={`flex h-8 items-center rounded-xl px-4 text-sm font-semibold ${priorityMenu ? "bg-pgold-100 text-pbrown-500" : "bg-blue-200 text-blue-600"}`}>{tMobile("sesiAktif")}</span>
                 ) : (
-                  <span className="flex size-10 items-center justify-center"><ChevronRight /></span>
+                  <span className="flex size-10 items-center justify-center"><ChevronRight priorityMenu={priorityMenu} /></span>
                 )}
               </>
             );
@@ -168,9 +172,11 @@ export default function MobileMenu({
         </nav>
 
         <div className="absolute inset-x-4 bottom-[calc(1rem+env(safe-area-inset-bottom))]">
-          <a href="https://mybca.bca.co.id/auth/login" target="_blank" rel="noopener noreferrer" onClick={closeMenu} className="flex h-12 items-center justify-center rounded-full border border-blue-500 bg-neutral-100 px-6 text-base font-semibold text-blue-500 active:bg-blue-100">
-            {tNav("login")}
-          </a>
+          {memberLoginHref ? (
+            <Link href={memberLoginHref} onClick={closeMenu} className={`flex h-12 items-center justify-center rounded-full border bg-neutral-100 px-6 text-base font-semibold ${priorityMenu ? "border-pbrown-500 text-pbrown-500 active:bg-pgold-100" : "border-blue-500 text-blue-500 active:bg-blue-100"}`}>{tNav("login")}</Link>
+          ) : (
+            <a href="https://mybca.bca.co.id/auth/login" target="_blank" rel="noopener noreferrer" onClick={closeMenu} className="flex h-12 items-center justify-center rounded-full border border-blue-500 bg-neutral-100 px-6 text-base font-semibold text-blue-500 active:bg-blue-100">{tNav("login")}</a>
+          )}
         </div>
       </div>
     </div>,

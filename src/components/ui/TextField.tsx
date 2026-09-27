@@ -11,26 +11,32 @@ import {
 export default function TextField({
   label,
   hideLabel = false,
+  fieldSize = "default",
   error,
   as = "input",
   options,
   leadingIcon,
+  labelAdornment,
+  trailingAdornment,
   inputRef,
   className = "",
   ...props
 }: {
   label: string;
   hideLabel?: boolean;
+  fieldSize?: "default" | "large";
   error?: string;
   as?: "input" | "select";
   options?: string[];
   leadingIcon?: ReactNode;
+  labelAdornment?: ReactNode;
+  trailingAdornment?: ReactNode;
   inputRef?: Ref<HTMLInputElement>;
 } & InputHTMLAttributes<HTMLInputElement>) {
   const id = useId();
   const errorId = `${id}-error`;
   const box = [
-    "h-12 w-full rounded-xl border bg-neutral-200 px-3.5 text-sm leading-5 text-neutral-700",
+    `${fieldSize === "large" ? "h-14 text-base leading-6" : "h-12 text-sm leading-5"} w-full rounded-xl border bg-neutral-200 px-3.5 text-neutral-700`,
     "outline-none transition-colors placeholder:text-neutral-600",
     "disabled:text-neutral-500",
     leadingIcon ? "pl-11" : "",
@@ -40,12 +46,15 @@ export default function TextField({
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <label
-        htmlFor={id}
-        className={hideLabel ? "sr-only" : "text-sm font-bold leading-5 text-neutral-800"}
-      >
-        {label}
-      </label>
+      <div className="flex items-center gap-1">
+        <label
+          htmlFor={id}
+          className={hideLabel ? "sr-only" : `${fieldSize === "large" ? "text-base leading-6" : "text-sm leading-5"} font-bold text-neutral-800`}
+        >
+          {label}
+        </label>
+        {labelAdornment}
+      </div>
       {as === "select" ? (
         <div className="relative w-full">
           <select
@@ -82,9 +91,14 @@ export default function TextField({
             id={id}
             aria-invalid={Boolean(error)}
             aria-describedby={error ? errorId : undefined}
-            className={box}
+            className={`${box} ${trailingAdornment ? "pr-12" : ""}`}
             {...props}
           />
+          {trailingAdornment ? (
+            <span className="absolute inset-y-0 right-3 flex items-center justify-center">
+              {trailingAdornment}
+            </span>
+          ) : null}
         </div>
       )}
       {error ? (

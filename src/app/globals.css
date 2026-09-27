@@ -3,7 +3,7 @@
 /* Prioritas palette utilities are used by route-level components that can be
    loaded after the initial homepage scan. Keep these explicit so the compiler
    emits the shared utilities in both the dev and production bundles. */
-@source inline("bg-pbrown-600 bg-pbrown-800 bg-pbrown-900/30 text-pgold-100 text-pgold-300 border-pgold-100/25 border-pgold-300/25 backdrop-saturate-125 backdrop-saturate-[1.2]");
+@source inline("bg-pbrown-600 bg-pbrown-700/25 bg-pbrown-800 bg-pbrown-900/30 text-pgold-100 text-pgold-300 border-pgold-100/25 border-pgold-300/25 backdrop-saturate-125 backdrop-saturate-[1.2]");
 
 :root {
   --background: #ffffff;
@@ -144,6 +144,11 @@
   --text-heading--letter-spacing: -0.02em;                /* -0.48px */
   --text-heading--font-weight: 600;
 
+  --text-hero-title-mobile: 1.75rem;                      /* 28px */
+  --text-hero-title-mobile--line-height: calc(36 / 28);   /* 36px */
+  --text-hero-title-mobile--letter-spacing: -0.02em;      /* -0.56px */
+  --text-hero-title-mobile--font-weight: 600;
+
   --text-display: 2rem;                                   /* 32px */
   --text-display--line-height: calc(40 / 32);             /* 40px */
   --text-display--letter-spacing: -0.02em;                /* -0.64px */
@@ -209,6 +214,13 @@
      distance and stops rather than arriving: the product photo swap. */
   --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-emphasis: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@utility text-hero-title-mobile {
+  font-size: var(--text-hero-title-mobile);
+  line-height: var(--text-hero-title-mobile--line-height);
+  letter-spacing: var(--text-hero-title-mobile--letter-spacing);
+  font-weight: var(--text-hero-title-mobile--font-weight);
 }
 
 @theme inline {
@@ -414,6 +426,50 @@ html.hero-search-open .page-stack {
   .soliprio-photo-swap {
     transition-duration: 0ms;
   }
+}
+
+/* Prioritas index tabs use outward bottom curves so the active surface flows
+   into the light page background instead of ending as a plain rounded pill. */
+.prioritas-index-tab {
+  --prioritas-index-tab-bg: var(--color-pbrown-700);
+  z-index: 1;
+  border-radius: 0.75rem 0.75rem 0 0;
+  background-color: var(--prioritas-index-tab-bg);
+}
+
+.prioritas-index-tab-active {
+  --prioritas-index-tab-bg: var(--color-pgold-200);
+  z-index: 10;
+}
+
+.prioritas-index-tab::before,
+.prioritas-index-tab::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 0.75rem;
+  height: 0.75rem;
+  pointer-events: none;
+}
+
+.prioritas-index-tab::before {
+  left: -0.75rem;
+  background: radial-gradient(circle at 0 0, transparent 0 0.75rem, var(--prioritas-index-tab-bg) 0.75rem);
+}
+
+.prioritas-index-tab::after {
+  right: -0.75rem;
+  background: radial-gradient(circle at 100% 0, transparent 0 0.75rem, var(--prioritas-index-tab-bg) 0.75rem);
+}
+
+.prioritas-index-tab-list {
+  background-image: linear-gradient(
+    to bottom,
+    transparent calc(100% - 0.75rem),
+    var(--color-pgold-200) calc(100% - 0.75rem)
+  );
+  background-origin: content-box;
+  background-clip: content-box;
 }
 
 /* Perspective lives on the (untilted) anchor rather than as a `perspective()`

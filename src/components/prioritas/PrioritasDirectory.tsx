@@ -1,0 +1,149 @@
+"use client";
+
+import { useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
+import { useTranslations } from "next-intl";
+
+export const DIRECTORY_PAGE_SIZE = 9;
+const DIRECTORY_PANEL_CLASS = "relative -left-4 w-[calc(100%+2rem)] rounded-t-[20px] rounded-b-none bg-white shadow-card transition-[left,width,border-radius,box-shadow] duration-500 ease-in-out motion-reduce:transition-none xl:left-0 xl:w-full xl:rounded-xl";
+const DIRECTORY_CONTENT_CLASS = "mx-auto w-full max-w-[1280px] p-4 xl:p-6";
+const DIRECTORY_HEADER_CLASS = "relative z-20 -mx-4 -mt-4 rounded-t-[20px] bg-white px-4 pt-4 xl:-mx-6 xl:-mt-6 xl:rounded-t-xl xl:px-6 xl:pt-6";
+const DIRECTORY_FILTER_CLASS = "relative mt-2 -mx-4 flex flex-col justify-between gap-3 px-4 pb-4 after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-screen after:-translate-x-1/2 after:bg-neutral-300 xl:-mx-6 xl:flex-row xl:items-center xl:px-6";
+const DIRECTORY_GRID_CLASS = "relative z-0 mt-5 grid md:grid-cols-3";
+
+type PaginationItem = number | "start-ellipsis" | "end-ellipsis";
+
+function getPaginationItems(current: number, total: number): PaginationItem[] {
+  if (total <= 7) return Array.from({ length: total }, (_, index) => index + 1);
+  if (current <= 4) return [1, 2, 3, 4, 5, 6, "end-ellipsis", total];
+  if (current >= total - 3) return [1, "start-ellipsis", ...Array.from({ length: 6 }, (_, index) => total - 5 + index)];
+  return [1, "start-ellipsis", current - 1, current, current + 1, "end-ellipsis", total];
+}
+
+function usePrioritasDirectoryExpansion(panelRef: RefObject<HTMLElement | null>) {
+  const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    const panel = panelRef.current;
+    const tabs = document.querySelector<HTMLElement>("[data-prioritas-index-tabs]");
+    if (!panel || !tabs) return;
+
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      setExpanded(panel.getBoundingClientRect().top <= tabs.getBoundingClientRect().bottom + 1);
+    };
+    const scheduleUpdate = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+
+    scheduleUpdate();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+    };
+  }, [panelRef]);
+
+  return expanded;
+}
+
+export function PrioritasDirectoryCategories({ children, className = "" }: { children: ReactNode; className?: string }) {
+  const railRef = useRef<HTMLDivElement>(null);
+  const [overflow, setOverflow] = useState({ left: false, right: false });
+
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const update = () => setOverflow({
+      left: rail.scrollLeft > 1,
+      right: rail.scrollLeft + rail.clientWidth < rail.scrollWidth - 1,
+    });
+    update();
+    rail.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      rail.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  return <div className={`${className} relative w-full max-w-full`}>
+    <div ref={railRef} className="hide-scrollbar flex gap-3 overflow-x-auto pb-1 [scrollbar-width:none]">{children}</div>
+    {overflow.left ? <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-white via-white/90 to-transparent" /> : null}
+    {overflow.right ? <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-white via-white/90 to-transparent" /> : null}
+  </div>;
+}
+
+export function PrioritasDirectoryFilters({ children, count }: { children: ReactNode; count: ReactNode }) {
+  return <div className={DIRECTORY_FILTER_CLASS}>
+    {children}
+    <p className="text-sm text-neutral-700">{count}</p>
+  </div>;
+}
+
+function PrioritasDirectoryPagination({ page, total, pageSize, onPageChange, label, placement = "bottom" }: {
+  page: number;
+  total: number;
+  pageSize: number;
+  onPageChange: (page: number) => void;
+  label?: string;
+  placement?: "top" | "bottom";
+}) {
+  const t = useTranslations("signaturePrivilege");
+  const pageCount = Math.max(1, Math.ceil(total / pageSize));
+  const from = total === 0 ? 0 : (page - 1) * pageSize + 1;
+  const to = Math.min(page * pageSize, total);
+
+  return <nav aria-label={label ?? t("paginationLabel")} className={placement === "top" ? "mx-auto flex w-fit items-center justify-center gap-3 xl:mx-0 xl:w-full xl:justify-between" : "mt-6 -mx-4 flex flex-col items-start xl:mx-0 xl:h-24 xl:flex-row xl:items-center xl:justify-between xl:gap-0"}>
+    <p className="hidden text-sm font-semibold text-neutral-600 xl:block">{t("paginationSummary", { from, to, total })}</p>
+    <div className={`flex items-center justify-center gap-2 ${placement === "top" ? "w-fit xl:ml-auto" : "w-full xl:w-auto xl:self-auto xl:justify-start"}`}>
+      <button type="button" disabled={page === 1} onClick={() => onPageChange(page - 1)} className="flex size-12 items-center justify-center rounded-full bg-white text-pbrown-200 transition-colors hover:bg-pgold-100 disabled:opacity-40" aria-label={t("paginationPrevious")}><span aria-hidden className="size-5 rotate-180 bg-pgold-500 [mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]" /></button>
+      {getPaginationItems(page, pageCount).map((item) => typeof item === "number" ? <button key={item} type="button" onClick={() => onPageChange(item)} aria-current={item === page ? "page" : undefined} className={`flex size-10 items-center justify-center rounded-lg border text-sm font-semibold transition-colors ${item === page ? "border-pgold-500 bg-pgold-200 text-pbrown-600" : "border-neutral-300 bg-white text-neutral-800 hover:border-pgold-500"}`}>{item}</button> : <span key={item} aria-hidden className="flex size-10 items-center justify-center rounded-full bg-neutral-200 text-sm font-semibold text-neutral-600">•••</span>)}
+      <button type="button" disabled={page === pageCount} onClick={() => onPageChange(page + 1)} className="flex size-12 items-center justify-center rounded-full bg-white text-pbrown-200 transition-colors hover:bg-pgold-100 disabled:opacity-40" aria-label={t("paginationNext")}><span aria-hidden className="size-5 bg-pgold-500 [mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]" /></button>
+    </div>
+  </nav>;
+}
+
+export function PrioritasDirectoryPanel({ headingId, header, children, emptyMessage, page, total, pageSize = DIRECTORY_PAGE_SIZE, onPageChange, paginationLabel, paginationPlacement = "bottom", gridClassName = "", gridGap = "normal", panelRef, spacing = "none" }: {
+  headingId: string;
+  header: ReactNode;
+  children: ReactNode;
+  emptyMessage: string;
+  page: number;
+  total: number;
+  pageSize?: number;
+  onPageChange: (page: number) => void;
+  paginationLabel?: string;
+  paginationPlacement?: "top" | "bottom";
+  gridClassName?: string;
+  gridGap?: "normal" | "compact";
+  panelRef?: RefObject<HTMLElement | null>;
+  spacing?: "none" | "section";
+}) {
+  const internalRef = useRef<HTMLElement>(null);
+  const expanded = usePrioritasDirectoryExpansion(internalRef);
+  const setPanelRef = useCallback((node: HTMLElement | null) => {
+    internalRef.current = node;
+    if (panelRef) panelRef.current = node;
+  }, [panelRef]);
+
+  return <section
+    ref={setPanelRef}
+    data-prioritas-directory
+    className={`${spacing === "section" ? "mt-10" : "mt-0"} ${DIRECTORY_PANEL_CLASS} ${expanded ? "shadow-none" : ""}`}
+    style={expanded ? { left: "calc(50% - 50vw)", width: "100vw", borderRadius: 0 } : undefined}
+    aria-labelledby={headingId}
+  >
+    <div className={DIRECTORY_CONTENT_CLASS}>
+      <div className={`${DIRECTORY_HEADER_CLASS} ${paginationPlacement === "top" ? "pb-4" : ""}`}>
+        {header}
+        {paginationPlacement === "top" ? <PrioritasDirectoryPagination page={page} total={total} pageSize={pageSize} onPageChange={onPageChange} label={paginationLabel} placement="top" /> : null}
+      </div>
+      <div className={`${DIRECTORY_GRID_CLASS} ${gridGap === "compact" ? "gap-4" : "gap-6"} ${gridClassName}`}>{children}</div>
+      {total === 0 ? <p className="py-16 text-center text-neutral-600">{emptyMessage}</p> : null}
+      {paginationPlacement === "bottom" ? <PrioritasDirectoryPagination page={page} total={total} pageSize={pageSize} onPageChange={onPageChange} label={paginationLabel} /> : null}
+    </div>
+  </section>;
+}
