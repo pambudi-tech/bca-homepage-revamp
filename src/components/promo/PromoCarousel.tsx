@@ -17,6 +17,9 @@ export default function PromoCarousel({
   loop = true,
   variant = "default",
   promoPage = false,
+  detail = false,
+  detailHrefBase,
+  showEventDate = false,
 }: {
   promos: Promo[];
   now: Date;
@@ -30,6 +33,9 @@ export default function PromoCarousel({
   loop?: boolean;
   variant?: "default" | "prioritas";
   promoPage?: boolean;
+  detail?: boolean;
+  detailHrefBase?: string;
+  showEventDate?: boolean;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const itemsCount = promos.length + (campaignCover ? 1 : 0);
@@ -98,7 +104,17 @@ export default function PromoCarousel({
               <img src={campaignCover} alt={campaignAlt ?? ""} className="size-full object-cover" />
             </a>
           ) : (
-            <PromoCard promo={promos[item - (campaignCover ? 1 : 0)]} now={now} reveal={false} compact={compact} variant={variant} promoPage={promoPage} />
+            <PromoCard
+              promo={promos[item - (campaignCover ? 1 : 0)]}
+              now={now}
+              reveal={false}
+              compact={compact}
+              variant={variant}
+              promoPage={promoPage}
+              detail={detail}
+              detailHref={detailHrefBase ? `${detailHrefBase}/${promos[item - (campaignCover ? 1 : 0)].id}` : undefined}
+              eventDate={showEventDate ? (promos[item - (campaignCover ? 1 : 0)] as Promo & { dateTile?: React.ComponentProps<typeof PromoCard>["eventDate"] }).dateTile : undefined}
+            />
           )}
         </div>
       ))}

@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import PromoCard from "@/components/promo/PromoCard";
+import PromoCarousel from "@/components/promo/PromoCarousel";
 import { getPromoBadge, getPromoTimestamp, type Promo } from "@/components/home/promo-data";
 import Navbar from "@/components/home/Navbar";
 import PrioritasEventDateTile from "@/components/prioritas/PrioritasEventDateTile";
@@ -84,11 +85,6 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
   const pathname = usePathname();
   const lenis = useLenis();
   const [openPanels, setOpenPanels] = useState<DetailPanel[]>(["detail", "terms"]);
-  const [sheetPinned, setSheetPinned] = useState(false);
-  const [sheetScrolled, setSheetScrolled] = useState(false);
-  const [sheetTrackHeight, setSheetTrackHeight] = useState(0);
-  const sheetRef = useRef<HTMLDivElement>(null);
-  const sheetContentRef = useRef<HTMLDivElement>(null);
   const toggle = (panel: DetailPanel) => setOpenPanels((current) => current.includes(panel) ? current.filter((item) => item !== panel) : [...current, panel]);
   const brand = copy.brand?.trim();
   const directoryPath = kind === "event" ? "/prioritas/event" : kind === "promo" ? "/prioritas/promo" : "/prioritas/lifestyle-privilege";
@@ -102,53 +98,10 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
     lenis?.scrollTo(0, { immediate: true });
   }, [lenis, pathname]);
 
-  useEffect(() => {
-    const mobileLayout = window.matchMedia("(max-width: 1279px)");
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const sheet = sheetRef.current;
-      const content = sheetContentRef.current;
-      if (!sheet || !content) return;
-      setSheetScrolled(mobileLayout.matches && window.scrollY > 8);
-      if (!mobileLayout.matches) {
-        setSheetPinned(false);
-        setSheetTrackHeight(0);
-        sheet.scrollTop = 0;
-        return;
-      }
-
-      const shouldPin = sheet.getBoundingClientRect().top <= 64;
-      setSheetPinned((current) => {
-        if (current && !shouldPin) sheet.scrollTop = 0;
-        return current === shouldPin ? current : shouldPin;
-      });
-      const nextTrackHeight = content.scrollHeight + 16;
-      setSheetTrackHeight((current) => Math.abs(current - nextTrackHeight) < 1 ? current : nextTrackHeight);
-    };
-    const scheduleUpdate = () => {
-      if (!frame) frame = window.requestAnimationFrame(update);
-    };
-    const contentObserver = new ResizeObserver(scheduleUpdate);
-
-    if (sheetContentRef.current) contentObserver.observe(sheetContentRef.current);
-    update();
-    window.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("resize", scheduleUpdate);
-    mobileLayout.addEventListener("change", scheduleUpdate);
-    return () => {
-      window.cancelAnimationFrame(frame);
-      contentObserver.disconnect();
-      window.removeEventListener("scroll", scheduleUpdate);
-      window.removeEventListener("resize", scheduleUpdate);
-      mobileLayout.removeEventListener("change", scheduleUpdate);
-    };
-  }, []);
-
   return (
     <article className="relative isolate overflow-x-clip bg-pgold-200 text-neutral-900">
-      <div className="sticky top-0 z-0 xl:relative">
-        <Navbar variant="prioritas" staticOnMobile keepTransparentOnScroll />
+      <div className="relative">
+        <Navbar variant="prioritas" />
         <PrioritasDetailSubnav
           label={copy.subNav.label}
           privilege={copy.subNav.privilege}
@@ -175,20 +128,16 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
         </div>
         <div className="pointer-events-none relative z-20 mx-auto w-full max-w-[1280px] px-4 xl:px-0">
           <div className="grid gap-6 xl:grid-cols-[560px_minmax(0,1fr)] xl:gap-6">
-            <div className={`pointer-events-auto sticky ${brand ? "top-[340px]" : "top-[304px]"} z-0 w-full self-start aspect-[4/3] overflow-hidden rounded-2xl xl:top-6 xl:h-[480px] xl:aspect-auto`}>
+            <div className="pointer-events-auto relative z-0 w-full self-start aspect-[4/3] overflow-hidden rounded-2xl xl:sticky xl:top-6 xl:h-[480px] xl:aspect-auto">
               <img src={heroImage} alt={copy.title} className="size-full object-cover" />
               {eventDate ? <PrioritasEventDateTile date={eventDate} detail /> : null}
               {heroTimestampLabel ? <PrioritasEventDateTile timeLabel={heroTimestampLabel} timeIconSrc="/assets/prioritas/detail/promo/clock.svg" /> : null}
             </div>
-            <div
-              className="relative min-h-[var(--detail-panel-track-height)] xl:min-h-0"
-              style={{ "--detail-panel-track-height": `${sheetTrackHeight}px` } as React.CSSProperties}
-            >
+            <div>
               <div
-                ref={sheetRef}
-                className={`pointer-events-auto sticky top-[calc(4rem+env(safe-area-inset-top))] z-30 -mx-4 flex w-[calc(100%+2rem)] flex-col gap-4 rounded-t-[20px] rounded-b-none bg-white p-2 transition-shadow duration-300 xl:static xl:z-auto xl:mx-0 xl:w-full xl:rounded-2xl xl:p-2 ${sheetScrolled ? "shadow-scroll-top" : ""} ${sheetPinned ? "max-h-[calc(100dvh-4rem-env(safe-area-inset-top))] overflow-y-auto" : ""}`}
+                className="pointer-events-auto -mx-4 flex w-[calc(100%+2rem)] flex-col gap-4 rounded-t-[20px] rounded-b-none bg-white p-2 xl:mx-0 xl:w-full xl:rounded-2xl"
               >
-                <div ref={sheetContentRef} className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4">
                   <DetailRow title={copy.detail.title} open={openPanels.includes("detail")} onToggle={() => toggle("detail")}>
                     <p>{copy.detail.content}</p>
                   </DetailRow>
@@ -231,7 +180,10 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
                 />
               </Link>
             </div>
-            <div className="mt-6 grid gap-6 md:grid-cols-3 xl:mt-8">
+            <div className="mt-6 xl:hidden">
+              <PromoCarousel promos={promos.slice(0, 3)} now={new Date(now)} loop={false} variant="prioritas" promoPage={kind === "promo"} detail detailHrefBase={kind === "lifestyle" ? undefined : directoryPath} showEventDate={kind === "event"} />
+            </div>
+            <div className="hidden gap-6 xl:mt-8 xl:grid xl:grid-cols-3">
               {promos.slice(0, 3).map((promo) => <PromoCard key={promo.id} promo={promo} now={new Date(now)} reveal={false} variant="prioritas" fill detail promoPage={kind === "promo"} eventDate={kind === "event" && "dateTile" in promo ? (promo as EventPromo).dateTile : undefined} detailHref={kind === "lifestyle" ? undefined : `${directoryPath}/${promo.id}`} />)}
             </div>
           </section>
