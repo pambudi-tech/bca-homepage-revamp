@@ -325,7 +325,7 @@ export default function SignaturePrivilegeExperience({ promos, now, directoryOnl
             </PrioritasDirectoryFilters>
             </>}
           >
-              {visiblePromos.map((promo) => <PromoCard key={promo.id} promo={promo} now={now} reveal={false} variant={cardVariant} promoPage={currentTab === "promo"} fill detailHref={currentTab === "promo" ? `/prioritas/promo/${promo.id}` : undefined} {...(cardDetail ? { detail: true } : {})} />)}
+              {visiblePromos.map((promo) => <PromoCard key={promo.id} promo={promo} now={now} reveal={false} variant={cardVariant} promoPage={currentTab === "promo"} fill detailHref={currentTab === "promo" || currentTab === "lifestyle" ? `/prioritas/promo/${promo.id}` : undefined} {...(cardDetail ? { detail: true } : {})} />)}
           </PrioritasDirectoryPanel>
         </div>
       </section>
