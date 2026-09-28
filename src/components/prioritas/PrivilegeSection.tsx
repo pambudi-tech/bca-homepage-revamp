@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useIsLive } from "@/lib/useIsLive";
 import { Link } from "@/i18n/navigation";
+import { PrioritasButton, PrioritasButtonIcon } from "@/components/prioritas/PrioritasButton";
 
 const AUTO_ADVANCE_MS = 6000;
 
@@ -23,13 +24,9 @@ export type PrivilegeSectionCopy = {
 
 function ArrowAction({ children }: { children: ReactNode }) {
   return (
-    <button
-      type="button"
-      className="flex items-center gap-0.5 text-left text-base font-semibold leading-6 text-pgold-300 transition-colors hover:text-pgold-100"
-    >
-      <span className="px-0.5">{children}</span>
-      <img src={`${ASSET_ROOT}/arrow-small.svg`} alt="" className="size-5" />
-    </button>
+    <PrioritasButton kind="text" surface="inverse" size="large" trailingIcon={<PrioritasButtonIcon src={`${ASSET_ROOT}/arrow-small.svg`} />}>
+      {children}
+    </PrioritasButton>
   );
 }
 
@@ -199,7 +196,7 @@ export default function PrivilegeSection({ copy }: { copy: PrivilegeSectionCopy 
             <img src={`${ASSET_ROOT}/arrow-right.svg`} alt="" className="size-6" />
           </Link>
 
-          <div className="hidden grid-cols-1 gap-8 xl:grid xl:grid-cols-2">
+          <div className="hidden grid-cols-1 gap-8 xl:grid xl:grid-cols-2 xl:gap-6">
             <PrivilegeCard copy={cards[0].copy} image={cards[0].image} feature />
             <PrivilegeCard copy={cards[1].copy} image={cards[1].image} />
             <PrivilegeCard copy={cards[2].copy} image={cards[2].image} />

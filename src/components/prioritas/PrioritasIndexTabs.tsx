@@ -1,10 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { TabLink } from "@/components/ui/Tab";
 
 export type PrioritasIndexTab = "signature" | "lifestyle" | "event" | "promo";
+type PrioritasOverviewTab = "overview" | "privilege" | "banking" | "magazine" | "financial";
+type PrioritasTabKey = PrioritasIndexTab | PrioritasOverviewTab;
 
 const tabs: Array<{ key: PrioritasIndexTab; href: string }> = [
   { key: "signature", href: "/prioritas/privilege" },
@@ -13,11 +15,19 @@ const tabs: Array<{ key: PrioritasIndexTab; href: string }> = [
   { key: "promo", href: "/prioritas/promo" },
 ];
 
-export default function PrioritasIndexTabs({ activeTab }: { activeTab: PrioritasIndexTab }) {
-  const t = useTranslations("signaturePrivilege");
+const overviewTabs: Array<{ key: PrioritasOverviewTab; href: string }> = [
+  { key: "overview", href: "/prioritas/overview#overview-start" },
+  { key: "privilege", href: "/prioritas/overview#overview-signature" },
+  { key: "banking", href: "/prioritas/banking-solution" },
+  { key: "magazine", href: "/prioritas/overview#overview-magazine" },
+  { key: "financial", href: "/prioritas/overview#overview-financial" },
+];
+
+export default function PrioritasIndexTabs({ activeTab, surface = "default" }: { activeTab: PrioritasTabKey; surface?: "default" | "overview" }) {
+  const t = useTranslations(surface === "overview" ? "memberOverview" : "signaturePrivilege");
   const viewportRef = useRef<HTMLDivElement>(null);
-  const tabRefs = useRef<Partial<Record<PrioritasIndexTab, HTMLAnchorElement | null>>>({});
-  const requestedTabRef = useRef<PrioritasIndexTab | null>(null);
+  const tabRefs = useRef<Partial<Record<PrioritasTabKey, HTMLAnchorElement | null>>>({});
+  const requestedTabRef = useRef<PrioritasTabKey | null>(null);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -27,7 +37,7 @@ export default function PrioritasIndexTabs({ activeTab }: { activeTab: Prioritas
     return () => window.removeEventListener("scroll", update);
   }, []);
 
-  const centerTab = useCallback((key: PrioritasIndexTab, behavior: ScrollBehavior = "smooth") => {
+  const centerTab = useCallback((key: PrioritasTabKey, behavior: ScrollBehavior = "smooth") => {
     const viewport = viewportRef.current;
     const tab = tabRefs.current[key];
     if (!viewport || !tab || viewport.scrollWidth <= viewport.clientWidth) return false;
@@ -53,17 +63,17 @@ export default function PrioritasIndexTabs({ activeTab }: { activeTab: Prioritas
   }, [activeTab, centerTab]);
 
   return (
-    <div data-prioritas-index-tabs className={`relative sticky top-4 z-30 -mt-12 mx-auto w-full max-w-[1280px] before:pointer-events-none before:absolute before:-top-6 before:left-1/2 before:z-0 before:h-[calc(100%+1.5rem)] before:w-screen before:-translate-x-1/2 before:transition-[background-color,backdrop-filter] before:duration-200 xl:-mt-14 xl:w-full ${scrolled ? "before:bg-pbrown-600/95 before:backdrop-blur-md" : "before:bg-transparent"}`}>
+    <div data-prioritas-index-tabs style={{ "--prioritas-index-tab-surface": surface === "overview" ? "var(--color-pgold-100)" : "var(--color-pgold-200)" } as CSSProperties} className={`relative sticky top-4 z-30 mx-auto -mt-12 w-full max-w-[1280px] before:pointer-events-none before:absolute before:-top-6 before:left-1/2 before:z-0 before:h-[calc(100%+1.5rem)] before:w-screen before:-translate-x-1/2 before:transition-[background-color,backdrop-filter] before:duration-200 xl:w-full ${scrolled ? "before:bg-pbrown-600/95 before:backdrop-blur-md" : "before:bg-transparent"}`}>
       <div ref={viewportRef} className="hide-scrollbar relative w-full overflow-x-auto bg-transparent px-4 [scrollbar-width:none] xl:overflow-visible xl:px-0">
         <div
           role="tablist"
-          aria-label={t("tabLabel")}
-          className="prioritas-index-tab-list relative flex w-max overflow-visible rounded-t-xl bg-pbrown-700"
+          aria-label={surface === "overview" ? t("nav.label") : t("tabLabel")}
+          className={`tab-curved-list prioritas-index-tab-list relative flex overflow-visible rounded-t-xl bg-pbrown-700 ${surface === "overview" ? "w-max xl:w-full" : "w-max"}`}
         >
-        {tabs.map(({ key, href }) => {
+        {(surface === "overview" ? overviewTabs : tabs).map(({ key, href }) => {
           const active = key === activeTab;
           return (
-            <Link
+            <TabLink
               ref={(node) => { tabRefs.current[key] = node; }}
               key={key}
               href={href}
@@ -75,10 +85,12 @@ export default function PrioritasIndexTabs({ activeTab }: { activeTab: Prioritas
               }}
               role="tab"
               aria-selected={active}
-              className={`prioritas-index-tab relative flex h-12 shrink-0 items-center px-6 text-base font-semibold xl:h-14 xl:px-8 xl:text-base ${active ? "prioritas-index-tab-active text-pbrown-600" : "text-pbrown-200"}`}
+              variant="curved"
+              active={active}
+              className={surface === "overview" ? "xl:flex-1 xl:justify-center" : undefined}
             >
-              {t(`tabs.${key}`)}
-            </Link>
+              {surface === "overview" ? t(`nav.${key}`) : t(`tabs.${key}`)}
+            </TabLink>
           );
         })}
         </div>

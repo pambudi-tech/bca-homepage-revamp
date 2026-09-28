@@ -3,14 +3,19 @@
 import { useLayoutEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
-import PromoCard from "@/components/promo/PromoCard";
+import ContentCard from "@/components/prioritas/ContentCard";
+import SignaturePrivilegeCard from "@/components/prioritas/SignaturePrivilegeCard";
+import ExecutiveAirportLoungeTable from "@/components/prioritas/ExecutiveAirportLoungeTable";
+import PromoRibbon from "@/components/PromoRibbon";
 import PromoCarousel from "@/components/promo/PromoCarousel";
 import { getPromoBadge, getPromoTimestamp, type Promo } from "@/components/home/promo-data";
 import Navbar from "@/components/home/Navbar";
 import PrioritasEventDateTile from "@/components/prioritas/PrioritasEventDateTile";
 import type { EventPromo } from "@/components/prioritas/event-data";
+import type { PrivilegePromo } from "@/lib/partner-privileges";
 import PrioritasDetailSubnav from "@/components/prioritas/PrioritasDetailSubnav";
 import PrioritasPageHeader from "@/components/prioritas/PrioritasPageHeader";
+import { prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
 import { useLenis } from "@/components/SmoothScroll";
 
 const ASSET_ROOT = "/assets/prioritas/detail/molton-brown";
@@ -26,14 +31,15 @@ type DetailCopy = {
   terms: { title: string; items: string[] };
   validUntil?: { label: string; value: string };
   contact: { title: string; content: string; items?: string[]; groups?: { intro: string; items: string[] } };
-  location: { title: string; content: string };
+  location: { title: string; content: string; table?: "executiveAirportLounge" };
   recommendations: {
     title: string;
     viewMore: string;
   };
+  dynamicModule?: { message: string; loginLabel: string };
 };
 
-type DetailKind = "lifestyle" | "complimentary" | "event" | "promo" | "about";
+type DetailKind = "signature" | "lifestyle" | "complimentary" | "event" | "promo" | "about";
 
 function DetailRow({
   title,
@@ -83,31 +89,199 @@ const DOCUMENT_SECTION_HEADINGS = new Set([
   "Simulasi biaya",
   "Informasi tambahan",
   "Pertanyaan dan pengaduan",
+  "Privilege",
+  "Special Price",
+  "Additional Benefit",
+  "Informasi Acara",
+  "Informasi Penting",
+  "Syarat dan Ketentuan",
+  "Syarat & Ketentuan",
+  "Program Fresh Fund",
+  "Periode Program",
+  "Special Activity",
+  "Activity",
+  "Cashback",
+  "Complimentary Treatment",
+  "Pembicara",
 ]);
+
+const DOCUMENT_LIST_HEADINGS = new Set([
+  "Privilege",
+  "Special Price",
+  "Additional Benefit",
+  "Periode Program",
+  "Special Activity",
+  "Activity",
+  "Cashback",
+  "Complimentary Treatment",
+  "Pembicara",
+  "Program Fresh Fund",
+]);
+
+const DOCUMENT_PARAGRAPH_HEADINGS = new Set([
+  "Informasi Acara",
+  "Informasi Penting",
+  "Syarat dan Ketentuan",
+  "Syarat & Ketentuan",
+]);
+
+const DOCUMENT_FIELD_LABELS = new Set([
+  "Hari/Tanggal",
+  "Hari dan Tanggal",
+  "Tanggal",
+  "Hari",
+  "Waktu",
+  "Pukul",
+  "Lokasi",
+  "Venue",
+  "Periode",
+  "Periode penawaran",
+  "Periode program",
+  "Usia Peserta",
+  "Drop-Off Point",
+  "RSVP",
+  "WA",
+  "Website",
+  "Dresscode",
+  "Dress Code",
+  "Catatan",
+  "Additional Benefit",
+]);
+
+const IMPORTANT_TERM_VALUE = /(?:[≥≤>]\s*)?Rp\s?[\d.,]+(?:\s?(?:ribu|juta|miliar))?|\d{1,2}\s+(?:Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|Agu|Okt|Des)\s+\d{4}(?:\s*[–-]\s*\d{1,2}\s+(?:Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|Agu|Okt|Des)\s+\d{4})?|(?:[≥≤>]\s*)?\d+(?:[.,]\d+)?\s?(?:%|x|menit|jam|hari|bulan|tahun|orang|voucher)\b/gi;
+
+function ImportantTermText({ text }: { text: string }) {
+  const parts: React.ReactNode[] = [];
+  let lastIndex = 0;
+
+  for (const match of text.matchAll(IMPORTANT_TERM_VALUE)) {
+    const index = match.index ?? 0;
+    if (index > lastIndex) parts.push(text.slice(lastIndex, index));
+    parts.push(<strong key={`${index}-${match[0]}`} className="font-semibold">{match[0]}</strong>);
+    lastIndex = index + match[0].length;
+  }
+
+  if (lastIndex < text.length) parts.push(text.slice(lastIndex));
+  return parts;
+}
+
+function LabeledText({ text }: { text: string }) {
+  const label = text.match(/^([^:]{1,48}:)\s+(.+)$/);
+  if (!label) return <ImportantTermText text={text} />;
+  return <><strong className="font-semibold">{label[1]}</strong> <ImportantTermText text={label[2]} /></>;
+}
 
 function DocumentLines({ lines }: { lines: string[] }) {
   const blocks: React.ReactNode[] = [];
   let bullets: string[] = [];
+  let paragraphs: string[] = [];
+  let fields: Array<{ label: string; value: string }> = [];
+  let listMode = false;
+  let pendingFieldLabel: string | null = null;
 
   const flushBullets = () => {
     if (bullets.length) {
-      blocks.push(<ul key={`list-${blocks.length}`} className="list-disc space-y-1 pl-5">{bullets.map((bullet, index) => <li key={`${index}-${bullet}`}>{bullet}</li>)}</ul>);
+      blocks.push(<ul key={`list-${blocks.length}`} className="list-disc space-y-2 pl-5">{bullets.map((bullet, index) => <li key={`${index}-${bullet}`}><LabeledText text={bullet} /></li>)}</ul>);
       bullets = [];
+    }
+  };
+
+  const flushParagraphs = () => {
+    if (paragraphs.length) {
+      blocks.push(<p key={`text-${blocks.length}`} className="whitespace-pre-line">{paragraphs.join(" ")}</p>);
+      paragraphs = [];
+    }
+  };
+
+  const flushFields = () => {
+    if (fields.length) {
+      blocks.push(<dl key={`fields-${blocks.length}`} className="grid gap-x-4 gap-y-2 sm:grid-cols-[minmax(8rem,0.32fr)_1fr]">
+        {fields.map(({ label, value }, index) => <div key={`${label}-${index}`} className="contents">
+          <dt className="font-semibold text-pbrown-600">{label}</dt>
+          <dd>{value}</dd>
+        </div>)}
+      </dl>);
+      fields = [];
     }
   };
 
   lines.forEach((line) => {
     const trimmed = line.trim();
+    const heading = trimmed.replace(/:\s*$/, "");
+    if (DOCUMENT_SECTION_HEADINGS.has(heading) || (trimmed.endsWith(":") && heading.length <= 64)) {
+      flushBullets();
+      flushParagraphs();
+      flushFields();
+      blocks.push(<h4 key={`heading-${blocks.length}`} className="font-semibold text-pbrown-600">{heading}</h4>);
+      listMode = DOCUMENT_LIST_HEADINGS.has(heading)
+        || (trimmed.endsWith(":") && !DOCUMENT_FIELD_LABELS.has(heading) && !DOCUMENT_PARAGRAPH_HEADINGS.has(heading));
+      return;
+    }
+    if (pendingFieldLabel) {
+      flushBullets();
+      flushParagraphs();
+      fields.push({ label: pendingFieldLabel, value: trimmed });
+      pendingFieldLabel = null;
+      return;
+    }
+    if (DOCUMENT_FIELD_LABELS.has(trimmed)) {
+      flushBullets();
+      flushParagraphs();
+      flushFields();
+      pendingFieldLabel = trimmed;
+      return;
+    }
     if (trimmed.startsWith("•")) {
+      flushParagraphs();
+      flushFields();
       bullets.push(trimmed.slice(1).trim());
       return;
     }
+    const semicolonItems = trimmed.split(/\s*;\s*/).filter(Boolean);
+    if (semicolonItems.length > 1) {
+      flushParagraphs();
+      flushFields();
+      bullets.push(...semicolonItems);
+      return;
+    }
+    const field = trimmed.match(/^([^:]{1,48}):\s*(.+)$/);
+    if (field && DOCUMENT_FIELD_LABELS.has(field[1].trim())) {
+      flushBullets();
+      flushParagraphs();
+      fields.push({ label: field[1].trim(), value: field[2].trim() });
+      return;
+    }
+    if (listMode) {
+      flushFields();
+      bullets.push(trimmed);
+      return;
+    }
     flushBullets();
-    if (trimmed) blocks.push(<p key={`text-${blocks.length}`} className="whitespace-pre-line">{trimmed}</p>);
+    flushFields();
+    const pipeItems = trimmed.split(/\s+\|\s+/).map((item) => item.trim()).filter(Boolean);
+    if (pipeItems.length > 1) {
+      blocks.push(<ul key={`pipe-${blocks.length}`} className="list-disc space-y-2 pl-5">{pipeItems.map((item, index) => <li key={`${index}-${item}`}><LabeledText text={item} /></li>)}</ul>);
+      return;
+    }
+    const fleetDetails = trimmed.match(/^(.*?)\s+Armada:\s*(.+)$/);
+    if (fleetDetails) {
+      flushParagraphs();
+      if (fleetDetails[1]) blocks.push(<p key={`text-${blocks.length}`} className="whitespace-pre-line">{fleetDetails[1]}</p>);
+      blocks.push(<section key={`armada-${blocks.length}`} className="space-y-1">
+        <h4 className="font-semibold text-pbrown-600">Armada</h4>
+        <ul className="list-disc space-y-1 pl-5">{fleetDetails[2].split(/\s+atau\s+/i).map((vehicle, index) => <li key={`${index}-${vehicle}`}>{vehicle.replace(/[.]$/, "")}</li>)}</ul>
+      </section>);
+    } else if (trimmed) {
+      paragraphs.push(trimmed);
+    }
   });
   flushBullets();
+  flushParagraphs();
+  if (pendingFieldLabel) paragraphs.push(`${pendingFieldLabel}:`);
+  flushFields();
+  flushParagraphs();
 
-  return <div className="space-y-2">{blocks}</div>;
+  return <div className="space-y-3">{blocks}</div>;
 }
 
 function FormattedDocumentContent({ content }: { content: string }) {
@@ -118,8 +292,12 @@ function FormattedDocumentContent({ content }: { content: string }) {
       const lines = section.split("\n").map((line) => line.trim()).filter(Boolean);
       const heading = lines[0];
 
-      if (index === 0 && lines.every((line) => line.includes(":"))) {
-        return <dl key={section} className="grid gap-2 rounded-xl bg-pgold-100/70 p-4 sm:grid-cols-2">
+      const isMetadataBlock = index === 0
+        && lines.length > 1
+        && lines.every((line) => /^[^:]{1,32}:\s*\S/.test(line));
+
+      if (isMetadataBlock) {
+        return <dl key={section} className="grid min-w-0 grid-cols-1 gap-3 rounded-xl bg-pgold-100/70 p-4">
           {lines.map((line) => {
             const separator = line.indexOf(":");
             return <div key={line}>
@@ -130,7 +308,7 @@ function FormattedDocumentContent({ content }: { content: string }) {
         </dl>;
       }
 
-      if (DOCUMENT_SECTION_HEADINGS.has(heading)) {
+      if (DOCUMENT_SECTION_HEADINGS.has(heading) || (lines.length > 1 && heading.length <= 72 && lines.slice(1).every((line) => line.startsWith("•")))) {
         return <section key={section} className="space-y-2">
           <h3 className="text-base font-semibold leading-6 text-pbrown-600 xl:text-lg">{heading}</h3>
           <DocumentLines lines={lines.slice(1)} />
@@ -142,12 +320,13 @@ function FormattedDocumentContent({ content }: { content: string }) {
   </div>;
 }
 
-export default function PrioritasDetailExperience({ copy, promos, now, kind = "lifestyle", heroImage, brandLogo, eventDate, heroPromo, categoryFilter = "beauty", showHero = true, showRecommendations = true, customSections, relatedPage }: {
+export default function PrioritasDetailExperience({ copy, promos, now, kind = "lifestyle", heroImage, birthdayGift = false, brandLogo, eventDate, heroPromo, categoryFilter = "beauty", showHero = true, showRecommendations = true, customSections, relatedPage }: {
   copy: DetailCopy;
   promos: Promo[];
   now: string;
   kind?: DetailKind;
   heroImage?: string;
+  birthdayGift?: boolean;
   brandLogo?: string;
   eventDate?: EventPromo["dateTile"];
   heroPromo?: Promo;
@@ -158,12 +337,13 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
   relatedPage?: { title: string; href: string; label: string };
 }) {
   const promoT = useTranslations("promo");
+  const privilegeT = useTranslations("signaturePrivilege");
   const pathname = usePathname();
   const lenis = useLenis();
   const [openPanels, setOpenPanels] = useState<DetailPanel[]>(customSections?.length ? [customSections[0].id] : kind === "about" ? ["detail", "terms", "contact"] : ["detail", "terms"]);
   const toggle = (panel: DetailPanel) => setOpenPanels((current) => current.includes(panel) ? current.filter((item) => item !== panel) : [...current, panel]);
   const brand = copy.brand?.trim();
-  const directoryPath = kind === "event" ? "/prioritas/event" : kind === "promo" ? "/prioritas/promo" : kind === "complimentary" ? "/prioritas/privilege" : kind === "about" ? "/prioritas" : "/prioritas/lifestyle-privilege";
+  const directoryPath = kind === "event" ? "/prioritas/event" : kind === "promo" ? "/prioritas/promo" : kind === "complimentary" || kind === "signature" ? "/prioritas/privilege" : kind === "about" ? "/prioritas" : "/prioritas/lifestyle-privilege";
   const heroTimestamp = heroPromo ? getPromoTimestamp(heroPromo, new Date(now), getPromoBadge(heroPromo, new Date(now))) : null;
   const heroTimestampLabel = heroTimestamp
     ? promoT(`timestamp.${heroTimestamp.kind}`, { hours: heroTimestamp.kind === "hoursLeft" ? heroTimestamp.hours : 0, date: heroTimestamp.kind === "until" ? heroTimestamp.date : "" })
@@ -189,6 +369,9 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
           breadcrumbs={kind === "about" ? [
             { label: copy.breadcrumb.home, href: "/prioritas" },
             { label: copy.breadcrumb.current },
+          ] : kind === "signature" ? [
+            { label: copy.breadcrumb.home, href: "/prioritas" },
+            { label: copy.breadcrumb.category, href: directoryPath },
           ] : [
             { label: copy.breadcrumb.home, href: "/prioritas" },
             { label: copy.breadcrumb.category, href: directoryPath },
@@ -207,15 +390,22 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
           <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent via-pgold-200/70 to-pgold-200" />
         </div>
         <div className="pointer-events-none relative z-20 mx-auto w-full max-w-[1280px] px-4 xl:px-0">
-          <div className={`grid gap-6 ${showHero ? "xl:grid-cols-[560px_minmax(0,1fr)] xl:gap-6" : "grid-cols-1"}`}>
-            {showHero ? <div className="pointer-events-auto relative z-0 aspect-[4/3] w-full self-start overflow-hidden rounded-2xl xl:sticky xl:top-6 xl:h-[480px] xl:aspect-auto">
-              {heroImage ? <img src={heroImage} alt={copy.title} className="size-full object-cover" /> : <div className="flex size-full items-center justify-center bg-pgold-200 p-8 text-center text-subtitle text-pbrown-700">{brand ?? copy.title}</div>}
-              {eventDate ? <PrioritasEventDateTile date={eventDate} detail /> : null}
-              {heroTimestampLabel ? <PrioritasEventDateTile timeLabel={heroTimestampLabel} timeIconSrc="/assets/prioritas/detail/promo/clock.svg" /> : null}
+          <div className={`grid gap-6 ${showHero ? "xl:grid-cols-2 xl:gap-6" : "grid-cols-1"}`}>
+            {showHero ? <div className="pointer-events-auto relative z-0 aspect-[4/3] w-full self-start rounded-2xl xl:sticky xl:top-6 xl:h-[480px] xl:aspect-auto">
+              <div className="relative size-full overflow-hidden rounded-2xl">
+                {heroImage ? <img src={heroImage} alt={copy.title} className="size-full object-cover" /> : <div className="flex size-full items-center justify-center bg-pgold-200 p-8 text-center text-subtitle text-pbrown-700">{brand ?? copy.title}</div>}
+                {eventDate ? <PrioritasEventDateTile date={eventDate} detail /> : null}
+                {heroTimestampLabel ? <PrioritasEventDateTile timeLabel={heroTimestampLabel} timeIconSrc="/assets/prioritas/detail/promo/clock.svg" /> : null}
+              </div>
+              {kind === "complimentary" && birthdayGift ? <PromoRibbon badgeKey="popular" label={privilegeT("complimentary.birthday")} placement="hero" /> : null}
             </div> : null}
             <div className={showHero ? "" : "w-full"}>
+              {copy.dynamicModule ? <div className="pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] flex flex-col gap-4 rounded-2xl bg-gradient-to-b from-white to-pgold-300 p-5 pb-10 text-sm leading-5 text-neutral-700 shadow-panel-gold sm:mx-0 sm:mb-6 sm:w-auto sm:flex-row sm:items-center sm:justify-between sm:pb-5 xl:px-6">
+                <p className="text-sm leading-5 text-pbrown-600 xl:text-base xl:leading-6">{copy.dynamicModule.message}</p>
+                <Link href="/member/login?from=prioritas" className={prioritasButtonClassName({ size: "medium", className: "w-full self-stretch xl:w-auto xl:self-auto prio-button--xl-large" })}>{copy.dynamicModule.loginLabel}</Link>
+              </div> : null}
               <div
-                className="pointer-events-auto -mx-4 flex w-[calc(100%+2rem)] flex-col gap-4 rounded-t-[20px] rounded-b-none bg-white p-2 xl:mx-0 xl:w-full xl:rounded-2xl"
+                className="pointer-events-auto relative z-10 -mx-4 -mt-5 flex w-[calc(100%+2rem)] flex-col gap-4 rounded-t-[20px] rounded-b-none bg-white p-2 sm:mt-0 xl:mx-0 xl:w-full xl:rounded-2xl"
               >
                 <div className="flex flex-col gap-4">
                   {customSections?.length ? customSections.map((section) => (
@@ -224,22 +414,22 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
                     </DetailRow>
                   )) : <>
                     <DetailRow title={copy.detail.title} open={openPanels.includes("detail")} onToggle={() => toggle("detail")}>
-                      {copy.detail.description ? <p className="mb-4">{copy.detail.description}</p> : null}
-                      <p className="whitespace-pre-line">{copy.detail.content}</p>
+                      {copy.detail.description ? <div className="mb-4"><FormattedDocumentContent content={copy.detail.description} /></div> : null}
+                      <FormattedDocumentContent content={copy.detail.content} />
                     </DetailRow>
                     <DetailRow title={copy.terms.title} open={openPanels.includes("terms")} onToggle={() => toggle("terms")}>
                       <ul className="list-disc space-y-1 pl-5">
-                        {copy.terms.items.map((item) => <li key={item}>{item}</li>)}
+                        {copy.terms.items.map((item) => <li key={item}><ImportantTermText text={item} /></li>)}
                       </ul>
                       {copy.validUntil ? <p className="mt-4 font-semibold">{copy.validUntil.label}: {copy.validUntil.value}</p> : null}
                     </DetailRow>
                     {copy.contact.content || copy.contact.items?.length || copy.contact.groups ? <DetailRow title={copy.contact.title} open={openPanels.includes("contact")} onToggle={() => toggle("contact")}>
                       {copy.contact.items?.length ? <ul className="list-disc space-y-1 pl-5">{copy.contact.items.map((item) => <li key={item}>{item}</li>)}</ul> : null}
                       {copy.contact.groups ? <div className="mt-4"><p>{copy.contact.groups.intro}</p><ul className="mt-2 list-disc space-y-1 pl-5">{copy.contact.groups.items.map((item) => <li key={item}>{item}</li>)}</ul></div> : null}
-                      {!copy.contact.items?.length && !copy.contact.groups ? <p className="whitespace-pre-line">{copy.contact.content}</p> : null}
+                      {!copy.contact.items?.length && !copy.contact.groups ? <FormattedDocumentContent content={copy.contact.content} /> : null}
                     </DetailRow> : null}
-                    {copy.location.content ? <DetailRow title={copy.location.title} open={openPanels.includes("location")} onToggle={() => toggle("location")}>
-                      <p>{copy.location.content}</p>
+                    {copy.location.content || copy.location.table ? <DetailRow title={copy.location.title} open={openPanels.includes("location")} onToggle={() => toggle("location")}>
+                      {copy.location.table === "executiveAirportLounge" ? <ExecutiveAirportLoungeTable /> : <FormattedDocumentContent content={copy.location.content} />}
                     </DetailRow> : null}
                   </>}
                 </div>
@@ -258,7 +448,7 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
 
           {showRecommendations ? <section className="pointer-events-auto -mx-4 bg-pgold-200 px-4 pt-10 xl:mx-0 xl:mt-20 xl:bg-transparent xl:px-0 xl:pt-0">
             <div className="flex items-center justify-between gap-4">
-              <h2 className="text-xl font-semibold text-pbrown-600 xl:text-heading">
+              <h2 className="text-subtitle font-semibold text-pbrown-600 xl:text-heading">
                 {copy.recommendations.title}
               </h2>
               <Link href={directoryPath} className="hidden items-center gap-1.5 text-base font-semibold leading-6 text-pbrown-600 transition-colors hover:text-pgold-700 xl:inline-flex">
@@ -280,10 +470,18 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
               </Link>
             </div>
             <div className="mt-6 xl:hidden">
-              <PromoCarousel promos={promos.slice(0, 3)} now={new Date(now)} loop={false} variant="prioritas" promoPage={kind === "promo"} partnerPrivilege={kind === "lifestyle" || kind === "complimentary"} detail detailHrefBase={directoryPath} showEventDate={kind === "event"} />
+              <PromoCarousel promos={promos.slice(0, 3)} now={new Date(now)} loop={false} variant="prioritas" promoPage={kind === "promo"} partnerPrivilege={kind === "lifestyle" || kind === "complimentary" || kind === "signature"} detail detailHrefBase={directoryPath} showEventDate={kind === "event"} contentCardVariant={kind === "signature" ? "signature" : kind === "complimentary" ? "complimentary" : kind === "lifestyle" || kind === "event" || kind === "promo" ? kind : undefined} />
             </div>
             <div className="hidden gap-6 xl:mt-8 xl:grid xl:grid-cols-3">
-              {promos.slice(0, 3).map((promo) => <PromoCard key={promo.id} promo={promo} now={new Date(now)} reveal={false} variant="prioritas" fill detail promoPage={kind === "promo"} partnerPrivilege={kind === "lifestyle" || kind === "complimentary"} eventDate={kind === "event" && "dateTile" in promo ? (promo as EventPromo).dateTile : undefined} detailHref={`${directoryPath}/${promo.id}`} />)}
+              {promos.slice(0, 3).map((promo) => kind === "signature" && "birthdayGift" in promo
+                ? <SignaturePrivilegeCard key={promo.id} promo={promo as PrivilegePromo} href={`${directoryPath}/${promo.id}`} />
+                : kind === "complimentary" && "birthdayGift" in promo
+                  ? <ContentCard key={promo.id} item={promo as PrivilegePromo} now={new Date(now)} variant="complimentary" />
+                : kind === "lifestyle" && "birthdayGift" in promo
+                  ? <ContentCard key={promo.id} item={promo as PrivilegePromo} now={new Date(now)} variant="lifestyle" />
+                  : kind === "event" && "dateTile" in promo
+                    ? <ContentCard key={promo.id} item={promo as EventPromo} now={new Date(now)} variant="event" />
+                    : kind === "promo" ? <ContentCard key={promo.id} item={promo} now={new Date(now)} variant="promo" /> : null)}
             </div>
           </section> : null}
         </div>

@@ -7,7 +7,7 @@ export const DIRECTORY_PAGE_SIZE = 9;
 const DIRECTORY_PANEL_CLASS = "relative -left-4 w-[calc(100%+2rem)] rounded-t-[20px] rounded-b-none bg-white shadow-card transition-[left,width,border-radius,box-shadow] duration-500 ease-in-out motion-reduce:transition-none xl:left-0 xl:w-full xl:rounded-xl";
 const DIRECTORY_CONTENT_CLASS = "mx-auto w-full max-w-[1280px] p-4 xl:p-6";
 const DIRECTORY_HEADER_CLASS = "relative z-20 -mx-4 -mt-4 rounded-t-[20px] bg-white px-4 pt-4 xl:-mx-6 xl:-mt-6 xl:rounded-t-xl xl:px-6 xl:pt-6";
-const DIRECTORY_FILTER_CLASS = "relative mt-2 -mx-4 flex flex-col justify-between gap-3 px-4 pb-4 after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-screen after:-translate-x-1/2 after:bg-neutral-300 xl:-mx-6 xl:flex-row xl:items-center xl:px-6";
+const DIRECTORY_FILTER_CLASS = "relative mt-2 -mx-4 flex flex-col justify-between gap-3 px-4 pb-4 after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-screen after:-translate-x-1/2 after:bg-neutral-300 xl:-mx-6 xl:mt-3 xl:flex-row xl:items-center xl:px-6";
 const DIRECTORY_GRID_CLASS = "relative z-0 mt-5 grid md:grid-cols-3";
 
 type PaginationItem = number | "start-ellipsis" | "end-ellipsis";
@@ -88,7 +88,7 @@ export function PrioritasDirectoryCategories({ children, className = "" }: { chi
   }, []);
 
   return <div className={`${className} relative w-full max-w-full`}>
-    <div ref={railRef} className="hide-scrollbar flex gap-3 overflow-x-auto pb-1 [scrollbar-width:none]">{children}</div>
+    <div ref={railRef} className="hide-scrollbar flex gap-2 overflow-x-auto [scrollbar-width:none] xl:gap-3">{children}</div>
     {overflow.left ? <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-white via-white/90 to-transparent" /> : null}
     {overflow.right ? <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-white via-white/90 to-transparent" /> : null}
   </div>;

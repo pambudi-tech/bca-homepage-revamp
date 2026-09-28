@@ -3,7 +3,7 @@ import assetSnapshot from "@/components/prioritas/partner-privilege-assets.json"
 import logoSnapshot from "@/components/prioritas/partner-privilege-logos.json";
 import type { Promo, PromoCategory } from "@/components/home/promo-data";
 
-export type PrivilegeSection = "complimentary" | "lifestyle";
+export type PrivilegeSection = "signature" | "complimentary" | "lifestyle";
 export type PrivilegeCategory = "beauty" | "culinary" | "health" | "travel" | "lifestyle" | "education" | "home";
 export type PrivilegePromo = Promo & {
   partnerId: string;
@@ -15,6 +15,7 @@ export type PrivilegePromo = Promo & {
 type Partner = (typeof snapshot.partners)[number];
 type Complimentary = (typeof snapshot.complimentary)[number];
 type Lifestyle = (typeof snapshot.lifestyle)[number];
+type Signature = (typeof snapshot.signature)[number];
 type Asset = { heroImage: string; sourceUrl: string; siteTitle: string };
 type PartnerLogo = { logo: string; sourceUrl: string; originImageUrl: string; background?: "dark" };
 
@@ -57,7 +58,7 @@ function getEndDate(period: string): Date {
 }
 
 function toPromo(
-  row: Complimentary | Lifestyle,
+  row: Signature | Complimentary | Lifestyle,
   section: PrivilegeSection,
 ): PrivilegePromo {
   const partner = partnersById.get(row.partnerId);
@@ -82,18 +83,19 @@ function toPromo(
 }
 
 export function getPrivilegePromos(section: PrivilegeSection): PrivilegePromo[] {
-  const rows = section === "complimentary" ? snapshot.complimentary : snapshot.lifestyle;
+  const rows = section === "signature" ? snapshot.signature : section === "complimentary" ? snapshot.complimentary : snapshot.lifestyle;
   return rows.map((row) => toPromo(row, section));
 }
 
 export function getPrivilegeOffer(section: PrivilegeSection, partnerId: string): {
   partner: Partner;
-  benefit: Complimentary | Lifestyle;
+  benefit: Signature | Complimentary | Lifestyle;
   asset?: Asset;
   logo?: PartnerLogo;
 } | null {
   const partner = partnersById.get(partnerId);
-  const benefit = (section === "complimentary" ? snapshot.complimentary : snapshot.lifestyle)
+  const rows = section === "signature" ? snapshot.signature : section === "complimentary" ? snapshot.complimentary : snapshot.lifestyle;
+  const benefit = rows
     .find((row) => row.partnerId === partnerId);
   if (!partner || !benefit) return null;
   return { partner, benefit, asset: assets[partnerId], logo: logos[partnerId] };

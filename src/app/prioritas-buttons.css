@@ -1,0 +1,119 @@
+.prio-button {
+  --prio-button-fill: transparent;
+  --prio-button-border: transparent;
+  --prio-button-ink: var(--color-pbrown-600);
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 1px solid var(--prio-button-border);
+  border-radius: 999px;
+  background: var(--prio-button-fill);
+  color: var(--prio-button-ink);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 200ms, border-color 200ms, color 200ms;
+}
+
+.prio-button:focus-visible {
+  outline: 2px solid var(--color-pgold-500);
+  outline-offset: 3px;
+}
+
+.prio-button:disabled { cursor: not-allowed; }
+
+.prio-button--button { height: 40px; padding-inline: 20px; font-size: 14px; line-height: 14px; }
+.prio-button--button.prio-button--small { height: 32px; padding-inline: 16px; }
+.prio-button--button.prio-button--large { height: 48px; gap: 4px; padding-inline: 24px; font-size: 16px; line-height: 16px; }
+@media (min-width: 1280px) {
+  .prio-button--button.prio-button--xl-large { height: 48px; gap: 4px; padding-inline: 24px; font-size: 16px; line-height: 16px; }
+  .prio-button--text.prio-button--xl-large { font-size: 16px; line-height: 16px; }
+}
+.prio-button__label { padding-inline: 2px; }
+
+.prio-button--icon { width: 40px; height: 40px; padding: 0; }
+.prio-button--icon.prio-button--small { width: 32px; height: 32px; }
+.prio-button--icon.prio-button--large { width: 48px; height: 48px; }
+
+.prio-button--text { height: 20px; padding: 0; border: 0; border-radius: 0; background: transparent; font-size: 14px; line-height: 14px; }
+.prio-button--text.prio-button--small { font-size: 12px; line-height: 14px; }
+.prio-button--text.prio-button--large { font-size: 16px; line-height: 16px; }
+
+.prio-button__icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  background: currentColor;
+  -webkit-mask: url("/assets/prioritas/button-icon-placeholder.svg") center / 15px 15px no-repeat;
+  mask: url("/assets/prioritas/button-icon-placeholder.svg") center / 15px 15px no-repeat;
+}
+.prio-button__icon--asset { -webkit-mask-size: contain; mask-size: contain; }
+
+/* Default surface: the two button and icon variants share the same colors. */
+.prio-button--default.prio-button--primary:not(.prio-button--text) { --prio-button-fill: var(--color-pbrown-600); --prio-button-ink: var(--color-neutral-100); }
+.prio-button--default.prio-button--primary:not(.prio-button--text):is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --prio-button-fill: var(--color-pbrown-500); }
+.prio-button--default.prio-button--primary:not(.prio-button--text):is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --prio-button-fill: var(--color-pbrown-700); }
+.prio-button--default.prio-button--primary:not(.prio-button--text):disabled { --prio-button-fill: var(--color-neutral-300); --prio-button-ink: var(--color-neutral-600); }
+
+.prio-button--default.prio-button--secondary:not(.prio-button--text) { --prio-button-fill: var(--color-neutral-100); --prio-button-border: var(--color-pbrown-600); --prio-button-ink: var(--color-pbrown-600); }
+.prio-button--default.prio-button--secondary:not(.prio-button--text):is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --prio-button-fill: var(--color-pgold-100); --prio-button-border: var(--color-pbrown-500); --prio-button-ink: var(--color-pbrown-500); }
+.prio-button--default.prio-button--secondary:not(.prio-button--text):is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --prio-button-fill: var(--color-pgold-200); --prio-button-border: var(--color-pbrown-700); --prio-button-ink: var(--color-pbrown-700); }
+.prio-button--default.prio-button--secondary:not(.prio-button--text):disabled { --prio-button-fill: var(--color-neutral-100); --prio-button-border: var(--color-neutral-500); --prio-button-ink: var(--color-neutral-500); }
+
+/* Inverse surface uses the same state palette as the Figma dark panels. */
+.prio-button--inverse.prio-button--primary:not(.prio-button--text) { --prio-button-fill: var(--color-neutral-100); --prio-button-ink: var(--color-pbrown-600); }
+.prio-button--inverse.prio-button--primary:not(.prio-button--text):is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --prio-button-fill: var(--color-pgold-200); --prio-button-ink: var(--color-pbrown-500); }
+.prio-button--inverse.prio-button--primary:not(.prio-button--text):is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --prio-button-fill: var(--color-pgold-300); --prio-button-ink: var(--color-pbrown-700); }
+.prio-button--inverse.prio-button--primary:not(.prio-button--text):disabled { --prio-button-fill: var(--color-pgold-100); --prio-button-ink: var(--color-pbrown-600); opacity: .4; }
+
+.prio-button--inverse.prio-button--secondary:not(.prio-button--text) { --prio-button-border: var(--color-neutral-100); --prio-button-ink: var(--color-neutral-100); }
+.prio-button--inverse.prio-button--secondary:not(.prio-button--text):is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --prio-button-fill: rgb(255 250 242 / 8%); --prio-button-border: var(--color-pgold-200); --prio-button-ink: var(--color-pgold-200); }
+.prio-button--inverse.prio-button--secondary:not(.prio-button--text):is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --prio-button-fill: rgb(255 250 242 / 8%); --prio-button-border: var(--color-pgold-400); --prio-button-ink: var(--color-pgold-400); }
+.prio-button--inverse.prio-button--secondary:not(.prio-button--text):disabled { --prio-button-border: var(--color-pgold-100); --prio-button-ink: var(--color-pgold-100); opacity: .4; }
+
+.prio-button--text.prio-button--default { --prio-button-ink: var(--color-pbrown-600); }
+.prio-button--text.prio-button--default:is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --prio-button-ink: var(--color-pbrown-500); }
+.prio-button--text.prio-button--default:is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --prio-button-ink: var(--color-pbrown-700); }
+.prio-button--text.prio-button--default:disabled { --prio-button-ink: var(--color-neutral-500); }
+
+.prio-button--text.prio-button--inverse { --prio-button-ink: var(--color-pgold-300); }
+.prio-button--text.prio-button--inverse:is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --prio-button-ink: var(--color-pgold-400); }
+.prio-button--text.prio-button--inverse:is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --prio-button-ink: var(--color-pgold-500); }
+.prio-button--text.prio-button--inverse:disabled { --prio-button-ink: var(--color-pgold-100); opacity: .4; }
+
+/* Library layout follows the Figma component board at node 8431:99459. */
+.prio-library-page { min-height: 100vh; background: var(--color-neutral-200); color: var(--color-neutral-800); }
+.prio-library-header { min-height: 204px; padding: 40px 56px; background: var(--color-neutral-100); }
+.prio-library-header p { margin: 0; color: var(--color-pbrown-500); font-size: 12px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
+.prio-library-header h1 { margin: 40px 0 0; font-size: 36px; font-weight: 700; line-height: 1; }
+.prio-library-scroll { overflow-x: auto; }
+.prio-library-board { box-sizing: border-box; width: 3152px; min-height: 1094px; padding: 80px 40px 40px; }
+.prio-library-headings { display: grid; grid-template-columns: 108px 1240px 606px 884px; column-gap: 40px; align-items: center; margin-bottom: 46px; }
+.prio-library-headings h2 { margin: 0; font-size: 24px; font-weight: 700; line-height: 32px; }
+.prio-library-matrix { display: grid; grid-template-columns: 108px 600px 600px 283px 283px 422px 422px; column-gap: 40px; align-items: start; }
+.prio-library-panel { box-sizing: border-box; height: 874px; border-radius: 12px; padding: 32px 49px; background: var(--color-neutral-100); }
+.prio-library-panel--inverse { background: var(--color-pbrown-600); color: var(--color-pgold-100); }
+.prio-library-panel--icon { width: 283px; padding-inline: 40px; }
+.prio-library-panel--text { width: 422px; height: 461px; padding-inline: 40px; }
+.prio-library-panel__caption { display: flex; align-items: center; gap: 16px; height: 20px; color: var(--color-neutral-700); font-size: 14px; font-weight: 700; }
+.prio-library-panel--inverse .prio-library-panel__caption { color: var(--color-pgold-100); }
+.prio-library-panel__caption::before, .prio-library-panel__caption::after { height: 1px; flex: 1; content: ""; background: var(--color-neutral-300); }
+.prio-library-panel--inverse .prio-library-panel__caption::before, .prio-library-panel--inverse .prio-library-panel__caption::after { background: var(--color-pgold-400); }
+.prio-library-panel__size-labels { display: grid; grid-template-columns: 119px 127px 145px; column-gap: 55px; align-items: center; margin-top: 34px; height: 20px; font-size: 14px; font-weight: 700; text-align: center; }
+.prio-library-panel--icon .prio-library-panel__size-labels { grid-template-columns: 32px 40px 48px; column-gap: 40px; }
+.prio-library-panel--text .prio-library-panel__size-labels { grid-template-columns: 82px 87px 93px; column-gap: 40px; }
+.prio-library-panel__group { margin-top: 14px; }
+.prio-library-panel__group + .prio-library-panel__group { margin-top: 80px; }
+.prio-library-panel__row { display: grid; grid-template-columns: 119px 127px 145px; column-gap: 55px; align-items: center; justify-items: center; height: 80px; }
+.prio-library-panel--icon .prio-library-panel__row { grid-template-columns: 32px 40px 48px; column-gap: 40px; }
+.prio-library-panel--text .prio-library-panel__row { grid-template-columns: 82px 87px 93px; column-gap: 40px; }
+.prio-library-rail { position: relative; height: 874px; color: var(--color-neutral-700); font-size: 12px; font-weight: 700; }
+.prio-library-rail span { position: absolute; left: 0; }
+.prio-library-rail__primary { top: 20px; text-transform: uppercase; letter-spacing: .15em; }
+.prio-library-rail__secondary { top: 420px; text-transform: uppercase; letter-spacing: .15em; }
+.prio-library-usage { display: flex; align-items: center; gap: 12px; padding: 24px 56px; color: var(--color-neutral-700); font-size: 14px; }
+.prio-library-usage p { margin: 0; font-weight: 600; }
+.prio-library-usage code { border-radius: 6px; padding: 6px 8px; background: var(--color-neutral-100); color: var(--color-pbrown-600); }

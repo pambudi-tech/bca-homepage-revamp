@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation";
+import { PrioritasButtonIcon, prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
 
 type Copy = {
   eyebrow: string;
@@ -14,7 +15,7 @@ export default function FinancialReportSection({ copy }: { copy: Copy }) {
         src="/assets/prioritas/financial/background.png"
         alt=""
         aria-hidden
-        className="absolute left-1/2 top-1/2 z-0 h-[320px] w-full translate-x-[calc(-50%_+_40px)] -translate-y-1/2 object-cover object-right xl:inset-0 xl:size-full xl:translate-x-0 xl:translate-y-0 xl:object-center"
+        className="absolute left-1/2 top-1/2 z-0 h-[320px] w-full translate-x-[calc(-50%_+_72px)] -translate-y-1/2 object-cover object-right xl:inset-0 xl:size-full xl:translate-x-0 xl:translate-y-0 xl:object-center"
       />
       <div className="pointer-events-none absolute inset-x-0 top-0 z-1 h-full bg-gradient-to-b from-pbrown-700 via-transparent to-pbrown-700 xl:hidden" aria-hidden />
       <div
@@ -59,22 +60,9 @@ export default function FinancialReportSection({ copy }: { copy: Copy }) {
               </div>
             ))}
           </div>
-          <Link href="/artikel" className="btn-base w-full bg-neutral-100 text-pbrown-600 transition-colors hover:bg-pgold-100 xl:w-fit">
-            <span className="px-0.5 text-base font-semibold">{copy.action}</span>
-            <span
-              aria-hidden
-              className="size-5 shrink-0 bg-pbrown-600"
-              style={{
-                maskImage: "url(/assets/cycle1/pelajari-icon.svg)",
-                WebkitMaskImage: "url(/assets/cycle1/pelajari-icon.svg)",
-                maskRepeat: "no-repeat",
-                WebkitMaskRepeat: "no-repeat",
-                maskPosition: "center",
-                WebkitMaskPosition: "center",
-                maskSize: "contain",
-                WebkitMaskSize: "contain",
-              }}
-            />
+          <Link href="/artikel" className={prioritasButtonClassName({ surface: "inverse", size: "large", className: "w-full xl:w-fit" })}>
+            <span className="prio-button__label">{copy.action}</span>
+            <PrioritasButtonIcon src="/assets/cycle1/pelajari-icon.svg" />
           </Link>
         </div>
       </div>

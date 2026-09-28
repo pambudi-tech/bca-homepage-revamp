@@ -9,6 +9,7 @@ import {
 import PromoRibbon from "@/components/PromoRibbon";
 import PrioritasEventDateTile from "@/components/prioritas/PrioritasEventDateTile";
 import { Link } from "@/i18n/navigation";
+import { PrioritasButtonIcon, prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
 
 export default function PromoCard({
   promo,
@@ -22,6 +23,9 @@ export default function PromoCard({
   eventDate,
   detailHref,
   partnerPrivilege = false,
+  birthdayGift = false,
+  usePrioritasButtonLibrary = false,
+  className = "",
 }: {
   promo: Promo;
   now: Date;
@@ -41,6 +45,9 @@ export default function PromoCard({
   };
   detailHref?: string;
   partnerPrivilege?: boolean;
+  birthdayGift?: boolean;
+  usePrioritasButtonLibrary?: boolean;
+  className?: string;
 }) {
   const t = useTranslations("promo");
   const privilegeT = useTranslations("signaturePrivilege");
@@ -60,7 +67,7 @@ export default function PromoCard({
       href={detailHref ?? `/promo/${promo.id}`}
       scroll={detailHref ? false : undefined}
       {...(reveal ? { "data-reveal": "" } : {})}
-      className={`group relative block shrink-0 cursor-pointer transition-transform duration-300 ease-out hover:-translate-y-1.5 ${prioritasCompact ? "h-[180px] w-full min-w-0" : compact ? "h-[268px] w-full min-w-0" : fill ? "h-[360px] w-full" : "h-[360px] w-[280px] xl:w-[302px]"}`}
+      className={`group relative block shrink-0 cursor-pointer transition-transform duration-300 ease-out hover:-translate-y-1.5 ${prioritasCompact ? "h-[180px] w-full min-w-0" : compact ? "h-[268px] w-full min-w-0" : fill ? "h-[360px] w-full" : "h-[360px] w-[280px] xl:w-[302px]"} ${className}`}
     >
       <div className={`absolute inset-0 flex flex-col items-start overflow-clip rounded-3xl border transition-colors duration-300 ${detailTone ? "border-neutral-300 bg-neutral-100 group-hover:border-pgold-600" : variant === "prioritas" ? "border-pbrown-500 bg-pbrown-500 group-hover:border-pgold-500" : "border-neutral-300 bg-white group-hover:border-cyan-500"}`}>
         <div className={`relative w-full shrink-0 overflow-clip ${prioritasCompact ? "h-20" : compact ? "h-24" : "h-40"}`}>
@@ -73,17 +80,24 @@ export default function PromoCard({
         </div>
         <div className="relative w-full flex-1">
           <div className={`absolute flex flex-col items-start ${prioritasCompact ? "left-3 right-3 top-7 gap-1" : compact ? "left-3 right-3 top-9 gap-1.5" : "left-5 right-5 top-12 gap-2"}`}>
-            <p className={`line-clamp-2 w-full font-semibold tracking-normal transition-colors duration-300 group-hover:font-bold ${detailTone ? "text-neutral-800 group-hover:text-pgold-600" : variant === "prioritas" ? "text-pgold-100 group-hover:text-white" : "text-neutral-800 group-hover:text-blue-500"} ${prioritasCompact ? "text-sm leading-5" : compact ? "text-sm leading-5" : "text-base leading-6 xl:text-[18px] xl:leading-[1.2]"}`}>
+            <p className={`line-clamp-2 w-full font-semibold tracking-normal transition-colors duration-300 group-hover:font-bold ${detailTone ? "text-neutral-800 group-hover:text-pgold-600" : variant === "prioritas" ? "text-pgold-100 group-hover:text-white" : "text-neutral-800 group-hover:text-blue-500"} ${prioritasCompact ? "text-sm leading-5" : compact ? "text-sm leading-5" : detailTone ? "text-base leading-6" : "text-base leading-6 xl:text-[18px] xl:leading-[1.2]"}`}>
               {promo.title}
             </p>
-            <p className={`line-clamp-2 w-full font-semibold ${detailTone ? "text-neutral-600" : variant === "prioritas" ? "text-pbrown-100" : "text-neutral-600"} ${promoPage ? compact ? "text-xs leading-4" : "text-sm leading-5 xl:text-base" : "text-sm leading-5"}`}>{promo.brand}</p>
+            <p className={`line-clamp-2 w-full font-semibold ${detailTone ? "text-neutral-600" : variant === "prioritas" ? "text-pbrown-100" : "text-neutral-600"} ${promoPage && compact ? "text-xs leading-4" : "text-sm leading-5"}`}>{promo.brand}</p>
           </div>
           <div className={`absolute flex items-center gap-1.5 ${prioritasCompact ? "bottom-3 left-3" : compact ? "bottom-3 left-3" : "bottom-5 left-5 gap-2"}`}>
             {(variant !== "prioritas" || promoPage) && <img loading="lazy" decoding="async" src="/assets/promo/icon-clock.svg" alt="" className={`${compact ? "size-4" : "size-5"} shrink-0`} />}
+            {usePrioritasButtonLibrary && variant === "prioritas" && !promoPage ? (
+              <span className={prioritasButtonClassName({ kind: "text", surface: detailTone ? "default" : "inverse", size: "large" })}>
+                <span className="prio-button__label">{privilegeT("more")}</span>
+                <PrioritasButtonIcon src={detailTone ? "/assets/prioritas/detail/molton-brown/arrow-right.svg" : "/assets/prioritas/privilege/arrow-small.svg"} />
+              </span>
+            ) : <>
             <span className={`whitespace-nowrap font-semibold ${promoPage ? "text-neutral-700" : detailTone ? "text-pgold-600" : variant === "prioritas" ? "text-pgold-300" : "text-neutral-700"} ${promoPage ? "text-sm leading-5" : detailTone ? "text-sm leading-5 xl:text-base xl:leading-6" : compact ? "text-[11px] leading-4" : "text-sm leading-5"}`}>
               {variant === "prioritas" && !promoPage ? privilegeT("more") : timestamp}
             </span>
             {detailTone && !promoPage ? <img src="/assets/prioritas/detail/molton-brown/arrow-right.svg" alt="" aria-hidden="true" className="size-5 shrink-0" /> : variant === "prioritas" && !promoPage ? <img src="/assets/prioritas/privilege/arrow-small.svg" alt="" aria-hidden="true" className="size-5 shrink-0" /> : null}
+            </>}
           </div>
         </div>
       </div>
@@ -94,7 +108,7 @@ export default function PromoCard({
         {promo.logo ? <img loading="lazy" decoding="async" src={promo.logo} alt="" className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded object-contain ${compact ? "size-9" : "size-14"}`} /> : <span aria-hidden className="absolute inset-1 flex items-center justify-center text-center text-xs font-semibold leading-tight text-pbrown-700"><span className="line-clamp-3 break-words">{brandFallback}</span></span>}
       </div>
 
-      {!partnerPrivilege && !eventDate && badge.key !== "default" && <PromoRibbon badgeKey={badge.key} label={t(`badge.${badge.key}`)} />}
+      {birthdayGift ? <PromoRibbon badgeKey="popular" label={privilegeT("complimentary.birthday")} /> : !partnerPrivilege && !eventDate && badge.key !== "default" ? <PromoRibbon badgeKey={badge.key} label={t(`badge.${badge.key}`)} /> : null}
     </Link>
   );
 }

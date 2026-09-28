@@ -13,17 +13,19 @@ export default function PromoRibbon({
   label,
   side = "right",
   flow = false,
+  placement = "card",
 }: {
   badgeKey: Exclude<PromoBadgeKey, "default">;
   label: string;
   side?: "left" | "right";
   flow?: boolean;
+  placement?: "card" | "hero";
 }) {
   const style = RIBBON_STYLE[badgeKey];
   const isLeft = side === "left";
 
   return (
-    <div className={`${flow ? "relative left-[-24px] min-h-[44px]" : `absolute z-20 ${isLeft ? "bottom-3 left-[-6px]" : "right-[-8px] top-40"}`} flex items-center`}>
+    <div className={`${flow ? "relative left-[-24px] min-h-[44px]" : `absolute z-20 ${isLeft ? "bottom-3 left-[-6px]" : placement === "hero" ? "right-[-8px] top-5" : "right-[-8px] top-40"}`} flex items-center`}>
       <div className={`absolute ${isLeft ? "left-0" : "right-0"} top-[22px] flex h-[22px] w-2 items-center justify-center`}>
         <div className={isLeft ? "-rotate-90" : "rotate-90"}>
           <svg width="22" height="8" viewBox="0 0 22 8" fill="none" xmlns="http://www.w3.org/2000/svg">

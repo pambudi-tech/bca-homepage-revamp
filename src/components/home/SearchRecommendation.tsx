@@ -10,7 +10,9 @@ import {
   type ProductIcon,
   type ProgramRec,
   type SearchRecommendations,
+  type SearchSegment,
 } from "./search-data";
+import { PRIOSOLI_POPULAR_SEARCHES, SOLITAIRE_POPULAR_SEARCHES } from "./priosoli-search-data";
 
 /* ---------------------------------------------------------------------------
  * Inline icons (vuesax-linear style). Kept inline so the dropdown has no
@@ -238,6 +240,7 @@ type Props = {
   maxHeight?: string;
   screen?: boolean;
   prioritas?: boolean;
+  segment?: SearchSegment;
 };
 
 export default function SearchRecommendation({
@@ -252,6 +255,7 @@ export default function SearchRecommendation({
   maxHeight,
   screen = false,
   prioritas = false,
+  segment = "Semua",
 }: Props) {
   const t = useTranslations("search");
   const accentText = prioritas ? "text-pbrown-500" : "text-blue-500";
@@ -260,6 +264,8 @@ export default function SearchRecommendation({
   const isEmpty = keyword.trim() === "";
   const hasResults = products.length > 0 || information.length > 0 || program.length > 0;
   const seeAllUrl = bcaSearchResultUrl(keyword || "");
+  const scoped = segment === "Prioritas" || segment === "Solitaire";
+  const popularSearches = segment === "Solitaire" ? SOLITAIRE_POPULAR_SEARCHES : scoped ? PRIOSOLI_POPULAR_SEARCHES : POPULAR_SEARCHES;
 
   // Drives the shadow above the footer links on mobile — the results list
   // scrolls internally (fixed panel height) while the footer stays pinned
@@ -331,7 +337,7 @@ export default function SearchRecommendation({
           <section className="flex flex-col gap-3">
             <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{t("popularSearches")}</p>
             <div className="flex flex-wrap gap-2">
-              {POPULAR_SEARCHES.map(({ id, keyword }) => (
+              {popularSearches.map(({ id, keyword }) => (
                 <button
                   key={id}
                   type="button"
@@ -355,7 +361,7 @@ export default function SearchRecommendation({
                   compact={compact}
                   label={t("relatedProducts")}
                   viewAllLabel={t("viewAll")}
-                  seeAllUrl={seeAllUrl}
+                  seeAllUrl={scoped ? undefined : seeAllUrl}
                   prioritas={prioritas}
                 />
               ) : null;
@@ -376,7 +382,7 @@ export default function SearchRecommendation({
             {t("noResultsFor", { keyword })}
           </p>
           <p className="mt-1 text-sm text-neutral-700">
-            {t("noResultsHint")}
+            {t(segment === "Solitaire" ? "noResultsSolitaireHint" : scoped ? "noResultsScopedHint" : "noResultsHint")}
           </p>
         </div>
       )}
@@ -393,7 +399,7 @@ export default function SearchRecommendation({
           compact ? "flex-col" : "items-center justify-between"
         } ${showBottomShadow ? "shadow-scroll-top" : ""}`}
       >
-        {!isEmpty && hasResults && (
+        {!scoped && !isEmpty && hasResults && (
           <a
             href={seeAllUrl}
             target="_blank"
@@ -440,7 +446,7 @@ type ProductsSectionProps = {
   compact: boolean;
   label: string;
   viewAllLabel: string;
-  seeAllUrl: string;
+  seeAllUrl?: string;
   prioritas: boolean;
 };
 
@@ -450,7 +456,7 @@ function ProductsSection({ products, compact, label, viewAllLabel, seeAllUrl, pr
     <section className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
         <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{label}</p>
-        <a
+        {seeAllUrl && <a
           href={seeAllUrl}
           target="_blank"
           rel="noopener noreferrer"
@@ -458,7 +464,7 @@ function ProductsSection({ products, compact, label, viewAllLabel, seeAllUrl, pr
         >
           {viewAllLabel}
           <ArrowDiagonalIcon className="size-5" />
-        </a>
+        </a>}
       </div>
               {/* Desktop lays the cards out as three equal columns; mobile
                   scrolls them horizontally as fixed 200px cards, bleeding to

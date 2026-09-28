@@ -1,0 +1,73 @@
+.priosoli-chip {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 12px;
+  height: var(--priosoli-chip-height);
+  padding-inline: var(--priosoli-chip-padding);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 12px;
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-800);
+  font-size: var(--priosoli-chip-font-size);
+  font-weight: 600;
+  line-height: var(--priosoli-chip-line-height);
+  white-space: nowrap;
+  transition: border-color 200ms, background-color 200ms, color 200ms;
+}
+
+.priosoli-chip--medium {
+  --priosoli-chip-height: 48px;
+  --priosoli-chip-padding: 12px;
+  --priosoli-chip-font-size: 14px;
+  --priosoli-chip-line-height: 20px;
+  --priosoli-chip-icon-size: 20px;
+}
+
+.priosoli-chip--large {
+  --priosoli-chip-height: 56px;
+  --priosoli-chip-padding: 16px;
+  --priosoli-chip-font-size: 16px;
+  --priosoli-chip-line-height: 24px;
+  --priosoli-chip-icon-size: 24px;
+}
+
+@media (min-width: 1280px) {
+  .priosoli-chip--xl-large {
+    --priosoli-chip-height: 56px;
+    --priosoli-chip-padding: 16px;
+    --priosoli-chip-font-size: 16px;
+    --priosoli-chip-line-height: 24px;
+    --priosoli-chip-icon-size: 24px;
+  }
+}
+
+.priosoli-chip__icon {
+  width: var(--priosoli-chip-icon-size);
+  height: var(--priosoli-chip-icon-size);
+  flex: none;
+  background: currentColor;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.priosoli-chip:hover:not([aria-pressed="true"]) {
+  border-color: var(--color-pgold-500);
+  color: var(--color-pbrown-600);
+}
+
+.priosoli-chip[aria-pressed="true"] {
+  border-color: var(--color-pgold-500);
+  background: var(--color-pgold-200);
+  color: var(--color-pbrown-600);
+}
+
+.priosoli-chip:focus-visible {
+  outline: 2px solid var(--color-pgold-500);
+  outline-offset: 3px;
+}

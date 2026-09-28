@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useScrollLock } from "@/components/SmoothScroll";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 import SearchPlaceholderCarousel from "./SearchPlaceholderCarousel";
 import SearchRecommendation, { panelMaxHeight } from "./SearchRecommendation";
 import PromoCard from "@/components/promo/PromoCard";
 import type { Promo } from "./promo-data";
+import { getPriosoliSearchRecommendations } from "./priosoli-search-data";
 import {
   addRecentSearch,
   bcaSearchResultUrl,
@@ -70,6 +71,9 @@ function CloseIcon({ className }: { className?: string }) {
 const PANEL_TOP_OFFSET = 240;
 const PROMO_RECENT_SEARCH_KEY = "bca:promo-recent-searches";
 const PROMO_RECENT_SEARCH_MAX = 6;
+const segmentRecentKey = (segment: SearchSegment) => segment === "Prioritas" || segment === "Solitaire"
+  ? `bca:${segment.toLowerCase()}-recent-searches`
+  : undefined;
 
 function SegmentPicker({
   value,
@@ -83,40 +87,84 @@ function SegmentPicker({
   prioritas?: boolean;
 }) {
   const tSearch = useTranslations("search");
+  const menuId = useId();
   const [open, setOpen] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const activeBorder = prioritas ? "border-pgold-500" : "border-cyan-500";
   const hoverBorder = prioritas ? "hover:border-pgold-500" : "hover:border-cyan-500";
+
+  const positionMenu = useCallback(() => {
+    const rect = triggerRef.current?.getBoundingClientRect();
+    if (rect) setMenuPosition({ top: rect.bottom + 8, left: rect.left });
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    positionMenu();
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (!triggerRef.current?.contains(target) && !menuRef.current?.contains(target)) setOpen(false);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      triggerRef.current?.focus();
+    };
+    const onViewportChange = () => positionMenu();
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    window.addEventListener("resize", onViewportChange);
+    window.addEventListener("scroll", onViewportChange, true);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("resize", onViewportChange);
+      window.removeEventListener("scroll", onViewportChange, true);
+    };
+  }, [open, positionMenu]);
 
   return (
     <div className="relative shrink-0">
       <button
+        ref={triggerRef}
         type="button"
         aria-label={tSearch("segmentLabel")}
+        aria-haspopup="listbox"
         aria-expanded={open}
-        onClick={() => setOpen((current) => !current)}
+        aria-controls={menuId}
+        onClick={() => {
+          if (!open) positionMenu();
+          setOpen((current) => !current);
+        }}
         className={`flex h-[34px] w-[120px] items-center justify-between rounded-full border px-3 text-sm font-semibold transition-colors xl:h-10 ${open ? activeBorder : dark ? "border-white/20" : "border-neutral-300"} ${dark ? `bg-white/10 text-white ${hoverBorder} hover:bg-white/20` : `bg-white text-neutral-800 ${hoverBorder}`}`}
       >
         <span className="truncate">{tSearch(`segments.${value}`)}</span>
-        <svg viewBox="0 0 20 20" fill="none" className="size-3.5 shrink-0" aria-hidden>
-          <path d="m5 7.5 5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        <img src="/assets/promo-page/controls/chevron-down.svg" alt="" aria-hidden className={`h-[8.5px] w-[14.5px] shrink-0 transition-transform ${prioritas ? "brightness-0 invert" : ""} ${open ? "rotate-180" : ""}`} />
       </button>
-      {open && (
-        <div className="absolute left-0 top-full z-30 mt-2 min-w-[142px] overflow-hidden rounded-xl border border-neutral-200 bg-white p-1 shadow-menu">
+      {open && createPortal(
+        <div ref={menuRef} id={menuId} role="listbox" aria-label={tSearch("segmentLabel")} style={{ position: "fixed", top: menuPosition.top, left: menuPosition.left }} className="z-[100] min-w-[142px] overflow-hidden rounded-xl border border-neutral-200 bg-white p-1 shadow-menu">
           {SEARCH_SEGMENTS.map((segment) => (
             <button
               key={segment}
               type="button"
+              role="option"
+              aria-selected={segment === value}
               onClick={() => {
                 onChange(segment);
                 setOpen(false);
               }}
-              className={`block w-full rounded-lg px-3 py-2 text-left text-sm font-semibold transition-colors hover:bg-blue-100 ${segment === value ? `bg-blue-100 ${prioritas ? "text-pbrown-500" : "text-blue-500"}` : "text-neutral-800"}`}
+              className={`flex h-10 w-full items-center rounded-lg px-3 text-left text-sm leading-5 transition-colors ${prioritas
+                ? `${segment === value ? "font-semibold text-pbrown-700" : "text-neutral-700"} hover:bg-pgold-100 hover:font-semibold hover:text-pbrown-600`
+                : `${segment === value ? "bg-blue-100 font-semibold text-blue-500" : "font-semibold text-neutral-800"} hover:bg-blue-100`
+                }`}
             >
               {tSearch(`segments.${segment}`)}
             </button>
           ))}
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
@@ -266,8 +314,12 @@ export default function SearchOverlay({
   const tNav = useTranslations("nav");
   const tSearch = useTranslations("search");
   const tPromo = useTranslations("promoPage");
+  const tSignature = useTranslations("signaturePrivilege");
+  const tBanking = useTranslations("bankingSolutionIndex");
+  const tPrioritasHero = useTranslations("prioritasHero");
+  const locale = useLocale();
   const isPromoSearch = promoSearchItems !== undefined;
-  const prioritas = initialSegment === "Prioritas";
+  const prioritas = initialSegment === "Prioritas" || initialSegment === "Solitaire";
   const placeholders = isPromoSearch
     ? tPromo.raw("search.placeholders") as string[]
     : t.raw("placeholders") as string[];
@@ -277,6 +329,8 @@ export default function SearchOverlay({
 
   const [searchValue, setSearchValue] = useState("");
   const [segment, setSegment] = useState<SearchSegment>(initialSegment);
+  const isPriosoliSearch = segment === "Prioritas" || segment === "Solitaire";
+  const recentKey = segmentRecentKey(segment);
   const [recent, setRecent] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
   const portalRef = useRef<HTMLDivElement>(null);
@@ -284,7 +338,20 @@ export default function SearchOverlay({
   const closeRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const recommendations = useMemo(() => getSearchRecommendations(searchValue, segment), [searchValue, segment]);
+  const recommendations = useMemo(() => isPriosoliSearch
+    ? getPriosoliSearchRecommendations(searchValue, segment, locale, {
+      signature: tSignature.raw("signature") as Record<"lounge" | "transfer" | "medical", { title: string }>,
+      banking: tBanking.raw("privilege") as Record<"jcb" | "vehicle" | "branch" | "insurance" | "fees" | "transaction" | "media" | "advisor" | "family" | "contact" | "credit" | "home" | "motorcycle" | "merchant" | "deposit" | "forex", string>,
+      signatureLabel: tSignature("tabs.signature"),
+      bankingLabel: tBanking("tabs.privilege"),
+      wealthLabel: tBanking("tabs.wealth"),
+      homePrivilege: {
+        lounge: tPrioritasHero("privilege.cards.lounge.title"),
+        health: tPrioritasHero("privilege.cards.health.title"),
+        event: tPrioritasHero("privilege.cards.event.title"),
+      },
+    })
+    : getSearchRecommendations(searchValue, segment), [searchValue, segment, isPriosoliSearch, locale, tSignature, tBanking, tPrioritasHero]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- portals need a client-only mount gate
@@ -300,7 +367,7 @@ export default function SearchOverlay({
     // eslint-disable-next-line react-hooks/set-state-in-effect -- reads localStorage, unavailable during server render
     setSearchValue("");
     setSegment(initialSegment);
-    setRecent(isPromoSearch ? getPromoRecentSearches() : getRecentSearches());
+    setRecent(isPromoSearch ? getPromoRecentSearches() : getRecentSearches(segmentRecentKey(initialSegment)));
     inputRef.current?.focus();
   }, [initialSegment, isPromoSearch, open]);
 
@@ -345,11 +412,15 @@ export default function SearchOverlay({
   }, [open]);
 
   const selectQuery = (term: string) => setSearchValue(term);
-  const removeRecent = (term: string) => setRecent((r) => isPromoSearch ? removePromoRecentSearch(r, term) : removeRecentSearch(r, term));
-  const clearRecent = () => setRecent(isPromoSearch ? clearPromoRecentSearches() : clearRecentSearches());
+  const changeSegment = (next: SearchSegment) => {
+    setSegment(next);
+    if (!isPromoSearch) setRecent(getRecentSearches(segmentRecentKey(next)));
+  };
+  const removeRecent = (term: string) => setRecent((r) => isPromoSearch ? removePromoRecentSearch(r, term) : removeRecentSearch(r, term, recentKey));
+  const clearRecent = () => setRecent(isPromoSearch ? clearPromoRecentSearches() : clearRecentSearches(recentKey));
 
-  // A committed search leaves for BCA's real result page, so the overlay has
-  // nothing left to show — close it behind the new tab.
+  // General searches open BCA's result page. Prioritas and Solitaire keep
+  // their scoped results in this overlay.
   const submitSearch = (term: string) => {
     const trimmed = term.trim();
     if (!trimmed) return;
@@ -359,9 +430,11 @@ export default function SearchOverlay({
       setRecent((r) => addPromoRecentSearch(r, trimmed));
       return;
     }
-    setRecent((r) => addRecentSearch(r, trimmed));
-    window.open(bcaSearchResultUrl(trimmed), "_blank", "noopener,noreferrer");
-    onClose();
+    setRecent((r) => addRecentSearch(r, trimmed, recentKey));
+    if (!isPriosoliSearch) {
+      window.open(bcaSearchResultUrl(trimmed), "_blank", "noopener,noreferrer");
+      onClose();
+    }
   };
 
   if (!mounted) return null;
@@ -403,13 +476,13 @@ export default function SearchOverlay({
 
       {!isDesktop ? (
         <div ref={contentRef} className="flex h-full w-full max-w-[440px] flex-col bg-neutral-100">
-          <header className="relative z-30 flex h-[calc(4rem+env(safe-area-inset-top))] shrink-0 items-center gap-2 px-4 pt-[env(safe-area-inset-top)]">
+          <header className="relative z-[60] flex h-[calc(4rem+env(safe-area-inset-top))] shrink-0 items-center gap-2 px-4 pt-[env(safe-area-inset-top)]">
             <button type="button" onClick={onClose} aria-label={tSearch("close")} className="flex size-6 shrink-0 items-center justify-center">
               <svg aria-hidden viewBox="0 0 24 24" fill="none" className="size-6 text-pbrown-500"><path d="m14.5 5-7 7 7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </button>
             <div className={`relative h-10 min-w-0 flex-1 overflow-visible rounded-full border ${prioritas ? "border-pgold-500" : "border-cyan-500"} bg-neutral-200 backdrop-blur-[28px]`}>
               <div className="absolute left-0.5 top-0.5 z-20">
-                <SegmentPicker value={segment} onChange={setSegment} prioritas={prioritas} />
+                <SegmentPicker value={segment} onChange={changeSegment} prioritas={prioritas} />
               </div>
               <input
                 ref={inputRef}
@@ -438,6 +511,7 @@ export default function SearchOverlay({
                 compact
                 screen
                 prioritas={prioritas}
+                segment={segment}
               />
             )}
           </div>
@@ -455,8 +529,8 @@ export default function SearchOverlay({
               "--slb-gradient": "rgba(255,255,255,0.15)",
             } as CSSProperties}
           >
-            <div className="absolute left-2 top-2 z-20">
-              <SegmentPicker value={segment} onChange={setSegment} dark prioritas={prioritas} />
+            <div className="absolute left-2 top-2 z-[60]">
+              <SegmentPicker value={segment} onChange={changeSegment} dark prioritas={prioritas} />
             </div>
             <input
               ref={inputRef}
@@ -490,6 +564,7 @@ export default function SearchOverlay({
                 // no height override here.
                 maxHeight={panelMaxHeight(PANEL_TOP_OFFSET)}
                 prioritas={prioritas}
+                segment={segment}
               />
             )}
           </div>

@@ -19,8 +19,6 @@ export default async function PrioritasPromoPage({ params, searchParams }: {
       now={now}
       directoryOnly
       activeTab="promo"
-      cardVariant="prioritas"
-      cardDetail
       initialCategories={initialCategories}
     />
   );

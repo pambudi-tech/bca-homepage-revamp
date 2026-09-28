@@ -11,6 +11,7 @@ import { SLIDES, SLIDE_DURATION_MS, type Slide, type SlideCta } from "./hero-sli
 import ChristmasDecor from "./ChristmasDecor";
 import CnyDecor from "./CnyDecor";
 import LebaranDecor from "./LebaranDecor";
+import { PrioritasButtonIcon, prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
 import LayoutSwitcher from "./LayoutSwitcher";
 
 const PARALLAX_SPEED = 0.45;
@@ -27,12 +28,12 @@ function HeroCta({ label, icon, variant, tone = "default" }: SlideCta) {
   return (
     <div className="group/cta relative inline-flex items-start gap-3">
       <button
-        className={`relative flex items-center justify-center gap-1 font-semibold transition-[color,transform] duration-300 active:scale-95 ${prioritas ? "h-12 rounded-full bg-neutral-100 px-6 text-base text-pbrown-600 no-underline hover:bg-neutral-200" : solitaire ? "h-12 rounded-full bg-white px-6 text-base text-pbrown-600 no-underline hover:bg-neutral-100" : `h-10 px-0 text-sm text-white underline-offset-4 hover:underline xl:h-12 xl:rounded-full xl:px-6 xl:text-base xl:no-underline ${variant === "primary" ? "xl:bg-primary xl:hover:bg-primary-hover" : "xl:bg-black/50 xl:hover:bg-black/70"}`}`}
+        className={prioritas ? prioritasButtonClassName({ surface: "inverse", size: "large" }) : `relative flex items-center justify-center gap-1 font-semibold transition-[color,transform] duration-300 active:scale-95 ${solitaire ? "h-12 rounded-full bg-white px-6 text-base text-pbrown-600 no-underline hover:bg-neutral-100" : `h-10 px-0 text-sm text-white underline-offset-4 hover:underline xl:h-12 xl:rounded-full xl:px-6 xl:text-base xl:no-underline ${variant === "primary" ? "xl:bg-primary xl:hover:bg-primary-hover" : "xl:bg-black/50 xl:hover:bg-black/70"}`}`}
       >
-        <span className={`px-0.5 text-base font-semibold ${brandedHero ? "text-pbrown-600" : "text-white"}`}>
+        <span className={prioritas ? "prio-button__label" : `px-0.5 text-base font-semibold ${brandedHero ? "text-pbrown-600" : "text-white"}`}>
           {label}
         </span>
-        {prioritas ? <span aria-hidden className="size-5 shrink-0 bg-pbrown-600" style={{ maskImage: `url(${icon})`, WebkitMaskImage: `url(${icon})`, maskRepeat: "no-repeat", WebkitMaskRepeat: "no-repeat", maskPosition: "center", WebkitMaskPosition: "center", maskSize: "contain", WebkitMaskSize: "contain" }} /> : <img src={icon} alt="" className={`size-5 ${solitaire ? "brightness-0 invert xl:brightness-0 xl:invert-0" : "brightness-0 invert"}`} />}
+        {prioritas ? <PrioritasButtonIcon src={icon} /> : <img src={icon} alt="" className={`size-5 ${solitaire ? "brightness-0 invert xl:brightness-0 xl:invert-0" : "brightness-0 invert"}`} />}
       </button>
     </div>
   );
@@ -251,13 +252,13 @@ export default function HeroSection({
               )}
             </div>
             <div className="hidden items-center gap-2 xl:flex">
-              <button onClick={goPrev} aria-label={t("prevSlide")} className="flex size-10 items-center justify-center rounded-full bg-black/30 transition-colors hover:bg-black/50">
+              <button onClick={goPrev} aria-label={t("prevSlide")} className={slides[activeSlide].cta.tone === "prioritas" ? prioritasButtonClassName({ kind: "icon", variant: "secondary", surface: "inverse", size: "medium" }) : "flex size-10 items-center justify-center rounded-full bg-black/30 transition-colors hover:bg-black/50"}>
                 <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-5" />
               </button>
             <button
               onClick={goNext}
               aria-label={t("nextSlide")}
-              className="flex size-10 items-center justify-center rounded-full bg-black/30 transition-colors hover:bg-black/50"
+              className={slides[activeSlide].cta.tone === "prioritas" ? prioritasButtonClassName({ kind: "icon", variant: "secondary", surface: "inverse", size: "medium" }) : "flex size-10 items-center justify-center rounded-full bg-black/30 transition-colors hover:bg-black/50"}
             >
               <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5" />
             </button>

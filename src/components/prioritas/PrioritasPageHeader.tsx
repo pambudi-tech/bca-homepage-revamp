@@ -22,8 +22,8 @@ export default function PrioritasPageHeader({
   const missingDetailIdentity = detailLayout && !subtitle && !logo;
 
   return (
-    <header className="relative isolate h-[360px] overflow-clip bg-pbrown-600 text-pgold-100 xl:h-[400px]">
-      <div className={`pointer-events-none absolute inset-x-0 top-0 ${detailLayout ? "z-0 h-[360px] overflow-hidden bg-pbrown-600 xl:h-[400px]" : "inset-y-0 overflow-hidden"}`}>
+    <header className="relative isolate h-[344px] overflow-clip bg-pbrown-600 text-pgold-100 xl:h-[384px]">
+      <div className={`pointer-events-none absolute inset-x-0 top-0 ${detailLayout ? "z-0 h-[344px] overflow-hidden bg-pbrown-600 xl:h-[384px]" : "inset-y-0 overflow-hidden"}`}>
         <img
           src="/assets/prioritas/card/prio-glow.png"
           alt=""
@@ -31,7 +31,7 @@ export default function PrioritasPageHeader({
           className="pointer-events-none absolute -right-[390px] -top-[320px] h-[960px] w-auto max-w-none opacity-80 xl:-right-[120px]"
         />
         <div aria-hidden className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-pbrown-600 to-transparent" />
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[112px] bg-pbrown-700/25 backdrop-blur-md xl:h-[116px]" />
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[112px] bg-pbrown-700/25 backdrop-blur-md xl:h-[120px]" />
       </div>
       <div className="relative z-10 mx-auto h-full w-full max-w-[1280px] px-4 xl:px-0">
         <nav aria-label="Breadcrumb" className="hide-scrollbar -mx-4 flex max-w-[calc(100%+2rem)] items-center gap-2 overflow-x-auto overscroll-x-contain px-4 pt-[128px] text-sm font-semibold leading-6 text-pgold-100/85 [scrollbar-width:none] xl:mx-0 xl:max-w-full xl:px-0 xl:pt-[140px]">

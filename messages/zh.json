@@ -1,19 +1,8 @@
 {
-  "metadata": {
-    "title": "BCA - 始终在您身边",
-    "description": "BCA.co.id 主页改版原型"
-  },
+  "metadata": { "title": "BCA - 始终在您身边", "description": "BCA.co.id 主页改版原型" },
   "promoPage": {
-    "metadata": {
-      "title": "BCA 优惠",
-      "description": "探索满足各种需求的 BCA 优惠。"
-    },
-    "hero": {
-      "eyebrow": "BCA 优惠",
-      "title": "畅享满足各种需求的丰富优惠",
-      "cta": "探索所有优惠",
-      "imageAlt": "一对情侣享受多种活动和 BCA 生活方式优惠"
-    },
+    "metadata": { "title": "BCA 优惠", "description": "探索满足各种需求的 BCA 优惠。" },
+    "hero": { "eyebrow": "BCA 优惠", "title": "畅享满足各种需求的丰富优惠", "cta": "探索所有优惠", "imageAlt": "一对情侣享受多种活动和 BCA 生活方式优惠" },
     "categoryRail": {
       "kuliner": "餐饮",
       "hobby": "爱好",
@@ -39,14 +28,7 @@
       "noResultsHint": "请尝试其他关键词或类别。"
     },
     "common": { "previous": "上一个", "next": "下一个" },
-    "seasonal": {
-      "badge": "Gebyar BCA 特别优惠",
-      "discount": "超值",
-      "emphasis": "折扣",
-      "partner": "BCA 精选合作伙伴",
-      "quota": "名额有限！",
-      "quotaHint": "结束前立即领取"
-    },
+    "seasonal": { "badge": "Gebyar BCA 特别优惠", "discount": "超值", "emphasis": "折扣", "partner": "BCA 精选合作伙伴", "quota": "名额有限！", "quotaHint": "结束前立即领取" },
     "allPromos": {
       "title": "全部优惠",
       "showCount": "显示 {total} 个优惠中的 {from}-{to} 个",
@@ -80,12 +62,20 @@
       "eyebrow": "特别优惠地点",
       "defaultLocation": "Grand Indonesia",
       "selectLabel": "选择优惠地点",
-      "locations": ["Grand Indonesia", "Plaza Indonesia", "Senayan City", "Plaza Senayan", "Pacific Place", "Kota Kasablanka", "Pondok Indah Mall", "Mall Kelapa Gading", "Central Park", "Lippo Mall Puri"]
+      "locations": [
+        "Grand Indonesia",
+        "Plaza Indonesia",
+        "Senayan City",
+        "Plaza Senayan",
+        "Pacific Place",
+        "Kota Kasablanka",
+        "Pondok Indah Mall",
+        "Mall Kelapa Gading",
+        "Central Park",
+        "Lippo Mall Puri"
+      ]
     },
-    "endingSoon": {
-      "title": "即将结束",
-      "description": "即将结束的精选优惠"
-    },
+    "endingSoon": { "title": "即将结束", "description": "即将结束的精选优惠" },
     "categories": {
       "fnb": "餐饮",
       "hobby": "兴趣爱好",
@@ -116,10 +106,7 @@
     }
   },
   "creditCardDetail": {
-    "metadata": {
-      "title": "BCA 信用卡",
-      "description": "探索多种 BCA 信用卡选择，满足您的生活方式需求。"
-    },
+    "metadata": { "title": "BCA 信用卡", "description": "探索多种 BCA 信用卡选择，满足您的生活方式需求。" },
     "hero": {
       "eyebrow": "BCA 信用卡",
       "title": "多种选择，满足您的生活方式",
@@ -129,16 +116,7 @@
       "scrollCue": "向下滚动",
       "cardsSection": "信用卡选择",
       "imageAlt": "一名男子在钱包上方手持 BCA 信用卡",
-      "sectionNav": {
-        "label": "信用卡页面导航",
-        "cards": "卡片选择",
-        "benefits": "权益",
-        "features": "功能",
-        "promos": "优惠",
-        "tutorials": "教程",
-        "news": "资讯",
-        "help": "帮助"
-      }
+      "sectionNav": { "label": "信用卡页面导航", "cards": "卡片选择", "benefits": "权益", "features": "功能", "promos": "优惠", "tutorials": "教程", "news": "资讯", "help": "帮助" }
     },
     "comparisonPage": {
       "eyebrow": "信用卡",
@@ -220,70 +198,348 @@
       "cardSpecificInformation": {
         "krisflyer-signature": {
           "topics": [
-            { "key": "fees", "label": "费用", "columns": ["费用类型", "主卡", "附属卡"], "rows": [
-              { "label": "年费", "cells": [{ "text": "Rp500,000" }, { "text": "Rp300,000" }] },
-              { "label": "逾期付款费用", "cells": [{ "text": "账单总额的 1%，最高 Rp100,000", "colSpan": 2 }] },
-              { "label": "一年交易摘要申请", "cells": [{ "text": "Rp100,000", "colSpan": 2 }] },
-              { "label": "账单副本申请", "cells": [{ "text": "Rp30,000", "colSpan": 2 }] },
-              { "label": "遗失或损坏卡片更换", "cells": [{ "text": "免费", "colSpan": 2 }] },
-              { "label": "账单打印与寄送", "cells": [{ "text": "Rp10,000", "colSpan": 2 }] },
-              { "label": "超额费用", "cells": [{ "text": "免费", "colSpan": 2 }] },
-              { "label": "国内及国际现金预借", "cells": [{ "text": "提款金额的 4%，或最低 Rp40,000", "colSpan": 2 }] },
-              { "label": "柜台现金预借管理费", "cells": [{ "text": "每笔 Rp20,000", "colSpan": 2 }] },
-              { "label": "取消分期付款", "cells": [{ "text": "Rp100,000", "colSpan": 2 }] },
-              { "label": "印花税", "cells": [{ "text": "账单付款超过 Rp5,000,000 时收取 Rp10,000", "colSpan": 2 }] }
-            ] },
-            { "key": "limit-risk", "label": "额度、利率与风险", "columns": ["信息类型", "主卡", "附属卡"], "blocks": [
-              { "type": "text", "heading": "额度", "bullets": ["主卡与附属卡的最低信用额度"] },
-              { "type": "table", "columns": ["额度类型", "主卡", "附属卡"], "rows": [{ "label": "BCA Singapore Airlines KrisFlyer Visa Signature", "cells": [{ "text": "Rp10,000,000" }, { "text": "Rp5,000,000" }] }] },
-              { "type": "text", "body": "说明：信用额度将根据 BCA 的分析结果确定。" },
-              { "type": "text", "heading": "交易额度", "bullets": ["BCA Singapore Airlines KrisFlyer Visa Signature 的交易额度"] },
-              { "type": "table", "columns": ["交易类型", "额度"], "rows": [
-                { "label": "Contact（EDC）", "cells": [{ "text": "根据可用信用额度" }] },
-                { "label": "使用 PIN 的非接触式交易", "cells": [{ "text": "根据可用信用额度" }] },
-                { "label": "无需 PIN 的非接触式交易", "cells": [{ "text": "最高交易额度遵循当地规定；在印度尼西亚最高 Rp1,000,000。可通过 myBCA/BCA mobile 设置每日额度，最高 Rp200,000,000 或可用信用额度。" }] },
-                { "label": "网上交易", "cells": [{ "text": "根据可用信用额度" }] },
-                { "label": "ATM 现金预借", "cells": [{ "text": "信用额度的 20%" }] }
-              ] },
-              { "type": "text", "heading": "利率", "body": "现金预借和消费交易的利率为每月 1.75%，具体以印度尼西亚银行现行规定为准。" },
-              { "type": "text", "heading": "风险", "bullets": ["逾期支付账单可能产生逾期费用并影响债务人信用记录。", "提前结清分期交易可能产生费用。", "因客户疏忽，卡片、PIN/Password/OTP 或 User ID/BCA ID 可能被滥用。"] }
-            ], "rows": [
-              { "label": "最低信用额度", "cells": [{ "text": "Rp10,000,000" }, { "text": "Rp5,000,000" }] },
-              { "label": "EDC 额度", "cells": [{ "text": "根据可用信用额度", "colSpan": 2 }] },
-              { "label": "使用 PIN 的非接触式交易", "cells": [{ "text": "根据可用信用额度", "colSpan": 2 }] },
-              { "label": "无需 PIN 的非接触式交易", "cells": [{ "text": "遵循当地规定；在印度尼西亚最高 Rp1,000,000", "colSpan": 2 }] },
-              { "label": "网上交易", "cells": [{ "text": "根据可用信用额度", "colSpan": 2 }] },
-              { "label": "ATM 现金预借", "cells": [{ "text": "信用额度的 20%", "colSpan": 2 }] },
-              { "label": "消费及现金预借利率", "cells": [{ "text": "每月 1.75%", "colSpan": 2 }] },
-              { "label": "逾期付款风险", "cells": [{ "text": "可能产生逾期费用并影响债务人信用记录", "colSpan": 2 }] },
-              { "label": "提前结清分期风险", "cells": [{ "text": "提前结清分期交易可能产生费用", "colSpan": 2 }] },
-              { "label": "卡片滥用风险", "cells": [{ "text": "因客户疏忽导致卡片、PIN/Password/OTP 或 User ID/BCA ID 被滥用", "colSpan": 2 }] }
-            ] },
-            { "key": "simulation", "label": "模拟", "columns": ["过账日期", "说明", "金额"], "blocks": [
-              { "type": "text", "body": "账单日为 2024 年 4 月 1 日、付款到期日为 2024 年 4 月 17 日的账单计算。" },
-              { "type": "table", "columns": ["过账日期", "说明", "金额"], "rows": [
-                { "label": "2024 年 3 月 1 日", "cells": [{ "text": "上一期账单" }, { "text": "Rp0" }] },
-                { "label": "2024 年 3 月 5 日", "cells": [{ "text": "交易 I" }, { "text": "Rp1,250,000" }] },
-                { "label": "2024 年 3 月 16 日", "cells": [{ "text": "交易 II" }, { "text": "Rp1,750,000" }] },
-                { "label": "新账单", "labelColSpan": 2, "cells": [{ "text": "Rp3,000,000" }] }
-              ] },
-              { "type": "text", "body": "账单周期为 2024 年 5 月 1 日，按最低付款计算利息（付款日期：2024 年 4 月 17 日）。" },
-              { "type": "table", "columns": ["过账日期", "说明", "金额"], "rows": [
-                { "label": "2024 年 4 月 1 日", "cells": [{ "text": "上一期余额" }, { "text": "Rp3,000,000" }] },
-                { "label": "2024 年 4 月 8 日", "cells": [{ "text": "交易 I" }, { "text": "Rp1,250,000" }] },
-                { "label": "2024 年 4 月 24 日", "cells": [{ "text": "交易 II" }, { "text": "Rp1,750,000" }] },
-                { "label": "2024 年 4 月 17 日", "cells": [{ "text": "付款（最低 5% x Rp3,000,000）" }, { "text": "(Rp150,000)" }] },
-                { "label": "利息", "labelColSpan": 2, "cells": [{ "text": "Rp87,740" }] },
-                { "label": "新账单", "labelColSpan": 2, "cells": [{ "text": "Rp4,187,740" }] }
-              ] },
-              { "type": "text", "heading": "利息计算：" },
-              { "type": "table", "columns": ["交易类型", "期间", "交易金额", "利率", "计算公式", "利息总额"], "columnTooltips": { "期间": "从交易日期到账单打印日期的时间间隔。" }, "rows": [
-                { "label": "交易 I", "cells": [{ "text": "2024 年 3 月 5 日 – 2024 年 4 月 16 日（43 天）" }, { "text": "Rp1,250,000" }, { "text": "1.75%", "rowSpan": 3 }, { "text": "交易金额 x 利率 x 12 个月 x（期间/365 天）", "rowSpan": 3 }, { "text": "Rp30,925" }] },
-                { "label": "交易 II", "cells": [{ "text": "2024 年 3 月 16 日 – 2024 年 4 月 16 日（32 天）" }, { "text": "Rp1,750,000" }, { "text": "Rp32,219" }] },
-                { "label": "上月剩余付款", "cells": [{ "text": "2024 年 4 月 17 日 – 2024 年 5 月 1 日（15 天）" }, { "text": "Rp2,850,000" }, { "text": "Rp24,596" }] },
-                { "label": "总计", "labelColSpan": 5, "cells": [{ "text": "Rp87,740" }] }
-              ] }
-            ] }
+            {
+              "key": "fees",
+              "label": "费用",
+              "columns": ["费用类型", "主卡", "附属卡"],
+              "rows": [
+                {
+                  "label": "年费",
+                  "cells": [
+                    { "text": "Rp500,000" },
+                    { "text": "Rp300,000" }
+                  ]
+                },
+                {
+                  "label": "逾期付款费用",
+                  "cells": [
+                    { "text": "账单总额的 1%，最高 Rp100,000", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "一年交易摘要申请",
+                  "cells": [
+                    { "text": "Rp100,000", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "账单副本申请",
+                  "cells": [
+                    { "text": "Rp30,000", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "遗失或损坏卡片更换",
+                  "cells": [
+                    { "text": "免费", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "账单打印与寄送",
+                  "cells": [
+                    { "text": "Rp10,000", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "超额费用",
+                  "cells": [
+                    { "text": "免费", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "国内及国际现金预借",
+                  "cells": [
+                    { "text": "提款金额的 4%，或最低 Rp40,000", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "柜台现金预借管理费",
+                  "cells": [
+                    { "text": "每笔 Rp20,000", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "取消分期付款",
+                  "cells": [
+                    { "text": "Rp100,000", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "印花税",
+                  "cells": [
+                    { "text": "账单付款超过 Rp5,000,000 时收取 Rp10,000", "colSpan": 2 }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "limit-risk",
+              "label": "额度、利率与风险",
+              "columns": ["信息类型", "主卡", "附属卡"],
+              "blocks": [
+                {
+                  "type": "text",
+                  "heading": "额度",
+                  "bullets": ["主卡与附属卡的最低信用额度"]
+                },
+                {
+                  "type": "table",
+                  "columns": ["额度类型", "主卡", "附属卡"],
+                  "rows": [
+                    {
+                      "label": "BCA Singapore Airlines KrisFlyer Visa Signature",
+                      "cells": [
+                        { "text": "Rp10,000,000" },
+                        { "text": "Rp5,000,000" }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "text", "body": "说明：信用额度将根据 BCA 的分析结果确定。" },
+                {
+                  "type": "text",
+                  "heading": "交易额度",
+                  "bullets": ["BCA Singapore Airlines KrisFlyer Visa Signature 的交易额度"]
+                },
+                {
+                  "type": "table",
+                  "columns": ["交易类型", "额度"],
+                  "rows": [
+                    {
+                      "label": "Contact（EDC）",
+                      "cells": [
+                        { "text": "根据可用信用额度" }
+                      ]
+                    },
+                    {
+                      "label": "使用 PIN 的非接触式交易",
+                      "cells": [
+                        { "text": "根据可用信用额度" }
+                      ]
+                    },
+                    {
+                      "label": "无需 PIN 的非接触式交易",
+                      "cells": [
+                        { "text": "最高交易额度遵循当地规定；在印度尼西亚最高 Rp1,000,000。可通过 myBCA/BCA mobile 设置每日额度，最高 Rp200,000,000 或可用信用额度。" }
+                      ]
+                    },
+                    {
+                      "label": "网上交易",
+                      "cells": [
+                        { "text": "根据可用信用额度" }
+                      ]
+                    },
+                    {
+                      "label": "ATM 现金预借",
+                      "cells": [
+                        { "text": "信用额度的 20%" }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "text", "heading": "利率", "body": "现金预借和消费交易的利率为每月 1.75%，具体以印度尼西亚银行现行规定为准。" },
+                {
+                  "type": "text",
+                  "heading": "风险",
+                  "bullets": ["逾期支付账单可能产生逾期费用并影响债务人信用记录。", "提前结清分期交易可能产生费用。", "因客户疏忽，卡片、PIN/Password/OTP 或 User ID/BCA ID 可能被滥用。"]
+                }
+              ],
+              "rows": [
+                {
+                  "label": "最低信用额度",
+                  "cells": [
+                    { "text": "Rp10,000,000" },
+                    { "text": "Rp5,000,000" }
+                  ]
+                },
+                {
+                  "label": "EDC 额度",
+                  "cells": [
+                    { "text": "根据可用信用额度", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "使用 PIN 的非接触式交易",
+                  "cells": [
+                    { "text": "根据可用信用额度", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "无需 PIN 的非接触式交易",
+                  "cells": [
+                    { "text": "遵循当地规定；在印度尼西亚最高 Rp1,000,000", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "网上交易",
+                  "cells": [
+                    { "text": "根据可用信用额度", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "ATM 现金预借",
+                  "cells": [
+                    { "text": "信用额度的 20%", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "消费及现金预借利率",
+                  "cells": [
+                    { "text": "每月 1.75%", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "逾期付款风险",
+                  "cells": [
+                    { "text": "可能产生逾期费用并影响债务人信用记录", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "提前结清分期风险",
+                  "cells": [
+                    { "text": "提前结清分期交易可能产生费用", "colSpan": 2 }
+                  ]
+                },
+                {
+                  "label": "卡片滥用风险",
+                  "cells": [
+                    { "text": "因客户疏忽导致卡片、PIN/Password/OTP 或 User ID/BCA ID 被滥用", "colSpan": 2 }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "simulation",
+              "label": "模拟",
+              "columns": ["过账日期", "说明", "金额"],
+              "blocks": [
+                { "type": "text", "body": "账单日为 2024 年 4 月 1 日、付款到期日为 2024 年 4 月 17 日的账单计算。" },
+                {
+                  "type": "table",
+                  "columns": ["过账日期", "说明", "金额"],
+                  "rows": [
+                    {
+                      "label": "2024 年 3 月 1 日",
+                      "cells": [
+                        { "text": "上一期账单" },
+                        { "text": "Rp0" }
+                      ]
+                    },
+                    {
+                      "label": "2024 年 3 月 5 日",
+                      "cells": [
+                        { "text": "交易 I" },
+                        { "text": "Rp1,250,000" }
+                      ]
+                    },
+                    {
+                      "label": "2024 年 3 月 16 日",
+                      "cells": [
+                        { "text": "交易 II" },
+                        { "text": "Rp1,750,000" }
+                      ]
+                    },
+                    {
+                      "label": "新账单",
+                      "labelColSpan": 2,
+                      "cells": [
+                        { "text": "Rp3,000,000" }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "text", "body": "账单周期为 2024 年 5 月 1 日，按最低付款计算利息（付款日期：2024 年 4 月 17 日）。" },
+                {
+                  "type": "table",
+                  "columns": ["过账日期", "说明", "金额"],
+                  "rows": [
+                    {
+                      "label": "2024 年 4 月 1 日",
+                      "cells": [
+                        { "text": "上一期余额" },
+                        { "text": "Rp3,000,000" }
+                      ]
+                    },
+                    {
+                      "label": "2024 年 4 月 8 日",
+                      "cells": [
+                        { "text": "交易 I" },
+                        { "text": "Rp1,250,000" }
+                      ]
+                    },
+                    {
+                      "label": "2024 年 4 月 24 日",
+                      "cells": [
+                        { "text": "交易 II" },
+                        { "text": "Rp1,750,000" }
+                      ]
+                    },
+                    {
+                      "label": "2024 年 4 月 17 日",
+                      "cells": [
+                        { "text": "付款（最低 5% x Rp3,000,000）" },
+                        { "text": "(Rp150,000)" }
+                      ]
+                    },
+                    {
+                      "label": "利息",
+                      "labelColSpan": 2,
+                      "cells": [
+                        { "text": "Rp87,740" }
+                      ]
+                    },
+                    {
+                      "label": "新账单",
+                      "labelColSpan": 2,
+                      "cells": [
+                        { "text": "Rp4,187,740" }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "text", "heading": "利息计算：" },
+                {
+                  "type": "table",
+                  "columns": ["交易类型", "期间", "交易金额", "利率", "计算公式", "利息总额"],
+                  "columnTooltips": { "期间": "从交易日期到账单打印日期的时间间隔。" },
+                  "rows": [
+                    {
+                      "label": "交易 I",
+                      "cells": [
+                        { "text": "2024 年 3 月 5 日 – 2024 年 4 月 16 日（43 天）" },
+                        { "text": "Rp1,250,000" },
+                        { "text": "1.75%", "rowSpan": 3 },
+                        { "text": "交易金额 x 利率 x 12 个月 x（期间/365 天）", "rowSpan": 3 },
+                        { "text": "Rp30,925" }
+                      ]
+                    },
+                    {
+                      "label": "交易 II",
+                      "cells": [
+                        { "text": "2024 年 3 月 16 日 – 2024 年 4 月 16 日（32 天）" },
+                        { "text": "Rp1,750,000" },
+                        { "text": "Rp32,219" }
+                      ]
+                    },
+                    {
+                      "label": "上月剩余付款",
+                      "cells": [
+                        { "text": "2024 年 4 月 17 日 – 2024 年 5 月 1 日（15 天）" },
+                        { "text": "Rp2,850,000" },
+                        { "text": "Rp24,596" }
+                      ]
+                    },
+                    {
+                      "label": "总计",
+                      "labelColSpan": 5,
+                      "cells": [
+                        { "text": "Rp87,740" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         }
       },
@@ -304,14 +560,7 @@
         "unionpay": "Let's Live It Up!",
         "american-express-platinum": "For the finest things in life"
       },
-      "tabs": {
-        "benefits": "权益",
-        "features": "主要功能",
-        "fees": "费用",
-        "requirements": "申请条件",
-        "limit": "额度",
-        "payments": "利率与还款"
-      }
+      "tabs": { "benefits": "权益", "features": "主要功能", "fees": "费用", "requirements": "申请条件", "limit": "额度", "payments": "利率与还款" }
     },
     "tutorial": {
       "heading": "通过 myBCA 轻松申请信用卡",
@@ -343,18 +592,9 @@
         "key": "credit-card",
         "label": "信用卡",
         "items": [
-          {
-            "question": "如果忘记 BCA 信用卡 PIN 码怎么办？",
-            "answer": "您可以通过 myBCA、BCA mobile、BCA ATM，或访问 bca.co.id/creditcard 的电子账单与 PIN 激活菜单重新激活信用卡 PIN 码。"
-          },
-          {
-            "question": "如果 BCA 信用卡遗失或被盗，该怎么办？",
-            "answer": "请立即通过 myBCA、BCA mobile 或拨打 1500888 联系 Halo BCA 挂失。因遗失或被盗而挂失的卡片需要更换后才能继续使用。"
-          },
-          {
-            "question": "如何支付 BCA 信用卡账单？",
-            "answer": "在 myBCA 中选择账单与充值，然后选择信用卡与 Paylater。选择卡片和扣款账户，输入付款金额，核对信息后输入 PIN 确认。"
-          }
+          { "question": "如果忘记 BCA 信用卡 PIN 码怎么办？", "answer": "您可以通过 myBCA、BCA mobile、BCA ATM，或访问 bca.co.id/creditcard 的电子账单与 PIN 激活菜单重新激活信用卡 PIN 码。" },
+          { "question": "如果 BCA 信用卡遗失或被盗，该怎么办？", "answer": "请立即通过 myBCA、BCA mobile 或拨打 1500888 联系 Halo BCA 挂失。因遗失或被盗而挂失的卡片需要更换后才能继续使用。" },
+          { "question": "如何支付 BCA 信用卡账单？", "answer": "在 myBCA 中选择账单与充值，然后选择信用卡与 Paylater。选择卡片和扣款账户，输入付款金额，核对信息后输入 PIN 确认。" }
         ]
       }
     },
@@ -367,9 +607,7 @@
       "appPlaceholder": "应用内信用卡功能界面占位图",
       "cardSpecificHeadings": {
         "krisflyer-signature": "更快累积 KrisFlyer 里程",
-        "features": {
-          "krisflyer-signature": "消费与旅行主要功能"
-        }
+        "features": { "krisflyer-signature": "消费与旅行主要功能" }
       },
       "benefits": [
         { "key": "installment", "title": "BCA 分期", "description": "将交易转为 BCA 分期，利率低至 0%，期限最长 36 个月。" },
@@ -441,22 +679,8 @@
         "apply": "在 myBCA 申请",
         "navigationLabel": "信用卡比较导航",
         "selectedCards": "正在比较的卡片",
-        "cardClusters": {
-          "bca-card": "BCA Card",
-          "visa": "Visa",
-          "mastercard": "Mastercard",
-          "jcb": "JCB",
-          "unionpay": "UnionPay",
-          "american-express": "American Express"
-        },
-        "tabs": {
-          "benefits": "权益",
-          "features": "主要功能",
-          "fees": "费用",
-          "requirements": "申请条件",
-          "limit": "额度",
-          "payments": "利率与还款"
-        },
+        "cardClusters": { "bca-card": "BCA Card", "visa": "Visa", "mastercard": "Mastercard", "jcb": "JCB", "unionpay": "UnionPay", "american-express": "American Express" },
+        "tabs": { "benefits": "权益", "features": "主要功能", "fees": "费用", "requirements": "申请条件", "limit": "额度", "payments": "利率与还款" },
         "benefitLabel": "权益 {index}",
         "category": "类别",
         "annualFee": "年费",
@@ -464,32 +688,86 @@
         "applicationValue": "通过 myBCA 申请",
         "noData": "暂无详细信息",
         "sections": [
-          { "key": "benefits", "groups": [{ "title": "", "points": [
-            { "label": "BCA 奖赏", "bullets": ["tiket.com 交易 1%；其他商户交易 0.5%", "自 2026 年 5 月 1 日起，Blibli 商户交易适用 0.4% 方案"] },
-            { "label": "首刷奖励", "bullets": ["tiket.com 交易 1%；其他商户交易 0.5%"] },
-            { "label": "旅行积分 / 里程", "description": "自 2026 年 5 月 1 日起，Blibli 商户交易适用 0.4% 方案" }
-          ] }] },
-          { "key": "features", "groups": [{ "title": "", "points": [
-            { "label": "非接触式支付" }, { "label": "BCA 分期" }, { "label": "旅行保险" }, { "label": "信用卡寿险" },
-            { "label": "BCA 旅行服务" }, { "label": "BCA 自动还款" }, { "label": "BCA 奖赏" }, { "label": "信用卡管理" }
-          ] }] },
-          { "key": "fees", "groups": [{ "title": "", "points": [
-            { "label": "年费", "description": "Rp125,000/年" },
-            { "label": "逾期付款费用", "bullets": ["账单金额的 1%，最高 Rp100,000", "Rp100,000**"] },
-            { "label": "补卡费用", "description": "Rp50,000" }
-          ] }] },
-          { "key": "requirements", "groups": [
-            { "title": "", "points": [
-              { "label": "年龄", "description": "至少 21 岁" },
-              { "label": "最低收入", "description": "每月最低收入：国企 / 公务员 Rp3 百万，私营部门 Rp5 百万" }
-            ] },
-            { "title": "额度", "points": [
-              { "label": "最低信用卡额度", "description": "Rp3,000,000" }, { "label": "最低信用卡额度", "description": "Rp1,000,000" }, { "label": "EDC 额度", "description": "根据可用卡片而定" }
-            ] },
-            { "title": "利率与还款", "points": [
-              { "label": "消费利率", "description": "每月 1.75%" }, { "label": "取现利率", "description": "每月 1.75%" }
-            ] }
-          ] }
+          {
+            "key": "benefits",
+            "groups": [
+              {
+                "title": "",
+                "points": [
+                  {
+                    "label": "BCA 奖赏",
+                    "bullets": ["tiket.com 交易 1%；其他商户交易 0.5%", "自 2026 年 5 月 1 日起，Blibli 商户交易适用 0.4% 方案"]
+                  },
+                  {
+                    "label": "首刷奖励",
+                    "bullets": ["tiket.com 交易 1%；其他商户交易 0.5%"]
+                  },
+                  { "label": "旅行积分 / 里程", "description": "自 2026 年 5 月 1 日起，Blibli 商户交易适用 0.4% 方案" }
+                ]
+              }
+            ]
+          },
+          {
+            "key": "features",
+            "groups": [
+              {
+                "title": "",
+                "points": [
+                  { "label": "非接触式支付" },
+                  { "label": "BCA 分期" },
+                  { "label": "旅行保险" },
+                  { "label": "信用卡寿险" },
+                  { "label": "BCA 旅行服务" },
+                  { "label": "BCA 自动还款" },
+                  { "label": "BCA 奖赏" },
+                  { "label": "信用卡管理" }
+                ]
+              }
+            ]
+          },
+          {
+            "key": "fees",
+            "groups": [
+              {
+                "title": "",
+                "points": [
+                  { "label": "年费", "description": "Rp125,000/年" },
+                  {
+                    "label": "逾期付款费用",
+                    "bullets": ["账单金额的 1%，最高 Rp100,000", "Rp100,000**"]
+                  },
+                  { "label": "补卡费用", "description": "Rp50,000" }
+                ]
+              }
+            ]
+          },
+          {
+            "key": "requirements",
+            "groups": [
+              {
+                "title": "",
+                "points": [
+                  { "label": "年龄", "description": "至少 21 岁" },
+                  { "label": "最低收入", "description": "每月最低收入：国企 / 公务员 Rp3 百万，私营部门 Rp5 百万" }
+                ]
+              },
+              {
+                "title": "额度",
+                "points": [
+                  { "label": "最低信用卡额度", "description": "Rp3,000,000" },
+                  { "label": "最低信用卡额度", "description": "Rp1,000,000" },
+                  { "label": "EDC 额度", "description": "根据可用卡片而定" }
+                ]
+              },
+              {
+                "title": "利率与还款",
+                "points": [
+                  { "label": "消费利率", "description": "每月 1.75%" },
+                  { "label": "取现利率", "description": "每月 1.75%" }
+                ]
+              }
+            ]
+          }
         ]
       },
       "filters": [
@@ -726,45 +1004,18 @@
     "languageSwitcher": "选择语言",
     "disclaimer": "Property of Natuno. All rights reserved."
   },
-  "languages": {
-    "id": "Indonesia",
-    "en": "English",
-    "zh": "简体中文"
-  },
+  "languages": { "id": "Indonesia", "en": "English", "zh": "简体中文" },
   "hero": {
     "searchPrompt": "有什么可以帮您？",
-    "placeholders": [
-      "开设BCA账户",
-      "激活BCA Paylater",
-      "申请信用卡",
-      "安装 myBCA"
-    ],
+    "placeholders": ["开设BCA账户", "激活BCA Paylater", "申请信用卡", "安装 myBCA"],
     "quickActions": {
-      "login": {
-        "title": "登录BCA",
-        "subtitle": "myBCA • KlikBCA"
-      },
-      "promo": {
-        "title": "最新优惠",
-        "subtitle": "超值优惠"
-      },
-      "halobca": {
-        "title": "HaloBCA",
-        "subtitle": "1500888，聊天，邮件"
-      },
-      "location": {
-        "title": "BCA网点",
-        "subtitle": "分行与ATM"
-      },
-      "webform": {
-        "title": "BCA在线表单",
-        "subtitle": "产品申请"
-      }
+      "login": { "title": "登录BCA", "subtitle": "myBCA • KlikBCA" },
+      "promo": { "title": "最新优惠", "subtitle": "超值优惠" },
+      "halobca": { "title": "HaloBCA", "subtitle": "1500888，聊天，邮件" },
+      "location": { "title": "BCA网点", "subtitle": "分行与ATM" },
+      "webform": { "title": "BCA在线表单", "subtitle": "产品申请" }
     },
-    "loginCepat": {
-      "title": "快速登录",
-      "subtitle": "进入 BCA 服务"
-    },
+    "loginCepat": { "title": "快速登录", "subtitle": "进入 BCA 服务" },
     "loginMybca": "登录 myBCA",
     "loginKlikbca": "登录 KlikBCA",
     "closeLogin": "关闭",
@@ -782,24 +1033,11 @@
     "loginCard": "登录 {service}",
     "kursERate": "BCA E-Rate 汇率",
     "viewAll": "查看全部",
-    "sectionAnchor": {
-      "label": "页面栏目导航",
-      "products": "产品与服务",
-      "promo": "活动与优惠",
-      "soliprio": "Solitaire 与 Prioritas",
-      "news": "新闻与教育",
-      "faq": "常见问题"
-    }
+    "sectionAnchor": { "label": "页面栏目导航", "products": "产品与服务", "promo": "活动与优惠", "soliprio": "Solitaire 与 Prioritas", "news": "新闻与教育", "faq": "常见问题" }
   },
   "search": {
     "segmentLabel": "内容分类",
-    "segments": {
-      "Semua": "全部",
-      "Individu": "个人",
-      "Bisnis": "企业",
-      "Prioritas": "优先",
-      "Solitaire": "尊尚"
-    },
+    "segments": { "Semua": "全部", "Individu": "个人", "Bisnis": "企业", "Prioritas": "优先", "Solitaire": "尊尚" },
     "recentSearches": "最近搜索",
     "clearAll": "清除全部",
     "removeTerm": "删除 {term}",
@@ -814,46 +1052,31 @@
     "needHelp": "需要帮助？",
     "visitHelpCenter": "访问帮助中心",
     "close": "关闭搜索",
-    "categories": {
-      "produk-layanan": "产品与服务",
-      "artikel": "文章",
-      "promo": "促销"
-    },
+    "categories": { "produk-layanan": "产品与服务", "artikel": "文章", "promo": "促销" },
     "popular": {
       "openAccount": "开户",
       "exchangeRate": "今日汇率",
       "creditCardPromo": "信用卡促销",
       "mortgage": "BCA 房贷",
       "activateMybca": "激活 myBCA",
-      "atmLocation": "ATM 位置"
+      "atmLocation": "ATM 位置",
+      "airportLounge": "机场贵宾室",
+      "airportTransfer": "机场接送",
+      "bankingPrivilege": "专属银行礼遇",
+      "wealthInsight": "财富洞察",
+      "safeDeposit": "保管箱",
+      "healthPrivilege": "健康礼遇",
+      "exclusivePrivilege": "专属礼遇"
     },
-    "topics": {
-      "topic-rekening": "开户与储蓄",
-      "topic-kartu": "信用卡与 Paylater",
-      "topic-kredit": "房贷与车贷",
-      "topic-investasi": "投资与共同基金"
-    }
+    "topics": { "topic-rekening": "开户与储蓄", "topic-kartu": "信用卡与 Paylater", "topic-kredit": "房贷与车贷", "topic-investasi": "投资与共同基金" },
+    "noResultsScopedHint": "请尝试其他礼遇或银行服务关键词。",
+    "noResultsSolitaireHint": "请尝试其他 Solitaire 礼遇关键词。"
   },
-  "scrollCue": {
-    "label": "滚动查看更多"
-  },
-  "backToTop": {
-    "label": "返回顶部"
-  },
-  "slideDots": {
-    "play": "继续轮播",
-    "pause": "暂停轮播"
-  },
-  "common": {
-    "learnMore": "了解更多"
-  },
-  "product": {
-    "eyebrow": "产品与服务",
-    "heading": "为您的每一个财务目标提供BCA解决方案",
-    "ctaHint": "为您找到合适的{category}",
-    "ctaLabel": "打开 GoodPlan BCA",
-    "mobileCtaHint": "为您找到合适的产品与服务"
-  },
+  "scrollCue": { "label": "滚动查看更多" },
+  "backToTop": { "label": "返回顶部" },
+  "slideDots": { "play": "继续轮播", "pause": "暂停轮播" },
+  "common": { "learnMore": "了解更多" },
+  "product": { "eyebrow": "产品与服务", "heading": "为您的每一个财务目标提供BCA解决方案", "ctaHint": "为您找到合适的{category}", "ctaLabel": "打开 GoodPlan BCA", "mobileCtaHint": "为您找到合适的产品与服务" },
   "promo": {
     "eyebrow": "优惠",
     "heading": "为您献上最佳礼遇",
@@ -864,15 +1087,8 @@
     "nextSlide": "下一个活动",
     "playSlide": "播放轮播",
     "pauseSlide": "暂停轮播",
-    "badge": {
-      "almostEnd": "即将结束！",
-      "popular": "热门"
-    },
-    "timestamp": {
-      "expired": "活动已结束",
-      "hoursLeft": "{hours}小时后结束",
-      "until": "截止至{date}"
-    }
+    "badge": { "almostEnd": "即将结束！", "popular": "热门" },
+    "timestamp": { "expired": "活动已结束", "hoursLeft": "{hours}小时后结束", "until": "截止至{date}" }
   },
   "soliprio": {
     "title": "尊崇专属的礼遇，只为您而设。",
@@ -882,37 +1098,17 @@
     "visitSolitaire": "访问 Solitaire",
     "visitPrioritas": "访问 Prioritas",
     "benefits": {
-      "lounge": {
-        "title": "尊享全球 200 多家机场贵宾室",
-        "cta": "查看合作医院"
-      },
-      "healthcare": {
-        "title": "于精选高端医院享受专属健康检查",
-        "cta": "进入贵宾室"
-      },
-      "event": {
-        "title": "优先参与知名活动",
-        "cta": "查看所有活动"
-      }
+      "lounge": { "title": "尊享全球 200 多家机场贵宾室", "cta": "查看合作医院" },
+      "healthcare": { "title": "于精选高端医院享受专属健康检查", "cta": "进入贵宾室" },
+      "event": { "title": "优先参与知名活动", "cta": "查看所有活动" }
     },
     "solitaireBenefits": {
-      "personalBanker": {
-        "title": "专属私人银行家，提供更个性化的服务",
-        "cta": "了解更多"
-      },
-      "exclusiveCommunity": {
-        "title": "专属 BCA 社群，拓展关系与合作",
-        "cta": "了解更多"
-      }
+      "personalBanker": { "title": "专属私人银行家，提供更个性化的服务", "cta": "了解更多" },
+      "exclusiveCommunity": { "title": "专属 BCA 社群，拓展关系与合作", "cta": "了解更多" }
     }
   },
   "nav": {
-    "segments": {
-      "Individu": "个人",
-      "Bisnis": "企业",
-      "Solitaire": "尊尚",
-      "Prioritas": "优先"
-    },
+    "segments": { "Individu": "个人", "Bisnis": "企业", "Solitaire": "尊尚", "Prioritas": "优先" },
     "produk": "产品",
     "promo": "优惠",
     "login": "登录",
@@ -929,24 +1125,9 @@
     "pilihSegmen": "选择细分",
     "primary": "主导航",
     "skipToContent": "跳到主要内容",
-    "aboutTabs": {
-      "korporasi": "企业信息",
-      "hubunganInvestor": "投资者关系",
-      "tataKelola": "公司治理",
-      "sustainability": "可持续发展",
-      "csr": "社会责任",
-      "mediaRiset": "媒体与研究"
-    }
+    "aboutTabs": { "korporasi": "企业信息", "hubunganInvestor": "投资者关系", "tataKelola": "公司治理", "sustainability": "可持续发展", "csr": "社会责任", "mediaRiset": "媒体与研究" }
   },
-  "mobileMenu": {
-    "tutupMenu": "关闭菜单",
-    "bukaMenu": "打开菜单",
-    "bahasa": "语言",
-    "pilihSegmen": "选择您的客户类型",
-    "sesiAktif": "当前会话",
-    "kembali": "返回",
-    "menuLabel": "主菜单"
-  },
+  "mobileMenu": { "tutupMenu": "关闭菜单", "bukaMenu": "打开菜单", "bahasa": "语言", "pilihSegmen": "选择您的客户类型", "sesiAktif": "当前会话", "kembali": "返回", "menuLabel": "主菜单" },
   "cookieBanner": {
     "ariaLabel": "Cookie 提示",
     "heading": "我们使用 Cookie",
@@ -958,22 +1139,10 @@
     "rejectAll": "拒绝全部",
     "settings": "管理偏好设置",
     "categories": {
-      "essential": {
-        "label": "必要",
-        "desc": "维持登录会话、安全性及网站基本功能，无法关闭。"
-      },
-      "functional": {
-        "label": "功能性",
-        "desc": "记住您的偏好设置，例如语言和最近查看的汇率。"
-      },
-      "analytics": {
-        "label": "分析",
-        "desc": "帮助我们了解哪些页面被最常使用。"
-      },
-      "marketing": {
-        "label": "营销",
-        "desc": "定制您在其他网站上看到的 BCA 优惠和广告。"
-      }
+      "essential": { "label": "必要", "desc": "维持登录会话、安全性及网站基本功能，无法关闭。" },
+      "functional": { "label": "功能性", "desc": "记住您的偏好设置，例如语言和最近查看的汇率。" },
+      "analytics": { "label": "分析", "desc": "帮助我们了解哪些页面被最常使用。" },
+      "marketing": { "label": "营销", "desc": "定制您在其他网站上看到的 BCA 优惠和广告。" }
     }
   },
   "prioritasAbout": {
@@ -1009,30 +1178,15 @@
     "linkColumns": {
       "Tentang BCA": {
         "heading": "企业",
-        "links": [
-          "关于BCA",
-          "招聘信息",
-          "利率信息",
-          "分行与ATM位置"
-        ]
+        "links": ["关于BCA", "招聘信息", "利率信息", "分行与ATM位置"]
       },
       "Layanan": {
         "heading": "服务",
-        "links": [
-          "帮助中心",
-          "客户服务",
-          "模拟计算器",
-          "分行网络"
-        ]
+        "links": ["帮助中心", "客户服务", "模拟计算器", "分行网络"]
       },
       "Wawasan": {
         "heading": "资讯",
-        "links": [
-          "新闻与专题",
-          "理财小贴士",
-          "#诈骗预警",
-          "查看更多"
-        ]
+        "links": ["新闻与专题", "理财小贴士", "#诈骗预警", "查看更多"]
       }
     },
     "prioritasLinkColumns": {
@@ -1049,17 +1203,8 @@
         "links": ["电子杂志", "House View", "每周市场洞察"]
       }
     },
-    "prioritasBottomLinks": [
-      "SBDK",
-      "隐私政策",
-      "条款与条件",
-      "bca.co.id"
-    ],
-    "bottomLinks": [
-      "SBDK",
-      "隐私政策",
-      "条款与条件"
-    ]
+    "prioritasBottomLinks": ["SBDK", "隐私政策", "条款与条件", "bca.co.id"],
+    "bottomLinks": ["SBDK", "隐私政策", "条款与条件"]
   },
   "mybca": {
     "heading": "所有银行业务需求，尽在掌握",
@@ -1072,155 +1217,71 @@
     "googlePlay": "Get it on Google Play",
     "detail": "myBCA 详情"
   },
-  "news": {
-    "eyebrow": "新闻与洞察",
-    "heading": "BCA 最新动态",
-    "seeMore": "全部新闻与洞察"
-  },
-  "faq": {
-    "eyebrow": "常见问题",
-    "heading": "值得信赖的支持，随时在您身边",
-    "notFound": "没有找到您想要的答案？",
-    "cta": "访问帮助中心"
-  },
+  "news": { "eyebrow": "新闻与洞察", "heading": "BCA 最新动态", "seeMore": "全部新闻与洞察" },
+  "faq": { "eyebrow": "常见问题", "heading": "值得信赖的支持，随时在您身边", "notFound": "没有找到您想要的答案？", "cta": "访问帮助中心" },
   "megamenu": {
     "Simpanan": {
       "label": "储蓄",
-      "products": [
-        "Tahapan",
-        "Tahapan Xpresi",
-        "Tahapan Berjangka",
-        "定期存款",
-        "查看全部储蓄产品"
-      ],
+      "products": ["Tahapan", "Tahapan Xpresi", "Tahapan Berjangka", "定期存款", "查看全部储蓄产品"],
       "ctaLabel": "比较储蓄产品",
       "tools": ["计算储蓄潜力", "在线开户"],
       "links": [
-        {
-          "label": "如何在账户间充值和转账",
-          "type": "video"
-        },
-        {
-          "label": "Tahapan、Tapres 与定期存款的区别"
-        },
-        {
-          "label": "各储蓄产品的最低余额和管理费是多少？"
-        },
-        {
-          "label": "开设BCA账户所需的条件与文件"
-        }
+        { "label": "如何在账户间充值和转账", "type": "video" },
+        { "label": "Tahapan、Tapres 与定期存款的区别" },
+        { "label": "各储蓄产品的最低余额和管理费是多少？" },
+        { "label": "开设BCA账户所需的条件与文件" }
       ],
       "editorialTitle": "开户即可获得高达10万印尼盾的QRIS返现"
     },
     "Kartu Kredit": {
       "label": "信用卡",
-      "products": [
-        "BCA Everyday Card",
-        "BCA Visa Batman",
-        "BCA Mastercard Black",
-        "Reward BCA",
-        "查看全部信用卡"
-      ],
+      "products": ["BCA Everyday Card", "BCA Visa Batman", "BCA Mastercard Black", "Reward BCA", "查看全部信用卡"],
       "ctaLabel": "比较信用卡",
       "tools": ["信用卡分期模拟", "查询BCA奖励"],
       "links": [
-        {
-          "label": "如何通过网站申请信用卡",
-          "type": "video"
-        },
-        {
-          "label": "哪种信用卡最适合我？"
-        },
-        {
-          "label": "申请BCA信用卡的条件"
-        },
-        {
-          "label": "如何偿还BCA信用卡账单"
-        }
+        { "label": "如何通过网站申请信用卡", "type": "video" },
+        { "label": "哪种信用卡最适合我？" },
+        { "label": "申请BCA信用卡的条件" },
+        { "label": "如何偿还BCA信用卡账单" }
       ],
       "editorialTitle": "立即申请信用卡，终身免年费并享50万印尼盾欢迎奖励"
     },
     "Pinjaman": {
       "label": "贷款",
-      "products": [
-        "Paylater BCA",
-        "住房贷款（KPR）",
-        "车辆贷款（KKB）",
-        "BCA个人贷款",
-        "查看全部贷款"
-      ],
+      "products": ["Paylater BCA", "住房贷款（KPR）", "车辆贷款（KKB）", "BCA个人贷款", "查看全部贷款"],
       "ctaLabel": "计算预估分期还款",
       "tools": ["计算分期付款", "查询Paylater BCA额度"],
       "links": [
-        {
-          "label": "从申请到放款的完整流程",
-          "type": "video"
-        },
-        {
-          "label": "如何通过myBCA在线申请住房贷款"
-        },
-        {
-          "label": "申请BCA贷款所需的条件与文件"
-        },
-        {
-          "label": "我最多可以申请多少贷款额度？"
-        }
+        { "label": "从申请到放款的完整流程", "type": "video" },
+        { "label": "如何通过myBCA在线申请住房贷款" },
+        { "label": "申请BCA贷款所需的条件与文件" },
+        { "label": "我最多可以申请多少贷款额度？" }
       ],
       "editorialTitle": "首年住房贷款特惠利率2.99%"
     },
     "e-Banking": {
       "label": "网上银行",
-      "products": [
-        "myBCA",
-        "KlikBCA",
-        "Sakuku",
-        "e-Branch",
-        "查看全部网上银行服务"
-      ],
+      "products": ["myBCA", "KlikBCA", "Sakuku", "e-Branch", "查看全部网上银行服务"],
       "ctaLabel": "比较网上银行服务",
       "tools": ["注册并激活myBCA", "比较BCA数字服务"],
       "links": [
-        {
-          "label": "新用户如何激活myBCA",
-          "type": "video"
-        },
-        {
-          "label": "如何通过myBCA为Flazz充值"
-        },
-        {
-          "label": "myBCA的特色功能"
-        },
-        {
-          "label": "myBCA与KlikBCA有什么区别？"
-        }
+        { "label": "新用户如何激活myBCA", "type": "video" },
+        { "label": "如何通过myBCA为Flazz充值" },
+        { "label": "myBCA的特色功能" },
+        { "label": "myBCA与KlikBCA有什么区别？" }
       ],
       "editorialTitle": "在myBCA使用QRIS消费，指定商户享最高50%折扣"
     },
     "Wealth Management": {
       "label": "财富管理",
-      "products": [
-        "共同基金",
-        "债券",
-        "保险",
-        "客户资金账户 (RDN)",
-        "查看全部财富管理产品"
-      ],
+      "products": ["共同基金", "债券", "保险", "客户资金账户 (RDN)", "查看全部财富管理产品"],
       "ctaLabel": "计算投资与保障潜力",
       "tools": ["计算投资潜力", "查看投资风险偏好"],
       "links": [
-        {
-          "label": "根据风险偏好选择投资产品指南",
-          "type": "video"
-        },
-        {
-          "label": "如何通过myBCA购买共同基金"
-        },
-        {
-          "label": "为家人选择合适的保险"
-        },
-        {
-          "label": "人寿保险与健康保险有什么区别？"
-        }
+        { "label": "根据风险偏好选择投资产品指南", "type": "video" },
+        { "label": "如何通过myBCA购买共同基金" },
+        { "label": "为家人选择合适的保险" },
+        { "label": "人寿保险与健康保险有什么区别？" }
       ],
       "editorialTitle": "投资与保障一站式服务，最低1万印尼盾起"
     },
@@ -1252,25 +1313,13 @@
     },
     "Transaksi": {
       "label": "交易",
-      "products": [
-        "Flazz",
-        "Firecash",
-        "汇款",
-        "查看全部交易服务"
-      ],
+      "products": ["Flazz", "Firecash", "汇款", "查看全部交易服务"],
       "ctaLabel": "计算预估保费",
       "tools": ["BCA汇率计算器", "查询交易状态"],
       "links": [
-        {
-          "label": "通过myBCA直接为Flazz充值的便捷方式",
-          "type": "video"
-        },
-        {
-          "label": "海外汇款完整指南"
-        },
-        {
-          "label": "在附近分行提取Firecash资金且无手续费的条件与方法"
-        }
+        { "label": "通过myBCA直接为Flazz充值的便捷方式", "type": "video" },
+        { "label": "海外汇款完整指南" },
+        { "label": "在附近分行提取Firecash资金且无手续费的条件与方法" }
       ],
       "editorialTitle": "海外汇款免电汇费，享最优惠汇率"
     }
@@ -1289,21 +1338,10 @@
       "produk": "产品 / 服务",
       "produkPlaceholder": "请选择产品或服务"
     },
-    "products": [
-      "储蓄",
-      "信用卡",
-      "贷款",
-      "myBCA / KlikBCA",
-      "其他"
-    ],
+    "products": ["储蓄", "信用卡", "贷款", "myBCA / KlikBCA", "其他"],
     "terms": "Halo BCA Chat 条款与条件",
     "submit": "开始对话",
-    "errors": {
-      "required": "此项为必填",
-      "email": "电子邮箱格式无效",
-      "phone": "电话号码无效",
-      "captcha": "请完成\"我不是机器人\"验证"
-    },
+    "errors": { "required": "此项为必填", "email": "电子邮箱格式无效", "phone": "电话号码无效", "captcha": "请完成\"我不是机器人\"验证" },
     "close": "关闭 HaloBCA"
   },
   "prioritasHero": {
@@ -1312,20 +1350,8 @@
     "bannerAlt": "一家人在客厅共度时光",
     "prioritasLogoAlt": "BCA Prioritas",
     "sectionNavLabel": "BCA Prioritas 页面导航",
-    "sections": {
-      "privilege": "尊享礼遇",
-      "eventPromo": "活动与优惠",
-      "bankingSolution": "银行解决方案",
-      "magazine": "电子杂志",
-      "financialReport": "财务报告"
-    },
-    "contact": {
-      "heading": "我们随时准备陪伴您迈向下一段旅程。",
-      "riplayTitle": "产品与服务信息摘要（RIPLAY）",
-      "download": "下载文件",
-      "contactTitle": "联系我们",
-      "phone": "拨打 150022"
-    },
+    "sections": { "privilege": "尊享礼遇", "eventPromo": "活动与优惠", "bankingSolution": "银行解决方案", "magazine": "电子杂志", "financialReport": "财务报告" },
+    "contact": { "heading": "我们随时准备陪伴您迈向下一段旅程。", "riplayTitle": "产品与服务信息摘要（RIPLAY）", "download": "下载文件", "contactTitle": "联系我们", "phone": "拨打 150022" },
     "privilege": {
       "eyebrow": "尊享礼遇",
       "heading": "伴随您人生旅程每一步的尊贵礼遇",
@@ -1339,21 +1365,11 @@
     "eventPromo": {
       "eyebrow": "活动与优惠",
       "heading": "为您专属打造的优惠与精彩体验",
-      "featuredTitles": {
-        "javaJazz": "为BCA Prioritas客户赠送Java Jazz音乐节门票",
-        "theWeeknd": "The Weeknd 演唱会赠票，限前三位客户",
-        "brightspot": "获取Brightspot开幕之夜VIP门票"
-      },
+      "featuredTitles": { "javaJazz": "为BCA Prioritas客户赠送Java Jazz音乐节门票", "theWeeknd": "The Weeknd 演唱会赠票，限前三位客户", "brightspot": "获取Brightspot开幕之夜VIP门票" },
       "featuredCta": "了解更多",
       "viewMore": "查看所有活动与优惠"
     },
-    "card": {
-      "eyebrow": "银行卡",
-      "heading": "一张卡片，尊享千项专属礼遇",
-      "description": "仅限特别邀请。请联系您的 Personal Banker 了解更多信息。",
-      "action": "了解更多",
-      "imageAlt": "BCA Prioritas 铂金借记卡"
-    },
+    "card": { "eyebrow": "银行卡", "heading": "一张卡片，尊享千项专属礼遇", "description": "仅限特别邀请。请联系您的 Personal Banker 了解更多信息。", "action": "了解更多", "imageAlt": "BCA Prioritas 铂金借记卡" },
     "kartu": {
       "eyebrow": "银行解决方案",
       "heading": "陪伴您人生旅程的专属银行服务",
@@ -1392,19 +1408,8 @@
         "deposit": { "title": "保险箱", "alt": "保险箱" }
       },
       "wealthCards": {
-        "houseView": {
-          "title": "2025年6月观点：降息周期中的投资组合策略",
-          "date": "2025年6月16日，星期三 · 14.00 WIB",
-          "channel": "YouTube 直播",
-          "action": "添加到日历",
-          "alt": "BCA Prioritas House View 活动"
-        },
-        "market": {
-          "title": "每周市场概览：缓和与滞胀之间",
-          "date": "2026年6月2日",
-          "action": "下载报告",
-          "alt": "BCA Prioritas 每周市场概览"
-        }
+        "houseView": { "title": "2025年6月观点：降息周期中的投资组合策略", "date": "2025年6月16日，星期三 · 14.00 WIB", "channel": "YouTube 直播", "action": "添加到日历", "alt": "BCA Prioritas House View 活动" },
+        "market": { "title": "每周市场概览：缓和与滞胀之间", "date": "2026年6月2日", "action": "下载报告", "alt": "BCA Prioritas 每周市场概览" }
       }
     },
     "magazine": {
@@ -1420,11 +1425,7 @@
     "financialReport": {
       "eyebrow": "财务报告",
       "heading": "一览您的完整投资组合",
-      "features": {
-        "centralized": "集中展示您所有 BCA 产品的数据",
-        "reporting": "可用于各种报告",
-        "updated": "每次访问时都会及时更新"
-      },
+      "features": { "centralized": "集中展示您所有 BCA 产品的数据", "reporting": "可用于各种报告", "updated": "每次访问时都会及时更新" },
       "action": "查看您的报告"
     }
   },
@@ -1444,7 +1445,6 @@
     "signature": {
       "lounge": { "title": "行政机场贵宾厅" },
       "transfer": { "title": "国内机场接送" },
-      "transferFee": { "title": "免转账手续费" },
       "medical": { "title": "国际健康检查" }
     },
     "complimentary": {
@@ -1488,12 +1488,7 @@
     }
   },
   "prioritasContentDetail": {
-    "fallback": {
-      "description": "{title}的详细信息尚未提供。",
-      "terms": "条款与条件尚未提供。",
-      "contact": "联系信息尚未提供。",
-      "location": "地点信息尚未提供。"
-    },
+    "fallback": { "description": "{title}的详细信息尚未提供。", "terms": "条款与条件尚未提供。", "contact": "联系信息尚未提供。", "location": "地点信息尚未提供。" },
     "event": {
       "breadcrumb": "活动",
       "recommendations": "更多推荐活动",
@@ -1559,6 +1554,7 @@
     },
     "contact": { "title": "品牌与联系方式", "content": "请联系 Molton Brown 客服了解护理信息及预约。" },
     "location": { "title": "地点", "content": "适用于所有 Molton Brown 门店。" },
+    "loungeTable": { "number": "序号", "name": "城市", "airport": "机场", "lounge": "贵宾室/商户", "solitaireOnly": "仅限 BCA Solitaire 客户", "solitaireAndPrioritas": "适用于 BCA Solitaire 和 Prioritas 客户" },
     "recommendations": {
       "title": "更多礼遇推荐",
       "viewMore": "查看更多",
@@ -1568,32 +1564,20 @@
         "skii": { "title": "红毯焕亮护理（180 万印尼盾）+ 欢迎按摩 + 轻度清洁", "brand": "SK-II Boutique Spa", "alt": "SK-II Boutique Spa 面部护理" },
         "shiseido": { "title": "尊享 Ultimune 精华免费肌肤分析", "brand": "Shiseido", "alt": "资生堂 Ultimune 精华" }
       }
-    }
+    },
+    "dynamicModule": { "message": "登录以查看您剩余的{benefit}使用次数和礼券额度。", "loginLabel": "登录" }
   },
-  "magazineIndex": {
-    "breadcrumb": "电子杂志",
-    "title": "陪伴每一位不断成长的您",
-    "paginationLabel": "电子杂志页码",
-    "readNow": "立即阅读",
-    "coverAlt": "{title}封面",
-    "empty": "暂无电子杂志。"
-  },
+  "magazineIndex": { "breadcrumb": "电子杂志", "title": "陪伴每一位不断成长的您", "paginationLabel": "电子杂志页码", "readNow": "立即阅读", "coverAlt": "{title}封面", "empty": "暂无电子杂志。" },
   "bankingSolutionIndex": {
     "breadcrumb": "银行解决方案",
     "title": "陪伴您人生旅程的专属银行服务",
     "tabLabel": "银行解决方案类别",
-    "clusters": {"cards":"卡片与支付","financing":"融资与保障","transactions":"交易与外汇","personal":"专属服务"},
+    "clusters": { "cards": "卡片与支付", "financing": "融资与保障", "transactions": "交易与外汇", "personal": "专属服务" },
     "previousCards": "{cluster}中的上一张卡片",
     "nextCards": "{cluster}中的下一张卡片",
-    "tabs": {
-      "privilege": "银行礼遇",
-      "wealth": "财富洞察"
-    },
+    "tabs": { "privilege": "银行礼遇", "wealth": "财富洞察" },
     "more": "了解更多",
-    "groups": {
-      "house": "市场观点报告",
-      "market": "每周市场概览"
-    },
+    "groups": { "house": "市场观点报告", "market": "每周市场概览" },
     "calendarAction": "添加到日历",
     "downloadAction": "下载 PDF",
     "privilege": {
@@ -1615,94 +1599,77 @@
       "forex": "外汇"
     },
     "insight": {
-      "portfolio": {
-        "title": "2025 年 6 月市场观点：降息周期中的投资组合策略",
-        "date": "2026 年 6 月 16 日 14:00 WIB",
-        "channel": "YouTube 直播",
-        "alt": "极地水域中的浮冰"
-      },
-      "inflation": {
-        "title": "2025 年 6 月市场观点：美伊战争对通胀及经济增长的影响",
-        "date": "2026 年 4 月 16 日",
-        "alt": "海面下的冰山"
-      },
-      "oil": {
-        "title": "2025 年 5 月市场观点：美伊谈判对油价及全球通胀的影响",
-        "date": "2026 年 5 月 16 日",
-        "alt": "空中的热气球"
-      },
-      "house0908": {
-        "title": "美国通胀与美联储鹰派立场推高美国国债收益率",
-        "date": "2026 年 9 月 8 日",
-        "alt": "阳光下的秋叶"
-      },
-      "house0804": {
-        "title": "美国通胀降温、全球风险与中国经济放缓影响市场",
-        "date": "2026 年 8 月 4 日",
-        "alt": "有溪流的绿色森林"
-      },
-      "house0701": {
-        "title": "美国通胀与伊朗冲突推高加息预期",
-        "date": "2026 年 7 月 1 日",
-        "alt": "极地水域中的冰川"
-      },
-      "house0608": {
-        "title": "美伊冲突令油价居高不下，各国央行转向加息",
-        "date": "2026 年 6 月 8 日",
-        "alt": "空中的热气球"
-      },
-      "crossroads": {
-        "title": "每周市场概览：缓和与滞胀之间的全球市场",
-        "date": "2026 年 6 月 2 日",
-        "alt": "红色世界地图"
-      },
-      "global": {
-        "title": "每周市场概览：全球市场的滞胀与战略机遇",
-        "date": "2026 年 5 月 29 日",
-        "alt": "展示世界地区的地球仪"
-      },
-      "insights": {
-        "title": "每周市场洞察：滞胀与局势缓和带来的双重挑战",
-        "date": "2026 年 5 月 22 日",
-        "alt": "桌上的望远镜"
-      },
-      "weekly0921": {
-        "title": "美联储重启加息，美元与美国国债收益率走强",
-        "date": "2026 年 9 月 21 日",
-        "alt": "投资者分析金融市场报告"
-      },
-      "weekly0914": {
-        "title": "油价上涨与通胀居高不下推动美国国债收益率逼近 5%",
-        "date": "2026 年 9 月 14 日",
-        "alt": "展示世界地图的地球仪"
-      },
-      "weekly0907": {
-        "title": "美伊紧张局势与就业数据推高美联储加息预期",
-        "date": "2026 年 9 月 7 日",
-        "alt": "港口装卸货运集装箱"
-      },
-      "weekly0831": {
-        "title": "地缘政治与通胀推动美元及短期美国国债收益率走高",
-        "date": "2026 年 8 月 31 日",
-        "alt": "桌上的文件与报告"
-      },
-      "weekly0824": {
-        "title": "中东局势与美国财政风险推高美国国债收益率",
-        "date": "2026 年 8 月 24 日",
-        "alt": "运送集装箱的卡车"
-      },
-      "weekly0818": {
-        "title": "美国通胀降温，但美国国债拍卖收益率创 25 年新高",
-        "date": "2026 年 8 月 18 日",
-        "alt": "桌上的望远镜"
-      }
+      "portfolio": { "title": "2025 年 6 月市场观点：降息周期中的投资组合策略", "date": "2026 年 6 月 16 日 14:00 WIB", "channel": "YouTube 直播", "alt": "极地水域中的浮冰" },
+      "inflation": { "title": "2025 年 6 月市场观点：美伊战争对通胀及经济增长的影响", "date": "2026 年 4 月 16 日", "alt": "海面下的冰山" },
+      "oil": { "title": "2025 年 5 月市场观点：美伊谈判对油价及全球通胀的影响", "date": "2026 年 5 月 16 日", "alt": "空中的热气球" },
+      "house0908": { "title": "美国通胀与美联储鹰派立场推高美国国债收益率", "date": "2026 年 9 月 8 日", "alt": "阳光下的秋叶" },
+      "house0804": { "title": "美国通胀降温、全球风险与中国经济放缓影响市场", "date": "2026 年 8 月 4 日", "alt": "有溪流的绿色森林" },
+      "house0701": { "title": "美国通胀与伊朗冲突推高加息预期", "date": "2026 年 7 月 1 日", "alt": "极地水域中的冰川" },
+      "house0608": { "title": "美伊冲突令油价居高不下，各国央行转向加息", "date": "2026 年 6 月 8 日", "alt": "空中的热气球" },
+      "crossroads": { "title": "每周市场概览：缓和与滞胀之间的全球市场", "date": "2026 年 6 月 2 日", "alt": "红色世界地图" },
+      "global": { "title": "每周市场概览：全球市场的滞胀与战略机遇", "date": "2026 年 5 月 29 日", "alt": "展示世界地区的地球仪" },
+      "insights": { "title": "每周市场洞察：滞胀与局势缓和带来的双重挑战", "date": "2026 年 5 月 22 日", "alt": "桌上的望远镜" },
+      "weekly0921": { "title": "美联储重启加息，美元与美国国债收益率走强", "date": "2026 年 9 月 21 日", "alt": "投资者分析金融市场报告" },
+      "weekly0914": { "title": "油价上涨与通胀居高不下推动美国国债收益率逼近 5%", "date": "2026 年 9 月 14 日", "alt": "展示世界地图的地球仪" },
+      "weekly0907": { "title": "美伊紧张局势与就业数据推高美联储加息预期", "date": "2026 年 9 月 7 日", "alt": "港口装卸货运集装箱" },
+      "weekly0831": { "title": "地缘政治与通胀推动美元及短期美国国债收益率走高", "date": "2026 年 8 月 31 日", "alt": "桌上的文件与报告" },
+      "weekly0824": { "title": "中东局势与美国财政风险推高美国国债收益率", "date": "2026 年 8 月 24 日", "alt": "运送集装箱的卡车" },
+      "weekly0818": { "title": "美国通胀降温，但美国国债拍卖收益率创 25 年新高", "date": "2026 年 8 月 18 日", "alt": "桌上的望远镜" }
     }
   },
-  "solitaireHero": {
-    "title": "尊贵而专属的服务，只为您而来。",
-    "cta": "了解更多",
-    "viewMore": "查看全部",
-    "bannerAlt": "一家人在客厅共享美好时光",
-    "solitaireLogoAlt": "BCA Solitaire"
+  "solitaireHero": { "title": "尊贵而专属的服务，只为您而来。", "cta": "了解更多", "viewMore": "查看全部", "bannerAlt": "一家人在客厅共享美好时光", "solitaireLogoAlt": "BCA Solitaire" },
+  "memberOverview": {
+    "previewFullName": "Andhini Putri",
+    "previewFirstName": "Andhini",
+    "welcome": "欢迎，{name}",
+    "lastLogin": "上次登录：2026年8月27日 08:54 WIB",
+    "back": "返回首页",
+    "viewAll": "查看全部",
+    "nav": { "label": "Prioritas 会员总览导航", "overview": "总览", "privilege": "礼遇", "banking": "银行服务", "magazine": "电子杂志", "financial": "财务报告" },
+    "signature": {
+      "title": "专属礼遇",
+      "all": "查看所有礼遇",
+      "lounge": "机场贵宾室",
+      "transfer": "国内机场接送",
+      "padel": "周末板式网球场使用权",
+      "medical": "癌症与心脏疾病早期筛查",
+      "fifty": "提供 50 张优惠券",
+      "four": "提供 4 张优惠券",
+      "details": "了解详情",
+      "voucher": "显示优惠码"
+    },
+    "financial": { "title": "财务报告", "description": "在一个地方查看您的净资产、资产和负债", "action": "查看报告" },
+    "magazine": { "title": "电子杂志", "read": "立即阅读", "coverAlt": "{title} 封面" },
+    "event": { "title": "本月精彩体验" },
+    "promo": { "title": "为您的生活方式精选的优惠" }
+  },
+  "buttonAudit": {
+    "component": "COMPONENT",
+    "title": "Button",
+    "button": "Button",
+    "icon": "Icon Button",
+    "text": "Text Button",
+    "default": "Default",
+    "inverse": "Inverse",
+    "primary": "Primary",
+    "secondary": "Secondary",
+    "small": "Small",
+    "medium": "Medium",
+    "large": "Large",
+    "hover": "Hover",
+    "pressed": "Pressed",
+    "disabled": "Disabled",
+    "label": "Label",
+    "states": "Button states",
+    "usage": "类名示例："
+  },
+  "contentCardAudit": {
+    "component": "组件",
+    "title": "Content Card",
+    "description": "统一的卡片结构，根据数据场景切换变体。",
+    "complimentary": "礼遇卡 — Complimentary",
+    "lifestyle": "礼遇卡 — Lifestyle Privilege",
+    "event": "活动卡",
+    "promo": "优惠卡"
   }
 }

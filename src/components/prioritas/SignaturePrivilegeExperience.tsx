@@ -1,32 +1,34 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import PromoCard from "@/components/promo/PromoCard";
+import ContentCard from "@/components/prioritas/ContentCard";
 import type { Promo } from "@/components/home/promo-data";
 import type { PrivilegePromo } from "@/lib/partner-privileges";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import type { PrioritasIndexTab } from "@/components/prioritas/PrioritasIndexTabs";
 import { useIsLive } from "@/lib/useIsLive";
 import { useLenis } from "@/components/SmoothScroll";
 import { BackToTopAction } from "@/components/home/BackToTop";
 import { DIRECTORY_PAGE_SIZE, PrioritasDirectoryCategories, PrioritasDirectoryFilters, PrioritasDirectoryPanel } from "@/components/prioritas/PrioritasDirectory";
 import PrioritasDirectoryDropdown from "@/components/prioritas/PrioritasDirectoryDropdown";
+import { PrioritasButton, PrioritasButtonIcon, prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
 
 const ASSET_ROOT = "/assets/prioritas/signature-privilege";
 const signatureCards = [
-  ["lounge", "privilege-01.png"],
-  ["transfer", "privilege-04.png"],
-  ["transfer", "privilege-05.png"],
-  ["transferFee", "figma-08.png"],
-  ["medical", "privilege-11.png"],
-  ["medical", "privilege-10.png"],
-  // Preview cards for the expanded state; replace when more privileges are available.
-  ["lounge", "privilege-03.png"],
-  ["transfer", "privilege-02.png"],
+  { id: "executive-airport-lounge", image: "privilege-01.png" },
+  { id: "airport-transfer-domestik", image: "privilege-04.png" },
+  { id: "airport-transfer-internasional", image: "privilege-05.png" },
+  { id: "medical-check-up-internasional", image: "privilege-11.png" },
+  { id: "deteksi-dini-kanker-dan-penyakit-jantung", image: "privilege-10.png" },
+  { id: "padel-court", image: "privilege-03.png" },
+  // Keep repeated cards in the expanded example rail, each linking to its detail page.
+  { id: "executive-airport-lounge", image: "privilege-02.png" },
+  { id: "airport-transfer-domestik", image: "privilege-03.png" },
 ] as const;
 
 const SIGNATURE_AUTOPLAY_MS = 6000;
-const chipCategories = ["beauty", "culinary", "health", "travel", "lifestyle", "education", "home", "business"] as const;
+const chipCategories = ["travel", "health", "lifestyle", "culinary", "beauty", "education", "home", "business"] as const;
 
 const chipIcons: Record<(typeof chipCategories)[number], string> = {
   beauty: "beauty",
@@ -39,17 +41,12 @@ const chipIcons: Record<(typeof chipCategories)[number], string> = {
   business: "business",
 };
 
-function Arrow() {
-  return <img src="/assets/prioritas/privilege/arrow-small.svg" alt="" className="size-5" />;
-}
-
 type SignaturePrivilegeExperienceProps = {
   promos: Array<Promo | PrivilegePromo>;
+  signaturePromos?: PrivilegePromo[];
   now: Date;
   directoryOnly?: boolean;
   activeTab?: PrioritasIndexTab;
-  cardVariant?: "default" | "prioritas";
-  cardDetail?: boolean;
   initialCategories?: string[];
 };
 
@@ -57,7 +54,16 @@ function isPrivilegePromo(promo: Promo): promo is PrivilegePromo {
   return "privilegeCategory" in promo;
 }
 
-export default function SignaturePrivilegeExperience({ promos, now, directoryOnly = false, activeTab, cardVariant = "prioritas", cardDetail = true, initialCategories = [] }: SignaturePrivilegeExperienceProps) {
+function randomOrderKey(id: string) {
+  let hash = 2166136261;
+  for (const character of id) {
+    hash ^= character.charCodeAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+export default function SignaturePrivilegeExperience({ promos, signaturePromos = [], now, directoryOnly = false, activeTab, initialCategories = [] }: SignaturePrivilegeExperienceProps) {
   const t = useTranslations("signaturePrivilege");
   const lenis = useLenis();
   const [selectedCategories, setSelectedCategories] = useState<string[]>(() => initialCategories.filter((category) => chipCategories.some((chip) => chip === category)));
@@ -80,7 +86,11 @@ export default function SignaturePrivilegeExperience({ promos, now, directoryOnl
   const signatureCardRefs = useRef<Array<HTMLElement | null>>([]);
   const signatureLive = useIsLive(signatureSectionRef);
   const currentTab = activeTab ?? (directoryOnly ? "lifestyle" : "signature");
-  const availableChipCategories = currentTab === "promo" ? chipCategories : chipCategories.filter((category) => category !== "business");
+  const orderedPromos = useMemo(
+    () => currentTab === "signature" ? [...promos].sort((a, b) => randomOrderKey(`prioritas-complimentary:${a.id}`) - randomOrderKey(`prioritas-complimentary:${b.id}`)) : promos,
+    [currentTab, promos],
+  );
+  const availableChipCategories = chipCategories;
   const visibleSignatureCards = renderSignatureExtras || mobileSignatureRail ? signatureCards : signatureCards.slice(0, 6);
   const activeSignatureCardCount = signatureExpanded || mobileSignatureRail ? signatureCards.length : Math.min(6, signatureCards.length);
   const brandOptions = useMemo(() => {
@@ -89,7 +99,7 @@ export default function SignaturePrivilegeExperience({ promos, now, directoryOnl
   }, [currentTab, promos]);
   const filteredPromos = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase();
-    return promos.filter((promo) => {
+    return orderedPromos.filter((promo) => {
       const categoryMatch = isPrivilegePromo(promo)
         ? selectedCategories.length === 0 || selectedCategories.includes(promo.privilegeCategory)
         : selectedCategories.length === 0 || selectedCategories.some((category) =>
@@ -108,7 +118,7 @@ export default function SignaturePrivilegeExperience({ promos, now, directoryOnl
       const haystack = `${promo.title} ${promo.brand}`.toLocaleLowerCase();
       return categoryMatch && birthdayMatch && (!normalizedQuery || haystack.includes(normalizedQuery));
     });
-  }, [birthdayChecked, currentTab, promos, query, selectedCategories]);
+  }, [birthdayChecked, currentTab, orderedPromos, query, selectedCategories]);
   const visiblePromos = filteredPromos.slice((page - 1) * DIRECTORY_PAGE_SIZE, page * DIRECTORY_PAGE_SIZE);
 
   useEffect(() => {
@@ -260,8 +270,11 @@ export default function SignaturePrivilegeExperience({ promos, now, directoryOnl
           {directoryOnly ? null : <>
             <p className="text-base font-semibold leading-6">{t("description")}</p>
             <div id="signature-privilege-grid" ref={signatureRailRef} onScroll={handleSignatureRailScroll} onMouseEnter={() => (pausedSignatureRef.current = true)} onMouseLeave={() => (pausedSignatureRef.current = false)} onTouchStart={() => (pausedSignatureRef.current = true)} onTouchEnd={() => (pausedSignatureRef.current = false)} className="hide-scrollbar relative -mx-4 mt-8 flex h-[360px] snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:mt-6 sm:grid sm:h-auto sm:snap-none sm:overflow-visible sm:px-0 sm:grid-cols-2 xl:grid-cols-3 xl:gap-6 sm:transition-[height] sm:duration-500 sm:ease-in-out motion-reduce:transition-none">
-              {visibleSignatureCards.map(([key, image], index) => <article ref={(node) => { signatureCardRefs.current[index] = node; }} key={`${key}-${image}`} aria-hidden={index >= 6 && !signatureExpanded && !mobileSignatureRail} inert={index >= 6 && !signatureExpanded && !mobileSignatureRail} className={`group relative w-[280px] shrink-0 snap-center overflow-hidden rounded-xl bg-pbrown-800 shadow-prioritas transition-[height,opacity,transform] duration-500 ease-in-out ${activeSignatureCard === index ? "h-[360px]" : "h-[328px]"} ${index >= 6 && !signatureExpanded && !mobileSignatureRail ? "translate-y-4 opacity-0" : "translate-y-0 opacity-100"} sm:h-60 sm:w-auto sm:shrink sm:snap-none`}>
-                <img src={`${ASSET_ROOT}/${image}`} alt="" className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              {visibleSignatureCards.map(({ id, image }, index) => {
+                const promo = signaturePromos.find((item) => item.id === id);
+                const cardImage = id === "padel-court" ? promo?.cover || `${ASSET_ROOT}/${image}` : `${ASSET_ROOT}/${image}`;
+                return <Link href={`/prioritas/privilege/${id}`} ref={(node) => { signatureCardRefs.current[index] = node; }} key={`${id}-${image}`} aria-hidden={index >= 6 && !signatureExpanded && !mobileSignatureRail} inert={index >= 6 && !signatureExpanded && !mobileSignatureRail} className={`group relative block w-[280px] shrink-0 snap-center overflow-hidden rounded-xl bg-pbrown-800 shadow-prioritas transition-[height,opacity,transform] duration-500 ease-in-out ${activeSignatureCard === index ? "h-[360px]" : "h-[328px]"} ${index >= 6 && !signatureExpanded && !mobileSignatureRail ? "translate-y-4 opacity-0" : "translate-y-0 opacity-100"} sm:h-60 sm:w-auto sm:shrink sm:snap-none`}>
+                <img src={cardImage} alt="" className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-pbrown-900/90 via-pbrown-900/20 to-transparent" />
                 <div className="absolute left-4 top-4 z-30 xl:hidden">
                   <svg viewBox="0 0 32 32" className={`size-8 -rotate-90 transition-opacity duration-300 ${activeSignatureCard === index ? "opacity-100" : "opacity-0"}`} aria-hidden>
@@ -271,24 +284,28 @@ export default function SignaturePrivilegeExperience({ promos, now, directoryOnl
                   </svg>
                 </div>
                 <div
-                  className="glass-panel glass-panel-prioritas absolute inset-x-2 bottom-2 z-10 flex h-[120px] flex-col justify-between rounded-xl px-5 pb-5 pt-4 sm:h-auto"
+                  className="glass-panel glass-panel-prioritas absolute inset-x-2 bottom-2 z-10 flex h-[120px] flex-col justify-between rounded-xl p-4 sm:h-auto"
                   style={{ backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)", isolation: "isolate" }}
                 >
-                  <h2 className="min-h-14 text-subtitle text-white">{t(`signature.${key}.title`)}</h2>
-                  <button type="button" className="mt-2 flex items-center gap-0.5 text-sm font-semibold text-pgold-300"><span>{t("more")}</span><Arrow /></button>
+                  <h2 className="min-h-14 text-subtitle text-white">{promo?.title}</h2>
+                  <span className={prioritasButtonClassName({ kind: "text", surface: "inverse", size: "large", className: "mt-2 self-start" })}>
+                    <span className="prio-button__label">{t("more")}</span>
+                    <PrioritasButtonIcon src="/assets/prioritas/privilege/arrow-small.svg" />
+                  </span>
                 </div>
-              </article>)}
+              </Link>;
+              })}
             </div>
-            {signatureCards.length > 6 ? <button
+            {signatureCards.length > 6 ? <div className="hidden justify-center sm:flex"><button
               type="button"
               aria-controls="signature-privilege-grid"
               aria-expanded={signatureExpanded}
               onClick={toggleSignatureCards}
-              className="mx-auto mt-6 hidden min-h-12 items-center justify-center gap-2 rounded-full border border-pgold-500 bg-white px-6 text-base font-semibold text-pbrown-600 transition-colors hover:bg-pgold-100 sm:flex"
+              className={prioritasButtonClassName({ variant: "secondary", size: "large", className: "mt-6" })}
             >
-              <span>{t(signatureExpanded ? "showLessSignature" : "showAllSignature")}</span>
+              <span className="prio-button__label">{t(signatureExpanded ? "showLessSignature" : "showAllSignature")}</span>
               <svg aria-hidden viewBox="0 0 24 24" fill="none" className={`size-5 transition-transform ${signatureExpanded ? "rotate-180" : ""}`}><path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </button> : null}
+            </button></div> : null}
           </>}
 
           {directoryOnly && currentTab === "lifestyle" ? <p className="mb-8 text-base font-semibold leading-6">{t("lifestyleDescription")}</p> : null}
@@ -317,7 +334,7 @@ export default function SignaturePrivilegeExperience({ promos, now, directoryOnl
               </label>
             </header>}
             <PrioritasDirectoryCategories className={directoryOnly ? "mt-0" : "mt-4"}>
-                {availableChipCategories.map((key) => <button key={key} type="button" aria-pressed={selectedCategories.includes(key)} onClick={() => selectCategory(key)} className={`flex h-12 shrink-0 items-center gap-3 rounded-xl border px-[18px] text-sm font-semibold transition-colors xl:h-14 xl:px-4 xl:text-base ${selectedCategories.includes(key) ? "border-pgold-500 bg-pgold-200 text-pbrown-600" : "border-neutral-300 bg-white text-neutral-800 hover:border-pgold-500 hover:text-pbrown-600"}`}><span aria-hidden className="size-6 shrink-0 bg-current [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]" style={{ maskImage: `url(/assets/prioritas/privilege/categories/${chipIcons[key]}.svg)`, WebkitMaskImage: `url(/assets/prioritas/privilege/categories/${chipIcons[key]}.svg)` }} /><span>{t(`categories.${key}`)}</span></button>)}
+                {availableChipCategories.map((key) => <button key={key} type="button" aria-pressed={selectedCategories.includes(key)} onClick={() => selectCategory(key)} className="priosoli-chip priosoli-chip--medium priosoli-chip--xl-large"><span aria-hidden className="priosoli-chip__icon" style={{ maskImage: `url(/assets/prioritas/privilege/categories/${chipIcons[key]}.svg)`, WebkitMaskImage: `url(/assets/prioritas/privilege/categories/${chipIcons[key]}.svg)` }} /><span>{t(`categories.${key}`)}</span></button>)}
             </PrioritasDirectoryCategories>
             <PrioritasDirectoryFilters count={t("showing", { count: filteredPromos.length })}>
               <PrioritasDirectoryDropdown
@@ -329,6 +346,8 @@ export default function SignaturePrivilegeExperience({ promos, now, directoryOnl
                   .map((brand) => ({ value: brand, label: brand }))}
                 onChange={(brand) => { setQuery(brand); setPage(1); }}
                 widthClassName="xl:w-80"
+                size="medium"
+                xlSize="large"
                 search={{
                   placeholder: t("searchPlaceholder"),
                   onChange: (value) => { setQuery(value); setPage(1); },
@@ -337,7 +356,9 @@ export default function SignaturePrivilegeExperience({ promos, now, directoryOnl
             </PrioritasDirectoryFilters>
             </>}
           >
-              {visiblePromos.map((promo) => <PromoCard key={promo.id} promo={promo} now={now} reveal={false} variant={cardVariant} promoPage={currentTab === "promo"} partnerPrivilege={isPrivilegePromo(promo)} fill detailHref={currentTab === "promo" ? `/prioritas/promo/${promo.id}` : currentTab === "lifestyle" ? `/prioritas/lifestyle-privilege/${promo.id}` : `/prioritas/privilege/${promo.id}`} {...(cardDetail ? { detail: true } : {})} />)}
+              {visiblePromos.map((promo) => isPrivilegePromo(promo)
+                ? <ContentCard key={promo.id} item={promo} now={now} variant={currentTab === "signature" ? "complimentary" : "lifestyle"} />
+                : <ContentCard key={promo.id} item={promo} now={now} variant="promo" />)}
           </PrioritasDirectoryPanel>
         </div>
       </section>

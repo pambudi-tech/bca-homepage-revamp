@@ -178,6 +178,9 @@
   --shadow-panel:
     0px 8px 16px 0px rgba(0, 0, 0, 0.10),
     0px 20px 32px 0px rgba(0, 0, 0, 0.12);
+  --shadow-panel-gold:
+    0px 8px 16px 0px rgba(178, 144, 80, 0.10),
+    0px 20px 32px 0px rgba(178, 144, 80, 0.12);
 
   /* Sticky action row at the bottom of an attached filter flyout. */
   --shadow-panel-footer: 0px -4px 12px 0px rgba(0, 0, 0, 0.08);
@@ -428,22 +431,43 @@ html.hero-search-open .page-stack {
   }
 }
 
-/* Prioritas index tabs use outward bottom curves so the active surface flows
+/* Curved tabs use outward bottom curves so the active surface flows
    into the light page background instead of ending as a plain rounded pill. */
-.prioritas-index-tab {
+.tab-curved {
   --prioritas-index-tab-bg: var(--color-pbrown-700);
   z-index: 1;
   border-radius: 0.75rem 0.75rem 0 0;
   background-color: var(--prioritas-index-tab-bg);
 }
 
-.prioritas-index-tab-active {
-  --prioritas-index-tab-bg: var(--color-pgold-200);
-  z-index: 10;
+.tab-curved:not(.tab-curved-active),
+.tab-curved:not(.tab-curved-active)::before,
+.tab-curved:not(.tab-curved-active)::after {
+  transition: background-color 160ms ease;
 }
 
-.prioritas-index-tab::before,
-.prioritas-index-tab::after {
+@media (hover: hover) {
+  .tab-curved:not(.tab-curved-active):hover {
+    --prioritas-index-tab-bg: var(--color-pbrown-500);
+    z-index: 10;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab-curved:not(.tab-curved-active),
+  .tab-curved:not(.tab-curved-active)::before,
+  .tab-curved:not(.tab-curved-active)::after {
+    transition-duration: 0ms;
+  }
+}
+
+.tab-curved-active {
+  --prioritas-index-tab-bg: var(--prioritas-index-tab-surface, var(--color-pgold-200));
+  z-index: 100;
+}
+
+.tab-curved::before,
+.tab-curved::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -452,21 +476,21 @@ html.hero-search-open .page-stack {
   pointer-events: none;
 }
 
-.prioritas-index-tab::before {
+.tab-curved::before {
   left: -0.75rem;
   background: radial-gradient(circle at 0 0, transparent 0 0.75rem, var(--prioritas-index-tab-bg) 0.75rem);
 }
 
-.prioritas-index-tab::after {
+.tab-curved::after {
   right: -0.75rem;
   background: radial-gradient(circle at 100% 0, transparent 0 0.75rem, var(--prioritas-index-tab-bg) 0.75rem);
 }
 
-.prioritas-index-tab-list {
+.tab-curved-list {
   background-image: linear-gradient(
     to bottom,
     transparent calc(100% - 0.75rem),
-    var(--color-pgold-200) calc(100% - 0.75rem)
+    var(--prioritas-index-tab-surface, var(--color-pgold-200)) calc(100% - 0.75rem)
   );
   background-origin: content-box;
   background-clip: content-box;

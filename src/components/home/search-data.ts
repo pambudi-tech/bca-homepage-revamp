@@ -1448,10 +1448,10 @@ export const POPULAR_TOPICS: PopularTopic[] = [
 const RECENT_KEY = "bca:recent-searches";
 const RECENT_MAX = 6;
 
-export function getRecentSearches(): string[] {
+export function getRecentSearches(storageKey = RECENT_KEY): string[] {
   if (typeof window === "undefined") return [];
   try {
-    const raw = window.localStorage.getItem(RECENT_KEY);
+    const raw = window.localStorage.getItem(storageKey);
     const parsed: unknown = raw ? JSON.parse(raw) : [];
     if (!Array.isArray(parsed)) return [];
     return parsed.filter((x): x is string => typeof x === "string").slice(0, RECENT_MAX);
@@ -1460,31 +1460,31 @@ export function getRecentSearches(): string[] {
   }
 }
 
-function persistRecent(list: string[]): void {
+function persistRecent(list: string[], storageKey = RECENT_KEY): void {
   if (typeof window === "undefined") return;
   try {
-    window.localStorage.setItem(RECENT_KEY, JSON.stringify(list.slice(0, RECENT_MAX)));
+    window.localStorage.setItem(storageKey, JSON.stringify(list.slice(0, RECENT_MAX)));
   } catch {
     /* storage unavailable (private mode / quota) — recents just won't persist */
   }
 }
 
 /** Returns a new list with `term` moved to the front (deduped, capped). */
-export function addRecentSearch(list: string[], term: string): string[] {
+export function addRecentSearch(list: string[], term: string, storageKey = RECENT_KEY): string[] {
   const t = term.trim();
   if (!t) return list;
   const next = [t, ...list.filter((x) => x.toLowerCase() !== t.toLowerCase())].slice(0, RECENT_MAX);
-  persistRecent(next);
+  persistRecent(next, storageKey);
   return next;
 }
 
-export function removeRecentSearch(list: string[], term: string): string[] {
+export function removeRecentSearch(list: string[], term: string, storageKey = RECENT_KEY): string[] {
   const next = list.filter((x) => x.toLowerCase() !== term.toLowerCase());
-  persistRecent(next);
+  persistRecent(next, storageKey);
   return next;
 }
 
-export function clearRecentSearches(): string[] {
-  persistRecent([]);
+export function clearRecentSearches(storageKey = RECENT_KEY): string[] {
+  persistRecent([], storageKey);
   return [];
 }

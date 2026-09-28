@@ -36,6 +36,7 @@ export default function MagazineIndexExperience() {
             imageAlt={t("coverAlt", { title: issue.title })}
             href={`/member/login?from=prioritas&magazine=${encodeURIComponent(issue.slug)}`}
             className="aspect-[3/4] w-full"
+            usePrioritasButtonLibrary
           />
           <figcaption className="mt-4 text-center text-sm font-medium text-neutral-700">{issue.title}</figcaption>
         </figure>)}

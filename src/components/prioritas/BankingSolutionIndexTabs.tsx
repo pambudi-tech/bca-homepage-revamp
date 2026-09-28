@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { TabLink } from "@/components/ui/Tab";
 
 export default function BankingSolutionIndexTabs({ activeTab }: { activeTab: "privilege" | "wealth" }) {
   const t = useTranslations("bankingSolutionIndex");
@@ -39,13 +39,13 @@ export default function BankingSolutionIndexTabs({ activeTab }: { activeTab: "pr
     return () => cancelAnimationFrame(frame);
   }, [activeTab, centerTab]);
 
-  return <div data-prioritas-index-tabs className={`relative sticky top-4 z-30 -mt-12 mx-auto w-full max-w-[1280px] before:pointer-events-none before:absolute before:-top-6 before:left-1/2 before:z-0 before:h-[calc(100%+1.5rem)] before:w-screen before:-translate-x-1/2 before:transition-[background-color,backdrop-filter] before:duration-200 xl:-mt-14 ${scrolled ? "before:bg-pbrown-600/95 before:backdrop-blur-md" : "before:bg-transparent"}`}>
+  return <div data-prioritas-index-tabs className={`relative sticky top-4 z-30 -mt-12 mx-auto w-full max-w-[1280px] before:pointer-events-none before:absolute before:-top-6 before:left-1/2 before:z-0 before:h-[calc(100%+1.5rem)] before:w-screen before:-translate-x-1/2 before:transition-[background-color,backdrop-filter] before:duration-200 ${scrolled ? "before:bg-pbrown-600/95 before:backdrop-blur-md" : "before:bg-transparent"}`}>
     <div ref={viewportRef} className="hide-scrollbar relative overflow-x-auto px-4 [scrollbar-width:none] xl:overflow-visible xl:px-0">
-      <div role="tablist" aria-label={t("tabLabel")} className="prioritas-index-tab-list relative flex w-max overflow-visible rounded-t-xl bg-pbrown-700">
+      <div role="tablist" aria-label={t("tabLabel")} className="tab-curved-list prioritas-index-tab-list relative flex w-max overflow-visible rounded-t-xl bg-pbrown-700">
         {([
           { key: "privilege", href: "/prioritas/banking-solution" },
           { key: "wealth", href: "/prioritas/banking-solution/wealth-insight" },
-        ] as const).map(({ key, href }) => <Link
+        ] as const).map(({ key, href }) => <TabLink
           ref={(node) => { tabRefs.current[key] = node; }}
           key={key}
           href={href}
@@ -57,8 +57,10 @@ export default function BankingSolutionIndexTabs({ activeTab }: { activeTab: "pr
             requestedTabRef.current = key;
             if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) centerTab(key);
           }}
-          className={`prioritas-index-tab relative flex h-12 shrink-0 items-center justify-center px-6 text-base font-semibold xl:h-14 xl:px-8 ${key === "privilege" ? "xl:w-[219px]" : "xl:w-[193px]"} ${activeTab === key ? "prioritas-index-tab-active text-pbrown-600" : "text-pbrown-200"}`}
-        >{t(`tabs.${key}`)}</Link>)}
+          variant="curved"
+          active={activeTab === key}
+          className="justify-center"
+        >{t(`tabs.${key}`)}</TabLink>)}
       </div>
     </div>
   </div>;

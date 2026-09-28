@@ -7,5 +7,6 @@ export default async function SignaturePrivilegePage({ params }: { params: Promi
   setRequestLocale(locale);
   const now = new Date();
   const promos = getPrivilegePromos("complimentary");
-  return <SignaturePrivilegeExperience promos={promos} now={now} />;
+  const signaturePromos = getPrivilegePromos("signature");
+  return <SignaturePrivilegeExperience promos={promos} signaturePromos={signaturePromos} now={now} />;
 }

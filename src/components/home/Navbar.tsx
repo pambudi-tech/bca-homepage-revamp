@@ -50,7 +50,7 @@ function LoginIcon({ className = "size-6 shrink-0" }: { className?: string }) {
   );
 }
 
-export default function Navbar({ productCategories, megamenuContent, promoSearchItems, variant = "default", disableHideShow = false, staticOnMobile = false, keepTransparentOnScroll = false }: { productCategories?: ProductCategory[]; megamenuContent?: MegaMenuContent; /** Passed only by the Promo page, so its navbar search never falls back to the site-wide index. */ promoSearchItems?: Promo[]; variant?: "default" | "about" | "promo" | "prioritas" | "solitaire"; disableHideShow?: boolean; staticOnMobile?: boolean; keepTransparentOnScroll?: boolean }) {
+export default function Navbar({ productCategories, megamenuContent, promoSearchItems, variant = "default", disableHideShow = false, staticOnMobile = false, keepTransparentOnScroll = false, memberPreviewName }: { productCategories?: ProductCategory[]; megamenuContent?: MegaMenuContent; /** Passed only by the Promo page, so its navbar search never falls back to the site-wide index. */ promoSearchItems?: Promo[]; variant?: "default" | "about" | "promo" | "prioritas" | "solitaire"; disableHideShow?: boolean; staticOnMobile?: boolean; keepTransparentOnScroll?: boolean; memberPreviewName?: string }) {
   const tNav = useTranslations("nav");
   const tHero = useTranslations("hero");
   const tLogin = useTranslations("login");
@@ -168,7 +168,14 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
           <div className="flex items-center gap-3">
             <SearchButton label={tNav("search")} placeholders={searchPlaceholders} expanded={searchOpen} onClick={() => setSearchOpen(true)} />
             <LocaleSwitcher label={tLogin("languageSwitcher")} onOpenChange={setLangOpen} />
-            {memberLoginHref ? (
+            {memberPreviewName ? (
+              <Link href="/prioritas/overview" aria-current="page" className="flex h-10 items-center gap-3 rounded-xl px-2 text-sm font-bold leading-5 text-white">
+                <span aria-hidden className="flex size-10 shrink-0 items-center justify-center rounded-full" style={{ backgroundImage: "linear-gradient(262.59deg, #c2a266 0.18%, #98732c 100.18%)" }}>
+                  <img src="/assets/prioritas/member-overview/account-user.svg" alt="" className="shrink-0" />
+                </span>
+                <span className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap">{memberPreviewName}</span>
+              </Link>
+            ) : memberLoginHref ? (
               <Link href={memberLoginHref} className={`group flex h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 text-sm font-semibold text-white backdrop-blur-[40px] transition-colors duration-300 hover:bg-white ${prioritas ? "hover:border-pbrown-500 hover:text-pbrown-500" : "hover:border-blue-500 hover:text-blue-500"}`}><LoginIcon className={`size-6 text-white/80 transition-colors ${prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"}`} />{tNav("login")}</Link>
             ) : (
               <a href="https://mybca.bca.co.id/auth/login" target="_blank" rel="noopener noreferrer" className="group flex h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 text-sm font-semibold text-white backdrop-blur-[40px] transition-colors duration-300 hover:border-blue-500 hover:bg-white hover:text-blue-500"><LoginIcon className="size-6 text-white/80 transition-colors group-hover:text-blue-500" />{tNav("login")}</a>
@@ -182,7 +189,7 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
         open={searchOpen}
         onClose={() => setSearchOpen(false)}
         promoSearchItems={promoSearchItems}
-        initialSegment={variant === "prioritas" ? ("Prioritas" satisfies SearchSegment) : "Semua"}
+        initialSegment={variant === "prioritas" ? ("Prioritas" satisfies SearchSegment) : variant === "solitaire" ? ("Solitaire" satisfies SearchSegment) : "Semua"}
       />
     </>
   );

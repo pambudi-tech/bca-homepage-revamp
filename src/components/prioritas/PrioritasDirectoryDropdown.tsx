@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 export type PrioritasDirectoryDropdownOption = { value: string; label: string };
+export type PrioritasDirectoryDropdownSize = "medium" | "large";
 
 type PrioritasDirectoryDropdownProps = {
   id: string;
@@ -11,15 +12,13 @@ type PrioritasDirectoryDropdownProps = {
   options: PrioritasDirectoryDropdownOption[];
   onChange: (value: string) => void;
   widthClassName?: string;
+  size?: PrioritasDirectoryDropdownSize;
+  xlSize?: "large";
   search?: {
     placeholder: string;
     onChange: (value: string) => void;
   };
 };
-
-const CONTROL_CLASS = "flex h-12 items-center rounded-xl border px-4 transition-colors xl:h-14";
-const MENU_CLASS = "fixed z-[60] max-h-64 overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-card";
-const OPTION_CLASS = "flex h-12 w-full items-center rounded-lg px-3 text-left text-sm leading-5 transition-colors xl:h-14 xl:text-base";
 
 export default function PrioritasDirectoryDropdown({
   id,
@@ -28,6 +27,8 @@ export default function PrioritasDirectoryDropdown({
   options,
   onChange,
   widthClassName = "",
+  size = "medium",
+  xlSize,
   search,
 }: PrioritasDirectoryDropdownProps) {
   const [open, setOpen] = useState(false);
@@ -67,12 +68,10 @@ export default function PrioritasDirectoryDropdown({
     };
   }, [open, search]);
 
-  const controlStyle = open ? "border-pgold-500 bg-white" : "border-neutral-300 bg-neutral-200";
-
-  return <div ref={containerRef} className={`relative block w-full ${widthClassName}`}>
+  return <div ref={containerRef} data-open={open} className={`priosoli-dropdown priosoli-dropdown--${size} ${xlSize ? `priosoli-dropdown--xl-${xlSize}` : ""} w-full ${widthClassName}`}>
     <span className="sr-only">{label}</span>
-    <div className={`${CONTROL_CLASS} ${controlStyle}`}>
-      {search ? <img src="/assets/promo-page/controls/search.svg" alt="" aria-hidden className="size-[18px] shrink-0" /> : null}
+    <div className="priosoli-dropdown__control">
+      {search ? <img src="/assets/promo-page/controls/search.svg" alt="" aria-hidden className="priosoli-dropdown__search-icon" /> : null}
       {search ? <input
         ref={inputRef}
         value={value}
@@ -86,7 +85,7 @@ export default function PrioritasDirectoryDropdown({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={id}
-        className="h-full min-w-0 flex-1 bg-transparent px-2 text-sm outline-none placeholder:text-neutral-600 xl:text-base"
+        className="priosoli-dropdown__input"
       /> : <button
         ref={triggerRef}
         type="button"
@@ -95,7 +94,7 @@ export default function PrioritasDirectoryDropdown({
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen((current) => !current)}
-        className="h-full min-w-0 flex-1 bg-transparent text-left text-sm font-semibold text-neutral-700 outline-none xl:text-base"
+        className="priosoli-dropdown__trigger"
       >{selected?.label ?? value}</button>}
       <button
         type="button"
@@ -104,13 +103,13 @@ export default function PrioritasDirectoryDropdown({
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen((current) => !current)}
-        className="flex size-5 shrink-0 items-center justify-center text-neutral-700"
+        className="priosoli-dropdown__toggle"
       >
-        <img src="/assets/promo-page/controls/chevron-down.svg" alt="" aria-hidden className={`h-[8.5px] w-[14.5px] transition-transform ${open ? "rotate-180" : ""}`} />
+        <img src="/assets/promo-page/controls/chevron-down.svg" alt="" aria-hidden className="priosoli-dropdown__chevron" />
       </button>
     </div>
-    {open ? <div style={menuPosition} className={MENU_CLASS}>
-      <div id={id} role="listbox" aria-label={label} data-lenis-prevent className="max-h-64 overflow-y-auto overscroll-contain p-2">
+    {open ? <div style={menuPosition} className="priosoli-dropdown__menu">
+      <div id={id} role="listbox" aria-label={label} data-lenis-prevent className="priosoli-dropdown__listbox">
         {options.map((option) => <button
           key={option.value}
           type="button"
@@ -121,7 +120,7 @@ export default function PrioritasDirectoryDropdown({
             onChange(option.value);
             setOpen(false);
           }}
-          className={`${OPTION_CLASS} ${value === option.value ? "font-semibold text-pbrown-700" : "text-neutral-700"} hover:bg-pgold-100 hover:font-semibold hover:text-pbrown-600`}
+          className="priosoli-dropdown__option"
         ><span className="line-clamp-2">{option.label}</span></button>)}
       </div>
     </div> : null}

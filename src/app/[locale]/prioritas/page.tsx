@@ -15,6 +15,8 @@ import FinancialReportSection from "@/components/prioritas/FinancialReportSectio
 import PrioritasContactSection from "@/components/prioritas/PrioritasContactSection";
 import { getPrioritasSourceEvents } from "@/lib/prioritas-source-data";
 import { formatKursUpdatedAt, getKursHariIni } from "@/lib/kurs";
+import { getImageBackdropColor } from "@/lib/image-color";
+import { insightAssets } from "@/components/prioritas/wealth-insight-assets";
 
 const HERO_IMAGE = "/assets/prioritas/hero-banner.webp";
 const PRIORITAS_LOGO = "/assets/prioritas/logo.svg";
@@ -27,12 +29,18 @@ export default async function PrioritasPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("prioritasHero");
+  const tWealth = await getTranslations("bankingSolutionIndex");
   const now = new Date();
   const kurs = await getKursHariIni();
   const allEvents = getPrioritasSourceEvents(now);
   const upcomingEvents = allEvents.filter((event) => event.endAt >= now).toSorted((a, b) => a.startAt.getTime() - b.startAt.getTime());
   const events = upcomingEvents.length ? upcomingEvents : allEvents.toSorted((a, b) => b.startAt.getTime() - a.startAt.getTime());
   const kursUpdatedAt = kurs[0]?.updatedAt ?? 0;
+  const [latestHouseView, latestWeeklyMarket] = [insightAssets.house[0], insightAssets.market[0]];
+  const [houseBackdrop, marketBackdrop] = await Promise.all([
+    getImageBackdropColor(latestHouseView.image),
+    getImageBackdropColor(latestWeeklyMarket.image),
+  ]);
 
   const sectionAnchors: SectionAnchorItem[] = [
     { key: "privilege", target: "#privilege", label: t("sections.privilege") },
@@ -131,24 +139,24 @@ export default async function PrioritasPage({
           ],
           wealthCards: [
             {
-              title: t("bankingSolution.wealthCards.houseView.title"),
-              metadata: [
-                { icon: "/assets/prioritas/banking/calendar.svg", label: t("bankingSolution.wealthCards.houseView.date") },
-                { icon: "/assets/prioritas/banking/youtube.svg", label: t("bankingSolution.wealthCards.houseView.channel") },
-              ],
-              action: t("bankingSolution.wealthCards.houseView.action"),
-              image: "/assets/prioritas/banking/wealth-house-view.png",
-              imageAlt: t("bankingSolution.wealthCards.houseView.alt"),
-              backdrop: "var(--color-neutral-900)",
+              title: tWealth(`insight.${latestHouseView.key}.title`),
+              metadata: [{ icon: "/assets/prioritas/banking/calendar.svg", label: tWealth(`insight.${latestHouseView.key}.date`) }],
+              action: tWealth("downloadAction"),
+              actionIcon: latestHouseView.actionIcon,
+              image: latestHouseView.image,
+              imageAlt: tWealth(`insight.${latestHouseView.key}.alt`),
+              backdrop: houseBackdrop,
+              href: "https://prioritas.bca.co.id/en/Wealth-Management/Market-Insight/House-View-Report",
             },
             {
-              title: t("bankingSolution.wealthCards.market.title"),
-              metadata: [{ icon: "/assets/prioritas/banking/calendar.svg", label: t("bankingSolution.wealthCards.market.date") }],
-              action: t("bankingSolution.wealthCards.market.action"),
-              actionIcon: "download",
-              image: "/assets/prioritas/banking/wealth-market-overview.png",
-              imageAlt: t("bankingSolution.wealthCards.market.alt"),
-              backdrop: "var(--color-red-500)",
+              title: tWealth(`insight.${latestWeeklyMarket.key}.title`),
+              metadata: [{ icon: "/assets/prioritas/banking/calendar.svg", label: tWealth(`insight.${latestWeeklyMarket.key}.date`) }],
+              action: tWealth("downloadAction"),
+              actionIcon: latestWeeklyMarket.actionIcon,
+              image: latestWeeklyMarket.image,
+              imageAlt: tWealth(`insight.${latestWeeklyMarket.key}.alt`),
+              backdrop: marketBackdrop,
+              href: "https://prioritas.bca.co.id/en/Wealth-Management/Market-Insight/Weekly-Market-Overview",
             },
           ],
         }}

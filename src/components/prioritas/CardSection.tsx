@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation";
+import { PrioritasButtonIcon, prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
 
 export default function CardSection({
   copy,
@@ -31,9 +32,9 @@ export default function CardSection({
             <p className="text-heading max-w-[400px] text-pgold-100 xl:text-display">{copy.heading}</p>
             <p className="max-w-[460px] text-base leading-7 text-wrap-pretty text-pgold-100/80">{copy.description}</p>
           </div>
-          <Link href="/prioritas" className="inline-flex items-center gap-0.5 text-base font-semibold leading-5 text-pgold-300 transition-colors hover:text-pgold-100 xl:leading-4">
-            <span className="px-0.5">{copy.action}</span>
-            <img src="/assets/prioritas/card/arrow-right.svg" alt="" aria-hidden="true" className="size-5" />
+          <Link href="/prioritas" className={prioritasButtonClassName({ kind: "text", surface: "inverse", size: "large" })}>
+            <span className="prio-button__label">{copy.action}</span>
+            <PrioritasButtonIcon src="/assets/prioritas/card/arrow-right.svg" />
           </Link>
         </div>
       </div>

@@ -2,14 +2,16 @@
 
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "@/i18n/navigation";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useIsLive } from "@/lib/useIsLive";
 import { FEATURED_BANNER_SLIDES } from "@/components/prioritas/featured-banner-data";
+import { PrioritasButton, PrioritasButtonIcon, prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
 
 const AUTOPLAY_MS = 6000;
 const INDICATOR_LENGTH = 40;
 
-export default function PrioritasFeaturedBanner({ titles, cta, backdrops }: { titles: string[]; cta: string; backdrops: Record<string, string> }) {
+export default function PrioritasFeaturedBanner({ titles, cta, backdrops, slideHrefs }: { titles: string[]; cta: string; backdrops: Record<string, string>; slideHrefs?: Record<string, string> }) {
   const t = useTranslations("promo");
   const [activeIndex, setActiveIndex] = useState(1);
   const [paused, setPaused] = useState(false);
@@ -17,6 +19,7 @@ export default function PrioritasFeaturedBanner({ titles, cta, backdrops }: { ti
   const pausedRef = useRef(false);
   const progressLineRef = useRef<SVGLineElement>(null);
   const touchStartX = useRef<number | null>(null);
+  const bannerWasSwiped = useRef(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const live = useIsLive(rootRef);
   const activeSlide = FEATURED_BANNER_SLIDES[activeIndex];
@@ -46,6 +49,7 @@ export default function PrioritasFeaturedBanner({ titles, cta, backdrops }: { ti
 
   const onTouchStart = (event: React.TouchEvent) => {
     touchStartX.current = event.touches[0]?.clientX ?? null;
+    bannerWasSwiped.current = false;
   };
 
   const onTouchEnd = (event: React.TouchEvent) => {
@@ -53,7 +57,10 @@ export default function PrioritasFeaturedBanner({ titles, cta, backdrops }: { ti
     const endX = event.changedTouches[0]?.clientX;
     const distance = endX === undefined ? 0 : endX - touchStartX.current;
     touchStartX.current = null;
-    if (Math.abs(distance) >= 40) goBy(distance < 0 ? 1 : -1);
+    if (Math.abs(distance) >= 40) {
+      bannerWasSwiped.current = true;
+      goBy(distance < 0 ? 1 : -1);
+    }
   };
 
   return (
@@ -67,22 +74,30 @@ export default function PrioritasFeaturedBanner({ titles, cta, backdrops }: { ti
       {FEATURED_BANNER_SLIDES.map((slide, index) => (
         <img key={slide.id} src={slide.image} alt={slide.alt} className="absolute inset-x-0 top-0 h-[200px] w-full object-cover transition-opacity duration-700 ease-in-out [mask-image:linear-gradient(to_bottom,black_65%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_65%,transparent_100%)] xl:inset-0 xl:size-full xl:[mask-image:none] xl:[-webkit-mask-image:none]" style={{ opacity: index === activeIndex ? 1 : 0 }} />
       ))}
-      <div className="absolute inset-0 hidden bg-gradient-to-r from-pbrown-900/75 via-pbrown-900/15 to-transparent xl:block" />
+      {slideHrefs ? <Link
+        href={slideHrefs[activeSlide.id] ?? "/prioritas/event"}
+        aria-label={`${titles[activeIndex]} — ${cta}`}
+        onClick={(event) => {
+          if (!bannerWasSwiped.current) return;
+          event.preventDefault();
+          bannerWasSwiped.current = false;
+        }}
+        className="absolute inset-0 z-10 focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-white"
+      /> : null}
       <div className="absolute inset-x-0 top-[150px] h-[100px] xl:hidden" style={{ backgroundImage: `linear-gradient(to bottom, transparent 0%, ${activeBackdrop} 100%)` }} />
-      <div className="absolute inset-x-0 bottom-0 hidden h-1/2 bg-gradient-to-t from-pbrown-900/60 to-transparent xl:block" />
 
       <div
-        className="glass-panel glass-panel-prioritas absolute inset-x-2 bottom-[72px] z-10 flex h-[160px] w-auto flex-col items-start justify-start gap-6 overflow-hidden rounded-2xl px-4 pb-5 pt-4 xl:inset-x-auto xl:bottom-auto xl:left-4 xl:top-4 xl:h-[180px] xl:w-[360px] xl:max-w-[calc(100%-2rem)] xl:justify-between"
+        aria-hidden={Boolean(slideHrefs)}
+        className={`glass-panel glass-panel-prioritas absolute inset-x-2 bottom-[72px] z-20 flex h-[160px] w-auto flex-col items-start justify-start gap-6 overflow-hidden rounded-2xl px-4 pb-5 pt-4 xl:inset-x-auto xl:bottom-auto xl:left-4 xl:top-4 xl:h-[180px] xl:w-[360px] xl:max-w-[calc(100%-2rem)] xl:justify-between ${slideHrefs ? "pointer-events-none" : ""}`}
         style={{ backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)", isolation: "isolate" }}
       >
         <h3 className="h-20 max-w-full overflow-hidden text-subtitle text-white line-clamp-3 xl:h-[96px] xl:text-heading">{titles[activeIndex]}</h3>
-        <button type="button" className="flex items-center gap-0.5 text-left text-base font-semibold leading-6 text-pgold-300 transition-colors hover:text-pgold-100">
-          <span className="px-0.5">{cta}</span>
-          <img src="/assets/prioritas/privilege/arrow-small.svg" alt="" className="size-5" />
-        </button>
+        <PrioritasButton kind="text" surface="inverse" size="large" trailingIcon={<PrioritasButtonIcon src="/assets/prioritas/privilege/arrow-small.svg" />}>
+          {cta}
+        </PrioritasButton>
       </div>
 
-      <div className="absolute inset-x-2 bottom-2 z-20 flex h-14 items-center justify-between p-2 text-white xl:inset-x-auto xl:bottom-6 xl:left-8 xl:h-auto xl:justify-start xl:gap-6 xl:p-0">
+      <div className="absolute inset-x-2 bottom-2 z-30 flex h-14 items-center justify-between p-2 text-white xl:inset-x-auto xl:bottom-6 xl:left-8 xl:h-auto xl:justify-start xl:gap-6 xl:p-0">
         <div className="flex items-center gap-3" aria-label="Carousel pagination" onMouseEnter={() => setHoveringIndicator(true)} onMouseLeave={() => setHoveringIndicator(false)}>
           {FEATURED_BANNER_SLIDES.map((slide, index) =>
             index === activeIndex ? (
@@ -100,10 +115,10 @@ export default function PrioritasFeaturedBanner({ titles, cta, backdrops }: { ti
           )}
         </div>
         <div className="flex items-center gap-2">
-          <button type="button" onClick={() => goBy(-1)} aria-label={t("prevSlide")} className="flex size-10 items-center justify-center rounded-full bg-black/30 transition-colors hover:bg-black/50">
+          <button type="button" onClick={() => goBy(-1)} aria-label={t("prevSlide")} className={prioritasButtonClassName({ kind: "icon", variant: "secondary", surface: "inverse", size: "medium" })}>
             <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-5" />
           </button>
-          <button type="button" onClick={() => goBy(1)} aria-label={t("nextSlide")} className="flex size-10 items-center justify-center rounded-full bg-black/30 transition-colors hover:bg-black/50">
+          <button type="button" onClick={() => goBy(1)} aria-label={t("nextSlide")} className={prioritasButtonClassName({ kind: "icon", variant: "secondary", surface: "inverse", size: "medium" })}>
             <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5" />
           </button>
         </div>

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useLenis } from "@/components/SmoothScroll";
+import { TabButton } from "@/components/ui/Tab";
 import { NAVBAR_ANCHOR_LOCK_EVENT, NAVBAR_VISIBILITY_EVENT } from "./Navbar";
 
 export type SectionAnchorItem = {
@@ -111,7 +112,7 @@ export default function SectionAnchor({
       setActiveKey(anchor.key);
       centerTab(anchor.key);
     }
-    const navigationHeight = window.matchMedia("(min-width: 80rem)").matches ? 60 : 48;
+    const navigationHeight = 56;
     if (lenis) lenis.scrollTo(element, { offset: -navigationHeight, duration: 1 });
     else {
       window.scrollTo({
@@ -133,22 +134,25 @@ export default function SectionAnchor({
     <nav
       ref={tabListRef}
       aria-label={label ?? t("label")}
-      className={`hide-scrollbar ${sticky ? "sticky" : "relative"} ${stickyPosition} z-30 h-12 overflow-x-auto px-4 [scrollbar-width:none] backdrop-blur-md transition-[top] duration-300 xl:h-[60px] ${prioritas ? "bg-pbrown-800/95" : solitaire ? "bg-neutral-900/95" : "bg-blue-200/90"}`}
+      className={`hide-scrollbar ${sticky ? "sticky" : "relative"} ${stickyPosition} z-30 h-14 overflow-x-auto px-4 [scrollbar-width:none] backdrop-blur-md transition-[top] duration-300 ${prioritas ? "bg-pbrown-800/95" : solitaire ? "bg-neutral-900/95" : "bg-blue-200/90"}`}
     >
       <div className="flex h-full w-max xl:mx-auto xl:w-full xl:min-w-[720px] xl:max-w-[1280px]">
         {items.map((anchor) => (
-          <button
+          <TabButton
             key={anchor.key}
+            variant="underline"
+            size="large"
+            tone={variant}
+            active={activeKey === anchor.key}
             ref={(element) => {
               if (element) tabRefs.current.set(anchor.key, element);
               else tabRefs.current.delete(anchor.key);
             }}
             onClick={() => navigate(anchor.target)}
-            className={`group relative flex shrink-0 items-center justify-center whitespace-nowrap px-3 text-sm leading-[14px] transition-opacity xl:flex-1 xl:px-5 xl:text-base xl:leading-normal ${prioritas ? "text-pbrown-200" : solitaire ? "text-neutral-100" : "text-blue-500"} ${activeKey === anchor.key ? "font-bold opacity-100" : "font-semibold opacity-50"}`}
+            className="xl:flex-1"
           >
             {anchor.label ?? t(anchor.key)}
-            <span className={`absolute inset-x-0 bottom-0 h-1 rounded-t-xl transition-opacity ${prioritas ? "bg-pgold-500" : solitaire ? "bg-neutral-100" : "bg-blue-500"} ${activeKey === anchor.key ? "opacity-100" : "opacity-0 group-hover:opacity-40"}`} />
-          </button>
+          </TabButton>
         ))}
       </div>
     </nav>

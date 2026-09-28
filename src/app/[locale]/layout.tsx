@@ -8,6 +8,9 @@ import SmoothScroll from "@/components/SmoothScroll";
 import PreviewIdleLogout from "@/components/PreviewIdleLogout";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
+import "../prioritas-buttons.css";
+import "../priosoli-chips.css";
+import "../priosoli-dropdowns.css";
 
 // Only the three weights the design actually uses. The italic, Light (300) and
 // Extrabold (800) cuts were dropped — nothing referenced them, and every file

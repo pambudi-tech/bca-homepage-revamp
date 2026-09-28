@@ -2550,7 +2550,7 @@
       "name": "Executive Airport Lounge",
       "category": "Travel",
       "description": "Akses complimentary ke berbagai executive airport lounge di seluruh Indonesia bagi pemegang kartu BCA Solitaire dan Prioritas. Termasuk benefit F&B di Subway Bandara Kualanamu Medan.",
-      "privilegeDetails": "Complimentary access: BCA Solitaire (pemegang kartu + 1 pendamping), BCA Prioritas (pemegang kartu) | Complimentary F&B di Subway Bandara Kualanamu Medan – BCA Solitaire: 1 sandwich footlong (semua jenis kecuali Subway Series) + 2 minuman (ice lemon tea/ice green tea 16 oz atau air mineral) | BCA Prioritas: 1 sandwich 6-inch + 1 minuman | Harga khusus untuk teman seperjalanan di lounge tertentu",
+      "privilegeDetails": "Complimentary access\n• BCA Solitaire: pemegang kartu + 1 pendamping\n• BCA Prioritas: pemegang kartu\n\nComplimentary F&B di Subway Bandara Kualanamu Medan\n• BCA Solitaire: 1 sandwich footlong (semua jenis kecuali Subway Series) + 2 minuman (ice lemon tea/ice green tea 16 oz atau air mineral)\n• BCA Prioritas: 1 sandwich 6-inch + 1 minuman\n\nHarga khusus untuk teman seperjalanan di lounge tertentu",
       "terms": "Fasilitas baru dapat digunakan setelah 1x24 jam sejak aktivasi kartu BCA Solitaire/Prioritas | Menunjukkan dan melakukan transaksi dengan kartu BCA Solitaire/Prioritas di mesin EDC BCA | Per 11 April 2026: privilege hanya berlaku bagi nasabah yang memenuhi ketentuan saldo keanggotaan (tidak terkena biaya layanan); nasabah yang terkena biaya layanan tidak dapat akses lounge selama 1 bulan setelah dikenakan biaya (reset per tanggal 11 setiap bulan)",
       "city": "Nasional (berbagai bandara)",
       "address": "Berbagai Executive Airport Lounge di seluruh Indonesia",
@@ -2593,6 +2593,14 @@
       "contact": "WA Chat: +62 855 1500 830 (ketik \"BCA Solitaire\") — 24 jam 7 hari | Call Center Prodia: 1500 830 (informasi \"BCA Solitaire\") — Senin–Minggu 04.00–22.00 WIB",
       "validUntil": "s/d 31 Desember 2026"
     }
+  ],
+  "signature": [
+    { "partnerId": "airport-transfer-domestik", "category": "Travel", "benefit": "Airport Transfer Domestik" },
+    { "partnerId": "airport-transfer-internasional", "category": "Travel", "benefit": "Airport Transfer Internasional" },
+    { "partnerId": "executive-airport-lounge", "category": "Travel", "benefit": "Executive Airport Lounge" },
+    { "partnerId": "medical-check-up-internasional", "category": "Kesehatan", "benefit": "Medical Check Up Internasional" },
+    { "partnerId": "deteksi-dini-kanker-dan-penyakit-jantung", "category": "Kesehatan", "benefit": "Deteksi Dini Kanker dan Penyakit Jantung" },
+    { "partnerId": "padel-court", "category": "Gaya Hidup", "benefit": "Padel Court" }
   ],
   "complimentary": [
     {

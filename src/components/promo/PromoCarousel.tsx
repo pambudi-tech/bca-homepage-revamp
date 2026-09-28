@@ -2,7 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import type { Promo } from "@/components/home/promo-data";
+import type { EventPromo } from "@/components/prioritas/event-data";
+import ContentCard from "@/components/prioritas/ContentCard";
 import PromoCard from "./PromoCard";
+import type { PrivilegePromo } from "@/lib/partner-privileges";
+import SignaturePrivilegeCard from "@/components/prioritas/SignaturePrivilegeCard";
 
 const CARD_GAP = 16;
 
@@ -21,6 +25,8 @@ export default function PromoCarousel({
   detailHrefBase,
   partnerPrivilege = false,
   showEventDate = false,
+  usePrioritasButtonLibrary = false,
+  contentCardVariant,
 }: {
   promos: Promo[];
   now: Date;
@@ -38,6 +44,8 @@ export default function PromoCarousel({
   detailHrefBase?: string;
   partnerPrivilege?: boolean;
   showEventDate?: boolean;
+  usePrioritasButtonLibrary?: boolean;
+  contentCardVariant?: "signature" | "complimentary" | "lifestyle" | "event" | "promo";
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const itemsCount = promos.length + (campaignCover ? 1 : 0);
@@ -105,6 +113,35 @@ export default function PromoCarousel({
             <a href="#semua-promo" aria-label={campaignAlt} className={`block shrink-0 overflow-clip rounded-3xl border border-neutral-300 bg-white ${compact ? "h-[268px] w-full" : "h-[360px] w-[280px] xl:w-[302px]"}`}>
               <img src={campaignCover} alt={campaignAlt ?? ""} className="size-full object-cover" />
             </a>
+          ) : contentCardVariant === "signature" ? (
+            <SignaturePrivilegeCard
+              promo={promos[item - (campaignCover ? 1 : 0)] as PrivilegePromo}
+              href={detailHrefBase ? `${detailHrefBase}/${promos[item - (campaignCover ? 1 : 0)].id}` : "#"}
+            />
+          ) : contentCardVariant === "complimentary" || contentCardVariant === "lifestyle" ? (
+            <ContentCard
+              item={promos[item - (campaignCover ? 1 : 0)] as PrivilegePromo}
+              variant={contentCardVariant}
+              now={now}
+              fill={false}
+              detailHref={detailHrefBase ? `${detailHrefBase}/${promos[item - (campaignCover ? 1 : 0)].id}` : undefined}
+            />
+          ) : contentCardVariant === "event" ? (
+            <ContentCard
+              item={promos[item - (campaignCover ? 1 : 0)] as EventPromo}
+              variant="event"
+              now={now}
+              fill={false}
+              detailHref={detailHrefBase ? `${detailHrefBase}/${promos[item - (campaignCover ? 1 : 0)].id}` : undefined}
+            />
+          ) : contentCardVariant === "promo" ? (
+            <ContentCard
+              item={promos[item - (campaignCover ? 1 : 0)]}
+              variant="promo"
+              now={now}
+              fill={false}
+              detailHref={detailHrefBase ? `${detailHrefBase}/${promos[item - (campaignCover ? 1 : 0)].id}` : undefined}
+            />
           ) : (
             <PromoCard
               promo={promos[item - (campaignCover ? 1 : 0)]}
@@ -115,6 +152,7 @@ export default function PromoCarousel({
               promoPage={promoPage}
               detail={detail}
               partnerPrivilege={partnerPrivilege}
+              usePrioritasButtonLibrary={usePrioritasButtonLibrary}
               detailHref={detailHrefBase ? `${detailHrefBase}/${promos[item - (campaignCover ? 1 : 0)].id}` : undefined}
               eventDate={showEventDate ? (promos[item - (campaignCover ? 1 : 0)] as Promo & { dateTile?: React.ComponentProps<typeof PromoCard>["eventDate"] }).dateTile : undefined}
             />

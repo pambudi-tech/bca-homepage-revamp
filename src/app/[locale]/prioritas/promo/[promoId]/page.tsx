@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import BackToTop from "@/components/home/BackToTop";
 import PrioritasDetailExperience from "@/components/prioritas/PrioritasDetailExperience";
@@ -21,6 +21,9 @@ function categoryFilter(category: PromoCategory) {
 export default async function PrioritasPromoDetailPage({ params }: { params: Promise<PromoParams> }) {
   const { locale, promoId } = await params;
   setRequestLocale(locale);
+  if (promoId === "program-nabung-konser-the-weeknd-20260618") {
+    permanentRedirect(`/${locale}/prioritas/event/${promoId}`);
+  }
   const [t, detailT, signatureT] = await Promise.all([
     getTranslations("prioritasContentDetail"),
     getTranslations("lifestylePrivilegeDetail"),
@@ -41,7 +44,10 @@ export default async function PrioritasPromoDetailPage({ params }: { params: Pro
 
   const isPorsche = promoId === "porsche-test-drive";
   const filter = categoryFilter(promo.category);
-  const recommendations = isPorsche ? samples.filter((item) => item.id !== promoId) : promos.filter((item) => item.id !== promoId).slice(0, 3);
+  const recommendationPool = isPorsche ? samples : promos;
+  const recommendations = recommendationPool
+    .filter((item) => item.id !== promoId && categoryFilter(item.category) === filter)
+    .slice(0, 3);
 
   return <main id="main-content" className="flex min-h-screen flex-1 flex-col overflow-x-clip bg-pgold-200">
     <PrioritasDetailExperience

@@ -6,7 +6,7 @@ type DetailParams = { locale: string; benefitId: string };
 
 export async function generateMetadata({ params }: { params: Promise<DetailParams> }): Promise<Metadata> {
   const { benefitId } = await params;
-  const offer = getPrivilegeOffer("complimentary", benefitId);
+  const offer = getPrivilegeOffer("signature", benefitId) ?? getPrivilegeOffer("complimentary", benefitId);
   if (!offer) return {};
   return {
     title: `${offer.benefit.benefit} | BCA Prioritas`,
@@ -16,5 +16,6 @@ export async function generateMetadata({ params }: { params: Promise<DetailParam
 
 export default async function ComplimentaryPrivilegeDetailPage({ params }: { params: Promise<DetailParams> }) {
   const { locale, benefitId } = await params;
-  return <PartnerPrivilegeDetailPage locale={locale} partnerId={benefitId} section="complimentary" />;
+  const section = getPrivilegeOffer("signature", benefitId) ? "signature" : "complimentary";
+  return <PartnerPrivilegeDetailPage locale={locale} partnerId={benefitId} section={section} />;
 }
