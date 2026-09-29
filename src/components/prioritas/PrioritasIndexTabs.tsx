@@ -16,15 +16,15 @@ const tabs: Array<{ key: PrioritasIndexTab; href: string }> = [
 ];
 
 const overviewTabs: Array<{ key: PrioritasOverviewTab; href: string }> = [
-  { key: "overview", href: "/prioritas/overview#overview-start" },
-  { key: "privilege", href: "/prioritas/overview#overview-signature" },
-  { key: "banking", href: "/prioritas/banking-solution" },
-  { key: "magazine", href: "/prioritas/overview#overview-magazine" },
-  { key: "financial", href: "/prioritas/overview#overview-financial" },
+  { key: "overview", href: "/prioritas/member/overview#overview-start" },
+  { key: "privilege", href: "/prioritas/member/privilege" },
+  { key: "banking", href: "/prioritas/member/banking-solution" },
+  { key: "magazine", href: "/prioritas/member/e-magazine" },
+  { key: "financial", href: "/prioritas/member/financial-report" },
 ];
 
-export default function PrioritasIndexTabs({ activeTab, surface = "default" }: { activeTab: PrioritasTabKey; surface?: "default" | "overview" }) {
-  const t = useTranslations(surface === "overview" ? "memberOverview" : "signaturePrivilege");
+export default function PrioritasIndexTabs({ activeTab, surface = "default" }: { activeTab: PrioritasTabKey; surface?: "default" | "overview" | "member" }) {
+  const t = useTranslations(surface !== "default" ? "memberOverview" : "signaturePrivilege");
   const viewportRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<Partial<Record<PrioritasTabKey, HTMLAnchorElement | null>>>({});
   const requestedTabRef = useRef<PrioritasTabKey | null>(null);
@@ -62,16 +62,22 @@ export default function PrioritasIndexTabs({ activeTab, surface = "default" }: {
     return () => cancelAnimationFrame(frame);
   }, [activeTab, centerTab]);
 
+  const memberUnderline = surface === "member";
   return (
     <div data-prioritas-index-tabs style={{ "--prioritas-index-tab-surface": surface === "overview" ? "var(--color-pgold-100)" : "var(--color-pgold-200)" } as CSSProperties} className={`relative sticky top-4 z-30 mx-auto -mt-12 w-full max-w-[1280px] before:pointer-events-none before:absolute before:-top-6 before:left-1/2 before:z-0 before:h-[calc(100%+1.5rem)] before:w-screen before:-translate-x-1/2 before:transition-[background-color,backdrop-filter] before:duration-200 xl:w-full ${scrolled ? "before:bg-pbrown-600/95 before:backdrop-blur-md" : "before:bg-transparent"}`}>
       <div ref={viewportRef} className="hide-scrollbar relative w-full overflow-x-auto bg-transparent px-4 [scrollbar-width:none] xl:overflow-visible xl:px-0">
         <div
           role="tablist"
           aria-label={surface === "overview" ? t("nav.label") : t("tabLabel")}
-          className={`tab-curved-list prioritas-index-tab-list relative flex overflow-visible rounded-t-xl bg-pbrown-700 ${surface === "overview" ? "w-max xl:w-full" : "w-max"}`}
+          className={memberUnderline ? "relative flex w-max overflow-visible border-b border-pbrown-100 bg-pgold-100 xl:w-full" : `tab-curved-list prioritas-index-tab-list relative flex overflow-visible rounded-t-xl bg-pbrown-700 ${surface === "overview" ? "w-max xl:w-full" : "w-max"}`}
         >
         {(surface === "overview" ? overviewTabs : tabs).map(({ key, href }) => {
           const active = key === activeTab;
+          const tabVisual = memberUnderline
+            ? { variant: "underline" as const, size: "medium" as const, tone: "prioritas" as const, active }
+            : surface === "overview"
+              ? { variant: "curved" as const, size: "medium" as const, active }
+              : { variant: "curved" as const, active };
           return (
             <TabLink
               ref={(node) => { tabRefs.current[key] = node; }}
@@ -85,8 +91,7 @@ export default function PrioritasIndexTabs({ activeTab, surface = "default" }: {
               }}
               role="tab"
               aria-selected={active}
-              variant="curved"
-              active={active}
+              {...tabVisual}
               className={surface === "overview" ? "xl:flex-1 xl:justify-center" : undefined}
             >
               {surface === "overview" ? t(`nav.${key}`) : t(`tabs.${key}`)}

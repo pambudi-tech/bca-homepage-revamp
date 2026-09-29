@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import ContentCard from "@/components/prioritas/ContentCard";
 import type { Promo } from "@/components/home/promo-data";
+import type { EventPromo } from "@/components/prioritas/event-data";
 import type { PrivilegePromo } from "@/lib/partner-privileges";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -13,18 +14,20 @@ import { BackToTopAction } from "@/components/home/BackToTop";
 import { DIRECTORY_PAGE_SIZE, PrioritasDirectoryCategories, PrioritasDirectoryFilters, PrioritasDirectoryPanel } from "@/components/prioritas/PrioritasDirectory";
 import PrioritasDirectoryDropdown from "@/components/prioritas/PrioritasDirectoryDropdown";
 import { PrioritasButton, PrioritasButtonIcon, prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
+import PrioritasFeaturedBanner from "@/components/prioritas/PrioritasFeaturedBanner";
+import { PRIORITAS_EVENT_FEATURED_BANNER_SLIDES } from "@/components/prioritas/featured-banner-data";
 
 const ASSET_ROOT = "/assets/prioritas/signature-privilege";
 const signatureCards = [
   { id: "executive-airport-lounge", image: "privilege-01.png" },
-  { id: "airport-transfer-domestik", image: "privilege-04.png" },
-  { id: "airport-transfer-internasional", image: "privilege-05.png" },
+  { id: "airport-transfer-domestik", image: "/assets/prioritas/partners/airport-transfer-domestik.jpg" },
+  { id: "airport-transfer-internasional", image: "/assets/prioritas/partners/airport-transfer-internasional.jpg" },
   { id: "medical-check-up-internasional", image: "privilege-11.png" },
   { id: "deteksi-dini-kanker-dan-penyakit-jantung", image: "privilege-10.png" },
   { id: "padel-court", image: "privilege-03.png" },
   // Keep repeated cards in the expanded example rail, each linking to its detail page.
   { id: "executive-airport-lounge", image: "privilege-02.png" },
-  { id: "airport-transfer-domestik", image: "privilege-03.png" },
+  { id: "airport-transfer-domestik", image: "/assets/prioritas/partners/airport-transfer-domestik.jpg" },
 ] as const;
 
 const SIGNATURE_AUTOPLAY_MS = 6000;
@@ -48,6 +51,8 @@ type SignaturePrivilegeExperienceProps = {
   directoryOnly?: boolean;
   activeTab?: PrioritasIndexTab;
   initialCategories?: string[];
+  memberArea?: boolean;
+  bannerBackdrops?: Record<string, string>;
 };
 
 function isPrivilegePromo(promo: Promo): promo is PrivilegePromo {
@@ -63,8 +68,9 @@ function randomOrderKey(id: string) {
   return hash >>> 0;
 }
 
-export default function SignaturePrivilegeExperience({ promos, signaturePromos = [], now, directoryOnly = false, activeTab, initialCategories = [] }: SignaturePrivilegeExperienceProps) {
+export default function SignaturePrivilegeExperience({ promos, signaturePromos = [], now, directoryOnly = false, activeTab, initialCategories = [], memberArea = false, bannerBackdrops = {} }: SignaturePrivilegeExperienceProps) {
   const t = useTranslations("signaturePrivilege");
+  const heroT = useTranslations("prioritasHero");
   const lenis = useLenis();
   const [selectedCategories, setSelectedCategories] = useState<string[]>(() => initialCategories.filter((category) => chipCategories.some((chip) => chip === category)));
   const [query, setQuery] = useState("");
@@ -161,7 +167,7 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
     const timer = window.setInterval(() => {
       if (pausedSignatureRef.current) return;
       setSignatureProgress((current) => {
-        if (current >= 1) {
+        if (current >= 100) {
           setActiveSignatureCard((active) => {
             const next = (active + 1) % activeSignatureCardCount;
             const rail = signatureRailRef.current;
@@ -272,15 +278,15 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
             <div id="signature-privilege-grid" ref={signatureRailRef} onScroll={handleSignatureRailScroll} onMouseEnter={() => (pausedSignatureRef.current = true)} onMouseLeave={() => (pausedSignatureRef.current = false)} onTouchStart={() => (pausedSignatureRef.current = true)} onTouchEnd={() => (pausedSignatureRef.current = false)} className="hide-scrollbar relative -mx-4 mt-8 flex h-[360px] snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:mt-6 sm:grid sm:h-auto sm:snap-none sm:overflow-visible sm:px-0 sm:grid-cols-2 xl:grid-cols-3 xl:gap-6 sm:transition-[height] sm:duration-500 sm:ease-in-out motion-reduce:transition-none">
               {visibleSignatureCards.map(({ id, image }, index) => {
                 const promo = signaturePromos.find((item) => item.id === id);
-                const cardImage = id === "padel-court" ? promo?.cover || `${ASSET_ROOT}/${image}` : `${ASSET_ROOT}/${image}`;
-                return <Link href={`/prioritas/privilege/${id}`} ref={(node) => { signatureCardRefs.current[index] = node; }} key={`${id}-${image}`} aria-hidden={index >= 6 && !signatureExpanded && !mobileSignatureRail} inert={index >= 6 && !signatureExpanded && !mobileSignatureRail} className={`group relative block w-[280px] shrink-0 snap-center overflow-hidden rounded-xl bg-pbrown-800 shadow-prioritas transition-[height,opacity,transform] duration-500 ease-in-out ${activeSignatureCard === index ? "h-[360px]" : "h-[328px]"} ${index >= 6 && !signatureExpanded && !mobileSignatureRail ? "translate-y-4 opacity-0" : "translate-y-0 opacity-100"} sm:h-60 sm:w-auto sm:shrink sm:snap-none`}>
+                const cardImage = id === "padel-court" ? promo?.cover || `${ASSET_ROOT}/${image}` : image.startsWith("/") ? image : `${ASSET_ROOT}/${image}`;
+                return <Link href={`${memberArea ? "/prioritas/member" : "/prioritas"}/privilege/${id}`} ref={(node) => { signatureCardRefs.current[index] = node; }} key={`${id}-${image}-${index}`} aria-hidden={index >= 6 && !signatureExpanded && !mobileSignatureRail} inert={index >= 6 && !signatureExpanded && !mobileSignatureRail} className={`group relative block w-[280px] shrink-0 snap-center overflow-hidden rounded-xl bg-pbrown-800 shadow-prioritas transition-[height,opacity,transform] duration-500 ease-in-out ${activeSignatureCard === index ? "h-[360px]" : "h-[328px]"} ${index >= 6 && !signatureExpanded && !mobileSignatureRail ? "translate-y-4 opacity-0" : "translate-y-0 opacity-100"} sm:h-60 sm:w-auto sm:shrink sm:snap-none`}>
                 <img src={cardImage} alt="" className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-pbrown-900/90 via-pbrown-900/20 to-transparent" />
                 <div className="absolute left-4 top-4 z-30 xl:hidden">
                   <svg viewBox="0 0 32 32" className={`size-8 -rotate-90 transition-opacity duration-300 ${activeSignatureCard === index ? "opacity-100" : "opacity-0"}`} aria-hidden>
                     <circle cx="16" cy="16" r="16" fill="rgba(0,0,0,0.28)" />
                     <circle cx="16" cy="16" r="14" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" />
-                    <circle cx="16" cy="16" r="14" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeDasharray={2 * Math.PI * 14} strokeDashoffset={2 * Math.PI * 14 * (1 - (activeSignatureCard === index ? signatureProgress : 0))} />
+                    <circle cx="16" cy="16" r="14" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeDasharray={2 * Math.PI * 14} strokeDashoffset={2 * Math.PI * 14 * (1 - (activeSignatureCard === index ? signatureProgress / 100 : 0))} />
                   </svg>
                 </div>
                 <div
@@ -309,9 +315,21 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
           </>}
 
           {directoryOnly && currentTab === "lifestyle" ? <p className="mb-8 text-base font-semibold leading-6">{t("lifestyleDescription")}</p> : null}
+          {directoryOnly && currentTab === "event" ? <PrioritasFeaturedBanner
+            slides={PRIORITAS_EVENT_FEATURED_BANNER_SLIDES}
+            initialIndex={0}
+            titles={[heroT("eventPromo.featuredTitles.javaJazz"), heroT("eventPromo.featuredTitles.mercedesAds"), heroT("eventPromo.featuredTitles.theWeeknd"), heroT("eventPromo.featuredTitles.brightspot")]}
+            cta={[heroT("eventPromo.featuredCta"), heroT("eventPromo.featuredCtas.mercedesAds"), heroT("eventPromo.featuredCta"), heroT("eventPromo.featuredCta")]}
+            backdrops={bannerBackdrops}
+            slideHrefs={{
+              "java-jazz": "/prioritas/promo/bluebird-javajazz",
+              "the-weeknd": "/prioritas/event/program-nabung-konser-the-weeknd-20260618",
+              brightspot: "/prioritas/promo/brightspot-city-2026-20260430",
+            }}
+          /> : null}
           <PrioritasDirectoryPanel
             panelRef={directoryPanelRef}
-            spacing={directoryOnly ? "none" : "section"}
+            spacing={directoryOnly && currentTab !== "event" ? "none" : "section"}
             headingId={directoryOnly ? `${currentTab}-directory-title` : "complimentary-title"}
             page={page}
             total={filteredPromos.length}
@@ -357,8 +375,10 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
             </>}
           >
               {visiblePromos.map((promo) => isPrivilegePromo(promo)
-                ? <ContentCard key={promo.id} item={promo} now={now} variant={currentTab === "signature" ? "complimentary" : "lifestyle"} />
-                : <ContentCard key={promo.id} item={promo} now={now} variant="promo" />)}
+                ? <ContentCard key={promo.id} item={promo} now={now} variant={currentTab === "signature" ? "complimentary" : "lifestyle"} detailHref={memberArea ? `/prioritas/member/${currentTab === "signature" ? "privilege" : "lifestyle-privilege"}/${promo.id}` : undefined} />
+                : currentTab === "event" && "dateTile" in promo
+                  ? <ContentCard key={promo.id} item={promo as EventPromo} now={now} variant="event" detailHref={memberArea ? `/prioritas/member/event/${promo.id}` : undefined} />
+                  : <ContentCard key={promo.id} item={promo} now={now} variant="promo" detailHref={memberArea ? `/prioritas/member/promo/${promo.id}` : undefined} />)}
           </PrioritasDirectoryPanel>
         </div>
       </section>

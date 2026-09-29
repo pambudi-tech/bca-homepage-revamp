@@ -36,6 +36,7 @@
 .prio-button--icon { width: 40px; height: 40px; padding: 0; }
 .prio-button--icon.prio-button--small { width: 32px; height: 32px; }
 .prio-button--icon.prio-button--large { width: 48px; height: 48px; }
+.prio-button--icon.prio-button--large .prio-button__icon { width: 24px; height: 24px; }
 
 .prio-button--text { height: 20px; padding: 0; border: 0; border-radius: 0; background: transparent; font-size: 14px; line-height: 14px; }
 .prio-button--text.prio-button--small { font-size: 12px; line-height: 14px; }

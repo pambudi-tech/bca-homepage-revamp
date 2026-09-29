@@ -8,6 +8,7 @@ import {
   loginPathForRequest,
 } from "@/lib/preview-auth";
 import { routing } from "@/i18n/routing";
+import { isMemberAreaPath, MEMBER_SESSION_COOKIE, MEMBER_SESSION_VALUE } from "@/lib/member-auth";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -19,6 +20,13 @@ const isStaticFile = (pathname: string) => /\.[^/]+$/.test(pathname);
 export function proxy(request: NextRequest) {
   const password = getPreviewPassword();
   const { pathname } = request.nextUrl;
+
+  if (isMemberAreaPath(pathname) && request.cookies.get(MEMBER_SESSION_COOKIE)?.value !== MEMBER_SESSION_VALUE) {
+    const loginUrl = new URL(loginPathForRequest(pathname).replace(/\/login$/, "/member/login"), request.url);
+    loginUrl.searchParams.set("from", "prioritas");
+    loginUrl.searchParams.set("redirectTo", `${pathname}${request.nextUrl.search}`);
+    return NextResponse.redirect(loginUrl);
+  }
 
   // Allow the social share thumbnail to be fetched without the gate,
   // so link previews (WhatsApp, X, Facebook) can load it.

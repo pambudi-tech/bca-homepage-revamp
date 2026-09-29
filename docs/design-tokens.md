@@ -7,7 +7,7 @@ ever disagree, the CSS is right — file an update here.
 ## The two tiers
 
 - **Core primitives** — what a value *is*. The color ramps (`neutral-*`,
-  `blue-*`, `cyan-*`, `red-500`) mirror Figma's "Foundation / Colors" page
+  `blue-*`, `cyan-*`, `red-100`, `red-500`, `red-600`) mirror Figma's "Foundation / Colors" page
   (node 1578-27737) 1:1. Don't add, remove, or re-value a rung here without
   updating Figma first.
 - **Semantic tokens** — what a value is *for* (`--color-primary`,
@@ -27,6 +27,7 @@ These are available as Tailwind color utilities for the Prioritas experience.
 |---|---|
 | `pgold-100` … `pgold-900` | `#FBF8F1`, `#F5EEDF`, `#E9D9B8`, `#D5BD91`, `#B29050`, `#98783F`, `#785D2F`, `#59451F`, `#3B2D16` |
 | `pbrown-100` … `pbrown-900` | `#F2E8E0`, `#DDC8B8`, `#AE9079`, `#885E3F`, `#67442A`, `#46290B`, `#351E08`, `#281706`, `#1C1004` |
+| `asset-savings`, `asset-deposit`, `asset-current`, `asset-securities` | `#665019`, `#F6C960`, `#E9AF35`, `#9D7A28` — segmented asset composition chart and legend |
 
 | Token | Value | For |
 |---|---|---|
@@ -41,7 +42,7 @@ sits just below `blue-600` without matching it. They're named states instead
 of ramp steps so the Figma correspondence on the primitive ramp stays exact.
 
 The core ramps (`neutral-100..900`, `blue-100..800`, `cyan-100/300/400/500/700`,
-`red-500`) are usable directly as `bg-blue-700`, `text-neutral-800`, etc. —
+`red-100/500/600`) are usable directly as `bg-blue-700`, `text-neutral-800`, etc. —
 reach for a semantic token first; fall back to a primitive when there's no
 semantic meaning to name (e.g. a specific brand-blue background on a card).
 

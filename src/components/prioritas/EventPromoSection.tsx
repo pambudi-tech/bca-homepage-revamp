@@ -5,6 +5,7 @@ import PromoCarousel from "@/components/promo/PromoCarousel";
 import type { Promo } from "@/components/home/promo-data";
 import { Link } from "@/i18n/navigation";
 import { PrioritasButtonIcon, prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
+import { PRIORITAS_EVENT_FEATURED_BANNER_SLIDES } from "@/components/prioritas/featured-banner-data";
 
 export default async function EventPromoSection({ promos, copy, now }: {
   promos: Promo[];
@@ -13,11 +14,13 @@ export default async function EventPromoSection({ promos, copy, now }: {
     eyebrow: string;
     heading: string;
     featuredTitles: string[];
+    mercedesAdTitle: string;
+    mercedesAdCta: string;
     featuredCta: string;
     viewMore: string;
   };
 }) {
-  const backdrops = await getFeaturedBannerBackdrops();
+  const backdrops = await getFeaturedBannerBackdrops(PRIORITAS_EVENT_FEATURED_BANNER_SLIDES);
   return (
     <section id="event-promo" className="relative overflow-hidden bg-pbrown-600 py-12 text-white xl:py-20">
       <div className="relative mx-auto w-full max-w-[1280px] px-4 xl:px-0">
@@ -26,7 +29,22 @@ export default async function EventPromoSection({ promos, copy, now }: {
           <h2 className="text-heading max-w-[560px] text-pgold-100 xl:text-display">{copy.heading}</h2>
         </header>
 
-        <PrioritasFeaturedBanner titles={copy.featuredTitles} cta={copy.featuredCta} backdrops={backdrops} />
+        <PrioritasFeaturedBanner
+          slides={PRIORITAS_EVENT_FEATURED_BANNER_SLIDES}
+          initialIndex={0}
+          titles={[
+            copy.featuredTitles[0],
+            copy.mercedesAdTitle,
+            ...copy.featuredTitles.slice(1),
+          ]}
+          cta={[
+            copy.featuredCta,
+            copy.mercedesAdCta,
+            copy.featuredCta,
+            copy.featuredCta,
+          ]}
+          backdrops={backdrops}
+        />
 
         <div className="mt-4 xl:hidden">
           <PromoCarousel promos={promos.slice(0, 3)} now={now} loop={false} variant="prioritas" detailHrefBase="/prioritas/event" showEventDate usePrioritasButtonLibrary />

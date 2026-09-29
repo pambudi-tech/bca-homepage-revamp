@@ -1365,7 +1365,8 @@
     "eventPromo": {
       "eyebrow": "活动与优惠",
       "heading": "为您专属打造的优惠与精彩体验",
-      "featuredTitles": { "javaJazz": "为BCA Prioritas客户赠送Java Jazz音乐节门票", "theWeeknd": "The Weeknd 演唱会赠票，限前三位客户", "brightspot": "获取Brightspot开幕之夜VIP门票" },
+      "featuredTitles": { "javaJazz": "为BCA Prioritas客户赠送Java Jazz音乐节门票", "theWeeknd": "The Weeknd 演唱会赠票，限前三位客户", "brightspot": "获取Brightspot开幕之夜VIP门票", "mercedesAds": "全新 Mercedes-Benz GLC 300——以领先科技开启每一段旅程" },
+      "featuredCtas": { "mercedesAds": "立即预约" },
       "featuredCta": "了解更多",
       "viewMore": "查看所有活动与优惠"
     },
@@ -1618,6 +1619,31 @@
     }
   },
   "solitaireHero": { "title": "尊贵而专属的服务，只为您而来。", "cta": "了解更多", "viewMore": "查看全部", "bannerAlt": "一家人在客厅共享美好时光", "solitaireLogoAlt": "BCA Solitaire" },
+  "memberAirportTransfer": {
+    "title": "服务",
+    "description": "您可以使用以下代码享受机场接送服务：",
+    "voucherTitle": "国内接送礼券",
+    "copy": "复制",
+    "copied": "已复制",
+    "copyCode": "复制礼券代码 {code}",
+    "used": "已使用",
+    "usedOn": "礼券已于 {date} 使用",
+    "viewMore": "查看更多礼券",
+    "hideMore": "收起其他礼券",
+    "notes": {
+      "updated": "礼券数据会定期于每月1日[时间] WIB更新。",
+      "contact": "如有疑问或信息不一致，请联系 Halo BCA 了解详情。"
+    }
+  },
+  "memberSignatureVoucher": {
+    "title": "礼券可用情况",
+    "available": "可用礼券 {count} 张",
+    "unlimited": "无限礼券",
+    "exhausted": "礼券额度已用尽",
+    "penaltyBadge": "暂不可使用",
+    "penaltyMessage": "由于您上个月的每日合并平均余额未达到 BCA Prioritas 会员要求，您暂时无法使用此服务。",
+    "learn": "了解详情"
+  },
   "memberOverview": {
     "previewFullName": "Andhini Putri",
     "previewFirstName": "Andhini",
@@ -1642,6 +1668,93 @@
     "magazine": { "title": "电子杂志", "read": "立即阅读", "coverAlt": "{title} 封面" },
     "event": { "title": "本月精彩体验" },
     "promo": { "title": "为您的生活方式精选的优惠" }
+  },
+  "memberFinancialReport": {
+    "title": "财务报告",
+    "tabs": {
+      "label": "财务报告类型",
+      "portfolio": "投资组合报告",
+      "tax": "税务扣缴报告"
+    },
+    "download": "下载报告",
+    "maskedAmount": "Rp•••",
+    "previewAmounts": {
+      "netWorth": "Rp376.5 十亿", "assets": "Rp410.1 十亿", "liabilities": "Rp33.6 十亿",
+      "chart": { "0": "600 十亿", "1": "500 十亿", "2": "400 十亿", "3": "300 十亿", "4": "200 十亿", "5": "100 十亿" },
+      "composition": { "savings": "Rp164.0 十亿", "deposit": "Rp123.0 十亿", "current": "Rp82.0 十亿", "securities": "Rp41.0 十亿" },
+      "categories": { "savings": "Rp120.0 十亿", "investments": "Rp210.0 十亿", "protection": "Rp80.0 十亿", "consumerCredit": "Rp12.0 十亿", "workingCapital": "Rp14.0 十亿", "creditCard": "Rp7.6 十亿" }
+    },
+    "visibility": {
+      "show": "显示投资组合金额", "hide": "隐藏投资组合金额", "close": "关闭对话框",
+      "request": { "title": "发送验证码", "description": "要查看财务报告，验证码将发送至以下号码", "phoneLabel": "接收验证码的电话号码", "phonePlaceholder": "选择电话号码", "phoneRequired": "请先选择电话号码。", "feeNotice": "发送验证码可能产生运营商收费", "send": "发送验证码" },
+      "verify": { "title": "输入验证码", "description": "我们已向 {phone} 发送 6 位验证码", "codeLabel": "6 位验证码", "resend": "重新发送验证码" },
+      "noPhone": { "title": "尚未登记电话号码", "description": "您尚未登记电子银行手机号码。请前往附近的 ATM 办理登记。", "back": "返回" }
+    },
+    "overviewLabel": "投资组合概览",
+    "updated": "最后更新于2026年6月3日12:47 WIB",
+    "previewNotice": "此预览不提供个人报告数据。请登录 BCA 官方服务下载您的报告。",
+    "viewDetails": "查看详情",
+    "summary": {
+      "netWorth": "净资产",
+      "netWorthInfo": "资产减去负债",
+      "netWorthChange": "较去年增长11.8%",
+      "assets": "总资产",
+      "assetsInfo": "资产总值",
+      "assetsChange": "较去年下降6.7%",
+      "liabilities": "总负债",
+      "liabilitiesInfo": "负债总值",
+      "liabilitiesChange": "较去年下降6.7%"
+    },
+    "chart": {
+      "title": "财富增长",
+      "intervalLabel": "图表周期",
+      "yearly": "按年",
+      "monthly": "按月",
+      "lastPeriod": "2026年7月"
+    },
+    "composition": {
+      "title": "资产构成",
+      "savings": "储蓄",
+      "deposit": "定期存款",
+      "current": "活期账户",
+      "securities": "BCA证券"
+    },
+    "categories": {
+      "assets": "资产",
+      "liabilities": "负债",
+      "savings": "储蓄",
+      "investments": "投资",
+      "protection": "保障",
+      "consumerCredit": "消费贷款",
+      "workingCapital": "流动资金贷款",
+      "creditCard": "信用卡",
+      "change": "较去年增长11.8%"
+    },
+    "portfolio": {
+      "periodLabel": "投资组合报告月份"
+    },
+    "tax": {
+      "title": "下载税务辅助报告",
+      "periodLabel": "税务报告周期",
+      "year": "年度",
+      "month": "月度",
+      "yearLabel": "税务报告年份",
+      "monthLabel": "税务报告月份"
+    },
+    "months": {
+      "1": "一月",
+      "2": "二月",
+      "3": "三月",
+      "4": "四月",
+      "5": "五月",
+      "6": "六月",
+      "7": "七月",
+      "8": "八月",
+      "9": "九月",
+      "10": "十月",
+      "11": "十一月",
+      "12": "十二月"
+    }
   },
   "buttonAudit": {
     "component": "COMPONENT",

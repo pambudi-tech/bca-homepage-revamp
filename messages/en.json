@@ -1471,8 +1471,10 @@
       "featuredTitles": {
         "javaJazz": "Complimentary Ticket to Java Jazz Festival for BCA Prioritas Customers",
         "theWeeknd": "Complimentary Ticket to The Weeknd Concert for the First 3 Customers",
-        "brightspot": "Get VIP Tickets to Brightspot Opening Night"
+        "brightspot": "Get VIP Tickets to Brightspot Opening Night",
+        "mercedesAds": "All-New Mercedes-Benz GLC 300 — Bringing Leading Technology to Every Journey"
       },
+      "featuredCtas": { "mercedesAds": "Schedule Now" },
       "featuredCta": "Learn More",
       "viewMore": "See All Events & Promos"
     },
@@ -1775,6 +1777,31 @@
     "bannerAlt": "A family enjoying time together in a living room",
     "solitaireLogoAlt": "BCA Solitaire"
   },
+  "memberAirportTransfer": {
+    "title": "Facilities",
+    "description": "You can enjoy the Airport Transfer facility with the following codes:",
+    "voucherTitle": "Domestic Voucher",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyCode": "Copy voucher code {code}",
+    "used": "Used",
+    "usedOn": "Voucher used on {date}",
+    "viewMore": "View More Vouchers",
+    "hideMore": "Hide More Vouchers",
+    "notes": {
+      "updated": "Voucher data is updated periodically on the 1st of each month at [time] WIB.",
+      "contact": "If you have any questions or notice different information, please contact Halo BCA for further assistance."
+    }
+  },
+  "memberSignatureVoucher": {
+    "title": "Voucher Availability",
+    "available": "{count} vouchers available",
+    "unlimited": "Unlimited Vouchers",
+    "exhausted": "Voucher Quota Exhausted",
+    "penaltyBadge": "Not available yet",
+    "penaltyMessage": "You cannot use this facility yet because your average combined daily balance last month did not meet the BCA Prioritas membership requirements.",
+    "learn": "Learn More"
+  },
   "memberOverview": {
     "previewFullName": "Andhini Putri",
     "previewFirstName": "Andhini",
@@ -1806,6 +1833,93 @@
     "magazine": { "title": "e-Magazine", "read": "Read Now", "coverAlt": "{title} cover" },
     "event": { "title": "Exceptional experiences this month" },
     "promo": { "title": "Selected offers for your lifestyle" }
+  },
+  "memberFinancialReport": {
+    "title": "Financial Report",
+    "tabs": {
+      "label": "Financial report type",
+      "portfolio": "Portfolio Report",
+      "tax": "Tax Withholding Report"
+    },
+    "download": "Download Report",
+    "maskedAmount": "Rp•••",
+    "previewAmounts": {
+      "netWorth": "Rp376.5 B", "assets": "Rp410.1 B", "liabilities": "Rp33.6 B",
+      "chart": { "0": "600 B", "1": "500 B", "2": "400 B", "3": "300 B", "4": "200 B", "5": "100 B" },
+      "composition": { "savings": "Rp164.0 B", "deposit": "Rp123.0 B", "current": "Rp82.0 B", "securities": "Rp41.0 B" },
+      "categories": { "savings": "Rp120.0 B", "investments": "Rp210.0 B", "protection": "Rp80.0 B", "consumerCredit": "Rp12.0 B", "workingCapital": "Rp14.0 B", "creditCard": "Rp7.6 B" }
+    },
+    "visibility": {
+      "show": "Show portfolio amounts", "hide": "Hide portfolio amounts", "close": "Close dialog",
+      "request": { "title": "Send OTP Code", "description": "To access your Financial Report, an OTP code will be sent to the following number", "phoneLabel": "Phone number for OTP", "phonePlaceholder": "Select a phone number", "phoneRequired": "Select a phone number first.", "feeNotice": "Sending the code may incur charges according to your operator's rates", "send": "Send OTP" },
+      "verify": { "title": "Enter OTP Code", "description": "We have sent a 6-digit code to {phone}", "codeLabel": "6-digit OTP code", "resend": "Resend OTP code" },
+      "noPhone": { "title": "No Phone Number Registered", "description": "You do not have a registered e-Banking mobile number. Please register one at the nearest ATM.", "back": "Back" }
+    },
+    "overviewLabel": "Portfolio overview",
+    "updated": "Last updated on 03 June 2026 at 12:47 WIB",
+    "previewNotice": "Personal report data is unavailable in this preview. Sign in to the official BCA service to download your report.",
+    "viewDetails": "View Details",
+    "summary": {
+      "netWorth": "Net Worth",
+      "netWorthInfo": "Assets minus liabilities",
+      "netWorthChange": "+11.8% from last year",
+      "assets": "Total Assets",
+      "assetsInfo": "Total asset value",
+      "assetsChange": "-6.7% from last year",
+      "liabilities": "Total Liabilities",
+      "liabilitiesInfo": "Total liability value",
+      "liabilitiesChange": "-6.7% from last year"
+    },
+    "chart": {
+      "title": "Wealth Growth",
+      "intervalLabel": "Chart interval",
+      "yearly": "Yearly",
+      "monthly": "Monthly",
+      "lastPeriod": "July 2026"
+    },
+    "composition": {
+      "title": "Asset Composition",
+      "savings": "Savings",
+      "deposit": "Time Deposits",
+      "current": "Current Accounts",
+      "securities": "BCA Securities"
+    },
+    "categories": {
+      "assets": "Assets",
+      "liabilities": "Liabilities",
+      "savings": "Savings",
+      "investments": "Investments",
+      "protection": "Protection",
+      "consumerCredit": "Consumer Loans",
+      "workingCapital": "Working Capital Loans",
+      "creditCard": "Credit Cards",
+      "change": "+11.8% from last year"
+    },
+    "portfolio": {
+      "periodLabel": "Portfolio report month"
+    },
+    "tax": {
+      "title": "Download Supporting Tax Report",
+      "periodLabel": "Tax report period",
+      "year": "Yearly",
+      "month": "Monthly",
+      "yearLabel": "Tax report year",
+      "monthLabel": "Tax report month"
+    },
+    "months": {
+      "1": "January",
+      "2": "February",
+      "3": "March",
+      "4": "April",
+      "5": "May",
+      "6": "June",
+      "7": "July",
+      "8": "August",
+      "9": "September",
+      "10": "October",
+      "11": "November",
+      "12": "December"
+    }
   },
   "buttonAudit": {
     "component": "COMPONENT",

@@ -3,7 +3,7 @@
 /* Prioritas palette utilities are used by route-level components that can be
    loaded after the initial homepage scan. Keep these explicit so the compiler
    emits the shared utilities in both the dev and production bundles. */
-@source inline("bg-pbrown-600 bg-pbrown-700/25 bg-pbrown-800 bg-pbrown-900/30 text-pgold-100 text-pgold-300 border-pgold-100/25 border-pgold-300/25 backdrop-saturate-125 backdrop-saturate-[1.2]");
+@source inline("bg-pbrown-600 bg-pbrown-700/25 bg-pbrown-800 bg-pbrown-900/30 text-pgold-100 text-pgold-300 border-pgold-100/25 border-pgold-300/25 backdrop-saturate-125 backdrop-saturate-[1.2] bg-voucher-available text-voucher-available-ink bg-voucher-exhausted text-voucher-exhausted-ink bg-voucher-warning text-voucher-warning-ink bg-asset-savings bg-asset-deposit bg-asset-current bg-asset-securities");
 
 :root {
   --background: #ffffff;
@@ -50,6 +50,16 @@
   --color-pbrown-700: #351e08;
   --color-pbrown-800: #281706;
   --color-pbrown-900: #1c1004;
+  --color-asset-savings: #665019;
+  --color-asset-deposit: #f6c960;
+  --color-asset-current: #e9af35;
+  --color-asset-securities: #9d7a28;
+  --color-voucher-available: #d5ffd0;
+  --color-voucher-available-ink: #22552f;
+  --color-voucher-exhausted: #f8dedb;
+  --color-voucher-exhausted-ink: #7c2929;
+  --color-voucher-warning: #fff6ca;
+  --color-voucher-warning-ink: #674b20;
   /* Legacy aliases retained while Prioritas components migrate to the
      project palette names from Figma. */
   --color-prioritas-gold: var(--color-pgold-500);
@@ -70,10 +80,10 @@
   --color-blue-700: #00335e;
   --color-blue-800: #00213d;
 
-  /* Error ramp — only the one shade the Figma text-input states use
-     (Foundation / Colors, "color/error/red-500"). Tailwind's stock red-*
-     stays intact; this shade overrides it so red-500 is BCA's red. */
+  /* Error ramp shades used by Figma validation and alert states. */
+  --color-red-100: #fff1f0;
   --color-red-500: #cd1923;
+  --color-red-600: #9f141b;
 
   --color-cyan-100: #e6f3ff;
   --color-cyan-300: #d1f4ff;

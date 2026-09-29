@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import BackToTop from "@/components/home/BackToTop";
 import PrioritasDetailExperience from "@/components/prioritas/PrioritasDetailExperience";
 import { getPrivilegeOffer, getPrivilegePromos, splitPartnerTerms, type PrivilegeSection } from "@/lib/partner-privileges";
+import type { MemberSignatureVoucherStatus } from "@/lib/member-signature-voucher";
 
 function available(value: string): string {
   const trimmed = value.trim();
@@ -13,10 +14,14 @@ export default async function PartnerPrivilegeDetailPage({
   locale,
   partnerId,
   section,
+  memberArea = false,
+  memberVoucherStatus,
 }: {
   locale: string;
   partnerId: string;
   section: PrivilegeSection;
+  memberArea?: boolean;
+  memberVoucherStatus?: MemberSignatureVoucherStatus;
 }) {
   setRequestLocale(locale);
   const offer = getPrivilegeOffer(section, partnerId);
@@ -43,6 +48,9 @@ export default async function PartnerPrivilegeDetailPage({
   return (
     <main id="main-content" className="flex min-h-screen flex-1 flex-col overflow-x-clip bg-pgold-200">
       <PrioritasDetailExperience
+        memberArea={memberArea}
+        memberAirportTransfer={memberArea && partnerId === "airport-transfer-domestik" ? "domestic" : memberArea && partnerId === "airport-transfer-internasional" ? "international" : false}
+        memberVoucherStatus={memberArea && partnerId === "executive-airport-lounge" ? memberVoucherStatus ?? "available" : undefined}
         kind={section}
         categoryFilter={current?.privilegeCategory}
         heroImage={asset?.heroImage}

@@ -1701,8 +1701,10 @@
       "featuredTitles": {
         "javaJazz": "Complimentary Ticket Java Jazz Festival untuk Nasabah Prioritas",
         "theWeeknd": "Complimentary Ticket Konser The Weeknd untuk 3 Nasabah Tercepat",
-        "brightspot": "Dapatkan Tiket VIP Brightspot di Opening Night"
+        "brightspot": "Dapatkan Tiket VIP Brightspot di Opening Night",
+        "mercedesAds": "All-New Mercedes-Benz GLC 300 — Hadirkan Teknologi Terdepan di Setiap Perjalanan"
       },
+      "featuredCtas": { "mercedesAds": "Jadwalkan" },
       "featuredCta": "Selengkapnya",
       "viewMore": "Lihat Semua Event & Promo"
     },
@@ -2017,6 +2019,31 @@
     "bannerAlt": "Keluarga menikmati waktu bersama di ruang keluarga",
     "solitaireLogoAlt": "BCA Solitaire"
   },
+  "memberAirportTransfer": {
+    "title": "Fasilitas",
+    "description": "Anda dapat menikmati fasilitas Airport Transfer dengan kode sebagai berikut:",
+    "voucherTitle": "Voucher Domestik",
+    "copy": "Salin",
+    "copied": "Disalin",
+    "copyCode": "Salin kode voucher {code}",
+    "used": "Terpakai",
+    "usedOn": "Voucher sudah digunakan pada tanggal {date}",
+    "viewMore": "Lihat Voucher Lainnya",
+    "hideMore": "Sembunyikan Voucher Lainnya",
+    "notes": {
+      "updated": "Data voucher diperbarui secara berkala setiap tanggal 1 pada pukul [jam] WIB.",
+      "contact": "Apabila terdapat pertanyaan atau perbedaan informasi, silakan menghubungi Halo BCA untuk informasi lebih lanjut."
+    }
+  },
+  "memberSignatureVoucher": {
+    "title": "Ketersediaan Voucher",
+    "available": "Tersedia {count} voucher",
+    "unlimited": "Unlimited Voucher",
+    "exhausted": "Kuota Voucher Habis",
+    "penaltyBadge": "Belum dapat digunakan",
+    "penaltyMessage": "Anda belum dapat menikmati fasilitas ini karena rata-rata harian saldo gabungan Anda di bulan lalu tidak sesuai ketentuan keanggotaan BCA Prioritas",
+    "learn": "Pelajari"
+  },
   "memberOverview": {
     "previewFullName": "Andhini Putri",
     "previewFirstName": "Andhini",
@@ -2048,6 +2075,93 @@
     "magazine": { "title": "e-Magazine", "read": "Baca Sekarang", "coverAlt": "Sampul {title}" },
     "event": { "title": "Akses Pengalaman istimewa bulan ini" },
     "promo": { "title": "Penawaran terpilih sesuai gaya hidup Anda" }
+  },
+  "memberFinancialReport": {
+    "title": "Laporan Finansial",
+    "tabs": {
+      "label": "Jenis laporan finansial",
+      "portfolio": "Laporan Portofolio",
+      "tax": "Laporan Bukti Potong Pajak"
+    },
+    "download": "Unduh Laporan",
+    "maskedAmount": "Rp•••",
+    "previewAmounts": {
+      "netWorth": "Rp376,5 M", "assets": "Rp410,1 M", "liabilities": "Rp33,6 M",
+      "chart": { "0": "600 M", "1": "500 M", "2": "400 M", "3": "300 M", "4": "200 M", "5": "100 M" },
+      "composition": { "savings": "Rp164,0 M", "deposit": "Rp123,0 M", "current": "Rp82,0 M", "securities": "Rp41,0 M" },
+      "categories": { "savings": "Rp120,0 M", "investments": "Rp210,0 M", "protection": "Rp80,0 M", "consumerCredit": "Rp12,0 M", "workingCapital": "Rp14,0 M", "creditCard": "Rp7,6 M" }
+    },
+    "visibility": {
+      "show": "Tampilkan nilai portofolio", "hide": "Sembunyikan nilai portofolio", "close": "Tutup dialog",
+      "request": { "title": "Kirim Kode OTP", "description": "Untuk mengakses Laporan Finansial, kode OTP akan dikirimkan ke nomor berikut", "phoneLabel": "Nomor telepon untuk OTP", "phonePlaceholder": "Pilih nomor telepon", "phoneRequired": "Pilih nomor telepon terlebih dahulu.", "feeNotice": "Pengiriman kode akan dikenakan biaya sesuai dengan tarif operator", "send": "Kirim OTP" },
+      "verify": { "title": "Masukkan Kode OTP", "description": "Kami telah mengirim 6 digit kode ke nomor {phone}", "codeLabel": "Kode OTP 6 digit", "resend": "Kirim ulang kode OTP" },
+      "noPhone": { "title": "Belum Ada Nomor Telepon", "description": "Anda belum memiliki Nomor Handphone e-Banking yang terdaftar. Silakan daftarkan ke ATM terdekat.", "back": "Kembali" }
+    },
+    "overviewLabel": "Ringkasan portofolio",
+    "updated": "Terakhir diperbarui pada 03 Juni 2026 12.47 WIB",
+    "previewNotice": "Data laporan pribadi belum tersedia pada pratinjau ini. Masuk ke layanan resmi BCA untuk mengunduh laporan Anda.",
+    "viewDetails": "Lihat Detail",
+    "summary": {
+      "netWorth": "Net Worth",
+      "netWorthInfo": "Nilai aset dikurangi liabilitas",
+      "netWorthChange": "+11,8% dari tahun lalu",
+      "assets": "Total Aset",
+      "assetsInfo": "Total nilai aset",
+      "assetsChange": "-6,7% dari tahun lalu",
+      "liabilities": "Total Liabilitas",
+      "liabilitiesInfo": "Total nilai liabilitas",
+      "liabilitiesChange": "-6,7% dari tahun lalu"
+    },
+    "chart": {
+      "title": "Pertumbuhan Kekayaan",
+      "intervalLabel": "Rentang grafik",
+      "yearly": "Tahunan",
+      "monthly": "Bulanan",
+      "lastPeriod": "Juli 2026"
+    },
+    "composition": {
+      "title": "Komposisi Aset",
+      "savings": "Tabungan",
+      "deposit": "Deposito",
+      "current": "Giro",
+      "securities": "BCA Sekuritas"
+    },
+    "categories": {
+      "assets": "Aset",
+      "liabilities": "Liabilitas",
+      "savings": "Simpanan",
+      "investments": "Investasi",
+      "protection": "Perlindungan",
+      "consumerCredit": "Kredit Konsumtif",
+      "workingCapital": "Kredit Modal Kerja",
+      "creditCard": "Kartu Kredit",
+      "change": "+11,8% dari tahun lalu"
+    },
+    "portfolio": {
+      "periodLabel": "Bulan laporan portofolio"
+    },
+    "tax": {
+      "title": "Download Laporan Pendukung Pajak",
+      "periodLabel": "Periode laporan pajak",
+      "year": "Tahunan",
+      "month": "Bulanan",
+      "yearLabel": "Tahun laporan pajak",
+      "monthLabel": "Bulan laporan pajak"
+    },
+    "months": {
+      "1": "Januari",
+      "2": "Februari",
+      "3": "Maret",
+      "4": "April",
+      "5": "Mei",
+      "6": "Juni",
+      "7": "Juli",
+      "8": "Agustus",
+      "9": "September",
+      "10": "Oktober",
+      "11": "November",
+      "12": "Desember"
+    }
   },
   "buttonAudit": {
     "component": "COMPONENT",

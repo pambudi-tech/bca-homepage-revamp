@@ -169,7 +169,7 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
             <SearchButton label={tNav("search")} placeholders={searchPlaceholders} expanded={searchOpen} onClick={() => setSearchOpen(true)} />
             <LocaleSwitcher label={tLogin("languageSwitcher")} onOpenChange={setLangOpen} />
             {memberPreviewName ? (
-              <Link href="/prioritas/overview" aria-current="page" className="flex h-10 items-center gap-3 rounded-xl px-2 text-sm font-bold leading-5 text-white">
+              <Link href="/prioritas/member/overview" aria-current="page" className="flex h-10 items-center gap-3 rounded-xl px-2 text-sm font-bold leading-5 text-white">
                 <span aria-hidden className="flex size-10 shrink-0 items-center justify-center rounded-full" style={{ backgroundImage: "linear-gradient(262.59deg, #c2a266 0.18%, #98732c 100.18%)" }}>
                   <img src="/assets/prioritas/member-overview/account-user.svg" alt="" className="shrink-0" />
                 </span>

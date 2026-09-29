@@ -2,7 +2,7 @@
 
 import { useId, useRef, useState } from "react";
 
-export default function InfoTip({ label, message }: { label: string; message: string }) {
+export default function InfoTip({ label, message, tone = "neutral" }: { label: string; message: string; tone?: "neutral" | "prioritas" }) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLSpanElement>(null);
@@ -21,7 +21,7 @@ export default function InfoTip({ label, message }: { label: string; message: st
         }}
         className="inline-flex size-6 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
       >
-        <img aria-hidden src="/assets/member-login/info.svg" alt="" className="size-6" />
+        {tone === "prioritas" ? <span aria-hidden className="size-6 bg-pbrown-500" style={{ maskImage: "url(/assets/member-login/info.svg)", WebkitMaskImage: "url(/assets/member-login/info.svg)", maskRepeat: "no-repeat", WebkitMaskRepeat: "no-repeat", maskPosition: "center", WebkitMaskPosition: "center", maskSize: "contain", WebkitMaskSize: "contain" }} /> : <img aria-hidden src="/assets/member-login/info.svg" alt="" className="size-6" />}
       </button>
       {open ? (
         <span id={id} role="tooltip" className="absolute bottom-[calc(100%+10px)] left-1/2 z-30 w-56 -translate-x-1/2 rounded-xl border border-neutral-200 bg-white px-3 py-2 text-left text-sm leading-5 text-neutral-800 shadow-panel">

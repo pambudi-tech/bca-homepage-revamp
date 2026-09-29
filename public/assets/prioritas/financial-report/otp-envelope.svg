@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="envelope" x1="8" y1="17" x2="53" y2="55" gradientUnits="userSpaceOnUse"><stop stop-color="#D8C795"/><stop offset=".55" stop-color="#A98B58"/><stop offset="1" stop-color="#7C6136"/></linearGradient>
+    <linearGradient id="card" x1="10" y1="35" x2="34" y2="55" gradientUnits="userSpaceOnUse"><stop stop-color="#D2C4A7"/><stop offset="1" stop-color="#8F7A59"/></linearGradient>
+  </defs>
+  <path d="M15 21h34a5 5 0 0 1 5 5v25a5 5 0 0 1-5 5H15a5 5 0 0 1-5-5V26a5 5 0 0 1 5-5Z" fill="url(#envelope)"/>
+  <path d="m10 28 22 16 22-16v23a5 5 0 0 1-5 5H15a5 5 0 0 1-5-5V28Z" fill="#B9A67D"/>
+  <path d="m10 51 22-18 22 18a5 5 0 0 1-5 5H15a5 5 0 0 1-5-5Z" fill="url(#envelope)"/>
+  <path d="M19 11h26v23L32 43 19 34V11Z" fill="#644A2D"/>
+  <path d="M23 17h18M23 23h18M23 29h12" stroke="#D6C5A0" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M9 39h22a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V43a4 4 0 0 1 4-4Z" fill="url(#card)"/>
+  <path d="m14 46 1 2.1 2.3.4-1.7 1.7.4 2.3-2-1.1-2.1 1.1.4-2.3-1.7-1.7 2.3-.4L14 46Zm12 0 1 2.1 2.3.4-1.7 1.7.4 2.3-2-1.1-2.1 1.1.4-2.3-1.7-1.7 2.3-.4L26 46Z" fill="#FFF9EC"/>
+</svg>

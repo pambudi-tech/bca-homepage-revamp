@@ -7,6 +7,7 @@ import PrioritasFeaturedBanner from "@/components/prioritas/PrioritasFeaturedBan
 import { DIRECTORY_PAGE_SIZE, PrioritasDirectoryCategories, PrioritasDirectoryFilters, PrioritasDirectoryPanel } from "@/components/prioritas/PrioritasDirectory";
 import PrioritasDirectoryDropdown from "@/components/prioritas/PrioritasDirectoryDropdown";
 import { EVENT_CATEGORY_KEYS, type EventCategory, type EventPromo } from "@/components/prioritas/event-data";
+import { PRIORITAS_EVENT_FEATURED_BANNER_SLIDES } from "@/components/prioritas/featured-banner-data";
 
 const categoryIcons: Record<EventCategory, string> = { lifestyle: "lifestyle", networking: "business", arts: "beauty", culinary: "fnb" };
 
@@ -48,8 +49,10 @@ export default function EventPrivilegeExperience({ promos, initialCategory = "al
     <section className="relative isolate overflow-x-clip bg-pgold-200 py-8">
       <div className="relative mx-auto max-w-[1280px] px-4 xl:px-0">
         <PrioritasFeaturedBanner
-          titles={[heroT("eventPromo.featuredTitles.javaJazz"), heroT("eventPromo.featuredTitles.theWeeknd"), heroT("eventPromo.featuredTitles.brightspot")]}
-          cta={heroT("eventPromo.featuredCta")}
+          slides={PRIORITAS_EVENT_FEATURED_BANNER_SLIDES}
+          initialIndex={0}
+          titles={[heroT("eventPromo.featuredTitles.javaJazz"), heroT("eventPromo.featuredTitles.mercedesAds"), heroT("eventPromo.featuredTitles.theWeeknd"), heroT("eventPromo.featuredTitles.brightspot")]}
+          cta={[heroT("eventPromo.featuredCta"), heroT("eventPromo.featuredCtas.mercedesAds"), heroT("eventPromo.featuredCta"), heroT("eventPromo.featuredCta")]}
           backdrops={bannerBackdrops}
           slideHrefs={{
             "java-jazz": "/prioritas/promo/bluebird-javajazz",

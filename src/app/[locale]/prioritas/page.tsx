@@ -100,6 +100,8 @@ export default async function PrioritasPage({
             t("eventPromo.featuredTitles.theWeeknd"),
             t("eventPromo.featuredTitles.brightspot"),
           ],
+          mercedesAdTitle: t("eventPromo.featuredTitles.mercedesAds"),
+          mercedesAdCta: t("eventPromo.featuredCtas.mercedesAds"),
           featuredCta: t("eventPromo.featuredCta"),
           viewMore: t("eventPromo.viewMore"),
         }}
