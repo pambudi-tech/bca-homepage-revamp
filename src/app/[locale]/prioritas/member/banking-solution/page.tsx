@@ -21,6 +21,6 @@ export default async function PrioritasMemberBankingPage({ params, searchParams 
         }))}
       />
     </PrioritasMemberHeader>
-    <BankingSolutionIndexExperience activeTab={activeSection} />
+    <BankingSolutionIndexExperience activeTab={activeSection} memberArea />
   </>;
 }

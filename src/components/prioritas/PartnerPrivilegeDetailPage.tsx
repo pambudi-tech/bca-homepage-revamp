@@ -4,6 +4,8 @@ import BackToTop from "@/components/home/BackToTop";
 import PrioritasDetailExperience from "@/components/prioritas/PrioritasDetailExperience";
 import { getPrivilegeOffer, getPrivilegePromos, splitPartnerTerms, type PrivilegeSection } from "@/lib/partner-privileges";
 import type { MemberSignatureVoucherStatus } from "@/lib/member-signature-voucher";
+import { cookies } from "next/headers";
+import { MEMBER_SESSION_COOKIE, MEMBER_SESSION_VALUE } from "@/lib/member-auth";
 
 function available(value: string): string {
   const trimmed = value.trim();
@@ -28,6 +30,10 @@ export default async function PartnerPrivilegeDetailPage({
   if (!offer) notFound();
 
   const detailT = await getTranslations("lifestylePrivilegeDetail");
+  const session = (await cookies()).get(MEMBER_SESSION_COOKIE)?.value;
+  const memberPreviewName = session === MEMBER_SESSION_VALUE
+    ? await (await getTranslations("memberOverview"))("previewFullName")
+    : undefined;
   const signatureT = await getTranslations("signaturePrivilege");
   const { partner, benefit, asset, logo } = offer;
   const promos = getPrivilegePromos(section);
@@ -49,6 +55,7 @@ export default async function PartnerPrivilegeDetailPage({
     <main id="main-content" className="flex min-h-screen flex-1 flex-col overflow-x-clip bg-pgold-200">
       <PrioritasDetailExperience
         memberArea={memberArea}
+        memberPreviewName={memberPreviewName}
         memberAirportTransfer={memberArea && partnerId === "airport-transfer-domestik" ? "domestic" : memberArea && partnerId === "airport-transfer-internasional" ? "international" : false}
         memberVoucherStatus={memberArea && partnerId === "executive-airport-lounge" ? memberVoucherStatus ?? "available" : undefined}
         kind={section}
@@ -89,6 +96,7 @@ export default async function PartnerPrivilegeDetailPage({
             dynamicModule: {
               message: detailT("dynamicModule.message", { benefit: benefit.benefit }),
               loginLabel: detailT("dynamicModule.loginLabel"),
+              memberHref: `/prioritas/member/privilege/${encodeURIComponent(partnerId)}`,
             },
           } : {}),
         }}

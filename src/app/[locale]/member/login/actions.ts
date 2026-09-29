@@ -34,3 +34,7 @@ export async function loginMember(
 
   return "success";
 }
+
+export async function logoutMember(): Promise<void> {
+  (await cookies()).delete(MEMBER_SESSION_COOKIE);
+}

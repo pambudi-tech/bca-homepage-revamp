@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useIsLive } from "@/lib/useIsLive";
 import { Link } from "@/i18n/navigation";
-import { PrioritasButton, PrioritasButtonIcon } from "@/components/prioritas/PrioritasButton";
+import { prioritasButtonClassName, PrioritasButtonIcon } from "@/components/prioritas/PrioritasButton";
 
 const AUTO_ADVANCE_MS = 6000;
 
@@ -24,15 +24,17 @@ export type PrivilegeSectionCopy = {
 
 function ArrowAction({ children }: { children: ReactNode }) {
   return (
-    <PrioritasButton kind="text" surface="inverse" size="large" trailingIcon={<PrioritasButtonIcon src={`${ASSET_ROOT}/arrow-small.svg`} />}>
-      {children}
-    </PrioritasButton>
+    <span className={prioritasButtonClassName({ kind: "text", surface: "inverse", size: "large" })}>
+      <span className="prio-button__label">{children}</span>
+      <PrioritasButtonIcon src={`${ASSET_ROOT}/arrow-small.svg`} />
+    </span>
   );
 }
 
 function PrivilegeCard({
   copy,
   image,
+  href,
   feature = false,
   active = false,
   onSelect,
@@ -41,6 +43,7 @@ function PrivilegeCard({
 }: {
   copy: PrivilegeCardCopy;
   image: string;
+  href: string;
   feature?: boolean;
   active?: boolean;
   onSelect?: () => void;
@@ -49,9 +52,11 @@ function PrivilegeCard({
 }) {
   const circumference = 2 * Math.PI * 14;
   return (
-    <article
+    <Link
+      href={href}
       ref={cardRef}
       onClick={onSelect}
+      aria-label={`${copy.title} ${copy.action}`}
       className={`group relative w-[280px] shrink-0 snap-center overflow-hidden rounded-3xl transition-[height] duration-500 ease-in-out xl:w-auto xl:shrink xl:snap-none ${feature ? "h-[360px] xl:col-span-2" : active ? "h-[360px]" : "h-[328px] xl:h-[400px]"}`}
     >
       <img
@@ -80,7 +85,7 @@ function PrivilegeCard({
         </h3>
         <ArrowAction>{copy.action}</ArrowAction>
       </div>
-    </article>
+    </Link>
   );
 }
 
@@ -93,9 +98,9 @@ export default function PrivilegeSection({ copy }: { copy: PrivilegeSectionCopy 
   const sectionRef = useRef<HTMLElement>(null);
   const live = useIsLive(sectionRef);
   const cards = [
-    { copy: copy.cards[0], image: `${ASSET_ROOT}/lounge.webp` },
-    { copy: copy.cards[1], image: `${ASSET_ROOT}/hospital.webp` },
-    { copy: copy.cards[2], image: `${ASSET_ROOT}/event.webp` },
+    { copy: copy.cards[0], image: `${ASSET_ROOT}/lounge.webp`, href: "/prioritas/privilege/executive-airport-lounge" },
+    { copy: copy.cards[1], image: `${ASSET_ROOT}/hospital.webp`, href: "/prioritas/lifestyle-privilege?category=health" },
+    { copy: copy.cards[2], image: `${ASSET_ROOT}/event.webp`, href: "/prioritas/event" },
   ];
 
   const selectMobileCard = (index: number, scroll = false) => {
@@ -180,6 +185,7 @@ export default function PrivilegeSection({ copy }: { copy: PrivilegeSectionCopy 
                 key={card.copy.title}
                 copy={card.copy}
                 image={card.image}
+                href={card.href}
                 active={activeCard === index}
                 progress={activeCard === index ? progress : 0}
                 cardRef={(node) => { cardRefs.current[index] = node; }}
@@ -197,9 +203,9 @@ export default function PrivilegeSection({ copy }: { copy: PrivilegeSectionCopy 
           </Link>
 
           <div className="hidden grid-cols-1 gap-8 xl:grid xl:grid-cols-2 xl:gap-6">
-            <PrivilegeCard copy={cards[0].copy} image={cards[0].image} feature />
-            <PrivilegeCard copy={cards[1].copy} image={cards[1].image} />
-            <PrivilegeCard copy={cards[2].copy} image={cards[2].image} />
+            <PrivilegeCard copy={cards[0].copy} image={cards[0].image} href={cards[0].href} feature />
+            <PrivilegeCard copy={cards[1].copy} image={cards[1].image} href={cards[1].href} />
+            <PrivilegeCard copy={cards[2].copy} image={cards[2].image} href={cards[2].href} />
 
             <Link
               href="/prioritas/privilege"

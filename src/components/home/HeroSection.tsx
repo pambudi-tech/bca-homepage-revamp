@@ -11,7 +11,7 @@ import { SLIDES, SLIDE_DURATION_MS, type Slide, type SlideCta } from "./hero-sli
 import ChristmasDecor from "./ChristmasDecor";
 import CnyDecor from "./CnyDecor";
 import LebaranDecor from "./LebaranDecor";
-import { PrioritasButtonIcon, prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
+import { prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
 import LayoutSwitcher from "./LayoutSwitcher";
 
 const PARALLAX_SPEED = 0.45;
@@ -33,7 +33,7 @@ function HeroCta({ label, icon, variant, tone = "default" }: SlideCta) {
         <span className={prioritas ? "prio-button__label" : `px-0.5 text-base font-semibold ${brandedHero ? "text-pbrown-600" : "text-white"}`}>
           {label}
         </span>
-        {prioritas ? <PrioritasButtonIcon src={icon} /> : <img src={icon} alt="" className={`size-5 ${solitaire ? "brightness-0 invert xl:brightness-0 xl:invert-0" : "brightness-0 invert"}`} />}
+        <img src={icon} alt="" className={`size-5 ${prioritas ? "brightness-0 opacity-80" : solitaire ? "brightness-0 invert xl:brightness-0 xl:invert-0" : "brightness-0 invert"}`} />
       </button>
     </div>
   );
@@ -135,6 +135,10 @@ export default function HeroSection({
     goTo(activeSlide + (dx < 0 ? 1 : -1)); // swipe left → next, right → prev
   };
 
+  const carouselControlClass = slides[activeSlide].cta.tone === "prioritas"
+    ? "flex size-10 items-center justify-center rounded-full border border-white/25 bg-pbrown-900/30 text-white backdrop-blur-md transition-colors hover:bg-pbrown-900/50"
+    : "flex size-10 items-center justify-center rounded-full bg-black/30 transition-colors hover:bg-black/50";
+
   return (
     <div
       ref={rootRef}
@@ -223,10 +227,10 @@ export default function HeroSection({
               <img
                 src={slides[activeSlide].brandMark.src}
                 alt={slides[activeSlide].brandMark.alt}
-                className="h-10 w-auto animate-hero-title object-contain"
+                className="h-10 w-auto animate-hero-title object-contain xl:h-14"
               />
             ) : null}
-            <h1 className={`animate-hero-title ${solitaireHero ? "max-w-[260px]" : "max-w-[240px]"} font-semibold text-white text-shadow-hero ${brandedHero ? (slides[activeSlide].cta.tone === "prioritas" ? "text-hero-title-mobile" : "text-display") : "text-2xl leading-7 tracking-[-0.4px]"} xl:line-clamp-2 xl:max-w-none xl:text-[clamp(36px,5svh,40px)] xl:leading-[clamp(44px,6svh,48px)] xl:tracking-[-0.8px] xl:text-shadow-none`}>
+            <h1 className={`animate-hero-title ${solitaireHero ? "max-w-[260px]" : "max-w-[240px]"} font-semibold text-white text-shadow-hero ${brandedHero ? (slides[activeSlide].cta.tone === "prioritas" ? "text-hero-title-mobile" : "text-display") : "text-2xl leading-7 tracking-[-0.4px]"} ${brandedHero ? "xl:line-clamp-3" : "xl:line-clamp-2"} xl:max-w-none xl:text-[clamp(36px,5svh,40px)] xl:leading-[clamp(44px,6svh,48px)] xl:tracking-[-0.8px] xl:text-shadow-none`}>
               {slides[activeSlide].title}
             </h1>
             <div className="animate-hero-cta">
@@ -252,13 +256,13 @@ export default function HeroSection({
               )}
             </div>
             <div className="hidden items-center gap-2 xl:flex">
-              <button onClick={goPrev} aria-label={t("prevSlide")} className={slides[activeSlide].cta.tone === "prioritas" ? prioritasButtonClassName({ kind: "icon", variant: "secondary", surface: "inverse", size: "medium" }) : "flex size-10 items-center justify-center rounded-full bg-black/30 transition-colors hover:bg-black/50"}>
+              <button onClick={goPrev} aria-label={t("prevSlide")} className={carouselControlClass}>
                 <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-5" />
               </button>
             <button
               onClick={goNext}
               aria-label={t("nextSlide")}
-              className={slides[activeSlide].cta.tone === "prioritas" ? prioritasButtonClassName({ kind: "icon", variant: "secondary", surface: "inverse", size: "medium" }) : "flex size-10 items-center justify-center rounded-full bg-black/30 transition-colors hover:bg-black/50"}
+              className={carouselControlClass}
             >
               <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5" />
             </button>

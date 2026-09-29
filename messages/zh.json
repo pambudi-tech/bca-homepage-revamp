@@ -1582,15 +1582,15 @@
     "calendarAction": "添加到日历",
     "downloadAction": "下载 PDF",
     "privilege": {
-      "jcb": "JCB 欢迎礼遇",
+      "jcb": "BCA JCB Black信用卡",
       "vehicle": "汽车贷款 (KKB)",
       "branch": "BCA 分行专属服务",
       "insurance": "保险",
       "fees": "专属交易费用",
       "transaction": "专属交易功能与服务",
       "media": "资讯服务",
-      "advisor": "BCA 分行专属服务",
-      "family": "BCA 分行专属服务",
+      "advisor": "专属Personal Banker",
+      "family": "BCA Young Community",
       "contact": "客户服务中心",
       "credit": "BCA 信用卡",
       "home": "住房贷款",
@@ -1784,5 +1784,244 @@
     "lifestyle": "礼遇卡 — Lifestyle Privilege",
     "event": "活动卡",
     "promo": "优惠卡"
+  }
+,
+  "accountMenu":   {
+    "home": "前往主页",
+    "overview": "前往概览",
+    "logout": "退出账户",
+    "confirmTitle": "退出账户？",
+    "confirmMessage": "确定要退出账户吗？",
+    "cancel": "取消"
+  },
+  "mobileMenu":   {
+    "tutupMenu": "关闭菜单",
+    "bukaMenu": "打开菜单",
+    "bahasa": "语言",
+    "pilihSegmen": "选择您的客户类型",
+    "sesiAktif": "当前会话",
+    "logout": "退出登录",
+    "kembali": "返回",
+    "menuLabel": "主菜单"
+  },
+  "prioritasHero":   {
+    "title": "您的人生旅程，是我们的优先考量。",
+    "cta": "了解更多",
+    "bannerAlt": "一家人在客厅共度时光",
+    "prioritasLogoAlt": "BCA Prioritas",
+    "campaigns": {
+      "weekndAlt": "BCA The Weeknd 预售",
+      "weekndTitle": "BCA The Weeknd《After Hours Til Dawn》雅加达演唱会预售",
+      "weekndCta": "获取门票",
+      "jrfAlt": "为 myBCA JRF 2026 门票持续储蓄",
+      "jrfTitle": "持续储蓄，赢取 myBCA JRF 2026 门票！",
+      "jrfCta": "了解更多"
+    },
+    "sectionNavLabel": "BCA Prioritas 页面导航",
+    "sections": {
+      "privilege": "尊享礼遇",
+      "eventPromo": "活动与优惠",
+      "bankingSolution": "银行解决方案",
+      "magazine": "电子杂志",
+      "financialReport": "财务报告"
+    },
+    "contact": {
+      "heading": "我们随时准备陪伴您迈向下一段旅程。",
+      "riplayTitle": "产品与服务信息摘要（RIPLAY）",
+      "download": "下载文件",
+      "contactTitle": "联系我们",
+      "phone": "拨打 150022"
+    },
+    "privilege": {
+      "eyebrow": "尊享礼遇",
+      "heading": "伴随您人生旅程每一步的尊贵礼遇",
+      "cards": {
+        "lounge": {
+          "title": "尊享印度尼西亚数百家机场贵宾休息室",
+          "action": "立即预订",
+          "alt": "机场贵宾休息室"
+        },
+        "health": {
+          "title": "精选高端医院尊享健康检查",
+          "action": "查看合作医院",
+          "alt": "高端医院房间"
+        },
+        "event": {
+          "title": "尊享热门活动优先入场礼遇",
+          "action": "查看所有活动",
+          "alt": "活动现场尊享座位"
+        }
+      },
+      "viewMore": "查看您拥有的更多尊享礼遇"
+    },
+    "eventPromo": {
+      "eyebrow": "活动与优惠",
+      "heading": "为您专属打造的优惠与精彩体验",
+      "featuredTitles": {
+        "javaJazz": "为BCA Prioritas客户赠送Java Jazz音乐节门票",
+        "theWeeknd": "The Weeknd 演唱会赠票，限前三位客户",
+        "brightspot": "获取Brightspot开幕之夜VIP门票",
+        "mercedesAds": "全新 Mercedes-Benz GLC 300——以领先科技开启每一段旅程"
+      },
+      "featuredCtas": {
+        "mercedesAds": "立即预约"
+      },
+      "featuredCta": "了解更多",
+      "viewMore": "查看所有活动与优惠"
+    },
+    "card": {
+      "eyebrow": "银行卡",
+      "heading": "一张卡片，尊享千项专属礼遇",
+      "description": "仅限特别邀请。请联系您的 Personal Banker 了解更多信息。",
+      "action": "了解更多",
+      "imageAlt": "BCA Prioritas 铂金借记卡"
+    },
+    "kartu": {
+      "eyebrow": "银行解决方案",
+      "heading": "陪伴您人生旅程的专属银行服务",
+      "label": "专属银行礼遇",
+      "viewMore": "查看全部",
+      "action": "了解更多",
+      "cards": {
+        "branch": {
+          "title": "BCA 分行专属服务",
+          "alt": "BCA 分行专属服务"
+        },
+        "vehicle": {
+          "title": "机动车贷款（KKB）",
+          "alt": "机动车贷款"
+        },
+        "transaction": {
+          "title": "专属交易功能与服务",
+          "alt": "专属交易功能与服务"
+        },
+        "credit": {
+          "title": "BCA 信用卡",
+          "alt": "BCA 信用卡"
+        },
+        "home": {
+          "title": "房屋所有权贷款",
+          "alt": "房屋所有权贷款"
+        },
+        "deposit": {
+          "title": "保险箱",
+          "alt": "保险箱"
+        }
+      }
+    },
+    "bankingSolution": {
+      "eyebrow": "银行解决方案",
+      "heading": "陪伴您人生旅程的专属银行服务",
+      "bankingPrivilege": "专属银行礼遇",
+      "wealthInsight": "财富洞察",
+      "kurs": "今日汇率",
+      "viewMore": "查看全部",
+      "action": "了解更多",
+      "buy": "买入",
+      "sell": "卖出",
+      "updatedAt": "最后更新于 {date}",
+      "refresh": "刷新汇率",
+      "previous": "上一项汇率",
+      "next": "下一项汇率",
+      "cards": {
+        "branch": {
+          "title": "BCA 分行专属服务",
+          "alt": "BCA 分行专属服务"
+        },
+        "vehicle": {
+          "title": "机动车贷款（KKB）",
+          "alt": "机动车贷款"
+        },
+        "transaction": {
+          "title": "专属交易功能与服务",
+          "alt": "专属交易功能与服务"
+        },
+        "credit": {
+          "title": "BCA 信用卡",
+          "alt": "BCA 信用卡"
+        },
+        "home": {
+          "title": "房屋所有权贷款",
+          "alt": "房屋所有权贷款"
+        },
+        "deposit": {
+          "title": "保险箱",
+          "alt": "保险箱"
+        }
+      },
+      "wealthCards": {
+        "houseView": {
+          "title": "2025年6月观点：降息周期中的投资组合策略",
+          "date": "2025年6月16日，星期三 · 14.00 WIB",
+          "channel": "YouTube 直播",
+          "action": "添加到日历",
+          "alt": "BCA Prioritas House View 活动"
+        },
+        "market": {
+          "title": "每周市场概览：缓和与滞胀之间",
+          "date": "2026年6月2日",
+          "action": "下载报告",
+          "alt": "BCA Prioritas 每周市场概览"
+        }
+      }
+    },
+    "magazine": {
+      "eyebrow": "电子杂志",
+      "heading": "陪伴每一位不断成长的您",
+      "viewMore": "查看全部",
+      "cards": {
+        "property": {
+          "title": "第104期-XXI/2025",
+          "action": "立即阅读",
+          "alt": "关于印度尼西亚房地产行业的优先杂志"
+        },
+        "food": {
+          "title": "第105期-XXII/2026",
+          "action": "立即阅读",
+          "alt": "关于餐饮行业的优先杂志"
+        },
+        "chess": {
+          "title": "第103期-XX/2025",
+          "action": "立即阅读",
+          "alt": "关于年轻企业家的优先杂志"
+        }
+      }
+    },
+    "financialReport": {
+      "eyebrow": "财务报告",
+      "heading": "一览您的完整投资组合",
+      "features": {
+        "centralized": "集中展示您所有 BCA 产品的数据",
+        "reporting": "可用于各种报告",
+        "updated": "每次访问时都会及时更新"
+      },
+      "action": "查看您的报告"
+    }
+  },
+  "bankingPrivilegeDetail":   {
+    "title": "专属银行礼遇",
+    "detailTitle": "礼遇详情",
+    "contactTitle": "了解更多",
+    "contact": "如需了解更多信息，请联系BCA Prioritas分行或您的Personal Banker。",
+    "back": "返回银行礼遇",
+    "recommendations": "其他银行礼遇",
+    "items": {
+      "jcb-black": "使用BCA JCB Black信用卡，可享最高200万印尼盾现金返还。",
+      "kkb": "申请机动车贷款，享受更快捷简便的流程、便捷的调查服务以及分行抵押文件服务。",
+      "layanan-cabang": "通过专属休息室和服务，享受便捷的BCA分行银行服务。",
+      "asuransi": "通过BCA多种保险产品，为您的生命、健康和财产提供保障。",
+      "biaya-transaksi": "多项金融交易可享专属费用。",
+      "fitur-transaksi": "使用BCA创新功能，让交易更加便捷。",
+      "media-informasi": "获取面向BCA Solitaire和Prioritas客户的专属资讯。",
+      "personal-banker": "专属Personal Banker为您的银行需求提供协助。",
+      "young-community": "加入面向年轻BCA Solitaire和Prioritas客户的社群。",
+      "contact-center": "享受专为BCA Solitaire和Prioritas客户提供的联络中心服务。",
+      "kartu-kredit": "使用BCA信用卡可享年费豁免和现金返还。",
+      "kpr": "享受住房贷款管理费优惠。",
+      "ksm": "申请摩托车贷款，首付低至5%。",
+      "merchant-edc": "BCA EDC商户可享专属商户折扣率（MDR）。",
+      "safe-deposit-box": "租用Safe Deposit Box可享专属礼遇。",
+      "valuta-asing": "购买外币可享专属汇率。"
+    }
   }
 }

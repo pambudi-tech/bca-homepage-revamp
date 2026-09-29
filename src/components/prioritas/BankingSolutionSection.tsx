@@ -62,8 +62,10 @@ export function BankingPrivilegeCard({ card, action, directory = false }: { card
       <h3 className="absolute bottom-20 left-4 w-[min(301px,calc(100%-2rem))] text-subtitle text-neutral-100 [text-shadow:0_3px_4px_rgb(0_0_0_/_0.25)] md:bottom-[88px] md:left-6 md:w-[min(301px,calc(100%-3rem))] md:text-title">
         {card.title}
       </h3>
-      <Link href={card.href ?? "/kartu-kredit"} className={prioritasButtonClassName({ variant: "secondary", surface: "inverse", size: "medium", className: "absolute bottom-4 left-4 md:bottom-6 md:left-6" })}>
-        <span className="prio-button__label">{action}</span>
+      <Link href={card.href ?? "/kartu-kredit"} aria-label={`${card.title} — ${action}`} className="absolute inset-0 z-10">
+        <span aria-hidden="true" className={prioritasButtonClassName({ variant: "secondary", surface: "inverse", size: "medium", className: "absolute bottom-4 left-4 md:bottom-6 md:left-6" })}>
+          <span className="prio-button__label">{action}</span>
+        </span>
       </Link>
     </article>
   );

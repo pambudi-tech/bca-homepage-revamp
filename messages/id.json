@@ -1963,15 +1963,15 @@
     "calendarAction": "Tambahkan ke Kalender",
     "downloadAction": "Download PDF",
     "privilege": {
-      "jcb": "JCB Welcome Bonus",
+      "jcb": "Kartu Kredit BCA JCB Black",
       "vehicle": "Kredit Kendaraan Bermotor (KKB)",
       "branch": "Layanan khusus di Cabang BCA",
       "insurance": "Asuransi",
       "fees": "Biaya Transaksi Khusus",
       "transaction": "Fitur & Layanan Transaksi Khusus",
       "media": "Media Informasi",
-      "advisor": "Layanan khusus di Cabang BCA",
-      "family": "Layanan khusus di Cabang BCA",
+      "advisor": "PIC Khusus",
+      "family": "BCA Young Community",
       "contact": "Contact Center",
       "credit": "Kartu Kredit BCA",
       "home": "Kredit Pemilikan Rumah",
@@ -2191,5 +2191,244 @@
     "lifestyle": "Privilege Card — Lifestyle Privilege",
     "event": "Event Card",
     "promo": "Promo Card"
+  }
+,
+  "accountMenu":   {
+    "home": "ke Homepage",
+    "overview": "ke Overview",
+    "logout": "Keluar Akun",
+    "confirmTitle": "Keluar dari akun?",
+    "confirmMessage": "Apakah Anda yakin ingin keluar dari akun?",
+    "cancel": "Batal"
+  },
+  "mobileMenu":   {
+    "tutupMenu": "Tutup menu",
+    "bukaMenu": "Buka menu",
+    "bahasa": "Bahasa",
+    "pilihSegmen": "Pilih Segmen Anda",
+    "sesiAktif": "Sesi aktif",
+    "logout": "Logout",
+    "kembali": "Kembali",
+    "menuLabel": "Menu utama"
+  },
+  "prioritasHero":   {
+    "title": "Perjalanan Hidup Anda adalah Prioritas Kami.",
+    "cta": "Pelajari Lebih Lanjut",
+    "bannerAlt": "Keluarga menikmati waktu bersama di ruang keluarga",
+    "prioritasLogoAlt": "BCA Prioritas",
+    "campaigns": {
+      "weekndAlt": "BCA Presale The Weeknd",
+      "weekndTitle": "BCA Presale: The Weeknd After Hours Til Dawn Tour di Jakarta",
+      "weekndCta": "Dapatkan Tiket",
+      "jrfAlt": "Terus Nabung buat Kejar Tiket myBCA JRF 2026",
+      "jrfTitle": "Terus Nabung buat Kejar Tiket myBCA JRF 2026!",
+      "jrfCta": "Pelajari Lebih Lanjut"
+    },
+    "sectionNavLabel": "Navigasi halaman BCA Prioritas",
+    "sections": {
+      "privilege": "Privilege",
+      "eventPromo": "Event & Promo",
+      "bankingSolution": "Banking Solution",
+      "magazine": "e-Magazine",
+      "financialReport": "Laporan Finansial"
+    },
+    "contact": {
+      "heading": "Kami siap mendampingi langkah Anda selanjutnya.",
+      "riplayTitle": "Ringkasan Informasi Produk dan Layanan (RIPLAY)",
+      "download": "Unduh Dokumen",
+      "contactTitle": "Hubungi Kami",
+      "phone": "Telp 150022"
+    },
+    "privilege": {
+      "eyebrow": "Privilege",
+      "heading": "Beragam Akses Istimewa yang Hadir di Setiap Langkah Perjalanan Anda",
+      "cards": {
+        "lounge": {
+          "title": "Akses ke Ratusan Airport Lounge Eksklusif di Seluruh Indonesia",
+          "action": "Reservasi Sekarang",
+          "alt": "Airport lounge eksklusif"
+        },
+        "health": {
+          "title": "Pemeriksaan Kesehatan Eksklusif di Rumah Sakit Premium Pilihan",
+          "action": "Lihat RS Partner",
+          "alt": "Kamar rumah sakit premium"
+        },
+        "event": {
+          "title": "Akses Prioritas ke Beragam Event Ternama",
+          "action": "Lihat Semua Event",
+          "alt": "Tempat duduk eksklusif di sebuah event"
+        }
+      },
+      "viewMore": "Lihat Privilege Lainnya yang Anda Miliki"
+    },
+    "eventPromo": {
+      "eyebrow": "EVENT & PROMO",
+      "heading": "Penawaran dan Pengalaman Eksklusif Hanya untuk Anda",
+      "featuredTitles": {
+        "javaJazz": "Complimentary Ticket Java Jazz Festival untuk Nasabah Prioritas",
+        "theWeeknd": "Complimentary Ticket Konser The Weeknd untuk 3 Nasabah Tercepat",
+        "brightspot": "Dapatkan Tiket VIP Brightspot di Opening Night",
+        "mercedesAds": "All-New Mercedes-Benz GLC 300 — Hadirkan Teknologi Terdepan di Setiap Perjalanan"
+      },
+      "featuredCtas": {
+        "mercedesAds": "Jadwalkan"
+      },
+      "featuredCta": "Selengkapnya",
+      "viewMore": "Lihat Semua Event & Promo"
+    },
+    "card": {
+      "eyebrow": "CARD",
+      "heading": "Satu Kartu untuk Ribuan Akses Eksklusif",
+      "description": "Tersedia hanya melalui undangan khusus. Hubungi Personal Banker Anda untuk informasi lebih lanjut.",
+      "action": "Pelajari Lebih Lanjut",
+      "imageAlt": "Kartu debit platinum BCA Prioritas"
+    },
+    "kartu": {
+      "eyebrow": "BANKING SOLUTION",
+      "heading": "Layanan Perbankan Khusus untuk Perjalanan Hidup Anda",
+      "label": "Banking Privilege",
+      "viewMore": "Lihat Semua",
+      "action": "Selengkapnya",
+      "cards": {
+        "branch": {
+          "title": "Layanan khusus di Cabang BCA",
+          "alt": "Layanan khusus di Cabang BCA"
+        },
+        "vehicle": {
+          "title": "Kredit Kendaraan Bermotor (KKB)",
+          "alt": "Kredit kendaraan bermotor"
+        },
+        "transaction": {
+          "title": "Fitur & Layanan Transaksi Khusus",
+          "alt": "Fitur dan layanan transaksi khusus"
+        },
+        "credit": {
+          "title": "Kartu Kredit BCA",
+          "alt": "Kartu Kredit BCA"
+        },
+        "home": {
+          "title": "Kredit Pemilikan Rumah",
+          "alt": "Kredit pemilikan rumah"
+        },
+        "deposit": {
+          "title": "Safe Deposit Box",
+          "alt": "Safe Deposit Box"
+        }
+      }
+    },
+    "bankingSolution": {
+      "eyebrow": "BANKING SOLUTION",
+      "heading": "Layanan Perbankan Khusus untuk Perjalanan Hidup Anda",
+      "bankingPrivilege": "Banking Privilege",
+      "wealthInsight": "Wealth Insight",
+      "kurs": "Kurs Hari Ini",
+      "viewMore": "Lihat Semua",
+      "action": "Selengkapnya",
+      "buy": "Beli",
+      "sell": "Jual",
+      "updatedAt": "Terakhir diperbarui pada {date}",
+      "refresh": "Perbarui kurs",
+      "previous": "Kurs sebelumnya",
+      "next": "Kurs berikutnya",
+      "cards": {
+        "branch": {
+          "title": "Layanan khusus di Cabang BCA",
+          "alt": "Layanan khusus di Cabang BCA"
+        },
+        "vehicle": {
+          "title": "Kredit Kendaraan Bermotor (KKB)",
+          "alt": "Kredit kendaraan bermotor"
+        },
+        "transaction": {
+          "title": "Fitur & Layanan Transaksi Khusus",
+          "alt": "Fitur dan layanan transaksi khusus"
+        },
+        "credit": {
+          "title": "Kartu Kredit BCA",
+          "alt": "Kartu kredit BCA"
+        },
+        "home": {
+          "title": "Kredit Pemilikan Rumah",
+          "alt": "Kredit pemilikan rumah"
+        },
+        "deposit": {
+          "title": "Safe Deposit Box",
+          "alt": "Safe Deposit Box"
+        }
+      },
+      "wealthCards": {
+        "houseView": {
+          "title": "House View Juni 2025 - Strategi Portofolio di Tengah Siklus Pemangkasan Rate",
+          "date": "Rabu, 16 Juni 2025 · 14.00 WIB",
+          "channel": "Live di YouTube",
+          "action": "Tambahkan ke Kalender",
+          "alt": "Acara House View BCA Prioritas"
+        },
+        "market": {
+          "title": "Weekly Market Overview Antara De-eskalasi dan Stagflasi: Pasar Global di Persimpangan, Indonesia Hadapi Tekanan Ganda",
+          "date": "2 Juni 2026",
+          "action": "Unduh Laporan",
+          "alt": "Weekly Market Overview BCA Prioritas"
+        }
+      }
+    },
+    "magazine": {
+      "eyebrow": "E-MAGAZINE",
+      "heading": "Hadir untuk Mereka yang Tidak Berhenti Bertumbuh",
+      "viewMore": "Lihat Semua",
+      "cards": {
+        "property": {
+          "title": "Edisi 104-XXI/2025",
+          "action": "Baca Sekarang",
+          "alt": "Majalah Prioritas tentang industri properti Indonesia"
+        },
+        "food": {
+          "title": "Edisi 105-XXII/2026",
+          "action": "Baca Sekarang",
+          "alt": "Majalah Prioritas tentang industri makanan dan minuman"
+        },
+        "chess": {
+          "title": "Edisi 103-XX/2025",
+          "action": "Baca Sekarang",
+          "alt": "Majalah Prioritas tentang wirausaha muda"
+        }
+      }
+    },
+    "financialReport": {
+      "eyebrow": "LAPORAN FINANSIAL",
+      "heading": "Gambaran Lengkap Portofolio Anda, dalam Satu Tampilan",
+      "features": {
+        "centralized": "Data terpusat dari seluruh produk BCA Anda",
+        "reporting": "Siap digunakan untuk beragam pelaporan",
+        "updated": "Selalu diperbarui setiap kali Anda mengakses"
+      },
+      "action": "Akses Laporan Anda"
+    }
+  },
+  "bankingPrivilegeDetail":   {
+    "title": "Banking Privilege",
+    "detailTitle": "Detail Manfaat",
+    "contactTitle": "Informasi Lebih Lanjut",
+    "contact": "Hubungi Cabang Prioritas atau Personal Banker Anda untuk informasi lebih lanjut.",
+    "back": "Kembali ke Banking Privilege",
+    "recommendations": "Banking Privilege Lainnya",
+    "items": {
+      "jcb-black": "Nikmati cashback hingga Rp2 juta melalui Kartu Kredit BCA JCB Black.",
+      "kkb": "Pengajuan Kredit Kendaraan Bermotor yang lebih cepat dan mudah, dengan kemudahan proses survei serta layanan dokumen agunan di cabang.",
+      "layanan-cabang": "Nikmati kenyamanan bertransaksi di cabang BCA melalui lounge dan layanan khusus nasabah.",
+      "asuransi": "Perlindungan untuk jiwa, kesehatan, dan harta benda melalui beragam produk asuransi BCA.",
+      "biaya-transaksi": "Biaya khusus untuk berbagai transaksi keuangan.",
+      "fitur-transaksi": "Manfaatkan inovasi dan fitur BCA untuk membantu mempermudah transaksi Anda.",
+      "media-informasi": "Akses media komunikasi eksklusif bagi nasabah BCA Solitaire dan Prioritas.",
+      "personal-banker": "Dapatkan dukungan Personal Banker khusus untuk membantu kebutuhan perbankan Anda.",
+      "young-community": "Terhubung dengan komunitas bagi nasabah muda BCA Solitaire dan Prioritas.",
+      "contact-center": "Nikmati layanan contact center khusus untuk nasabah BCA Solitaire dan Prioritas.",
+      "kartu-kredit": "Nikmati fasilitas bebas annual fee dan cashback melalui Kartu Kredit BCA.",
+      "kpr": "Dapatkan diskon biaya administrasi Kredit Pemilikan Rumah.",
+      "ksm": "Ajukan Kredit Sepeda Motor dengan uang muka mulai dari 5%.",
+      "merchant-edc": "Nikmati Special Merchant Discount Rate (MDR) untuk merchant EDC BCA.",
+      "safe-deposit-box": "Nikmati manfaat khusus untuk penyewaan Safe Deposit Box.",
+      "valuta-asing": "Dapatkan kurs spesial untuk pembelian valuta asing."
+    }
   }
 }

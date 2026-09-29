@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import type { ProductCategory } from "./product-data";
 import type { MegaMenuContent } from "@/lib/megamenu";
 import type { Promo } from "./promo-data";
@@ -12,6 +12,8 @@ import SearchPlaceholderCarousel from "./SearchPlaceholderCarousel";
 import LocaleSwitcher from "@/components/ui/LocaleSwitcher";
 import { SEGMENT_EXTERNAL_LINKS, SEGMENT_INTERNAL_LINKS } from "./segment-links";
 import type { SearchSegment } from "./search-data";
+import { logoutMember } from "@/app/[locale]/member/login/actions";
+import LogoutConfirmDialog from "./LogoutConfirmDialog";
 
 export const NAVBAR_VISIBILITY_EVENT = "bca:navbar-hidden";
 export const NAVBAR_ANCHOR_LOCK_EVENT = "bca:navbar-anchor-lock";
@@ -52,6 +54,7 @@ function LoginIcon({ className = "size-6 shrink-0" }: { className?: string }) {
 
 export default function Navbar({ productCategories, megamenuContent, promoSearchItems, variant = "default", disableHideShow = false, staticOnMobile = false, keepTransparentOnScroll = false, memberPreviewName }: { productCategories?: ProductCategory[]; megamenuContent?: MegaMenuContent; /** Passed only by the Promo page, so its navbar search never falls back to the site-wide index. */ promoSearchItems?: Promo[]; variant?: "default" | "about" | "promo" | "prioritas" | "solitaire"; disableHideShow?: boolean; staticOnMobile?: boolean; keepTransparentOnScroll?: boolean; memberPreviewName?: string }) {
   const tNav = useTranslations("nav");
+  const tAccount = useTranslations("accountMenu");
   const tHero = useTranslations("hero");
   const tLogin = useTranslations("login");
   const segments = Object.keys(tNav.raw("segments")) as string[];
@@ -65,6 +68,11 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
   const [navHidden, setNavHidden] = useState(false);
   const [nearPromoSection, setNearPromoSection] = useState(false);
   const [anchorLocked, setAnchorLocked] = useState(false);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
+  const accountMenuRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const router = useRouter();
   const lastScrollY = useRef(0);
 
   useEffect(() => {
@@ -136,10 +144,35 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
   const memberLoginHref = prioritas || solitaire ? `/member/login?from=${variant}` : null;
   const staticPrioritas = prioritas && disableHideShow;
   const navScrolled = scrolled && !keepTransparentOnScroll;
+  const onPrioritasHome = pathname === "/prioritas";
+
+  useEffect(() => {
+    if (!accountMenuOpen) return;
+    const closeOnOutsideClick = (event: MouseEvent) => {
+      if (!accountMenuRef.current?.contains(event.target as Node)) setAccountMenuOpen(false);
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setAccountMenuOpen(false);
+    };
+    document.addEventListener("mousedown", closeOnOutsideClick);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("mousedown", closeOnOutsideClick);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [accountMenuOpen]);
+
+  const handleMemberLogout = async () => {
+    await logoutMember();
+    setLogoutConfirmOpen(false);
+    setAccountMenuOpen(false);
+    router.replace("/prioritas");
+    router.refresh();
+  };
 
   return (
     <>
-      <MobileNav scrolled={navScrolled} hidden={staticOnMobile ? false : shouldHide} productCategories={productCategories} megamenuContent={megamenuContent} searchOpen={searchOpen} onOpenSearch={() => setSearchOpen(true)} variant={variant} logoHref={logoHref} disableHideShow={disableHideShow || staticOnMobile} />
+      <MobileNav scrolled={navScrolled} hidden={staticOnMobile ? false : shouldHide} productCategories={productCategories} megamenuContent={megamenuContent} searchOpen={searchOpen} onOpenSearch={() => setSearchOpen(true)} variant={variant} logoHref={logoHref} disableHideShow={disableHideShow || staticOnMobile} memberPreviewName={memberPreviewName} />
 
       <nav
         aria-label={tNav("primary")}
@@ -169,12 +202,26 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
             <SearchButton label={tNav("search")} placeholders={searchPlaceholders} expanded={searchOpen} onClick={() => setSearchOpen(true)} />
             <LocaleSwitcher label={tLogin("languageSwitcher")} onOpenChange={setLangOpen} />
             {memberPreviewName ? (
-              <Link href="/prioritas/member/overview" aria-current="page" className="flex h-10 items-center gap-3 rounded-xl px-2 text-sm font-bold leading-5 text-white">
-                <span aria-hidden className="flex size-10 shrink-0 items-center justify-center rounded-full" style={{ backgroundImage: "linear-gradient(262.59deg, #c2a266 0.18%, #98732c 100.18%)" }}>
-                  <img src="/assets/prioritas/member-overview/account-user.svg" alt="" className="shrink-0" />
-                </span>
-                <span className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap">{memberPreviewName}</span>
-              </Link>
+              <div ref={accountMenuRef} className="relative">
+                <button type="button" aria-haspopup="menu" aria-expanded={accountMenuOpen} onClick={() => setAccountMenuOpen((open) => !open)} className="flex h-10 items-center gap-3 rounded-xl px-2 text-sm font-bold leading-5 text-white">
+                  <span aria-hidden className="flex size-10 shrink-0 items-center justify-center rounded-full" style={{ backgroundImage: "linear-gradient(262.59deg, #c2a266 0.18%, #98732c 100.18%)" }}>
+                    <img src="/assets/prioritas/member-overview/account-user.svg" alt="" className="shrink-0" />
+                  </span>
+                  <span className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap">{memberPreviewName}</span>
+                </button>
+                {accountMenuOpen ? (
+                  <div role="menu" className="absolute right-0 top-full z-50 mt-1 flex min-w-[144px] flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white py-1 shadow-card">
+                    <Link role="menuitem" href={onPrioritasHome ? "/prioritas/member/overview" : "/prioritas"} onClick={() => setAccountMenuOpen(false)} className="flex h-10 items-center gap-2 px-4 text-sm font-medium text-neutral-800 hover:bg-neutral-100">
+                      <svg aria-hidden viewBox="0 0 20 20" fill="none" className="size-4 shrink-0"><path d="M3 3h5v5H3zM12 3h5v5h-5zM3 12h5v5H3zM12 12h5v5h-5z" stroke="currentColor" strokeWidth="1.5" /></svg>
+                      {onPrioritasHome ? tAccount("overview") : tAccount("home")}
+                    </Link>
+                    <button role="menuitem" type="button" onClick={() => { setAccountMenuOpen(false); setLogoutConfirmOpen(true); }} className="flex h-10 items-center gap-2 px-4 text-left text-sm font-medium text-red-600 hover:bg-red-50">
+                      <LoginIcon className="size-4 rotate-180 text-red-600" />
+                      {tAccount("logout")}
+                    </button>
+                  </div>
+                ) : null}
+              </div>
             ) : memberLoginHref ? (
               <Link href={memberLoginHref} className={`group flex h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 text-sm font-semibold text-white backdrop-blur-[40px] transition-colors duration-300 hover:bg-white ${prioritas ? "hover:border-pbrown-500 hover:text-pbrown-500" : "hover:border-blue-500 hover:text-blue-500"}`}><LoginIcon className={`size-6 text-white/80 transition-colors ${prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"}`} />{tNav("login")}</Link>
             ) : (
@@ -191,6 +238,7 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
         promoSearchItems={promoSearchItems}
         initialSegment={variant === "prioritas" ? ("Prioritas" satisfies SearchSegment) : variant === "solitaire" ? ("Solitaire" satisfies SearchSegment) : "Semua"}
       />
+      <LogoutConfirmDialog open={logoutConfirmOpen} onCancel={() => setLogoutConfirmOpen(false)} onConfirm={() => void handleMemberLogout()} />
     </>
   );
 }

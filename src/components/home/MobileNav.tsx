@@ -29,6 +29,7 @@ export default function MobileNav({
   variant = "default",
   logoHref,
   disableHideShow = false,
+  memberPreviewName,
 }: {
   scrolled: boolean;
   hidden: boolean;
@@ -42,6 +43,7 @@ export default function MobileNav({
   variant?: "default" | "about" | "promo" | "prioritas" | "solitaire";
   logoHref: string;
   disableHideShow?: boolean;
+  memberPreviewName?: string;
 }) {
   const t = useTranslations("mobileMenu");
   const tNav = useTranslations("nav");
@@ -105,6 +107,7 @@ export default function MobileNav({
       megamenuContent={megamenuContent}
       variant={variant}
       logoHref={logoHref}
+      memberPreviewName={memberPreviewName}
     />
     </>
   );

@@ -1,29 +1,28 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import { BankingPrivilegeCard, WealthCard, type PrivilegeCard, type WealthCardData } from "@/components/prioritas/BankingSolutionSection";
 import { insightAssets } from "@/components/prioritas/wealth-insight-assets";
 
 const root = "/assets/prioritas/banking-solution";
 const existing = "/assets/prioritas/banking";
 const privilegeAssets = [
-  { key: "jcb", image: `${root}/jcb-welcome-bonus.png`, imagePosition: "55% center" },
-  { key: "vehicle", image: `${existing}/privilege-vehicle.png` },
-  { key: "branch", image: `${existing}/privilege-branch.png` },
-  { key: "insurance", image: `${root}/insurance.png` },
-  { key: "fees", image: `${root}/special-transaction-fees.png` },
-  { key: "transaction", image: `${existing}/privilege-transaction.png` },
-  { key: "media", image: `${root}/information-media.jpg` },
-  { key: "advisor", image: `${root}/branch-service-advisor.png` },
-  { key: "family", image: `${root}/branch-service-family.png` },
-  { key: "contact", image: `${root}/contact-center.png` },
-  { key: "credit", image: `${existing}/privilege-credit.png` },
-  { key: "home", image: `${existing}/privilege-home.png` },
-  { key: "motorcycle", image: `${root}/motorcycle-loan.png` },
-  { key: "merchant", image: `${root}/merchant-edc.png` },
-  { key: "deposit", image: `${existing}/privilege-deposit.png` },
-  { key: "forex", image: `${root}/foreign-exchange.png` },
+  { key: "jcb", image: `${root}/jcb-welcome-bonus.png`, imagePosition: "55% center", id: "jcb-black" },
+  { key: "vehicle", image: `${existing}/privilege-vehicle.png`, id: "kkb" },
+  { key: "branch", image: `${existing}/privilege-branch.png`, id: "layanan-cabang" },
+  { key: "insurance", image: `${root}/insurance.png`, id: "asuransi" },
+  { key: "fees", image: `${root}/special-transaction-fees.png`, id: "biaya-transaksi" },
+  { key: "transaction", image: `${existing}/privilege-transaction.png`, id: "fitur-transaksi" },
+  { key: "media", image: `${root}/information-media.jpg`, id: "media-informasi" },
+  { key: "advisor", image: `${root}/branch-service-advisor.png`, id: "personal-banker" },
+  { key: "family", image: `${root}/branch-service-family.png`, id: "young-community" },
+  { key: "contact", image: `${root}/contact-center.png`, id: "contact-center" },
+  { key: "credit", image: `${existing}/privilege-credit.png`, id: "kartu-kredit" },
+  { key: "home", image: `${existing}/privilege-home.png`, id: "kpr" },
+  { key: "motorcycle", image: `${root}/motorcycle-loan.png`, id: "ksm" },
+  { key: "merchant", image: `${root}/merchant-edc.png`, id: "merchant-edc" },
+  { key: "deposit", image: `${existing}/privilege-deposit.png`, id: "safe-deposit-box" },
+  { key: "forex", image: `${root}/foreign-exchange.png`, id: "valuta-asing" },
 ] as const;
 
 const privilegeCardKeys = [
@@ -61,7 +60,7 @@ function WealthGroup({ group, backdrops }: { group: "house" | "market"; backdrop
   </section>;
 }
 
-export default function BankingSolutionIndexExperience({ activeTab, backdrops = {} }: { activeTab: "privilege" | "wealth"; backdrops?: Record<string, string> }) {
+export default function BankingSolutionIndexExperience({ activeTab, backdrops = {}, memberArea = false }: { activeTab: "privilege" | "wealth"; backdrops?: Record<string, string>; memberArea?: boolean }) {
   const t = useTranslations("bankingSolutionIndex");
 
   return <main className="overflow-hidden bg-pgold-200">
@@ -75,7 +74,7 @@ export default function BankingSolutionIndexExperience({ activeTab, backdrops = 
             alt: t(`privilege.${key}`),
             image: asset.image,
             imagePosition: "imagePosition" in asset ? asset.imagePosition : undefined,
-            href: "https://prioritas.bca.co.id/id/Privilege/BCA-Privilege",
+            href: activeTab === "privilege" ? `${memberArea ? "/prioritas/member" : "/prioritas"}/banking-solution/privilege/${asset.id}` : undefined,
           };
           return <BankingPrivilegeCard key={key} card={card} action={t("more")} directory />;
         })}

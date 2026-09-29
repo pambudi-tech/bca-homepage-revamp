@@ -17,7 +17,7 @@ const directoryRoutes: Array<{ path: string; tab: PrioritasIndexTab }> = [
   { path: "/prioritas/promo", tab: "promo" },
 ];
 
-export default function PrioritasDirectoryLayout({ children }: { children: ReactNode }) {
+export default function PrioritasDirectoryLayout({ children, memberPreviewName }: { children: ReactNode; memberPreviewName?: string }) {
   const pathname = usePathname();
   const lenis = useLenis();
   const t = useTranslations("signaturePrivilege");
@@ -41,7 +41,7 @@ export default function PrioritasDirectoryLayout({ children }: { children: React
   return (
     <>
       <div className="relative">
-        <Navbar variant="prioritas" disableHideShow keepTransparentOnScroll={route?.tab === "lifestyle"} />
+        <Navbar variant="prioritas" disableHideShow keepTransparentOnScroll={route?.tab === "lifestyle"} memberPreviewName={memberPreviewName} />
         <PrioritasDetailSubnav
           label={t("subNavLabel")}
           privilege={t("subNav.privilege")}

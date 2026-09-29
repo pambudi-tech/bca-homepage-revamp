@@ -1729,15 +1729,15 @@
     "calendarAction": "Add to Calendar",
     "downloadAction": "Download PDF",
     "privilege": {
-      "jcb": "JCB Welcome Bonus",
+      "jcb": "BCA JCB Black Credit Card",
       "vehicle": "Vehicle Loan (KKB)",
       "branch": "Special Services at BCA Branches",
       "insurance": "Insurance",
       "fees": "Special Transaction Fees",
       "transaction": "Special Transaction Features & Services",
       "media": "Information Media",
-      "advisor": "Special Services at BCA Branches",
-      "family": "Special Services at BCA Branches",
+      "advisor": "Dedicated Personal Banker",
+      "family": "BCA Young Community",
       "contact": "Contact Center",
       "credit": "BCA Credit Card",
       "home": "Home Loan",
@@ -1949,5 +1949,244 @@
     "lifestyle": "Privilege Card — Lifestyle Privilege",
     "event": "Event Card",
     "promo": "Promo Card"
+  }
+,
+  "accountMenu":   {
+    "home": "Go to Homepage",
+    "overview": "Go to Overview",
+    "logout": "Log out",
+    "confirmTitle": "Log out of your account?",
+    "confirmMessage": "Are you sure you want to log out?",
+    "cancel": "Cancel"
+  },
+  "mobileMenu":   {
+    "tutupMenu": "Close menu",
+    "bukaMenu": "Open menu",
+    "bahasa": "Language",
+    "pilihSegmen": "Choose Your Segment",
+    "sesiAktif": "Active session",
+    "logout": "Log out",
+    "kembali": "Back",
+    "menuLabel": "Main menu"
+  },
+  "prioritasHero":   {
+    "title": "Your Life Journey is Our Priority.",
+    "cta": "Learn More",
+    "bannerAlt": "A family enjoying time together in a living room",
+    "prioritasLogoAlt": "BCA Prioritas",
+    "campaigns": {
+      "weekndAlt": "BCA Presale The Weeknd",
+      "weekndTitle": "BCA Presale: The Weeknd After Hours Til Dawn Tour in Jakarta",
+      "weekndCta": "Get Tickets",
+      "jrfAlt": "Keep Saving for myBCA JRF 2026 Tickets",
+      "jrfTitle": "Keep Saving for myBCA JRF 2026 Tickets!",
+      "jrfCta": "Learn More"
+    },
+    "sectionNavLabel": "BCA Prioritas page navigation",
+    "sections": {
+      "privilege": "Privilege",
+      "eventPromo": "Event & Promo",
+      "bankingSolution": "Banking Solution",
+      "magazine": "e-Magazine",
+      "financialReport": "Financial Report"
+    },
+    "contact": {
+      "heading": "We're ready to support your next steps.",
+      "riplayTitle": "Product and Service Information Summary (RIPLAY)",
+      "download": "Download Document",
+      "contactTitle": "Contact Us",
+      "phone": "Call 150022"
+    },
+    "privilege": {
+      "eyebrow": "Privilege",
+      "heading": "Exclusive Access for Every Step of Your Journey",
+      "cards": {
+        "lounge": {
+          "title": "Access Hundreds of Exclusive Airport Lounges Across Indonesia",
+          "action": "Make a Reservation",
+          "alt": "Exclusive airport lounge"
+        },
+        "health": {
+          "title": "Exclusive Health Checks at Selected Premium Hospitals",
+          "action": "View Hospital Partners",
+          "alt": "Premium hospital room"
+        },
+        "event": {
+          "title": "Priority Access to Notable Events",
+          "action": "View All Events",
+          "alt": "Exclusive seating at an event"
+        }
+      },
+      "viewMore": "See More Privileges Available to You"
+    },
+    "eventPromo": {
+      "eyebrow": "EVENT & PROMO",
+      "heading": "Exclusive Offers and Experiences Just for You",
+      "featuredTitles": {
+        "javaJazz": "Complimentary Ticket to Java Jazz Festival for BCA Prioritas Customers",
+        "theWeeknd": "Complimentary Ticket to The Weeknd Concert for the First 3 Customers",
+        "brightspot": "Get VIP Tickets to Brightspot Opening Night",
+        "mercedesAds": "All-New Mercedes-Benz GLC 300 — Bringing Leading Technology to Every Journey"
+      },
+      "featuredCtas": {
+        "mercedesAds": "Schedule Now"
+      },
+      "featuredCta": "Learn More",
+      "viewMore": "See All Events & Promos"
+    },
+    "card": {
+      "eyebrow": "CARD",
+      "heading": "One Card for Thousands of Exclusive Benefits",
+      "description": "Available by special invitation only. Contact your Personal Banker for more information.",
+      "action": "Learn More",
+      "imageAlt": "BCA Prioritas platinum debit card"
+    },
+    "kartu": {
+      "eyebrow": "BANKING SOLUTION",
+      "heading": "Dedicated Banking Services for Your Life Journey",
+      "label": "Banking Privilege",
+      "viewMore": "View All",
+      "action": "Learn More",
+      "cards": {
+        "branch": {
+          "title": "Specialized Services at BCA Branches",
+          "alt": "Specialized services at BCA branches"
+        },
+        "vehicle": {
+          "title": "Motor Vehicle Loan (KKB)",
+          "alt": "Motor vehicle loan"
+        },
+        "transaction": {
+          "title": "Special Transaction Features & Services",
+          "alt": "Special transaction features and services"
+        },
+        "credit": {
+          "title": "BCA Credit Cards",
+          "alt": "BCA Credit Cards"
+        },
+        "home": {
+          "title": "Home Ownership Loan",
+          "alt": "Home ownership loan"
+        },
+        "deposit": {
+          "title": "Safe Deposit Box",
+          "alt": "Safe Deposit Box"
+        }
+      }
+    },
+    "bankingSolution": {
+      "eyebrow": "BANKING SOLUTION",
+      "heading": "Dedicated Banking Services for Your Life Journey",
+      "bankingPrivilege": "Banking Privilege",
+      "wealthInsight": "Wealth Insight",
+      "kurs": "Today's Exchange Rates",
+      "viewMore": "View All",
+      "action": "Learn More",
+      "buy": "Buy",
+      "sell": "Sell",
+      "updatedAt": "Last updated {date}",
+      "refresh": "Refresh exchange rates",
+      "previous": "Previous exchange rate",
+      "next": "Next exchange rate",
+      "cards": {
+        "branch": {
+          "title": "Specialized Services at BCA Branches",
+          "alt": "Specialized services at BCA branches"
+        },
+        "vehicle": {
+          "title": "Motor Vehicle Loan (KKB)",
+          "alt": "Motor vehicle loan"
+        },
+        "transaction": {
+          "title": "Special Transaction Features & Services",
+          "alt": "Special transaction features and services"
+        },
+        "credit": {
+          "title": "BCA Credit Cards",
+          "alt": "BCA credit cards"
+        },
+        "home": {
+          "title": "Home Ownership Loan",
+          "alt": "Home ownership loan"
+        },
+        "deposit": {
+          "title": "Safe Deposit Box",
+          "alt": "Safe deposit box"
+        }
+      },
+      "wealthCards": {
+        "houseView": {
+          "title": "House View June 2025 - Portfolio Strategy Amid the Rate-Cutting Cycle",
+          "date": "Wednesday, 16 June 2025 · 14.00 WIB",
+          "channel": "Live on YouTube",
+          "action": "Add to Calendar",
+          "alt": "BCA Prioritas House View event"
+        },
+        "market": {
+          "title": "Weekly Market Overview: Between De-escalation and Stagflation",
+          "date": "2 June 2026",
+          "action": "Download Report",
+          "alt": "BCA Prioritas Weekly Market Overview"
+        }
+      }
+    },
+    "magazine": {
+      "eyebrow": "E-MAGAZINE",
+      "heading": "Here for Those Who Never Stop Growing",
+      "viewMore": "View All",
+      "cards": {
+        "property": {
+          "title": "Issue 104-XXI/2025",
+          "action": "Read Now",
+          "alt": "Prioritas magazine about Indonesia's property industry"
+        },
+        "food": {
+          "title": "Issue 105-XXII/2026",
+          "action": "Read Now",
+          "alt": "Prioritas magazine about the food and beverage industry"
+        },
+        "chess": {
+          "title": "Issue 103-XX/2025",
+          "action": "Read Now",
+          "alt": "Prioritas magazine about young entrepreneurs"
+        }
+      }
+    },
+    "financialReport": {
+      "eyebrow": "FINANCIAL REPORT",
+      "heading": "Your Complete Portfolio Overview, in One View",
+      "features": {
+        "centralized": "Centralized data from all your BCA products",
+        "reporting": "Ready to use for various reports",
+        "updated": "Always updated whenever you access it"
+      },
+      "action": "Access Your Report"
+    }
+  },
+  "bankingPrivilegeDetail":   {
+    "title": "Banking Privileges",
+    "detailTitle": "Privilege Details",
+    "contactTitle": "Further Information",
+    "contact": "Contact your BCA Prioritas Branch or Personal Banker for more information.",
+    "back": "Back to Banking Privileges",
+    "recommendations": "Other Banking Privileges",
+    "items": {
+      "jcb-black": "Enjoy cashback of up to Rp2 million with the BCA JCB Black Credit Card.",
+      "kkb": "Apply for a Motor Vehicle Loan with a faster, easier process, convenient surveys, and branch collateral document services.",
+      "layanan-cabang": "Enjoy convenient banking at BCA branches through dedicated lounges and services.",
+      "asuransi": "Protection for your life, health, and property through a range of BCA insurance products.",
+      "biaya-transaksi": "Special fees for a range of financial transactions.",
+      "fitur-transaksi": "Use BCA innovations and features to make your transactions easier.",
+      "media-informasi": "Access exclusive communication media for BCA Solitaire and Prioritas customers.",
+      "personal-banker": "Get support from a dedicated Personal Banker for your banking needs.",
+      "young-community": "Connect with a community for younger BCA Solitaire and Prioritas customers.",
+      "contact-center": "Enjoy a dedicated contact center for BCA Solitaire and Prioritas customers.",
+      "kartu-kredit": "Enjoy annual fee waivers and cashback with BCA Credit Cards.",
+      "kpr": "Receive a discount on Home Ownership Loan administration fees.",
+      "ksm": "Apply for a Motorcycle Loan with a down payment starting at 5%.",
+      "merchant-edc": "Enjoy a Special Merchant Discount Rate (MDR) for BCA EDC merchants.",
+      "safe-deposit-box": "Enjoy special benefits on Safe Deposit Box rental.",
+      "valuta-asing": "Get special exchange rates when purchasing foreign currency."
+    }
   }
 }
