@@ -329,6 +329,7 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
           /> : null}
           <PrioritasDirectoryPanel
             panelRef={directoryPanelRef}
+            desktopPageItems={currentTab === "signature" ? 9 : undefined}
             spacing={directoryOnly && currentTab !== "event" ? "none" : "section"}
             headingId={directoryOnly ? `${currentTab}-directory-title` : "complimentary-title"}
             page={page}

@@ -34,6 +34,7 @@ export default async function PartnerPrivilegeDetailPage({
   const memberPreviewName = session === MEMBER_SESSION_VALUE
     ? await (await getTranslations("memberOverview"))("previewFullName")
     : undefined;
+  const hasMemberSession = session === MEMBER_SESSION_VALUE;
   const signatureT = await getTranslations("signaturePrivilege");
   const { partner, benefit, asset, logo } = offer;
   const promos = getPrivilegePromos(section);
@@ -56,8 +57,9 @@ export default async function PartnerPrivilegeDetailPage({
       <PrioritasDetailExperience
         memberArea={memberArea}
         memberPreviewName={memberPreviewName}
-        memberAirportTransfer={memberArea && partnerId === "airport-transfer-domestik" ? "domestic" : memberArea && partnerId === "airport-transfer-internasional" ? "international" : false}
-        memberVoucherStatus={memberArea && partnerId === "executive-airport-lounge" ? memberVoucherStatus ?? "available" : undefined}
+        memberSessionActive={hasMemberSession}
+        memberAirportTransfer={(memberArea || hasMemberSession) && partnerId === "airport-transfer-domestik" ? "domestic" : (memberArea || hasMemberSession) && partnerId === "airport-transfer-internasional" ? "international" : false}
+        memberVoucherStatus={(memberArea || hasMemberSession) && partnerId === "executive-airport-lounge" ? memberVoucherStatus ?? "available" : undefined}
         kind={section}
         categoryFilter={current?.privilegeCategory}
         heroImage={asset?.heroImage}

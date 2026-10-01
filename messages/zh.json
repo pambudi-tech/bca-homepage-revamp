@@ -1153,6 +1153,8 @@
     "locating": "正在获取您的位置…",
     "searchLabel": "搜索 Prioritas 分行",
     "searchPlaceholder": "搜索分行名称或地址",
+    "searching": "正在搜索分行…",
+    "searchNoMatches": "未找到分行或区域，请尝试其他关键词。",
     "yourLocation": "您的位置",
     "defaultPlace": "BCA大厦",
     "nearestFrom": "距离{place}最近",

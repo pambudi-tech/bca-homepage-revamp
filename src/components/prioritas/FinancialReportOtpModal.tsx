@@ -17,6 +17,7 @@ export default function FinancialReportOtpModal({ onClose, onVerified, phoneNumb
   const [step, setStep] = useState<Step>(phoneNumbers.length ? "request" : "noPhone");
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
+  const [codeVerified, setCodeVerified] = useState(false);
   const [seconds, setSeconds] = useState(119);
   const [error, setError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -69,14 +70,14 @@ export default function FinancialReportOtpModal({ onClose, onVerified, phoneNumb
       <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="financial-otp-title" tabIndex={-1} className={`relative w-full max-w-96 rounded-xl bg-white px-6 text-center text-neutral-800 shadow-card outline-none ${step === "noPhone" ? "py-6" : "py-8"}`}>
         {step !== "noPhone" ? <>
           <button type="button" onClick={onClose} aria-label={t("close")} className="absolute right-5 top-5 flex size-6 items-center justify-center rounded-md text-neutral-700 hover:bg-neutral-200 focus-visible:outline-2 focus-visible:outline-pgold-500"><span aria-hidden className="text-2xl leading-none">×</span></button>
-          <img src="/assets/prioritas/financial-report/otp-envelope.svg" alt="" aria-hidden className="mx-auto mb-5 size-16" />
+          <img src="/assets/prioritas/financial-report/otp-email.svg" alt="" aria-hidden className="mx-auto mb-5 size-16" />
         </> : null}
         <h2 id="financial-otp-title" className="text-xl font-semibold leading-7 text-neutral-900">{t(`${step}.title`)}</h2>
         <p className="mx-auto mt-2 max-w-[310px] text-sm leading-5 text-neutral-700">{step === "verify" ? t("verify.description", { phone }) : t(`${step}.description`)}</p>
 
         {step === "request" ? <>
           <div className="mt-7 text-left">
-            <PrioritasDirectoryDropdown id="financial-otp-phone" label={t("request.phoneLabel")} value={phone} onChange={(value) => { setPhone(value); setError(false); }} options={[{ value: "", label: t("request.phonePlaceholder") }, ...phoneNumbers.map((number) => ({ value: number, label: number }))]} size="large" />
+            <PrioritasDirectoryDropdown id="financial-otp-phone" label={t("request.phoneLabel")} value={phone} placeholder={t("request.phonePlaceholder")} onChange={(value) => { setPhone(value); setError(false); }} options={phoneNumbers.map((number) => ({ value: number, label: number }))} size="medium" xlSize="large" />
             {error ? <p role="alert" className="mt-2 text-sm text-red-600">{t("request.phoneRequired")}</p> : null}
           </div>
           <div role="note" className="mt-5 flex items-start gap-3 rounded-xl bg-blue-200 p-4 text-left text-sm leading-5 text-blue-600">
@@ -89,15 +90,23 @@ export default function FinancialReportOtpModal({ onClose, onVerified, phoneNumb
         {step === "verify" ? <>
           <div className="relative mt-8" onClick={() => codeRef.current?.focus()}>
             <div aria-hidden className="grid grid-cols-6 gap-2">
-              {Array.from({ length: 6 }, (_, index) => <span key={index} className="flex h-14 items-center justify-center rounded-xl border border-neutral-300 bg-neutral-200 text-2xl text-neutral-800">{code[index] ?? "0"}</span>)}
+              {Array.from({ length: 6 }, (_, index) => {
+                const hasDigit = code[index] !== undefined;
+                return <span key={index} className={`flex h-14 items-center justify-center rounded-xl border bg-neutral-200 text-2xl ${codeVerified ? "border-green-600" : "border-neutral-300"} ${hasDigit ? "text-neutral-800" : "text-neutral-600"}`}>{code[index] ?? "0"}</span>;
+              })}
             </div>
             <input ref={codeRef} value={code} disabled={submitting} onChange={async (event) => {
               const next = event.target.value.replace(/\D/g, "").slice(0, 6);
               setCode(next);
+              setCodeVerified(false);
               if (next.length === 6 && !submitting) {
                 setSubmitting(true);
+                setError(false);
                 const expiresAt = await onVerified(next);
-                if (expiresAt) onClose();
+                if (expiresAt) {
+                  setCodeVerified(true);
+                  window.setTimeout(onClose, 700);
+                }
                 else { setSubmitting(false); setError(true); }
               }
             }} inputMode="numeric" autoComplete="one-time-code" maxLength={6} aria-label={t("verify.codeLabel")} className="absolute inset-0 h-full w-full cursor-text opacity-0" />

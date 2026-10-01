@@ -11,6 +11,7 @@ type PrioritasDirectoryDropdownProps = {
   value: string;
   options: PrioritasDirectoryDropdownOption[];
   onChange: (value: string) => void;
+  placeholder?: string;
   widthClassName?: string;
   size?: PrioritasDirectoryDropdownSize;
   xlSize?: "large";
@@ -26,6 +27,7 @@ export default function PrioritasDirectoryDropdown({
   value,
   options,
   onChange,
+  placeholder,
   widthClassName = "",
   size = "medium",
   xlSize,
@@ -89,13 +91,13 @@ export default function PrioritasDirectoryDropdown({
       /> : <button
         ref={triggerRef}
         type="button"
-        aria-label={`${label}: ${selected?.accessibleLabel ?? value}`}
+        aria-label={`${label}: ${selected?.accessibleLabel ?? (value || placeholder || "")}`}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen((current) => !current)}
         className="priosoli-dropdown__trigger"
-      ><span className="flex min-w-0 items-center gap-2">{selected?.label ?? value}</span></button>}
+      ><span className={`flex min-w-0 items-center gap-2 ${!selected && placeholder ? "text-neutral-600" : ""}`}>{selected?.label ?? placeholder ?? value}</span></button>}
       <button
         type="button"
         aria-label={label}

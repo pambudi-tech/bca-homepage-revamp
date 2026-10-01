@@ -14,6 +14,7 @@ import { SEGMENT_EXTERNAL_LINKS, SEGMENT_INTERNAL_LINKS } from "./segment-links"
 import type { SearchSegment } from "./search-data";
 import { logoutMember } from "@/app/[locale]/member/login/actions";
 import LogoutConfirmDialog from "./LogoutConfirmDialog";
+import { isMemberAreaPath } from "@/lib/member-auth";
 
 export const NAVBAR_VISIBILITY_EVENT = "bca:navbar-hidden";
 export const NAVBAR_ANCHOR_LOCK_EVENT = "bca:navbar-anchor-lock";
@@ -162,7 +163,7 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
   const memberLoginHref = prioritas || solitaire ? `/member/login?from=${variant}` : null;
   const staticPrioritas = prioritas && disableHideShow;
   const navScrolled = scrolled && !keepTransparentOnScroll;
-  const onPrioritasHome = pathname === "/prioritas";
+  const inMemberArea = isMemberAreaPath(pathname);
 
   useEffect(() => {
     if (!accountMenuOpen) return;
@@ -228,13 +229,13 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
                   <span className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap">{effectiveMemberPreviewName}</span>
                 </button>
                 {accountMenuOpen ? (
-                  <div role="menu" className="absolute right-0 top-full z-50 mt-1 flex min-w-[144px] flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white py-1 shadow-card">
-                    <Link role="menuitem" href={onPrioritasHome ? "/prioritas/member/overview" : "/prioritas"} onClick={() => setAccountMenuOpen(false)} className="flex h-10 items-center gap-2 px-4 text-sm font-medium text-neutral-800 hover:bg-neutral-100">
-                      <svg aria-hidden viewBox="0 0 20 20" fill="none" className="size-4 shrink-0"><path d="M3 3h5v5H3zM12 3h5v5h-5zM3 12h5v5H3zM12 12h5v5h-5z" stroke="currentColor" strokeWidth="1.5" /></svg>
-                      {onPrioritasHome ? tAccount("overview") : tAccount("home")}
+                  <div role="menu" className="absolute right-0 top-full z-50 mt-1 flex min-w-[176px] flex-col overflow-hidden rounded-xl border border-neutral-300 bg-neutral-100 p-2 shadow-card">
+                    <Link role="menuitem" href={inMemberArea ? "/prioritas" : "/prioritas/member/overview"} onClick={() => setAccountMenuOpen(false)} className="flex h-10 items-center gap-2 whitespace-nowrap rounded-lg px-3 text-sm font-semibold text-neutral-800 hover:bg-pgold-100 hover:text-pbrown-600">
+                      <img src="/assets/prioritas/member-overview/homepage.svg" alt="" aria-hidden className="size-5 shrink-0" />
+                      {inMemberArea ? tAccount("home") : tAccount("overview")}
                     </Link>
-                    <button role="menuitem" type="button" onClick={() => { setAccountMenuOpen(false); setLogoutConfirmOpen(true); }} className="flex h-10 items-center gap-2 px-4 text-left text-sm font-medium text-red-600 hover:bg-red-50">
-                      <LoginIcon className="size-4 rotate-180 text-red-600" />
+                    <button role="menuitem" type="button" onClick={() => { setAccountMenuOpen(false); setLogoutConfirmOpen(true); }} className="flex h-10 items-center gap-2 rounded-lg px-3 text-left text-sm font-semibold text-red-600 hover:bg-red-50">
+                      <img src="/assets/prioritas/member-overview/logout.svg" alt="" aria-hidden className="size-5 shrink-0" />
                       {tAccount("logout")}
                     </button>
                   </div>

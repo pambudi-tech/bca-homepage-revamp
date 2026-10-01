@@ -76,6 +76,7 @@ export default function LocationFinder({ initial }: Props) {
 
   const [query, setQuery] = useState("");
   const [places, setPlaces] = useState<Place[]>([]);
+  const [searchPending, setSearchPending] = useState(false);
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
 
@@ -218,12 +219,15 @@ export default function LocationFinder({ initial }: Props) {
       fetch(`/api/prioritas-branches?q=${encodeURIComponent(query)}`, {
         signal: controller.signal,
       })
-        .then((res) => res.json())
+        .then((res) => (res.ok ? res.json() : Promise.reject(new Error(String(res.status)))))
         .then(({ places: found }: { places: Place[] }) => {
-          setPlaces(found);
+          setPlaces(Array.isArray(found) ? found : []);
           setActiveIndex(-1);
         })
-        .catch(() => { });
+        .catch(() => { })
+        .finally(() => {
+          if (!controller.signal.aborted) setSearchPending(false);
+        });
     }, 200);
 
     return () => {
@@ -488,6 +492,9 @@ export default function LocationFinder({ initial }: Props) {
     primerAllow,
     query,
     setQuery,
+    setPlaces,
+    searchPending,
+    setSearchPending,
     open,
     setOpen,
     suggestions,
@@ -623,6 +630,9 @@ type ControlsProps = {
   primerAllow: () => void;
   query: string;
   setQuery: (value: string) => void;
+  setPlaces: (value: Place[]) => void;
+  searchPending: boolean;
+  setSearchPending: (value: boolean) => void;
   open: boolean;
   setOpen: (value: boolean) => void;
   suggestions: Place[];
@@ -667,6 +677,9 @@ function Controls({
   primerAllow,
   query,
   setQuery,
+  setPlaces,
+  searchPending,
+  setSearchPending,
   open,
   setOpen,
   suggestions,
@@ -828,10 +841,10 @@ function Controls({
             role="combobox"
             autoComplete="off"
             aria-autocomplete="list"
-            aria-expanded={open && suggestions.length > 0}
+            aria-expanded={open && query.trim().length >= 2}
             // Only while the list exists — pointing at an absent id is a
             // dangling reference for a screen reader.
-            aria-controls={open && suggestions.length > 0 ? listboxId : undefined}
+            aria-controls={open && query.trim().length >= 2 ? listboxId : undefined}
             aria-activedescendant={
               activeIndex >= 0 ? `${listboxId}-option-${activeIndex}` : undefined
             }
@@ -839,6 +852,9 @@ function Controls({
             placeholder={t("searchPlaceholder")}
             onChange={(event) => {
               setQuery(event.target.value);
+              setPlaces([]);
+              setActiveIndex(-1);
+              setSearchPending(event.target.value.trim().length >= 2);
               setOpen(true);
             }}
             onFocus={() => setOpen(true)}
@@ -854,32 +870,36 @@ function Controls({
             className="bca-search-icon pointer-events-none absolute left-4 top-1/2 size-6 -translate-y-1/2 bg-neutral-700 transition-colors peer-focus:bg-pbrown-500"
           />
 
-          {open && suggestions.length > 0 && (
+          {open && query.trim().length >= 2 && (
             <ul
               id={listboxId}
               role="listbox"
               data-lenis-prevent
               className="priosoli-dropdown--large absolute inset-x-0 top-[calc(100%+4px)] z-20 max-h-64 overflow-y-auto overscroll-contain rounded-xl border border-neutral-300 bg-white p-2 shadow-[0px_8px_24px_0px_rgba(18,20,23,0.12)]"
             >
-              {suggestions.map((place, index) => (
-                <li key={place.id}>
-                  <button
-                    type="button"
-                    id={`${listboxId}-option-${index}`}
-                    role="option"
-                    aria-selected={index === activeIndex}
-                    // The input keeps focus, so this has to fire before blur
-                    // closes the list.
-                    onMouseDown={(event) => event.preventDefault()}
-                    onClick={() => choosePlace(place)}
-                    onMouseEnter={() => setActiveIndex(index)}
-                    className="priosoli-dropdown__option"
-                  >
-                    <span className="text-base font-semibold text-neutral-800">{place.label}</span>
-                    <span className="truncate text-sm text-neutral-600">{place.sub}</span>
-                  </button>
-                </li>
-              ))}
+              {suggestions.length > 0 ? suggestions.map((place, index) => (
+                  <li key={place.id}>
+                    <button
+                      type="button"
+                      id={`${listboxId}-option-${index}`}
+                      role="option"
+                      aria-selected={index === activeIndex}
+                      // The input keeps focus, so this has to fire before blur
+                      // closes the list.
+                      onMouseDown={(event) => event.preventDefault()}
+                      onClick={() => choosePlace(place)}
+                      onMouseEnter={() => setActiveIndex(index)}
+                      className="priosoli-dropdown__option"
+                    >
+                      <span className="text-base font-semibold text-neutral-800">{place.label}</span>
+                      <span className="truncate text-sm text-neutral-600">{place.sub}</span>
+                    </button>
+                  </li>
+                )) : (
+                  <li role="option" aria-disabled="true" aria-selected="false" className="px-3 py-2 text-sm text-neutral-600">
+                    {searchPending ? t("searching") : t("searchNoMatches")}
+                  </li>
+                )}
             </ul>
           )}
         </div>

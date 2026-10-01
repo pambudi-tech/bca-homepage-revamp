@@ -37,7 +37,6 @@ function LoginAlert({
 
 export default function MemberLoginExperience({ brand, magazineSlug, redirectTo }: { brand: Brand; magazineSlug?: string; redirectTo: string }) {
   const t = useTranslations("memberLogin");
-  const tFooter = useTranslations("footer");
   const router = useRouter();
   const [loginState, formAction, pending] = useActionState<MemberLoginState, FormData>(loginMember, "idle");
   const [method, setMethod] = useState<LoginMethod>("bcaId");
@@ -175,11 +174,6 @@ export default function MemberLoginExperience({ brand, magazineSlug, redirectTo 
         </div>
       </div>
 
-      <footer className="member-login-footer relative mx-auto w-full max-w-[1512px] px-6 pb-6 text-center text-xs leading-5 text-neutral-600 lg:px-14 lg:pb-8">
-        <p>{tFooter("ojkLine")}</p>
-        <p>{tFooter("lpsLinePrefix")} <a href="https://apps.lps.go.id/BankPesertaLPSRate" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">{tFooter("lpsLinkLabel")}</a></p>
-        <p className="mt-1">{tFooter("copyright")}</p>
-      </footer>
     </main>
   );
 }

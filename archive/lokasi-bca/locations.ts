@@ -71,10 +71,10 @@ function normalise(value: string): string {
 
 type IndexedPlace = Place & { haystack: string };
 
-/** Search suggestions are branch records, so a query can match branch names
- * as well as addresses and every result points to a real Prioritas branch. */
+/** Suggestions match branch names and addresses, plus a small locality index
+ * for common search areas that are not named in the branch address records. */
 const placeIndex: IndexedPlace[] = (() => {
-  return LOCATIONS.map((location) => ({
+  const branches = LOCATIONS.map((location) => ({
     id: location.id,
     label: location.street,
     sub: location.area,
@@ -82,11 +82,24 @@ const placeIndex: IndexedPlace[] = (() => {
     lng: location.lng,
     count: 1,
     haystack: normalise(`${location.street} ${location.area}`),
-  })).sort((a, b) => a.label.localeCompare(b.label));
+  }));
+
+  // These nearby residential areas are commonly searched by name, but are
+  // not always present in BCA's branch address text. Their coordinates are
+  // search origins; the results still come from the official branch dataset.
+  const areas: IndexedPlace[] = [
+    { id: "area:bintaro", label: "Bintaro", sub: "Tangerang Selatan", lat: -6.276, lng: 106.733, count: 0, haystack: "bintaro tangerang selatan" },
+    { id: "area:bsd", label: "BSD City", sub: "Tangerang Selatan", lat: -6.301, lng: 106.652, count: 0, haystack: "bsd city serpong tangerang selatan" },
+    { id: "area:serpong", label: "Serpong", sub: "Tangerang Selatan", lat: -6.312, lng: 106.683, count: 0, haystack: "serpong tangerang selatan" },
+    { id: "area:alam-sutera", label: "Alam Sutera", sub: "Tangerang", lat: -6.241, lng: 106.626, count: 0, haystack: "alam sutera tangerang" },
+    { id: "area:pondok-aren", label: "Pondok Aren", sub: "Tangerang Selatan", lat: -6.269, lng: 106.713, count: 0, haystack: "pondok aren tangerang selatan" },
+  ];
+
+  return [...branches, ...areas].sort((a, b) => a.label.localeCompare(b.label));
 })();
 
 /**
- * Ranked place suggestions for `query`.
+ * Ranked branch or locality suggestions for `query`.
  *
  * Exact branch names rank first, followed by names beginning with the query,
  * later words, and then address matches.

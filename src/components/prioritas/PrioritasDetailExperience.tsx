@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import ContentCard from "@/components/prioritas/ContentCard";
@@ -9,7 +9,7 @@ import ExecutiveAirportLoungeTable from "@/components/prioritas/ExecutiveAirport
 import PromoRibbon from "@/components/PromoRibbon";
 import PromoCarousel from "@/components/promo/PromoCarousel";
 import { getPromoBadge, getPromoTimestamp, type Promo } from "@/components/home/promo-data";
-import Navbar from "@/components/home/Navbar";
+import Navbar, { NAVBAR_VISIBILITY_EVENT } from "@/components/home/Navbar";
 import PrioritasEventDateTile from "@/components/prioritas/PrioritasEventDateTile";
 import type { EventPromo } from "@/components/prioritas/event-data";
 import type { PrivilegePromo } from "@/lib/partner-privileges";
@@ -325,7 +325,7 @@ function FormattedDocumentContent({ content }: { content: string }) {
   </div>;
 }
 
-export default function PrioritasDetailExperience({ copy, promos, now, kind = "lifestyle", heroImage, birthdayGift = false, brandLogo, eventDate, heroPromo, categoryFilter = "beauty", showHero = true, showRecommendations = true, customSections, relatedPage, bankingRecommendations = [], bankingRecommendationAction = "", memberArea = false, memberPreviewName, memberVoucherStatus, memberAirportTransfer = false }: {
+export default function PrioritasDetailExperience({ copy, promos, now, kind = "lifestyle", heroImage, birthdayGift = false, brandLogo, eventDate, heroPromo, categoryFilter = "beauty", showHero = true, showRecommendations = true, customSections, relatedPage, bankingRecommendations = [], bankingRecommendationAction = "", memberArea = false, memberPreviewName, memberSessionActive = false, memberVoucherStatus, memberAirportTransfer = false }: {
   copy: DetailCopy;
   promos: Promo[];
   now: string;
@@ -344,6 +344,7 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
   bankingRecommendationAction?: string;
   memberArea?: boolean;
   memberPreviewName?: string;
+  memberSessionActive?: boolean;
   memberVoucherStatus?: MemberSignatureVoucherStatus;
   memberAirportTransfer?: "domestic" | "international" | false;
 }) {
@@ -352,6 +353,8 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
   const memberT = useTranslations("memberOverview");
   const pathname = usePathname();
   const lenis = useLenis();
+  const [showHeroTitle, setShowHeroTitle] = useState(false);
+  const [navbarHidden, setNavbarHidden] = useState(false);
   const [openPanels, setOpenPanels] = useState<DetailPanel[]>(customSections?.length ? [customSections[0].id] : kind === "about" ? ["detail", "terms", "contact"] : ["detail", "terms"]);
   const toggle = (panel: DetailPanel) => setOpenPanels((current) => current.includes(panel) ? current.filter((item) => item !== panel) : [...current, panel]);
   const brand = copy.brand?.trim();
@@ -372,6 +375,25 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
     window.scrollTo(0, 0);
     lenis?.scrollTo(0, { immediate: true });
   }, [lenis, pathname]);
+
+  useEffect(() => {
+    const title = document.querySelector<HTMLElement>("[data-prioritas-detail-title]");
+    if (!title) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setShowHeroTitle(!entry.isIntersecting);
+    });
+    observer.observe(title);
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  useEffect(() => {
+    const handleNavbarVisibility = (event: Event) => {
+      setNavbarHidden((event as CustomEvent<boolean>).detail);
+    };
+    window.addEventListener(NAVBAR_VISIBILITY_EVENT, handleNavbarVisibility);
+    return () => window.removeEventListener(NAVBAR_VISIBILITY_EVENT, handleNavbarVisibility);
+  }, [pathname]);
 
   return (
     <article className="relative isolate overflow-x-clip bg-pgold-200 text-neutral-900">
@@ -424,22 +446,29 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
         </div>
         <div className="pointer-events-none relative z-20 mx-auto w-full max-w-[1280px] px-4 xl:px-0">
           <div className={`grid gap-6 ${showHero ? "xl:grid-cols-2 xl:gap-6" : "grid-cols-1"}`}>
-            {showHero ? <div className="pointer-events-auto relative z-0 aspect-[4/3] w-full self-start rounded-2xl xl:sticky xl:top-6 xl:h-[480px] xl:aspect-auto">
+            {showHero ? <div className={`pointer-events-auto relative z-0 aspect-[4/3] w-full self-start rounded-2xl transition-[top] duration-300 ease-out motion-reduce:transition-none xl:sticky ${navbarHidden ? "xl:top-6" : "xl:top-24"} xl:h-[480px] xl:aspect-auto`}>
               <div className="relative size-full overflow-hidden rounded-2xl">
                 {heroImage ? <img src={heroImage} alt={copy.title} className="size-full object-cover" /> : <div className="flex size-full items-center justify-center bg-pgold-200 p-8 text-center text-subtitle text-pbrown-700">{brand ?? copy.title}</div>}
                 {eventDate ? <PrioritasEventDateTile date={eventDate} detail /> : null}
                 {heroTimestampLabel ? <PrioritasEventDateTile timeLabel={heroTimestampLabel} timeIconSrc="/assets/prioritas/detail/promo/clock.svg" /> : null}
+                <div
+                  aria-hidden={!showHeroTitle}
+                  className={`glass-panel glass-panel-prioritas pointer-events-none absolute inset-x-2 bottom-2 z-10 max-w-[400px] rounded-xl p-4 pb-5 text-white shadow-card backdrop-blur-md transition-[opacity,transform] duration-300 motion-reduce:transition-none xl:inset-x-4 xl:bottom-4 ${showHeroTitle ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"}`}
+                >
+                  <p className="text-base font-semibold leading-6 xl:text-lg xl:leading-7">{copy.title}</p>
+                  {brand ? <p className="mt-2 text-sm font-semibold leading-5 text-white/80 xl:text-base">{brand}</p> : null}
+                </div>
               </div>
               {kind === "complimentary" && birthdayGift ? <PromoRibbon badgeKey="popular" label={privilegeT("complimentary.birthday")} placement="hero" /> : null}
             </div> : null}
             <div className={showHero ? "" : "w-full"}>
-              {memberAirportTransfer ? <MemberAirportTransferModule variant={memberAirportTransfer} /> : memberArea && memberVoucherStatus ? <MemberSignatureVoucherModule status={memberVoucherStatus} /> : null}
-              {copy.dynamicModule && !memberArea ? <div className="pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] flex flex-col gap-4 rounded-2xl bg-gradient-to-b from-white to-pgold-300 p-5 pb-10 text-sm leading-5 text-neutral-700 shadow-panel-gold sm:mx-0 sm:mb-6 sm:w-auto sm:flex-row sm:items-center sm:justify-between sm:pb-5 xl:px-6">
+              {memberAirportTransfer ? <MemberAirportTransferModule variant={memberAirportTransfer} /> : memberVoucherStatus ? <MemberSignatureVoucherModule status={memberVoucherStatus} /> : null}
+              {copy.dynamicModule && !memberArea && !memberSessionActive && !memberAirportTransfer && !memberVoucherStatus ? <div className="pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] flex flex-col gap-4 rounded-2xl bg-gradient-to-b from-white to-pgold-300 p-5 pb-10 text-sm leading-5 text-neutral-700 shadow-panel-gold sm:mx-0 sm:mb-6 sm:w-auto sm:flex-row sm:items-center sm:justify-between sm:pb-5 xl:px-6">
                 <p className="text-sm leading-5 text-pbrown-600 xl:text-base xl:leading-6">{copy.dynamicModule.message}</p>
                 <Link href={copy.dynamicModule.memberHref} className={prioritasButtonClassName({ size: "medium", className: "w-full self-stretch xl:w-auto xl:self-auto prio-button--xl-large" })}>{copy.dynamicModule.actionLabel}</Link>
               </div> : null}
               <div
-                className={`pointer-events-auto relative z-10 -mx-4 flex w-[calc(100%+2rem)] flex-col gap-4 rounded-t-[20px] rounded-b-none bg-white p-2 xl:mx-0 xl:w-full xl:rounded-2xl ${copy.dynamicModule ? "-mt-5 xl:mt-0" : memberAirportTransfer || memberVoucherStatus ? "-mt-5 xl:mt-0" : "mt-4 xl:mt-0"} ${copy.dynamicModule || memberAirportTransfer || memberVoucherStatus ? "shadow-panel-footer" : ""}`}
+                  className={`pointer-events-auto relative z-10 -mx-4 flex w-[calc(100%+2rem)] flex-col gap-4 rounded-t-[20px] rounded-b-none bg-white p-2 xl:mx-0 xl:w-full xl:rounded-2xl ${copy.dynamicModule ? "-mt-5 xl:mt-0" : memberAirportTransfer || memberVoucherStatus ? "-mt-5 xl:mt-0" : "mt-0 xl:mt-0"} ${copy.dynamicModule || memberAirportTransfer || memberVoucherStatus ? "shadow-panel-footer" : ""}`}
               >
                 <div className="flex flex-col gap-4">
                   {customSections?.length ? customSections.map((section) => (

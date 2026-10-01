@@ -1250,6 +1250,8 @@
     "locating": "Finding your location…",
     "searchLabel": "Search Prioritas branches",
     "searchPlaceholder": "Search branch name or address",
+    "searching": "Searching branches…",
+    "searchNoMatches": "No branch or area found. Try another search.",
     "yourLocation": "Your location",
     "defaultPlace": "BCA Tower",
     "nearestFrom": "Nearest to {place}",

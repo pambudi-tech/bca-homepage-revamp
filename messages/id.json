@@ -1475,6 +1475,8 @@
     "locating": "Mencari lokasi Anda…",
     "searchLabel": "Cari cabang Prioritas",
     "searchPlaceholder": "Cari nama cabang atau alamat",
+    "searching": "Mencari cabang…",
+    "searchNoMatches": "Cabang atau area tidak ditemukan. Coba kata kunci lain.",
     "yourLocation": "Lokasi Anda",
     "defaultPlace": "Menara BCA",
     "nearestFrom": "Terdekat dari {place}",

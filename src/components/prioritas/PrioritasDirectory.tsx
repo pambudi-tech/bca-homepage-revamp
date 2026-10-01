@@ -18,6 +18,7 @@ function getPaginationItems(current: number, total: number, maxItems: number): P
     const start = Math.max(1, Math.min(current - Math.floor(maxItems / 2), total - maxItems + 1));
     return Array.from({ length: maxItems }, (_, index) => start + index);
   }
+
   if (maxItems < 8) {
     if (current <= 3) {
       const visiblePages = maxItems - 2;
@@ -32,9 +33,24 @@ function getPaginationItems(current: number, total: number, maxItems: number): P
     const start = current - Math.floor((visibleCurrentPages - 1) / 2);
     return [1, "start-ellipsis", ...Array.from({ length: visibleCurrentPages }, (_, index) => start + index), "end-ellipsis", total];
   }
-  if (current <= 4) return [1, 2, 3, 4, 5, 6, "end-ellipsis", total];
-  if (current >= total - 3) return [1, "start-ellipsis", ...Array.from({ length: 6 }, (_, index) => total - 5 + index)];
-  return [1, "start-ellipsis", current - 1, current, current + 1, "end-ellipsis", total];
+
+  if (maxItems === 8) {
+    if (current <= 4) return [1, 2, 3, 4, 5, 6, "end-ellipsis", total];
+    if (current >= total - 3) return [1, "start-ellipsis", ...Array.from({ length: 6 }, (_, index) => total - 5 + index)];
+    return [1, "start-ellipsis", current - 1, current, current + 1, "end-ellipsis", total];
+  }
+
+  const visiblePages = maxItems - 2;
+  const visibleCurrentPages = maxItems - 4;
+  const start = current - Math.floor((visibleCurrentPages - 1) / 2);
+  const end = start + visibleCurrentPages - 1;
+  if (start <= 2) {
+    return [...Array.from({ length: visiblePages }, (_, index) => index + 1), "end-ellipsis", total];
+  }
+  if (end >= total - 1) {
+    return [1, "start-ellipsis", ...Array.from({ length: visiblePages }, (_, index) => total - visiblePages + index + 1)];
+  }
+  return [1, "start-ellipsis", ...Array.from({ length: visibleCurrentPages }, (_, index) => start + index), "end-ellipsis", total];
 }
 
 function usePrioritasDirectoryExpansion(panelRef: RefObject<HTMLElement | null>) {
@@ -122,13 +138,14 @@ export function PrioritasDirectoryFilters({ children, count }: { children: React
   </div>;
 }
 
-function PrioritasDirectoryPagination({ page, total, pageSize, onPageChange, label, placement = "bottom" }: {
+function PrioritasDirectoryPagination({ page, total, pageSize, onPageChange, label, placement = "bottom", desktopPageItems }: {
   page: number;
   total: number;
   pageSize: number;
   onPageChange: (page: number) => void;
   label?: string;
   placement?: "top" | "bottom";
+  desktopPageItems?: number;
 }) {
   const t = useTranslations("signaturePrivilege");
   const pageCount = Math.max(1, Math.ceil(total / pageSize));
@@ -144,6 +161,11 @@ function PrioritasDirectoryPagination({ page, total, pageSize, onPageChange, lab
     const update = () => {
       // Keep the 48px navigation arrows and 40px page controls intact. Each
       // page item plus its 8px gap uses 48px; the arrows and outer gaps use 112px.
+      if (desktopPageItems !== undefined && window.matchMedia("(min-width: 1280px)").matches) {
+        setMaxPageItems(desktopPageItems);
+        return;
+      }
+
       const availablePageWidth = pagination.clientWidth - 112;
       setMaxPageItems(Math.max(1, Math.floor((availablePageWidth + 8) / 48)));
     };
@@ -152,7 +174,7 @@ function PrioritasDirectoryPagination({ page, total, pageSize, onPageChange, lab
     const observer = new ResizeObserver(update);
     observer.observe(pagination);
     return () => observer.disconnect();
-  }, []);
+  }, [desktopPageItems]);
 
   return <nav aria-label={label ?? t("paginationLabel")} className={placement === "top" ? "mx-auto flex w-fit items-center justify-center gap-3 xl:mx-0 xl:w-full xl:justify-between" : "mt-6 -mx-4 flex flex-col items-start xl:mx-0 xl:h-24 xl:flex-row xl:items-center xl:justify-between xl:gap-0"}>
     <p className="hidden text-sm font-semibold text-neutral-600 xl:block">{t("paginationSummary", { from, to, total })}</p>
@@ -164,7 +186,7 @@ function PrioritasDirectoryPagination({ page, total, pageSize, onPageChange, lab
   </nav>;
 }
 
-export function PrioritasDirectoryPanel({ headingId, header, children, emptyMessage, page, total, pageSize = DIRECTORY_PAGE_SIZE, onPageChange, paginationLabel, paginationPlacement = "bottom", gridClassName = "", gridGap = "normal", panelRef, spacing = "none" }: {
+export function PrioritasDirectoryPanel({ headingId, header, children, emptyMessage, page, total, pageSize = DIRECTORY_PAGE_SIZE, onPageChange, paginationLabel, paginationPlacement = "bottom", desktopPageItems, gridClassName = "", gridGap = "normal", panelRef, spacing = "none" }: {
   headingId: string;
   header: ReactNode;
   children: ReactNode;
@@ -175,6 +197,7 @@ export function PrioritasDirectoryPanel({ headingId, header, children, emptyMess
   onPageChange: (page: number) => void;
   paginationLabel?: string;
   paginationPlacement?: "top" | "bottom";
+  desktopPageItems?: number;
   gridClassName?: string;
   gridGap?: "normal" | "compact";
   panelRef?: RefObject<HTMLElement | null>;
@@ -197,11 +220,11 @@ export function PrioritasDirectoryPanel({ headingId, header, children, emptyMess
     <div className={DIRECTORY_CONTENT_CLASS}>
       <div className={`${DIRECTORY_HEADER_CLASS} ${paginationPlacement === "top" ? "pb-4" : ""}`}>
         {header}
-        {paginationPlacement === "top" ? <PrioritasDirectoryPagination page={page} total={total} pageSize={pageSize} onPageChange={onPageChange} label={paginationLabel} placement="top" /> : null}
+        {paginationPlacement === "top" ? <PrioritasDirectoryPagination page={page} total={total} pageSize={pageSize} onPageChange={onPageChange} label={paginationLabel} placement="top" desktopPageItems={desktopPageItems} /> : null}
       </div>
       <div className={`${DIRECTORY_GRID_CLASS} ${gridGap === "compact" ? "gap-4" : "gap-6"} ${gridClassName}`}>{children}</div>
       {total === 0 ? <p className="py-16 text-center text-neutral-600">{emptyMessage}</p> : null}
-      {paginationPlacement === "bottom" ? <PrioritasDirectoryPagination page={page} total={total} pageSize={pageSize} onPageChange={onPageChange} label={paginationLabel} /> : null}
+      {paginationPlacement === "bottom" ? <PrioritasDirectoryPagination page={page} total={total} pageSize={pageSize} onPageChange={onPageChange} label={paginationLabel} desktopPageItems={desktopPageItems} /> : null}
     </div>
   </section>;
 }
