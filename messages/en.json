@@ -1348,7 +1348,7 @@
     "prioritasLinkColumns": {
       "Perusahaan": {
         "heading": "Company",
-        "links": ["About Us", "Contact Us", "Find a Branch", "RIPLAY"]
+        "links": ["About Us", "Contact Us", "Find Us", "RIPLAY"]
       },
       "Layanan": {
         "heading": "Services",

@@ -1251,7 +1251,7 @@
     "prioritasLinkColumns": {
       "Perusahaan": {
         "heading": "公司",
-        "links": ["关于我们", "联系我们", "查找分行", "RIPLAY"]
+        "links": ["关于我们", "联系我们", "找到我们", "RIPLAY"]
       },
       "Layanan": {
         "heading": "服务",

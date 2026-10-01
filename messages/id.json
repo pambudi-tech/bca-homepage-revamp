@@ -1573,7 +1573,7 @@
     "prioritasLinkColumns": {
       "Perusahaan": {
         "heading": "Perusahaan",
-        "links": ["Tentang Kami", "Hubungi Kami", "Temukan Cabang", "RIPLAY"]
+        "links": ["Tentang Kami", "Hubungi Kami", "Temukan Kami", "RIPLAY"]
       },
       "Layanan": {
         "heading": "Layanan",
