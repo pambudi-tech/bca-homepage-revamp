@@ -8,9 +8,9 @@ export default function KursRefreshButton({ label }: { label: string }) {
       type="button"
       onClick={() => window.location.reload()}
       aria-label={label}
-      className={prioritasButtonClassName({ kind: "icon", variant: "secondary", surface: "inverse", size: "small" })}
+      className={prioritasButtonClassName({ kind: "icon", variant: "secondary", surface: "default", size: "small" })}
     >
-      <img src="/assets/prioritas/banking/refresh.svg" alt="" aria-hidden className="size-5 shrink-0" />
+      <span aria-hidden="true" className="size-5 shrink-0 bg-current [mask-image:url('/assets/prioritas/banking/refresh.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/prioritas/banking/refresh.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]" />
     </button>
   );
 }

@@ -4,11 +4,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { TabLink } from "@/components/ui/Tab";
 
-export default function BankingSolutionIndexTabs({ activeTab }: { activeTab: "privilege" | "wealth" }) {
+type BankingSolutionTab = "privilege" | "wealth" | "kurs";
+
+export default function BankingSolutionIndexTabs({ activeTab }: { activeTab: BankingSolutionTab }) {
   const t = useTranslations("bankingSolutionIndex");
   const viewportRef = useRef<HTMLDivElement>(null);
-  const tabRefs = useRef<Partial<Record<"privilege" | "wealth", HTMLAnchorElement | null>>>({});
-  const requestedTabRef = useRef<"privilege" | "wealth" | null>(null);
+  const tabRefs = useRef<Partial<Record<BankingSolutionTab, HTMLAnchorElement | null>>>({});
+  const requestedTabRef = useRef<BankingSolutionTab | null>(null);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -18,7 +20,7 @@ export default function BankingSolutionIndexTabs({ activeTab }: { activeTab: "pr
     return () => window.removeEventListener("scroll", update);
   }, []);
 
-  const centerTab = useCallback((key: "privilege" | "wealth", behavior: ScrollBehavior = "smooth") => {
+  const centerTab = useCallback((key: BankingSolutionTab, behavior: ScrollBehavior = "smooth") => {
     const viewport = viewportRef.current;
     const tab = tabRefs.current[key];
     if (!viewport || !tab || viewport.scrollWidth <= viewport.clientWidth) return;
@@ -45,6 +47,7 @@ export default function BankingSolutionIndexTabs({ activeTab }: { activeTab: "pr
         {([
           { key: "privilege", href: "/prioritas/banking-solution" },
           { key: "wealth", href: "/prioritas/banking-solution/wealth-insight" },
+          { key: "kurs", href: "/prioritas/banking-solution/kurs" },
         ] as const).map(({ key, href }) => <TabLink
           ref={(node) => { tabRefs.current[key] = node; }}
           key={key}

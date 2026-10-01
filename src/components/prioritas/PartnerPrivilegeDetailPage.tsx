@@ -94,8 +94,8 @@ export default async function PartnerPrivilegeDetailPage({
           },
           ...(isSignatureModule ? {
             dynamicModule: {
-              message: detailT("dynamicModule.message", { benefit: benefit.benefit }),
-              loginLabel: detailT("dynamicModule.loginLabel"),
+              message: detailT(memberPreviewName ? "dynamicModule.memberMessage" : "dynamicModule.message", { benefit: benefit.benefit }),
+              actionLabel: detailT(memberPreviewName ? "dynamicModule.memberActionLabel" : "dynamicModule.loginLabel"),
               memberHref: `/prioritas/member/privilege/${encodeURIComponent(partnerId)}`,
             },
           } : {}),

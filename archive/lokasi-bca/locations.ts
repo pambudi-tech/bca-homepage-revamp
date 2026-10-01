@@ -1,19 +1,18 @@
-import dataset from "@/data/bca-locations.json";
+import data from "../../src/components/prioritas/temukan-cabang-data.json";
 import {
   MAX_RADIUS_METERS,
   PIN_COUNT,
   RESULT_COUNT,
   distanceMeters,
   type BcaLocation,
-  type LocationType,
   type NearbyLocation,
   type NearbyResponse,
   type Place,
-} from "@/components/home/location-data";
+} from "./location-data";
 
 /**
- * The ATM/branch dataset and the two queries the Lokasi BCA section runs
- * against it.
+ * The Prioritas branch dataset and the queries used by the archived
+ * Lokasi BCA map interface.
  *
  * Import this from server code only. The dataset is a few hundred kilobytes of
  * JSON — fine to hold in the server process, absurd to ship to a browser that
@@ -25,23 +24,26 @@ import {
  * pass is well under a millisecond, and a spatial index would be more code to
  * maintain than it saves.
  *
- * Data © OpenStreetMap contributors (ODbL), collected by
- * `scripts/fetch-bca-locations.mjs`.
+ * Branch locations come from the Prioritas locator dataset.
  */
 
-const LOCATIONS = dataset as BcaLocation[];
+const LOCATIONS: BcaLocation[] = data.locations.map((location) => ({
+  id: `${location.latitude},${location.longitude}`,
+  type: "cabang",
+  lat: location.latitude,
+  lng: location.longitude,
+  street: location.name,
+  area: location.address,
+  district: "",
+  city: "",
+  hours: "",
+}));
 
 /* ------------------------------------------------------------------ nearby */
 
 /** The three cards plus the pins to draw, in one pass over the dataset. */
-export function findNearby(
-  lat: number,
-  lng: number,
-  type: LocationType | "all" = "all",
-): NearbyResponse {
-  const pool = type === "all" ? LOCATIONS : LOCATIONS.filter((l) => l.type === type);
-
-  const ranked: NearbyLocation[] = pool
+export function findNearby(lat: number, lng: number): NearbyResponse {
+  const ranked: NearbyLocation[] = LOCATIONS
     .map((loc) => ({ ...loc, distance: distanceMeters(lat, lng, loc.lat, loc.lng) }))
     // Outside the coverage radius there is no useful answer to give, and
     // pretending otherwise produces a map zoomed out to half of Java.
@@ -69,76 +71,25 @@ function normalise(value: string): string {
 
 type IndexedPlace = Place & { haystack: string };
 
-/**
- * Search suggestions, derived from the dataset itself rather than a geocoder.
- *
- * That is the point: every suggestion is a place we can actually answer for.
- * A geocoder would happily return an address in a town where the dataset has
- * nothing, and the visitor would get three "nearest" results 40km away.
- *
- * Built once on first use and kept — the underlying JSON never changes at
- * runtime.
- */
+/** Search suggestions are branch records, so a query can match branch names
+ * as well as addresses and every result points to a real Prioritas branch. */
 const placeIndex: IndexedPlace[] = (() => {
-  // Three granularities — kelurahan, kecamatan, kota — so both "Kelapa Gading"
-  // and "Surabaya" resolve. Keyed by name + city rather than by granularity:
-  // an Indonesian kelurahan very often shares its kecamatan's name (Menteng,
-  // Menteng), and two identical "Menteng" rows in a dropdown read as a bug.
-  // Collapsing them also makes `count` the true number of locations there.
-  const buckets = new Map<
-    string,
-    { label: string; sub: string; latSum: number; lngSum: number; count: number }
-  >();
-
-  const add = (label: string, parents: string[], loc: BcaLocation) => {
-    if (!label) return;
-    const key = `${label}|${loc.city}`;
-    const bucket = buckets.get(key);
-    if (bucket) {
-      bucket.latSum += loc.lat;
-      bucket.lngSum += loc.lng;
-      bucket.count += 1;
-      return;
-    }
-    // The context line drops anything that just repeats the label.
-    const sub = [...new Set(parents)].filter((p) => p && p !== label).join(", ");
-    buckets.set(key, { label, sub, latSum: loc.lat, lngSum: loc.lng, count: 1 });
-  };
-
-  for (const loc of LOCATIONS) {
-    add(loc.area, [loc.district, loc.city], loc);
-    add(loc.district, [loc.city], loc);
-    add(loc.city, [], loc);
-  }
-
-  return [...buckets.entries()]
-    .map(([id, b]) => ({
-      id,
-      label: b.label,
-      sub: b.sub,
-      // Centroid of the matching locations — close enough to the middle of a
-      // kelurahan, and guaranteed to sit among BCA locations rather than in a
-      // field on the administrative boundary.
-      lat: Number((b.latSum / b.count).toFixed(6)),
-      lng: Number((b.lngSum / b.count).toFixed(6)),
-      count: b.count,
-      haystack: normalise(`${b.label} ${b.sub}`),
-    }))
-    .sort((a, b) => b.count - a.count);
+  return LOCATIONS.map((location) => ({
+    id: location.id,
+    label: location.street,
+    sub: location.area,
+    lat: location.lat,
+    lng: location.lng,
+    count: 1,
+    haystack: normalise(`${location.street} ${location.area}`),
+  })).sort((a, b) => a.label.localeCompare(b.label));
 })();
 
 /**
  * Ranked place suggestions for `query`.
  *
- * Four tiers, best first: the name *is* the query, the name starts with it, a
- * later word in the name starts with it, or it appears anywhere (including in
- * the kecamatan/kota line, so "Jakarta Utara" surfaces its kelurahan). Ties
- * break on how many BCA locations the place has, which floats the busy areas
- * people mean.
- *
- * The exact tier exists because count alone gets it wrong: typing "Menteng"
- * would otherwise return Menteng Dalam first, purely because it has one more
- * location than the Menteng the visitor typed.
+ * Exact branch names rank first, followed by names beginning with the query,
+ * later words, and then address matches.
  */
 export function searchPlaces(query: string, limit = 6): Place[] {
   const q = normalise(query);
@@ -160,7 +111,7 @@ export function searchPlaces(query: string, limit = 6): Place[] {
   }
 
   return scored
-    .sort((a, b) => a.rank - b.rank || b.place.count - a.place.count)
+    .sort((a, b) => a.rank - b.rank || a.place.label.localeCompare(b.place.label))
     .slice(0, limit)
     // `haystack` is an index-building detail; it never leaves the server.
     .map(({ place }) => ({

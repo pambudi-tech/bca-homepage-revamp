@@ -59,8 +59,11 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
   const tLogin = useTranslations("login");
   const segments = Object.keys(tNav.raw("segments")) as string[];
   const tPromo = useTranslations("promoPage");
+  const tPrioritasHero = useTranslations("prioritasHero");
   const searchPlaceholders = variant === "promo"
     ? tPromo.raw("search.placeholders") as string[]
+    : variant === "prioritas"
+      ? tPrioritasHero.raw("searchPlaceholders") as string[]
     : tHero.raw("placeholders") as string[];
   const [searchOpen, setSearchOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);

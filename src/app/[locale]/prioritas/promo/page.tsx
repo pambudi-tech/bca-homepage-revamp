@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import SignaturePrivilegeExperience from "@/components/prioritas/SignaturePrivilegeExperience";
 import { getPrioritasSourcePromos } from "@/lib/prioritas-source-data";
+import { getPromos } from "@/lib/promos";
 
 export default async function PrioritasPromoPage({ params, searchParams }: {
   params: Promise<{ locale: string }>;
@@ -10,7 +11,7 @@ export default async function PrioritasPromoPage({ params, searchParams }: {
   const { category } = await searchParams;
   setRequestLocale(locale);
   const now = new Date();
-  const promos = getPrioritasSourcePromos();
+  const promos = [...getPrioritasSourcePromos(), ...await getPromos(now)];
   const initialCategories = Array.isArray(category) ? category : category ? [category] : [];
 
   return (

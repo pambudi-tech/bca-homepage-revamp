@@ -12,6 +12,7 @@ export default function PrioritasPageHeader({
   logo,
   layout = "directory",
   memberArea = false,
+  subtitleFontWeight = "semibold",
 }: {
   breadcrumbs: BreadcrumbItem[];
   title: string;
@@ -19,6 +20,7 @@ export default function PrioritasPageHeader({
   logo?: { src: string; alt: string };
   layout?: "directory" | "detail";
   memberArea?: boolean;
+  subtitleFontWeight?: "normal" | "semibold";
 }) {
   const detailLayout = layout === "detail";
   const missingDetailIdentity = detailLayout && !subtitle && !logo;
@@ -50,7 +52,7 @@ export default function PrioritasPageHeader({
         <div className={detailLayout ? `absolute ${missingDetailIdentity ? "bottom-20 xl:bottom-32" : "bottom-11 xl:bottom-[88px]"} left-4 right-4 flex items-start justify-between gap-4 min-[375px]:gap-8 xl:left-0 xl:right-0 xl:gap-8` : "absolute bottom-20 left-4 right-4 flex items-end justify-between gap-8 xl:bottom-[88px] xl:left-0 xl:right-0"}>
           <div className="max-w-[560px]">
             <h1 className={`text-heading xl:text-display ${memberArea ? "text-neutral-900" : "text-pgold-100"} ${detailLayout ? "line-clamp-3 xl:line-clamp-2" : ""}`}>{title}</h1>
-            {subtitle ? <p className={`mt-3 text-sm font-semibold leading-6 xl:text-base ${memberArea ? "text-pbrown-600" : "text-pgold-100/85"}`}>{subtitle}</p> : null}
+            {subtitle ? <p className={`mt-3 text-sm leading-6 xl:text-base ${subtitleFontWeight === "normal" ? "font-normal" : "font-semibold"} ${memberArea ? "text-pbrown-600" : "text-pgold-100/85"}`}>{subtitle}</p> : null}
           </div>
           {logo ? <span className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white p-3 shadow-card xl:size-30">
             <img src={logo.src} alt={logo.alt} className="size-full object-contain" />

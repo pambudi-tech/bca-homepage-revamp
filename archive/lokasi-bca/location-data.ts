@@ -45,13 +45,12 @@ export type NearbyResponse = {
   pins: NearbyLocation[];
 };
 
-/** How many cards the homepage section shows. This is a quick finder, not a
- *  directory — anything more belongs on bca.co.id/id/lokasi-bca. */
-export const RESULT_COUNT = 3;
+/** Upper bound for all branch results around the selected origin. */
+export const RESULT_COUNT = 1000;
 
 /** Upper bound on map pins. Enough to make the area read as "covered" without
  *  shipping a payload the section doesn't need. */
-export const PIN_COUNT = 60;
+export const PIN_COUNT = 1000;
 
 /**
  * How far out "terdekat" is still a meaningful claim, in metres.

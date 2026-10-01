@@ -47,17 +47,17 @@ export default async function EventPromoSection({ promos, copy, now }: {
         />
 
         <div className="mt-4 xl:hidden">
-          <PromoCarousel promos={promos.slice(0, 3)} now={now} loop={false} variant="prioritas" detailHrefBase="/prioritas/event" showEventDate usePrioritasButtonLibrary />
+          <PromoCarousel promos={promos.slice(0, 3)} now={now} loop={false} variant="prioritas" detailHrefBase="/prioritas/promo" usePrioritasButtonLibrary />
         </div>
 
         <div className="mt-8 hidden gap-8 md:mt-6 md:grid md:grid-cols-3 md:gap-6 xl:grid">
           {promos.slice(0, 3).map((promo) => (
-            <PromoCard key={promo.id} promo={promo} now={now} reveal={false} variant="prioritas" fill detailHref={`/prioritas/event/${promo.id}`} eventDate={"dateTile" in promo ? promo.dateTile as React.ComponentProps<typeof PromoCard>["eventDate"] : undefined} usePrioritasButtonLibrary />
+            <PromoCard key={promo.id} promo={promo} now={now} reveal={false} variant="prioritas" fill detailHref={`/prioritas/promo/${promo.id}`} usePrioritasButtonLibrary />
           ))}
         </div>
 
         <div className="mt-8 flex justify-center md:mt-6">
-          <Link href="/prioritas/event" className={prioritasButtonClassName({ surface: "inverse", size: "large", className: "w-full xl:w-fit" })}>
+          <Link href="/prioritas/promo" className={prioritasButtonClassName({ surface: "inverse", size: "large", className: "w-full xl:w-fit" })}>
             <span className="prio-button__label">{copy.viewMore}</span>
             <PrioritasButtonIcon src="/assets/cycle1/pelajari-icon.svg" />
           </Link>

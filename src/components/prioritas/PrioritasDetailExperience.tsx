@@ -41,7 +41,7 @@ type DetailCopy = {
     title: string;
     viewMore: string;
   };
-  dynamicModule?: { message: string; loginLabel: string; memberHref: string };
+  dynamicModule?: { message: string; actionLabel: string; memberHref: string };
 };
 
 type DetailKind = "signature" | "lifestyle" | "complimentary" | "event" | "promo" | "about" | "banking";
@@ -436,10 +436,10 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
               {memberAirportTransfer ? <MemberAirportTransferModule variant={memberAirportTransfer} /> : memberArea && memberVoucherStatus ? <MemberSignatureVoucherModule status={memberVoucherStatus} /> : null}
               {copy.dynamicModule && !memberArea ? <div className="pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] flex flex-col gap-4 rounded-2xl bg-gradient-to-b from-white to-pgold-300 p-5 pb-10 text-sm leading-5 text-neutral-700 shadow-panel-gold sm:mx-0 sm:mb-6 sm:w-auto sm:flex-row sm:items-center sm:justify-between sm:pb-5 xl:px-6">
                 <p className="text-sm leading-5 text-pbrown-600 xl:text-base xl:leading-6">{copy.dynamicModule.message}</p>
-                <Link href={copy.dynamicModule.memberHref} className={prioritasButtonClassName({ size: "medium", className: "w-full self-stretch xl:w-auto xl:self-auto prio-button--xl-large" })}>{copy.dynamicModule.loginLabel}</Link>
+                <Link href={copy.dynamicModule.memberHref} className={prioritasButtonClassName({ size: "medium", className: "w-full self-stretch xl:w-auto xl:self-auto prio-button--xl-large" })}>{copy.dynamicModule.actionLabel}</Link>
               </div> : null}
               <div
-                className={`pointer-events-auto relative z-10 -mx-4 flex w-[calc(100%+2rem)] flex-col gap-4 rounded-t-[20px] rounded-b-none bg-white p-2 xl:mx-0 xl:w-full xl:rounded-2xl ${copy.dynamicModule ? "-mt-5" : memberAirportTransfer || memberVoucherStatus ? "-mt-5 xl:mt-0" : "mt-4 xl:mt-0"} ${copy.dynamicModule || memberAirportTransfer || memberVoucherStatus ? "shadow-panel-footer" : ""}`}
+                className={`pointer-events-auto relative z-10 -mx-4 flex w-[calc(100%+2rem)] flex-col gap-4 rounded-t-[20px] rounded-b-none bg-white p-2 xl:mx-0 xl:w-full xl:rounded-2xl ${copy.dynamicModule ? "-mt-5 xl:mt-0" : memberAirportTransfer || memberVoucherStatus ? "-mt-5 xl:mt-0" : "mt-4 xl:mt-0"} ${copy.dynamicModule || memberAirportTransfer || memberVoucherStatus ? "shadow-panel-footer" : ""}`}
               >
                 <div className="flex flex-col gap-4">
                   {customSections?.length ? customSections.map((section) => (

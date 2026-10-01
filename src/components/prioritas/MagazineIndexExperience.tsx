@@ -14,7 +14,7 @@ export default function MagazineIndexExperience({ memberLayout = false }: { memb
   const visibleIssues = issues.slice((page - 1) * MAGAZINE_PAGE_SIZE, page * MAGAZINE_PAGE_SIZE);
 
   return <main id="main-content" className="min-h-screen overflow-x-clip bg-pgold-200 pb-12 text-pbrown-800 xl:pb-20">
-    <div className={`relative z-10 mx-auto w-full max-w-[1280px] px-4 xl:px-0 ${memberLayout ? "mt-0 xl:-mt-6" : "-mt-12 xl:-mt-14"}`}>
+    <div className={`relative z-10 mx-auto w-full max-w-[1280px] px-4 xl:px-0 ${memberLayout ? "mt-0 xl:-mt-6" : "-mt-12 xl:-mt-12"}`}>
       <PrioritasDirectoryPanel
         headingId="magazine-directory-title"
         header={<h2 id="magazine-directory-title" className="sr-only">{t("breadcrumb")}</h2>}

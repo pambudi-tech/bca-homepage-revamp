@@ -3,6 +3,7 @@
 import { useLayoutEffect, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import Navbar from "@/components/home/Navbar";
+import Footer from "@/components/home/Footer";
 import { useLenis } from "@/components/SmoothScroll";
 import PrioritasDetailSubnav from "@/components/prioritas/PrioritasDetailSubnav";
 import PrioritasIndexTabs, { type PrioritasIndexTab } from "@/components/prioritas/PrioritasIndexTabs";
@@ -24,8 +25,11 @@ export default function PrioritasDirectoryLayout({ children, memberPreviewName }
   const banking = useTranslations("bankingSolutionIndex");
   const magazine = useTranslations("magazineIndex");
   const route = directoryRoutes.find((item) => item.path === pathname);
-  const bankingTab = pathname === "/prioritas/banking-solution" ? "privilege" : pathname === "/prioritas/banking-solution/wealth-insight" ? "wealth" : null;
+  const bankingTab = pathname === "/prioritas/banking-solution" ? "privilege" : pathname === "/prioritas/banking-solution/wealth-insight" ? "wealth" : pathname === "/prioritas/banking-solution/kurs" ? "kurs" : null;
   const magazineIndex = pathname === "/prioritas/e-magazine";
+  const pageOwnsFooter = pathname === "/prioritas" || pathname === "/prioritas/temukan-cabang";
+  // Footer measures document height on mount, so refresh it after route changes.
+  const footer = pageOwnsFooter ? null : <Footer key={pathname} variant="prioritas" />;
 
   useLayoutEffect(() => {
     if (!route && !bankingTab && !magazineIndex) return;
@@ -33,7 +37,10 @@ export default function PrioritasDirectoryLayout({ children, memberPreviewName }
     lenis?.scrollTo(0, { immediate: true });
   }, [pathname, lenis, route, bankingTab, magazineIndex]);
 
-  if (!route && !bankingTab && !magazineIndex) return children;
+  if (!route && !bankingTab && !magazineIndex) return <>
+    {children}
+    {footer}
+  </>;
 
   const breadcrumb = magazineIndex ? magazine("breadcrumb") : bankingTab ? banking("breadcrumb") : route!.tab === "signature" ? t("breadcrumb") : t(`tabs.${route!.tab}`);
   const title = magazineIndex ? magazine("title") : bankingTab ? banking("title") : route!.tab === "event" || route!.tab === "promo" ? t("eventPromoTitle") : t("title");
@@ -53,6 +60,7 @@ export default function PrioritasDirectoryLayout({ children, memberPreviewName }
       </div>
       {bankingTab ? <BankingSolutionIndexTabs activeTab={bankingTab} /> : route ? <PrioritasIndexTabs activeTab={route.tab} /> : null}
       {children}
+      {footer}
     </>
   );
 }

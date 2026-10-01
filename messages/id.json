@@ -1467,6 +1467,65 @@
       "marketing": { "label": "Pemasaran", "desc": "Menyesuaikan promo dan iklan BCA yang Anda lihat di situs lain." }
     }
   },
+  "lokasi": {
+    "useMyLocation": "Gunakan lokasi saya",
+    "locatingDetail": "Menentukan lokasi…",
+    "locatedAreaUnknown": "Terdeteksi, di luar area cakupan",
+    "stopUsingLocation": "Berhenti pakai lokasi ini",
+    "locating": "Mencari lokasi Anda…",
+    "searchLabel": "Cari cabang Prioritas",
+    "searchPlaceholder": "Cari nama cabang atau alamat",
+    "yourLocation": "Lokasi Anda",
+    "defaultPlace": "Menara BCA",
+    "nearestFrom": "Terdekat dari {place}",
+    "permissionDenied": "Akses lokasi ditolak. Anda masih bisa mencari berdasarkan nama cabang atau alamat.",
+    "permissionBlocked": "Akses lokasi diblokir oleh browser Anda. Buka pengaturan situs lewat ikon kunci/info di address bar, izinkan Lokasi, lalu klik \"Gunakan lokasi saya\" lagi — tidak perlu memuat ulang halaman.",
+    "positionUnavailable": "Lokasi Anda belum terdeteksi. Coba lagi, atau cari berdasarkan nama cabang.",
+    "noResults": "Belum ada cabang BCA Prioritas di sekitar sini. Coba cari nama cabang atau alamat.",
+    "route": "Rute",
+    "routeLabel": "Buka rute ke {name} di Google Maps",
+    "type": {
+      "cabang": "Cabang"
+    },
+    "map": {
+      "region": "Peta cabang BCA Prioritas",
+      "zoomIn": "Perbesar peta",
+      "zoomOut": "Perkecil peta",
+      "ctrlZoom": "Tekan ctrl + scroll untuk memperbesar peta",
+      "cmdZoom": "Tekan ⌘ + scroll untuk memperbesar peta",
+      "twoFingers": "Gunakan dua jari untuk menggeser peta",
+      "unavailable": "Peta tidak dapat ditampilkan di peramban ini. Daftar lokasi di samping tetap bisa digunakan.",
+      "attribution": "Atribusi peta",
+      "yourPosition": "Posisi Anda"
+    },
+    "primer": {
+      "title": "Izinkan lokasi Anda?",
+      "body": "Kami akan meminta browser Anda membagikan lokasi, supaya bisa menampilkan cabang BCA Prioritas terdekat. Anda tetap bisa mencari cabang lewat kolom di bawah tanpa ini.",
+      "allow": "Izinkan",
+      "notNow": "Nanti Saja"
+    }
+  },
+  "prioritasFindBranch": {
+    "title": "Temukan Cabang",
+    "breadcrumb": "Prioritas",
+    "description": "Cari lokasi cabang BCA Prioritas berdasarkan nama atau alamat, lalu lihat petunjuk arah menuju cabang pilihan Anda.",
+    "searchLabel": "Cari cabang",
+    "searchPlaceholder": "Cari nama cabang atau alamat",
+    "useLocation": "Gunakan lokasi saya",
+    "locating": "Mencari lokasi...",
+    "locationError": "Lokasi Anda belum dapat diakses. Anda tetap bisa mencari cabang berdasarkan nama atau alamat.",
+    "resultCount": "{count} cabang Prioritas ditemukan",
+    "phone": "Telepon",
+    "distanceFromYou": "{distance} km dari lokasi Anda",
+    "distanceFromCenter": "{distance} km dari Jakarta Pusat",
+    "showOnMap": "Lihat di peta",
+    "directions": "Petunjuk arah",
+    "noResults": "Tidak ada cabang Prioritas yang sesuai. Coba kata kunci lain.",
+    "showMore": "Tampilkan lebih banyak",
+    "mapLabel": "Peta cabang BCA Prioritas",
+    "mapUnavailable": "Peta belum dapat dimuat. Daftar cabang dan petunjuk arah tetap tersedia.",
+    "sourceNote": "Data lokasi bersumber dari situs resmi BCA Prioritas, diambil pada 1 Oktober 2026. Informasi cabang dapat berubah."
+  },
   "prioritasAbout": {
     "title": "Tentang Kami",
     "relatedTitle": "Informasi terkait",
@@ -1671,6 +1730,25 @@
     "errors": { "required": "Wajib diisi", "email": "Format email tidak valid", "phone": "Nomor telepon tidak valid", "captcha": "Verifikasi \"saya bukan robot\" wajib diselesaikan" },
     "close": "Tutup HaloBCA"
   },
+  "prioritasKurs": {
+    "title": "Kurs",
+    "subtitle": "Lihat kurs berbagai mata uang dan gunakan konverter untuk menghitung perkiraan nilai tukar.",
+    "ratesHeading": "Kurs e-Rate",
+    "updatedAt": "Terakhir diperbarui",
+    "refresh": "Perbarui kurs",
+    "currency": "Mata uang",
+    "buy": "Beli",
+    "sell": "Jual",
+    "converter": "Konverter",
+    "conversionEstimate": "Perkiraan nilai tukar",
+    "amount": "Nominal",
+    "from": "Dari",
+    "to": "Ke",
+    "swapCurrencies": "Tukar mata uang",
+    "viewConverter": "Lihat Konverter",
+    "note": "Nilai pada halaman ini bersifat indikatif dan dihitung dari referensi kurs umum, bukan kuotasi resmi BCA. Untuk kurs e-Rate yang berlaku bagi transaksi e-Banking atau kurs khusus, silakan hubungi BCA. Nilai dapat berubah.",
+    "tellerNote": "Untuk transaksi valas di atas USD 25.000 atau ekuivalen (selain mata uang MYR dan THB), transaksi dapat dilakukan melalui teller BCA dengan menyertakan dokumen pendukung. Transaksi MYR dan THB untuk nominal berapa pun hanya dapat dilakukan melalui teller BCA dengan dokumen pendukung."
+  },
   "prioritasHero": {
     "title": "Perjalanan Hidup Anda adalah Prioritas Kami.",
     "cta": "Pelajari Lebih Lanjut",
@@ -1835,6 +1913,8 @@
       "home": "Home & Living",
       "business": "Bisnis"
     },
+    "categoriesScrollPrevious": "Geser kategori ke kiri",
+    "categoriesScrollNext": "Geser kategori ke kanan",
     "searchLabel": "Cari benefit",
     "searchPlaceholder": "Cari nama brand/partner",
     "showing": "Menampilkan {count} penawaran",
@@ -1940,7 +2020,7 @@
         "shiseido": { "title": "Rasakan Analisis Kulit Gratis dengan Ultimune Serum", "brand": "Shiseido", "alt": "Shiseido Ultimune Serum" }
       }
     },
-    "dynamicModule": { "message": "Cek sisa kuota akses dan voucher {benefit} Anda dengan masuk ke akun.", "loginLabel": "Masuk ke Akun Anda" }
+    "dynamicModule": { "message": "Cek sisa kuota akses dan voucher {benefit} Anda dengan masuk ke akun.", "loginLabel": "Masuk ke Akun Anda", "memberMessage": "Cek sisa kuota voucher {benefit} Anda di area member.", "memberActionLabel": "Akses sekarang" }
   },
   "magazineIndex": {
     "breadcrumb": "e-Magazine",
@@ -1957,7 +2037,7 @@
     "clusters": { "cards": "Kartu & Pembayaran", "financing": "Pembiayaan & Proteksi", "transactions": "Transaksi & Valas", "personal": "Layanan Personal" },
     "previousCards": "Card sebelumnya di {cluster}",
     "nextCards": "Card berikutnya di {cluster}",
-    "tabs": { "privilege": "Banking Privilege", "wealth": "Wealth Insight" },
+    "tabs": { "privilege": "Banking Privilege", "wealth": "Wealth Insight", "kurs": "Kurs" },
     "more": "Selengkapnya",
     "groups": { "house": "House View Report", "market": "Weekly Market Overview" },
     "calendarAction": "Tambahkan ke Kalender",
@@ -2216,6 +2296,7 @@
     "cta": "Pelajari Lebih Lanjut",
     "bannerAlt": "Keluarga menikmati waktu bersama di ruang keluarga",
     "prioritasLogoAlt": "BCA Prioritas",
+    "searchPlaceholders": ["Airport lounge eksklusif", "Promo hotel dan restoran", "Privilege kesehatan", "Safe Deposit Box"],
     "campaigns": {
       "weekndAlt": "BCA Presale The Weeknd",
       "weekndTitle": "BCA Presale: The Weeknd After Hours Til Dawn Tour di Jakarta",

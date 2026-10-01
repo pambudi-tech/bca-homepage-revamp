@@ -134,10 +134,10 @@ export default function BankingSolutionSection({ copy, kurs }: { copy: Copy; kur
         <section className="flex flex-col gap-6">
           <div className="flex items-center justify-between gap-4">
             <h3 className="text-lg font-semibold text-pgold-200 xl:text-heading">{copy.kurs}</h3>
-            <div className="hidden md:block"><ViewMore label={copy.viewMore} href="https://www.bca.co.id/id/informasi/kurs" /></div>
+            <div className="hidden md:block"><ViewMore label={copy.viewMore} href="/prioritas/banking-solution/kurs" /></div>
           </div>
           <KursRatesCarousel rates={kurs} copy={copy} />
-          <div className="md:hidden"><ViewMore label={copy.viewMore} href="https://www.bca.co.id/id/informasi/kurs" /></div>
+          <div className="md:hidden"><ViewMore label={copy.viewMore} href="/prioritas/banking-solution/kurs" /></div>
         </section>
       </div>
     </section>

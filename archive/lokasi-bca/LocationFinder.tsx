@@ -4,6 +4,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import { useLocale, useTranslations } from "next-intl";
+import { prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
 import {
   DEFAULT_ORIGIN,
   areaLine,
@@ -22,9 +23,6 @@ import type { MapLabels } from "./LocationMap";
    to server-render) and `mapArmed` below, which waits for the section to come
    within a screen of the viewport before the chunk is even requested. */
 const LocationMap = dynamic(() => import("./LocationMap"), { ssr: false });
-
-const FILTERS = ["all", "cabang", "atm"] as const;
-type Filter = (typeof FILTERS)[number];
 
 type Origin = { lat: number; lng: number };
 
@@ -58,8 +56,8 @@ export default function LocationFinder({ initial }: Props) {
    *  still on the default origin. The visible label is derived below rather
    *  than stored, so it can never drift out of step with `originIsUser`. */
   const [placeLabel, setPlaceLabel] = useState<string | null>(null);
-  const [filter, setFilter] = useState<Filter>("all");
   const [data, setData] = useState<NearbyResponse>(initial);
+  const [mapScrollTargetId, setMapScrollTargetId] = useState<string | null>(null);
   /** The origin `data` was actually fetched for. `pending` alone can't gate
    *  "are we still locating the visitor" — it also goes true on a plain
    *  filter switch (see the nearby-fetch effect below), which doesn't touch
@@ -171,12 +169,12 @@ export default function LocationFinder({ initial }: Props) {
     return () => io.disconnect();
   }, []);
 
-  /* ---- results follow the origin and the filter ----
+  /* ---- results follow the origin ----
      The first pass is skipped: `initial` already holds exactly this answer,
      and refetching it would spend a round trip to redraw the same three cards. */
   const isFirstQuery = useRef(true);
   useEffect(() => {
-    if (isFirstQuery.current && sameOrigin(origin, DEFAULT_ORIGIN) && filter === "all") {
+    if (isFirstQuery.current && sameOrigin(origin, DEFAULT_ORIGIN)) {
       isFirstQuery.current = false;
       return;
     }
@@ -185,10 +183,10 @@ export default function LocationFinder({ initial }: Props) {
     const controller = new AbortController();
     setPending(true);
 
-    fetch("/api/locations/nearby", {
+    fetch("/api/prioritas-branches/nearby", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ lat: origin.lat, lng: origin.lng, type: filter }),
+      body: JSON.stringify({ lat: origin.lat, lng: origin.lng }),
       signal: controller.signal,
     })
       .then((res) => (res.ok ? res.json() : Promise.reject(new Error(String(res.status)))))
@@ -208,7 +206,7 @@ export default function LocationFinder({ initial }: Props) {
       });
 
     return () => controller.abort();
-  }, [origin, filter]);
+  }, [origin]);
 
   /* ---- place suggestions ---- */
   useEffect(() => {
@@ -217,7 +215,7 @@ export default function LocationFinder({ initial }: Props) {
     const controller = new AbortController();
     // Typing is faster than the round trip; only the last keystroke matters.
     const timer = window.setTimeout(() => {
-      fetch(`/api/locations/places?q=${encodeURIComponent(query)}`, {
+      fetch(`/api/prioritas-branches/places?q=${encodeURIComponent(query)}`, {
         signal: controller.signal,
       })
         .then((res) => res.json())
@@ -252,7 +250,7 @@ export default function LocationFinder({ initial }: Props) {
     if (!originIsUser) return;
     const controller = new AbortController();
 
-    fetch("/api/locations/reverse", {
+    fetch("/api/prioritas-branches/reverse", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ lat: origin.lat, lng: origin.lng }),
@@ -462,7 +460,10 @@ export default function LocationFinder({ initial }: Props) {
       pins={data.pins}
       results={data.results}
       selectedId={selectedId}
-      onSelect={setSelectedId}
+      onSelect={(id) => {
+        setSelectedId(id);
+        setMapScrollTargetId(id);
+      }}
       labels={mapLabels}
       // This element only ever ends up in the one slot matching the current
       // `isDesktop` value (see the mobile/desktop render below), so this is
@@ -494,8 +495,6 @@ export default function LocationFinder({ initial }: Props) {
     setActiveIndex,
     onKeyDown,
     choosePlace,
-    filter,
-    setFilter,
   };
 
   const resultsShared = { originLabel, data, pending, locale, selectedId, setSelectedId };
@@ -538,18 +537,13 @@ export default function LocationFinder({ initial }: Props) {
             sub-xl tablet viewport doesn't stretch it edge to edge the way a
             phone-width `inset-x-4` alone would. */}
         <div
-          data-reveal
           // `overflow-visible`, not `-clip`: the search combobox's suggestion
           // list (see Controls below) is an absolutely-positioned child that
           // drops below this panel's own bottom edge — clipping here cut that
           // dropdown off instead of letting it float over the map like the
           // rest of this floating composition.
-          className="absolute left-1/2 top-4 z-10 w-[calc(100%-32px)] max-w-[560px] -translate-x-1/2 overflow-visible rounded-2xl border border-neutral-300 bg-white shadow-[0px_8px_24px_0px_rgba(18,20,23,0.16)]"
+          className="absolute left-1/2 top-4 z-10 w-[calc(100%-32px)] max-w-[560px] -translate-x-1/2 -translate-y-16 overflow-visible rounded-2xl border border-neutral-300 bg-white shadow-[0px_8px_24px_0px_rgba(18,20,23,0.16)]"
         >
-          {/* -2% kerning: 20px font-size × -0.02 = -0.4px. */}
-          <h2 className="px-5 pt-5 text-xl font-semibold leading-7 tracking-[-0.4px] text-blue-800">
-            {t("heading")}
-          </h2>
           <Controls
             idBase={mobileIdBase}
             inputRef={mobileInputRef}
@@ -568,7 +562,7 @@ export default function LocationFinder({ initial }: Props) {
             (its own padding stands in for the 16px margin instead), so a
             partial card peeking past the edge can still read as "more to
             scroll to" rather than being clipped by this wrapper first. */}
-        <div data-reveal className="absolute inset-x-0 bottom-12 z-10">
+        <div className="absolute inset-x-0 bottom-12 z-10">
           <ResultsSlider {...resultsShared} />
         </div>
       </div>
@@ -599,31 +593,13 @@ export default function LocationFinder({ initial }: Props) {
           }}
         />
 
-        {/* Content column — centred to the same 1280px grid every other
-            section on the page uses via ordinary `mx-auto` (not the
-            absolute-positioned `left-1/2 -translate-x-1/2` trick — this
-            column is what the map/gradient above key their height off, so it
-            has to be real, height-contributing, normal-flow content, not
-            something removed from the flow like they are). The panel hugs
-            its own content (only ever three cards) instead of being
-            stretched to some fixed height with a scrollbar nothing needs.
-            `pointer-events-none` here, `pointer-events-auto` back on the
-            panel below — this column is `w-[1280px]` (the full grid) but the
-            visible panel only fills the left 452px of it; without this, the
-            empty ~828px to its right was still an invisible box sitting at
-            `z-10` over the map, silently eating every drag and wheel-zoom
-            meant for it. */}
+        {/* Content column shares the page's 1280px grid and contributes the
+            map section's height. The panel stays a single surface while the
+            empty grid area remains transparent to map gestures. */}
         <div className="xl:relative xl:z-10 xl:mx-auto xl:flex xl:w-[1280px] xl:flex-col xl:items-start xl:py-16 xl:pointer-events-none">
-          <div
-            data-reveal
-            className="xl:pointer-events-auto xl:flex xl:w-[452px] xl:flex-col xl:overflow-clip xl:rounded-2xl xl:border xl:border-neutral-300 xl:bg-white xl:shadow-[0px_16px_48px_0px_rgba(18,20,23,0.28)]"
-          >
-            {/* -2% kerning: 24px font-size × -0.02 = -0.48px. */}
-            <h2 className="xl:px-6 xl:pt-6 xl:text-2xl xl:font-semibold xl:leading-8 xl:tracking-[-0.48px] xl:text-blue-800">
-              {t("heading")}
-            </h2>
+          <div className="xl:pointer-events-auto xl:flex xl:h-[min(780px,calc(100vh-160px))] xl:w-[452px] xl:min-h-0 xl:-translate-y-28 xl:flex-col xl:overflow-hidden xl:rounded-2xl xl:border xl:border-neutral-300 xl:bg-white xl:shadow-[0px_16px_48px_0px_rgba(18,20,23,0.28)]">
             <Controls idBase={desktopIdBase} inputRef={desktopInputRef} {...controlsShared} />
-            <ResultsList {...resultsShared} />
+            <ResultsList {...resultsShared} mapScrollTargetId={mapScrollTargetId} />
           </div>
         </div>
       </div>
@@ -654,15 +630,9 @@ type ControlsProps = {
   setActiveIndex: (value: number) => void;
   onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   choosePlace: (place: Place) => void;
-  filter: Filter;
-  setFilter: (value: Filter) => void;
   /** Whether this instance ends in a bottom rule. Desktop's Controls is
-   *  followed by ResultsList inside the same panel, so the line still marks a
-   *  real boundary; mobile's is the last thing in its own floating card (see
-   *  the top panel in the render below) — nothing follows it there, so the
-   *  same line was just a stray mark sitting in front of the card's own
-   *  rounded bottom edge. Defaults to shown, since desktop is the more common
-   *  case to reach for this component without thinking about the prop. */
+   *  followed by ResultsList inside the same panel. Mobile's Controls is the
+   *  last thing in its own floating card, so it has no divider there. */
   divider?: boolean;
   /** Mobile's geo-primer popover must be a bottom sheet pinned to the
    *  viewport, but its button sits inside the top panel's `-translate-x-1/2`
@@ -704,8 +674,6 @@ function Controls({
   setActiveIndex,
   onKeyDown,
   choosePlace,
-  filter,
-  setFilter,
   divider = true,
   usePortal = false,
 }: ControlsProps) {
@@ -713,11 +681,8 @@ function Controls({
   const listboxId = `${idBase}-listbox`;
 
   return (
-    // No bottom padding here — the tab strip's own border (when `divider` is
-    // on; see the Figma "Tab Style" spec) is meant to sit flush at the bottom
-    // edge of this block, not floating above a gap of empty padding.
     <div
-      className={`flex flex-col gap-4 px-5 pt-5 xl:px-6 xl:pt-6 ${divider ? "border-b border-neutral-300" : ""}`}
+      className={`flex flex-col gap-4 px-5 pt-5 xl:px-6 xl:pt-6 xl:pb-6 ${divider ? "border-b border-neutral-300" : ""}`}
     >
       <div className="flex flex-col gap-3">
         {/* Once the visitor's own position is in use, clicking already did
@@ -783,7 +748,7 @@ function Controls({
               aria-expanded={
                 permission === "granted" || permission === "denied" ? undefined : primerMounted
               }
-              className="flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-blue-500 px-5 text-base font-semibold text-neutral-100 transition-colors duration-200 hover:bg-blue-600 active:bg-blue-700 disabled:opacity-70"
+              className="flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-pbrown-500 px-5 text-base font-semibold text-pgold-100 transition-colors duration-200 hover:bg-pbrown-600 active:bg-pbrown-700 disabled:opacity-70"
             >
               <span
                 aria-hidden
@@ -879,28 +844,22 @@ function Controls({
             onFocus={() => setOpen(true)}
             onBlur={() => window.setTimeout(() => setOpen(false), 120)}
             onKeyDown={onKeyDown}
-            // `focus:outline-none` here, on purpose, unlike this section's
-            // other controls: text inputs are the one element type where
-            // browsers (Safari and Chrome both) draw their native focus ring
-            // on *any* focus, not just `:focus-visible` keyboard focus — so a
-            // mouse click was showing that ring's default blue laid directly
-            // over our cyan-500 border, reading as a colour neither one of
-            // them. `focus-visible:` reinstates a ring for keyboard focus
-            // specifically, in the same cyan so the two never disagree.
-            // `peer` lets the icon below (a sibling, not a descendant) react
-            // to this input's own focus state via `peer-focus:`.
-            className="peer h-12 w-full rounded-xl border border-neutral-300 bg-neutral-200 pl-12 pr-4 text-base text-neutral-800 transition-colors placeholder:text-neutral-600 focus:border-cyan-500 focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500"
+            // `peer` lets the search icon below follow this input's focus
+            // state. The Prioritas field grows to the 56px desktop dropdown
+            // size and uses the gold focus ring from the shared dropdowns.
+            className="peer h-12 w-full rounded-xl border border-neutral-300 bg-neutral-200 pl-12 pr-4 text-base text-neutral-800 transition-colors placeholder:text-neutral-600 focus:border-2 focus:border-pgold-500 focus:outline-none xl:h-14 xl:text-base"
           />
           <span
             aria-hidden
-            className="bca-search-icon pointer-events-none absolute left-4 top-1/2 size-6 -translate-y-1/2 bg-neutral-700 transition-colors peer-focus:bg-blue-500"
+            className="bca-search-icon pointer-events-none absolute left-4 top-1/2 size-6 -translate-y-1/2 bg-neutral-700 transition-colors peer-focus:bg-pbrown-500"
           />
 
           {open && suggestions.length > 0 && (
             <ul
               id={listboxId}
               role="listbox"
-              className="absolute inset-x-0 top-[calc(100%+4px)] z-20 overflow-clip rounded-xl border border-neutral-300 bg-white py-1 shadow-[0px_8px_24px_0px_rgba(18,20,23,0.12)]"
+              data-lenis-prevent
+              className="priosoli-dropdown--large absolute inset-x-0 top-[calc(100%+4px)] z-20 max-h-64 overflow-y-auto overscroll-contain rounded-xl border border-neutral-300 bg-white p-2 shadow-[0px_8px_24px_0px_rgba(18,20,23,0.12)]"
             >
               {suggestions.map((place, index) => (
                 <li key={place.id}>
@@ -914,8 +873,7 @@ function Controls({
                     onMouseDown={(event) => event.preventDefault()}
                     onClick={() => choosePlace(place)}
                     onMouseEnter={() => setActiveIndex(index)}
-                    className={`flex w-full items-baseline gap-2 px-4 py-2.5 text-left transition-colors ${index === activeIndex ? "bg-blue-100" : "bg-white"
-                      }`}
+                    className="priosoli-dropdown__option"
                   >
                     <span className="text-base font-semibold text-neutral-800">{place.label}</span>
                     <span className="truncate text-sm text-neutral-600">{place.sub}</span>
@@ -938,36 +896,6 @@ function Controls({
       )}
       {geo === "unavailable" && <Hint>{t("positionUnavailable")}</Hint>}
 
-      {/* Tabs, not chips — per the Figma "Tab Style" spec (node 1700-6158):
-          a shared bottom rule under the whole row, each tab a 14px label over
-          a 4px indicator bar that's transparent until active rather than
-          absent, so switching filters never shifts any tab's label
-          vertically. */}
-      <div className="flex items-center gap-2">
-        {FILTERS.map((key) => {
-          const active = filter === key;
-          return (
-            <button
-              key={key}
-              type="button"
-              onClick={() => setFilter(key)}
-              aria-pressed={active}
-              className="flex h-12 cursor-pointer flex-col items-center"
-            >
-              <span
-                className={`flex flex-1 items-center justify-center gap-1.5 px-3 text-md ${active ? "font-bold text-blue-500" : "font-semibold text-neutral-700"
-                  }`}
-              >
-                {t(`filters.${key}`)}
-              </span>
-              <span
-                aria-hidden
-                className={`h-1 w-full rounded-t-xl bg-cyan-500 ${active ? "" : "opacity-0"}`}
-              />
-            </button>
-          );
-        })}
-      </div>
     </div>
   );
 }
@@ -979,15 +907,41 @@ type ResultsListProps = {
   locale: string;
   selectedId: string | null;
   setSelectedId: (id: string | null) => void;
+  mapScrollTargetId: string | null;
 };
 
-/** Desktop's vertical list, plus the "see all" link — split out for the same
+/** Desktop's vertical, scrollable list — split out for the same
  *  reason as `Controls`: it's mounted once per breakpoint. Mobile uses
  *  `ResultsSlider` below instead, not this — its horizontal row of cards and
  *  unenclosed layout are different enough that sharing one component meant
  *  more branching in here than the two ever had in common. */
-function ResultsList({ originLabel, data, pending, locale, selectedId, setSelectedId }: ResultsListProps) {
+function ResultsList({ originLabel, data, pending, locale, selectedId, setSelectedId, mapScrollTargetId }: ResultsListProps) {
   const t = useTranslations("lokasi");
+  const listRef = useRef<HTMLUListElement>(null);
+  const basePaddingBottomRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!mapScrollTargetId) return;
+    const list = listRef.current;
+    const card = list?.querySelector<HTMLElement>(`[data-location-id="${mapScrollTargetId}"]`);
+    if (!list || !card) return;
+
+    if (basePaddingBottomRef.current === null) {
+      basePaddingBottomRef.current = Number.parseFloat(window.getComputedStyle(list).paddingBottom) || 0;
+    }
+    const basePaddingBottom = basePaddingBottomRef.current;
+    list.style.paddingBottom = `${basePaddingBottom}px`;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const top = Math.max(
+      0,
+      card.getBoundingClientRect().top - list.getBoundingClientRect().top + list.scrollTop - 32,
+    );
+    const currentMaxScroll = list.scrollHeight - list.clientHeight;
+    const extraBottomSpace = Math.max(0, top - currentMaxScroll);
+    if (extraBottomSpace) list.style.paddingBottom = `${basePaddingBottom + extraBottomSpace}px`;
+    list.scrollTo({ top, behavior: reduceMotion ? "auto" : "smooth" });
+  }, [mapScrollTargetId, data.results]);
 
   return (
     <div className="flex min-h-0 flex-col xl:flex-1">
@@ -1000,14 +954,14 @@ function ResultsList({ originLabel, data, pending, locale, selectedId, setSelect
       </p>
 
       <ul
+        ref={listRef}
+        data-lenis-prevent
         data-pending={pending}
-        className="flex flex-1 flex-col gap-3 overflow-y-auto bg-neutral-100 p-5 pt-4 transition-opacity duration-200 data-[pending=true]:opacity-50 xl:px-6 xl:py-6"
+        className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto overscroll-contain bg-neutral-100 p-5 pt-4 transition-opacity duration-200 data-[pending=true]:opacity-50 xl:px-6 xl:py-6"
       >
         {data.results.map((location, index) => (
           <ResultCard
-            // Keyed by slot: the three nodes persist across queries, so the
-            // list swaps contents instead of remounting.
-            key={index}
+            key={location.id}
             rank={index + 1}
             location={location}
             locale={locale}
@@ -1023,23 +977,6 @@ function ResultsList({ originLabel, data, pending, locale, selectedId, setSelect
         )}
       </ul>
 
-      <div className="border-t border-neutral-300 px-5 py-6 xl:px-6">
-        <a
-          href="https://www.bca.co.id/id/lokasi-bca"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-0.5 text-base font-semibold text-blue-500 transition-transform hover:translate-x-0.5"
-        >
-          {t("seeAll")}
-          <img
-            loading="lazy"
-            decoding="async"
-            src="/assets/navbar/icon-arrow-blue.svg"
-            alt=""
-            className="size-5"
-          />
-        </a>
-      </div>
     </div>
   );
 }
@@ -1123,7 +1060,7 @@ function ResultsSlider({
       >
         {data.results.map((location, index) => (
           <ResultCardCompact
-            key={index}
+            key={location.id}
             rank={index + 1}
             location={location}
             locale={locale}
@@ -1141,14 +1078,6 @@ function ResultsSlider({
         )}
       </ul>
 
-      <a
-        href="https://www.bca.co.id/id/lokasi-bca"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex h-11 shrink-0 items-center justify-center rounded-full border border-blue-500 bg-white px-5 text-sm font-semibold text-blue-500 shadow-[0px_8px_24px_0px_rgba(18,20,23,0.16)] transition-colors hover:bg-blue-100"
-      >
-        {t("seeAll")}
-      </a>
     </div>
   );
 }
@@ -1177,12 +1106,12 @@ function ResultCard({
   const t = useTranslations("lokasi");
   const { title, sub } = locationLines(location);
   const hours = formatHours(location.hours, locale);
-  const typeLabel = t(`type.${location.type}`);
-  const isBranch = location.type === "cabang";
+  const typeLabel = t("type.cabang");
 
   return (
     <li
       data-selected={selected}
+      data-location-id={location.id}
       // `[&:hover]:`, not the plain `hover:` variant: Tailwind wraps `hover:`
       // in `@media (hover: hover)` so a tap doesn't leave touch devices stuck
       // in a hover state — but that same guard reports `hover: none` under a
@@ -1190,7 +1119,7 @@ function ResultCard({
       // viewport width, which was silently swallowing this state exactly
       // there. The arbitrary variant compiles to a plain `:hover` selector,
       // so a real mouse still gets it and a touch tap still can't stick it.
-      className="flex items-stretch rounded-xl border border-neutral-300 bg-neutral-100 transition-colors [&:hover]:bg-blue-100 data-[selected=true]:border-cyan-500 data-[selected=true]:bg-blue-100"
+      className="flex items-stretch rounded-xl border border-neutral-300 bg-neutral-100 transition-colors [&:hover]:bg-pgold-100 [&:has(>button:active)]:border-pgold-500 [&:has(>button:active)]:bg-pgold-100 data-[selected=true]:border-pgold-500 data-[selected=true]:bg-pgold-100"
     >
       <button
         type="button"
@@ -1201,30 +1130,15 @@ function ResultCard({
         {/* Same number as the map pin — this is what ties a card to a dot. */}
         <span
           aria-hidden
-          className={`flex size-7 shrink-0 items-center justify-center rounded-full text-sm font-bold text-neutral-100 ${isBranch ? "bg-blue-500" : "bg-cyan-500"
-            }`}
+          className="flex size-7 shrink-0 items-center justify-center rounded-full border border-pbrown-500 bg-transparent text-sm font-bold text-pbrown-500"
         >
           {rank}
         </span>
 
         <span className="flex min-w-0 flex-1 flex-col gap-1">
-          <span className="flex items-center gap-2">
-            <span
-              // Per the Figma "Badge Style" spec (node 1704-6230): 12px
-              // SemiBold, 20px tall pill, sentence case (no uppercase/tracking
-              // — "Cabang" reads as "Cabang", not "CABANG").
-              className={`flex h-5 items-center justify-center rounded-md px-1.5 text-xs font-semibold ${isBranch ? "bg-blue-300 text-blue-600" : "bg-cyan-300 text-cyan-700"
-                }`}
-            >
-              {typeLabel}
-            </span>
-            <span className="text-xs font-semibold text-neutral-600">
-              {formatDistance(location.distance, locale)}
-            </span>
-          </span>
-
-          <span className="line-clamp-1 text-base font-semibold text-neutral-800">{title}</span>
+          <span className={`line-clamp-1 text-base font-semibold ${selected ? "text-pbrown-600" : "text-neutral-800"}`}>{title}</span>
           {sub && <span className="line-clamp-1 text-sm text-neutral-600">{sub}</span>}
+          <span className="text-xs font-semibold text-neutral-600">{formatDistance(location.distance, locale)}</span>
           {hours && <span className="text-xs text-neutral-700">{hours}</span>}
         </span>
       </button>
@@ -1234,7 +1148,11 @@ function ResultCard({
         target="_blank"
         rel="noopener noreferrer"
         aria-label={t("routeLabel", { name: `${typeLabel} — ${title}` })}
-        className="m-3 flex shrink-0 items-center gap-1 self-center rounded-full border border-blue-500 px-3 py-2 text-xs font-semibold text-blue-500 transition-colors hover:bg-blue-100"
+        className={prioritasButtonClassName({
+          variant: "secondary",
+          size: "small",
+          className: "m-3 shrink-0 self-center",
+        })}
       >
         {t("route")}
       </a>
@@ -1264,8 +1182,7 @@ function ResultCardCompact({
   const t = useTranslations("lokasi");
   const { title, sub } = locationLines(location);
   const hours = formatHours(location.hours, locale);
-  const typeLabel = t(`type.${location.type}`);
-  const isBranch = location.type === "cabang";
+  const typeLabel = t("type.cabang");
 
   return (
     <li
@@ -1283,7 +1200,7 @@ function ResultCardCompact({
       // `snap-start` is `scroll-snap-align`, paired with `snap-x snap-mandatory`
       // on the parent `<ul>` (see ResultsSlider) for the swipe-to-settle feel.
       // `[&:hover]:`, not `hover:` — same reasoning as ResultCard above.
-      className="flex w-[220px] shrink-0 snap-start flex-col overflow-clip rounded-xl border border-neutral-300 bg-white transition-colors [&:hover]:bg-blue-100 data-[selected=true]:border-cyan-500"
+      className="flex w-[220px] shrink-0 snap-start flex-col overflow-clip rounded-xl border border-neutral-300 bg-white transition-colors [&:hover]:bg-pgold-100 data-[selected=true]:border-pgold-500 data-[selected=true]:bg-pgold-100"
     >
       <button
         type="button"
@@ -1291,37 +1208,16 @@ function ResultCardCompact({
         aria-pressed={selected}
         className="flex min-w-0 flex-1 flex-col items-start gap-2 p-3 text-left"
       >
-        {/* Same number as the map pin — this is what ties a card to a dot.
-            Distance sits at the far end of this same row (not under it),
-            level with the rank badge and type tag rather than stacked below
-            them, so the numbers a visitor scans first — how far, which kind —
-            read as one line. */}
+        {/* Same number as the map pin — this is what ties a card to a dot. */}
         <span className="flex w-full items-center justify-between gap-2">
-          <span className="flex items-center gap-1.5">
-            <span
-              aria-hidden
-              className={`flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold text-neutral-100 ${isBranch ? "bg-blue-500" : "bg-cyan-500"
-                }`}
-            >
-              {rank}
-            </span>
-            <span
-              // Per the Figma "Badge Style" spec (node 1704-6230): 12px
-              // SemiBold, 20px tall pill, sentence case (no uppercase/tracking
-              // — "Cabang" reads as "Cabang", not "CABANG").
-              className={`flex h-5 items-center justify-center rounded-md px-1.5 text-xs font-semibold ${isBranch ? "bg-blue-300 text-blue-600" : "bg-cyan-300 text-cyan-700"
-                }`}
-            >
-              {typeLabel}
-            </span>
-          </span>
-          <span className="shrink-0 text-xs font-semibold text-neutral-600">
-            {formatDistance(location.distance, locale)}
+          <span className="flex size-6 shrink-0 items-center justify-center rounded-full border border-pbrown-500 bg-transparent text-xs font-bold text-pbrown-500">
+            {rank}
           </span>
         </span>
 
-        <span className="line-clamp-2 text-base font-semibold text-neutral-800">{title}</span>
+        <span className={`line-clamp-2 text-base font-semibold ${selected ? "text-pbrown-600" : "text-neutral-800"}`}>{title}</span>
         {sub && <span className="line-clamp-1 text-sm text-neutral-600">{sub}</span>}
+        <span className="text-xs font-semibold text-neutral-600">{formatDistance(location.distance, locale)}</span>
         {hours && <span className="line-clamp-1 text-xs text-neutral-700">{hours}</span>}
       </button>
 

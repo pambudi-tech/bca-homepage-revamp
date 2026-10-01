@@ -1242,6 +1242,65 @@
       "marketing": { "label": "Marketing", "desc": "Tailors the BCA promos and ads you see on other sites." }
     }
   },
+  "lokasi": {
+    "useMyLocation": "Use my location",
+    "locatingDetail": "Finding your area…",
+    "locatedAreaUnknown": "Detected, outside our coverage area",
+    "stopUsingLocation": "Stop using this location",
+    "locating": "Finding your location…",
+    "searchLabel": "Search Prioritas branches",
+    "searchPlaceholder": "Search branch name or address",
+    "yourLocation": "Your location",
+    "defaultPlace": "BCA Tower",
+    "nearestFrom": "Nearest to {place}",
+    "permissionDenied": "Location access was denied. You can still search by branch name or address.",
+    "permissionBlocked": "Location access is blocked in your browser. Open the site settings from the lock/info icon in the address bar, allow Location, then click \"Use my location\" again — no reload needed.",
+    "positionUnavailable": "We could not detect your location. Try again, or search by branch name.",
+    "noResults": "No BCA Prioritas branches nearby. Try a branch name or address.",
+    "route": "Directions",
+    "routeLabel": "Open directions to {name} in Google Maps",
+    "type": {
+      "cabang": "Branch"
+    },
+    "map": {
+      "region": "Map of BCA Prioritas branches",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "ctrlZoom": "Use ctrl + scroll to zoom the map",
+      "cmdZoom": "Use ⌘ + scroll to zoom the map",
+      "twoFingers": "Use two fingers to move the map",
+      "unavailable": "The map cannot be displayed in this browser. The list of locations still works.",
+      "attribution": "Map attribution",
+      "yourPosition": "Your position"
+    },
+    "primer": {
+      "title": "Allow your location?",
+      "body": "We'll ask your browser to share your location, so we can show the nearest BCA Prioritas branches. You can still search by branch name below without this.",
+      "allow": "Allow",
+      "notNow": "Not Now"
+    }
+  },
+  "prioritasFindBranch": {
+    "title": "Find a Branch",
+    "breadcrumb": "Prioritas",
+    "description": "Search BCA Prioritas branches by name or address, then get directions to your chosen branch.",
+    "searchLabel": "Search branches",
+    "searchPlaceholder": "Search branch name or address",
+    "useLocation": "Use my location",
+    "locating": "Finding your location...",
+    "locationError": "Your location is unavailable. You can still search by branch name or address.",
+    "resultCount": "{count} BCA Prioritas branches found",
+    "phone": "Phone",
+    "distanceFromYou": "{distance} km from you",
+    "distanceFromCenter": "{distance} km from Central Jakarta",
+    "showOnMap": "Show on map",
+    "directions": "Directions",
+    "noResults": "No matching BCA Prioritas branches. Try another keyword.",
+    "showMore": "Show more",
+    "mapLabel": "BCA Prioritas branch map",
+    "mapUnavailable": "The map could not load. The branch list and directions are still available.",
+    "sourceNote": "Location data sourced from the official BCA Prioritas website on 1 October 2026. Branch information may change."
+  },
   "prioritasAbout": {
     "title": "About Us",
     "relatedTitle": "Related information",
@@ -1441,6 +1500,25 @@
     "errors": { "required": "This field is required", "email": "Invalid email format", "phone": "Invalid phone number", "captcha": "Please complete the \"I'm not a robot\" verification" },
     "close": "Close HaloBCA"
   },
+  "prioritasKurs": {
+    "title": "Exchange Rates",
+    "subtitle": "View exchange rates for major currencies and use the converter to estimate an exchange amount.",
+    "ratesHeading": "e-Rate Exchange Rates",
+    "updatedAt": "Last updated",
+    "refresh": "Refresh exchange rates",
+    "currency": "Currency",
+    "buy": "Buy",
+    "sell": "Sell",
+    "converter": "Currency converter",
+    "conversionEstimate": "Estimated conversion",
+    "amount": "Amount",
+    "from": "From",
+    "to": "To",
+    "swapCurrencies": "Swap currencies",
+    "viewConverter": "View converter",
+    "note": "Rates shown here are indicative estimates based on general exchange-rate references, not official BCA quotes. Contact BCA for the e-Rate used for e-Banking transactions or for a special rate. Rates may change.",
+    "tellerNote": "Foreign currency transactions above USD 25,000 or equivalent (except MYR and THB) can be made at a BCA teller with supporting documents. Transactions in MYR and THB for any amount can only be made at a BCA teller with supporting documents."
+  },
   "prioritasHero": {
     "title": "Your Life Journey is Our Priority.",
     "cta": "Learn More",
@@ -1601,6 +1679,8 @@
       "home": "Home & Living",
       "business": "Business"
     },
+    "categoriesScrollPrevious": "Scroll categories left",
+    "categoriesScrollNext": "Scroll categories right",
     "searchLabel": "Search benefits",
     "searchPlaceholder": "Search brand/partner",
     "showing": "Showing {count} offers",
@@ -1706,7 +1786,7 @@
         "shiseido": { "title": "Enjoy a Complimentary Skin Analysis with Ultimune Serum", "brand": "Shiseido", "alt": "Shiseido Ultimune Serum" }
       }
     },
-    "dynamicModule": { "message": "Sign in to check your remaining access and voucher quota for {benefit}.", "loginLabel": "Sign In" }
+    "dynamicModule": { "message": "Sign in to check your remaining access and voucher quota for {benefit}.", "loginLabel": "Sign In", "memberMessage": "Check your remaining {benefit} voucher quota in the member area.", "memberActionLabel": "Access Now" }
   },
   "magazineIndex": {
     "breadcrumb": "e-Magazine",
@@ -1723,7 +1803,7 @@
     "clusters": { "cards": "Cards & Payments", "financing": "Financing & Protection", "transactions": "Transactions & Foreign Exchange", "personal": "Personal Services" },
     "previousCards": "Previous card in {cluster}",
     "nextCards": "Next card in {cluster}",
-    "tabs": { "privilege": "Banking Privilege", "wealth": "Wealth Insight" },
+    "tabs": { "privilege": "Banking Privilege", "wealth": "Wealth Insight", "kurs": "Exchange Rates" },
     "more": "Learn More",
     "groups": { "house": "House View Report", "market": "Weekly Market Overview" },
     "calendarAction": "Add to Calendar",
@@ -1974,6 +2054,7 @@
     "cta": "Learn More",
     "bannerAlt": "A family enjoying time together in a living room",
     "prioritasLogoAlt": "BCA Prioritas",
+    "searchPlaceholders": ["Exclusive airport lounges", "Hotel and dining offers", "Health privileges", "Safe Deposit Box"],
     "campaigns": {
       "weekndAlt": "BCA Presale The Weeknd",
       "weekndTitle": "BCA Presale: The Weeknd After Hours Til Dawn Tour in Jakarta",

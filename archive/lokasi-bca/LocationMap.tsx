@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { GeoJSONSource, Map as MapLibreMap, Marker } from "maplibre-gl";
+import type { Map as MapLibreMap, Marker } from "maplibre-gl";
 import { BCA_MAP_STYLE } from "./bca-map-style";
 import type { NearbyLocation } from "./location-data";
 
@@ -9,14 +9,6 @@ import type { NearbyLocation } from "./location-data";
    component is behind a `next/dynamic` boundary (see LocationFinder), so a
    visitor who never scrolls this far downloads neither. */
 import "maplibre-gl/dist/maplibre-gl.css";
-
-/* Pin colours are the BCA ramps from globals.css. Kept as literals because a
-   WebGL style can't read CSS custom properties. */
-const BRANCH = "#005caa"; // blue-500
-const ATM = "#00b5f0"; //    cyan-500
-const RING = "#ffffff"; //   neutral-100
-
-const PIN_SOURCE = "bca-pins";
 
 /**
  * At the `xl` breakpoint (1280px+) the controls/results panel stops sitting
@@ -104,22 +96,25 @@ type Props = {
   zoomControl?: boolean;
 };
 
-function toFeatureCollection(pins: NearbyLocation[], results: NearbyLocation[]) {
-  const ranks = new Map(results.map((r, i) => [r.id, i + 1]));
-  return {
-    type: "FeatureCollection" as const,
-    features: pins.map((pin) => ({
-      type: "Feature" as const,
-      id: pin.id,
-      geometry: { type: "Point" as const, coordinates: [pin.lng, pin.lat] },
-      properties: {
-        id: pin.id,
-        type: pin.type,
-        // 0 = an ordinary nearby pin, 1-3 = one of the cards.
-        rank: ranks.get(pin.id) ?? 0,
-      },
-    })),
-  };
+function branchPinElement(
+  location: NearbyLocation,
+  rank: number | undefined,
+  selected: boolean,
+  onSelect: (id: string) => void,
+): HTMLButtonElement {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "bca-branch-pin";
+  button.dataset.ranked = rank ? "true" : "false";
+  button.dataset.selected = selected ? "true" : "false";
+  button.setAttribute("aria-label", location.street || location.area);
+  button.title = location.street || location.area;
+  if (rank) button.textContent = String(rank);
+  button.addEventListener("click", (event) => {
+    event.stopPropagation();
+    onSelect(location.id);
+  });
+  return button;
 }
 
 /** A dot for the origin. Built by hand rather than as a GeoJSON layer so the
@@ -157,7 +152,9 @@ export default function LocationMap({
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
+  const maplibreRef = useRef<typeof import("maplibre-gl") | null>(null);
   const originMarkerRef = useRef<Marker | null>(null);
+  const pinMarkersRef = useRef(new Map<string, Marker>());
   const hasFittedRef = useRef(false);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -194,6 +191,7 @@ export default function LocationMap({
       // MapLibre v6 is ESM-only and has no default export.
       const maplibregl = await import("maplibre-gl");
       if (cancelled || !containerRef.current) return;
+      maplibreRef.current = maplibregl;
 
       try {
         map = new maplibregl.Map({
@@ -215,7 +213,7 @@ export default function LocationMap({
           // MapLibre's own built-in control (compact: true) actually defaults
           // to *expanded* — it only collapses once the visitor has clicked it
           // once (its internal state starts `open`). Attribution is mandatory
-          // here (OpenFreeMap's terms), but starting expanded on a map this
+          // here (OpenStreetMap's attribution terms), but starting expanded on a map this
           // size read as clutter, so this is disabled in favour of our own
           // "i" toggle below, which is hidden until clicked from the outset.
           attributionControl: false,
@@ -258,15 +256,15 @@ export default function LocationMap({
       // map is disorienting and there is no compass control to undo it.
       map.touchZoomRotate.disableRotation();
 
-      // If the style or its glyphs never arrive (OpenFreeMap unreachable, a
+      // If the style or its tiles never arrive (OpenStreetMap unreachable, a
       // captive-portal network, an offline visitor), `load` simply never fires
       // and the panel would sit blank and unexplained. Bound the wait and say
       // so instead. Cleared below the moment `load` does fire.
       styleTimeout = window.setTimeout(() => {
         console.error(
           "[Lokasi BCA] map style never finished loading within 10s " +
-            "(no 'load' event) — check the Network tab for requests to " +
-            "tiles.openfreemap.org: blocked, timed out, or never sent at all " +
+          "(no 'load' event) — check the Network tab for requests to " +
+            "tile.openstreetmap.org: blocked, timed out, or never sent at all " +
             "points at an ad blocker, DNS filter, corporate proxy, or being offline.",
         );
         setFailed(true);
@@ -275,87 +273,6 @@ export default function LocationMap({
       map.on("load", () => {
         window.clearTimeout(styleTimeout);
         if (!map) return;
-
-        map.addSource(PIN_SOURCE, {
-          type: "geojson",
-          data: toFeatureCollection(pins, results),
-        });
-
-        // Selection ring, under the dots so it reads as a halo.
-        map.addLayer({
-          id: "pins-selected",
-          type: "circle",
-          source: PIN_SOURCE,
-          filter: ["==", ["get", "id"], ""],
-          paint: {
-            "circle-radius": 20,
-            "circle-color": BRANCH,
-            "circle-opacity": 0.14,
-          },
-        });
-
-        // Ordinary nearby pins — small, so the three ranked ones dominate.
-        map.addLayer({
-          id: "pins-dot",
-          type: "circle",
-          source: PIN_SOURCE,
-          filter: ["==", ["get", "rank"], 0],
-          paint: {
-            "circle-radius": [
-              "interpolate",
-              ["linear"],
-              ["zoom"],
-              11,
-              ["case", ["==", ["get", "type"], "cabang"], 4, 3],
-              16,
-              ["case", ["==", ["get", "type"], "cabang"], 7, 5.5],
-            ],
-            "circle-color": ["case", ["==", ["get", "type"], "cabang"], BRANCH, ATM],
-            "circle-stroke-color": RING,
-            "circle-stroke-width": 1.5,
-          },
-        });
-
-        // The three results, sized to be unmistakable and carrying their number.
-        map.addLayer({
-          id: "pins-ranked",
-          type: "circle",
-          source: PIN_SOURCE,
-          filter: [">", ["get", "rank"], 0],
-          paint: {
-            "circle-radius": 13,
-            "circle-color": ["case", ["==", ["get", "type"], "cabang"], BRANCH, ATM],
-            "circle-stroke-color": RING,
-            "circle-stroke-width": 2.5,
-          },
-        });
-        map.addLayer({
-          id: "pins-rank-label",
-          type: "symbol",
-          source: PIN_SOURCE,
-          filter: [">", ["get", "rank"], 0],
-          layout: {
-            "text-field": ["to-string", ["get", "rank"]],
-            "text-font": ["Noto Sans Bold"],
-            "text-size": 13,
-            "text-allow-overlap": true,
-            "text-ignore-placement": true,
-          },
-          paint: { "text-color": RING },
-        });
-
-        for (const layer of ["pins-dot", "pins-ranked", "pins-rank-label"]) {
-          map.on("click", layer, (event) => {
-            const id = event.features?.[0]?.properties?.id;
-            if (typeof id === "string") onSelectRef.current(id);
-          });
-          map.on("mouseenter", layer, () => {
-            if (map) map.getCanvas().style.cursor = "pointer";
-          });
-          map.on("mouseleave", layer, () => {
-            if (map) map.getCanvas().style.cursor = "";
-          });
-        }
 
         originMarkerRef.current = new maplibregl.Marker({
           element: originElement(originIsUser, labels.yourLocation, labels.yourPosition),
@@ -374,6 +291,8 @@ export default function LocationMap({
       window.clearTimeout(styleTimeout);
       originMarkerRef.current?.remove();
       originMarkerRef.current = null;
+      pinMarkersRef.current.forEach((marker) => marker.remove());
+      pinMarkersRef.current.clear();
       mapRef.current?.remove();
       mapRef.current = null;
     };
@@ -385,9 +304,6 @@ export default function LocationMap({
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !ready) return;
-
-    const source = map.getSource(PIN_SOURCE) as GeoJSONSource | undefined;
-    source?.setData(toFeatureCollection(pins, results));
 
     originMarkerRef.current?.setLngLat([origin.lng, origin.lat]);
     const element = originMarkerRef.current?.getElement();
@@ -407,6 +323,48 @@ export default function LocationMap({
     fitToOriginAndResults(map, origin, results, duration);
   }, [origin, originIsUser, pins, results, ready, labels.yourLocation]);
 
+  /* HTML markers stay crisp above raster tiles and remain visible at every
+   * zoom. Keep one for each nearby Prioritas branch, with only the first three
+   * carrying ranks that tie them to the featured rows in the list. */
+  useEffect(() => {
+    const map = mapRef.current;
+    const maplibregl = maplibreRef.current;
+    if (!map || !maplibregl || !ready) return;
+
+    const ranks = new Map(results.slice(0, 3).map((location, index) => [location.id, index + 1]));
+    const liveIds = new Set(pins.map((location) => location.id));
+
+    for (const [id, marker] of pinMarkersRef.current) {
+      if (!liveIds.has(id)) {
+        marker.remove();
+        pinMarkersRef.current.delete(id);
+      }
+    }
+
+    for (const location of pins) {
+      const rank = ranks.get(location.id);
+      const marker = pinMarkersRef.current.get(location.id);
+      const element = marker?.getElement();
+      if (marker && element) {
+        marker.setLngLat([location.lng, location.lat]);
+        element.dataset.ranked = rank ? "true" : "false";
+        element.dataset.selected = selectedId === location.id ? "true" : "false";
+        element.setAttribute("aria-label", location.street || location.area);
+        element.title = location.street || location.area;
+        element.textContent = rank ? String(rank) : "";
+        continue;
+      }
+
+      const nextMarker = new maplibregl.Marker({
+        element: branchPinElement(location, rank, selectedId === location.id, onSelectRef.current),
+        anchor: "center",
+      })
+        .setLngLat([location.lng, location.lat])
+        .addTo(map);
+      pinMarkersRef.current.set(location.id, nextMarker);
+    }
+  }, [pins, results, selectedId, ready]);
+
   /* ---- selection ---- */
   // Tracks whether the *previous* render had a selection, so the effect below
   // can tell "just deselected" (was something, now null — pull the camera
@@ -417,8 +375,6 @@ export default function LocationMap({
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !ready) return;
-
-    map.setFilter("pins-selected", ["==", ["get", "id"], selectedId ?? ""]);
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const duration = reduceMotion ? 0 : 600;
@@ -479,30 +435,11 @@ export default function LocationMap({
 
       {/* Our own attribution toggle, replacing MapLibre's built-in control
           (see the `attributionControl: false` note above). Bottom-right,
-          matching where that control would have sat. Required by OpenFreeMap's
-          terms — https://openfreemap.org — this just states it on request
-          instead of by default. */}
+          matching where that control would have sat. */}
       {ready && (
         <div className="absolute bottom-2 right-2 z-10">
           {attribOpen && (
             <div className="absolute bottom-[calc(100%+4px)] right-0 whitespace-nowrap rounded-md bg-white/90 px-2 py-1 text-[10px] leading-4 text-neutral-700 shadow-[0px_2px_8px_0px_rgba(18,20,23,0.16)]">
-              <a
-                href="https://openfreemap.org"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline"
-              >
-                OpenFreeMap
-              </a>{" "}
-              <a
-                href="https://www.openmaptiles.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline"
-              >
-                © OpenMapTiles
-              </a>{" "}
-              Data from{" "}
               <a
                 href="https://www.openstreetmap.org/copyright"
                 target="_blank"

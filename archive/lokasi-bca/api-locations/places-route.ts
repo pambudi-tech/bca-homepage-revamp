@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { searchPlaces } from "@/lib/locations";
+import { searchPlaces } from "../locations";
 
 /**
  * Place suggestions for the section's search box — kelurahan, kecamatan and

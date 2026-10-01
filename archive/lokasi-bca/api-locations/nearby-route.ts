@@ -1,8 +1,7 @@
-import { findNearby } from "@/lib/locations";
-import type { LocationType } from "@/components/home/location-data";
+import { findNearby } from "../locations";
 
 /**
- * The three nearest ATMs/branches to a point, plus the pins to draw around it.
+ * The three nearest Prioritas branches to a point, plus the pins to draw around it.
  *
  * POST rather than GET, even though this only reads: the body carries the
  * visitor's coordinates, and a query string would put them in the URL — where
@@ -14,8 +13,6 @@ import type { LocationType } from "@/components/home/location-data";
  * the query is a linear scan of a ~1k-row in-memory array.
  */
 
-const TYPES = new Set<string>(["all", "cabang", "atm"]);
-
 export async function POST(request: Request) {
   let body: unknown;
   try {
@@ -24,10 +21,9 @@ export async function POST(request: Request) {
     return Response.json({ error: "invalid JSON body" }, { status: 400 });
   }
 
-  const { lat, lng, type } = (body ?? {}) as {
+  const { lat, lng } = (body ?? {}) as {
     lat?: unknown;
     lng?: unknown;
-    type?: unknown;
   };
 
   if (
@@ -41,9 +37,7 @@ export async function POST(request: Request) {
     return Response.json({ error: "lat/lng must be valid coordinates" }, { status: 400 });
   }
 
-  const filter = typeof type === "string" && TYPES.has(type) ? type : "all";
-
-  return Response.json(findNearby(lat, lng, filter as LocationType | "all"), {
+  return Response.json(findNearby(lat, lng), {
     // Coordinates in, results out — nothing in between should hold onto it.
     headers: { "Cache-Control": "no-store" },
   });

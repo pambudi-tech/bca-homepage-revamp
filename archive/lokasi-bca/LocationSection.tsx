@@ -1,14 +1,12 @@
-import { findNearby } from "@/lib/locations";
+import { findNearby } from "./locations";
 import { DEFAULT_ORIGIN } from "./location-data";
 import LocationFinder from "./LocationFinder";
 
 /**
- * Lokasi BCA — a quick finder, not a directory.
+ * Prioritas branch finder using the archived full-bleed map experience.
  *
  * Three cards and a map, answering one question: where is the nearest BCA
- * branch or ATM? Anything past that (full directory, filters by service,
- * weekend banking) belongs on bca.co.id/id/lokasi-bca, which the footer link
- * points at.
+ * Prioritas branch?
  *
  * The nearest three around a default origin are resolved here on the server, so
  * the section is populated in the very first HTML — no spinner, no round trip,
@@ -40,7 +38,7 @@ export default async function LocationSection() {
   const initial = findNearby(DEFAULT_ORIGIN.lat, DEFAULT_ORIGIN.lng);
 
   return (
-    <section id="lokasi" className="relative h-[880px] overflow-clip bg-blue-100 xl:h-auto">
+    <section id="lokasi" className="relative h-[880px] overflow-x-clip bg-blue-100 xl:h-auto">
       <LocationFinder initial={initial} />
     </section>
   );

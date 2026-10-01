@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
-export type PrioritasDirectoryDropdownOption = { value: string; label: string };
+export type PrioritasDirectoryDropdownOption = { value: string; label: ReactNode; accessibleLabel?: string; horizontal?: boolean };
 export type PrioritasDirectoryDropdownSize = "medium" | "large";
 
 type PrioritasDirectoryDropdownProps = {
@@ -89,13 +89,13 @@ export default function PrioritasDirectoryDropdown({
       /> : <button
         ref={triggerRef}
         type="button"
-        aria-label={`${label}: ${selected?.label ?? value}`}
+        aria-label={`${label}: ${selected?.accessibleLabel ?? value}`}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen((current) => !current)}
         className="priosoli-dropdown__trigger"
-      >{selected?.label ?? value}</button>}
+      ><span className="flex min-w-0 items-center gap-2">{selected?.label ?? value}</span></button>}
       <button
         type="button"
         aria-label={label}
@@ -121,7 +121,7 @@ export default function PrioritasDirectoryDropdown({
             setOpen(false);
           }}
           className="priosoli-dropdown__option"
-        ><span className="line-clamp-2">{option.label}</span></button>)}
+        ><span className={option.horizontal ? "flex min-w-0 items-center gap-2" : "line-clamp-2"}>{option.label}</span></button>)}
       </div>
     </div> : null}
   </div>;

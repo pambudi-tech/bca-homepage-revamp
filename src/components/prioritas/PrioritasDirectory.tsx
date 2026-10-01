@@ -68,6 +68,7 @@ function usePrioritasDirectoryExpansion(panelRef: RefObject<HTMLElement | null>)
 }
 
 export function PrioritasDirectoryCategories({ children, className = "" }: { children: ReactNode; className?: string }) {
+  const t = useTranslations("signaturePrivilege");
   const railRef = useRef<HTMLDivElement>(null);
   const [overflow, setOverflow] = useState({ left: false, right: false });
 
@@ -79,18 +80,38 @@ export function PrioritasDirectoryCategories({ children, className = "" }: { chi
       right: rail.scrollLeft + rail.clientWidth < rail.scrollWidth - 1,
     });
     update();
+    const observer = new ResizeObserver(update);
+    observer.observe(rail);
+    Array.from(rail.children).forEach((child) => observer.observe(child));
     rail.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
     return () => {
+      observer.disconnect();
       rail.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
   }, []);
 
+  const scrollCategories = (direction: -1 | 1) => {
+    const rail = railRef.current;
+    if (!rail) return;
+    rail.scrollBy({ left: direction * rail.clientWidth * 0.75, behavior: "smooth" });
+  };
+
+  const arrowClassName = "pointer-events-auto flex size-10 items-center justify-center rounded-full border border-white/25 bg-pbrown-900/30 text-white backdrop-blur-md transition-colors hover:bg-pbrown-900/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pgold-500";
+
   return <div className={`${className} relative w-full max-w-full`}>
     <div ref={railRef} className="hide-scrollbar flex gap-2 overflow-x-auto [scrollbar-width:none] xl:gap-3">{children}</div>
-    {overflow.left ? <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-white via-white/90 to-transparent" /> : null}
-    {overflow.right ? <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-white via-white/90 to-transparent" /> : null}
+    {overflow.left ? <div className="pointer-events-none absolute inset-y-0 left-0 z-10 flex items-center bg-gradient-to-r from-white via-white/90 to-transparent pr-6">
+      <button type="button" onClick={() => scrollCategories(-1)} aria-label={t("categoriesScrollPrevious")} className={arrowClassName}>
+        <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-5" />
+      </button>
+    </div> : null}
+    {overflow.right ? <div className="pointer-events-none absolute inset-y-0 right-0 z-10 flex items-center bg-gradient-to-l from-white via-white/90 to-transparent pl-6">
+      <button type="button" onClick={() => scrollCategories(1)} aria-label={t("categoriesScrollNext")} className={arrowClassName}>
+        <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5" />
+      </button>
+    </div> : null}
   </div>;
 }
 

@@ -322,6 +322,8 @@ export default function SearchOverlay({
   const prioritas = initialSegment === "Prioritas" || initialSegment === "Solitaire";
   const placeholders = isPromoSearch
     ? tPromo.raw("search.placeholders") as string[]
+    : initialSegment === "Prioritas"
+      ? tPrioritasHero.raw("searchPlaceholders") as string[]
     : t.raw("placeholders") as string[];
   // Which of the dropdown's two layouts to render. CSS can't decide this one:
   // `compact` is a prop that restructures the panel, not a set of classes.

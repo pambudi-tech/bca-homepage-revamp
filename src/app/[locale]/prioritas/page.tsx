@@ -13,7 +13,7 @@ import BankingSolutionSection from "@/components/prioritas/BankingSolutionSectio
 import MagazineSection from "@/components/prioritas/MagazineSection";
 import FinancialReportSection from "@/components/prioritas/FinancialReportSection";
 import PrioritasContactSection from "@/components/prioritas/PrioritasContactSection";
-import { getPrioritasSourceEvents } from "@/lib/prioritas-source-data";
+import { getPromos } from "@/lib/promos";
 import { formatKursUpdatedAt, getKursHariIni } from "@/lib/kurs";
 import { getImageBackdropColor } from "@/lib/image-color";
 import { insightAssets } from "@/components/prioritas/wealth-insight-assets";
@@ -37,9 +37,10 @@ export default async function PrioritasPage({
   const tWealth = await getTranslations("bankingSolutionIndex");
   const now = new Date();
   const kurs = await getKursHariIni();
-  const allEvents = getPrioritasSourceEvents(now);
-  const upcomingEvents = allEvents.filter((event) => event.endAt >= now).toSorted((a, b) => a.startAt.getTime() - b.startAt.getTime());
-  const events = upcomingEvents.length ? upcomingEvents : allEvents.toSorted((a, b) => b.startAt.getTime() - a.startAt.getTime());
+  const allPromos = await getPromos(now);
+  const promos = allPromos
+    .filter((promo) => promo.endAt >= now && promo.startAt <= now)
+    .toSorted((a, b) => a.endAt.getTime() - b.endAt.getTime());
   const kursUpdatedAt = kurs[0]?.updatedAt ?? 0;
   const [latestHouseView, latestWeeklyMarket] = [insightAssets.house[0], insightAssets.market[0]];
   const [houseBackdrop, marketBackdrop] = await Promise.all([
@@ -117,7 +118,7 @@ export default async function PrioritasPage({
         }}
       />
       <EventPromoSection
-        promos={events}
+        promos={promos}
         now={now}
         copy={{
           eyebrow: t("eventPromo.eyebrow"),
