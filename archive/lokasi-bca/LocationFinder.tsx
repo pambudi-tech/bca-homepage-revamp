@@ -183,7 +183,7 @@ export default function LocationFinder({ initial }: Props) {
     const controller = new AbortController();
     setPending(true);
 
-    fetch("/api/prioritas-branches/nearby", {
+    fetch("/api/prioritas-branches?action=nearby", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ lat: origin.lat, lng: origin.lng }),
@@ -215,7 +215,7 @@ export default function LocationFinder({ initial }: Props) {
     const controller = new AbortController();
     // Typing is faster than the round trip; only the last keystroke matters.
     const timer = window.setTimeout(() => {
-      fetch(`/api/prioritas-branches/places?q=${encodeURIComponent(query)}`, {
+      fetch(`/api/prioritas-branches?q=${encodeURIComponent(query)}`, {
         signal: controller.signal,
       })
         .then((res) => res.json())
@@ -250,7 +250,7 @@ export default function LocationFinder({ initial }: Props) {
     if (!originIsUser) return;
     const controller = new AbortController();
 
-    fetch("/api/prioritas-branches/reverse", {
+    fetch("/api/prioritas-branches?action=reverse", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ lat: origin.lat, lng: origin.lng }),

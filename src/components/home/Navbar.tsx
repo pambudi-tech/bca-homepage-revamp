@@ -57,6 +57,7 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
   const tAccount = useTranslations("accountMenu");
   const tHero = useTranslations("hero");
   const tLogin = useTranslations("login");
+  const tMember = useTranslations("memberOverview");
   const segments = Object.keys(tNav.raw("segments")) as string[];
   const tPromo = useTranslations("promoPage");
   const tPrioritasHero = useTranslations("prioritasHero");
@@ -73,10 +74,24 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
   const [anchorLocked, setAnchorLocked] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
+  const [memberAuthenticated, setMemberAuthenticated] = useState(false);
   const accountMenuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const router = useRouter();
   const lastScrollY = useRef(0);
+  const effectiveMemberPreviewName = memberPreviewName ?? (memberAuthenticated ? tMember("previewFullName") : undefined);
+
+  useEffect(() => {
+    if (variant !== "prioritas" || memberPreviewName) return;
+    const controller = new AbortController();
+    fetch("/api/preview-logout", { signal: controller.signal, credentials: "same-origin" })
+      .then((response) => response.ok ? response.json() : Promise.reject(new Error(String(response.status))))
+      .then((result: { authenticated?: boolean }) => setMemberAuthenticated(result.authenticated === true))
+      .catch(() => {
+        if (!controller.signal.aborted) setMemberAuthenticated(false);
+      });
+    return () => controller.abort();
+  }, [variant, memberPreviewName]);
 
   useEffect(() => {
     const openSearch = () => setSearchOpen(true);
@@ -175,7 +190,7 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
 
   return (
     <>
-      <MobileNav scrolled={navScrolled} hidden={staticOnMobile ? false : shouldHide} productCategories={productCategories} megamenuContent={megamenuContent} searchOpen={searchOpen} onOpenSearch={() => setSearchOpen(true)} variant={variant} logoHref={logoHref} disableHideShow={disableHideShow || staticOnMobile} memberPreviewName={memberPreviewName} />
+      <MobileNav scrolled={navScrolled} hidden={staticOnMobile ? false : shouldHide} productCategories={productCategories} megamenuContent={megamenuContent} searchOpen={searchOpen} onOpenSearch={() => setSearchOpen(true)} variant={variant} logoHref={logoHref} disableHideShow={disableHideShow || staticOnMobile} memberPreviewName={effectiveMemberPreviewName} />
 
       <nav
         aria-label={tNav("primary")}
@@ -204,13 +219,13 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
           <div className="flex items-center gap-3">
             <SearchButton label={tNav("search")} placeholders={searchPlaceholders} expanded={searchOpen} onClick={() => setSearchOpen(true)} />
             <LocaleSwitcher label={tLogin("languageSwitcher")} onOpenChange={setLangOpen} />
-            {memberPreviewName ? (
+            {effectiveMemberPreviewName ? (
               <div ref={accountMenuRef} className="relative">
                 <button type="button" aria-haspopup="menu" aria-expanded={accountMenuOpen} onClick={() => setAccountMenuOpen((open) => !open)} className="flex h-10 items-center gap-3 rounded-xl px-2 text-sm font-bold leading-5 text-white">
                   <span aria-hidden className="flex size-10 shrink-0 items-center justify-center rounded-full" style={{ backgroundImage: "linear-gradient(262.59deg, #c2a266 0.18%, #98732c 100.18%)" }}>
                     <img src="/assets/prioritas/member-overview/account-user.svg" alt="" className="shrink-0" />
                   </span>
-                  <span className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap">{memberPreviewName}</span>
+                  <span className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap">{effectiveMemberPreviewName}</span>
                 </button>
                 {accountMenuOpen ? (
                   <div role="menu" className="absolute right-0 top-full z-50 mt-1 flex min-w-[144px] flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white py-1 shadow-card">

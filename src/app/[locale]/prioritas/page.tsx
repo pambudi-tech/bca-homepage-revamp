@@ -17,8 +17,6 @@ import { getPromos } from "@/lib/promos";
 import { formatKursUpdatedAt, getKursHariIni } from "@/lib/kurs";
 import { getImageBackdropColor } from "@/lib/image-color";
 import { insightAssets } from "@/components/prioritas/wealth-insight-assets";
-import { cookies } from "next/headers";
-import { MEMBER_SESSION_COOKIE, MEMBER_SESSION_VALUE } from "@/lib/member-auth";
 
 const HERO_IMAGE = "/assets/prioritas/hero-banner.webp";
 const PRIORITAS_LOGO = "/assets/prioritas/logo.svg";
@@ -31,9 +29,6 @@ export default async function PrioritasPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("prioritasHero");
-  const tMember = await getTranslations("memberOverview");
-  const memberSession = (await cookies()).get(MEMBER_SESSION_COOKIE)?.value;
-  const memberPreviewName = memberSession === MEMBER_SESSION_VALUE ? tMember("previewFullName") : undefined;
   const tWealth = await getTranslations("bankingSolutionIndex");
   const now = new Date();
   const kurs = await getKursHariIni();
@@ -59,7 +54,7 @@ export default async function PrioritasPage({
   return (
     <main id="main-content" className="flex min-h-screen flex-1 flex-col overflow-x-clip bg-pgold-100" style={{ "--shadow-color": "29 55% 16%" } as CSSProperties}>
       <div className="page-stack relative z-10 bg-pgold-100">
-      <Navbar variant="prioritas" memberPreviewName={memberPreviewName} />
+      <Navbar variant="prioritas" />
       <HeroSection
           slides={[
             {
