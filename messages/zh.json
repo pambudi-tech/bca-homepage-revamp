@@ -1717,6 +1717,26 @@
       "contact": "如有疑问或信息不一致，请联系 Halo BCA 了解详情。"
     }
   },
+  "memberMedicalCheckUp": {
+    "title": "国际医疗检查礼遇",
+    "description": "使用您的专属礼券代码，在 Parkway Shenton Singapore 预约 Executive Health Screening。",
+    "provider": "Parkway Shenton",
+    "voucherValue": "SGD 400",
+    "voucherLabel": "含税金额",
+    "codeLabel": "专属礼券代码",
+    "copy": "复制",
+    "copied": "已复制",
+    "copyCode": "复制礼券代码 {code}",
+    "locationLabel": "选择检查地点",
+    "locations": ["Executive Health Screeners (Mount Elizabeth Hospital)", "Executive Health Screeners (Gleneagles Hospital)", "Executive Health Screeners (Republic Plaza)", "Executive Health Screeners (Paragon)", "Parkway MediCentre (The Woodleigh Mall)", "Executive Health Screeners (Bedok Central)"],
+    "book": "通过 WhatsApp 预约",
+    "whatsappMessage": "您好，我想预约在 {location} 进行 Executive Health Screening。礼券代码：{code}。",
+    "eligibility": "仅限符合条件的 BCA Solitaire 客户：过去 3 个月平均 AUM 超过 500 亿印尼盾，且过去 12 个月服务费收取次数不超过 2 次。",
+    "bookingTerms": "请至少提前 7 天通过 WhatsApp Business 预约，服务时间为周一至周五 WIB 08:30–17:00。请附上患者护照照片及礼券代码。",
+    "paymentTerms": "礼券含税额度最高为 SGD 400。超出部分须使用 BCA Solitaire 借记卡或 BCA 信用卡支付。",
+    "validityTerms": "适用于 2026 年 1 月至 12 月的检查。礼券不可退款，也不可与其他优惠同时使用。",
+    "cancellationTerms": "取消预约须至少提前 3 天办理。"
+  },
   "memberSignatureVoucher": {
     "title": "礼券可用情况",
     "available": "可用礼券 {count} 张",

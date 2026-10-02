@@ -1875,6 +1875,26 @@
       "contact": "If you have any questions or notice different information, please contact Halo BCA for further assistance."
     }
   },
+  "memberMedicalCheckUp": {
+    "title": "International Medical Check Up Facility",
+    "description": "Use your unique voucher code for an Executive Health Screening at Parkway Shenton Singapore.",
+    "provider": "Parkway Shenton",
+    "voucherValue": "SGD 400",
+    "voucherLabel": "After tax",
+    "codeLabel": "Unique voucher code",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyCode": "Copy voucher code {code}",
+    "locationLabel": "Choose screening location",
+    "locations": ["Executive Health Screeners (Mount Elizabeth Hospital)", "Executive Health Screeners (Gleneagles Hospital)", "Executive Health Screeners (Republic Plaza)", "Executive Health Screeners (Paragon)", "Parkway MediCentre (The Woodleigh Mall)", "Executive Health Screeners (Bedok Central)"],
+    "book": "Book via WhatsApp",
+    "whatsappMessage": "Hello, I would like to book an Executive Health Screening at {location}. Voucher code: {code}.",
+    "eligibility": "For selected BCA Solitaire customers with average AUM above Rp50 billion over the last 3 months and no more than 2 service fees in the last 12 months.",
+    "bookingTerms": "Book at least 7 days before the screening via WhatsApp Business, Monday–Friday, 8:30 am–5:00 pm WIB. Attach the patient's passport photo and voucher code.",
+    "paymentTerms": "The voucher covers up to SGD 400 after tax. Any balance must be paid with a BCA Solitaire Debit Card or BCA Credit Card.",
+    "validityTerms": "Valid for screenings from January to December 2026. The voucher is non-refundable and cannot be combined with other promotions.",
+    "cancellationTerms": "Cancellations must be made at least 3 days before the appointment."
+  },
   "memberSignatureVoucher": {
     "title": "Voucher Availability",
     "available": "{count} vouchers available",

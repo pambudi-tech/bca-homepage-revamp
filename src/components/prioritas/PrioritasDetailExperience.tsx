@@ -19,6 +19,7 @@ import PrioritasIndexTabs from "@/components/prioritas/PrioritasIndexTabs";
 import { BankingPrivilegeCard, type PrivilegeCard } from "@/components/prioritas/BankingSolutionSection";
 import MemberSignatureVoucherModule from "@/components/prioritas/MemberSignatureVoucherModule";
 import MemberAirportTransferModule from "@/components/prioritas/MemberAirportTransferModule";
+import MemberMedicalCheckUpModule from "@/components/prioritas/MemberMedicalCheckUpModule";
 import { withMemberSignatureVoucherStatus, type MemberSignatureVoucherStatus } from "@/lib/member-signature-voucher";
 import { prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
 import { useLenis } from "@/components/SmoothScroll";
@@ -325,7 +326,7 @@ function FormattedDocumentContent({ content }: { content: string }) {
   </div>;
 }
 
-export default function PrioritasDetailExperience({ copy, promos, now, kind = "lifestyle", heroImage, birthdayGift = false, brandLogo, eventDate, heroPromo, categoryFilter = "beauty", showHero = true, showRecommendations = true, customSections, relatedPage, bankingRecommendations = [], bankingRecommendationAction = "", memberArea = false, memberPreviewName, memberSessionActive = false, memberVoucherStatus, memberAirportTransfer = false }: {
+export default function PrioritasDetailExperience({ copy, promos, now, kind = "lifestyle", heroImage, birthdayGift = false, brandLogo, eventDate, heroPromo, categoryFilter = "beauty", showHero = true, showRecommendations = true, customSections, relatedPage, bankingRecommendations = [], bankingRecommendationAction = "", memberArea = false, memberPreviewName, memberSessionActive = false, memberVoucherStatus, memberAirportTransfer = false, memberMedicalCheckUp = false }: {
   copy: DetailCopy;
   promos: Promo[];
   now: string;
@@ -347,6 +348,7 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
   memberSessionActive?: boolean;
   memberVoucherStatus?: MemberSignatureVoucherStatus;
   memberAirportTransfer?: "domestic" | "international" | false;
+  memberMedicalCheckUp?: boolean;
 }) {
   const promoT = useTranslations("promo");
   const privilegeT = useTranslations("signaturePrivilege");
@@ -462,13 +464,13 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
               {kind === "complimentary" && birthdayGift ? <PromoRibbon badgeKey="popular" label={privilegeT("complimentary.birthday")} placement="hero" /> : null}
             </div> : null}
             <div className={showHero ? "" : "w-full"}>
-              {memberAirportTransfer ? <MemberAirportTransferModule variant={memberAirportTransfer} /> : memberVoucherStatus ? <MemberSignatureVoucherModule status={memberVoucherStatus} /> : null}
-              {copy.dynamicModule && !memberArea && !memberSessionActive && !memberAirportTransfer && !memberVoucherStatus ? <div className="pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] flex flex-col gap-4 rounded-2xl bg-gradient-to-b from-white to-pgold-300 p-5 pb-10 text-sm leading-5 text-neutral-700 shadow-panel-gold sm:mx-0 sm:mb-6 sm:w-auto sm:flex-row sm:items-center sm:justify-between sm:pb-5 xl:px-6">
+              {memberAirportTransfer ? <MemberAirportTransferModule variant={memberAirportTransfer} /> : memberMedicalCheckUp ? <MemberMedicalCheckUpModule /> : memberVoucherStatus ? <MemberSignatureVoucherModule status={memberVoucherStatus} /> : null}
+              {copy.dynamicModule && !memberArea && !memberSessionActive && !memberAirportTransfer && !memberMedicalCheckUp && !memberVoucherStatus ? <div className="pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] flex flex-col gap-4 rounded-2xl bg-gradient-to-b from-white to-pgold-300 p-5 pb-10 text-sm leading-5 text-neutral-700 shadow-panel-gold sm:mx-0 sm:mb-6 sm:w-auto sm:flex-row sm:items-center sm:justify-between sm:pb-5 xl:px-6">
                 <p className="text-sm leading-5 text-pbrown-600 xl:text-base xl:leading-6">{copy.dynamicModule.message}</p>
                 <Link href={copy.dynamicModule.memberHref} className={prioritasButtonClassName({ size: "medium", className: "w-full self-stretch xl:w-auto xl:self-auto prio-button--xl-large" })}>{copy.dynamicModule.actionLabel}</Link>
               </div> : null}
               <div
-                  className={`pointer-events-auto relative z-10 -mx-4 flex w-[calc(100%+2rem)] flex-col gap-4 rounded-t-[20px] rounded-b-none bg-white p-2 xl:mx-0 xl:w-full xl:rounded-2xl ${copy.dynamicModule ? "-mt-5 xl:mt-0" : memberAirportTransfer || memberVoucherStatus ? "-mt-5 xl:mt-0" : "mt-0 xl:mt-0"} ${copy.dynamicModule || memberAirportTransfer || memberVoucherStatus ? "shadow-panel-footer" : ""}`}
+                  className={`pointer-events-auto relative z-10 -mx-4 flex w-[calc(100%+2rem)] flex-col gap-4 rounded-t-[20px] rounded-b-none bg-white p-2 xl:mx-0 xl:w-full xl:rounded-2xl ${copy.dynamicModule ? "-mt-5 xl:mt-0" : memberAirportTransfer || memberMedicalCheckUp || memberVoucherStatus ? "-mt-5 xl:mt-0" : "mt-0 xl:mt-0"} ${copy.dynamicModule || memberAirportTransfer || memberMedicalCheckUp || memberVoucherStatus ? "shadow-panel-footer" : ""}`}
               >
                 <div className="flex flex-col gap-4">
                   {customSections?.length ? customSections.map((section) => (

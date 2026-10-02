@@ -2117,6 +2117,26 @@
       "contact": "Apabila terdapat pertanyaan atau perbedaan informasi, silakan menghubungi Halo BCA untuk informasi lebih lanjut."
     }
   },
+  "memberMedicalCheckUp": {
+    "title": "Fasilitas Medical Check Up Internasional",
+    "description": "Gunakan kode unique voucher Anda untuk Executive Health Screening di Parkway Shenton Singapore.",
+    "provider": "Parkway Shenton",
+    "voucherValue": "SGD 400",
+    "voucherLabel": "Setelah pajak",
+    "codeLabel": "Kode unique voucher",
+    "copy": "Salin",
+    "copied": "Disalin",
+    "copyCode": "Salin kode voucher {code}",
+    "locationLabel": "Pilih lokasi pemeriksaan",
+    "locations": ["Executive Health Screeners (Mount Elizabeth Hospital)", "Executive Health Screeners (Gleneagles Hospital)", "Executive Health Screeners (Republic Plaza)", "Executive Health Screeners (Paragon)", "Parkway MediCentre (The Woodleigh Mall)", "Executive Health Screeners (Bedok Central)"],
+    "book": "Reservasi via WhatsApp",
+    "whatsappMessage": "Halo, saya ingin reservasi Executive Health Screening di {location}. Kode voucher: {code}.",
+    "eligibility": "Khusus nasabah BCA Solitaire terpilih dengan rata-rata AUM 3 bulan terakhir lebih dari Rp50 miliar dan tidak dikenakan biaya layanan lebih dari 2 kali dalam 12 bulan terakhir.",
+    "bookingTerms": "Pemesanan paling lambat H-7 melalui WhatsApp Business, Senin–Jumat pukul 08.30–17.00 WIB. Lampirkan foto paspor pasien dan kode voucher.",
+    "paymentTerms": "Voucher berlaku hingga SGD 400 setelah pajak. Selisih biaya wajib dibayar dengan Kartu Debit BCA Solitaire atau Kartu Kredit BCA.",
+    "validityTerms": "Berlaku untuk pemeriksaan Januari–Desember 2026. Voucher tidak dapat diuangkan dan tidak dapat digabung dengan promo lain.",
+    "cancellationTerms": "Pembatalan dapat dilakukan paling lambat H-3 sebelum tanggal janji temu."
+  },
   "memberSignatureVoucher": {
     "title": "Ketersediaan Voucher",
     "available": "Tersedia {count} voucher",

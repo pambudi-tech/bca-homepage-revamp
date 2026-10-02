@@ -59,6 +59,7 @@ export default async function PartnerPrivilegeDetailPage({
         memberPreviewName={memberPreviewName}
         memberSessionActive={hasMemberSession}
         memberAirportTransfer={(memberArea || hasMemberSession) && partnerId === "airport-transfer-domestik" ? "domestic" : (memberArea || hasMemberSession) && partnerId === "airport-transfer-internasional" ? "international" : false}
+        memberMedicalCheckUp={(memberArea || hasMemberSession) && partnerId === "medical-check-up-internasional"}
         memberVoucherStatus={(memberArea || hasMemberSession) && partnerId === "executive-airport-lounge" ? memberVoucherStatus ?? "available" : undefined}
         kind={section}
         categoryFilter={current?.privilegeCategory}
@@ -94,7 +95,7 @@ export default async function PartnerPrivilegeDetailPage({
             title: detailT("recommendations.title"),
             viewMore: detailT("recommendations.viewMore"),
           },
-          ...(isSignatureModule ? {
+          ...(isSignatureModule || partnerId === "medical-check-up-internasional" ? {
             dynamicModule: {
               message: detailT(memberPreviewName ? "dynamicModule.memberMessage" : "dynamicModule.message", { benefit: benefit.benefit }),
               actionLabel: detailT(memberPreviewName ? "dynamicModule.memberActionLabel" : "dynamicModule.loginLabel"),
