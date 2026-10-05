@@ -1,4 +1,4 @@
-import { PrioritasButtonIcon, prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
+import { PrioritasButtonIcon, prioritasButtonClassName, solitaireButtonClassName } from "@/components/prioritas/PrioritasButton";
 
 type ContactCopy = {
   heading: string;
@@ -18,23 +18,32 @@ function PhoneIcon() {
   );
 }
 
-export default function PrioritasContactSection({ copy }: { copy: ContactCopy }) {
+export default function PrioritasContactSection({ copy, tone = "prioritas" }: { copy: ContactCopy; tone?: "prioritas" | "solitaire" }) {
+  const isSolitaire = tone === "solitaire";
+  const glassStyle = isSolitaire ? {
+    backgroundColor: "color-mix(in srgb, var(--color-neutral-900) 50%, transparent)",
+    backdropFilter: "blur(16px) saturate(1.25)",
+    WebkitBackdropFilter: "blur(16px) saturate(1.25)",
+    isolation: "isolate" as const,
+  } : undefined;
+  const buttonClassName = isSolitaire ? solitaireButtonClassName : prioritasButtonClassName;
+
   return (
-    <section aria-label={copy.heading} className="bg-pbrown-700 text-pgold-100">
+    <section aria-label={copy.heading} className={`${isSolitaire ? "bg-neutral-700" : "bg-pbrown-700"} text-pgold-100`}>
       <div className="mx-auto grid min-h-[240px] w-full max-w-[1280px] items-center gap-x-8 gap-y-6 px-4 py-12 md:grid-cols-[minmax(0,1fr)_260px_260px] md:gap-4 md:px-8 xl:gap-5 xl:px-0">
         <h2 className="max-w-[360px] text-heading text-pgold-100 md:text-hero-title-mobile">{copy.heading}</h2>
 
-        <article className="glass-panel glass-panel-prioritas relative flex h-[160px] flex-col justify-between overflow-hidden rounded-lg p-5">
+        <article className="glass-panel glass-panel-prioritas relative flex h-[160px] flex-col justify-between overflow-hidden rounded-lg p-5" style={glassStyle}>
           <h3 className="w-full text-base font-semibold leading-6 text-pgold-100">{copy.riplayTitle}</h3>
-          <a href={RIPLAY_URL} target="_blank" rel="noopener noreferrer" className={prioritasButtonClassName({ kind: "text", surface: "inverse", size: "medium", className: "w-fit" })}>
+          <a href={RIPLAY_URL} target="_blank" rel="noopener noreferrer" className={buttonClassName({ kind: "text", surface: "inverse", size: "medium", className: "w-fit" })}>
             <PrioritasButtonIcon src="/assets/prioritas/banking/download.svg" />
             <span className="prio-button__label">{copy.download}</span>
           </a>
         </article>
 
-        <article className="glass-panel glass-panel-prioritas relative flex h-[160px] flex-col justify-between overflow-hidden rounded-lg p-5 max-md:-mt-2">
+        <article className="glass-panel glass-panel-prioritas relative flex h-[160px] flex-col justify-between overflow-hidden rounded-lg p-5 max-md:-mt-2" style={glassStyle}>
           <h3 className="text-base font-semibold leading-6 text-pgold-100">{copy.contactTitle}</h3>
-          <a href="tel:150022" className={prioritasButtonClassName({ kind: "text", surface: "inverse", size: "medium", className: "w-fit" })}>
+          <a href="tel:150022" className={buttonClassName({ kind: "text", surface: "inverse", size: "medium", className: "w-fit" })}>
             <PhoneIcon />
             <span className="prio-button__label">{copy.phone}</span>
           </a>

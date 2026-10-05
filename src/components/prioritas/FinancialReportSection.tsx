@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation";
-import { PrioritasButtonIcon, prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
+import { PrioritasButtonIcon, prioritasButtonClassName, solitaireButtonClassName } from "@/components/prioritas/PrioritasButton";
 
 type Copy = {
   eyebrow: string;
@@ -8,18 +8,25 @@ type Copy = {
   action: string;
 };
 
-export default function FinancialReportSection({ copy }: { copy: Copy }) {
+export default function FinancialReportSection({ copy, tone = "prioritas" }: { copy: Copy; tone?: "prioritas" | "solitaire" }) {
+  const isSolitaire = tone === "solitaire";
+  const fillClassName = isSolitaire ? "bg-neutral-900" : "bg-pbrown-700";
+  const gradientClassName = isSolitaire ? "from-neutral-900" : "from-pbrown-700";
+  const textClassName = isSolitaire ? "text-neutral-100" : "text-pgold-100";
+  const buttonClassName = isSolitaire ? solitaireButtonClassName : prioritasButtonClassName;
+  const backgroundImage = isSolitaire ? "/assets/solitaire/financial-report/background.webp" : "/assets/prioritas/financial/background.png";
+
   return (
-    <section id="financial-report" className="relative h-[600px] min-h-0 overflow-hidden bg-pbrown-700 text-pgold-100 xl:h-auto xl:min-h-[640px]">
+    <section id="financial-report" className={`relative h-[600px] min-h-0 overflow-hidden ${fillClassName} ${textClassName} xl:h-auto xl:min-h-[640px]`}>
       <img
-        src="/assets/prioritas/financial/background.png"
+        src={backgroundImage}
         alt=""
         aria-hidden
         className="absolute left-1/2 top-1/2 z-0 h-[320px] w-full translate-x-[calc(-50%_+_72px)] -translate-y-1/2 object-cover object-right xl:inset-0 xl:size-full xl:translate-x-0 xl:translate-y-0 xl:object-center"
       />
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-1 h-full bg-gradient-to-b from-pbrown-700 via-transparent to-pbrown-700 xl:hidden" aria-hidden />
+      <div className={`pointer-events-none absolute inset-x-0 top-0 z-1 h-full bg-gradient-to-b ${gradientClassName} via-transparent ${isSolitaire ? "to-neutral-900" : "to-pbrown-700"} xl:hidden`} aria-hidden />
       <div
-        className="absolute inset-0 z-0 bg-[linear-gradient(90deg,var(--color-pbrown-700)_0%,rgb(53_30_8_/_0.82)_32%,rgb(50_32_17_/_0)_71%)]"
+        className={`absolute inset-0 z-0 ${isSolitaire ? "bg-[linear-gradient(90deg,var(--color-neutral-900)_0%,var(--color-neutral-900)_32%,transparent_71%)]" : "bg-[linear-gradient(90deg,var(--color-pbrown-700)_0%,rgb(53_30_8_/_0.82)_32%,rgb(50_32_17_/_0)_71%)]"}`}
         aria-hidden
       />
 
@@ -32,9 +39,9 @@ export default function FinancialReportSection({ copy }: { copy: Copy }) {
                   <img
                     src="/assets/prioritas/financial/decoration-art.png"
                     alt=""
-                    className="absolute size-full object-bottom mix-blend-screen"
+                    className={`absolute size-full object-bottom mix-blend-screen ${isSolitaire ? "grayscale" : ""}`}
                   />
-                  <div className="absolute inset-0 bg-pgold-300 mix-blend-color" />
+                  {!isSolitaire ? <div className="absolute inset-0 bg-pgold-300 mix-blend-color" /> : null}
                 </div>
               </div>
             </div>
@@ -44,8 +51,8 @@ export default function FinancialReportSection({ copy }: { copy: Copy }) {
 
       <div className="relative z-10 mx-auto flex min-h-[600px] w-full max-w-[1280px] flex-col px-4 py-12 xl:min-h-[640px] xl:px-0 xl:py-20">
         <header className="flex flex-col gap-6 xl:flex-row xl:items-start xl:gap-10">
-          <p className="text-eyebrow uppercase leading-[120%] text-pgold-300 xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-lg">{copy.eyebrow}</p>
-          <h2 className="text-heading max-w-[560px] text-pgold-100 xl:text-display">{copy.heading}</h2>
+          <p className={`text-eyebrow uppercase leading-[120%] ${isSolitaire ? "text-neutral-100" : "text-pgold-300"} xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-lg`}>{copy.eyebrow}</p>
+          <h2 className={`text-heading max-w-[560px] ${textClassName} xl:text-display`}>{copy.heading}</h2>
         </header>
 
         <div className="mx-auto mt-auto flex w-full max-w-[752px] flex-col items-start gap-6 xl:ml-[220px] xl:mr-0 xl:mt-40 xl:gap-12">
@@ -54,13 +61,13 @@ export default function FinancialReportSection({ copy }: { copy: Copy }) {
               <div
                 key={feature}
                 className={`glass-panel glass-panel-prioritas relative flex min-h-0 items-start overflow-hidden rounded-2xl px-4 pb-5 pt-4 ${index === 0 ? "col-start-1 row-start-1" : index === 1 ? "col-start-1 row-start-2" : "col-start-2 row-start-2"} md:col-auto md:row-auto md:min-h-36 md:px-6 md:py-5`}
-                style={{ backgroundColor: "color-mix(in srgb, var(--color-pbrown-900) 50%, transparent)", backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)", isolation: "isolate" }}
+                style={{ backgroundColor: `color-mix(in srgb, ${isSolitaire ? "var(--color-neutral-900)" : "var(--color-pbrown-900)"} 50%, transparent)`, backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)", isolation: "isolate" }}
               >
                 <p className="text-sm font-semibold leading-5 text-neutral-100 xl:text-xl xl:leading-7 xl:tracking-[-0.4px]">{feature}</p>
               </div>
             ))}
           </div>
-          <Link href="/prioritas/member/financial-report" className={prioritasButtonClassName({ surface: "inverse", size: "large", className: "w-full xl:w-fit" })}>
+          <Link href="/prioritas/member/financial-report" className={buttonClassName({ surface: "inverse", size: "large", className: "w-full xl:w-fit" })}>
             <span className="prio-button__label">{copy.action}</span>
             <PrioritasButtonIcon src="/assets/cycle1/pelajari-icon.svg" />
           </Link>

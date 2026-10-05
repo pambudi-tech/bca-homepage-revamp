@@ -35,6 +35,7 @@ These are available as Tailwind color utilities for the Prioritas experience.
 | `--color-primary-hover` | `#0068c0` | Hover state on a primary fill |
 | `--color-primary-active` | `#00457f` | Active/pressed state on a primary fill |
 | `--color-on-primary` | `var(--color-neutral-100)` (`#ffffff`) | Foreground text/icon on a primary fill |
+| `--color-solitaire-card-fill` | `#000000` | Solitaire card section fill and image fade |
 
 `--color-primary-hover` and `--color-primary-active` are **not** rungs on the
 `blue-*` ramp — `#0068c0` sits between `blue-400` and `blue-500`; `#00457f`

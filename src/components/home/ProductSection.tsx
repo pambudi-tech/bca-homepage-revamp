@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
+import { PrioritasButtonIcon, prioritasButtonClassName, solitaireButtonClassName } from "@/components/prioritas/PrioritasButton";
 import {
   PRODUCT_CATEGORIES,
   SAMPLE_CATEGORY_PHOTOS,
@@ -205,7 +206,7 @@ function ProductCard({
       onMouseMove={handleCardMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group relative shrink-0 overflow-clip rounded-3xl bg-white text-left ${layout === "solitaire" ? "h-[560px] rounded-xl" : "h-[420px] rounded-3xl"} ${active ? "cursor-none" : "cursor-pointer"
+      className={`group relative shrink-0 overflow-clip rounded-3xl bg-white text-left ${layout === "solitaire" ? "h-[480px] rounded-xl" : "h-[420px] rounded-3xl"} ${active ? "cursor-none" : "cursor-pointer"
         }`}
       style={{
         // Desktop accordion uses explicit widths so the active card remains
@@ -289,9 +290,9 @@ function CardContent({
           becoming active slides this one up into place from just below while
           it fades in from 0 to full opacity; losing active reverses it. */}
       <div
-        className={`glass-panel absolute bottom-2 left-2 z-10 flex flex-col items-start overflow-clip rounded-2xl px-5 pb-6 pt-4 transition-[transform,opacity] duration-500 ease-in-out ${layout === "solitaire" ? "w-[400px] max-w-[calc(100%-2rem)]" : ""}`}
+        className={`glass-panel absolute z-10 flex flex-col items-start overflow-clip rounded-2xl transition-[transform,opacity] duration-500 ease-in-out ${layout === "solitaire" ? "bottom-4 left-4 h-[180px] w-[360px] max-w-[calc(100%-2rem)] justify-between px-4 pb-5 pt-4" : "bottom-2 left-2 px-5 pb-6 pt-4"}`}
         style={{
-          width: layout === "solitaire" ? 400 : 280,
+          width: layout === "solitaire" ? 360 : 280,
           backgroundColor: "rgba(0,0,0,0.3)",
           backdropFilter: "blur(16px) saturate(1.25)",
           WebkitBackdropFilter: "blur(16px) saturate(1.25)",
@@ -301,26 +302,43 @@ function CardContent({
           pointerEvents: active ? "auto" : "none",
         }}
       >
-        <div className="w-full" style={swap.copy}>
-          <p className="w-full text-title text-white text-shadow-hero">
-            {copy.title}
-          </p>
-          <div className="grid w-full" style={{ gridTemplateRows: "1fr" }}>
-            <div className="overflow-hidden">
-              <p className="w-full pt-2 text-base leading-6 text-white/80">
-                {copy.subtitle}
+        {layout === "solitaire" ? (
+          <>
+            <div className="w-full" style={swap.copy}>
+              <p className="w-full text-heading text-white text-shadow-hero">
+                {copy.title}
               </p>
-              <div className={`items-center gap-0.5 pt-8 text-base font-semibold ${layout === "solitaire" ? "flex text-white" : "flex text-blue-100 md:hidden"}`}>
-                {copy.action ?? t("learnMore")}
-                <img loading="lazy" decoding="async"
-                  src="/assets/cycle1/pelajari-icon.svg"
-                  alt=""
-                  className="size-5 transition-transform group-hover:translate-x-1"
-                />
+            </div>
+            <span
+              className={(layout === "solitaire" ? solitaireButtonClassName : prioritasButtonClassName)({ kind: "text", surface: "inverse", size: "large" })}
+              style={layout === "solitaire" ? undefined : { "--prio-button-ink": "var(--color-neutral-100)" } as React.CSSProperties}
+            >
+              <span className="prio-button__label">{copy.action ?? t("learnMore")}</span>
+              <PrioritasButtonIcon src="/assets/cycle1/pelajari-icon.svg" />
+            </span>
+          </>
+        ) : (
+          <div className="w-full" style={swap.copy}>
+            <p className="w-full text-title text-white text-shadow-hero">
+              {copy.title}
+            </p>
+            <div className="grid w-full" style={{ gridTemplateRows: "1fr" }}>
+              <div className="overflow-hidden">
+                <p className="w-full pt-2 text-base leading-6 text-white/80">
+                  {copy.subtitle}
+                </p>
+                <div className="flex items-center gap-0.5 pt-8 text-base font-semibold text-blue-100 md:hidden">
+                  {copy.action ?? t("learnMore")}
+                  <img loading="lazy" decoding="async"
+                    src="/assets/cycle1/pelajari-icon.svg"
+                    alt=""
+                    className="size-5 transition-transform group-hover:translate-x-1"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Collapsed (default) content — the title keeps its normal left-to-right
@@ -395,6 +413,7 @@ function MobileProductCard({
   href,
   swap,
   progressRef,
+  layout,
 }: {
   product: Product;
   outgoing: Product | null;
@@ -404,6 +423,7 @@ function MobileProductCard({
   href?: string;
   swap: ReturnType<typeof swapStyles>;
   progressRef: React.Ref<SVGCircleElement> | undefined;
+  layout: "default" | "solitaire";
 }) {
   const t = useTranslations("common");
   const router = useRouter();
@@ -430,6 +450,7 @@ function MobileProductCard({
         swap={swap}
         progressRef={progressRef}
         t={t}
+        layout={layout}
       />
     </button>
   );
@@ -443,6 +464,7 @@ function MobileCardContent({
   swap,
   progressRef,
   t,
+  layout,
 }: {
   active: boolean;
   product: Product;
@@ -451,6 +473,7 @@ function MobileCardContent({
   swap: ReturnType<typeof swapStyles>;
   progressRef: React.Ref<SVGCircleElement> | undefined;
   t: (key: string) => string;
+  layout: "default" | "solitaire";
 }) {
   return (
     <>
@@ -490,7 +513,9 @@ function MobileCardContent({
         className="absolute inset-x-0 bottom-0 h-40"
         style={{
           background: active
-            ? "linear-gradient(to top, #005caa 0%, rgba(0,33,61,0) 100%)"
+            ? layout === "solitaire"
+              ? "linear-gradient(to top, var(--color-neutral-800) 0%, rgba(18,20,23,0) 100%)"
+              : "linear-gradient(to top, #005caa 0%, rgba(0,33,61,0) 100%)"
             : "linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(18,20,23,0) 100%)",
         }}
       />
@@ -557,6 +582,7 @@ function MobileProductCarousel({
   progressRef,
   entered,
   pausedRef,
+  layout,
 }: {
   products: Product[];
   outgoingProducts: Product[] | null;
@@ -570,12 +596,13 @@ function MobileProductCarousel({
   progressRef: React.Ref<SVGCircleElement>;
   entered: boolean;
   pausedRef: React.RefObject<boolean>;
+  layout: "default" | "solitaire";
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const n = products.length;
   // Clamped so a category with fewer products than the clone count still
   // renders a well-formed track.
-  const clones = Math.min(MOBILE_LOOP_CLONES, n);
+  const clones = layout === "solitaire" ? 0 : Math.min(MOBILE_LOOP_CLONES, n);
 
   // Rendered copies, in DOM order: `clones` from the tail, the real set, then
   // `clones` from the head. Slot `clones + i` is therefore the real card for
@@ -737,6 +764,7 @@ function MobileProductCarousel({
           swap={swapStyles(swapping, swapDir, real * SWAP_STAGGER_MS, swapAlt)}
           // Exactly one node may own the ring — the copy actually on screen.
           progressRef={slot === activeSlot ? progressRef : undefined}
+          layout={layout}
         />
       ))}
     </div>
@@ -1519,6 +1547,7 @@ export default function ProductSection({
               progressRef={mobileProgressRef}
               entered={entered}
               pausedRef={pausedRef}
+              layout="default"
             />
 
             {/* Pill progress bar — the mobile carousel loops endlessly, so this
@@ -1616,6 +1645,7 @@ export type ProductAccordionItem = {
   description: string;
   image: string;
   action?: string;
+  href?: string;
 };
 
 /**
@@ -1639,6 +1669,7 @@ export function ProductAccordion({
   const initialIndex = Math.max(0, items.findIndex((item) => item.key === defaultKey));
   const [activeIndex, setActiveIndex] = useState(initialIndex);
   const [entered, setEntered] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
   const pausedRef = useRef(false);
   const progressRef = useRef<SVGCircleElement>(null);
   const mobileProgressRef = useRef<SVGCircleElement>(null);
@@ -1649,6 +1680,14 @@ export function ProductAccordion({
     () => items.map((item) => ({ title: item.title, subtitle: item.description, image: item.image, action: item.action })),
     [items]
   );
+
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 1280px)");
+    const sync = () => setIsDesktop(media.matches);
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     const element = rootRef.current;
@@ -1673,7 +1712,12 @@ export function ProductAccordion({
     progressRef: progressRefs,
     pausedRef,
     live,
-    onAdvance: () => setActiveIndex((index) => (index + 1) % products.length),
+    loop: layout !== "solitaire" || isDesktop,
+    onAdvance: () => setActiveIndex((index) => (
+      layout === "solitaire" && !isDesktop
+        ? Math.min(index + 1, products.length - 1)
+        : (index + 1) % products.length
+    )),
   });
 
   return (
@@ -1692,6 +1736,7 @@ export function ProductAccordion({
             copy={product}
             active={index === activeIndex}
             onSelect={() => setActiveIndex(index)}
+            href={items[index].href}
             progressRef={index === activeIndex ? progressRef : undefined}
             entered={entered}
             enterDelayMs={250 + index * 80}
@@ -1707,7 +1752,7 @@ export function ProductAccordion({
             type="button"
             onClick={() => setActiveIndex((index) => (index - 1 + products.length) % products.length)}
             aria-label="Sebelumnya"
-            className="flex size-[72px] items-center justify-center rounded-full bg-black/30 transition-colors hover:bg-black/45"
+            className={`flex ${layout === "solitaire" ? "size-16 bg-black/50 hover:bg-black/60" : "size-[72px] bg-black/30 hover:bg-black/45"} items-center justify-center rounded-full transition-colors`}
           >
             <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-8" />
           </button>
@@ -1715,7 +1760,7 @@ export function ProductAccordion({
             type="button"
             onClick={() => setActiveIndex((index) => (index + 1) % products.length)}
             aria-label="Berikutnya"
-            className="flex size-[72px] items-center justify-center rounded-full bg-black/30 transition-colors hover:bg-black/45"
+            className={`flex ${layout === "solitaire" ? "size-16 bg-black/50 hover:bg-black/60" : "size-[72px] bg-black/30 hover:bg-black/45"} items-center justify-center rounded-full transition-colors`}
           >
             <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-8" />
           </button>
@@ -1726,6 +1771,7 @@ export function ProductAccordion({
         products={products}
         outgoingProducts={null}
         copyProducts={products}
+        hrefs={items.map((item) => item.href)}
         activeIndex={activeIndex}
         onSelect={setActiveIndex}
         swapping={false}
@@ -1734,16 +1780,19 @@ export function ProductAccordion({
         progressRef={mobileProgressRef}
         entered={entered}
         pausedRef={pausedRef}
+        layout={layout}
       />
 
-      <div className="mt-6 flex justify-center xl:hidden">
-        <div className="h-2 w-16 overflow-hidden rounded-full bg-blue-300">
-          <div
-            className="h-full rounded-full bg-cyan-500 transition-[width] duration-300"
-            style={{ width: `${((activeIndex + 1) / products.length) * 100}%` }}
-          />
+      {layout !== "solitaire" ? (
+        <div className="mt-6 flex justify-center xl:hidden">
+          <div className="h-2 w-16 overflow-hidden rounded-full bg-blue-300">
+            <div
+              className="h-full rounded-full bg-cyan-500 transition-[width] duration-300"
+              style={{ width: `${((activeIndex + 1) / products.length) * 100}%` }}
+            />
+          </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 }

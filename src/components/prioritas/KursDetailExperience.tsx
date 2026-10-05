@@ -37,13 +37,14 @@ function currencyOption(item: KursDetailEntry) {
   };
 }
 
-export default function KursDetailExperience({ rates, updatedAt, copy }: { rates: KursDetailEntry[]; updatedAt: string; copy: Copy }) {
+export default function KursDetailExperience({ rates, updatedAt, copy, tone = "prioritas" }: { rates: KursDetailEntry[]; updatedAt: string; copy: Copy; tone?: "prioritas" | "solitaire" }) {
   const [amount, setAmount] = useState("1");
   const [from, setFrom] = useState("USD");
   const [to, setTo] = useState("IDR");
   const [showMiniConverter, setShowMiniConverter] = useState(false);
   const converterRef = useRef<HTMLElement>(null);
   const lenis = useLenis();
+  const isSolitaire = tone === "solitaire";
 
   useEffect(() => {
     const panel = converterRef.current;
@@ -77,9 +78,9 @@ export default function KursDetailExperience({ rates, updatedAt, copy }: { rates
   const convertedText = Number.isFinite(converted) ? NUMBER_FORMAT.format(converted) : "—";
 
   return (
-    <main className="bg-pgold-200 pb-20 xl:pb-28">
+    <main className={`${isSolitaire ? "bg-neutral-200" : "bg-pgold-200"} pb-20 xl:pb-28`}>
       <div className="mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-6 px-4 py-10 xl:grid-cols-[minmax(0,1fr)_420px] xl:px-0">
-        <section className="flex flex-col gap-5 rounded-2xl bg-white p-4 text-neutral-900 shadow-panel-gold md:p-6" aria-labelledby="kurs-list-title">
+        <section className={`flex flex-col gap-5 rounded-2xl border border-neutral-300 bg-white p-4 text-neutral-900 ${isSolitaire ? "shadow-panel" : "shadow-panel-gold"} md:p-6`} aria-labelledby="kurs-list-title">
           <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <h2 id="kurs-list-title" className="text-subtitle font-semibold text-pbrown-800 xl:text-title">{copy.ratesHeading}</h2>
             <div className="flex items-center gap-2 text-sm text-neutral-600">
@@ -87,32 +88,32 @@ export default function KursDetailExperience({ rates, updatedAt, copy }: { rates
               <KursRefreshButton label={copy.refresh} />
             </div>
           </div>
-          <div className="overflow-hidden rounded-xl border border-pbrown-100">
-            <div className="grid grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_minmax(0,1fr)] border-b border-pbrown-100 bg-pbrown-600 px-3 py-3 text-base font-semibold text-pbrown-100 sm:px-4">
+          <div className={`overflow-hidden rounded-xl border ${isSolitaire ? "border-neutral-300" : "border-pbrown-100"}`}>
+            <div className={`grid grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_minmax(0,1fr)] border-b px-3 py-3 text-base font-semibold sm:px-4 ${isSolitaire ? "border-neutral-300 bg-neutral-800 text-neutral-100" : "border-pbrown-100 bg-pbrown-600 text-pbrown-100"}`}>
               <span>{copy.currency}</span><span>{copy.buy}</span><span>{copy.sell}</span>
             </div>
             {rates.map((rate, index) => (
-              <div key={rate.code} className={`grid grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_minmax(0,1fr)] items-center border-b border-pbrown-100/70 px-3 py-3 text-base last:border-0 sm:px-4 sm:py-3.5 ${index % 2 === 0 ? "bg-neutral-100" : "bg-pgold-100/50"}`}>
+              <div key={rate.code} className={`grid grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_minmax(0,1fr)] items-center border-b px-3 py-3 text-base last:border-0 sm:px-4 sm:py-3.5 ${isSolitaire ? `border-neutral-300 ${index % 2 === 0 ? "bg-neutral-100" : "bg-neutral-200/50"}` : `border-pbrown-100/70 ${index % 2 === 0 ? "bg-neutral-100" : "bg-pgold-100/50"}`} `}>
                 <span className="flex items-center gap-2 font-semibold sm:gap-3"><img src={rate.flag} alt="" aria-hidden="true" className="size-5 shrink-0" />{rate.code}</span>
                 <span className="tabular-nums">{NUMBER_FORMAT.format(rate.buy)}</span>
                 <span className="tabular-nums">{NUMBER_FORMAT.format(rate.sell)}</span>
               </div>
             ))}
           </div>
-          <div className="flex flex-col gap-3 text-sm leading-6 text-pbrown-600">
+          <div className={`flex flex-col gap-3 text-sm leading-6 ${isSolitaire ? "text-neutral-700" : "text-pbrown-600"}`}>
             <p>{copy.note}</p>
             <p>{copy.tellerNote}</p>
           </div>
         </section>
 
-        <section ref={converterRef} className="flex h-fit scroll-mt-20 flex-col gap-5 rounded-2xl bg-white p-5 text-neutral-900 shadow-panel-gold md:p-6 xl:sticky xl:top-22 xl:self-start" aria-labelledby="kurs-converter-title">
+        <section ref={converterRef} className={`flex h-fit scroll-mt-20 flex-col gap-5 rounded-2xl border border-neutral-300 bg-white p-5 text-neutral-900 ${isSolitaire ? "shadow-panel" : "shadow-panel-gold"} md:p-6 xl:sticky xl:top-22 xl:self-start`} aria-labelledby="kurs-converter-title">
           <div>
             <h2 id="kurs-converter-title" className="text-subtitle font-semibold text-pbrown-800 xl:text-title">{copy.converter}</h2>
           </div>
           <div className="grid grid-cols-[minmax(0,1fr)_2rem_minmax(0,1fr)] items-end gap-2">
             <div className="flex min-w-0 flex-col gap-2">
               <span className="text-base leading-6 font-bold text-neutral-800">{copy.from}</span>
-              <PrioritasDirectoryDropdown id="kurs-converter-from" label={copy.from} value={from} onChange={setFrom} options={fromOptions} size="medium" xlSize="large" />
+              <PrioritasDirectoryDropdown id="kurs-converter-from" label={copy.from} value={from} onChange={setFrom} options={fromOptions} size="medium" xlSize="large" tone={isSolitaire ? "solitaire" : "prioritas"} />
             </div>
             <button type="button" aria-label={copy.swapCurrencies} onClick={swapCurrencies} className="mb-2 flex size-8 items-center justify-center rounded-full border border-pbrown-100 bg-pgold-100 text-pbrown-700 transition-colors hover:bg-pgold-200 focus-visible:outline-2 focus-visible:outline-pgold-500">
               <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" className="size-4" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8">
@@ -121,11 +122,11 @@ export default function KursDetailExperience({ rates, updatedAt, copy }: { rates
             </button>
             <div className="flex min-w-0 flex-col gap-2">
               <span className="text-base leading-6 font-bold text-neutral-800">{copy.to}</span>
-              <PrioritasDirectoryDropdown id="kurs-converter-to" label={copy.to} value={to} onChange={setTo} options={toOptions} size="medium" xlSize="large" />
+              <PrioritasDirectoryDropdown id="kurs-converter-to" label={copy.to} value={to} onChange={setTo} options={toOptions} size="medium" xlSize="large" tone={isSolitaire ? "solitaire" : "prioritas"} />
             </div>
           </div>
           <TextField label={copy.amount} fieldSize="medium" inputMode="decimal" value={amount} onChange={(event) => setAmount(event.target.value)} />
-          <div className="flex min-h-32 flex-col justify-center rounded-xl bg-pbrown-700 p-5 text-pgold-100">
+          <div className={`flex min-h-32 flex-col justify-center rounded-xl p-5 ${isSolitaire ? "bg-neutral-800 text-neutral-100" : "bg-pbrown-700 text-pgold-100"}`}>
             <p className="text-sm text-pgold-200/80">{copy.conversionEstimate}</p>
             <p className="mt-3 break-words text-3xl font-semibold">{convertedText} <span className="text-lg">{to}</span></p>
           </div>

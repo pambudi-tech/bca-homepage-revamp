@@ -18,12 +18,14 @@ export default async function PartnerPrivilegeDetailPage({
   section,
   memberArea = false,
   memberVoucherStatus,
+  publicBasePath = "/prioritas",
 }: {
   locale: string;
   partnerId: string;
   section: PrivilegeSection;
   memberArea?: boolean;
   memberVoucherStatus?: MemberSignatureVoucherStatus;
+  publicBasePath?: string;
 }) {
   setRequestLocale(locale);
   const offer = getPrivilegeOffer(section, partnerId);
@@ -36,6 +38,8 @@ export default async function PartnerPrivilegeDetailPage({
     : undefined;
   const hasMemberSession = session === MEMBER_SESSION_VALUE;
   const signatureT = await getTranslations("signaturePrivilege");
+  const solitaireT = await getTranslations("solitaireHero");
+  const homeLabel = publicBasePath === "/solitaire" ? solitaireT("breadcrumbLabel") : detailT("breadcrumb.home");
   const { partner, benefit, asset, logo } = offer;
   const promos = getPrivilegePromos(section);
   const current = promos.find((promo) => promo.id === partnerId);
@@ -53,8 +57,9 @@ export default async function PartnerPrivilegeDetailPage({
     .replace(/\s+s\/d\s+/i, " – ");
 
   return (
-    <main id="main-content" className="flex min-h-screen flex-1 flex-col overflow-x-clip bg-pgold-200">
+    <main id="main-content" className={`flex min-h-screen flex-1 flex-col overflow-x-clip ${publicBasePath === "/solitaire" && !memberArea ? "bg-neutral-200" : "bg-pgold-200"}`}>
       <PrioritasDetailExperience
+        publicBasePath={publicBasePath}
         memberArea={memberArea}
         memberPreviewName={memberPreviewName}
         memberSessionActive={hasMemberSession}
@@ -76,7 +81,7 @@ export default async function PartnerPrivilegeDetailPage({
             magazine: detailT("subNav.magazine"),
           },
           breadcrumb: {
-            home: detailT("breadcrumb.home"),
+            home: homeLabel,
             category: section === "signature" ? signatureT("tabs.signature") : section === "complimentary" ? signatureT("complimentary.title") : detailT("breadcrumb.category"),
             current: current ? signatureT(`categories.${current.privilegeCategory}`) : partner.category,
           },
@@ -99,7 +104,9 @@ export default async function PartnerPrivilegeDetailPage({
             dynamicModule: {
               message: detailT(memberPreviewName ? "dynamicModule.memberMessage" : "dynamicModule.message", { benefit: benefit.benefit }),
               actionLabel: detailT(memberPreviewName ? "dynamicModule.memberActionLabel" : "dynamicModule.loginLabel"),
-              memberHref: `/prioritas/member/privilege/${encodeURIComponent(partnerId)}`,
+              memberHref: publicBasePath === "/solitaire"
+                ? "/member/login?from=solitaire"
+                : `/prioritas/member/privilege/${encodeURIComponent(partnerId)}`,
             },
           } : {}),
         }}

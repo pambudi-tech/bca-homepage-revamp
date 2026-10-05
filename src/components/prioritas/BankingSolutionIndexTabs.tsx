@@ -6,7 +6,7 @@ import { TabLink } from "@/components/ui/Tab";
 
 type BankingSolutionTab = "privilege" | "wealth" | "kurs";
 
-export default function BankingSolutionIndexTabs({ activeTab }: { activeTab: BankingSolutionTab }) {
+export default function BankingSolutionIndexTabs({ activeTab, basePath = "/prioritas", tone = "prioritas" }: { activeTab: BankingSolutionTab; basePath?: string; tone?: "prioritas" | "solitaire" }) {
   const t = useTranslations("bankingSolutionIndex");
   const viewportRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<Partial<Record<BankingSolutionTab, HTMLAnchorElement | null>>>({});
@@ -41,13 +41,13 @@ export default function BankingSolutionIndexTabs({ activeTab }: { activeTab: Ban
     return () => cancelAnimationFrame(frame);
   }, [activeTab, centerTab]);
 
-  return <div data-prioritas-index-tabs className={`relative sticky top-4 z-30 -mt-12 mx-auto w-full max-w-[1280px] before:pointer-events-none before:absolute before:-top-6 before:left-1/2 before:z-0 before:h-[calc(100%+1.5rem)] before:w-screen before:-translate-x-1/2 before:transition-[background-color,backdrop-filter] before:duration-200 ${scrolled ? "before:bg-pbrown-600/95 before:backdrop-blur-md" : "before:bg-transparent"}`}>
+  return <div data-prioritas-index-tabs className={`relative sticky top-4 z-30 -mt-12 mx-auto w-full max-w-[1280px] before:pointer-events-none before:absolute before:-top-6 before:left-1/2 before:z-0 before:h-[calc(100%+1.5rem)] before:w-screen before:-translate-x-1/2 before:transition-[background-color,backdrop-filter] before:duration-200 ${scrolled ? tone === "solitaire" ? "before:bg-neutral-900/95 before:backdrop-blur-md" : "before:bg-pbrown-600/95 before:backdrop-blur-md" : "before:bg-transparent"}`}>
     <div ref={viewportRef} className="hide-scrollbar relative overflow-x-auto px-4 [scrollbar-width:none] xl:overflow-visible xl:px-0">
-      <div role="tablist" aria-label={t("tabLabel")} className="tab-curved-list prioritas-index-tab-list relative flex w-max overflow-visible rounded-t-xl bg-pbrown-700">
+      <div role="tablist" aria-label={t("tabLabel")} className={`tab-curved-list prioritas-index-tab-list relative flex w-max overflow-visible rounded-t-xl ${tone === "solitaire" ? "bg-neutral-800" : "bg-pbrown-700"}`}>
         {([
-          { key: "privilege", href: "/prioritas/banking-solution" },
-          { key: "wealth", href: "/prioritas/banking-solution/wealth-insight" },
-          { key: "kurs", href: "/prioritas/banking-solution/kurs" },
+          { key: "privilege", href: `${basePath}/banking-solution` },
+          { key: "wealth", href: `${basePath}/banking-solution/wealth-insight` },
+          { key: "kurs", href: `${basePath}/banking-solution/kurs` },
         ] as const).map(({ key, href }) => <TabLink
           ref={(node) => { tabRefs.current[key] = node; }}
           key={key}
@@ -61,6 +61,7 @@ export default function BankingSolutionIndexTabs({ activeTab }: { activeTab: Ban
             if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) centerTab(key);
           }}
           variant="curved"
+          tone={tone}
           active={activeTab === key}
           className="justify-center"
         >{t(`tabs.${key}`)}</TabLink>)}

@@ -7,13 +7,14 @@ import PrioritasFeaturedBanner from "@/components/prioritas/PrioritasFeaturedBan
 import { DIRECTORY_PAGE_SIZE, PrioritasDirectoryCategories, PrioritasDirectoryFilters, PrioritasDirectoryPanel } from "@/components/prioritas/PrioritasDirectory";
 import PrioritasDirectoryDropdown from "@/components/prioritas/PrioritasDirectoryDropdown";
 import { EVENT_CATEGORY_KEYS, type EventCategory, type EventPromo } from "@/components/prioritas/event-data";
-import { PRIORITAS_EVENT_FEATURED_BANNER_SLIDES } from "@/components/prioritas/featured-banner-data";
+import { FEATURED_BANNER_SLIDES, PRIORITAS_EVENT_FEATURED_BANNER_SLIDES } from "@/components/prioritas/featured-banner-data";
 
 const categoryIcons: Record<EventCategory, string> = { lifestyle: "lifestyle", networking: "business", arts: "beauty", culinary: "fnb" };
 
-export default function EventPrivilegeExperience({ promos, initialCategory = "all", bannerBackdrops }: { promos: EventPromo[]; initialCategory?: EventCategory | "all"; bannerBackdrops: Record<string, string> }) {
+export default function EventPrivilegeExperience({ promos, initialCategory = "all", bannerBackdrops, publicBasePath = "/prioritas" }: { promos: EventPromo[]; initialCategory?: EventCategory | "all"; bannerBackdrops: Record<string, string>; publicBasePath?: string }) {
   const t = useTranslations("signaturePrivilege");
   const heroT = useTranslations("prioritasHero");
+  const isSolitaire = publicBasePath === "/solitaire";
   const [category, setCategory] = useState<EventCategory | "all">(initialCategory);
   const [period, setPeriod] = useState<"upcoming" | "all" | "ended">("all");
   const [page, setPage] = useState(1);
@@ -45,22 +46,30 @@ export default function EventPrivilegeExperience({ promos, initialCategory = "al
     window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
   }
 
-  return <main id="main-content" className="min-h-screen overflow-x-clip bg-pgold-200 text-pbrown-800">
-    <section className="relative isolate overflow-x-clip bg-pgold-200 py-8">
+  return <main id="main-content" className={`min-h-screen overflow-x-clip ${isSolitaire ? "bg-neutral-200" : "bg-pgold-200"} text-pbrown-800`}>
+    <section className={`relative isolate overflow-x-clip ${isSolitaire ? "bg-neutral-200" : "bg-pgold-200"} py-8`}>
       <div className="relative mx-auto max-w-[1280px] px-4 xl:px-0">
         <PrioritasFeaturedBanner
-          slides={PRIORITAS_EVENT_FEATURED_BANNER_SLIDES}
+          slides={isSolitaire ? FEATURED_BANNER_SLIDES : PRIORITAS_EVENT_FEATURED_BANNER_SLIDES}
           initialIndex={0}
-          titles={[heroT("eventPromo.featuredTitles.javaJazz"), heroT("eventPromo.featuredTitles.mercedesAds"), heroT("eventPromo.featuredTitles.theWeeknd"), heroT("eventPromo.featuredTitles.brightspot")]}
-          cta={[heroT("eventPromo.featuredCta"), heroT("eventPromo.featuredCtas.mercedesAds"), heroT("eventPromo.featuredCta"), heroT("eventPromo.featuredCta")]}
+          titles={isSolitaire
+            ? [heroT("eventPromo.featuredTitles.javaJazz"), heroT("eventPromo.featuredTitles.theWeeknd"), heroT("eventPromo.featuredTitles.brightspot")]
+            : [heroT("eventPromo.featuredTitles.javaJazz"), heroT("eventPromo.featuredTitles.mercedesAds"), heroT("eventPromo.featuredTitles.theWeeknd"), heroT("eventPromo.featuredTitles.brightspot")]
+          }
+          cta={isSolitaire
+            ? heroT("eventPromo.featuredCta")
+            : [heroT("eventPromo.featuredCta"), heroT("eventPromo.featuredCtas.mercedesAds"), heroT("eventPromo.featuredCta"), heroT("eventPromo.featuredCta")]
+          }
           backdrops={bannerBackdrops}
+          buttonTheme={isSolitaire ? "solitaire" : "prioritas"}
           slideHrefs={{
-            "java-jazz": "/prioritas/promo/bluebird-javajazz",
-            "the-weeknd": "/prioritas/event/program-nabung-konser-the-weeknd-20260618",
-            brightspot: "/prioritas/promo/brightspot-city-2026-20260430",
+            "java-jazz": `${publicBasePath}/event`,
+            "the-weeknd": `${publicBasePath}/event`,
+            brightspot: `${publicBasePath}/event`,
           }}
         />
         <PrioritasDirectoryPanel
+          tone={isSolitaire ? "solitaire" : "prioritas"}
           spacing="section"
           headingId="event-directory-title"
           page={page}
@@ -71,7 +80,7 @@ export default function EventPrivilegeExperience({ promos, initialCategory = "al
           header={<>
             <h2 id="event-directory-title" className="sr-only">{t("tabs.event")}</h2>
             <PrioritasDirectoryCategories>
-              {EVENT_CATEGORY_KEYS.map((key) => <button key={key} type="button" onClick={() => selectCategory(key)} aria-pressed={category === key} className="priosoli-chip priosoli-chip--medium priosoli-chip--xl-large xl:flex-1 xl:justify-center"><span aria-hidden className="priosoli-chip__icon" style={{ maskImage: `url(/assets/prioritas/privilege/categories/${categoryIcons[key]}.svg)`, WebkitMaskImage: `url(/assets/prioritas/privilege/categories/${categoryIcons[key]}.svg)` }} />{t(`eventDirectory.categories.${key}`)}</button>)}
+              {EVENT_CATEGORY_KEYS.map((key) => <button key={key} type="button" onClick={() => selectCategory(key)} aria-pressed={category === key} className={`priosoli-chip ${isSolitaire ? "priosoli-chip--solitaire" : ""} priosoli-chip--medium priosoli-chip--xl-large xl:flex-1 xl:justify-center`}><span aria-hidden className="priosoli-chip__icon" style={{ maskImage: `url(/assets/prioritas/privilege/categories/${categoryIcons[key]}.svg)`, WebkitMaskImage: `url(/assets/prioritas/privilege/categories/${categoryIcons[key]}.svg)` }} />{t(`eventDirectory.categories.${key}`)}</button>)}
             </PrioritasDirectoryCategories>
             <PrioritasDirectoryFilters count={t("eventDirectory.showing", { count: events.length })}>
               <PrioritasDirectoryDropdown
@@ -87,11 +96,12 @@ export default function EventPrivilegeExperience({ promos, initialCategory = "al
                 widthClassName="sm:w-56"
                 size="medium"
                 xlSize="large"
+                tone={isSolitaire ? "solitaire" : "prioritas"}
               />
             </PrioritasDirectoryFilters>
           </>}
         >
-              {visibleEvents.map((event) => <ContentCard key={event.id} item={event} now={new Date()} variant="event" />)}
+              {visibleEvents.map((event) => <ContentCard key={event.id} item={event} now={new Date()} solitaire={isSolitaire} variant="event" detailHref={`${publicBasePath}/event/${event.id}`} />)}
         </PrioritasDirectoryPanel>
       </div>
     </section>

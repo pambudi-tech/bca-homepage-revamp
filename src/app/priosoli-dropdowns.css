@@ -40,6 +40,10 @@
   background: var(--color-neutral-100);
 }
 
+.priosoli-dropdown--solitaire[data-open="true"] .priosoli-dropdown__control {
+  border-color: var(--color-neutral-800);
+}
+
 .priosoli-dropdown__search-icon {
   width: 18px;
   height: 18px;
@@ -136,4 +140,9 @@
   background: var(--color-pgold-100);
   color: var(--color-pbrown-600);
   font-weight: 600;
+}
+
+.priosoli-dropdown--solitaire .priosoli-dropdown__option:hover {
+  background: var(--color-neutral-200);
+  color: var(--color-neutral-800);
 }

@@ -58,7 +58,7 @@ export default function MobileNav({
     <>
     <nav
       aria-label={tNav("primary")}
-      className={`pre-nav ${variant === "prioritas" && disableHideShow ? "absolute" : "fixed"} left-0 right-0 top-0 z-40 flex h-[calc(4rem+env(safe-area-inset-top))] items-center px-4 py-3 pt-[calc(0.75rem+env(safe-area-inset-top))] transition-[transform,translate,background-color] duration-300 xl:hidden ${variant === "promo" ? "gap-3" : "justify-between"} ${
+      className={`pre-nav ${(variant === "prioritas" || variant === "solitaire") && disableHideShow ? "absolute" : "fixed"} left-0 right-0 top-0 z-40 flex h-[calc(4rem+env(safe-area-inset-top))] items-center px-4 py-3 pt-[calc(0.75rem+env(safe-area-inset-top))] transition-[transform,translate,background-color] duration-300 xl:hidden ${variant === "promo" ? "gap-3" : "justify-between"} ${
         !disableHideShow && hidden && !menuOpen ? "-translate-y-full" : "translate-y-0"
       } ${menuOpen ? "bg-[rgba(18,20,23,0.95)]" : scrolled ? (variant === "prioritas" ? "bg-pbrown-800" : variant === "solitaire" ? "bg-neutral-900" : "bg-blue-500") : "bg-transparent"}`}
     >
@@ -94,7 +94,7 @@ export default function MobileNav({
           aria-expanded={menuOpen}
           className={`flex items-center gap-2 rounded-full border border-white/15 bg-[rgba(5,13,25,0.2)] backdrop-blur-[40px] transition-transform active:scale-95 ${variant === "promo" ? "size-10 justify-center" : "h-10 py-1 pl-1 pr-3"}`}
         >
-          {variant !== "promo" ? <span className={`flex h-8 w-24 items-center justify-center rounded-full px-5 text-sm font-semibold ${variant === "prioritas" ? "bg-pgold-500 text-white" : variant === "solitaire" ? "bg-neutral-500 text-white" : "bg-neutral-100 text-blue-500"}`}>{variant === "prioritas" ? tNav("segments.Prioritas") : variant === "solitaire" ? tNav("segments.Solitaire") : tNav("segments.Individu")}</span> : null}
+          {variant !== "promo" ? <span className={`flex h-8 w-24 items-center justify-center rounded-full px-5 text-sm font-semibold ${variant === "prioritas" ? "bg-pgold-500 text-white" : variant === "solitaire" ? "bg-neutral-500 text-neutral-800" : "bg-neutral-100 text-blue-500"}`}>{variant === "prioritas" ? tNav("segments.Prioritas") : variant === "solitaire" ? tNav("segments.Solitaire") : tNav("segments.Individu")}</span> : null}
           <img src="/assets/cycle1/outline-menu.svg" alt="" className="size-6" />
         </button>
       </div>

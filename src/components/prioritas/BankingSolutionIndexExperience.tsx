@@ -32,7 +32,7 @@ const privilegeCardKeys = [
   "branch", "advisor", "family", "contact", "media",
 ] as const;
 
-function WealthGroup({ group, backdrops }: { group: "house" | "market"; backdrops: Record<string, string> }) {
+function WealthGroup({ group, backdrops, tone }: { group: "house" | "market"; backdrops: Record<string, string>; tone: "prioritas" | "solitaire" }) {
   const t = useTranslations("bankingSolutionIndex");
   const assets = group === "house" ? insightAssets.house.slice(0, 3) : insightAssets.market;
   const cards: WealthCardData[] = assets.map(({ key, image, actionIcon }) => ({
@@ -54,16 +54,17 @@ function WealthGroup({ group, backdrops }: { group: "house" | "market"; backdrop
     <h2 id={`wealth-${group}`} className="text-subtitle text-neutral-800 xl:text-title">{t(`groups.${group}`)}</h2>
     <div className="hide-scrollbar -mx-4 mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 xl:grid-cols-3">
       {cards.map((card) => <div key={card.title} className="w-[280px] shrink-0 snap-center sm:w-auto sm:shrink">
-        <WealthCard card={card} />
+        <WealthCard card={card} tone={tone} />
       </div>)}
     </div>
   </section>;
 }
 
-export default function BankingSolutionIndexExperience({ activeTab, backdrops = {}, memberArea = false }: { activeTab: "privilege" | "wealth"; backdrops?: Record<string, string>; memberArea?: boolean }) {
+export default function BankingSolutionIndexExperience({ activeTab, backdrops = {}, memberArea = false, publicBasePath = "/prioritas" }: { activeTab: "privilege" | "wealth"; backdrops?: Record<string, string>; memberArea?: boolean; publicBasePath?: string }) {
   const t = useTranslations("bankingSolutionIndex");
+  const isSolitaire = publicBasePath === "/solitaire" && !memberArea;
 
-  return <main className="overflow-hidden bg-pgold-200">
+  return <main className={`overflow-hidden ${isSolitaire ? "bg-neutral-200" : "bg-pgold-200"}`}>
     <div className="mx-auto w-full max-w-[1280px] px-4 py-10 xl:px-0">
       {activeTab === "privilege" ? <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3">
         {privilegeCardKeys.map((key) => {
@@ -74,13 +75,13 @@ export default function BankingSolutionIndexExperience({ activeTab, backdrops = 
             alt: t(`privilege.${key}`),
             image: asset.image,
             imagePosition: "imagePosition" in asset ? asset.imagePosition : undefined,
-            href: activeTab === "privilege" ? `${memberArea ? "/prioritas/member" : "/prioritas"}/banking-solution/privilege/${asset.id}` : undefined,
+            href: activeTab === "privilege" ? `${memberArea ? "/prioritas/member" : publicBasePath}/banking-solution/privilege/${asset.id}` : undefined,
           };
-          return <BankingPrivilegeCard key={key} card={card} action={t("more")} directory />;
+          return <BankingPrivilegeCard key={key} card={card} action={t("more")} directory tone={isSolitaire ? "solitaire" : "prioritas"} />;
         })}
       </div> : <div className="flex flex-col gap-10">
-        <WealthGroup group="house" backdrops={backdrops} />
-        <WealthGroup group="market" backdrops={backdrops} />
+        <WealthGroup group="house" backdrops={backdrops} tone={isSolitaire ? "solitaire" : "prioritas"} />
+        <WealthGroup group="market" backdrops={backdrops} tone={isSolitaire ? "solitaire" : "prioritas"} />
       </div>}
     </div>
   </main>;

@@ -68,7 +68,8 @@ function AnimatedRate({ value }: { value: string }) {
   return <span ref={elementRef}>{value}</span>;
 }
 
-export default function KursRatesCarousel({ rates, copy }: { rates: KursEntry[]; copy: Copy }) {
+export default function KursRatesCarousel({ rates, copy, tone = "prioritas" }: { rates: KursEntry[]; copy: Copy; tone?: "prioritas" | "solitaire" }) {
+  const isSolitaire = tone === "solitaire";
   const [offset, setOffset] = useState(0);
 
   const move = useCallback((step: number) => {
@@ -87,22 +88,22 @@ export default function KursRatesCarousel({ rates, copy }: { rates: KursEntry[];
   return (
     <div className="flex flex-col gap-6">
       <div className="overflow-hidden rounded-xl">
-      <div className="overflow-hidden rounded-xl border border-pbrown-200/25 bg-pbrown-100/10">
+      <div className={`overflow-hidden rounded-xl border ${isSolitaire ? "border-neutral-300 bg-neutral-100" : "border-pbrown-200/25 bg-pbrown-100/10"}`}>
         <div className="grid grid-cols-1 md:grid-cols-3">
           {visibleRates.map((rate, index) => (
-            <article key={index} className={`flex flex-row items-center gap-8 px-4 py-4 xl:flex-col xl:items-stretch xl:gap-8 xl:px-8 xl:py-6 ${index < visibleRates.length - 1 ? "border-b border-pbrown-200/25 md:border-b-0 md:border-r" : ""}`}>
+            <article key={index} className={`flex flex-row items-center gap-8 px-4 py-4 xl:flex-col xl:items-stretch xl:gap-8 xl:px-8 xl:py-6 ${index < visibleRates.length - 1 ? `border-b ${isSolitaire ? "border-neutral-300" : "border-pbrown-200/25"} md:border-b-0 md:border-r` : ""}`}>
               <div className="flex items-center gap-3 xl:gap-5">
                 <img src={rate.flag} alt={rate.code} className="size-10" />
-                <h4 className="text-lg font-semibold leading-[26px] text-pgold-200 xl:text-[28px] xl:leading-8 xl:tracking-[-0.56px]">{rate.code}</h4>
+                <h4 className={`text-lg font-semibold leading-[26px] ${isSolitaire ? "text-neutral-800" : "text-pgold-200"} xl:text-[28px] xl:leading-8 xl:tracking-[-0.56px]`}>{rate.code}</h4>
               </div>
               <div className="flex flex-1 items-center justify-between gap-4">
                 <div className="flex w-[88px] shrink-0 flex-col gap-1">
-                  <p className="text-sm font-semibold leading-5 text-pbrown-200 xl:text-lg xl:leading-[26px]">{copy.buy}</p>
-                <p className="text-base font-semibold leading-6 text-pgold-200 xl:text-xl xl:leading-7 xl:tracking-[-0.4px]"><AnimatedRate value={rate.beli} /></p>
+                  <p className={`text-sm font-semibold leading-5 ${isSolitaire ? "text-neutral-700" : "text-pbrown-200"} xl:text-lg xl:leading-[26px]`}>{copy.buy}</p>
+                <p className={`text-base font-semibold leading-6 ${isSolitaire ? "text-neutral-800" : "text-pgold-200"} xl:text-xl xl:leading-7 xl:tracking-[-0.4px]`}><AnimatedRate value={rate.beli} /></p>
                 </div>
                 <div className="flex w-[88px] shrink-0 flex-col gap-1">
-                  <p className="text-sm font-semibold leading-5 text-pbrown-200 xl:text-lg xl:leading-[26px]">{copy.sell}</p>
-                <p className="text-base font-semibold leading-6 text-pgold-200 xl:text-xl xl:leading-7 xl:tracking-[-0.4px]"><AnimatedRate value={rate.jual} /></p>
+                  <p className={`text-sm font-semibold leading-5 ${isSolitaire ? "text-neutral-700" : "text-pbrown-200"} xl:text-lg xl:leading-[26px]`}>{copy.sell}</p>
+                <p className={`text-base font-semibold leading-6 ${isSolitaire ? "text-neutral-800" : "text-pgold-200"} xl:text-xl xl:leading-7 xl:tracking-[-0.4px]`}><AnimatedRate value={rate.jual} /></p>
                 </div>
               </div>
             </article>
@@ -111,11 +112,11 @@ export default function KursRatesCarousel({ rates, copy }: { rates: KursEntry[];
       </div>
       </div>
       <div className="flex items-center justify-between gap-4">
-        <p className="flex items-center gap-2 text-left text-xs leading-4 text-pbrown-200 xl:text-base xl:leading-6">
+        <p className={`flex items-center gap-2 text-left text-xs leading-4 ${isSolitaire ? "text-neutral-700" : "text-pbrown-200"} xl:text-base xl:leading-6`}>
           {copy.updatedAt}
-          <KursRefreshButton label={copy.refresh} />
+          <KursRefreshButton label={copy.refresh} tone={tone} />
         </p>
-        <KursCarouselControls previousLabel={copy.previous} nextLabel={copy.next} onPrevious={() => move(-3)} onNext={() => move(3)} />
+        <KursCarouselControls previousLabel={copy.previous} nextLabel={copy.next} onPrevious={() => move(-3)} onNext={() => move(3)} tone={tone} />
       </div>
     </div>
   );

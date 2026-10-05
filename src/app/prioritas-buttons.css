@@ -85,6 +85,72 @@
 .prio-button--text.prio-button--inverse:is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --prio-button-ink: var(--color-pgold-500); }
 .prio-button--text.prio-button--inverse:disabled { --prio-button-ink: var(--color-pgold-100); opacity: .4; }
 
+/* Solitaire mirrors the Prioritas button geometry and interaction states, with
+   the neutral color system from the Solitaire section of the Figma library. */
+.solitaire-button {
+  --solitaire-button-fill: transparent;
+  --solitaire-button-border: transparent;
+  --solitaire-button-ink: var(--color-neutral-800);
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 1px solid var(--solitaire-button-border);
+  border-radius: 999px;
+  background: var(--solitaire-button-fill);
+  color: var(--solitaire-button-ink);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 200ms, border-color 200ms, color 200ms;
+}
+
+.solitaire-button:focus-visible { outline: 2px solid var(--color-neutral-800); outline-offset: 3px; }
+.solitaire-button--inverse:focus-visible { outline-color: var(--color-neutral-100); }
+.solitaire-button:disabled { cursor: not-allowed; }
+.solitaire-button--button { height: 40px; padding-inline: 20px; font-size: 14px; line-height: 14px; }
+.solitaire-button--button.solitaire-button--small { height: 32px; padding-inline: 16px; }
+.solitaire-button--button.solitaire-button--large { height: 48px; gap: 4px; padding-inline: 24px; font-size: 16px; line-height: 16px; }
+@media (min-width: 1280px) {
+  .solitaire-button--button.solitaire-button--xl-large { height: 48px; gap: 4px; padding-inline: 24px; font-size: 16px; line-height: 16px; }
+  .solitaire-button--text.solitaire-button--xl-large { font-size: 16px; line-height: 16px; }
+}
+.solitaire-button--icon { width: 40px; height: 40px; padding: 0; }
+.solitaire-button--icon.solitaire-button--small { width: 32px; height: 32px; }
+.solitaire-button--icon.solitaire-button--large { width: 48px; height: 48px; }
+.solitaire-button--icon.solitaire-button--large .prio-button__icon { width: 24px; height: 24px; }
+.solitaire-button--text { height: 20px; padding: 0; border: 0; border-radius: 0; background: transparent; font-size: 14px; line-height: 14px; }
+.solitaire-button--text.solitaire-button--small { font-size: 12px; line-height: 14px; }
+.solitaire-button--text.solitaire-button--large { font-size: 16px; line-height: 16px; }
+
+.solitaire-button--default.solitaire-button--primary:not(.solitaire-button--text) { --solitaire-button-fill: var(--color-neutral-800); --solitaire-button-ink: var(--color-neutral-100); }
+.solitaire-button--default.solitaire-button--primary:not(.solitaire-button--text):is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --solitaire-button-fill: var(--color-neutral-700); }
+.solitaire-button--default.solitaire-button--primary:not(.solitaire-button--text):is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --solitaire-button-fill: var(--color-neutral-900); }
+.solitaire-button--default.solitaire-button--primary:not(.solitaire-button--text):disabled { --solitaire-button-fill: var(--color-neutral-300); --solitaire-button-ink: var(--color-neutral-600); }
+.solitaire-button--default.solitaire-button--secondary:not(.solitaire-button--text) { --solitaire-button-fill: var(--color-neutral-100); --solitaire-button-border: var(--color-neutral-800); --solitaire-button-ink: var(--color-neutral-800); }
+.solitaire-button--default.solitaire-button--secondary:not(.solitaire-button--text):is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --solitaire-button-fill: var(--color-neutral-200); --solitaire-button-border: var(--color-neutral-700); --solitaire-button-ink: var(--color-neutral-700); }
+.solitaire-button--default.solitaire-button--secondary:not(.solitaire-button--text):is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --solitaire-button-fill: var(--color-neutral-300); --solitaire-button-border: var(--color-neutral-900); --solitaire-button-ink: var(--color-neutral-900); }
+.solitaire-button--default.solitaire-button--secondary:not(.solitaire-button--text):disabled { --solitaire-button-fill: var(--color-neutral-100); --solitaire-button-border: var(--color-neutral-500); --solitaire-button-ink: var(--color-neutral-500); }
+
+.solitaire-button--inverse.solitaire-button--primary:not(.solitaire-button--text) { --solitaire-button-fill: var(--color-neutral-100); --solitaire-button-ink: var(--color-neutral-800); }
+.solitaire-button--inverse.solitaire-button--primary:not(.solitaire-button--text):is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --solitaire-button-fill: var(--color-neutral-200); --solitaire-button-ink: var(--color-neutral-700); }
+.solitaire-button--inverse.solitaire-button--primary:not(.solitaire-button--text):is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --solitaire-button-fill: var(--color-neutral-300); --solitaire-button-ink: var(--color-neutral-900); }
+.solitaire-button--inverse.solitaire-button--primary:not(.solitaire-button--text):disabled { --solitaire-button-fill: var(--color-neutral-300); --solitaire-button-ink: var(--color-neutral-600); }
+.solitaire-button--inverse.solitaire-button--secondary:not(.solitaire-button--text) { --solitaire-button-border: var(--color-neutral-100); --solitaire-button-ink: var(--color-neutral-100); }
+.solitaire-button--inverse.solitaire-button--secondary:not(.solitaire-button--text):is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --solitaire-button-fill: color-mix(in srgb, var(--color-neutral-100) 10%, transparent); --solitaire-button-border: var(--color-neutral-200); --solitaire-button-ink: var(--color-neutral-200); }
+.solitaire-button--inverse.solitaire-button--secondary:not(.solitaire-button--text):is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --solitaire-button-fill: color-mix(in srgb, var(--color-neutral-100) 15%, transparent); --solitaire-button-border: var(--color-neutral-300); --solitaire-button-ink: var(--color-neutral-300); }
+.solitaire-button--inverse.solitaire-button--secondary:not(.solitaire-button--text):disabled { --solitaire-button-border: var(--color-neutral-100); --solitaire-button-ink: var(--color-neutral-100); opacity: .5; }
+
+.solitaire-button--text.solitaire-button--default { --solitaire-button-ink: var(--color-neutral-800); }
+.solitaire-button--text.solitaire-button--default:is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --solitaire-button-ink: var(--color-neutral-700); }
+.solitaire-button--text.solitaire-button--default:is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --solitaire-button-ink: var(--color-neutral-900); }
+.solitaire-button--text.solitaire-button--default:disabled { --solitaire-button-ink: var(--color-neutral-500); }
+.solitaire-button--text.solitaire-button--inverse { --solitaire-button-ink: var(--color-neutral-100); }
+.solitaire-button--text.solitaire-button--inverse:is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --solitaire-button-ink: var(--color-neutral-200); }
+.solitaire-button--text.solitaire-button--inverse:is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --solitaire-button-ink: var(--color-neutral-300); }
+.solitaire-button--text.solitaire-button--inverse:disabled { --solitaire-button-ink: var(--color-neutral-100); opacity: .5; }
+
 /* Library layout follows the Figma component board at node 8431:99459. */
 .prio-library-page { min-height: 100vh; background: var(--color-neutral-200); color: var(--color-neutral-800); }
 .prio-library-header { min-height: 204px; padding: 40px 56px; background: var(--color-neutral-100); }

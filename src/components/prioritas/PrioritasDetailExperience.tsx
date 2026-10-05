@@ -21,7 +21,7 @@ import MemberSignatureVoucherModule from "@/components/prioritas/MemberSignature
 import MemberAirportTransferModule from "@/components/prioritas/MemberAirportTransferModule";
 import MemberMedicalCheckUpModule from "@/components/prioritas/MemberMedicalCheckUpModule";
 import { withMemberSignatureVoucherStatus, type MemberSignatureVoucherStatus } from "@/lib/member-signature-voucher";
-import { prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
+import { prioritasButtonClassName, solitaireButtonClassName } from "@/components/prioritas/PrioritasButton";
 import { useLenis } from "@/components/SmoothScroll";
 
 const ASSET_ROOT = "/assets/prioritas/detail/molton-brown";
@@ -52,27 +52,29 @@ function DetailRow({
   children,
   open,
   onToggle,
+  solitaire = false,
 }: {
   title: string;
   children: React.ReactNode;
   open: boolean;
   onToggle: () => void;
+  solitaire?: boolean;
 }) {
   return (
-    <section className="group relative rounded-xl transition-colors hover:bg-pgold-100 before:absolute before:inset-x-4 before:-top-2 before:border-t before:border-neutral-300 before:content-[''] first:before:hidden">
+    <section className={`group relative rounded-xl transition-colors ${solitaire ? "hover:bg-neutral-200" : "hover:bg-pgold-100"} before:absolute before:inset-x-4 before:-top-2 before:border-t before:border-neutral-300 before:content-[''] first:before:hidden`}>
       <button
         type="button"
         aria-expanded={open}
         onClick={onToggle}
-        className="flex w-full items-center justify-between gap-6 rounded-xl bg-transparent p-2 text-left text-lg font-semibold text-neutral-900 transition-colors group-hover:text-pbrown-500 xl:p-4 xl:text-title"
+        className={`flex w-full items-center justify-between gap-6 rounded-xl bg-transparent p-2 text-left text-lg font-semibold text-neutral-900 transition-colors ${solitaire ? "group-hover:text-neutral-900" : "group-hover:text-pbrown-500"} xl:p-4 xl:text-title`}
       >
         <span>{title}</span>
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-pgold-200">
-          <img
+        <span className={`flex size-10 shrink-0 items-center justify-center rounded-full ${solitaire ? "bg-neutral-300" : "bg-pgold-200"}`}>
+          {solitaire ? <span aria-hidden className={`size-6 bg-neutral-800 transition-transform duration-200 [mask-image:url('/assets/prioritas/detail/molton-brown/chevron-up.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/prioritas/detail/molton-brown/chevron-up.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain] ${open ? "-rotate-90" : "rotate-90"}`} /> : <img
             src={`${ASSET_ROOT}/chevron-up.svg`}
             alt=""
             className={`size-6 transition-transform duration-200 ${open ? "-rotate-90" : "rotate-90"}`}
-          />
+          />}
         </span>
       </button>
       <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
@@ -326,7 +328,7 @@ function FormattedDocumentContent({ content }: { content: string }) {
   </div>;
 }
 
-export default function PrioritasDetailExperience({ copy, promos, now, kind = "lifestyle", heroImage, birthdayGift = false, brandLogo, eventDate, heroPromo, categoryFilter = "beauty", showHero = true, showRecommendations = true, customSections, relatedPage, bankingRecommendations = [], bankingRecommendationAction = "", memberArea = false, memberPreviewName, memberSessionActive = false, memberVoucherStatus, memberAirportTransfer = false, memberMedicalCheckUp = false }: {
+export default function PrioritasDetailExperience({ copy, promos, now, kind = "lifestyle", heroImage, birthdayGift = false, brandLogo, eventDate, heroPromo, categoryFilter = "beauty", showHero = true, showRecommendations = true, customSections, relatedPage, bankingRecommendations = [], bankingRecommendationAction = "", memberArea = false, memberPreviewName, memberSessionActive = false, memberVoucherStatus, memberAirportTransfer = false, memberMedicalCheckUp = false, publicBasePath = "/prioritas" }: {
   copy: DetailCopy;
   promos: Promo[];
   now: string;
@@ -349,6 +351,7 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
   memberVoucherStatus?: MemberSignatureVoucherStatus;
   memberAirportTransfer?: "domestic" | "international" | false;
   memberMedicalCheckUp?: boolean;
+  publicBasePath?: string;
 }) {
   const promoT = useTranslations("promo");
   const privilegeT = useTranslations("signaturePrivilege");
@@ -360,8 +363,9 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
   const [openPanels, setOpenPanels] = useState<DetailPanel[]>(customSections?.length ? [customSections[0].id] : kind === "about" ? ["detail", "terms", "contact"] : ["detail", "terms"]);
   const toggle = (panel: DetailPanel) => setOpenPanels((current) => current.includes(panel) ? current.filter((item) => item !== panel) : [...current, panel]);
   const brand = copy.brand?.trim();
-  const detailBase = memberArea ? "/prioritas/member" : "/prioritas";
-  const directoryPath = kind === "event" ? `${detailBase}/event` : kind === "promo" ? `${detailBase}/promo` : kind === "complimentary" || kind === "signature" ? `${detailBase}/privilege` : kind === "about" ? "/prioritas" : kind === "banking" ? `${detailBase}/banking-solution` : `${detailBase}/lifestyle-privilege`;
+  const isSolitaire = publicBasePath === "/solitaire" && !memberArea;
+  const detailBase = memberArea ? "/prioritas/member" : publicBasePath;
+  const directoryPath = kind === "event" ? `${detailBase}/event` : kind === "promo" ? `${detailBase}/promo` : kind === "complimentary" || kind === "signature" ? `${detailBase}/privilege` : kind === "about" ? publicBasePath : kind === "banking" ? `${detailBase}/banking-solution` : `${detailBase}/lifestyle-privilege`;
   const listingPath = memberArea
     ? kind === "banking" ? "/prioritas/member/banking-solution" : `/prioritas/member/privilege${kind === "lifestyle" || kind === "event" || kind === "promo" ? `?section=${kind}` : ""}`
     : directoryPath;
@@ -398,7 +402,7 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
   }, [pathname]);
 
   return (
-    <article className="relative isolate overflow-x-clip bg-pgold-200 text-neutral-900">
+    <article className={`relative isolate overflow-x-clip ${isSolitaire ? "bg-neutral-200" : "bg-pgold-200"} text-neutral-900`}>
       <div className="relative">
         {memberArea ? <>
           <div className="relative bg-pgold-100">
@@ -408,51 +412,54 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
           </div>
           <PrioritasIndexTabs activeTab="privilege" surface="overview" />
         </> : <>
-        <Navbar variant="prioritas" memberPreviewName={memberPreviewName} />
+        <Navbar variant={publicBasePath === "/solitaire" ? "solitaire" : "prioritas"} memberPreviewName={memberPreviewName} />
         <PrioritasDetailSubnav
           label={copy.subNav.label}
           privilege={copy.subNav.privilege}
           banking={copy.subNav.banking}
           magazine={copy.subNav.magazine}
           active={kind === "about" ? null : kind === "banking" ? "banking" : undefined}
+          basePath={publicBasePath}
+          tone={isSolitaire ? "solitaire" : "prioritas"}
         />
         </>}
         <PrioritasPageHeader
           breadcrumbs={kind === "about" ? [
-            { label: copy.breadcrumb.home, href: memberArea ? memberOverviewPath : "/prioritas" },
+            { label: copy.breadcrumb.home, href: memberArea ? memberOverviewPath : publicBasePath },
             { label: copy.breadcrumb.current },
           ] : kind === "signature" ? [
-            { label: copy.breadcrumb.home, href: memberArea ? memberOverviewPath : "/prioritas" },
+            { label: copy.breadcrumb.home, href: memberArea ? memberOverviewPath : publicBasePath },
             { label: copy.breadcrumb.category, href: listingPath },
           ] : kind === "banking" ? [
-            { label: copy.breadcrumb.home, href: memberArea ? memberOverviewPath : "/prioritas" },
+            { label: copy.breadcrumb.home, href: memberArea ? memberOverviewPath : publicBasePath },
             { label: copy.breadcrumb.category, href: directoryPath },
             { label: copy.breadcrumb.current },
           ] : [
-            { label: copy.breadcrumb.home, href: memberArea ? memberOverviewPath : "/prioritas" },
+            { label: copy.breadcrumb.home, href: memberArea ? memberOverviewPath : publicBasePath },
             { label: copy.breadcrumb.category, href: listingPath },
-            { label: copy.breadcrumb.current, href: memberArea ? listingPath : `${directoryPath}?category=${categoryFilter}` },
+            { label: copy.breadcrumb.current, href: memberArea ? listingPath : `${directoryPath}?category=${encodeURIComponent(categoryFilter)}#complimentary-title` },
           ]}
           title={copy.title}
           subtitle={brand || undefined}
           logo={brand && brandLogo ? { src: brandLogo, alt: brand } : undefined}
           layout="detail"
           memberArea={memberArea}
+          tone={publicBasePath === "/solitaire" ? "solitaire" : "prioritas"}
         />
       </div>
 
       <section className={`pointer-events-none relative ${brand ? "-mt-5 xl:-mt-16" : "-mt-14 xl:-mt-[6.5rem]"} overflow-x-clip pb-20 xl:pb-28`}>
-        <div aria-hidden className={`bg-decoration-wrapper pointer-events-none absolute inset-x-0 -z-10 overflow-hidden ${brand ? "top-5 xl:top-16" : "top-14 xl:top-[6.5rem]"}`}>
+        {!isSolitaire ? <div aria-hidden className={`bg-decoration-wrapper pointer-events-none absolute inset-x-0 -z-10 overflow-hidden ${brand ? "top-5 xl:top-16" : "top-14 xl:top-[6.5rem]"}`}>
           <img src={`${ASSET_ROOT}/raw-01.png`} alt="" className="block h-auto w-full opacity-25" />
           <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent via-pgold-200/70 to-pgold-200" />
-        </div>
+        </div> : null}
         <div className="pointer-events-none relative z-20 mx-auto w-full max-w-[1280px] px-4 xl:px-0">
           <div className={`grid gap-6 ${showHero ? "xl:grid-cols-2 xl:gap-6" : "grid-cols-1"}`}>
             {showHero ? <div className={`pointer-events-auto relative z-0 aspect-[4/3] w-full self-start rounded-2xl transition-[top] duration-300 ease-out motion-reduce:transition-none xl:sticky ${navbarHidden ? "xl:top-6" : "xl:top-24"} xl:h-[480px] xl:aspect-auto`}>
               <div className="relative size-full overflow-hidden rounded-2xl">
-                {heroImage ? <img src={heroImage} alt={copy.title} className="size-full object-cover" /> : <div className="flex size-full items-center justify-center bg-pgold-200 p-8 text-center text-subtitle text-pbrown-700">{brand ?? copy.title}</div>}
-                {eventDate ? <PrioritasEventDateTile date={eventDate} detail /> : null}
-                {heroTimestampLabel ? <PrioritasEventDateTile timeLabel={heroTimestampLabel} timeIconSrc="/assets/prioritas/detail/promo/clock.svg" /> : null}
+                {heroImage ? <img src={heroImage} alt={copy.title} className="size-full object-cover" /> : <div className={`flex size-full items-center justify-center p-8 text-center text-subtitle ${isSolitaire ? "bg-neutral-200 text-neutral-700" : "bg-pgold-200 text-pbrown-700"}`}>{brand ?? copy.title}</div>}
+                {eventDate ? <PrioritasEventDateTile date={eventDate} detail solitaire={isSolitaire} /> : null}
+                {heroTimestampLabel ? <PrioritasEventDateTile timeLabel={heroTimestampLabel} timeIconSrc="/assets/prioritas/detail/promo/clock.svg" solitaire={isSolitaire} /> : null}
                 <div
                   aria-hidden={!showHeroTitle}
                   className={`glass-panel glass-panel-prioritas pointer-events-none absolute inset-x-2 bottom-2 z-10 max-w-[400px] rounded-xl p-4 pb-5 text-white shadow-card backdrop-blur-md transition-[opacity,transform] duration-300 motion-reduce:transition-none xl:inset-x-4 xl:bottom-4 ${showHeroTitle ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"}`}
@@ -474,26 +481,26 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
               >
                 <div className="flex flex-col gap-4">
                   {customSections?.length ? customSections.map((section) => (
-                    <DetailRow key={section.id} title={section.title} open={openPanels.includes(section.id)} onToggle={() => toggle(section.id)}>
+                    <DetailRow key={section.id} title={section.title} open={openPanels.includes(section.id)} onToggle={() => toggle(section.id)} solitaire={isSolitaire}>
                       <FormattedDocumentContent content={section.content} />
                     </DetailRow>
                   )) : <>
-                    <DetailRow title={copy.detail.title} open={openPanels.includes("detail")} onToggle={() => toggle("detail")}>
+                    <DetailRow title={copy.detail.title} open={openPanels.includes("detail")} onToggle={() => toggle("detail")} solitaire={isSolitaire}>
                       {copy.detail.description ? <div className="mb-4"><FormattedDocumentContent content={copy.detail.description} /></div> : null}
                       <FormattedDocumentContent content={copy.detail.content} />
                     </DetailRow>
-                    <DetailRow title={copy.terms.title} open={openPanels.includes("terms")} onToggle={() => toggle("terms")}>
+                    <DetailRow title={copy.terms.title} open={openPanels.includes("terms")} onToggle={() => toggle("terms")} solitaire={isSolitaire}>
                       <ul className="list-disc space-y-1 pl-5">
                         {copy.terms.items.map((item) => <li key={item}><ImportantTermText text={item} /></li>)}
                       </ul>
                       {copy.validUntil ? <p className="mt-4 font-semibold">{copy.validUntil.label}: {copy.validUntil.value}</p> : null}
                     </DetailRow>
-                    {copy.contact.content || copy.contact.items?.length || copy.contact.groups ? <DetailRow title={copy.contact.title} open={openPanels.includes("contact")} onToggle={() => toggle("contact")}>
+                    {copy.contact.content || copy.contact.items?.length || copy.contact.groups ? <DetailRow title={copy.contact.title} open={openPanels.includes("contact")} onToggle={() => toggle("contact")} solitaire={isSolitaire}>
                       {copy.contact.items?.length ? <ul className="list-disc space-y-1 pl-5">{copy.contact.items.map((item) => <li key={item}>{item}</li>)}</ul> : null}
                       {copy.contact.groups ? <div className="mt-4"><p>{copy.contact.groups.intro}</p><ul className="mt-2 list-disc space-y-1 pl-5">{copy.contact.groups.items.map((item) => <li key={item}>{item}</li>)}</ul></div> : null}
                       {!copy.contact.items?.length && !copy.contact.groups ? <FormattedDocumentContent content={copy.contact.content} /> : null}
                     </DetailRow> : null}
-                    {copy.location.content || copy.location.table ? <DetailRow title={copy.location.title} open={openPanels.includes("location")} onToggle={() => toggle("location")}>
+                    {copy.location.content || copy.location.table ? <DetailRow title={copy.location.title} open={openPanels.includes("location")} onToggle={() => toggle("location")} solitaire={isSolitaire}>
                       {copy.location.table === "executiveAirportLounge" ? <ExecutiveAirportLoungeTable /> : <FormattedDocumentContent content={copy.location.content} />}
                     </DetailRow> : null}
                   </>}
@@ -511,16 +518,18 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
             </div>
           </div>
 
-          {showRecommendations ? <section className="pointer-events-auto -mx-4 bg-pgold-200 px-4 pt-10 xl:mx-0 xl:mt-20 xl:bg-transparent xl:px-0 xl:pt-0">
+          {showRecommendations ? <section className={`pointer-events-auto -mx-4 ${isSolitaire ? "bg-neutral-200" : "bg-pgold-200"} px-4 pt-10 xl:mx-0 xl:mt-20 xl:bg-transparent xl:px-0 xl:pt-0`}>
             <div className="flex items-center justify-between gap-4">
-              <h2 className="text-subtitle font-semibold text-pbrown-600 xl:text-heading">
+              <h2 className={`text-subtitle font-semibold xl:text-heading ${isSolitaire ? "text-neutral-800" : "text-pbrown-600"}`}>
                 {copy.recommendations.title}
               </h2>
-              <Link href={listingPath} className="hidden items-center gap-1.5 text-base font-semibold leading-6 text-pbrown-600 transition-colors hover:text-pgold-700 xl:inline-flex">
+              <Link href={listingPath} className={isSolitaire
+                ? solitaireButtonClassName({ kind: "text", size: "large", className: "hidden items-center gap-1.5 xl:inline-flex" })
+                : "hidden items-center gap-1.5 text-base font-semibold leading-6 text-pbrown-600 transition-colors hover:text-pgold-700 xl:inline-flex"}>
                 <span>{copy.recommendations.viewMore}</span>
                 <span
                   aria-hidden
-                  className="size-5 shrink-0 bg-pbrown-600"
+                  className={`size-5 shrink-0 ${isSolitaire ? "bg-current" : "bg-pbrown-600"}`}
                   style={{
                     maskImage: "url(/assets/prioritas/detail/molton-brown/arrow-right.svg)",
                     WebkitMaskImage: "url(/assets/prioritas/detail/molton-brown/arrow-right.svg)",
@@ -537,18 +546,18 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
             {kind === "banking" ? <div className="hide-scrollbar -mx-4 mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-2 md:overflow-visible md:px-0 xl:grid-cols-3">
               {bankingRecommendations.map((card) => <div key={card.href} className="w-[280px] shrink-0 snap-center md:w-auto md:shrink"><BankingPrivilegeCard card={card} action={bankingRecommendationAction} /></div>)}
             </div> : <div className="mt-6 xl:hidden">
-              <PromoCarousel promos={promos.slice(0, 3)} now={new Date(now)} loop={false} variant="prioritas" promoPage={kind === "promo"} partnerPrivilege={kind === "lifestyle" || kind === "complimentary" || kind === "signature"} detail detailHrefBase={directoryPath} showEventDate={kind === "event"} contentCardVariant={kind === "signature" ? "signature" : kind === "complimentary" ? "complimentary" : kind === "lifestyle" || kind === "event" || kind === "promo" ? kind : undefined} />
+              <PromoCarousel promos={promos.slice(0, 3)} now={new Date(now)} loop={false} variant="prioritas" tone={isSolitaire ? "solitaire" : "prioritas"} promoPage={kind === "promo"} partnerPrivilege={kind === "lifestyle" || kind === "complimentary" || kind === "signature"} detail detailHrefBase={directoryPath} showEventDate={kind === "event"} contentCardVariant={kind === "signature" ? "signature" : kind === "complimentary" ? "complimentary" : kind === "lifestyle" || kind === "event" || kind === "promo" ? kind : undefined} />
             </div>}
             {kind !== "banking" ? <div className="hidden gap-6 xl:mt-8 xl:grid xl:grid-cols-3">
               {promos.slice(0, 3).map((promo) => kind === "signature" && "birthdayGift" in promo
-                ? <SignaturePrivilegeCard key={promo.id} promo={promo as PrivilegePromo} href={`${directoryPath}/${promo.id}`} />
+                ? <SignaturePrivilegeCard key={promo.id} promo={promo as PrivilegePromo} href={`${directoryPath}/${promo.id}`} tone={isSolitaire ? "solitaire" : "prioritas"} />
                 : kind === "complimentary" && "birthdayGift" in promo
-                  ? <ContentCard key={promo.id} item={promo as PrivilegePromo} now={new Date(now)} variant="complimentary" detailHref={`${directoryPath}/${promo.id}`} />
+                  ? <ContentCard key={promo.id} item={promo as PrivilegePromo} now={new Date(now)} solitaire={isSolitaire} variant="complimentary" detailHref={`${directoryPath}/${promo.id}`} />
                 : kind === "lifestyle" && "birthdayGift" in promo
-                  ? <ContentCard key={promo.id} item={promo as PrivilegePromo} now={new Date(now)} variant="lifestyle" detailHref={`${directoryPath}/${promo.id}`} />
+                  ? <ContentCard key={promo.id} item={promo as PrivilegePromo} now={new Date(now)} solitaire={isSolitaire} variant="lifestyle" detailHref={`${directoryPath}/${promo.id}`} />
                   : kind === "event" && "dateTile" in promo
-                    ? <ContentCard key={promo.id} item={promo as EventPromo} now={new Date(now)} variant="event" detailHref={`${directoryPath}/${promo.id}`} />
-                    : kind === "promo" ? <ContentCard key={promo.id} item={promo} now={new Date(now)} variant="promo" detailHref={`${directoryPath}/${promo.id}`} /> : null)}
+                    ? <ContentCard key={promo.id} item={promo as EventPromo} now={new Date(now)} solitaire={isSolitaire} variant="event" detailHref={`${directoryPath}/${promo.id}`} />
+                    : kind === "promo" ? <ContentCard key={promo.id} item={promo} now={new Date(now)} solitaire={isSolitaire} variant="promo" detailHref={`${directoryPath}/${promo.id}`} /> : null)}
             </div> : null}
           </section> : null}
         </div>

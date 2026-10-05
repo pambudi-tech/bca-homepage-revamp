@@ -1700,7 +1700,7 @@
       "weekly0818": { "title": "美国通胀降温，但美国国债拍卖收益率创 25 年新高", "date": "2026 年 8 月 18 日", "alt": "桌上的望远镜" }
     }
   },
-  "solitaireHero": { "title": "尊贵而专属的服务，只为您而来。", "cta": "了解更多", "viewMore": "查看全部", "bannerAlt": "一家人在客厅共享美好时光", "solitaireLogoAlt": "BCA Solitaire" },
+  "solitaireHero": { "title": "尊贵而专属的服务，只为您而来。", "cta": "了解更多", "viewMore": "查看全部", "bannerAlt": "一家人在客厅共享美好时光", "breadcrumbLabel": "Solitaire", "solitaireLogoAlt": "BCA Solitaire" },
   "memberAirportTransfer": {
     "title": "服务",
     "description": "您可以使用以下代码享受机场接送服务：",

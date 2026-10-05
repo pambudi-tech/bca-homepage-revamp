@@ -59,21 +59,27 @@ function AccordionChevron() {
   );
 }
 
-export default function Footer({ variant = "default" }: { variant?: "default" | "prioritas" }) {
+export default function Footer({ variant = "default", tone = "prioritas", hideMagazineLink = false }: { variant?: "default" | "prioritas"; tone?: "prioritas" | "solitaire"; hideMagazineLink?: boolean }) {
   const t = useTranslations("footer");
   const parallaxRef = useRef<HTMLDivElement>(null);
   const lenis = useLenis();
   const copyright = t("copyright");
   const bottomLinks = t.raw(variant === "prioritas" ? "prioritasBottomLinks" : "bottomLinks") as string[];
-  const linkColumns: FooterColumn[] = variant === "prioritas"
+  const baseLinkColumns: FooterColumn[] = variant === "prioritas"
     ? PRIORITAS_FOOTER_LINK_COLUMN_KEYS.map((key) => {
         const column = t.raw(`prioritasLinkColumns.${key}`) as { heading: string; links: string[] };
         return { key, ...column, hrefs: PRIORITAS_FOOTER_LINK_HREFS[key] };
       })
-    : FOOTER_LINK_COLUMN_KEYS.map((key) => {
+      : FOOTER_LINK_COLUMN_KEYS.map((key) => {
         const column = t.raw(`linkColumns.${key}`) as { heading: string; links: string[] };
         return { key, ...column, hrefs: FOOTER_LINK_HREFS[key] };
       });
+  const linkColumns = hideMagazineLink
+    ? baseLinkColumns.map((column) => column.key === "Wawasan"
+      ? { ...column, links: column.links.filter((_, index) => column.hrefs[index] !== "/prioritas/e-magazine"), hrefs: column.hrefs.filter((href) => href !== "/prioritas/e-magazine") }
+      : column)
+    : baseLinkColumns;
+  const prioritasSurfaceClassName = tone === "solitaire" ? "bg-neutral-900" : "bg-pbrown-600";
 
   useEffect(() => {
     if (!lenis) return;
@@ -105,7 +111,7 @@ export default function Footer({ variant = "default" }: { variant?: "default" | 
   );
 
   return (
-    <footer className={`relative overflow-clip ${variant === "prioritas" ? "bg-pbrown-600 pt-12 pb-24 xl:pt-14 xl:pb-16" : "bg-blue-500 pt-10 pb-[184px] xl:pt-14 xl:pb-8"}`}>
+    <footer className={`relative overflow-clip ${variant === "prioritas" ? `${prioritasSurfaceClassName} pt-12 pb-24 xl:pt-14 xl:pb-16` : "bg-blue-500 pt-10 pb-[184px] xl:pt-14 xl:pb-8"}`}>
       <div ref={parallaxRef} className="pointer-events-none absolute inset-0 z-0 overflow-visible mix-blend-multiply" style={{ isolation: "isolate" }}>
         <img loading="lazy" decoding="async" src="/assets/footer/footer-clove-pattern.svg" alt="" aria-hidden className="absolute bottom-[-512px] left-1/2 h-[1879px] w-[2568px] max-w-none -translate-x-[calc(50%+300px)]" />
       </div>

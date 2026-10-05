@@ -11,7 +11,7 @@ import { SLIDES, SLIDE_DURATION_MS, type Slide, type SlideCta } from "./hero-sli
 import ChristmasDecor from "./ChristmasDecor";
 import CnyDecor from "./CnyDecor";
 import LebaranDecor from "./LebaranDecor";
-import { prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
+import { prioritasButtonClassName, solitaireButtonClassName } from "@/components/prioritas/PrioritasButton";
 import LayoutSwitcher from "./LayoutSwitcher";
 
 const PARALLAX_SPEED = 0.45;
@@ -25,15 +25,20 @@ function HeroCta({ label, icon, variant, tone = "default" }: SlideCta) {
   const solitaire = tone === "solitaire";
   const prioritas = tone === "prioritas";
   const brandedHero = solitaire || prioritas;
+  const ctaClassName = prioritas
+    ? prioritasButtonClassName({ surface: "inverse", size: "large" })
+    : solitaire
+      ? solitaireButtonClassName({ surface: "inverse", size: "large" })
+      : `relative flex items-center justify-center gap-1 font-semibold transition-[color,transform] duration-300 active:scale-95 h-10 px-0 text-sm text-white underline-offset-4 hover:underline xl:h-12 xl:rounded-full xl:px-6 xl:text-base xl:no-underline ${variant === "primary" ? "xl:bg-primary xl:hover:bg-primary-hover" : "xl:bg-black/50 xl:hover:bg-black/70"}`;
   return (
     <div className="group/cta relative inline-flex items-start gap-3">
       <button
-        className={prioritas ? prioritasButtonClassName({ surface: "inverse", size: "large" }) : `relative flex items-center justify-center gap-1 font-semibold transition-[color,transform] duration-300 active:scale-95 ${solitaire ? "h-12 rounded-full bg-white px-6 text-base text-pbrown-600 no-underline hover:bg-neutral-100" : `h-10 px-0 text-sm text-white underline-offset-4 hover:underline xl:h-12 xl:rounded-full xl:px-6 xl:text-base xl:no-underline ${variant === "primary" ? "xl:bg-primary xl:hover:bg-primary-hover" : "xl:bg-black/50 xl:hover:bg-black/70"}`}`}
+        className={ctaClassName}
       >
-        <span className={prioritas ? "prio-button__label" : `px-0.5 text-base font-semibold ${brandedHero ? "text-pbrown-600" : "text-white"}`}>
+        <span className={prioritas || solitaire ? "prio-button__label" : `px-0.5 text-base font-semibold ${brandedHero ? "text-pbrown-600" : "text-white"}`}>
           {label}
         </span>
-        <img src={icon} alt="" className={`size-5 ${prioritas ? "brightness-0 opacity-80" : solitaire ? "brightness-0 invert xl:brightness-0 xl:invert-0" : "brightness-0 invert"}`} />
+        <img src={icon} alt="" className={`size-5 ${prioritas ? "brightness-0 opacity-80" : solitaire ? "brightness-0" : "brightness-0 invert"}`} />
       </button>
     </div>
   );

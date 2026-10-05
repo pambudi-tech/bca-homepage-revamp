@@ -12,6 +12,7 @@ import { SEGMENT_EXTERNAL_LINKS, SEGMENT_INTERNAL_LINKS } from "./segment-links"
 import { logoutMember } from "@/app/[locale]/member/login/actions";
 import LogoutConfirmDialog from "./LogoutConfirmDialog";
 import { isMemberAreaPath } from "@/lib/member-auth";
+import { solitaireButtonClassName } from "@/components/prioritas/PrioritasButton";
 
 const LOCALE_META: Record<AppLocale, { flag: string }> = {
   id: { flag: "/assets/cycle1/flag-id.svg" },
@@ -21,8 +22,8 @@ const LOCALE_META: Record<AppLocale, { flag: string }> = {
 
 const SEGMENTS = ["Individu", "Bisnis", "Prioritas", "Solitaire"] as const;
 
-function ChevronRight({ priorityMenu }: { priorityMenu: boolean }) {
-  return <svg aria-hidden viewBox="0 0 24 24" fill="none" className={`size-6 -rotate-90 ${priorityMenu ? "text-pbrown-500" : "text-blue-500"}`}><path d="m5.12 9.12 6 6a1.25 1.25 0 0 0 1.76 0l6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>;
+function ChevronRight({ priorityMenu, solitaireMenu }: { priorityMenu: boolean; solitaireMenu: boolean }) {
+  return <svg aria-hidden viewBox="0 0 24 24" fill="none" className={`size-6 -rotate-90 ${priorityMenu ? "text-pbrown-500" : solitaireMenu ? "text-neutral-800" : "text-blue-500"}`}><path d="m5.12 9.12 6 6a1.25 1.25 0 0 0 1.76 0l6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>;
 }
 
 export default function MobileMenu({
@@ -55,6 +56,7 @@ export default function MobileMenu({
   const restoreFocusRef = useRef<HTMLElement | null>(null);
   const otherLocales = routing.locales.filter((item) => item !== locale);
   const priorityMenu = variant === "prioritas";
+  const solitaireMenu = variant === "solitaire";
   const inMemberArea = isMemberAreaPath(pathname);
   const memberLoginHref = variant === "prioritas" || variant === "solitaire" ? `/member/login?from=${variant}` : null;
   const logout = async () => {
@@ -138,7 +140,7 @@ export default function MobileMenu({
       <div className="mx-auto flex h-full w-full max-w-[440px] flex-col bg-neutral-100 text-neutral-800">
         <header className="relative flex h-[calc(4rem+env(safe-area-inset-top))] shrink-0 items-center justify-between border-b border-neutral-300 px-4 pt-[env(safe-area-inset-top)]">
           <Link href={logoHref} aria-label="BCA" onClick={closeMenu} className="inline-flex">
-            <span aria-hidden className={`h-8 w-[102px] ${priorityMenu ? "bg-pbrown-500" : "bg-blue-500"} [mask-image:url('/assets/navbar/bca-logo-blue.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/navbar/bca-logo-blue.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]`} />
+            <span aria-hidden className={`h-8 w-[102px] ${priorityMenu ? "bg-pbrown-500" : solitaireMenu ? "bg-neutral-800" : "bg-blue-500"} [mask-image:url('/assets/navbar/bca-logo-blue.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/navbar/bca-logo-blue.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]`} />
           </Link>
 
           <div className="flex items-center gap-2">
@@ -159,7 +161,7 @@ export default function MobileMenu({
               ) : null}
             </div>
             <button type="button" onClick={closeMenu} aria-label={tMobile("tutupMenu")} className="flex size-10 items-center justify-center rounded-full active:scale-95">
-              <svg aria-hidden viewBox="0 0 32 32" fill="none" className={`size-6 ${priorityMenu ? "text-pbrown-500" : "text-blue-500"}`}><path d="m10 8 14 14M24 8 10 22" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" /></svg>
+              <svg aria-hidden viewBox="0 0 32 32" fill="none" className={`size-6 ${priorityMenu ? "text-pbrown-500" : solitaireMenu ? "text-neutral-800" : "text-blue-500"}`}><path d="m10 8 14 14M24 8 10 22" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" /></svg>
             </button>
           </div>
         </header>
@@ -168,11 +170,11 @@ export default function MobileMenu({
           {menuItems.map((item) => {
             const content = (
               <>
-                <span className={`text-base leading-6 ${item.active ? `font-bold ${priorityMenu ? "text-pbrown-500" : "text-blue-500"}` : "font-semibold text-neutral-800"}`}>{item.label}</span>
+                <span className={`text-base leading-6 ${item.active ? `font-bold ${priorityMenu ? "text-pbrown-500" : solitaireMenu ? "text-neutral-800" : "text-blue-500"}` : "font-semibold text-neutral-800"}`}>{item.label}</span>
                 {item.active ? (
-                  <span className={`flex h-8 items-center rounded-xl px-4 text-sm font-semibold ${priorityMenu ? "bg-pgold-100 text-pbrown-500" : "bg-blue-200 text-blue-600"}`}>{tMobile("sesiAktif")}</span>
+                  <span className={`flex h-8 items-center rounded-xl px-4 text-sm font-semibold ${priorityMenu ? "bg-pgold-100 text-pbrown-500" : solitaireMenu ? "bg-neutral-300 text-neutral-800" : "bg-blue-200 text-blue-600"}`}>{tMobile("sesiAktif")}</span>
                 ) : (
-                  <span className="flex size-10 items-center justify-center"><ChevronRight priorityMenu={priorityMenu} /></span>
+                  <span className="flex size-10 items-center justify-center"><ChevronRight priorityMenu={priorityMenu} solitaireMenu={solitaireMenu} /></span>
                 )}
               </>
             );
@@ -201,7 +203,7 @@ export default function MobileMenu({
               </button>
             </div>
           ) : memberLoginHref ? (
-            <Link href={memberLoginHref} onClick={closeMenu} className={`flex h-12 items-center justify-center rounded-full border bg-neutral-100 px-6 text-base font-semibold ${priorityMenu ? "border-pbrown-500 text-pbrown-500 active:bg-pgold-100" : "border-blue-500 text-blue-500 active:bg-blue-100"}`}>{tNav("login")}</Link>
+            <Link href={memberLoginHref} onClick={closeMenu} className={solitaireMenu ? solitaireButtonClassName({ variant: "secondary", size: "large", className: "w-full" }) : `flex h-12 items-center justify-center rounded-full border bg-neutral-100 px-6 text-base font-semibold ${priorityMenu ? "border-pbrown-500 text-pbrown-500 active:bg-pgold-100" : "border-blue-500 text-blue-500 active:bg-blue-100"}`}>{tNav("login")}</Link>
           ) : (
             <a href="https://mybca.bca.co.id/auth/login" target="_blank" rel="noopener noreferrer" onClick={closeMenu} className="flex h-12 items-center justify-center rounded-full border border-blue-500 bg-neutral-100 px-6 text-base font-semibold text-blue-500 active:bg-blue-100">{tNav("login")}</a>
           )}

@@ -27,6 +27,7 @@ export default function PromoCarousel({
   showEventDate = false,
   usePrioritasButtonLibrary = false,
   contentCardVariant,
+  tone = "prioritas",
 }: {
   promos: Promo[];
   now: Date;
@@ -46,6 +47,7 @@ export default function PromoCarousel({
   showEventDate?: boolean;
   usePrioritasButtonLibrary?: boolean;
   contentCardVariant?: "signature" | "complimentary" | "lifestyle" | "event" | "promo";
+  tone?: "prioritas" | "solitaire";
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const itemsCount = promos.length + (campaignCover ? 1 : 0);
@@ -117,11 +119,13 @@ export default function PromoCarousel({
             <SignaturePrivilegeCard
               promo={promos[item - (campaignCover ? 1 : 0)] as PrivilegePromo}
               href={detailHrefBase ? `${detailHrefBase}/${promos[item - (campaignCover ? 1 : 0)].id}` : "#"}
+              tone={tone}
             />
           ) : contentCardVariant === "complimentary" || contentCardVariant === "lifestyle" ? (
             <ContentCard
               item={promos[item - (campaignCover ? 1 : 0)] as PrivilegePromo}
               variant={contentCardVariant}
+              solitaire={tone === "solitaire"}
               now={now}
               fill={false}
               detailHref={detailHrefBase ? `${detailHrefBase}/${promos[item - (campaignCover ? 1 : 0)].id}` : undefined}
@@ -130,6 +134,7 @@ export default function PromoCarousel({
             <ContentCard
               item={promos[item - (campaignCover ? 1 : 0)] as EventPromo}
               variant="event"
+              solitaire={tone === "solitaire"}
               now={now}
               fill={false}
               detailHref={detailHrefBase ? `${detailHrefBase}/${promos[item - (campaignCover ? 1 : 0)].id}` : undefined}
@@ -138,6 +143,7 @@ export default function PromoCarousel({
             <ContentCard
               item={promos[item - (campaignCover ? 1 : 0)]}
               variant="promo"
+              solitaire={tone === "solitaire"}
               now={now}
               fill={false}
               detailHref={detailHrefBase ? `${detailHrefBase}/${promos[item - (campaignCover ? 1 : 0)].id}` : undefined}

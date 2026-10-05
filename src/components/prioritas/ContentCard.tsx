@@ -10,6 +10,7 @@ type ContentCardProps = {
   fill?: boolean;
   reveal?: boolean;
   detailHref?: string;
+  solitaire?: boolean;
 } & (
   | { variant: "complimentary" | "lifestyle"; item: PrivilegePromo }
   | { variant: "event"; item: EventPromo }
@@ -24,7 +25,7 @@ const detailBase: Record<ContentCardVariant, string> = {
 };
 
 /** The shared Prioritas card structure, with content slots selected by data context. */
-export default function ContentCard({ now, fill = true, reveal = false, detailHref, ...content }: ContentCardProps) {
+export default function ContentCard({ now, fill = true, reveal = false, detailHref, solitaire = false, ...content }: ContentCardProps) {
   const { variant, item } = content;
 
   return (
@@ -33,6 +34,7 @@ export default function ContentCard({ now, fill = true, reveal = false, detailHr
       now={now}
       reveal={reveal}
       variant="prioritas"
+      solitaire={solitaire}
       fill={fill}
       detail
       detailHref={detailHref ?? `${detailBase[variant]}/${item.id}`}

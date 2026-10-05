@@ -14,6 +14,16 @@ type ClassOptions = {
   className?: string;
 };
 
+function buttonClassName(prefix: "prio-button" | "solitaire-button", {
+  kind = "button",
+  variant = "primary",
+  surface = "default",
+  size = "medium",
+  className,
+}: ClassOptions = {}) {
+  return [prefix, `${prefix}--${kind}`, `${prefix}--${variant}`, `${prefix}--${surface}`, `${prefix}--${size}`, className].filter(Boolean).join(" ");
+}
+
 /** Use this class recipe on either a button or an internal Link. */
 export function prioritasButtonClassName({
   kind = "button",
@@ -22,7 +32,12 @@ export function prioritasButtonClassName({
   size = "medium",
   className,
 }: ClassOptions = {}) {
-  return ["prio-button", `prio-button--${kind}`, `prio-button--${variant}`, `prio-button--${surface}`, `prio-button--${size}`, className].filter(Boolean).join(" ");
+  return buttonClassName("prio-button", { kind, variant, surface, size, className });
+}
+
+/** Solitaire uses the same button geometry as Prioritas with its own Figma color states. */
+export function solitaireButtonClassName(options: ClassOptions = {}) {
+  return buttonClassName("solitaire-button", options);
 }
 
 type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> & ClassOptions & {

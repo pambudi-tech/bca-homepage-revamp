@@ -3,7 +3,7 @@
 /* Prioritas palette utilities are used by route-level components that can be
    loaded after the initial homepage scan. Keep these explicit so the compiler
    emits the shared utilities in both the dev and production bundles. */
-@source inline("bg-pbrown-600 bg-pbrown-700/25 bg-pbrown-800 bg-pbrown-900/30 text-pgold-100 text-pgold-300 border-pgold-100/25 border-pgold-300/25 backdrop-saturate-125 backdrop-saturate-[1.2] bg-voucher-available text-voucher-available-ink bg-voucher-exhausted text-voucher-exhausted-ink bg-voucher-warning text-voucher-warning-ink bg-asset-savings bg-asset-deposit bg-asset-current bg-asset-securities");
+@source inline("bg-neutral-200 bg-neutral-500 bg-neutral-700 bg-neutral-800 bg-neutral-900 bg-neutral-900/25 bg-neutral-900/95 from-neutral-900 text-neutral-100 text-neutral-100/85 text-neutral-500 text-neutral-800 bg-pbrown-600 bg-pbrown-700/25 bg-pbrown-800 bg-pbrown-900/30 from-pbrown-700 from-solitaire-card-fill bg-solitaire-card-fill text-pgold-100 text-pgold-300 border-pgold-100/25 border-pgold-300/25 backdrop-saturate-125 backdrop-saturate-[1.2] bg-voucher-available text-voucher-available-ink bg-voucher-exhausted text-voucher-exhausted-ink bg-voucher-warning text-voucher-warning-ink bg-asset-savings bg-asset-deposit bg-asset-current bg-asset-securities");
 
 :root {
   --background: #ffffff;
@@ -70,6 +70,7 @@
   --color-prioritas-gold-400: var(--color-pgold-400);
   --color-prioritas-gold-500: var(--color-pgold-500);
   --color-neutral-900: #121417;
+  --color-solitaire-card-fill: #000000;
 
   --color-blue-100: #f4f8fc;
   --color-blue-200: #dbefff;
@@ -461,6 +462,15 @@ html.hero-search-open .page-stack {
     --prioritas-index-tab-bg: var(--color-pbrown-500);
     z-index: 10;
   }
+
+  .tab-curved.prioritas-index-tab-solitaire:not(.tab-curved-active):hover {
+    --prioritas-index-tab-bg: var(--color-neutral-700);
+    color: var(--color-neutral-500);
+  }
+}
+
+.tab-curved.prioritas-index-tab-solitaire:not(.tab-curved-active) {
+  --prioritas-index-tab-bg: var(--color-neutral-800);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -474,6 +484,10 @@ html.hero-search-open .page-stack {
 .tab-curved-active {
   --prioritas-index-tab-bg: var(--prioritas-index-tab-surface, var(--color-pgold-200));
   z-index: 100;
+}
+
+.tab-curved.prioritas-index-tab-solitaire.tab-curved-active {
+  --prioritas-index-tab-bg: var(--color-neutral-200);
 }
 
 .tab-curved::before,
@@ -932,6 +946,15 @@ a:focus-visible > .soliprio-card .soliprio-beam {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes solitaire-carousel-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }
 

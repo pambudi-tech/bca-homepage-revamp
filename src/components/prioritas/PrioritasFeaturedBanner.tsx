@@ -6,12 +6,12 @@ import { Link } from "@/i18n/navigation";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useIsLive } from "@/lib/useIsLive";
 import { FEATURED_BANNER_SLIDES, type FeaturedBannerSlide } from "@/components/prioritas/featured-banner-data";
-import { PrioritasButton, PrioritasButtonIcon } from "@/components/prioritas/PrioritasButton";
+import { PrioritasButton, PrioritasButtonIcon, solitaireButtonClassName } from "@/components/prioritas/PrioritasButton";
 
 const AUTOPLAY_MS = 6000;
 const INDICATOR_LENGTH = 40;
 
-export default function PrioritasFeaturedBanner({ titles, cta, backdrops, slideHrefs, slides = FEATURED_BANNER_SLIDES, initialIndex = 1 }: { titles: string[]; cta: string | string[]; backdrops: Record<string, string>; slideHrefs?: Record<string, string>; slides?: readonly FeaturedBannerSlide[]; initialIndex?: number }) {
+export default function PrioritasFeaturedBanner({ titles, cta, backdrops, slideHrefs, slides = FEATURED_BANNER_SLIDES, initialIndex = 1, buttonTheme = "prioritas" }: { titles: string[]; cta: string | string[]; backdrops: Record<string, string>; slideHrefs?: Record<string, string>; slides?: readonly FeaturedBannerSlide[]; initialIndex?: number; buttonTheme?: "prioritas" | "solitaire" }) {
   const t = useTranslations("promo");
   const [activeIndex, setActiveIndex] = useState(initialIndex);
   const [paused, setPaused] = useState(false);
@@ -99,9 +99,16 @@ export default function PrioritasFeaturedBanner({ titles, cta, backdrops, slideH
           </span>
           <h3 className="h-20 max-w-full overflow-hidden text-subtitle text-white line-clamp-3 xl:h-[96px] xl:text-heading">{titles[activeIndex]}</h3>
         </div> : <h3 className="h-20 max-w-full overflow-hidden text-subtitle text-white line-clamp-3 xl:h-[96px] xl:text-heading">{titles[activeIndex]}</h3>}
-        <PrioritasButton kind="text" surface="inverse" size="large" trailingIcon={<PrioritasButtonIcon src="/assets/prioritas/privilege/arrow-small.svg" />}>
-          {activeCta}
-        </PrioritasButton>
+        {buttonTheme === "solitaire" ? (
+          <button type="button" className={solitaireButtonClassName({ kind: "text", surface: "inverse", size: "large" })}>
+            <span className="prio-button__label">{activeCta}</span>
+            <PrioritasButtonIcon src="/assets/cycle1/chevron-right-1.svg" />
+          </button>
+        ) : (
+          <PrioritasButton kind="text" surface="inverse" size="large" trailingIcon={<PrioritasButtonIcon src="/assets/prioritas/privilege/arrow-small.svg" />}>
+            {activeCta}
+          </PrioritasButton>
+        )}
       </div>
 
       <div className="absolute inset-x-2 bottom-2 z-30 flex h-14 items-center justify-between p-2 text-white xl:inset-x-auto xl:bottom-6 xl:left-8 xl:h-auto xl:justify-start xl:gap-6 xl:p-0">
@@ -122,10 +129,10 @@ export default function PrioritasFeaturedBanner({ titles, cta, backdrops, slideH
           )}
         </div>
         <div className="flex items-center gap-2">
-          <button type="button" onClick={() => goBy(-1)} aria-label={t("prevSlide")} className="flex size-10 items-center justify-center rounded-full border border-white/25 bg-pbrown-900/30 text-white backdrop-blur-md transition-colors hover:bg-pbrown-900/50">
+          <button type="button" onClick={() => goBy(-1)} aria-label={t("prevSlide")} className={`flex size-10 items-center justify-center rounded-full border border-white/25 ${buttonTheme === "solitaire" ? "bg-neutral-800/30 hover:bg-neutral-800/50 xl:bg-pbrown-900/30 xl:hover:bg-pbrown-900/50" : "bg-pbrown-900/30 hover:bg-pbrown-900/50"} text-white backdrop-blur-md transition-colors`}>
             <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-5" />
           </button>
-          <button type="button" onClick={() => goBy(1)} aria-label={t("nextSlide")} className="flex size-10 items-center justify-center rounded-full border border-white/25 bg-pbrown-900/30 text-white backdrop-blur-md transition-colors hover:bg-pbrown-900/50">
+          <button type="button" onClick={() => goBy(1)} aria-label={t("nextSlide")} className={`flex size-10 items-center justify-center rounded-full border border-white/25 ${buttonTheme === "solitaire" ? "bg-neutral-800/30 hover:bg-neutral-800/50 xl:bg-pbrown-900/30 xl:hover:bg-pbrown-900/50" : "bg-pbrown-900/30 hover:bg-pbrown-900/50"} text-white backdrop-blur-md transition-colors`}>
             <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5" />
           </button>
         </div>

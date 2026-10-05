@@ -15,6 +15,7 @@ type PrioritasDirectoryDropdownProps = {
   widthClassName?: string;
   size?: PrioritasDirectoryDropdownSize;
   xlSize?: "large";
+  tone?: "prioritas" | "solitaire";
   search?: {
     placeholder: string;
     onChange: (value: string) => void;
@@ -31,6 +32,7 @@ export default function PrioritasDirectoryDropdown({
   widthClassName = "",
   size = "medium",
   xlSize,
+  tone = "prioritas",
   search,
 }: PrioritasDirectoryDropdownProps) {
   const [open, setOpen] = useState(false);
@@ -70,7 +72,7 @@ export default function PrioritasDirectoryDropdown({
     };
   }, [open, search]);
 
-  return <div ref={containerRef} data-open={open} className={`priosoli-dropdown priosoli-dropdown--${size} ${xlSize ? `priosoli-dropdown--xl-${xlSize}` : ""} w-full ${widthClassName}`}>
+  return <div ref={containerRef} data-open={open} className={`priosoli-dropdown ${tone === "solitaire" ? "priosoli-dropdown--solitaire" : ""} priosoli-dropdown--${size} ${xlSize ? `priosoli-dropdown--xl-${xlSize}` : ""} w-full ${widthClassName}`}>
     <span className="sr-only">{label}</span>
     <div className="priosoli-dropdown__control">
       {search ? <img src="/assets/promo-page/controls/search.svg" alt="" aria-hidden className="priosoli-dropdown__search-icon" /> : null}

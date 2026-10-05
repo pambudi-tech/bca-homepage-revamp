@@ -8,6 +8,7 @@ import { useEffect, useRef, type RefObject } from "react";
 //
 // The timer resets whenever `activeIndex`/`count`/`durationMs` change, freezes
 // while `pausedRef.current` is true, and calls `onAdvance` on completion.
+// Finite carousels can keep the last ring full and stop instead of wrapping.
 //
 // Ticks on a ~80ms timer rather than every animation frame. A ring that fills
 // over several seconds looks identical at 12 ticks/sec as it does at 60 — but
@@ -21,7 +22,7 @@ import { useEffect, useRef, type RefObject } from "react";
 type Options = {
   /** Current active slide index — the timer resets whenever this changes. */
   activeIndex: number;
-  /** Total slides; advancing wraps modulo this (also re-keys the timer). */
+  /** Total slides; changing the count also re-keys the timer. */
   count: number;
   /** Full-cycle duration in ms. */
   durationMs: number;
@@ -39,6 +40,8 @@ type Options = {
   pausedRef: RefObject<boolean>;
   /** Called when a cycle completes — typically advances the slide. */
   onAdvance: () => void;
+  /** Keep the final slide full and stop the timer instead of wrapping. */
+  loop?: boolean;
   /** False parks the loop entirely (off-screen / hidden tab). Default true. */
   live?: boolean;
 };
@@ -51,6 +54,7 @@ export function useAutoplayProgress({
   progressRef,
   pausedRef,
   onAdvance,
+  loop = true,
   live = true,
 }: Options) {
   const elapsedRef = useRef(0);
@@ -98,10 +102,11 @@ export function useAutoplayProgress({
         const pct = Math.min(1, elapsedRef.current / durationMs);
         writeRef.current(circumference * (1 - pct));
         if (pct >= 1) {
-          // Reset here as well as on re-entry: with a single slide `onAdvance`
-          // leaves activeIndex alone, so this effect never re-runs to do it.
-          elapsedRef.current = 0;
+          // Looping carousels reset here as well as on re-entry. A finite rail
+          // leaves the ring full and parks on its final slide.
+          if (loop) elapsedRef.current = 0;
           onAdvanceRef.current();
+          if (!loop) return;
         }
       }
       timeoutId = setTimeout(tick, TICK_MS);
@@ -109,5 +114,5 @@ export function useAutoplayProgress({
 
     timeoutId = setTimeout(tick, TICK_MS);
     return () => clearTimeout(timeoutId);
-  }, [activeIndex, count, durationMs, circumference, progressRef, pausedRef, live]);
+  }, [activeIndex, count, durationMs, circumference, progressRef, pausedRef, loop, live]);
 }

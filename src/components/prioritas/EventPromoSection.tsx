@@ -22,8 +22,11 @@ export default async function EventPromoSection({ promos, copy, now }: {
 }) {
   const backdrops = await getFeaturedBannerBackdrops(PRIORITAS_EVENT_FEATURED_BANNER_SLIDES);
   return (
-    <section id="event-promo" className="relative overflow-hidden bg-pbrown-600 py-12 text-white xl:py-20">
-      <div className="relative mx-auto w-full max-w-[1280px] px-4 xl:px-0">
+    <section id="event-promo" className="relative isolate overflow-hidden bg-pbrown-600 py-12 text-white xl:overflow-x-clip xl:overflow-y-visible xl:py-20">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-0 hidden xl:block">
+        <img src="/assets/prioritas/event-promo/bg-decoration-2.svg" alt="" className="absolute -top-[36rem] left-1/2 block w-[153%] max-w-none -translate-x-1/2" />
+      </div>
+      <div className="relative z-10 mx-auto w-full max-w-[1280px] px-4 xl:px-0">
         <header className="mb-12 flex flex-col gap-6 xl:mb-14 xl:flex-row xl:items-start xl:gap-10">
           <p className="text-eyebrow uppercase text-pgold-300 xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-lg">{copy.eyebrow}</p>
           <h2 className="text-heading max-w-[560px] text-pgold-100 xl:text-display">{copy.heading}</h2>

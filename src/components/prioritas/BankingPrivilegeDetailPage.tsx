@@ -6,17 +6,19 @@ import PrioritasDetailExperience from "@/components/prioritas/PrioritasDetailExp
 import { bankingPrivilegeItems, getBankingPrivilegeItem } from "@/components/prioritas/banking-privilege-data";
 import { MEMBER_SESSION_COOKIE, MEMBER_SESSION_VALUE } from "@/lib/member-auth";
 
-export default async function BankingPrivilegeDetailPage({ locale, benefitId, memberArea = false }: { locale: string; benefitId: string; memberArea?: boolean }) {
+export default async function BankingPrivilegeDetailPage({ locale, benefitId, memberArea = false, publicBasePath = "/prioritas" }: { locale: string; benefitId: string; memberArea?: boolean; publicBasePath?: string }) {
   setRequestLocale(locale);
   const item = getBankingPrivilegeItem(benefitId);
   if (!item) notFound();
 
-  const [detailT, indexT, memberT, navT] = await Promise.all([
+  const [detailT, indexT, memberT, navT, solitaireT] = await Promise.all([
     getTranslations("bankingPrivilegeDetail"),
     getTranslations("bankingSolutionIndex"),
     getTranslations("memberOverview"),
     getTranslations("signaturePrivilege"),
+    getTranslations("solitaireHero"),
   ]);
+  const homeLabel = publicBasePath === "/solitaire" ? solitaireT("breadcrumbLabel") : "Prioritas";
   const session = (await cookies()).get(MEMBER_SESSION_COOKIE)?.value;
   const title = indexT(`privilege.${item.key}`);
   const sectionTitle = detailT("detailTitle");
@@ -29,12 +31,13 @@ export default async function BankingPrivilegeDetailPage({ locale, benefitId, me
       title: indexT(`privilege.${recommendation.key}`),
       alt: indexT(`privilege.${recommendation.key}`),
       image: recommendation.image,
-      href: `${memberArea ? "/prioritas/member" : "/prioritas"}/banking-solution/privilege/${recommendation.id}`,
+      href: `${memberArea ? "/prioritas/member" : publicBasePath}/banking-solution/privilege/${recommendation.id}`,
     }));
 
-  return <main id="main-content" className="flex min-h-screen flex-1 flex-col overflow-x-clip bg-pgold-200">
+  return <main id="main-content" className={`flex min-h-screen flex-1 flex-col overflow-x-clip ${publicBasePath === "/solitaire" && !memberArea ? "bg-neutral-200" : "bg-pgold-200"}`}>
     <PrioritasDetailExperience
       memberArea={memberArea}
+      publicBasePath={publicBasePath}
       memberPreviewName={session === MEMBER_SESSION_VALUE ? memberT("previewFullName") : undefined}
       kind="banking"
       heroImage={item.image}
@@ -53,7 +56,7 @@ export default async function BankingPrivilegeDetailPage({ locale, benefitId, me
           banking: navT("subNav.banking"),
           magazine: navT("subNav.magazine"),
         },
-        breadcrumb: { home: "Prioritas", category: indexT("breadcrumb"), current: title },
+        breadcrumb: { home: homeLabel, category: indexT("breadcrumb"), current: title },
         title,
         detail: { title: sectionTitle, content: summary },
         terms: { title: contactTitle, items: [detailT("contact")] },

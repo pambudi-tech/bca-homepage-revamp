@@ -161,7 +161,7 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
   const solitaire = variant === "solitaire";
   const logoHref = prioritas ? "/prioritas" : solitaire ? "/solitaire" : "/";
   const memberLoginHref = prioritas || solitaire ? `/member/login?from=${variant}` : null;
-  const staticPrioritas = prioritas && disableHideShow;
+  const staticPrioritas = (prioritas || solitaire) && disableHideShow;
   const navScrolled = scrolled && !keepTransparentOnScroll;
   const inMemberArea = isMemberAreaPath(pathname);
 
@@ -205,7 +205,7 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
             <div className="flex h-10 items-center rounded-full border border-white/15 bg-black/20 p-1 backdrop-blur-[40px]">
               {segments.map((segment) => {
                 const active = segment === activeSegment;
-                const className = `flex h-8 min-w-24 items-center justify-center rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${active ? (prioritas ? "bg-pgold-500 text-white" : solitaire ? "bg-neutral-500 text-white" : "bg-neutral-100 text-blue-500") : "text-white/80 hover:bg-white/10 hover:text-white"}`;
+                const className = `flex h-8 min-w-24 items-center justify-center rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${active ? (prioritas ? "bg-pgold-500 text-white" : solitaire ? "bg-neutral-500 text-neutral-800" : "bg-neutral-100 text-blue-500") : "text-white/80 hover:bg-white/10 hover:text-white"}`;
                 const internalHref = SEGMENT_INTERNAL_LINKS[segment];
                 if (internalHref) {
                   return <Link key={segment} href={internalHref} className={className} style={active ? ({ viewTransitionName: "nav-segment-pill" } as CSSProperties) : undefined}>{tNav(`segments.${segment}`)}</Link>;
