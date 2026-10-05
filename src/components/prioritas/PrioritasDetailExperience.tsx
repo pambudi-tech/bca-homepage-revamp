@@ -179,7 +179,8 @@ function LabeledText({ text }: { text: string }) {
   return <><strong className="font-semibold">{label[1]}</strong> <ImportantTermText text={label[2]} /></>;
 }
 
-function DocumentLines({ lines }: { lines: string[] }) {
+function DocumentLines({ lines, solitaire = false }: { lines: string[]; solitaire?: boolean }) {
+  const headingClassName = solitaire ? "text-neutral-800" : "text-pbrown-600";
   const blocks: React.ReactNode[] = [];
   let bullets: string[] = [];
   let paragraphs: string[] = [];
@@ -205,7 +206,7 @@ function DocumentLines({ lines }: { lines: string[] }) {
     if (fields.length) {
       blocks.push(<dl key={`fields-${blocks.length}`} className="grid gap-x-4 gap-y-2 sm:grid-cols-[minmax(8rem,0.32fr)_1fr]">
         {fields.map(({ label, value }, index) => <div key={`${label}-${index}`} className="contents">
-          <dt className="font-semibold text-pbrown-600">{label}</dt>
+          <dt className={`font-semibold ${headingClassName}`}>{label}</dt>
           <dd>{value}</dd>
         </div>)}
       </dl>);
@@ -220,7 +221,7 @@ function DocumentLines({ lines }: { lines: string[] }) {
       flushBullets();
       flushParagraphs();
       flushFields();
-      blocks.push(<h4 key={`heading-${blocks.length}`} className="font-semibold text-pbrown-600">{heading}</h4>);
+      blocks.push(<h4 key={`heading-${blocks.length}`} className={`font-semibold ${headingClassName}`}>{heading}</h4>);
       listMode = DOCUMENT_LIST_HEADINGS.has(heading)
         || (trimmed.endsWith(":") && !DOCUMENT_FIELD_LABELS.has(heading) && !DOCUMENT_PARAGRAPH_HEADINGS.has(heading));
       return;
@@ -276,7 +277,7 @@ function DocumentLines({ lines }: { lines: string[] }) {
       flushParagraphs();
       if (fleetDetails[1]) blocks.push(<p key={`text-${blocks.length}`} className="whitespace-pre-line">{fleetDetails[1]}</p>);
       blocks.push(<section key={`armada-${blocks.length}`} className="space-y-1">
-        <h4 className="font-semibold text-pbrown-600">Armada</h4>
+        <h4 className={`font-semibold ${headingClassName}`}>Armada</h4>
         <ul className="list-disc space-y-1 pl-5">{fleetDetails[2].split(/\s+atau\s+/i).map((vehicle, index) => <li key={`${index}-${vehicle}`}>{vehicle.replace(/[.]$/, "")}</li>)}</ul>
       </section>);
     } else if (trimmed) {
@@ -292,7 +293,7 @@ function DocumentLines({ lines }: { lines: string[] }) {
   return <div className="space-y-3">{blocks}</div>;
 }
 
-function FormattedDocumentContent({ content }: { content: string }) {
+function FormattedDocumentContent({ content, solitaire = false }: { content: string; solitaire?: boolean }) {
   const sections = content.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean);
 
   return <div className="space-y-5 text-sm leading-6 text-neutral-700 xl:text-base">
@@ -305,11 +306,11 @@ function FormattedDocumentContent({ content }: { content: string }) {
         && lines.every((line) => /^[^:]{1,32}:\s*\S/.test(line));
 
       if (isMetadataBlock) {
-        return <dl key={section} className="grid min-w-0 grid-cols-1 gap-3 rounded-xl bg-pgold-100/70 p-4">
+        return <dl key={section} className={`grid min-w-0 grid-cols-1 gap-3 rounded-xl p-4 ${solitaire ? "bg-neutral-200" : "bg-pgold-100/70"}`}>
           {lines.map((line) => {
             const separator = line.indexOf(":");
             return <div key={line}>
-              <dt className="font-semibold text-pbrown-600">{line.slice(0, separator + 1)}</dt>
+              <dt className={`font-semibold ${solitaire ? "text-neutral-800" : "text-pbrown-600"}`}>{line.slice(0, separator + 1)}</dt>
               <dd>{line.slice(separator + 1).trim()}</dd>
             </div>;
           })}
@@ -318,12 +319,12 @@ function FormattedDocumentContent({ content }: { content: string }) {
 
       if (DOCUMENT_SECTION_HEADINGS.has(heading) || (lines.length > 1 && heading.length <= 72 && lines.slice(1).every((line) => line.startsWith("•")))) {
         return <section key={section} className="space-y-2">
-          <h3 className="text-base font-semibold leading-6 text-pbrown-600 xl:text-lg">{heading}</h3>
-          <DocumentLines lines={lines.slice(1)} />
+          <h3 className={`text-base font-semibold leading-6 xl:text-lg ${solitaire ? "text-neutral-800" : "text-pbrown-600"}`}>{heading}</h3>
+          <DocumentLines lines={lines.slice(1)} solitaire={solitaire} />
         </section>;
       }
 
-      return <DocumentLines key={section} lines={lines} />;
+      return <DocumentLines key={section} lines={lines} solitaire={solitaire} />;
     })}
   </div>;
 }
@@ -482,12 +483,12 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
                 <div className="flex flex-col gap-4">
                   {customSections?.length ? customSections.map((section) => (
                     <DetailRow key={section.id} title={section.title} open={openPanels.includes(section.id)} onToggle={() => toggle(section.id)} solitaire={isSolitaire}>
-                      <FormattedDocumentContent content={section.content} />
+                      <FormattedDocumentContent content={section.content} solitaire={isSolitaire} />
                     </DetailRow>
                   )) : <>
                     <DetailRow title={copy.detail.title} open={openPanels.includes("detail")} onToggle={() => toggle("detail")} solitaire={isSolitaire}>
-                      {copy.detail.description ? <div className="mb-4"><FormattedDocumentContent content={copy.detail.description} /></div> : null}
-                      <FormattedDocumentContent content={copy.detail.content} />
+                      {copy.detail.description ? <div className="mb-4"><FormattedDocumentContent content={copy.detail.description} solitaire={isSolitaire} /></div> : null}
+                      <FormattedDocumentContent content={copy.detail.content} solitaire={isSolitaire} />
                     </DetailRow>
                     <DetailRow title={copy.terms.title} open={openPanels.includes("terms")} onToggle={() => toggle("terms")} solitaire={isSolitaire}>
                       <ul className="list-disc space-y-1 pl-5">
@@ -498,17 +499,17 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
                     {copy.contact.content || copy.contact.items?.length || copy.contact.groups ? <DetailRow title={copy.contact.title} open={openPanels.includes("contact")} onToggle={() => toggle("contact")} solitaire={isSolitaire}>
                       {copy.contact.items?.length ? <ul className="list-disc space-y-1 pl-5">{copy.contact.items.map((item) => <li key={item}>{item}</li>)}</ul> : null}
                       {copy.contact.groups ? <div className="mt-4"><p>{copy.contact.groups.intro}</p><ul className="mt-2 list-disc space-y-1 pl-5">{copy.contact.groups.items.map((item) => <li key={item}>{item}</li>)}</ul></div> : null}
-                      {!copy.contact.items?.length && !copy.contact.groups ? <FormattedDocumentContent content={copy.contact.content} /> : null}
+                      {!copy.contact.items?.length && !copy.contact.groups ? <FormattedDocumentContent content={copy.contact.content} solitaire={isSolitaire} /> : null}
                     </DetailRow> : null}
                     {copy.location.content || copy.location.table ? <DetailRow title={copy.location.title} open={openPanels.includes("location")} onToggle={() => toggle("location")} solitaire={isSolitaire}>
-                      {copy.location.table === "executiveAirportLounge" ? <ExecutiveAirportLoungeTable /> : <FormattedDocumentContent content={copy.location.content} />}
+                      {copy.location.table === "executiveAirportLounge" ? <ExecutiveAirportLoungeTable /> : <FormattedDocumentContent content={copy.location.content} solitaire={isSolitaire} />}
                     </DetailRow> : null}
                   </>}
                 </div>
               </div>
               {relatedPage ? <section className="pointer-events-auto mt-6 xl:mt-8" aria-labelledby="related-page-title">
-                <h2 id="related-page-title" className="mb-3 text-base font-semibold text-pbrown-600 xl:text-lg">{relatedPage.title}</h2>
-                <Link href={relatedPage.href} className="group flex items-center justify-between rounded-2xl border border-pbrown-100 bg-white px-5 py-4 text-pbrown-600 transition-colors hover:border-pgold-500">
+                <h2 id="related-page-title" className={`mb-3 text-base font-semibold xl:text-lg ${isSolitaire ? "text-neutral-800" : "text-pbrown-600"}`}>{relatedPage.title}</h2>
+                <Link href={relatedPage.href} className={`group flex items-center justify-between rounded-2xl border bg-white px-5 py-4 transition-colors ${isSolitaire ? "border-neutral-300 text-neutral-800 hover:border-neutral-800" : "border-pbrown-100 text-pbrown-600 hover:border-pgold-500"}`}>
                   <span className="font-semibold">{relatedPage.label}</span>
                   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="size-5 shrink-0 transition-transform group-hover:translate-x-1">
                     <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />

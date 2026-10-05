@@ -4,7 +4,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import { useLocale, useTranslations } from "next-intl";
-import { prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
+import { prioritasButtonClassName, solitaireButtonClassName } from "@/components/prioritas/PrioritasButton";
 import {
   DEFAULT_ORIGIN,
   areaLine,
@@ -27,11 +27,13 @@ const LocationMap = dynamic(() => import("./LocationMap"), { ssr: false });
 type Origin = { lat: number; lng: number };
 
 type GeoState = "idle" | "locating" | "denied" | "unavailable";
+type LocationTone = "prioritas" | "solitaire";
 
 type Props = {
   /** Nearest to `DEFAULT_ORIGIN`, rendered on the server so the section is
    *  populated on first paint rather than after a round trip. */
   initial: NearbyResponse;
+  tone?: LocationTone;
 };
 
 /** ~11m. Finer than "which ATM is closest" needs, and it keeps a precise fix
@@ -46,9 +48,10 @@ const sameOrigin = (a: Origin, b: Origin) => a.lat === b.lat && a.lng === b.lng;
  *  Tailwind's `xl:` (1280px), which every class below assumes. */
 const DESKTOP_QUERY = "(min-width: 1280px)";
 
-export default function LocationFinder({ initial }: Props) {
+export default function LocationFinder({ initial, tone = "prioritas" }: Props) {
   const t = useTranslations("lokasi");
   const locale = useLocale();
+  const isSolitaire = tone === "solitaire";
 
   const [origin, setOrigin] = useState<Origin>(DEFAULT_ORIGIN);
   const [originIsUser, setOriginIsUser] = useState(false);
@@ -469,13 +472,14 @@ export default function LocationFinder({ initial }: Props) {
         setMapScrollTargetId(id);
       }}
       labels={mapLabels}
+      tone={tone}
       // This element only ever ends up in the one slot matching the current
       // `isDesktop` value (see the mobile/desktop render below), so this is
       // never wrong for whichever breakpoint actually mounts it.
       zoomControl={isDesktop === true}
     />
   ) : (
-    <div className="size-full animate-pulse bg-blue-100" />
+    <div className={`size-full animate-pulse ${isSolitaire ? "bg-neutral-300" : "bg-blue-100"}`} />
   );
 
   const controlsShared = {
@@ -502,9 +506,10 @@ export default function LocationFinder({ initial }: Props) {
     setActiveIndex,
     onKeyDown,
     choosePlace,
+    tone,
   };
 
-  const resultsShared = { originLabel, data, pending, locale, selectedId, setSelectedId };
+  const resultsShared = { originLabel, data, pending, locale, selectedId, setSelectedId, tone };
 
   return (
     <div ref={sectionRef} className="relative h-full">
@@ -523,7 +528,7 @@ export default function LocationFinder({ initial }: Props) {
             all the way up past the panels below (z-10) instead of staying
             capped under them. */}
         <div className="absolute inset-0 z-0">
-          {isDesktop === false ? map : <div className="size-full animate-pulse bg-blue-100" />}
+          {isDesktop === false ? map : <div className={`size-full animate-pulse ${isSolitaire ? "bg-neutral-300" : "bg-blue-100"}`} />}
         </div>
 
         {/* Bottom wash — the same treatment as desktop's left gradient
@@ -586,7 +591,7 @@ export default function LocationFinder({ initial }: Props) {
           for the other half of this. ================= */}
       <div className="hidden xl:relative xl:block">
         <div className="xl:absolute xl:inset-0 xl:z-0">
-          {isDesktop === true ? map : <div className="size-full bg-blue-100" />}
+          {isDesktop === true ? map : <div className={`size-full ${isSolitaire ? "bg-neutral-300" : "bg-blue-100"}`} />}
         </div>
 
         {/* Left wash — identical formula to the hero banner's own left
@@ -615,6 +620,7 @@ export default function LocationFinder({ initial }: Props) {
 }
 
 type ControlsProps = {
+  tone: LocationTone;
   idBase: string;
   inputRef: React.RefObject<HTMLInputElement | null>;
   originIsUser: boolean;
@@ -662,6 +668,7 @@ type ControlsProps = {
  *  the `xl:hidden` / `hidden xl:block` split above), so there is nothing to
  *  keep in sync between them. */
 function Controls({
+  tone,
   idBase,
   inputRef,
   originIsUser,
@@ -691,6 +698,7 @@ function Controls({
   usePortal = false,
 }: ControlsProps) {
   const t = useTranslations("lokasi");
+  const isSolitaire = tone === "solitaire";
   const listboxId = `${idBase}-listbox`;
 
   return (
@@ -707,14 +715,14 @@ function Controls({
             anchored to". The only control left in it is the one that
             actually does something from here — stop using it. */}
         {originIsUser ? (
-          <div className="flex h-12 items-center gap-3 rounded-xl border border-cyan-500 bg-blue-100 pl-4 pr-2">
+          <div className={`flex h-12 items-center gap-3 rounded-xl border pl-4 pr-2 ${isSolitaire ? "border-neutral-400 bg-neutral-300" : "border-cyan-500 bg-blue-100"}`}>
             {/* Same icon as the "Gunakan lokasi saya" button — this row is
                 what that button turned into, so it keeps the same mark rather
                 than switching to a different "done" glyph. */}
-            <span aria-hidden className="bca-locate-icon size-6 shrink-0 bg-blue-500" />
+            <span aria-hidden className={`bca-locate-icon size-6 shrink-0 ${isSolitaire ? "bg-neutral-800" : "bg-blue-500"}`} />
             <span className="flex min-w-0 flex-1 items-baseline gap-1.5 overflow-hidden">
               {locating ? (
-                <span className="truncate text-base text-blue-500 opacity-70">
+                <span className={`truncate text-base opacity-70 ${isSolitaire ? "text-neutral-700" : "text-blue-500"}`}>
                   {t("locatingDetail")}
                 </span>
               ) : locatedArea ? (
@@ -727,7 +735,7 @@ function Controls({
                   )}
                 </>
               ) : (
-                <span className="truncate text-base text-blue-500 opacity-70">
+                <span className={`truncate text-base opacity-70 ${isSolitaire ? "text-neutral-700" : "text-blue-500"}`}>
                   {t("locatedAreaUnknown")}
                 </span>
               )}
@@ -736,7 +744,7 @@ function Controls({
               type="button"
               onClick={stopUsingMyLocation}
               aria-label={t("stopUsingLocation")}
-              className="flex size-8 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-blue-200"
+              className={`flex size-8 shrink-0 items-center justify-center rounded-full transition-colors ${isSolitaire ? "hover:bg-neutral-200" : "hover:bg-blue-200"}`}
             >
               <img
                 loading="lazy"
@@ -761,7 +769,7 @@ function Controls({
               aria-expanded={
                 permission === "granted" || permission === "denied" ? undefined : primerMounted
               }
-              className="flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-pbrown-500 px-5 text-base font-semibold text-pgold-100 transition-colors duration-200 hover:bg-pbrown-600 active:bg-pbrown-700 disabled:opacity-70"
+              className={`flex h-12 shrink-0 items-center justify-center gap-2 rounded-full px-5 text-base font-semibold transition-colors duration-200 disabled:opacity-70 ${isSolitaire ? "bg-neutral-800 text-neutral-100 hover:bg-neutral-700 active:bg-neutral-900" : "bg-pbrown-500 text-pgold-100 hover:bg-pbrown-600 active:bg-pbrown-700"}`}
             >
               <span
                 aria-hidden
@@ -815,7 +823,7 @@ function Controls({
                         <button
                           type="button"
                           onClick={primerAllow}
-                          className="flex h-11 flex-1 items-center justify-center whitespace-nowrap rounded-full bg-blue-500 text-sm font-semibold text-neutral-100 transition-colors hover:bg-blue-600"
+                          className={`flex h-11 flex-1 items-center justify-center whitespace-nowrap rounded-full text-sm font-semibold text-neutral-100 transition-colors ${isSolitaire ? "bg-neutral-800 hover:bg-neutral-700" : "bg-blue-500 hover:bg-blue-600"}`}
                         >
                           {t("primer.allow")}
                         </button>
@@ -863,11 +871,11 @@ function Controls({
             // `peer` lets the search icon below follow this input's focus
             // state. The Prioritas field grows to the 56px desktop dropdown
             // size and uses the gold focus ring from the shared dropdowns.
-            className="peer h-12 w-full rounded-xl border border-neutral-300 bg-neutral-200 pl-12 pr-4 text-base text-neutral-800 transition-colors placeholder:text-neutral-600 focus:border-2 focus:border-pgold-500 focus:outline-none xl:h-14 xl:text-base"
+            className={`peer h-12 w-full rounded-xl border border-neutral-300 bg-neutral-200 pl-12 pr-4 text-base text-neutral-800 transition-colors placeholder:text-neutral-600 focus:border-2 ${isSolitaire ? "focus:border-neutral-800" : "focus:border-pgold-500"} focus:outline-none xl:h-14 xl:text-base`}
           />
           <span
             aria-hidden
-            className="bca-search-icon pointer-events-none absolute left-4 top-1/2 size-6 -translate-y-1/2 bg-neutral-700 transition-colors peer-focus:bg-pbrown-500"
+            className={`bca-search-icon pointer-events-none absolute left-4 top-1/2 size-6 -translate-y-1/2 bg-neutral-700 transition-colors ${isSolitaire ? "peer-focus:bg-neutral-800" : "peer-focus:bg-pbrown-500"}`}
           />
 
           {open && query.trim().length >= 2 && (
@@ -921,6 +929,7 @@ function Controls({
 }
 
 type ResultsListProps = {
+  tone: LocationTone;
   originLabel: string;
   data: NearbyResponse;
   pending: boolean;
@@ -935,7 +944,7 @@ type ResultsListProps = {
  *  `ResultsSlider` below instead, not this — its horizontal row of cards and
  *  unenclosed layout are different enough that sharing one component meant
  *  more branching in here than the two ever had in common. */
-function ResultsList({ originLabel, data, pending, locale, selectedId, setSelectedId, mapScrollTargetId }: ResultsListProps) {
+function ResultsList({ tone, originLabel, data, pending, locale, selectedId, setSelectedId, mapScrollTargetId }: ResultsListProps) {
   const t = useTranslations("lokasi");
   const listRef = useRef<HTMLUListElement>(null);
   const basePaddingBottomRef = useRef<number | null>(null);
@@ -985,6 +994,7 @@ function ResultsList({ originLabel, data, pending, locale, selectedId, setSelect
             rank={index + 1}
             location={location}
             locale={locale}
+            tone={tone}
             selected={location.id === selectedId}
             // Clicking the already-selected card deselects it, rather than
             // leaving no way back to "nothing selected" short of picking a
@@ -1002,6 +1012,7 @@ function ResultsList({ originLabel, data, pending, locale, selectedId, setSelect
 }
 
 type ResultsSliderProps = {
+  tone: LocationTone;
   originLabel: string;
   data: NearbyResponse;
   pending: boolean;
@@ -1018,6 +1029,7 @@ type ResultsSliderProps = {
  *  text link `ResultsList` uses, for the same reason — floating alone, it
  *  needs a shape of its own to read as tappable over a busy map background. */
 function ResultsSlider({
+  tone,
   originLabel,
   data,
   pending,
@@ -1084,6 +1096,7 @@ function ResultsSlider({
             rank={index + 1}
             location={location}
             locale={locale}
+            tone={tone}
             selected={location.id === selectedId}
             // Clicking the already-selected card deselects it, rather than
             // leaving no way back to "nothing selected" short of picking a
@@ -1111,12 +1124,14 @@ function Hint({ children }: { children: React.ReactNode }) {
 }
 
 function ResultCard({
+  tone,
   rank,
   location,
   locale,
   selected,
   onSelect,
 }: {
+  tone: LocationTone;
   rank: number;
   location: NearbyLocation;
   locale: string;
@@ -1127,6 +1142,7 @@ function ResultCard({
   const { title, sub } = locationLines(location);
   const hours = formatHours(location.hours, locale);
   const typeLabel = t("type.cabang");
+  const isSolitaire = tone === "solitaire";
 
   return (
     <li
@@ -1139,7 +1155,7 @@ function ResultCard({
       // viewport width, which was silently swallowing this state exactly
       // there. The arbitrary variant compiles to a plain `:hover` selector,
       // so a real mouse still gets it and a touch tap still can't stick it.
-      className="flex items-stretch rounded-xl border border-neutral-300 bg-neutral-100 transition-colors [&:hover]:bg-pgold-100 [&:has(>button:active)]:border-pgold-500 [&:has(>button:active)]:bg-pgold-100 data-[selected=true]:border-pgold-500 data-[selected=true]:bg-pgold-100"
+      className={`flex items-stretch rounded-xl border border-neutral-300 bg-neutral-100 transition-colors ${isSolitaire ? "[&:hover]:bg-neutral-200 [&:has(>button:active)]:border-neutral-800 [&:has(>button:active)]:bg-neutral-200 data-[selected=true]:border-neutral-800 data-[selected=true]:bg-neutral-200" : "[&:hover]:bg-pgold-100 [&:has(>button:active)]:border-pgold-500 [&:has(>button:active)]:bg-pgold-100 data-[selected=true]:border-pgold-500 data-[selected=true]:bg-pgold-100"}`}
     >
       <button
         type="button"
@@ -1150,13 +1166,13 @@ function ResultCard({
         {/* Same number as the map pin — this is what ties a card to a dot. */}
         <span
           aria-hidden
-          className="flex size-7 shrink-0 items-center justify-center rounded-full border border-pbrown-500 bg-transparent text-sm font-bold text-pbrown-500"
+          className={`flex size-7 shrink-0 items-center justify-center rounded-full border bg-transparent text-sm font-bold ${isSolitaire ? "border-neutral-800 text-neutral-800" : "border-pbrown-500 text-pbrown-500"}`}
         >
           {rank}
         </span>
 
         <span className="flex min-w-0 flex-1 flex-col gap-1">
-          <span className={`line-clamp-1 text-base font-semibold ${selected ? "text-pbrown-600" : "text-neutral-800"}`}>{title}</span>
+          <span className={`line-clamp-1 text-base font-semibold ${selected && !isSolitaire ? "text-pbrown-600" : "text-neutral-800"}`}>{title}</span>
           {sub && <span className="line-clamp-1 text-sm text-neutral-600">{sub}</span>}
           <span className="text-xs font-semibold text-neutral-600">{formatDistance(location.distance, locale)}</span>
           {hours && <span className="text-xs text-neutral-700">{hours}</span>}
@@ -1168,7 +1184,7 @@ function ResultCard({
         target="_blank"
         rel="noopener noreferrer"
         aria-label={t("routeLabel", { name: `${typeLabel} — ${title}` })}
-        className={prioritasButtonClassName({
+        className={(isSolitaire ? solitaireButtonClassName : prioritasButtonClassName)({
           variant: "secondary",
           size: "small",
           className: "m-3 shrink-0 self-center",
@@ -1187,12 +1203,14 @@ function ResultCard({
  *  the type/distance line at the top of the card instead of floating to its
  *  left down the card's full height. */
 function ResultCardCompact({
+  tone,
   rank,
   location,
   locale,
   selected,
   onSelect,
 }: {
+  tone: LocationTone;
   rank: number;
   location: NearbyLocation;
   locale: string;
@@ -1203,6 +1221,7 @@ function ResultCardCompact({
   const { title, sub } = locationLines(location);
   const hours = formatHours(location.hours, locale);
   const typeLabel = t("type.cabang");
+  const isSolitaire = tone === "solitaire";
 
   return (
     <li
@@ -1220,7 +1239,7 @@ function ResultCardCompact({
       // `snap-start` is `scroll-snap-align`, paired with `snap-x snap-mandatory`
       // on the parent `<ul>` (see ResultsSlider) for the swipe-to-settle feel.
       // `[&:hover]:`, not `hover:` — same reasoning as ResultCard above.
-      className="flex w-[220px] shrink-0 snap-start flex-col overflow-clip rounded-xl border border-neutral-300 bg-white transition-colors [&:hover]:bg-pgold-100 data-[selected=true]:border-pgold-500 data-[selected=true]:bg-pgold-100"
+      className={`flex w-[220px] shrink-0 snap-start flex-col overflow-clip rounded-xl border border-neutral-300 bg-white transition-colors ${isSolitaire ? "[&:hover]:bg-neutral-200 data-[selected=true]:border-neutral-800 data-[selected=true]:bg-neutral-200" : "[&:hover]:bg-pgold-100 data-[selected=true]:border-pgold-500 data-[selected=true]:bg-pgold-100"}`}
     >
       <button
         type="button"
@@ -1230,12 +1249,12 @@ function ResultCardCompact({
       >
         {/* Same number as the map pin — this is what ties a card to a dot. */}
         <span className="flex w-full items-center justify-between gap-2">
-          <span className="flex size-6 shrink-0 items-center justify-center rounded-full border border-pbrown-500 bg-transparent text-xs font-bold text-pbrown-500">
+          <span className={`flex size-6 shrink-0 items-center justify-center rounded-full border bg-transparent text-xs font-bold ${isSolitaire ? "border-neutral-800 text-neutral-800" : "border-pbrown-500 text-pbrown-500"}`}>
             {rank}
           </span>
         </span>
 
-        <span className={`line-clamp-2 text-base font-semibold ${selected ? "text-pbrown-600" : "text-neutral-800"}`}>{title}</span>
+        <span className={`line-clamp-2 text-base font-semibold ${selected && !isSolitaire ? "text-pbrown-600" : "text-neutral-800"}`}>{title}</span>
         {sub && <span className="line-clamp-1 text-sm text-neutral-600">{sub}</span>}
         <span className="text-xs font-semibold text-neutral-600">{formatDistance(location.distance, locale)}</span>
         {hours && <span className="line-clamp-1 text-xs text-neutral-700">{hours}</span>}
@@ -1251,10 +1270,10 @@ function ResultCardCompact({
         target="_blank"
         rel="noopener noreferrer"
         aria-label={t("routeLabel", { name: `${typeLabel} — ${title}` })}
-        className="mx-3 mb-3 flex items-center gap-1 text-sm font-semibold text-blue-500 transition-colors hover:text-blue-400"
+        className={`mx-3 mb-3 flex items-center gap-1 text-sm font-semibold transition-colors ${isSolitaire ? "text-neutral-800 hover:text-neutral-700" : "text-blue-500 hover:text-blue-400"}`}
       >
         {t("route")}
-        <img loading="lazy" decoding="async" src="/assets/navbar/icon-arrow-diag-blue.svg" alt="" className="size-3.5" />
+        {isSolitaire ? <span aria-hidden className="size-3.5 bg-current [mask-image:url('/assets/navbar/icon-arrow-diag-blue.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/navbar/icon-arrow-diag-blue.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]" /> : <img loading="lazy" decoding="async" src="/assets/navbar/icon-arrow-diag-blue.svg" alt="" className="size-3.5" />}
       </a>
     </li>
   );

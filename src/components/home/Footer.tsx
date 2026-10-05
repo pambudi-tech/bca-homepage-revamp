@@ -74,11 +74,17 @@ export default function Footer({ variant = "default", tone = "prioritas", hideMa
         const column = t.raw(`linkColumns.${key}`) as { heading: string; links: string[] };
         return { key, ...column, hrefs: FOOTER_LINK_HREFS[key] };
       });
-  const linkColumns = hideMagazineLink
+  const visibleLinkColumns = hideMagazineLink
     ? baseLinkColumns.map((column) => column.key === "Wawasan"
       ? { ...column, links: column.links.filter((_, index) => column.hrefs[index] !== "/prioritas/e-magazine"), hrefs: column.hrefs.filter((href) => href !== "/prioritas/e-magazine") }
       : column)
     : baseLinkColumns;
+  const linkColumns = variant === "prioritas" && tone === "solitaire"
+    ? visibleLinkColumns.map((column) => ({
+        ...column,
+        hrefs: column.hrefs.map((href) => href?.startsWith("/prioritas/") ? href.replace("/prioritas/", "/solitaire/") : href),
+      }))
+    : visibleLinkColumns;
   const prioritasSurfaceClassName = tone === "solitaire" ? "bg-neutral-900" : "bg-pbrown-600";
 
   useEffect(() => {

@@ -79,6 +79,7 @@ export type MapLabels = {
 };
 
 type Props = {
+  tone?: "prioritas" | "solitaire";
   origin: { lat: number; lng: number };
   /** Whether `origin` is the visitor's own position (drawn as a live dot) or a
    *  place they picked (drawn as a soft target ring). */
@@ -101,12 +102,15 @@ function branchPinElement(
   rank: number | undefined,
   selected: boolean,
   onSelect: (id: string) => void,
+  tone: "prioritas" | "solitaire",
 ): HTMLButtonElement {
   const button = document.createElement("button");
   button.type = "button";
   button.className = "bca-branch-pin";
   button.dataset.ranked = rank ? "true" : "false";
   button.dataset.selected = selected ? "true" : "false";
+  button.dataset.tone = tone;
+  if (tone === "solitaire") button.style.backgroundColor = "var(--color-neutral-800)";
   button.setAttribute("aria-label", location.street || location.area);
   button.title = location.street || location.area;
   if (rank) button.textContent = String(rank);
@@ -141,6 +145,7 @@ function originElement(isUser: boolean, label: string, positionLabel: string): H
 }
 
 export default function LocationMap({
+  tone = "prioritas",
   origin,
   originIsUser,
   pins,
@@ -349,6 +354,8 @@ export default function LocationMap({
         marker.setLngLat([location.lng, location.lat]);
         element.dataset.ranked = rank ? "true" : "false";
         element.dataset.selected = selectedId === location.id ? "true" : "false";
+        element.dataset.tone = tone;
+        element.style.backgroundColor = tone === "solitaire" ? "var(--color-neutral-800)" : "";
         element.setAttribute("aria-label", location.street || location.area);
         element.title = location.street || location.area;
         element.textContent = rank ? String(rank) : "";
@@ -356,14 +363,14 @@ export default function LocationMap({
       }
 
       const nextMarker = new maplibregl.Marker({
-        element: branchPinElement(location, rank, selectedId === location.id, onSelectRef.current),
+        element: branchPinElement(location, rank, selectedId === location.id, onSelectRef.current, tone),
         anchor: "center",
       })
         .setLngLat([location.lng, location.lat])
         .addTo(map);
       pinMarkersRef.current.set(location.id, nextMarker);
     }
-  }, [pins, results, selectedId, ready]);
+  }, [pins, results, selectedId, ready, tone]);
 
   /* ---- selection ---- */
   // Tracks whether the *previous* render had a selection, so the effect below
@@ -415,7 +422,7 @@ export default function LocationMap({
 
   if (failed) {
     return (
-      <div className="flex size-full items-center justify-center bg-blue-100 px-6 text-center">
+      <div className={`flex size-full items-center justify-center px-6 text-center ${tone === "solitaire" ? "bg-neutral-300" : "bg-blue-100"}`}>
         <p className="text-sm text-neutral-700">{labels.unavailable}</p>
       </div>
     );

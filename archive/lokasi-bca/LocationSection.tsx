@@ -34,12 +34,12 @@ import LocationFinder from "./LocationFinder";
  * desktop half of LocationFinder.tsx for how the panel drives that height
  * from normal document flow while the map still overlays it via `absolute`.
  */
-export default async function LocationSection() {
+export default async function LocationSection({ tone = "prioritas" }: { tone?: "prioritas" | "solitaire" }) {
   const initial = findNearby(DEFAULT_ORIGIN.lat, DEFAULT_ORIGIN.lng);
 
   return (
-    <section id="lokasi" className="relative h-[880px] overflow-x-clip bg-blue-100 xl:h-auto">
-      <LocationFinder initial={initial} />
+    <section id="lokasi" className={`relative h-[880px] overflow-x-clip ${tone === "solitaire" ? "bg-neutral-200" : "bg-blue-100"} xl:h-auto`}>
+      <LocationFinder initial={initial} tone={tone} />
     </section>
   );
 }

@@ -42,7 +42,7 @@ export default function CardSection({
             <p className="text-heading max-w-[400px] text-pgold-100 xl:text-display">{copy.heading}</p>
             <p className="max-w-[460px] text-base leading-7 text-wrap-pretty text-pgold-100/80">{copy.description}</p>
           </div>
-          <Link href="/prioritas/tentang-kami" className={buttonClassName({ kind: "text", surface: "inverse", size: "large" })}>
+          <Link href={tone === "solitaire" ? "/solitaire/tentang-kami" : "/prioritas/tentang-kami"} className={buttonClassName({ kind: "text", surface: "inverse", size: "large" })}>
             <span className="prio-button__label">{copy.action}</span>
             <PrioritasButtonIcon src="/assets/prioritas/card/arrow-right.svg" />
           </Link>

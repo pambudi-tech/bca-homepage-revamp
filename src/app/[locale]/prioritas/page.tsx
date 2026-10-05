@@ -155,12 +155,12 @@ export default async function PrioritasPage({
           previous: t("bankingSolution.previous"),
           next: t("bankingSolution.next"),
           cards: [
-            { title: t("bankingSolution.cards.branch.title"), alt: t("bankingSolution.cards.branch.alt"), image: "/assets/prioritas/banking/privilege-branch.png" },
-            { title: t("bankingSolution.cards.vehicle.title"), alt: t("bankingSolution.cards.vehicle.alt"), image: "/assets/prioritas/banking/privilege-vehicle.png" },
-            { title: t("bankingSolution.cards.transaction.title"), alt: t("bankingSolution.cards.transaction.alt"), image: "/assets/prioritas/banking/privilege-transaction.png" },
-            { title: t("bankingSolution.cards.credit.title"), alt: t("bankingSolution.cards.credit.alt"), image: "/assets/prioritas/banking/privilege-credit.png" },
-            { title: t("bankingSolution.cards.home.title"), alt: t("bankingSolution.cards.home.alt"), image: "/assets/prioritas/banking/privilege-home.png" },
-            { title: t("bankingSolution.cards.deposit.title"), alt: t("bankingSolution.cards.deposit.alt"), image: "/assets/prioritas/banking/privilege-deposit.png" },
+            { title: t("bankingSolution.cards.branch.title"), alt: t("bankingSolution.cards.branch.alt"), image: "/assets/prioritas/banking/privilege-branch.png", href: "/prioritas/banking-solution/privilege/layanan-cabang" },
+            { title: t("bankingSolution.cards.vehicle.title"), alt: t("bankingSolution.cards.vehicle.alt"), image: "/assets/prioritas/banking/privilege-vehicle.png", href: "/prioritas/banking-solution/privilege/kkb" },
+            { title: t("bankingSolution.cards.transaction.title"), alt: t("bankingSolution.cards.transaction.alt"), image: "/assets/prioritas/banking/privilege-transaction.png", href: "/prioritas/banking-solution/privilege/fitur-transaksi" },
+            { title: t("bankingSolution.cards.credit.title"), alt: t("bankingSolution.cards.credit.alt"), image: "/assets/prioritas/banking/privilege-credit.png", href: "/prioritas/banking-solution/privilege/kartu-kredit" },
+            { title: t("bankingSolution.cards.home.title"), alt: t("bankingSolution.cards.home.alt"), image: "/assets/prioritas/banking/privilege-home.png", href: "/prioritas/banking-solution/privilege/kpr" },
+            { title: t("bankingSolution.cards.deposit.title"), alt: t("bankingSolution.cards.deposit.alt"), image: "/assets/prioritas/banking/privilege-deposit.png", href: "/prioritas/banking-solution/privilege/safe-deposit-box" },
           ],
           wealthCards: [
             {
