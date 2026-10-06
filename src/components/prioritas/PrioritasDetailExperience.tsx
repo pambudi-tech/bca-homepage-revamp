@@ -364,21 +364,23 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
   const privilegeT = useTranslations("signaturePrivilege");
   const memberT = useTranslations("memberOverview");
   const pathname = usePathname();
+  const memberBrand = pathname.startsWith("/solitaire/member") ? "solitaire" : "prioritas";
+  const memberBase = `/${memberBrand}/member`;
   const lenis = useLenis();
   const [showHeroTitle, setShowHeroTitle] = useState(false);
   const [navbarHidden, setNavbarHidden] = useState(false);
   const [openPanels, setOpenPanels] = useState<DetailPanel[]>(customSections?.length ? [customSections[0].id] : kind === "about" ? ["detail", "terms", "contact"] : ["detail", "terms"]);
   const toggle = (panel: DetailPanel) => setOpenPanels((current) => current.includes(panel) ? current.filter((item) => item !== panel) : [...current, panel]);
   const brand = copy.brand?.trim();
-  const isSolitaire = (publicBasePath === "/solitaire" || generalPage) && !memberArea;
-  const detailBase = memberArea ? "/prioritas/member" : publicBasePath;
+  const isSolitaire = ((publicBasePath === "/solitaire" || generalPage) && !memberArea) || (memberArea && memberBrand === "solitaire");
+  const detailBase = memberArea ? memberBase : publicBasePath;
   const directoryPath = kind === "event" ? `${detailBase}/event` : kind === "promo" ? `${detailBase}/promo` : kind === "complimentary" || kind === "signature" ? `${detailBase}/privilege` : kind === "about" ? publicBasePath : kind === "banking" ? `${detailBase}/banking-solution` : `${detailBase}/lifestyle-privilege`;
   const listingPath = memberArea
-    ? kind === "banking" ? "/prioritas/member/banking-solution" : `/prioritas/member/privilege${kind === "lifestyle" || kind === "event" || kind === "promo" ? `?section=${kind}` : ""}`
+    ? kind === "banking" ? `${memberBase}/banking-solution` : `${memberBase}/privilege${kind === "lifestyle" || kind === "event" || kind === "promo" ? `?section=${kind}` : ""}`
     : directoryPath;
   const memberOverviewPath = memberVoucherStatus
-    ? withMemberSignatureVoucherStatus("/prioritas/member/overview", memberVoucherStatus)
-    : "/prioritas/member/overview";
+    ? withMemberSignatureVoucherStatus(`${memberBase}/overview`, memberVoucherStatus)
+    : `${memberBase}/overview`;
   const heroTimestamp = heroPromo ? getPromoTimestamp(heroPromo, new Date(now), getPromoBadge(heroPromo, new Date(now))) : null;
   const heroTimestampLabel = heroTimestamp
     ? promoT(`timestamp.${heroTimestamp.kind}`, { hours: heroTimestamp.kind === "hoursLeft" ? heroTimestamp.hours : 0, date: heroTimestamp.kind === "until" ? heroTimestamp.date : "" })
@@ -412,9 +414,9 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
     <article id={generalPage ? "main-content" : undefined} className={`relative isolate overflow-x-clip ${generalPage ? "general-private-banking-background min-h-dvh" : ""} ${isSolitaire ? "bg-neutral-200" : "bg-pgold-200"} text-neutral-900`}>
       <div className="relative">
         {memberArea ? <>
-          <div className="relative bg-pgold-100">
-            <div className="absolute inset-x-0 top-0 h-[calc(7rem+env(safe-area-inset-top))] bg-pbrown-600 xl:h-[120px]" />
-            <Navbar variant="prioritas" disableHideShow memberPreviewName={memberT("previewFullName")} />
+          <div className={`relative ${memberBrand === "solitaire" ? "bg-neutral-100" : "bg-pgold-100"}`}>
+            <div className={`absolute inset-x-0 top-0 h-[calc(7rem+env(safe-area-inset-top))] xl:h-[120px] ${memberBrand === "solitaire" ? "bg-neutral-900" : "bg-pbrown-600"}`} />
+            <Navbar variant={memberBrand} disableHideShow memberPreviewName={memberT(memberBrand === "solitaire" ? "solitairePreviewFullName" : "previewFullName")} />
             <div className="h-[calc(7rem+env(safe-area-inset-top))] xl:h-[120px]" />
           </div>
           <PrioritasIndexTabs activeTab="privilege" surface="overview" />
@@ -454,12 +456,12 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
           hideBreadcrumb={generalPage}
           alignTitleWithContent={kind === "about" && !memberArea}
           alignMobileContentToIndexTitle={alignMobileContentToIndexTitle}
-          tone={generalPage ? "general" : publicBasePath === "/solitaire" ? "solitaire" : "prioritas"}
+          tone={generalPage ? "general" : isSolitaire ? "solitaire" : "prioritas"}
         />
       </div>
 
-      <section className={`pointer-events-none relative ${generalPage ? kind === "about" ? "-mt-12 xl:-mt-12" : "mt-0" : kind === "about" && !memberArea ? "-mt-12 xl:-mt-12" : brand ? "-mt-5 xl:-mt-16" : "-mt-14 xl:-mt-[6.5rem]"} overflow-x-clip pb-20 xl:pb-28`}>
-        {!isSolitaire ? <div aria-hidden className={`bg-decoration-wrapper pointer-events-none absolute inset-x-0 -z-10 overflow-hidden ${brand ? "top-5 xl:top-16" : "top-14 xl:top-[6.5rem]"}`}>
+      <section className={`pointer-events-none relative ${generalPage ? kind === "about" ? "-mt-12 xl:-mt-12" : "mt-0" : kind === "about" && !memberArea ? "-mt-12 xl:-mt-12" : brand ? "-mt-5 xl:-mt-12" : "-mt-14 xl:-mt-12"} overflow-x-clip pb-20 xl:pb-28`}>
+        {!isSolitaire ? <div aria-hidden className={`bg-decoration-wrapper pointer-events-none absolute inset-x-0 -z-10 overflow-hidden ${brand ? "top-5" : "top-14"} xl:top-12`}>
           <img src={`${ASSET_ROOT}/raw-01.png`} alt="" className="block h-auto w-full opacity-25" />
           <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent via-pgold-200/70 to-pgold-200" />
         </div> : null}
@@ -481,13 +483,13 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
               {kind === "complimentary" && birthdayGift ? <PromoRibbon badgeKey="popular" label={privilegeT("complimentary.birthday")} placement="hero" /> : null}
             </div> : null}
             <div className={showHero ? "" : "w-full"}>
-              {memberAirportTransfer ? <MemberAirportTransferModule variant={memberAirportTransfer} /> : memberMedicalCheckUp ? <MemberMedicalCheckUpModule /> : memberVoucherStatus ? <MemberSignatureVoucherModule status={memberVoucherStatus} /> : null}
-              {copy.dynamicModule && !memberArea && !memberSessionActive && !memberAirportTransfer && !memberMedicalCheckUp && !memberVoucherStatus ? <div className="pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] flex flex-col gap-4 rounded-2xl bg-gradient-to-b from-white to-pgold-300 p-5 pb-10 text-sm leading-5 text-neutral-700 shadow-panel-gold sm:mx-0 sm:mb-6 sm:w-auto sm:flex-row sm:items-center sm:justify-between sm:pb-5 xl:px-6">
+              {memberAirportTransfer ? <MemberAirportTransferModule variant={memberAirportTransfer} solitaire={isSolitaire} /> : memberMedicalCheckUp ? <MemberMedicalCheckUpModule solitaire={isSolitaire} /> : memberVoucherStatus ? <MemberSignatureVoucherModule status={memberVoucherStatus} solitaire={isSolitaire} /> : null}
+              {copy.dynamicModule && !memberArea && !memberSessionActive && !memberAirportTransfer && !memberMedicalCheckUp && !memberVoucherStatus ? <div className={`pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] flex flex-col gap-4 rounded-2xl bg-gradient-to-b from-white to-pgold-300 p-5 pb-10 text-sm leading-5 text-neutral-700 shadow-panel-gold ${isSolitaire ? "border border-neutral-300" : ""} sm:mx-0 sm:mb-6 sm:w-auto sm:flex-row sm:items-center sm:justify-between sm:pb-5 xl:px-6`}>
                 <p className="text-sm leading-5 text-pbrown-600 xl:text-base xl:leading-6">{copy.dynamicModule.message}</p>
                 <Link href={copy.dynamicModule.memberHref} className={prioritasButtonClassName({ size: "medium", className: "w-full self-stretch xl:w-auto xl:self-auto prio-button--xl-large" })}>{copy.dynamicModule.actionLabel}</Link>
               </div> : null}
               <div
-                  className={`pointer-events-auto relative z-10 -mx-4 flex w-[calc(100%+2rem)] flex-col gap-4 rounded-t-[20px] rounded-b-none bg-white p-2 xl:mx-0 xl:w-full xl:rounded-2xl ${generalPage ? "border border-neutral-300" : ""} ${copy.dynamicModule ? "-mt-5 xl:mt-0" : memberAirportTransfer || memberMedicalCheckUp || memberVoucherStatus ? "-mt-5 xl:mt-0" : "mt-0 xl:mt-0"} ${generalPage ? "shadow-card" : copy.dynamicModule || memberAirportTransfer || memberMedicalCheckUp || memberVoucherStatus ? "shadow-panel-footer" : ""}`}
+                  className={`pointer-events-auto relative z-10 -mx-4 flex w-[calc(100%+2rem)] flex-col gap-4 rounded-t-[20px] rounded-b-none bg-white p-2 xl:mx-0 xl:w-full xl:rounded-2xl ${generalPage || isSolitaire ? "border border-neutral-300" : ""} ${copy.dynamicModule ? "-mt-5 xl:mt-0" : memberAirportTransfer || memberMedicalCheckUp || memberVoucherStatus ? "-mt-5 xl:mt-0" : "mt-0 xl:mt-0"} ${isSolitaire || generalPage ? "shadow-card" : copy.dynamicModule || memberAirportTransfer || memberMedicalCheckUp || memberVoucherStatus ? "shadow-panel-footer" : ""}`}
               >
                 <div className="flex flex-col gap-4">
                   {customSections?.length ? customSections.map((section) => (

@@ -8,7 +8,7 @@ import {
   loginPathForRequest,
 } from "@/lib/preview-auth";
 import { routing } from "@/i18n/routing";
-import { isMemberAreaPath, MEMBER_SESSION_COOKIE, MEMBER_SESSION_VALUE } from "@/lib/member-auth";
+import { getMemberBrandFromSession, isMemberAreaPath, MEMBER_SESSION_COOKIE } from "@/lib/member-auth";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -21,9 +21,10 @@ export function proxy(request: NextRequest) {
   const password = getPreviewPassword();
   const { pathname } = request.nextUrl;
 
-  if (isMemberAreaPath(pathname) && request.cookies.get(MEMBER_SESSION_COOKIE)?.value !== MEMBER_SESSION_VALUE) {
+  const requestedMemberBrand = pathname.match(/^\/(?:id\/|en\/|zh\/)?(prioritas|solitaire)\/member(?:\/|$)/)?.[1] ?? "prioritas";
+  if (isMemberAreaPath(pathname) && getMemberBrandFromSession(request.cookies.get(MEMBER_SESSION_COOKIE)?.value) !== requestedMemberBrand) {
     const loginUrl = new URL(loginPathForRequest(pathname).replace(/\/login$/, "/member/login"), request.url);
-    loginUrl.searchParams.set("from", "prioritas");
+    loginUrl.searchParams.set("from", requestedMemberBrand);
     loginUrl.searchParams.set("redirectTo", `${pathname}${request.nextUrl.search}`);
     return NextResponse.redirect(loginUrl);
   }

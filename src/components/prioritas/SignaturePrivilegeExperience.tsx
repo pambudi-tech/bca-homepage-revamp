@@ -7,6 +7,7 @@ import type { EventPromo } from "@/components/prioritas/event-data";
 import type { PrivilegePromo } from "@/lib/partner-privileges";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { usePathname } from "@/i18n/navigation";
 import type { PrioritasIndexTab } from "@/components/prioritas/PrioritasIndexTabs";
 import { useIsLive } from "@/lib/useIsLive";
 import { useLenis } from "@/components/SmoothScroll";
@@ -71,6 +72,7 @@ function randomOrderKey(id: string) {
 
 export default function SignaturePrivilegeExperience({ promos, signaturePromos = [], now, directoryOnly = false, activeTab, initialCategories = [], memberArea = false, bannerBackdrops = {}, publicBasePath = "/prioritas" }: SignaturePrivilegeExperienceProps) {
   const t = useTranslations("signaturePrivilege");
+  const memberBase = usePathname().startsWith("/solitaire/member") ? "/solitaire/member" : "/prioritas/member";
   const heroT = useTranslations("prioritasHero");
   const lenis = useLenis();
   const [selectedCategories, setSelectedCategories] = useState<string[]>(() => initialCategories.filter((category) => chipCategories.some((chip) => chip === category)));
@@ -93,7 +95,7 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
   const signatureCardRefs = useRef<Array<HTMLElement | null>>([]);
   const signatureLive = useIsLive(signatureSectionRef);
   const currentTab = activeTab ?? (directoryOnly ? "lifestyle" : "signature");
-  const isSolitaire = publicBasePath === "/solitaire" && !memberArea;
+  const isSolitaire = (publicBasePath === "/solitaire" && !memberArea) || (memberArea && memberBase === "/solitaire/member");
   const buttonClassName = isSolitaire ? solitaireButtonClassName : prioritasButtonClassName;
   const orderedPromos = useMemo(
     () => currentTab === "signature" ? [...promos].sort((a, b) => randomOrderKey(`prioritas-complimentary:${a.id}`) - randomOrderKey(`prioritas-complimentary:${b.id}`)) : promos,
@@ -283,7 +285,7 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
   }
 
   return (
-    <main ref={signatureSectionRef} id="main-content" className={`min-h-screen overflow-x-clip ${isSolitaire ? "bg-neutral-200" : "bg-pgold-200"} text-pbrown-800`}>
+    <main ref={signatureSectionRef} id="main-content" className={`min-h-screen overflow-x-clip ${isSolitaire ? "bg-neutral-200 text-neutral-800" : "bg-pgold-200 text-pbrown-800"}`}>
       <section className={`relative isolate overflow-x-clip ${isSolitaire ? "bg-neutral-200" : "bg-pgold-200"} py-8 xl:py-8`}>
         <div aria-hidden className="absolute inset-0 opacity-40 [background:radial-gradient(ellipse_at_0%_50%,white_0%,transparent_38%),radial-gradient(ellipse_at_100%_18%,white_0%,transparent_36%)]" />
         <div className="relative mx-auto max-w-[1280px] px-4 xl:px-0">
@@ -293,7 +295,7 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
               {visibleSignatureCards.map(({ id, image }, index) => {
                 const promo = signaturePromos.find((item) => item.id === id);
                 const cardImage = id === "padel-court" ? promo?.cover || `${ASSET_ROOT}/${image}` : image.startsWith("/") ? image : `${ASSET_ROOT}/${image}`;
-                return <Link href={`${memberArea ? "/prioritas/member" : publicBasePath}/privilege/${id}`} ref={(node) => { signatureCardRefs.current[index] = node; }} key={`${id}-${image}-${index}`} aria-hidden={index >= 6 && !signatureExpanded && !mobileSignatureRail} inert={index >= 6 && !signatureExpanded && !mobileSignatureRail} className={`group relative block w-[280px] shrink-0 snap-center overflow-hidden rounded-xl ${isSolitaire ? "bg-neutral-900" : "bg-pbrown-800 shadow-prioritas"} transition-[height,opacity,transform] duration-500 ease-in-out ${activeSignatureCard === index ? "h-[360px]" : "h-[328px]"} ${index >= 6 && !signatureExpanded && !mobileSignatureRail ? "translate-y-4 opacity-0" : "translate-y-0 opacity-100"} sm:h-60 sm:w-auto sm:shrink sm:snap-none`}>
+                return <Link href={`${memberArea ? memberBase : publicBasePath}/privilege/${id}`} ref={(node) => { signatureCardRefs.current[index] = node; }} key={`${id}-${image}-${index}`} aria-hidden={index >= 6 && !signatureExpanded && !mobileSignatureRail} inert={index >= 6 && !signatureExpanded && !mobileSignatureRail} className={`group relative block w-[280px] shrink-0 snap-center overflow-hidden rounded-xl ${isSolitaire ? "bg-neutral-900" : "bg-pbrown-800 shadow-prioritas"} transition-[height,opacity,transform] duration-500 ease-in-out ${activeSignatureCard === index ? "h-[360px]" : "h-[328px]"} ${index >= 6 && !signatureExpanded && !mobileSignatureRail ? "translate-y-4 opacity-0" : "translate-y-0 opacity-100"} sm:h-60 sm:w-auto sm:shrink sm:snap-none`}>
                 <img src={cardImage} alt="" className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 <div className={`absolute inset-0 bg-gradient-to-t ${isSolitaire ? "from-black/70 via-black/15" : "from-pbrown-900/90 via-pbrown-900/20"} to-transparent`} />
                 <div className="absolute left-4 top-4 z-30 xl:hidden">
@@ -399,10 +401,10 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
             </>}
           >
               {visiblePromos.map((promo) => isPrivilegePromo(promo)
-                ? <ContentCard key={promo.id} item={promo} now={now} solitaire={isSolitaire} variant={currentTab === "signature" ? "complimentary" : "lifestyle"} detailHref={`${memberArea ? "/prioritas/member" : publicBasePath}/${currentTab === "signature" ? "privilege" : currentTab === "promo" ? "promo" : "lifestyle-privilege"}/${promo.id}`} />
+                ? <ContentCard key={promo.id} item={promo} now={now} solitaire={isSolitaire} variant={currentTab === "signature" ? "complimentary" : "lifestyle"} detailHref={`${memberArea ? memberBase : publicBasePath}/${currentTab === "signature" ? "privilege" : currentTab === "promo" ? "promo" : "lifestyle-privilege"}/${promo.id}`} />
                 : currentTab === "event" && "dateTile" in promo
-                  ? <ContentCard key={promo.id} item={promo as EventPromo} now={now} solitaire={isSolitaire} variant="event" detailHref={memberArea ? `/prioritas/member/event/${promo.id}` : undefined} />
-                  : <ContentCard key={promo.id} item={promo} now={now} solitaire={isSolitaire} variant="promo" detailHref={memberArea ? `/prioritas/member/promo/${promo.id}` : undefined} />)}
+                  ? <ContentCard key={promo.id} item={promo as EventPromo} now={now} solitaire={isSolitaire} variant="event" detailHref={memberArea ? `${memberBase}/event/${promo.id}` : undefined} />
+                  : <ContentCard key={promo.id} item={promo} now={now} solitaire={isSolitaire} variant="promo" detailHref={memberArea ? `${memberBase}/promo/${promo.id}` : undefined} />)}
           </PrioritasDirectoryPanel>
         </div>
       </section>

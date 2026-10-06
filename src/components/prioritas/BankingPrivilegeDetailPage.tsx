@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import BackToTop from "@/components/home/BackToTop";
 import PrioritasDetailExperience from "@/components/prioritas/PrioritasDetailExperience";
 import { bankingPrivilegeItems, getBankingPrivilegeItem } from "@/components/prioritas/banking-privilege-data";
-import { MEMBER_SESSION_COOKIE, MEMBER_SESSION_VALUE } from "@/lib/member-auth";
+import { getMemberBrandFromSession, MEMBER_SESSION_COOKIE, memberBasePath } from "@/lib/member-auth";
 
 export default async function BankingPrivilegeDetailPage({ locale, benefitId, memberArea = false, publicBasePath = "/prioritas" }: { locale: string; benefitId: string; memberArea?: boolean; publicBasePath?: string }) {
   setRequestLocale(locale);
@@ -18,8 +18,10 @@ export default async function BankingPrivilegeDetailPage({ locale, benefitId, me
     getTranslations("signaturePrivilege"),
     getTranslations("solitaireHero"),
   ]);
-  const homeLabel = publicBasePath === "/solitaire" ? solitaireT("breadcrumbLabel") : "Prioritas";
   const session = (await cookies()).get(MEMBER_SESSION_COOKIE)?.value;
+  const memberBrand = getMemberBrandFromSession(session);
+  const memberBase = memberBasePath(memberBrand ?? "prioritas");
+  const homeLabel = publicBasePath === "/solitaire" || memberArea && memberBrand === "solitaire" ? solitaireT("breadcrumbLabel") : "Prioritas";
   const title = indexT(`privilege.${item.key}`);
   const sectionTitle = detailT("detailTitle");
   const contactTitle = detailT("contactTitle");
@@ -31,14 +33,14 @@ export default async function BankingPrivilegeDetailPage({ locale, benefitId, me
       title: indexT(`privilege.${recommendation.key}`),
       alt: indexT(`privilege.${recommendation.key}`),
       image: recommendation.image,
-      href: `${memberArea ? "/prioritas/member" : publicBasePath}/banking-solution/privilege/${recommendation.id}`,
+      href: `${memberArea ? memberBase : publicBasePath}/banking-solution/privilege/${recommendation.id}`,
     }));
 
-  return <main id="main-content" className={`flex min-h-screen flex-1 flex-col overflow-x-clip ${publicBasePath === "/solitaire" && !memberArea ? "bg-neutral-200" : "bg-pgold-200"}`}>
+  return <main id="main-content" className={`flex min-h-screen flex-1 flex-col overflow-x-clip ${publicBasePath === "/solitaire" && !memberArea || memberArea && memberBrand === "solitaire" ? "bg-neutral-200" : "bg-pgold-200"}`}>
     <PrioritasDetailExperience
       memberArea={memberArea}
       publicBasePath={publicBasePath}
-      memberPreviewName={session === MEMBER_SESSION_VALUE ? memberT("previewFullName") : undefined}
+      memberPreviewName={memberBrand && (memberArea || memberBrand === (publicBasePath === "/solitaire" ? "solitaire" : "prioritas")) ? memberT(memberBrand === "solitaire" ? "solitairePreviewFullName" : "previewFullName") : undefined}
       kind="banking"
       heroImage={item.image}
       promos={[]}

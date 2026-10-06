@@ -490,6 +490,11 @@ html.hero-search-open .page-stack {
   --prioritas-index-tab-bg: var(--color-neutral-200);
 }
 
+.tab-curved.prioritas-index-tab-solitaire-member.tab-curved-active {
+  --prioritas-index-tab-bg: var(--color-neutral-100);
+  background-color: var(--color-neutral-100);
+}
+
 .tab-curved::before,
 .tab-curved::after {
   content: "";

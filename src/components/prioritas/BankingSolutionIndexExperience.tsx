@@ -1,5 +1,7 @@
 "use client";
 
+import { usePathname } from "@/i18n/navigation";
+
 import { useTranslations } from "next-intl";
 import { BankingPrivilegeCard, WealthCard, type PrivilegeCard, type WealthCardData } from "@/components/prioritas/BankingSolutionSection";
 import { insightAssets } from "@/components/prioritas/wealth-insight-assets";
@@ -62,7 +64,8 @@ function WealthGroup({ group, backdrops, tone }: { group: "house" | "market"; ba
 
 export default function BankingSolutionIndexExperience({ activeTab, backdrops = {}, memberArea = false, publicBasePath = "/prioritas" }: { activeTab: "privilege" | "wealth"; backdrops?: Record<string, string>; memberArea?: boolean; publicBasePath?: string }) {
   const t = useTranslations("bankingSolutionIndex");
-  const isSolitaire = publicBasePath === "/solitaire" && !memberArea;
+  const memberBase = usePathname().startsWith("/solitaire/member") ? "/solitaire/member" : "/prioritas/member";
+  const isSolitaire = (publicBasePath === "/solitaire" && !memberArea) || (memberArea && memberBase === "/solitaire/member");
 
   return <main className={`overflow-hidden ${isSolitaire ? "bg-neutral-200" : "bg-pgold-200"}`}>
     <div className="mx-auto w-full max-w-[1280px] px-4 py-10 xl:px-0">
@@ -75,7 +78,7 @@ export default function BankingSolutionIndexExperience({ activeTab, backdrops = 
             alt: t(`privilege.${key}`),
             image: asset.image,
             imagePosition: "imagePosition" in asset ? asset.imagePosition : undefined,
-            href: activeTab === "privilege" ? `${memberArea ? "/prioritas/member" : publicBasePath}/banking-solution/privilege/${asset.id}` : undefined,
+            href: activeTab === "privilege" ? `${memberArea ? memberBase : publicBasePath}/banking-solution/privilege/${asset.id}` : undefined,
           };
           return <BankingPrivilegeCard key={key} card={card} action={t("more")} directory tone={isSolitaire ? "solitaire" : "prioritas"} />;
         })}

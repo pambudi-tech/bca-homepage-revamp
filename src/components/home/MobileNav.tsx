@@ -7,6 +7,7 @@ import SearchPlaceholderCarousel from "./SearchPlaceholderCarousel";
 import type { ProductCategory } from "./product-data";
 import type { MegaMenuContent } from "@/lib/megamenu";
 import { Link } from "@/i18n/navigation";
+import type { MemberBrand } from "@/lib/member-auth";
 
 // Broadcast so unrelated fixed-position UI (HaloBcaChat's floating button)
 // can hide itself while the mobile menu overlay covers the viewport, without
@@ -30,6 +31,7 @@ export default function MobileNav({
   logoHref,
   disableHideShow = false,
   memberPreviewName,
+  memberBrand,
 }: {
   scrolled: boolean;
   hidden: boolean;
@@ -44,6 +46,7 @@ export default function MobileNav({
   logoHref: string;
   disableHideShow?: boolean;
   memberPreviewName?: string;
+  memberBrand?: MemberBrand;
 }) {
   const t = useTranslations("mobileMenu");
   const tNav = useTranslations("nav");
@@ -108,6 +111,7 @@ export default function MobileNav({
       variant={variant}
       logoHref={logoHref}
       memberPreviewName={memberPreviewName}
+      memberBrand={memberBrand}
     />
     </>
   );

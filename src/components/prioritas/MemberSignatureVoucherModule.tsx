@@ -3,13 +3,13 @@
 import { useTranslations } from "next-intl";
 import { AIRPORT_LOUNGE_VOUCHER_COUNT, type MemberSignatureVoucherStatus } from "@/lib/member-signature-voucher";
 
-export default function MemberSignatureVoucherModule({ status }: { status: MemberSignatureVoucherStatus }) {
+export default function MemberSignatureVoucherModule({ status, solitaire = false }: { status: MemberSignatureVoucherStatus; solitaire?: boolean }) {
   const t = useTranslations("memberSignatureVoucher");
   const exhausted = status === "exhausted";
   const badgeLabel = exhausted ? t("exhausted") : status === "unlimited" ? t("unlimited") : t("available", { count: AIRPORT_LOUNGE_VOUCHER_COUNT });
 
   return (
-    <section aria-label={t("title")} className="pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] rounded-t-[20px] rounded-b-none bg-white p-4 pb-9 shadow-none xl:mx-0 xl:mb-5 xl:w-full xl:rounded-xl xl:p-6 xl:shadow-card">
+    <section aria-label={t("title")} className={`pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] rounded-t-[20px] rounded-b-none bg-white p-4 pb-9 shadow-none ${solitaire ? "border border-neutral-300" : ""} xl:mx-0 xl:mb-5 xl:w-full xl:rounded-xl xl:p-6 xl:shadow-card`}>
       <div className="flex flex-nowrap items-center justify-between gap-3">
         <h2 className="text-lg font-semibold text-neutral-900 xl:text-xl">{t("title")}</h2>
         <span className={`inline-flex min-h-10 items-center rounded-xl px-4 py-2 text-sm font-semibold ${exhausted ? "bg-voucher-exhausted text-voucher-exhausted-ink" : "bg-voucher-available text-voucher-available-ink"}`}>

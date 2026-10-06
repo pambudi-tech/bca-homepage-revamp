@@ -6,6 +6,8 @@ import { buildPrioritasPromoSamples } from "@/components/prioritas/prioritas-pro
 import type { PromoCategory } from "@/components/home/promo-data";
 import { getPromos } from "@/lib/promos";
 import { getPrioritasSourcePromos } from "@/lib/prioritas-source-data";
+import { cookies } from "next/headers";
+import { getMemberBrandFromSession, MEMBER_SESSION_COOKIE } from "@/lib/member-auth";
 
 type PromoParams = { locale: string; promoId: string };
 
@@ -22,7 +24,8 @@ export default async function PrioritasPromoDetailPage({ params }: { params: Pro
   const { locale, promoId } = await params;
   setRequestLocale(locale);
   if (promoId === "program-nabung-konser-the-weeknd-20260618") {
-    permanentRedirect(`/${locale}/prioritas/member/event/${promoId}`);
+    const brand = getMemberBrandFromSession((await cookies()).get(MEMBER_SESSION_COOKIE)?.value) ?? "prioritas";
+    permanentRedirect(`/${locale}/${brand}/member/event/${promoId}`);
   }
   const [t, detailT, signatureT] = await Promise.all([
     getTranslations("prioritasContentDetail"),

@@ -14,7 +14,7 @@ import { SEGMENT_EXTERNAL_LINKS, SEGMENT_INTERNAL_LINKS } from "./segment-links"
 import type { SearchSegment } from "./search-data";
 import { logoutMember } from "@/app/[locale]/member/login/actions";
 import LogoutConfirmDialog from "./LogoutConfirmDialog";
-import { isMemberAreaPath } from "@/lib/member-auth";
+import { isMemberAreaPath, type MemberBrand } from "@/lib/member-auth";
 
 export const NAVBAR_VISIBILITY_EVENT = "bca:navbar-hidden";
 export const NAVBAR_ANCHOR_LOCK_EVENT = "bca:navbar-anchor-lock";
@@ -76,18 +76,26 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
   const [memberAuthenticated, setMemberAuthenticated] = useState(false);
+  const [sessionBrand, setSessionBrand] = useState<MemberBrand | null>(null);
+  const [pendingPostLogoutHref, setPendingPostLogoutHref] = useState<string | null>(null);
   const accountMenuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const router = useRouter();
   const lastScrollY = useRef(0);
-  const effectiveMemberPreviewName = memberPreviewName ?? (memberAuthenticated ? tMember("previewFullName") : undefined);
+  const memberBrand: MemberBrand = pathname.startsWith("/solitaire/member") ? "solitaire" : pathname.startsWith("/prioritas/member") ? "prioritas" : sessionBrand ?? (variant === "solitaire" ? "solitaire" : "prioritas");
+  const effectiveMemberPreviewName = memberPreviewName ?? (memberAuthenticated ? tMember(memberBrand === "solitaire" ? "solitairePreviewFullName" : "previewFullName") : undefined);
+  const accountSolitaire = Boolean(effectiveMemberPreviewName) && memberBrand === "solitaire";
+  const hasActiveMemberSession = memberAuthenticated || Boolean(memberPreviewName);
 
   useEffect(() => {
-    if (variant !== "prioritas" || memberPreviewName) return;
+    if ((variant !== "prioritas" && variant !== "solitaire") || memberPreviewName) return;
     const controller = new AbortController();
     fetch("/api/preview-logout", { signal: controller.signal, credentials: "same-origin" })
       .then((response) => response.ok ? response.json() : Promise.reject(new Error(String(response.status))))
-      .then((result: { authenticated?: boolean }) => setMemberAuthenticated(result.authenticated === true))
+      .then((result: { authenticated?: boolean; brand?: MemberBrand | null }) => {
+        setMemberAuthenticated(result.authenticated === true);
+        setSessionBrand(result.brand ?? null);
+      })
       .catch(() => {
         if (!controller.signal.aborted) setMemberAuthenticated(false);
       });
@@ -182,16 +190,31 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
   }, [accountMenuOpen]);
 
   const handleMemberLogout = async () => {
+    const destination = pendingPostLogoutHref;
     await logoutMember();
     setLogoutConfirmOpen(false);
     setAccountMenuOpen(false);
-    router.replace("/prioritas");
-    router.refresh();
+    setMemberAuthenticated(false);
+    setSessionBrand(null);
+    setPendingPostLogoutHref(null);
+    if (destination?.startsWith("http")) {
+      window.location.assign(destination);
+    } else {
+      router.replace(destination ?? `/${memberBrand}`);
+      router.refresh();
+    }
+  };
+
+  const requestSegmentNavigation = (event: { preventDefault: () => void }, segment: string, href: string) => {
+    if (!hasActiveMemberSession || segment === "Prioritas" || segment === "Solitaire") return;
+    event.preventDefault();
+    setPendingPostLogoutHref(href);
+    setLogoutConfirmOpen(true);
   };
 
   return (
     <>
-      <MobileNav scrolled={navScrolled} hidden={staticOnMobile ? false : shouldHide} productCategories={productCategories} megamenuContent={megamenuContent} searchOpen={searchOpen} onOpenSearch={() => setSearchOpen(true)} variant={variant} logoHref={logoHref} disableHideShow={disableHideShow || staticOnMobile} memberPreviewName={effectiveMemberPreviewName} />
+      <MobileNav scrolled={navScrolled} hidden={staticOnMobile ? false : shouldHide} productCategories={productCategories} megamenuContent={megamenuContent} searchOpen={searchOpen} onOpenSearch={() => setSearchOpen(true)} variant={variant} logoHref={logoHref} disableHideShow={disableHideShow || staticOnMobile} memberPreviewName={effectiveMemberPreviewName} memberBrand={memberBrand} />
 
       <nav
         aria-label={tNav("primary")}
@@ -208,12 +231,12 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
                 const className = `flex h-8 min-w-24 items-center justify-center rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${active ? (prioritas ? "bg-pgold-500 text-white" : solitaire ? "bg-neutral-500 text-neutral-800" : "bg-neutral-100 text-blue-500") : "text-white/80 hover:bg-white/10 hover:text-white"}`;
                 const internalHref = SEGMENT_INTERNAL_LINKS[segment];
                 if (internalHref) {
-                  return <Link key={segment} href={internalHref} className={className} style={active ? ({ viewTransitionName: "nav-segment-pill" } as CSSProperties) : undefined}>{tNav(`segments.${segment}`)}</Link>;
+                  return <Link key={segment} href={internalHref} onClick={(event) => requestSegmentNavigation(event, segment, internalHref)} className={className} style={active ? ({ viewTransitionName: "nav-segment-pill" } as CSSProperties) : undefined}>{tNav(`segments.${segment}`)}</Link>;
                 }
-                return <a key={segment} href={SEGMENT_EXTERNAL_LINKS[segment]} target="_blank" rel="noopener noreferrer" className={className}>{tNav(`segments.${segment}`)}</a>;
+                return <a key={segment} href={SEGMENT_EXTERNAL_LINKS[segment]} target="_blank" rel="noopener noreferrer" onClick={(event) => requestSegmentNavigation(event, segment, SEGMENT_EXTERNAL_LINKS[segment])} className={className}>{tNav(`segments.${segment}`)}</a>;
               })}
-              <Link href="/tentang-bca" className={`flex h-8 items-center rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${variant === "about" ? "bg-neutral-100 text-blue-500" : "text-white/80 hover:bg-white/10 hover:text-white"}`}>{tNav("tentangBca")}</Link>
-              <a href="https://karir.bca.co.id/" target="_blank" rel="noopener noreferrer" className="flex h-8 items-center rounded-full px-4 text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white">{tNav("karir")}</a>
+              <Link href="/tentang-bca" onClick={(event) => requestSegmentNavigation(event, "Tentang BCA", "/tentang-bca")} className={`flex h-8 items-center rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${variant === "about" ? "bg-neutral-100 text-blue-500" : "text-white/80 hover:bg-white/10 hover:text-white"}`}>{tNav("tentangBca")}</Link>
+              <a href="https://karir.bca.co.id/" target="_blank" rel="noopener noreferrer" onClick={(event) => requestSegmentNavigation(event, "Karir", "https://karir.bca.co.id/")} className="flex h-8 items-center rounded-full px-4 text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white">{tNav("karir")}</a>
             </div>
           </div>
 
@@ -223,18 +246,20 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
             {effectiveMemberPreviewName ? (
               <div ref={accountMenuRef} className="relative">
                 <button type="button" aria-haspopup="menu" aria-expanded={accountMenuOpen} onClick={() => setAccountMenuOpen((open) => !open)} className="flex h-10 items-center gap-3 rounded-xl px-2 text-sm font-bold leading-5 text-white">
-                  <span aria-hidden className="flex size-10 shrink-0 items-center justify-center rounded-full" style={{ backgroundImage: "linear-gradient(262.59deg, #c2a266 0.18%, #98732c 100.18%)" }}>
-                    <img src="/assets/prioritas/member-overview/account-user.svg" alt="" className="shrink-0" />
+                  <span aria-hidden className={`flex size-10 shrink-0 items-center justify-center rounded-full ${accountSolitaire ? "bg-gradient-to-r from-neutral-800 to-neutral-700" : ""}`} style={accountSolitaire ? undefined : { backgroundImage: "linear-gradient(262.59deg, #c2a266 0.18%, #98732c 100.18%)" }}>
+                    {accountSolitaire
+                      ? <span className="size-5 bg-neutral-100 [mask-image:url('/assets/prioritas/member-overview/account-user.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/prioritas/member-overview/account-user.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]" />
+                      : <img src="/assets/prioritas/member-overview/account-user.svg" alt="" className="shrink-0" />}
                   </span>
                   <span className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap">{effectiveMemberPreviewName}</span>
                 </button>
                 {accountMenuOpen ? (
                   <div role="menu" className="absolute right-0 top-full z-50 mt-1 flex min-w-[176px] flex-col overflow-hidden rounded-xl border border-neutral-300 bg-neutral-100 p-2 shadow-card">
-                    <Link role="menuitem" href={inMemberArea ? "/prioritas" : "/prioritas/member/overview"} onClick={() => setAccountMenuOpen(false)} className="flex h-10 items-center gap-2 whitespace-nowrap rounded-lg px-3 text-sm font-semibold text-neutral-800 hover:bg-pgold-100 hover:text-pbrown-600">
+                    <Link role="menuitem" href={inMemberArea ? `/${memberBrand}` : `/${memberBrand}/member/overview`} onClick={() => setAccountMenuOpen(false)} className={`flex h-10 items-center gap-2 whitespace-nowrap rounded-lg px-3 text-sm font-semibold ${accountSolitaire ? "text-neutral-800 hover:bg-neutral-200 hover:text-neutral-900" : "text-neutral-800 hover:bg-pgold-100 hover:text-pbrown-600"}`}>
                       <img src="/assets/prioritas/member-overview/homepage.svg" alt="" aria-hidden className="size-5 shrink-0" />
                       {inMemberArea ? tAccount("home") : tAccount("overview")}
                     </Link>
-                    <button role="menuitem" type="button" onClick={() => { setAccountMenuOpen(false); setLogoutConfirmOpen(true); }} className="flex h-10 items-center gap-2 rounded-lg px-3 text-left text-sm font-semibold text-red-600 hover:bg-red-50">
+                    <button role="menuitem" type="button" onClick={() => { setPendingPostLogoutHref(null); setAccountMenuOpen(false); setLogoutConfirmOpen(true); }} className={`flex h-10 items-center gap-2 rounded-lg px-3 text-left text-sm font-semibold ${accountSolitaire ? "text-neutral-700 hover:bg-neutral-200 hover:text-neutral-900" : "text-red-600 hover:bg-red-50"}`}>
                       <img src="/assets/prioritas/member-overview/logout.svg" alt="" aria-hidden className="size-5 shrink-0" />
                       {tAccount("logout")}
                     </button>
@@ -257,7 +282,7 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
         promoSearchItems={promoSearchItems}
         initialSegment={variant === "prioritas" ? ("Prioritas" satisfies SearchSegment) : variant === "solitaire" ? ("Solitaire" satisfies SearchSegment) : "Semua"}
       />
-      <LogoutConfirmDialog open={logoutConfirmOpen} onCancel={() => setLogoutConfirmOpen(false)} onConfirm={() => void handleMemberLogout()} />
+      <LogoutConfirmDialog open={logoutConfirmOpen} onCancel={() => { setLogoutConfirmOpen(false); setPendingPostLogoutHref(null); }} onConfirm={() => void handleMemberLogout()} />
     </>
   );
 }

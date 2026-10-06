@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { PrioritasButton, prioritasButtonClassName } from "@/components/prioritas/PrioritasButton";
 
 const VOUCHER_CODE = "EHS-SG-26-A4K8";
-export default function MemberMedicalCheckUpModule() {
+export default function MemberMedicalCheckUpModule({ solitaire = false }: { solitaire?: boolean }) {
   const t = useTranslations("memberMedicalCheckUp");
   const locations = t.raw("locations") as string[];
   const [copied, setCopied] = useState(false);
@@ -24,7 +24,7 @@ export default function MemberMedicalCheckUpModule() {
   }
 
   return (
-    <section aria-labelledby="member-medical-check-up-title" className="pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] rounded-t-[20px] rounded-b-none bg-white px-4 pb-8 pt-6 shadow-none xl:mx-0 xl:mb-5 xl:w-full xl:rounded-xl xl:p-6 xl:shadow-prioritas">
+    <section aria-labelledby="member-medical-check-up-title" className={`pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] rounded-t-[20px] rounded-b-none bg-white px-4 pb-8 pt-6 shadow-none ${solitaire ? "border border-neutral-300" : ""} xl:mx-0 xl:mb-5 xl:w-full xl:rounded-xl xl:p-6 xl:shadow-prioritas`}>
       <div className="flex flex-col gap-0.5 lg:gap-2">
         <h2 id="member-medical-check-up-title" className="text-lg font-semibold leading-7 tracking-tight text-neutral-900 xl:text-xl">{t("title")}</h2>
         <p className="text-sm leading-6 text-neutral-700 xl:text-base">{t("description")}</p>

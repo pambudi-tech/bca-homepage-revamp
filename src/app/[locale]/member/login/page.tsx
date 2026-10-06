@@ -20,7 +20,7 @@ export default async function MemberLoginPage({
     ? requestedMagazine
     : undefined;
 
-  const redirectTo = isSafeMemberRedirect(requestedRedirect) ? requestedRedirect : "/prioritas/member/overview";
+  const redirectTo = isSafeMemberRedirect(requestedRedirect) ? requestedRedirect : undefined;
 
   return <MemberLoginExperience brand={brand} magazineSlug={magazineSlug} redirectTo={redirectTo} />;
 }

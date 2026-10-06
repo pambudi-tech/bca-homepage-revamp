@@ -11,7 +11,7 @@ import type { MegaMenuContent } from "@/lib/megamenu";
 import { SEGMENT_EXTERNAL_LINKS, SEGMENT_INTERNAL_LINKS } from "./segment-links";
 import { logoutMember } from "@/app/[locale]/member/login/actions";
 import LogoutConfirmDialog from "./LogoutConfirmDialog";
-import { isMemberAreaPath } from "@/lib/member-auth";
+import { isMemberAreaPath, type MemberBrand } from "@/lib/member-auth";
 import { solitaireButtonClassName } from "@/components/prioritas/PrioritasButton";
 
 const LOCALE_META: Record<AppLocale, { flag: string }> = {
@@ -32,6 +32,7 @@ export default function MobileMenu({
   variant = "default",
   logoHref,
   memberPreviewName,
+  memberBrand = "prioritas",
 }: {
   open: boolean;
   onClose: () => void;
@@ -40,6 +41,7 @@ export default function MobileMenu({
   variant?: "default" | "about" | "promo" | "prioritas" | "solitaire";
   logoHref: string;
   memberPreviewName?: string;
+  memberBrand?: MemberBrand;
 }) {
   const locale = useLocale() as AppLocale;
   const router = useRouter();
@@ -63,7 +65,7 @@ export default function MobileMenu({
     await logoutMember();
     setLogoutConfirmOpen(false);
     closeMenu();
-    router.replace("/prioritas");
+    router.replace(`/${memberBrand}`);
   };
   const closeMenu = useCallback(() => {
     setLangOpen(false);
@@ -190,13 +192,13 @@ export default function MobileMenu({
         <div className="absolute inset-x-4 bottom-[calc(1rem+env(safe-area-inset-bottom))]">
           {memberPreviewName ? (
             <div className="flex flex-col gap-3">
-              <Link href="/prioritas/member/overview" onClick={closeMenu} className="flex h-12 items-center gap-3 rounded-xl px-2 text-sm font-bold leading-5 text-neutral-800">
+              <Link href={`/${memberBrand}/member/overview`} onClick={closeMenu} className="flex h-12 items-center gap-3 rounded-xl px-2 text-sm font-bold leading-5 text-neutral-800">
                 <span aria-hidden className="flex size-10 shrink-0 items-center justify-center rounded-full" style={{ backgroundImage: "linear-gradient(262.59deg, #c2a266 0.18%, #98732c 100.18%)" }}>
                   <img src="/assets/prioritas/member-overview/account-user.svg" alt="" className="shrink-0" />
                 </span>
                 <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap">{memberPreviewName}</span>
               </Link>
-              <Link href={inMemberArea ? "/prioritas" : "/prioritas/member/overview"} onClick={closeMenu} className={`flex h-12 items-center justify-center rounded-full border bg-neutral-100 px-6 text-base font-semibold ${priorityMenu ? "border-pbrown-500 text-pbrown-500 active:bg-pgold-100" : "border-blue-500 text-blue-500 active:bg-blue-100"}`}>{inMemberArea ? tAccount("home") : tAccount("overview")}</Link>
+              <Link href={inMemberArea ? `/${memberBrand}` : `/${memberBrand}/member/overview`} onClick={closeMenu} className={`flex h-12 items-center justify-center rounded-full border bg-neutral-100 px-6 text-base font-semibold ${priorityMenu ? "border-pbrown-500 text-pbrown-500 active:bg-pgold-100" : "border-blue-500 text-blue-500 active:bg-blue-100"}`}>{inMemberArea ? tAccount("home") : tAccount("overview")}</Link>
               <button type="button" onClick={() => setLogoutConfirmOpen(true)} className="flex h-12 items-center justify-center gap-2 rounded-full border border-red-600 bg-neutral-100 px-6 text-base font-semibold text-red-600 active:bg-red-50">
                 <svg aria-hidden viewBox="0 0 32 32" fill="none" className="size-5"><path d="M11.867 10.08c.413-4.8 2.88-6.76 8.28-6.76h.173c5.96 0 8.347 2.387 8.347 8.347v8.693c0 5.96-2.387 8.347-8.347 8.347h-.173c-5.36 0-7.827-1.934-8.267-6.654" stroke="currentColor" strokeWidth="2.18" strokeLinecap="round" strokeLinejoin="round" /><path d="M2.667 16H19.84m-2.973-4.467L21.333 16l-4.466 4.467" stroke="currentColor" strokeWidth="2.18" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 {tMobile("logout")}

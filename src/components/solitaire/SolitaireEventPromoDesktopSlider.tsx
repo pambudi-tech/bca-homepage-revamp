@@ -61,7 +61,7 @@ export default function SolitaireEventPromoDesktopSlider({ slides }: { slides: [
       <div className="absolute inset-0 overflow-hidden rounded-xl">
         {slides.map((slide, index) => (
           <img
-            key={slide.image}
+            key={`${slide.image}-${index}`}
             src={slide.image}
             alt={slide.alt}
             className={`absolute inset-0 size-full object-cover transition-opacity duration-700 ${index === activeIndex ? "opacity-100" : "opacity-0"}`}
@@ -99,7 +99,7 @@ export default function SolitaireEventPromoDesktopSlider({ slides }: { slides: [
       <div className="absolute -bottom-10 left-[calc(50%-176px)] flex w-[784px] max-w-[calc(100%-2rem)] gap-3" role="tablist" aria-label="Event dan promo">
         {slides.map((slide, index) => (
           <button
-            key={slide.image}
+            key={`${slide.image}-${index}`}
             type="button"
             role="tab"
             aria-selected={index === activeIndex}

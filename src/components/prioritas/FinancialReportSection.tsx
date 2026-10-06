@@ -67,7 +67,7 @@ export default function FinancialReportSection({ copy, tone = "prioritas" }: { c
               </div>
             ))}
           </div>
-          <Link href="/prioritas/member/financial-report" className={buttonClassName({ surface: "inverse", size: "large", className: "w-full xl:w-fit" })}>
+          <Link href={`/${tone}/member/financial-report`} className={buttonClassName({ surface: "inverse", size: "large", className: "w-full xl:w-fit" })}>
             <span className="prio-button__label">{copy.action}</span>
             <PrioritasButtonIcon src="/assets/cycle1/pelajari-icon.svg" />
           </Link>

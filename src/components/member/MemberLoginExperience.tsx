@@ -4,6 +4,7 @@ import { useActionState, useEffect, useState, type MouseEvent } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
+import { routing } from "@/i18n/routing";
 import InfoTip from "@/components/ui/InfoTip";
 import LocaleSwitcher from "@/components/ui/LocaleSwitcher";
 import TextField from "@/components/ui/TextField";
@@ -35,10 +36,10 @@ function LoginAlert({
   );
 }
 
-export default function MemberLoginExperience({ brand, magazineSlug, redirectTo }: { brand: Brand; magazineSlug?: string; redirectTo: string }) {
+export default function MemberLoginExperience({ brand, magazineSlug, redirectTo }: { brand: Brand; magazineSlug?: string; redirectTo?: string }) {
   const t = useTranslations("memberLogin");
   const router = useRouter();
-  const [loginState, formAction, pending] = useActionState<MemberLoginState, FormData>(loginMember, "idle");
+  const [loginState, formAction, pending] = useActionState<MemberLoginState, FormData>(loginMember, { status: "idle" });
   const [method, setMethod] = useState<LoginMethod>("bcaId");
   const [bcaId, setBcaId] = useState("");
   const [email, setEmail] = useState("");
@@ -47,7 +48,7 @@ export default function MemberLoginExperience({ brand, magazineSlug, redirectTo 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [showCredentialsError, setShowCredentialsError] = useState(false);
   const [notice, setNotice] = useState("");
-  const backHref = "/prioritas";
+  const backHref = `/${brand}`;
   const identifier = method === "bcaId" ? bcaId : email;
   const validIdentifier = method === "bcaId"
     ? identifier.trim().length >= 6 && identifier.trim().length <= 21
@@ -76,16 +77,24 @@ export default function MemberLoginExperience({ brand, magazineSlug, redirectTo 
         router.back();
       }
     } catch {
-      // Keep the Prioritas homepage link as a safe fallback for invalid referrers.
+      // Keep the brand homepage link as a safe fallback for invalid referrers.
     }
   }
 
   useEffect(() => {
-    if (loginState === "success") router.replace(redirectTo);
+    if (loginState.status === "success" && loginState.brand) {
+      const requestedPath = redirectTo && routing.locales.some((locale) => redirectTo.startsWith(`/${locale}/`))
+        ? redirectTo.replace(/^\/[^/]+/, "")
+        : redirectTo;
+      const destination = requestedPath?.startsWith(`/${loginState.brand}/member/`) || requestedPath === `/${loginState.brand}/member`
+        ? requestedPath
+        : `/${loginState.brand}/member/overview`;
+      router.replace(destination);
+    }
   }, [loginState, redirectTo, router]);
 
   useEffect(() => {
-    if (loginState !== "error" || pending) return;
+    if (loginState.status !== "error" || pending) return;
 
     const showTimer = window.setTimeout(() => setShowCredentialsError(true), 0);
     const dismissTimer = window.setTimeout(() => setShowCredentialsError(false), 5000);
@@ -109,13 +118,18 @@ export default function MemberLoginExperience({ brand, magazineSlug, redirectTo 
           <img src="/assets/prioritas/logo.svg" alt="BCA Prioritas" className="h-11 w-auto" />
         </div>
         <div className="member-login-language justify-self-end">
-          <LocaleSwitcher label={t("language")} appearance="surface" onLocaleChange={(code: AppLocale) => { window.location.href = `/${code}/member/login?from=${brand}${magazineSlug ? `&magazine=${encodeURIComponent(magazineSlug)}` : ""}`; }} />
+          <LocaleSwitcher label={t("language")} appearance="surface" onLocaleChange={(code: AppLocale) => {
+            const query = new URLSearchParams({ from: brand });
+            if (magazineSlug) query.set("magazine", magazineSlug);
+            if (redirectTo) query.set("redirectTo", redirectTo);
+            window.location.href = `/${code}/member/login?${query}`;
+          }} />
         </div>
       </header>
 
       <div className="member-login-center flex w-full flex-1 items-center justify-center px-4 py-10 sm:px-6">
         <div className="relative flex w-full flex-col items-center">
-          {loginState === "error" ? <LoginAlert message={t("credentialsError")} visible={showCredentialsError} /> : null}
+          {loginState.status === "error" ? <LoginAlert message={t("credentialsError")} visible={showCredentialsError} /> : null}
         <section className="member-login-card w-full max-w-[392px] rounded-xl border border-neutral-300/70 bg-white p-4 pb-6 shadow-card sm:p-7" aria-label={t("pageTitle")}>
           <h1 className="sr-only">{t("pageTitle")}</h1>
           <div role="tablist" aria-label={t("methodLabel")} className="relative grid h-12 grid-cols-2 rounded-xl border border-neutral-300 bg-neutral-200 p-1">

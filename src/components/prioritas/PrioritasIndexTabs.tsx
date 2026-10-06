@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { useTranslations } from "next-intl";
 import { TabLink } from "@/components/ui/Tab";
+import { usePathname } from "@/i18n/navigation";
 
 export type PrioritasIndexTab = "signature" | "lifestyle" | "event" | "promo";
 type PrioritasOverviewTab = "overview" | "privilege" | "banking" | "magazine" | "financial";
@@ -25,6 +26,10 @@ const overviewTabs: Array<{ key: PrioritasOverviewTab; href: string }> = [
 
 export default function PrioritasIndexTabs({ activeTab, surface = "default", basePath = "/prioritas", visibleTabs, tone = "prioritas" }: { activeTab: PrioritasTabKey; surface?: "default" | "overview" | "member"; basePath?: string; visibleTabs?: PrioritasIndexTab[]; tone?: "prioritas" | "solitaire" }) {
   const t = useTranslations(surface !== "default" ? "memberOverview" : "signaturePrivilege");
+  const pathname = usePathname();
+  const memberBase = pathname.startsWith("/solitaire/member") ? "/solitaire/member" : "/prioritas/member";
+  const solitaireMember = surface === "overview" && memberBase === "/solitaire/member";
+  const activeTone = solitaireMember ? "solitaire" : tone;
   const viewportRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<Partial<Record<PrioritasTabKey, HTMLAnchorElement | null>>>({});
   const requestedTabRef = useRef<PrioritasTabKey | null>(null);
@@ -64,25 +69,25 @@ export default function PrioritasIndexTabs({ activeTab, surface = "default", bas
 
   const memberUnderline = surface === "member";
   return (
-    <div data-prioritas-index-tabs style={{ "--prioritas-index-tab-surface": tone === "solitaire" ? "var(--color-neutral-200)" : surface === "overview" ? "var(--color-pgold-100)" : "var(--color-pgold-200)" } as CSSProperties} className={`relative sticky top-4 z-30 mx-auto -mt-12 w-full max-w-[1280px] before:pointer-events-none before:absolute before:-top-6 before:left-1/2 before:z-0 before:h-[calc(100%+1.5rem)] before:w-screen before:-translate-x-1/2 before:transition-[background-color,backdrop-filter] before:duration-200 xl:w-full ${scrolled ? tone === "solitaire" ? "before:bg-neutral-900/95 before:backdrop-blur-md" : "before:bg-pbrown-600/95 before:backdrop-blur-md" : "before:bg-transparent"}`}>
+    <div data-prioritas-index-tabs style={{ "--prioritas-index-tab-surface": solitaireMember ? "var(--color-neutral-100)" : tone === "solitaire" ? "var(--color-neutral-200)" : surface === "overview" ? "var(--color-pgold-100)" : "var(--color-pgold-200)" } as CSSProperties} className={`relative sticky top-4 z-30 mx-auto -mt-12 w-full max-w-[1280px] before:pointer-events-none before:absolute before:-top-6 before:left-1/2 before:z-0 before:h-[calc(100%+1.5rem)] before:w-screen before:-translate-x-1/2 before:transition-[background-color,backdrop-filter] before:duration-200 xl:w-full ${scrolled ? activeTone === "solitaire" ? "before:bg-neutral-900/95 before:backdrop-blur-md" : "before:bg-pbrown-600/95 before:backdrop-blur-md" : "before:bg-transparent"}`}>
       <div ref={viewportRef} className="hide-scrollbar relative w-full overflow-x-auto bg-transparent px-4 [scrollbar-width:none] xl:overflow-visible xl:px-0">
         <div
           role="tablist"
           aria-label={surface === "overview" ? t("nav.label") : t("tabLabel")}
-          className={memberUnderline ? "relative flex w-max overflow-visible border-b border-pbrown-100 bg-pgold-100 xl:w-full" : `tab-curved-list prioritas-index-tab-list relative flex overflow-visible rounded-t-xl ${tone === "solitaire" ? "bg-neutral-800" : "bg-pbrown-700"} ${surface === "overview" ? "w-max xl:w-full" : "w-max"}`}
+          className={memberUnderline ? "relative flex w-max overflow-visible border-b border-pbrown-100 bg-pgold-100 xl:w-full" : `tab-curved-list prioritas-index-tab-list relative flex overflow-visible rounded-t-xl ${solitaireMember || activeTone === "solitaire" ? "bg-neutral-800" : "bg-pbrown-700"} ${surface === "overview" ? "w-max xl:w-full" : "w-max"}`}
         >
         {(surface === "overview" ? overviewTabs : visibleTabs ? tabs.filter(({ key }) => visibleTabs.includes(key)) : tabs).map(({ key, href }) => {
           const active = key === activeTab;
           const tabVisual = memberUnderline
             ? { variant: "underline" as const, size: "medium" as const, tone: "prioritas" as const, active }
-            : surface === "overview"
-              ? { variant: "curved" as const, size: "medium" as const, active }
+              : surface === "overview"
+              ? { variant: "curved" as const, size: "medium" as const, tone: activeTone, active }
               : { variant: "curved" as const, tone, active };
           return (
             <TabLink
               ref={(node) => { tabRefs.current[key] = node; }}
               key={key}
-              href={surface === "default" && basePath !== "/prioritas" ? href.replace("/prioritas", basePath) : href}
+              href={surface === "overview" ? href.replace("/prioritas/member", memberBase) : surface === "default" && basePath !== "/prioritas" ? href.replace("/prioritas", basePath) : href}
               scroll={false}
               onNavigate={() => {
                 if (key === activeTab) return;
@@ -92,7 +97,7 @@ export default function PrioritasIndexTabs({ activeTab, surface = "default", bas
               role="tab"
               aria-selected={active}
               {...tabVisual}
-              className={surface === "overview" ? "xl:flex-1 xl:justify-center" : undefined}
+              className={surface === "overview" ? `xl:flex-1 xl:justify-center ${solitaireMember ? "prioritas-index-tab-solitaire-member" : ""}` : undefined}
             >
               {surface === "overview" ? t(`nav.${key}`) : t(`tabs.${key}`)}
             </TabLink>

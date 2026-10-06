@@ -5,7 +5,7 @@ import PrioritasDetailExperience from "@/components/prioritas/PrioritasDetailExp
 import { getPrivilegeOffer, getPrivilegePromos, splitPartnerTerms, type PrivilegeSection } from "@/lib/partner-privileges";
 import type { MemberSignatureVoucherStatus } from "@/lib/member-signature-voucher";
 import { cookies } from "next/headers";
-import { MEMBER_SESSION_COOKIE, MEMBER_SESSION_VALUE } from "@/lib/member-auth";
+import { getMemberBrandFromSession, MEMBER_SESSION_COOKIE, memberBasePath } from "@/lib/member-auth";
 
 function available(value: string): string {
   const trimmed = value.trim();
@@ -33,13 +33,15 @@ export default async function PartnerPrivilegeDetailPage({
 
   const detailT = await getTranslations("lifestylePrivilegeDetail");
   const session = (await cookies()).get(MEMBER_SESSION_COOKIE)?.value;
-  const memberPreviewName = session === MEMBER_SESSION_VALUE
-    ? await (await getTranslations("memberOverview"))("previewFullName")
+  const memberBrand = getMemberBrandFromSession(session);
+  const hasMemberSession = memberArea ? memberBrand !== null : memberBrand === (publicBasePath === "/solitaire" ? "solitaire" : "prioritas");
+  const memberPreviewName = hasMemberSession && memberBrand
+    ? await (await getTranslations("memberOverview"))(memberBrand === "solitaire" ? "solitairePreviewFullName" : "previewFullName")
     : undefined;
-  const hasMemberSession = session === MEMBER_SESSION_VALUE;
+  const memberBase = memberBasePath(memberBrand ?? "prioritas");
   const signatureT = await getTranslations("signaturePrivilege");
   const solitaireT = await getTranslations("solitaireHero");
-  const homeLabel = publicBasePath === "/solitaire" ? solitaireT("breadcrumbLabel") : detailT("breadcrumb.home");
+  const homeLabel = publicBasePath === "/solitaire" || memberArea && memberBrand === "solitaire" ? solitaireT("breadcrumbLabel") : detailT("breadcrumb.home");
   const { partner, benefit, asset, logo } = offer;
   const promos = getPrivilegePromos(section);
   const current = promos.find((promo) => promo.id === partnerId);
@@ -57,7 +59,7 @@ export default async function PartnerPrivilegeDetailPage({
     .replace(/\s+s\/d\s+/i, " – ");
 
   return (
-    <main id="main-content" className={`flex min-h-screen flex-1 flex-col overflow-x-clip ${publicBasePath === "/solitaire" && !memberArea ? "bg-neutral-200" : "bg-pgold-200"}`}>
+    <main id="main-content" className={`flex min-h-screen flex-1 flex-col overflow-x-clip ${publicBasePath === "/solitaire" && !memberArea || memberArea && memberBrand === "solitaire" ? "bg-neutral-200" : "bg-pgold-200"}`}>
       <PrioritasDetailExperience
         publicBasePath={publicBasePath}
         memberArea={memberArea}
@@ -104,9 +106,9 @@ export default async function PartnerPrivilegeDetailPage({
             dynamicModule: {
               message: detailT(memberPreviewName ? "dynamicModule.memberMessage" : "dynamicModule.message", { benefit: benefit.benefit }),
               actionLabel: detailT(memberPreviewName ? "dynamicModule.memberActionLabel" : "dynamicModule.loginLabel"),
-              memberHref: publicBasePath === "/solitaire"
-                ? "/member/login?from=solitaire"
-                : `/prioritas/member/privilege/${encodeURIComponent(partnerId)}`,
+              memberHref: hasMemberSession || memberArea
+                ? `${memberBase}/privilege/${encodeURIComponent(partnerId)}`
+                : `/member/login?from=${publicBasePath === "/solitaire" ? "solitaire" : "prioritas"}&redirectTo=${encodeURIComponent(`${publicBasePath}/member/privilege/${partnerId}`)}`,
             },
           } : {}),
         }}

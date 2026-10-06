@@ -1,12 +1,12 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { MEMBER_SESSION_COOKIE, MEMBER_SESSION_VALUE } from "@/lib/member-auth";
+import { getMemberBrandFromSession, MEMBER_SESSION_COOKIE } from "@/lib/member-auth";
 import { AUTH_COOKIE_NAME } from "@/lib/preview-auth";
 
 export async function GET() {
-  const authenticated = (await cookies()).get(MEMBER_SESSION_COOKIE)?.value === MEMBER_SESSION_VALUE;
+  const brand = getMemberBrandFromSession((await cookies()).get(MEMBER_SESSION_COOKIE)?.value);
   return NextResponse.json(
-    { authenticated },
+    { authenticated: brand !== null, brand },
     { headers: { "Cache-Control": "private, no-store" } },
   );
 }

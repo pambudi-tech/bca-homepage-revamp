@@ -26,7 +26,7 @@ const internationalVouchers: AirportTransferVoucher[] = [
 ];
 const INITIAL_VOUCHER_COUNT = 2;
 
-export default function MemberAirportTransferModule({ variant }: { variant: "domestic" | "international" }) {
+export default function MemberAirportTransferModule({ variant, solitaire = false }: { variant: "domestic" | "international"; solitaire?: boolean }) {
   const t = useTranslations("memberAirportTransfer");
   const vouchers = variant === "international" ? internationalVouchers : domesticVouchers;
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -68,7 +68,7 @@ export default function MemberAirportTransferModule({ variant }: { variant: "dom
   }
 
   return (
-    <section aria-labelledby="member-airport-transfer-title" className="pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] rounded-t-[20px] rounded-b-none bg-white px-4 pb-11 pt-6 shadow-none xl:mx-0 xl:mb-5 xl:w-full xl:rounded-xl xl:p-6 xl:shadow-prioritas">
+    <section aria-labelledby="member-airport-transfer-title" className={`pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] rounded-t-[20px] rounded-b-none bg-white px-4 pb-11 pt-6 shadow-none ${solitaire ? "border border-neutral-300" : ""} xl:mx-0 xl:mb-5 xl:w-full xl:rounded-xl xl:p-6 xl:shadow-prioritas`}>
       <div className="flex flex-col gap-0.5 lg:gap-2">
         <h2 id="member-airport-transfer-title" className="text-lg font-semibold leading-7 tracking-tight text-neutral-900 xl:text-xl">{t("title")}</h2>
         <p className="text-sm leading-6 text-neutral-700 xl:text-base">{t("description")}</p>
