@@ -20,6 +20,7 @@ export default async function SolitaireRiplayPage({ params }: { params: Promise<
   const detailT = await getTranslations("lifestylePrivilegeDetail");
   const aboutT = await getTranslations("prioritasAbout");
   const solitaireT = await getTranslations("solitaireHero");
+  const branchT = await getTranslations("prioritasFindBranch");
 
   const titles: Record<(typeof PRIORITAS_RIPLAY_SECTIONS)[number]["id"], string> = {
     solitaire: t("solitaireTitle"),
@@ -36,7 +37,11 @@ export default async function SolitaireRiplayPage({ params }: { params: Promise<
         now={new Date().toISOString()}
         showHero={false}
         showRecommendations={false}
-        relatedPage={{ title: t("relatedTitle"), href: "/solitaire/tentang-kami", label: aboutT("title") }}
+        alignMobileContentToIndexTitle
+        relatedPages={{ title: t("relatedTitle"), links: [
+          { href: "/solitaire/tentang-kami", label: aboutT("title") },
+          { href: "/solitaire/temukan-kami", label: branchT("title") },
+        ] }}
         customSections={PRIORITAS_RIPLAY_SECTIONS.map((section) => ({ ...section, title: titles[section.id] }))}
         copy={{
           subNav: {

@@ -1248,7 +1248,7 @@
     "locatedAreaUnknown": "Detected, outside our coverage area",
     "stopUsingLocation": "Stop using this location",
     "locating": "Finding your location…",
-    "searchLabel": "Search Prioritas branches",
+    "searchLabel": "Search BCA branches",
     "searchPlaceholder": "Search branch name or address",
     "searching": "Searching branches…",
     "searchNoMatches": "No branch or area found. Try another search.",
@@ -1258,14 +1258,14 @@
     "permissionDenied": "Location access was denied. You can still search by branch name or address.",
     "permissionBlocked": "Location access is blocked in your browser. Open the site settings from the lock/info icon in the address bar, allow Location, then click \"Use my location\" again — no reload needed.",
     "positionUnavailable": "We could not detect your location. Try again, or search by branch name.",
-    "noResults": "No BCA Prioritas branches nearby. Try a branch name or address.",
+    "noResults": "No BCA branches found nearby. Try a branch name or address.",
     "route": "Directions",
     "routeLabel": "Open directions to {name} in Google Maps",
     "type": {
       "cabang": "Branch"
     },
     "map": {
-      "region": "Map of BCA Prioritas branches",
+      "region": "Map of BCA branches",
       "zoomIn": "Zoom in",
       "zoomOut": "Zoom out",
       "ctrlZoom": "Use ctrl + scroll to zoom the map",
@@ -1277,7 +1277,7 @@
     },
     "primer": {
       "title": "Allow your location?",
-      "body": "We'll ask your browser to share your location, so we can show the nearest BCA Prioritas branches. You can still search by branch name below without this.",
+      "body": "We'll ask your browser to share your location, so we can show the nearest BCA branch. You can still search by branch name below without this.",
       "allow": "Allow",
       "notNow": "Not Now"
     }
@@ -1286,6 +1286,7 @@
     "title": "Find a Branch",
     "breadcrumb": "Prioritas",
     "description": "Search BCA Prioritas branches by name or address, then get directions to your chosen branch.",
+    "solitaireDescription": "Search BCA Prioritas/Solitaire branches by name or address.",
     "searchLabel": "Search branches",
     "searchPlaceholder": "Search branch name or address",
     "useLocation": "Use my location",
@@ -1323,6 +1324,13 @@
     "solitaireTitle": "General RIPLAY: BCA Solitaire",
     "prioritasTitle": "General RIPLAY: BCA Prioritas",
     "safeDepositBoxTitle": "General RIPLAY: Safe Deposit Box"
+  },
+  "generalPrivateBanking": {
+    "findUsTitle": "Find Us",
+    "entryPointsTitle": "Explore BCA Private Banking",
+    "solitaireEntryTitle": "BCA Solitaire",
+    "prioritasEntryTitle": "BCA Prioritas",
+    "entryAction": "Explore"
   },
   "footer": {
     "allSocialMedia": "See all BCA social media",

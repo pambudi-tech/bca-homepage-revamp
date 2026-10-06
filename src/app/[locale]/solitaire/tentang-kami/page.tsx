@@ -19,6 +19,7 @@ export default async function SolitaireAboutPage({ params }: { params: Promise<P
   const detailT = await getTranslations("lifestylePrivilegeDetail");
   const solitaireT = await getTranslations("solitaireHero");
   const riplayT = await getTranslations("prioritasRiplay");
+  const branchT = await getTranslations("prioritasFindBranch");
 
   return <>
     <main id="main-content" className="flex min-h-screen flex-1 flex-col overflow-x-clip bg-neutral-200">
@@ -29,7 +30,11 @@ export default async function SolitaireAboutPage({ params }: { params: Promise<P
         now={new Date().toISOString()}
         showHero={false}
         showRecommendations={false}
-        relatedPage={{ title: t("relatedTitle"), href: "/solitaire/riplay", label: riplayT("title") }}
+        alignMobileContentToIndexTitle
+        relatedPages={{ title: t("relatedTitle"), links: [
+          { href: "/solitaire/temukan-kami", label: branchT("title") },
+          { href: "/solitaire/riplay", label: riplayT("title") },
+        ] }}
         copy={{
           subNav: {
             label: detailT("subNavLabel"),

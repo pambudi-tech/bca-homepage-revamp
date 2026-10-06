@@ -1473,7 +1473,7 @@
     "locatedAreaUnknown": "Terdeteksi, di luar area cakupan",
     "stopUsingLocation": "Berhenti pakai lokasi ini",
     "locating": "Mencari lokasi Anda…",
-    "searchLabel": "Cari cabang Prioritas",
+    "searchLabel": "Cari cabang BCA",
     "searchPlaceholder": "Cari nama cabang atau alamat",
     "searching": "Mencari cabang…",
     "searchNoMatches": "Cabang atau area tidak ditemukan. Coba kata kunci lain.",
@@ -1483,14 +1483,14 @@
     "permissionDenied": "Akses lokasi ditolak. Anda masih bisa mencari berdasarkan nama cabang atau alamat.",
     "permissionBlocked": "Akses lokasi diblokir oleh browser Anda. Buka pengaturan situs lewat ikon kunci/info di address bar, izinkan Lokasi, lalu klik \"Gunakan lokasi saya\" lagi — tidak perlu memuat ulang halaman.",
     "positionUnavailable": "Lokasi Anda belum terdeteksi. Coba lagi, atau cari berdasarkan nama cabang.",
-    "noResults": "Belum ada cabang BCA Prioritas di sekitar sini. Coba cari nama cabang atau alamat.",
+    "noResults": "Cabang BCA tidak ditemukan di sekitar sini. Coba cari nama cabang atau alamat.",
     "route": "Rute",
     "routeLabel": "Buka rute ke {name} di Google Maps",
     "type": {
       "cabang": "Cabang"
     },
     "map": {
-      "region": "Peta cabang BCA Prioritas",
+      "region": "Peta cabang BCA",
       "zoomIn": "Perbesar peta",
       "zoomOut": "Perkecil peta",
       "ctrlZoom": "Tekan ctrl + scroll untuk memperbesar peta",
@@ -1502,15 +1502,16 @@
     },
     "primer": {
       "title": "Izinkan lokasi Anda?",
-      "body": "Kami akan meminta browser Anda membagikan lokasi, supaya bisa menampilkan cabang BCA Prioritas terdekat. Anda tetap bisa mencari cabang lewat kolom di bawah tanpa ini.",
+      "body": "Kami akan meminta browser Anda membagikan lokasi, supaya bisa menampilkan cabang BCA terdekat. Anda tetap bisa mencari cabang lewat kolom di bawah tanpa ini.",
       "allow": "Izinkan",
       "notNow": "Nanti Saja"
     }
   },
   "prioritasFindBranch": {
-    "title": "Temukan Cabang",
+    "title": "Temukan Kami",
     "breadcrumb": "Prioritas",
     "description": "Cari lokasi cabang BCA Prioritas berdasarkan nama atau alamat, lalu lihat petunjuk arah menuju cabang pilihan Anda.",
+    "solitaireDescription": "Cari lokasi cabang BCA Prioritas/Solitaire berdasarkan nama atau alamat.",
     "searchLabel": "Cari cabang",
     "searchPlaceholder": "Cari nama cabang atau alamat",
     "useLocation": "Gunakan lokasi saya",
@@ -1548,6 +1549,13 @@
     "solitaireTitle": "RIPLAY Umum BCA Solitaire",
     "prioritasTitle": "RIPLAY Umum BCA Prioritas",
     "safeDepositBoxTitle": "RIPLAY Umum Safe Deposit Box"
+  },
+  "generalPrivateBanking": {
+    "findUsTitle": "Temukan Kami",
+    "entryPointsTitle": "Jelajahi layanan Private Banking BCA",
+    "solitaireEntryTitle": "BCA Solitaire",
+    "prioritasEntryTitle": "BCA Prioritas",
+    "entryAction": "Jelajahi"
   },
   "footer": {
     "allSocialMedia": "Lihat semua media sosial BCA",

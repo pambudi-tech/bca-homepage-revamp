@@ -27,7 +27,7 @@ export default function PrioritasDirectoryLayout({ children, memberPreviewName }
   const route = directoryRoutes.find((item) => item.path === pathname);
   const bankingTab = pathname === "/prioritas/banking-solution" ? "privilege" : pathname === "/prioritas/banking-solution/wealth-insight" ? "wealth" : pathname === "/prioritas/banking-solution/kurs" ? "kurs" : null;
   const magazineIndex = pathname === "/prioritas/e-magazine";
-  const suppressFooter = pathname === "/prioritas" || pathname === "/prioritas/temukan-cabang" || pathname.startsWith("/prioritas/member");
+  const suppressFooter = pathname === "/prioritas" || pathname === "/prioritas/temukan-kami" || pathname.startsWith("/prioritas/member");
   // Footer measures document height on mount, so refresh it after route changes.
   const footer = suppressFooter ? null : <Footer key={pathname} variant="prioritas" />;
 

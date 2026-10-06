@@ -544,17 +544,15 @@ export default function LocationFinder({ initial, tone = "prioritas" }: Props) {
           }}
         />
 
-        {/* Top panel — heading, then the button/search/filter controls.
-            Centred and width-capped rather than a plain `inset-x-4`, so a
-            sub-xl tablet viewport doesn't stretch it edge to edge the way a
-            phone-width `inset-x-4` alone would. */}
+        {/* Top panel — heading, then the button/search/filter controls,
+            inset 16px from the map viewport edges. */}
         <div
           // `overflow-visible`, not `-clip`: the search combobox's suggestion
           // list (see Controls below) is an absolutely-positioned child that
           // drops below this panel's own bottom edge — clipping here cut that
           // dropdown off instead of letting it float over the map like the
           // rest of this floating composition.
-          className="absolute left-1/2 top-4 z-10 w-[calc(100%-32px)] max-w-[560px] -translate-x-1/2 -translate-y-16 overflow-visible rounded-2xl border border-neutral-300 bg-white shadow-[0px_8px_24px_0px_rgba(18,20,23,0.16)]"
+          className="absolute inset-x-4 top-4 z-10 -translate-y-16 overflow-visible rounded-2xl border border-neutral-300 bg-white shadow-[0px_8px_24px_0px_rgba(18,20,23,0.16)]"
         >
           <Controls
             idBase={mobileIdBase}
@@ -574,7 +572,7 @@ export default function LocationFinder({ initial, tone = "prioritas" }: Props) {
             (its own padding stands in for the 16px margin instead), so a
             partial card peeking past the edge can still read as "more to
             scroll to" rather than being clipped by this wrapper first. */}
-        <div className="absolute inset-x-0 bottom-12 z-10">
+        <div className="absolute inset-x-0 bottom-0 z-10">
           <ResultsSlider {...resultsShared} />
         </div>
       </div>
@@ -703,7 +701,7 @@ function Controls({
 
   return (
     <div
-      className={`flex flex-col gap-4 px-5 pt-5 xl:px-6 xl:pt-6 xl:pb-6 ${divider ? "border-b border-neutral-300" : ""}`}
+      className={`flex flex-col gap-4 px-4 py-4 xl:px-6 xl:py-6 ${divider ? "border-b border-neutral-300" : ""}`}
     >
       <div className="flex flex-col gap-3">
         {/* Once the visitor's own position is in use, clicking already did

@@ -29,7 +29,7 @@ export const PRIORITAS_FOOTER_LINK_HREFS: Record<(typeof PRIORITAS_FOOTER_LINK_C
   Perusahaan: [
     "/prioritas/tentang-kami",
     "https://prioritas.bca.co.id/en/Hubungi-Kami",
-    "/prioritas/temukan-cabang",
+    "/prioritas/temukan-kami",
     "/prioritas/riplay",
   ],
   Layanan: ["/prioritas/privilege", "/prioritas/banking-solution"],
