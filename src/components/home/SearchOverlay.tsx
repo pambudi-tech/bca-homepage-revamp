@@ -80,11 +80,13 @@ function SegmentPicker({
   onChange,
   dark = false,
   prioritas = false,
+  solitaire = false,
 }: {
   value: SearchSegment;
   onChange: (segment: SearchSegment) => void;
   dark?: boolean;
   prioritas?: boolean;
+  solitaire?: boolean;
 }) {
   const tSearch = useTranslations("search");
   const menuId = useId();
@@ -92,8 +94,8 @@ function SegmentPicker({
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-  const activeBorder = prioritas ? "border-pgold-500" : "border-cyan-500";
-  const hoverBorder = prioritas ? "hover:border-pgold-500" : "hover:border-cyan-500";
+  const activeBorder = solitaire ? "border-neutral-100" : prioritas ? "border-pgold-500" : "border-cyan-500";
+  const hoverBorder = solitaire ? "hover:border-neutral-100" : prioritas ? "hover:border-pgold-500" : "hover:border-cyan-500";
 
   const positionMenu = useCallback(() => {
     const rect = triggerRef.current?.getBoundingClientRect();
@@ -138,13 +140,13 @@ function SegmentPicker({
           if (!open) positionMenu();
           setOpen((current) => !current);
         }}
-        className={`flex h-[34px] w-[120px] items-center justify-between rounded-full border px-3 text-sm font-semibold transition-colors xl:h-10 ${open ? activeBorder : dark ? "border-white/20" : "border-neutral-300"} ${dark ? `bg-white/10 text-white ${hoverBorder} hover:bg-white/20` : `bg-white text-neutral-800 ${hoverBorder}`}`}
+        className={`flex h-[34px] w-[120px] items-center justify-between rounded-full border px-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 ${solitaire ? "focus-visible:ring-neutral-100" : prioritas ? "focus-visible:ring-pgold-500" : "focus-visible:ring-cyan-500"} xl:h-10 ${open ? activeBorder : dark ? "border-white/20" : "border-neutral-300"} ${dark ? `bg-white/10 text-white ${hoverBorder} hover:bg-white/20` : `bg-white text-neutral-800 ${hoverBorder}`}`}
       >
         <span className="truncate">{tSearch(`segments.${value}`)}</span>
-        <img src="/assets/promo-page/controls/chevron-down.svg" alt="" aria-hidden className={`h-[8.5px] w-[14.5px] shrink-0 transition-transform ${prioritas ? "brightness-0 invert" : ""} ${open ? "rotate-180" : ""}`} />
+        <img src="/assets/promo-page/controls/chevron-down.svg" alt="" aria-hidden className={`h-[8.5px] w-[14.5px] shrink-0 transition-transform ${dark && (prioritas || solitaire) ? "brightness-0 invert" : ""} ${open ? "rotate-180" : ""}`} />
       </button>
       {open && createPortal(
-        <div ref={menuRef} id={menuId} role="listbox" aria-label={tSearch("segmentLabel")} style={{ position: "fixed", top: menuPosition.top, left: menuPosition.left }} className="z-[100] min-w-[142px] overflow-hidden rounded-xl border border-neutral-200 bg-white p-1 shadow-menu">
+        <div ref={menuRef} id={menuId} role="listbox" aria-label={tSearch("segmentLabel")} style={{ position: "fixed", top: menuPosition.top, left: menuPosition.left }} className={`z-[100] min-w-[142px] overflow-hidden rounded-xl border p-1 ${solitaire ? "border-neutral-300 bg-neutral-100 shadow-card" : "border-neutral-200 bg-white shadow-menu"}`}>
           {SEARCH_SEGMENTS.map((segment) => (
             <button
               key={segment}
@@ -155,7 +157,9 @@ function SegmentPicker({
                 onChange(segment);
                 setOpen(false);
               }}
-              className={`flex h-10 w-full items-center rounded-lg px-3 text-left text-sm leading-5 transition-colors ${prioritas
+              className={`flex h-10 w-full items-center rounded-lg px-3 text-left text-sm leading-5 transition-colors ${solitaire
+                ? `${segment === value ? "bg-neutral-200 font-semibold text-neutral-800" : "font-semibold text-neutral-800"} hover:bg-neutral-200`
+                : prioritas
                 ? `${segment === value ? "font-semibold text-pbrown-700" : "text-neutral-700"} hover:bg-pgold-100 hover:font-semibold hover:text-pbrown-600`
                 : `${segment === value ? "bg-blue-100 font-semibold text-blue-500" : "font-semibold text-neutral-800"} hover:bg-blue-100`
                 }`}
@@ -484,7 +488,7 @@ export default function SearchOverlay({
             </button>
             <div className={`relative h-10 min-w-0 flex-1 overflow-visible rounded-full border ${prioritas ? "border-pgold-500" : "border-cyan-500"} bg-neutral-200 backdrop-blur-[28px]`}>
               <div className="absolute left-0.5 top-0.5 z-20">
-                <SegmentPicker value={segment} onChange={changeSegment} prioritas={prioritas} />
+                <SegmentPicker value={segment} onChange={changeSegment} prioritas={segment === "Prioritas"} solitaire={segment === "Solitaire"} />
               </div>
               <input
                 ref={inputRef}
@@ -532,7 +536,7 @@ export default function SearchOverlay({
             } as CSSProperties}
           >
             <div className="absolute left-2 top-2 z-[60]">
-              <SegmentPicker value={segment} onChange={changeSegment} dark prioritas={prioritas} />
+              <SegmentPicker value={segment} onChange={changeSegment} dark prioritas={segment === "Prioritas"} solitaire={segment === "Solitaire"} />
             </div>
             <input
               ref={inputRef}

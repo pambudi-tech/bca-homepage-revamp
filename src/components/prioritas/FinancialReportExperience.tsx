@@ -292,6 +292,6 @@ export default function FinancialReportExperience({ report, portfolioSessionExpi
       </>}
       {notice ? <p role="status" className="rounded-xl border border-pgold-400 bg-pgold-100 p-4 text-base text-pbrown-800">{notice}</p> : null}
     </div>
-    {otpOpen ? <FinancialReportOtpModal onClose={() => setOtpOpen(false)} onVerified={verifyPortfolioOtp} /> : null}
+    {otpOpen ? <FinancialReportOtpModal onClose={() => setOtpOpen(false)} onVerified={verifyPortfolioOtp} solitaire={isSolitaire} /> : null}
   </div>;
 }

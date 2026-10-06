@@ -4,14 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
 import PrioritasDirectoryDropdown from "@/components/prioritas/PrioritasDirectoryDropdown";
-import { PrioritasButton } from "@/components/prioritas/PrioritasButton";
+import { prioritasButtonClassName, solitaireButtonClassName } from "@/components/prioritas/PrioritasButton";
 
 type Step = "request" | "verify" | "noPhone";
 
-export default function FinancialReportOtpModal({ onClose, onVerified, phoneNumbers = ["0812•••••925"] }: {
+export default function FinancialReportOtpModal({ onClose, onVerified, phoneNumbers = ["0812•••••925"], solitaire = false }: {
   onClose: () => void;
   onVerified: (code: string) => Promise<number | null>;
   phoneNumbers?: string[];
+  solitaire?: boolean;
 }) {
   const t = useTranslations("memberFinancialReport.visibility");
   const [step, setStep] = useState<Step>(phoneNumbers.length ? "request" : "noPhone");
@@ -70,21 +71,21 @@ export default function FinancialReportOtpModal({ onClose, onVerified, phoneNumb
       <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="financial-otp-title" tabIndex={-1} className={`relative w-full max-w-96 rounded-xl bg-white px-6 text-center text-neutral-800 shadow-card outline-none ${step === "noPhone" ? "py-6" : "py-8"}`}>
         {step !== "noPhone" ? <>
           <button type="button" onClick={onClose} aria-label={t("close")} className="absolute right-5 top-5 flex size-6 items-center justify-center rounded-md text-neutral-700 hover:bg-neutral-200 focus-visible:outline-2 focus-visible:outline-pgold-500"><span aria-hidden className="text-2xl leading-none">×</span></button>
-          <img src="/assets/prioritas/financial-report/otp-email.svg" alt="" aria-hidden className="mx-auto mb-5 size-16" />
+          <img src="/assets/prioritas/financial-report/otp-email.svg" alt="" aria-hidden className={`mx-auto mb-5 size-16 ${solitaire ? "grayscale" : ""}`} />
         </> : null}
         <h2 id="financial-otp-title" className="text-xl font-semibold leading-7 text-neutral-900">{t(`${step}.title`)}</h2>
         <p className="mx-auto mt-2 max-w-[310px] text-sm leading-5 text-neutral-700">{step === "verify" ? t("verify.description", { phone }) : t(`${step}.description`)}</p>
 
         {step === "request" ? <>
           <div className="mt-7 text-left">
-            <PrioritasDirectoryDropdown id="financial-otp-phone" label={t("request.phoneLabel")} value={phone} placeholder={t("request.phonePlaceholder")} onChange={(value) => { setPhone(value); setError(false); }} options={phoneNumbers.map((number) => ({ value: number, label: number }))} size="medium" xlSize="large" />
+            <PrioritasDirectoryDropdown id="financial-otp-phone" label={t("request.phoneLabel")} value={phone} placeholder={t("request.phonePlaceholder")} onChange={(value) => { setPhone(value); setError(false); }} options={phoneNumbers.map((number) => ({ value: number, label: number }))} size="medium" xlSize="large" tone={solitaire ? "solitaire" : "prioritas"} />
             {error ? <p role="alert" className="mt-2 text-sm text-red-600">{t("request.phoneRequired")}</p> : null}
           </div>
           <div role="note" className="mt-5 flex items-start gap-3 rounded-xl bg-blue-200 p-4 text-left text-sm leading-5 text-blue-600">
             <img src="/assets/member-login/info.svg" alt="" aria-hidden className="mt-0.5 size-5 shrink-0" />
             <span>{t("request.feeNotice")}</span>
           </div>
-          <PrioritasButton size="large" onClick={requestCode} className="mt-6 w-full">{t("request.send")}</PrioritasButton>
+          <button type="button" onClick={requestCode} className={(solitaire ? solitaireButtonClassName : prioritasButtonClassName)({ size: "large", className: "mt-6 w-full" })}><span className="prio-button__label">{t("request.send")}</span></button>
         </> : null}
 
         {step === "verify" ? <>
@@ -115,7 +116,7 @@ export default function FinancialReportOtpModal({ onClose, onVerified, phoneNumb
           <button type="button" disabled={seconds > 0} onClick={() => { setCode(""); setSeconds(119); codeRef.current?.focus(); }} className="mt-1 text-sm font-semibold text-pbrown-600 disabled:text-neutral-500">{t("verify.resend")}</button>
         </> : null}
 
-        {step === "noPhone" ? <PrioritasButton variant="secondary" size="large" onClick={onClose} className="mt-8 w-full">{t("noPhone.back")}</PrioritasButton> : null}
+        {step === "noPhone" ? <button type="button" onClick={onClose} className={(solitaire ? solitaireButtonClassName : prioritasButtonClassName)({ variant: "secondary", size: "large", className: "mt-8 w-full" })}><span className="prio-button__label">{t("noPhone.back")}</span></button> : null}
       </div>
     </div>,
     document.body,
