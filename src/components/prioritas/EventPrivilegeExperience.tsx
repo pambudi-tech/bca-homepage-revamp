@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import ContentCard from "@/components/prioritas/ContentCard";
 import PrioritasFeaturedBanner from "@/components/prioritas/PrioritasFeaturedBanner";
@@ -18,6 +18,14 @@ export default function EventPrivilegeExperience({ promos, initialCategory = "al
   const [category, setCategory] = useState<EventCategory | "all">(initialCategory);
   const [period, setPeriod] = useState<"upcoming" | "all" | "ended">("all");
   const [page, setPage] = useState(1);
+  useEffect(() => {
+    if (initialCategory !== "all") return;
+    const requested = new URLSearchParams(window.location.search).get("category");
+    if (EVENT_CATEGORY_KEYS.includes(requested as EventCategory)) {
+      const frame = window.requestAnimationFrame(() => setCategory(requested as EventCategory));
+      return () => window.cancelAnimationFrame(frame);
+    }
+  }, [initialCategory]);
   const events = useMemo(() => {
     const now = new Date();
     return promos.filter((event) => category === "all" || event.eventCategory === category)

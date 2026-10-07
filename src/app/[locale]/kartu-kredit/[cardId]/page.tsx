@@ -23,6 +23,15 @@ import { getMegaMenuContent } from "@/lib/megamenu";
 import { getNewsCategories } from "@/lib/news";
 import { getProductCategories } from "@/lib/products";
 import { getPromos } from "@/lib/promos";
+import { routing } from "@/i18n/routing";
+
+const CARD_IDS = ["krisflyer-signature", "krisflyer-infinite", "tiket-mastercard", "pps-club-infinite", "everyday-card", "card-platinum", "visa-batman", "mastercard-black", "visa-black", "blibli-mastercard", "mastercard-globe", "mastercard-world", "jcb-black", "unionpay", "american-express-platinum"];
+
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return routing.locales.flatMap((locale) => CARD_IDS.map((cardId) => ({ locale, cardId })));
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; cardId: string }> }): Promise<Metadata> {
   const { locale, cardId } = await params;

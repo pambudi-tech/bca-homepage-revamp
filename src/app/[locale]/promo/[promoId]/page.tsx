@@ -10,8 +10,16 @@ import type { AppLocale } from "@/i18n/routing";
 import { getMegaMenuContent } from "@/lib/megamenu";
 import { getProductCategories } from "@/lib/products";
 import { getPromos } from "@/lib/promos";
+import { routing } from "@/i18n/routing";
 
 type PromoDetailParams = { locale: string; promoId: string };
+
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const promos = await getPromos(new Date());
+  return routing.locales.flatMap((locale) => promos.map(({ id: promoId }) => ({ locale, promoId })));
+}
 
 export async function generateMetadata({ params }: { params: Promise<PromoDetailParams> }): Promise<Metadata> {
   const { promoId } = await params;

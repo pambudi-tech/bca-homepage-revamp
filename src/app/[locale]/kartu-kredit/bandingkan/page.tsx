@@ -24,12 +24,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function CreditCardComparisonPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ cards?: string | string[] }>;
 }) {
-  const [{ locale }, queryParams] = await Promise.all([params, searchParams]);
+  const { locale } = await params;
   setRequestLocale(locale);
 
   const [produk, megamenu, t, hero, news] = await Promise.all([
@@ -40,10 +38,7 @@ export default async function CreditCardComparisonPage({
     getNewsCategories(locale as AppLocale),
   ]);
   const allCards = t.raw("cards") as ComparisonCard[];
-  const rawIds = Array.isArray(queryParams.cards) ? queryParams.cards[0] : queryParams.cards;
-  const selectedIds = new Set((rawIds ?? "").split(",").filter(Boolean));
-  const selectedCards = allCards.filter((card) => selectedIds.has(card.id)).slice(0, 3);
-  const cards = selectedCards.length >= 2 ? selectedCards : allCards.slice(0, 2);
+  const cards = allCards.slice(0, 2);
   const creditCardImage = produk.categories.find((category) => category.key === "Kartu Kredit")?.image ?? "/assets/category/kartu-kredit.webp";
   return (
     <main id="main-content" className="flex min-h-screen flex-1 flex-col bg-blue-100">

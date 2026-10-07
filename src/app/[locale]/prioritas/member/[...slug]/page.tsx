@@ -20,33 +20,17 @@ function first(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;
 }
 
-function solitaireMetadata(metadata: Metadata): Metadata {
-  return {
-    ...metadata,
-    title: typeof metadata.title === "string"
-      ? metadata.title.replace("BCA Prioritas", "BCA Solitaire")
-      : metadata.title,
-  };
-}
-
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { locale, slug } = await params;
   const benefitId = slug[slug.length - 1];
   const detailParams = { params: Promise.resolve({ locale, benefitId }) };
-
-  if (slug.length === 2 && slug[0] === "privilege") {
-    return solitaireMetadata(await privilegeMetadata(detailParams));
-  }
-  if (slug.length === 3 && slug[0] === "banking-solution" && slug[1] === "privilege") {
-    return solitaireMetadata(await bankingMetadata(detailParams));
-  }
-  if (slug.length === 2 && slug[0] === "lifestyle-privilege") {
-    return solitaireMetadata(await lifestyleMetadata(detailParams));
-  }
+  if (slug.length === 2 && slug[0] === "privilege") return privilegeMetadata(detailParams);
+  if (slug.length === 3 && slug[0] === "banking-solution" && slug[1] === "privilege") return bankingMetadata(detailParams);
+  if (slug.length === 2 && slug[0] === "lifestyle-privilege") return lifestyleMetadata(detailParams);
   return {};
 }
 
-export default async function SolitaireMemberPage({ params, searchParams }: Props) {
+export default async function PrioritasMemberPage({ params, searchParams }: Props) {
   const [{ locale, slug }, query] = await Promise.all([params, searchParams]);
   const localeParams = Promise.resolve({ locale });
   const benefitId = slug[slug.length - 1];
@@ -70,15 +54,11 @@ export default async function SolitaireMemberPage({ params, searchParams }: Prop
   if (slug.length === 3 && slug[0] === "banking-solution" && slug[1] === "privilege") {
     return <MemberBankingDetailPage params={detailParams} />;
   }
-  if (slug.length === 1 && slug[0] === "e-magazine") {
-    return <MemberMagazinePage params={localeParams} />;
-  }
+  if (slug.length === 1 && slug[0] === "e-magazine") return <MemberMagazinePage params={localeParams} />;
   if (slug.length === 1 && slug[0] === "financial-report") {
     return <MemberFinancialReportPage params={localeParams} searchParams={Promise.resolve({ report: first(query.report) })} />;
   }
-  if (slug.length === 2 && slug[0] === "lifestyle-privilege") {
-    return <MemberLifestyleDetailPage params={detailParams} />;
-  }
+  if (slug.length === 2 && slug[0] === "lifestyle-privilege") return <MemberLifestyleDetailPage params={detailParams} />;
   if (slug.length === 2 && slug[0] === "event") {
     return <MemberEventDetailPage params={Promise.resolve({ locale, eventId: slug[1] })} />;
   }

@@ -55,6 +55,18 @@ export default function CreditCardComparison({ cards, availableCards }: { cards:
   }, []);
 
   useEffect(() => {
+    const requestedIds = new URLSearchParams(window.location.search).get("cards")?.split(",") ?? [];
+    const requestedCards = requestedIds.flatMap((id) => {
+      const card = availableCards.find((item) => item.id === id);
+      return card ? [card] : [];
+    }).slice(0, 3);
+    if (requestedCards.length >= 2) {
+      const frame = window.requestAnimationFrame(() => setSelectedCards(requestedCards));
+      return () => window.cancelAnimationFrame(frame);
+    }
+  }, [availableCards]);
+
+  useEffect(() => {
     const syncNavbar = (event: Event) => setNavbarHidden((event as CustomEvent<boolean>).detail);
     window.addEventListener(NAVBAR_VISIBILITY_EVENT, syncNavbar);
     return () => window.removeEventListener(NAVBAR_VISIBILITY_EVENT, syncNavbar);

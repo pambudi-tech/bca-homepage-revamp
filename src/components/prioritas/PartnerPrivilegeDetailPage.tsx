@@ -32,7 +32,7 @@ export default async function PartnerPrivilegeDetailPage({
   if (!offer) notFound();
 
   const detailT = await getTranslations("lifestylePrivilegeDetail");
-  const session = (await cookies()).get(MEMBER_SESSION_COOKIE)?.value;
+  const session = memberArea ? (await cookies()).get(MEMBER_SESSION_COOKIE)?.value : undefined;
   const memberBrand = getMemberBrandFromSession(session);
   const hasMemberSession = memberArea ? memberBrand !== null : memberBrand === (publicBasePath === "/solitaire" ? "solitaire" : "prioritas");
   const memberPreviewName = hasMemberSession && memberBrand

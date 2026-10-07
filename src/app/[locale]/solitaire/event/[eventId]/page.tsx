@@ -3,8 +3,15 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import BackToTop from "@/components/home/BackToTop";
 import PrioritasDetailExperience from "@/components/prioritas/PrioritasDetailExperience";
 import { getPrioritasSourceEvents } from "@/lib/prioritas-source-data";
+import { routing } from "@/i18n/routing";
 
 type EventParams = { locale: string; eventId: string };
+
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return routing.locales.flatMap((locale) => getPrioritasSourceEvents().map(({ id: eventId }) => ({ locale, eventId })));
+}
 
 export default async function SolitaireEventDetailPage({ params }: { params: Promise<EventParams> }) {
   const { locale, eventId } = await params;

@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
 import PartnerPrivilegeDetailPage from "@/components/prioritas/PartnerPrivilegeDetailPage";
-import { getPrivilegeOffer } from "@/lib/partner-privileges";
+import { getPrivilegeOffer, getPrivilegePromos } from "@/lib/partner-privileges";
+import { routing } from "@/i18n/routing";
 
 type DetailParams = { locale: string; benefitId: string };
+
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  const ids = [...new Set([...getPrivilegePromos("signature"), ...getPrivilegePromos("complimentary")].map((item) => item.id))];
+  return routing.locales.flatMap((locale) => ids.map((benefitId) => ({ locale, benefitId })));
+}
 
 export async function generateMetadata({ params }: { params: Promise<DetailParams> }): Promise<Metadata> {
   const { benefitId } = await params;

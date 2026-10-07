@@ -3,8 +3,16 @@ import { notFound } from "next/navigation";
 import BankingPrivilegeDetailPage from "@/components/prioritas/BankingPrivilegeDetailPage";
 import { getBankingPrivilegeItem } from "@/components/prioritas/banking-privilege-data";
 import { getTranslations } from "next-intl/server";
+import { bankingPrivilegeItems } from "@/components/prioritas/banking-privilege-data";
+import { routing } from "@/i18n/routing";
 
 type Params = { locale: string; benefitId: string };
+
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return routing.locales.flatMap((locale) => bankingPrivilegeItems.map(({ id: benefitId }) => ({ locale, benefitId })));
+}
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { benefitId } = await params;

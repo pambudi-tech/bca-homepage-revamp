@@ -2,10 +2,22 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import BackToTop from "@/components/home/BackToTop";
 import PrioritasDetailExperience from "@/components/prioritas/PrioritasDetailExperience";
-import { buildEventDetailRecommendations, EVENT_PROMO_SAMPLES } from "@/components/prioritas/event-data";
+import { buildEventDetailRecommendations, EVENT_DETAIL_RECOMMENDATION_KEYS, EVENT_PROMO_SAMPLES } from "@/components/prioritas/event-data";
 import { getPrioritasSourceEvents } from "@/lib/prioritas-source-data";
+import { routing } from "@/i18n/routing";
 
 type EventParams = { locale: string; eventId: string };
+
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  const ids = [...new Set([
+    ...getPrioritasSourceEvents().map(({ id }) => id),
+    ...EVENT_PROMO_SAMPLES.map(({ id }) => id),
+    ...EVENT_DETAIL_RECOMMENDATION_KEYS.map((key) => key === "christies" ? "christies-private-viewing" : "symphony-gala"),
+  ])];
+  return routing.locales.flatMap((locale) => ids.map((eventId) => ({ locale, eventId })));
+}
 
 export default async function PrioritasEventDetailPage({ params }: { params: Promise<EventParams> }) {
   const { locale, eventId } = await params;

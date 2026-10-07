@@ -8,9 +8,8 @@ import PrioritasDetailSubnav from "@/components/prioritas/PrioritasDetailSubnav"
 import SignaturePrivilegeExperience from "@/components/prioritas/SignaturePrivilegeExperience";
 import { getPrivilegePromos } from "@/lib/partner-privileges";
 
-export default async function SolitairePrivilegePage({ params, searchParams }: { params: Promise<{ locale: string }>; searchParams: Promise<{ category?: string | string[] }> }) {
+export default async function SolitairePrivilegePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  const { category } = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations("signaturePrivilege");
   const solitaire = await getTranslations("solitaireHero");
@@ -39,7 +38,6 @@ export default async function SolitairePrivilegePage({ params, searchParams }: {
         promos={getPrivilegePromos("complimentary")}
         signaturePromos={getPrivilegePromos("signature")}
         now={now}
-        initialCategories={Array.isArray(category) ? category : category ? [category] : []}
         publicBasePath="/solitaire"
       />
       <Footer variant="prioritas" tone="solitaire" hideMagazineLink />

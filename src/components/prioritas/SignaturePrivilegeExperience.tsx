@@ -145,6 +145,16 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
   const visiblePromos = filteredPromos.slice((page - 1) * DIRECTORY_PAGE_SIZE, page * DIRECTORY_PAGE_SIZE);
 
   useEffect(() => {
+    if (initialCategories.length > 0) return;
+    const params = new URLSearchParams(window.location.search);
+    const categories = params.getAll("category").flatMap((value) => value.split(","));
+    const frame = window.requestAnimationFrame(() => {
+      setSelectedCategories(categories.filter((value) => chipCategories.includes(value as (typeof chipCategories)[number])));
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [initialCategories.length]);
+
+  useEffect(() => {
     const mobileQuery = window.matchMedia("(max-width: 639px)");
     const updateMobileRail = () => {
       setMobileSignatureRail(mobileQuery.matches);
