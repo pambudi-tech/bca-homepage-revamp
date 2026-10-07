@@ -258,8 +258,12 @@ export default function SearchRecommendation({
   segment = "Semua",
 }: Props) {
   const t = useTranslations("search");
-  const accentText = prioritas ? "text-pbrown-500" : "text-blue-500";
-  const accentBorder = prioritas ? "hover:border-pbrown-500" : "hover:border-blue-500";
+  const solitaire = segment === "Solitaire";
+  const prioritasTheme = prioritas && !solitaire;
+  const accentText = solitaire ? "text-neutral-700" : prioritasTheme ? "text-pbrown-500" : "text-blue-500";
+  const accentBorder = solitaire ? "hover:border-neutral-800" : prioritasTheme ? "hover:border-pbrown-500" : "hover:border-blue-500";
+  const hoverSurface = solitaire ? "hover:bg-neutral-200" : "hover:bg-blue-100";
+  const hoverAccentText = solitaire ? "hover:text-neutral-800" : prioritasTheme ? "hover:text-pbrown-500" : "hover:text-blue-500";
   const { products, information, program, order } = recommendations;
   const isEmpty = keyword.trim() === "";
   const hasResults = products.length > 0 || information.length > 0 || program.length > 0;
@@ -310,7 +314,7 @@ export default function SearchRecommendation({
                 {recent.map((term) => (
                   <span
                     key={term}
-                    className={`inline-flex items-center gap-1.5 rounded-full border border-neutral-300 py-1.5 pl-3.5 pr-2 transition-colors ${accentBorder} hover:bg-blue-100`}
+                    className={`inline-flex items-center gap-1.5 rounded-full border border-neutral-300 py-1.5 pl-3.5 pr-2 transition-colors ${accentBorder} ${hoverSurface}`}
                   >
                     <button
                       type="button"
@@ -342,7 +346,7 @@ export default function SearchRecommendation({
                   key={id}
                   type="button"
                   onClick={() => onSelectQuery(keyword)}
-                  className={`inline-flex items-center rounded-full border border-neutral-300 px-3.5 py-1.5 text-sm font-semibold text-neutral-800 transition-colors ${accentBorder} hover:bg-blue-100 ${prioritas ? "hover:text-pbrown-500" : "hover:text-blue-500"}`}
+                  className={`inline-flex items-center rounded-full border border-neutral-300 px-3.5 py-1.5 text-sm font-semibold text-neutral-800 transition-colors ${accentBorder} ${hoverSurface} ${hoverAccentText}`}
                 >
                   {t(`popular.${id}`)}
                 </button>
@@ -362,17 +366,18 @@ export default function SearchRecommendation({
                   label={t("relatedProducts")}
                   viewAllLabel={t("viewAll")}
                   seeAllUrl={scoped ? undefined : seeAllUrl}
-                  prioritas={prioritas}
+                  prioritas={prioritasTheme}
+                  solitaire={solitaire}
                 />
               ) : null;
             }
             if (sectionKey === "program") {
               return program.length > 0 ? (
-                <ProgramSection key="program" program={program} compact={compact} label={t("relatedProgram")} prioritas={prioritas} />
+                <ProgramSection key="program" program={program} compact={compact} label={t("relatedProgram")} prioritas={prioritasTheme} solitaire={solitaire} />
               ) : null;
             }
             return information.length > 0 ? (
-              <InfoSection key="information" items={information} compact={compact} label={t("relatedInfo")} t={t} prioritas={prioritas} />
+              <InfoSection key="information" items={information} compact={compact} label={t("relatedInfo")} t={t} prioritas={prioritasTheme} solitaire={solitaire} />
             ) : null;
           })}
         </div>
@@ -404,7 +409,7 @@ export default function SearchRecommendation({
             href={seeAllUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={`flex flex-1 items-center gap-3 text-sm font-semibold ${accentText} transition-colors hover:bg-blue-100 ${
+            className={`flex flex-1 items-center gap-3 text-sm font-semibold ${accentText} transition-colors ${hoverSurface} ${
               compact ? "p-3.5" : "p-5"
             }`}
           >
@@ -417,7 +422,7 @@ export default function SearchRecommendation({
             href="https://www.bca.co.id/id/bantuan/pusat-informasi"
             target="_blank"
             rel="noopener noreferrer"
-            className={`flex flex-1 items-center gap-3 transition-colors hover:bg-blue-100 ${
+            className={`flex flex-1 items-center gap-3 transition-colors ${hoverSurface} ${
               compact ? "p-3.5" : "p-5"
             }`}
           >
@@ -448,10 +453,12 @@ type ProductsSectionProps = {
   viewAllLabel: string;
   seeAllUrl?: string;
   prioritas: boolean;
+  solitaire: boolean;
 };
 
-function ProductsSection({ products, compact, label, viewAllLabel, seeAllUrl, prioritas }: ProductsSectionProps) {
-  const accentText = prioritas ? "text-pbrown-500" : "text-blue-500";
+function ProductsSection({ products, compact, label, viewAllLabel, seeAllUrl, prioritas, solitaire }: ProductsSectionProps) {
+  const accentText = solitaire ? "text-neutral-700" : prioritas ? "text-pbrown-500" : "text-blue-500";
+  const hoverStyle = solitaire ? "hover:border-neutral-800 hover:bg-neutral-200" : "hover:border-cyan-500 hover:bg-cyan-100";
   return (
     <section className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
@@ -482,7 +489,7 @@ function ProductsSection({ products, compact, label, viewAllLabel, seeAllUrl, pr
                     <a
                       key={product.id}
                       href={product.href}
-                      className={`group flex rounded-xl border border-neutral-300 transition-colors hover:border-cyan-500 hover:bg-cyan-100 ${
+                      className={`group flex rounded-xl border border-neutral-300 transition-colors ${hoverStyle} ${
                         compact
                           ? "w-[200px] shrink-0 flex-col gap-3 p-3"
                           : "w-[calc((100%-1.5rem)/3)] shrink-0 flex-col gap-4 px-4 pt-4 pb-5"
@@ -496,7 +503,7 @@ function ProductsSection({ products, compact, label, viewAllLabel, seeAllUrl, pr
                         />
                       ) : (
                         <span
-                          className={`flex shrink-0 items-center justify-center bg-cyan-100 ${prioritas ? "text-pbrown-500" : "text-blue-500"} ${
+                          className={`flex shrink-0 items-center justify-center ${solitaire ? "bg-neutral-200 text-neutral-800" : `bg-cyan-100 ${prioritas ? "text-pbrown-500" : "text-blue-500"}`} ${
                             compact ? "size-8 rounded-lg" : "size-10 rounded-xl"
                           }`}
                         >
@@ -505,7 +512,7 @@ function ProductsSection({ products, compact, label, viewAllLabel, seeAllUrl, pr
                       )}
                       <div className={`flex min-w-0 flex-col ${compact ? "gap-1" : "gap-1.5"}`}>
                         <p
-                      className={`font-semibold text-neutral-800 ${prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"} ${
+                      className={`font-semibold text-neutral-800 ${solitaire ? "group-hover:text-neutral-800" : prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"} ${
                             compact ? "text-sm" : "truncate text-base"
                           }`}
                         >
@@ -532,12 +539,14 @@ type ProgramSectionProps = {
   compact: boolean;
   label: string;
   prioritas: boolean;
+  solitaire: boolean;
 };
 
 /** Same card layout as ProductsSection, but led by the campaign's own key art
  * instead of a generic category icon — a concert presale reads better with
  * its poster than with a wallet icon. */
-function ProgramSection({ program, compact, label, prioritas }: ProgramSectionProps) {
+function ProgramSection({ program, compact, label, prioritas, solitaire }: ProgramSectionProps) {
+  const hoverStyle = solitaire ? "hover:border-neutral-800 hover:bg-neutral-200" : "hover:border-cyan-500 hover:bg-cyan-100";
   return (
     <section className="flex flex-col gap-3">
       <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{label}</p>
@@ -550,7 +559,7 @@ function ProgramSection({ program, compact, label, prioritas }: ProgramSectionPr
           <a
             key={item.id}
             href={item.href}
-            className={`group flex overflow-hidden rounded-xl border border-neutral-300 transition-colors hover:border-cyan-500 hover:bg-cyan-100 ${
+            className={`group flex overflow-hidden rounded-xl border border-neutral-300 transition-colors ${hoverStyle} ${
               compact ? "w-[200px] shrink-0 flex-col gap-3" : "w-[calc((100%-1.5rem)/3)] shrink-0 flex-col gap-4 pb-5"
             }`}
           >
@@ -561,7 +570,7 @@ function ProgramSection({ program, compact, label, prioritas }: ProgramSectionPr
             />
             <div className={`flex min-w-0 flex-col gap-1.5 ${compact ? "px-3 pb-3" : "px-4"}`}>
               <p
-                className={`font-semibold text-neutral-800 ${prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"} ${
+                className={`font-semibold text-neutral-800 ${solitaire ? "group-hover:text-neutral-800" : prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"} ${
                   compact ? "text-sm" : "truncate text-base"
                 }`}
               >
@@ -584,9 +593,10 @@ type InfoSectionProps = {
   label: string;
   t: ReturnType<typeof useTranslations>;
   prioritas: boolean;
+  solitaire: boolean;
 };
 
-function InfoSection({ items, compact, label, t, prioritas }: InfoSectionProps) {
+function InfoSection({ items, compact, label, t, prioritas, solitaire }: InfoSectionProps) {
   return (
     <section className="flex flex-col gap-3">
       <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{label}</p>
@@ -597,12 +607,12 @@ function InfoSection({ items, compact, label, t, prioritas }: InfoSectionProps) 
             <li key={info.id}>
               <a
                 href={info.href}
-                className="group flex items-center gap-8 rounded-xl px-3 py-3 transition-colors duration-200 hover:bg-cyan-100"
+                className={`group flex items-center gap-8 rounded-xl px-3 py-3 transition-colors duration-200 ${solitaire ? "hover:bg-neutral-200" : "hover:bg-cyan-100"}`}
               >
                 {/* Mobile has no room for the badge, so the title wraps
                     across the full row instead of truncating. */}
                 <span
-                  className={`min-w-0 flex-1 text-sm font-semibold text-neutral-800 transition-colors duration-200 ${prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"} ${
+                  className={`min-w-0 flex-1 text-sm font-semibold text-neutral-800 transition-colors duration-200 ${solitaire ? "group-hover:text-neutral-800" : prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"} ${
                     compact ? "" : "truncate"
                   }`}
                 >

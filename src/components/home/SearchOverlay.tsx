@@ -323,10 +323,10 @@ export default function SearchOverlay({
   const tPrioritasHero = useTranslations("prioritasHero");
   const locale = useLocale();
   const isPromoSearch = promoSearchItems !== undefined;
-  const prioritas = initialSegment === "Prioritas" || initialSegment === "Solitaire";
+  const initialPrioritas = initialSegment === "Prioritas";
   const placeholders = isPromoSearch
     ? tPromo.raw("search.placeholders") as string[]
-    : initialSegment === "Prioritas"
+    : initialPrioritas
       ? tPrioritasHero.raw("searchPlaceholders") as string[]
     : t.raw("placeholders") as string[];
   // Which of the dropdown's two layouts to render. CSS can't decide this one:
@@ -335,6 +335,8 @@ export default function SearchOverlay({
 
   const [searchValue, setSearchValue] = useState("");
   const [segment, setSegment] = useState<SearchSegment>(initialSegment);
+  const prioritas = segment === "Prioritas";
+  const solitaire = segment === "Solitaire";
   const isPriosoliSearch = segment === "Prioritas" || segment === "Solitaire";
   const recentKey = segmentRecentKey(segment);
   const [recent, setRecent] = useState<string[]>([]);
@@ -484,9 +486,9 @@ export default function SearchOverlay({
         <div ref={contentRef} className="flex h-full w-full max-w-[440px] flex-col bg-neutral-100">
           <header className="relative z-[60] flex h-[calc(4rem+env(safe-area-inset-top))] shrink-0 items-center gap-2 px-4 pt-[env(safe-area-inset-top)]">
             <button type="button" onClick={onClose} aria-label={tSearch("close")} className="flex size-6 shrink-0 items-center justify-center">
-              <svg aria-hidden viewBox="0 0 24 24" fill="none" className="size-6 text-pbrown-500"><path d="m14.5 5-7 7 7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              <svg aria-hidden viewBox="0 0 24 24" fill="none" className={`size-6 ${solitaire ? "text-neutral-800" : "text-pbrown-500"}`}><path d="m14.5 5-7 7 7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </button>
-            <div className={`relative h-10 min-w-0 flex-1 overflow-visible rounded-full border ${prioritas ? "border-pgold-500" : "border-cyan-500"} bg-neutral-200 backdrop-blur-[28px]`}>
+            <div className={`relative h-10 min-w-0 flex-1 overflow-visible rounded-full border ${solitaire ? "border-neutral-800" : prioritas ? "border-pgold-500" : "border-cyan-500"} bg-neutral-200 backdrop-blur-[28px]`}>
               <div className="absolute left-0.5 top-0.5 z-20">
                 <SegmentPicker value={segment} onChange={changeSegment} prioritas={segment === "Prioritas"} solitaire={segment === "Solitaire"} />
               </div>
@@ -551,7 +553,7 @@ export default function SearchOverlay({
             />
             <SearchPlaceholderCarousel placeholders={placeholders} visible={!searchValue} live={open} className="inset-y-0 left-36 right-[72px] text-base" />
             <button type="button" aria-label={tNav("search")} onClick={() => submitSearch(searchValue)} className="absolute right-2 top-1/2 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white transition-transform hover:scale-105">
-              <span aria-hidden className="size-6 bg-pbrown-500 [mask-image:url('/assets/cycle1/outline-search-1.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/cycle1/outline-search-1.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]" />
+              <span aria-hidden className={`size-6 ${solitaire ? "bg-neutral-800" : "bg-pbrown-500"} [mask-image:url('/assets/cycle1/outline-search-1.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/cycle1/outline-search-1.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]`} />
             </button>
           </div>
           <div className="mt-2 min-h-0 flex-1">

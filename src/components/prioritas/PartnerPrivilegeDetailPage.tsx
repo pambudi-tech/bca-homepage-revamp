@@ -104,7 +104,7 @@ export default async function PartnerPrivilegeDetailPage({
             viewMore: detailT("recommendations.viewMore"),
           },
           ...(isSignatureModule || partnerId === "medical-check-up-internasional" ? {
-            dynamicModule: solitaireOnly && publicBasePath === "/prioritas" ? {
+            dynamicModule: solitaireOnly && publicBasePath === "/prioritas" && memberBrand !== "solitaire" ? {
               infoOnly: true as const,
               infoTitle: detailT("dynamicModule.infoTitle"),
               message: detailT("dynamicModule.solitaireOnlyMessage"),

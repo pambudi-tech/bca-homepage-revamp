@@ -31,6 +31,18 @@ const signatureCards = [
   { id: "airport-transfer-domestik", image: "/assets/prioritas/partners/airport-transfer-domestik.jpg" },
 ] as const;
 
+const prioritasSignatureVoucherCounts: Record<string, number> = {
+  "executive-airport-lounge": 50,
+  "airport-transfer-domestik": 2,
+  "padel-court": 1,
+};
+
+const solitaireOnlySignaturePrivileges = new Set([
+  "airport-transfer-internasional",
+  "medical-check-up-internasional",
+  "deteksi-dini-kanker-dan-penyakit-jantung",
+]);
+
 const SIGNATURE_AUTOPLAY_MS = 6000;
 const chipCategories = ["travel", "health", "lifestyle", "culinary", "beauty", "education", "home", "business"] as const;
 
@@ -295,9 +307,21 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
               {visibleSignatureCards.map(({ id, image }, index) => {
                 const promo = signaturePromos.find((item) => item.id === id);
                 const cardImage = id === "padel-court" ? promo?.cover || `${ASSET_ROOT}/${image}` : image.startsWith("/") ? image : `${ASSET_ROOT}/${image}`;
+                const voucherCount = prioritasSignatureVoucherCounts[id];
+                const badgeLabel = memberArea && !isSolitaire
+                  ? solitaireOnlySignaturePrivileges.has(id)
+                    ? t("solitaireOnlyBadge")
+                    : voucherCount
+                      ? t("voucherAvailability", { count: voucherCount })
+                      : null
+                  : null;
                 return <Link href={`${memberArea ? memberBase : publicBasePath}/privilege/${id}`} ref={(node) => { signatureCardRefs.current[index] = node; }} key={`${id}-${image}-${index}`} aria-hidden={index >= 6 && !signatureExpanded && !mobileSignatureRail} inert={index >= 6 && !signatureExpanded && !mobileSignatureRail} className={`group relative block w-[280px] shrink-0 snap-center overflow-hidden rounded-xl ${isSolitaire ? "bg-neutral-900" : "bg-pbrown-800 shadow-prioritas"} transition-[height,opacity,transform] duration-500 ease-in-out ${activeSignatureCard === index ? "h-[360px]" : "h-[328px]"} ${index >= 6 && !signatureExpanded && !mobileSignatureRail ? "translate-y-4 opacity-0" : "translate-y-0 opacity-100"} sm:h-60 sm:w-auto sm:shrink sm:snap-none`}>
                 <img src={cardImage} alt="" className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 <div className={`absolute inset-0 bg-gradient-to-t ${isSolitaire ? "from-black/70 via-black/15" : "from-pbrown-900/90 via-pbrown-900/20"} to-transparent`} />
+                {badgeLabel ? <span
+                  className="glass-panel glass-panel-prioritas absolute right-2 top-4 z-20 inline-flex max-w-[calc(100%-1rem)] items-center rounded-xl px-3 py-2 text-right text-xs font-semibold leading-4 text-white shadow-card sm:top-2 sm:text-sm"
+                  style={{ backgroundColor: "color-mix(in srgb, var(--color-pbrown-600) 50%, transparent)", backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)", isolation: "isolate" }}
+                >{badgeLabel}</span> : null}
                 <div className="absolute left-4 top-4 z-30 xl:hidden">
                   <svg viewBox="0 0 32 32" className={`size-8 -rotate-90 transition-opacity duration-300 ${activeSignatureCard === index ? "opacity-100" : "opacity-0"}`} aria-hidden>
                     <circle cx="16" cy="16" r="16" fill="rgba(0,0,0,0.28)" />

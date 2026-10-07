@@ -40,9 +40,9 @@ export default async function MemberOverview({ events, promos, now, voucherStatu
   const voucherT = await getTranslations("memberSignatureVoucher");
   const loungeCount = voucherStatus === "exhausted" ? voucherT("exhausted") : voucherStatus === "unlimited" ? voucherT("unlimited") : voucherT("available", { count: AIRPORT_LOUNGE_VOUCHER_COUNT });
   const signature = [
-    { key: "lounge", detailId: "executive-airport-lounge", icon: "/assets/prioritas/member-overview/signature-airport.png", title: t("signature.lounge"), count: loungeCount, action: voucherStatus === "penalty" ? voucherT("learn") : t("signature.details"), badge: voucherStatus === "penalty" ? voucherT("penaltyBadge") : undefined },
-    { key: "transfer", detailId: "airport-transfer-domestik", icon: "/assets/prioritas/member-overview/signature-airport.png", title: t("signature.transfer"), count: t("signature.four"), action: t("signature.voucher") },
-    { key: "padel", detailId: "padel-court", icon: "/assets/prioritas/member-overview/signature-padel.png", title: t("signature.padel"), count: "", action: t("signature.voucher") },
+    { key: "lounge", detailId: "executive-airport-lounge", icon: "/assets/prioritas/member-overview/airplane.svg", title: t("signature.lounge"), count: loungeCount, action: voucherStatus === "penalty" ? voucherT("learn") : t("signature.details"), badge: voucherStatus === "penalty" ? voucherT("penaltyBadge") : undefined },
+    { key: "transfer", detailId: "airport-transfer-domestik", icon: "/assets/prioritas/member-overview/airplane.svg", title: t("signature.transfer"), count: t("signature.four"), action: t("signature.voucher") },
+    { key: "padel", detailId: "padel-court", icon: "/assets/prioritas/member-overview/padel-racket.svg", title: t("signature.padel"), count: "", action: t("signature.voucher") },
     { key: "medical", detailId: "deteksi-dini-kanker-dan-penyakit-jantung", icon: "/assets/prioritas/member-overview/signature-prodia.png", title: t("signature.medical"), count: t("signature.four"), action: t("signature.voucher") },
   ];
   return (
@@ -51,7 +51,7 @@ export default async function MemberOverview({ events, promos, now, voucherStatu
         <PrioritasMemberHeader activeTab="overview" compactTitleTabGap />
 
         <div className="relative isolate">
-          <img aria-hidden src="/assets/prioritas/member-overview/decoration.png" alt="" className={`pointer-events-none absolute inset-x-0 top-0 -z-10 h-auto w-full object-cover ${isSolitaire ? "grayscale" : ""}`} />
+          <img aria-hidden src="/assets/prioritas/member-overview/decoration.png" alt="" className={`pointer-events-none absolute inset-x-0 top-0 -z-10 h-auto w-full object-cover opacity-50 [mask-image:linear-gradient(to_bottom,black_0%,black_65%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_65%,transparent_100%)] ${isSolitaire ? "grayscale" : ""}`} />
           <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-10 px-4 py-6 xl:px-0">
           <section id="overview-signature" aria-labelledby="overview-signature-title">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
@@ -63,7 +63,7 @@ export default async function MemberOverview({ events, promos, now, voucherStatu
                 {signature.map((item) => <article key={item.key} className={`flex h-[208px] w-[280px] shrink-0 snap-center flex-col overflow-hidden rounded-xl shadow-card xl:h-60 xl:w-auto xl:shrink xl:snap-none ${isSolitaire ? "bg-neutral-900" : "bg-pbrown-600"}`}>
                   <div className={`flex h-40 flex-none flex-col rounded-xl p-4 xl:h-auto xl:min-h-0 xl:flex-1 xl:p-5 ${isSolitaire ? "bg-neutral-100" : "bg-white"}`}>
                     <div className="flex items-start justify-between gap-2">
-                      <img aria-hidden src={item.icon} alt="" className="h-10 w-auto max-w-[85px] self-start object-contain object-left" />
+                      {item.icon.endsWith(".svg") ? <span aria-hidden className={`size-10 shrink-0 self-start ${isSolitaire ? "bg-neutral-800" : "bg-pbrown-600"}`} style={{ maskImage: `url(${item.icon})`, WebkitMaskImage: `url(${item.icon})`, maskPosition: "center", WebkitMaskPosition: "center", maskRepeat: "no-repeat", WebkitMaskRepeat: "no-repeat", maskSize: "contain", WebkitMaskSize: "contain" }} /> : <img aria-hidden src={item.icon} alt="" className="h-10 w-auto max-w-[85px] self-start object-contain object-left" />}
                       {item.badge ? <span className="rounded-lg bg-voucher-warning px-2 py-1 text-xs font-semibold leading-4 text-voucher-warning-ink">{item.badge}</span> : null}
                     </div>
                     <h3 className="mt-5 text-lg font-semibold leading-6 tracking-[-0.02em] text-neutral-800 xl:text-xl xl:leading-7">{item.title}</h3>

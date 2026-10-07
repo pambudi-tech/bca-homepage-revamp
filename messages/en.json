@@ -1654,6 +1654,8 @@
     "description": "Exclusive services and benefits designed for your every need.",
     "lifestyleDescription": "Special offers and exclusive benefits to enjoy a variety of lifestyle experiences.",
     "more": "Learn more",
+    "voucherAvailability": "Available vouchers: {count}",
+    "solitaireOnlyBadge": "For BCA Solitaire customers only",
     "showAllSignature": "View All Privileges",
     "showLessSignature": "Show Fewer Privileges",
     "signature": {

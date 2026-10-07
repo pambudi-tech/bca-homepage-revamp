@@ -1888,6 +1888,8 @@
     "description": "Keistimewaan eksklusif berupa layanan dan manfaat khusus untuk berbagai kebutuhan Anda.",
     "lifestyleDescription": "Penawaran khusus dan keuntungan eksklusif untuk menikmati berbagai pilihan gaya hidup.",
     "more": "Selengkapnya",
+    "voucherAvailability": "Tersedia {count} voucher",
+    "solitaireOnlyBadge": "Khusus nasabah BCA Solitaire",
     "showAllSignature": "Lihat Semua Privilege",
     "showLessSignature": "Tampilkan Lebih Sedikit",
     "signature": {

@@ -1529,6 +1529,8 @@
     "description": "为满足您的多元需求而设计的专属服务与礼遇。",
     "lifestyleDescription": "专属优惠与礼遇，让您尽享多元生活方式体验。",
     "more": "了解更多",
+    "voucherAvailability": "{count} 张礼券可用",
+    "solitaireOnlyBadge": "仅限 BCA Solitaire 客户",
     "showAllSignature": "查看所有礼遇",
     "showLessSignature": "收起礼遇",
     "signature": {
