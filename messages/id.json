@@ -2030,7 +2030,7 @@
         "shiseido": { "title": "Rasakan Analisis Kulit Gratis dengan Ultimune Serum", "brand": "Shiseido", "alt": "Shiseido Ultimune Serum" }
       }
     },
-    "dynamicModule": { "message": "Cek sisa kuota akses dan voucher {benefit} Anda dengan masuk ke akun.", "loginLabel": "Masuk ke Akun Anda", "memberMessage": "Cek sisa kuota voucher {benefit} Anda di area member.", "memberActionLabel": "Akses sekarang" }
+    "dynamicModule": { "message": "Cek sisa kuota akses dan voucher {benefit} Anda dengan masuk ke akun.", "loginLabel": "Masuk ke Akun Anda", "memberMessage": "Cek sisa kuota voucher {benefit} Anda di area member.", "memberActionLabel": "Akses sekarang", "infoTitle": "Informasi", "solitaireOnlyMessage": "Privilege ini hanya tersedia untuk nasabah BCA Solitaire." }
   },
   "magazineIndex": {
     "breadcrumb": "e-Magazine",
@@ -2207,7 +2207,7 @@
     "visibility": {
       "show": "Tampilkan nilai portofolio", "hide": "Sembunyikan nilai portofolio", "close": "Tutup dialog",
       "request": { "title": "Kirim Kode OTP", "description": "Untuk mengakses Laporan Finansial, kode OTP akan dikirimkan ke nomor berikut", "phoneLabel": "Nomor telepon untuk OTP", "phonePlaceholder": "Pilih nomor telepon", "phoneRequired": "Pilih nomor telepon terlebih dahulu.", "feeNotice": "Pengiriman kode akan dikenakan biaya sesuai dengan tarif operator", "send": "Kirim OTP" },
-      "verify": { "title": "Masukkan Kode OTP", "description": "Kami telah mengirim 6 digit kode ke nomor {phone}", "codeLabel": "Kode OTP 6 digit", "resend": "Kirim ulang kode OTP" },
+      "verify": { "title": "Masukkan Kode OTP", "description": "Kami telah mengirim 6 digit kode ke nomor {phone}", "codeLabel": "Kode OTP 6 digit", "invalidCode": "Kode OTP salah. Silakan coba lagi.", "resend": "Kirim ulang kode OTP" },
       "noPhone": { "title": "Belum Ada Nomor Telepon", "description": "Anda belum memiliki Nomor Handphone e-Banking yang terdaftar. Silakan daftarkan ke ATM terdekat.", "back": "Kembali" }
     },
     "overviewLabel": "Ringkasan portofolio",
@@ -2217,13 +2217,16 @@
     "summary": {
       "netWorth": "Net Worth",
       "netWorthInfo": "Nilai aset dikurangi liabilitas",
-      "netWorthChange": "+11,8% dari tahun lalu",
+      "netWorthTooltip": "Net Worth adalah kekayaan bersih pada bulan laporan yang dipilih, dihitung dari total aset dikurangi total liabilitas.",
+      "netWorthChange": "{change}% dari tahun lalu",
       "assets": "Total Aset",
       "assetsInfo": "Total nilai aset",
-      "assetsChange": "-6,7% dari tahun lalu",
+      "assetsTooltip": "Total Aset adalah gabungan nilai aset yang tercantum pada laporan untuk bulan yang dipilih, sebelum dikurangi liabilitas.",
+      "assetsChange": "{change}% dari tahun lalu",
       "liabilities": "Total Liabilitas",
       "liabilitiesInfo": "Total nilai liabilitas",
-      "liabilitiesChange": "-6,7% dari tahun lalu"
+      "liabilitiesTooltip": "Total Liabilitas adalah gabungan kewajiban finansial yang tercantum pada laporan untuk bulan yang dipilih. Nilai ini dikurangkan dari aset untuk menghitung Net Worth.",
+      "liabilitiesChange": "{change}% dari tahun lalu"
     },
     "chart": {
       "title": "Pertumbuhan Kekayaan",
@@ -2248,7 +2251,7 @@
       "consumerCredit": "Kredit Konsumtif",
       "workingCapital": "Kredit Modal Kerja",
       "creditCard": "Kartu Kredit",
-      "change": "+11,8% dari tahun lalu"
+      "change": "{change}% dari tahun lalu"
     },
     "portfolio": {
       "periodLabel": "Bulan laporan portofolio"
@@ -2311,7 +2314,8 @@
     "overview": "ke Overview",
     "logout": "Keluar Akun",
     "confirmTitle": "Keluar dari akun?",
-    "confirmMessage": "Apakah Anda yakin ingin keluar dari akun?",
+    "confirmMessage": "Anda akan keluar dari sesi ini. Login kembali diperlukan untuk mengakses akun Anda.",
+    "confirmLogout": "Ya, Keluar",
     "cancel": "Batal"
   },
   "mobileMenu":   {

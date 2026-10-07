@@ -5,7 +5,7 @@ import { PORTFOLIO_VIEW_SESSION_COOKIE, PORTFOLIO_VIEW_SESSION_MAX_AGE_SECONDS }
 
 /** Demo OTP verification grants a separate ten-minute portfolio viewing session. */
 export async function activatePortfolioViewSession(code: string): Promise<number | null> {
-  if (!/^\d{6}$/.test(code)) return null;
+  if (!/^\d{6}$/.test(code) || code === "000000") return null;
 
   const expiresAt = Date.now() + PORTFOLIO_VIEW_SESSION_MAX_AGE_SECONDS * 1000;
   (await cookies()).set(PORTFOLIO_VIEW_SESSION_COOKIE, String(expiresAt), {

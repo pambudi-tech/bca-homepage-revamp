@@ -12,10 +12,17 @@ import { activatePortfolioViewSession } from "@/app/[locale]/prioritas/member/fi
 type Report = "portfolio" | "tax";
 type Period = "year" | "month";
 
-const years = ["2026", "2025", "2024", "2023", "2022"];
+const reportDateParts = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Jakarta", year: "numeric", month: "numeric" }).formatToParts(new Date());
+const currentReportYear = Number(reportDateParts.find((part) => part.type === "year")?.value);
+const currentReportMonth = Number(reportDateParts.find((part) => part.type === "month")?.value);
+const years = Array.from({ length: 5 }, (_, index) => String(currentReportYear - index));
 const months = Array.from({ length: 12 }, (_, index) => String(index + 1));
-const monthlyNetWorth = [3.65, 3.72, 3.78, 3.9, 4.05, 4.14, 4.28, 4.37, 4.3, 4.51, 4.58, 4.72];
+const prioritasMonthlyNetWorth = [3.65, 3.72, 3.78, 3.9, 4.05, 4.14, 4.28, 4.37, 4.3, 4.51, 4.58, 4.72];
+const solitaireMonthlyNetWorth = [20.65, 20.72, 20.78, 20.9, 21.05, 21.14, 21.28, 21.37, 21.3, 21.51, 21.58, 21.72];
+const prioritasPreviousYearNetWorth = [3.32, 3.38, 3.44, 3.55, 3.68, 3.76, 3.87, 3.95, 3.89, 4.08, 4.14, 4.26];
+const solitairePreviousYearNetWorth = [19.25, 19.33, 19.42, 19.55, 19.69, 19.78, 19.9, 20.01, 19.95, 20.12, 20.2, 20.32];
 const monthlyLiabilities = [0.52, 0.51, 0.53, 0.54, 0.52, 0.5, 0.48, 0.47, 0.49, 0.46, 0.45, 0.44];
+const previousYearMonthlyLiabilities = [0.56, 0.55, 0.57, 0.58, 0.56, 0.55, 0.54, 0.53, 0.54, 0.52, 0.51, 0.5];
 const composition = [
   { key: "savings", percent: 40, color: "bg-asset-savings", solitaireColor: "bg-neutral-700", solitaireStroke: "var(--color-neutral-700)" },
   { key: "deposit", percent: 30, color: "bg-asset-deposit", solitaireColor: "bg-neutral-600", solitaireStroke: "var(--color-neutral-600)" },
@@ -41,32 +48,60 @@ type PortfolioSnapshot = {
   netWorth: number;
   assets: number;
   liabilities: number;
+  changes: Record<"netWorth" | "assets" | "liabilities", number>;
   composition: Record<(typeof composition)[number]["key"], number>;
   categories: Record<"savings" | "investments" | "protection" | "consumerCredit" | "workingCapital" | "creditCard", number>;
+  categoryChanges: Record<"savings" | "investments" | "protection" | "consumerCredit" | "workingCapital" | "creditCard", number>;
 };
 
-function getPortfolioSnapshot(month: string): PortfolioSnapshot {
+function getMonthlyNetWorth(solitaire: boolean) {
+  return solitaire ? solitaireMonthlyNetWorth : prioritasMonthlyNetWorth;
+}
+
+function getPortfolioSnapshot(month: string, solitaire: boolean): PortfolioSnapshot {
+  const monthlyNetWorth = getMonthlyNetWorth(solitaire);
   const index = Math.max(0, Number(month) - 1) % monthlyNetWorth.length;
   const netWorth = monthlyNetWorth[index];
   const liabilities = monthlyLiabilities[index];
   const assets = netWorth + liabilities;
+  const previousNetWorth = (solitaire ? solitairePreviousYearNetWorth : prioritasPreviousYearNetWorth)[index];
+  const previousLiabilities = previousYearMonthlyLiabilities[index];
+  const previousAssets = previousNetWorth + previousLiabilities;
+  const percentChange = (current: number, previous: number) => ((current - previous) / previous) * 100;
+  const assetCategoryWeights = { savings: 120 / 410.1, investments: 210 / 410.1, protection: 80.1 / 410.1 };
+  const previousYearAssetCategoryWeights = { savings: 110 / 410, investments: 205 / 410, protection: 95 / 410 };
+  const liabilityCategoryWeights = { consumerCredit: 12 / 33.6, workingCapital: 14 / 33.6, creditCard: 7.6 / 33.6 };
+  const categories = {
+    savings: assets * assetCategoryWeights.savings,
+    investments: assets * assetCategoryWeights.investments,
+    protection: assets * assetCategoryWeights.protection,
+    consumerCredit: liabilities * liabilityCategoryWeights.consumerCredit,
+    workingCapital: liabilities * liabilityCategoryWeights.workingCapital,
+    creditCard: liabilities * liabilityCategoryWeights.creditCard,
+  };
   return {
     netWorth,
     assets,
     liabilities,
+    changes: {
+      netWorth: percentChange(netWorth, previousNetWorth),
+      assets: percentChange(assets, previousAssets),
+      liabilities: percentChange(liabilities, previousLiabilities),
+    },
     composition: {
       savings: assets * 0.4,
       deposit: assets * 0.3,
       current: assets * 0.2,
       securities: assets * 0.1,
     },
-    categories: {
-      savings: assets * (120 / 410.1),
-      investments: assets * (210 / 410.1),
-      protection: assets * (80.1 / 410.1),
-      consumerCredit: liabilities * (12 / 33.6),
-      workingCapital: liabilities * (14 / 33.6),
-      creditCard: liabilities * (7.6 / 33.6),
+    categories,
+    categoryChanges: {
+      savings: percentChange(categories.savings, previousAssets * previousYearAssetCategoryWeights.savings),
+      investments: percentChange(categories.investments, previousAssets * previousYearAssetCategoryWeights.investments),
+      protection: percentChange(categories.protection, previousAssets * previousYearAssetCategoryWeights.protection),
+      consumerCredit: percentChange(categories.consumerCredit, previousLiabilities * liabilityCategoryWeights.consumerCredit),
+      workingCapital: percentChange(categories.workingCapital, previousLiabilities * liabilityCategoryWeights.workingCapital),
+      creditCard: percentChange(categories.creditCard, previousLiabilities * liabilityCategoryWeights.creditCard),
     },
   };
 }
@@ -81,6 +116,21 @@ function formatPortfolioAxisAmount(value: number, locale: string) {
   const amount = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(value);
   const unit = locale.startsWith("id") ? "M" : locale.startsWith("zh") ? "十亿" : "B";
   return `Rp${amount} ${unit}`;
+}
+
+function formatPortfolioChange(value: number, locale: string) {
+  return new Intl.NumberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1, signDisplay: "always" }).format(value);
+}
+
+function insightChangeColor(change: number, favorableWhen: "increase" | "decrease", solitaire: boolean) {
+  const favorable = favorableWhen === "decrease" ? change < 0 : change > 0;
+  if (favorable) return "text-green-600";
+  if (solitaire) return "text-neutral-700";
+  return "text-pgold-700";
+}
+
+function summaryChangeColor(key: "netWorth" | "assets" | "liabilities", change: number, solitaire: boolean) {
+  return insightChangeColor(change, key === "liabilities" ? "decrease" : "increase", solitaire);
 }
 
 function ReportDropdown({ id, label, value, onChange, options, className = "", size = "large", xlSize, solitaire = false }: { id: string; label: string; value: string; onChange: (value: string) => void; options: { value: string; label: string }[]; className?: string; size?: "medium" | "large"; xlSize?: "large"; solitaire?: boolean }) {
@@ -99,14 +149,14 @@ function DownloadButton({ onClick, label, solitaire = false }: { onClick: () => 
 
 function SummaryCards({ t, visible, onToggleVisibility, snapshot, locale, solitaire = false }: { t: ReturnType<typeof useTranslations<"memberFinancialReport">>; visible: boolean; onToggleVisibility: () => void; snapshot: PortfolioSnapshot; locale: string; solitaire?: boolean }) {
   const cards = [
-    { key: "netWorth", change: "positive", amount: snapshot.netWorth },
-    { key: "assets", change: "neutral", amount: snapshot.assets },
-    { key: "liabilities", change: "warning", amount: snapshot.liabilities },
+    { key: "netWorth", amount: snapshot.netWorth },
+    { key: "assets", amount: snapshot.assets },
+    { key: "liabilities", amount: snapshot.liabilities },
   ] as const;
   return <div className="grid divide-y divide-neutral-300 md:grid-cols-3 md:divide-x md:divide-y-0">
-    {cards.map(({ key, change, amount }) => <div key={key} className="flex h-36 min-h-0 flex-col px-4 py-3 md:h-auto md:min-h-[200px] md:p-5">
+    {cards.map(({ key, amount }) => <div key={key} className="flex h-36 min-h-0 flex-col px-4 py-3 md:h-auto md:min-h-[200px] md:p-5">
       <div className="flex items-center gap-2 text-base font-semibold text-neutral-800 md:text-lg">
-        {t(`summary.${key}`)} <InfoTip label={t(`summary.${key}Info`)} message={t(`summary.${key}Info`)} tone={solitaire ? "solitaire" : "prioritas"} />
+        {t(`summary.${key}`)} <InfoTip label={t(`summary.${key}Info`)} message={t(`summary.${key}Tooltip`)} tone={solitaire ? "solitaire" : "prioritas"} />
       </div>
       <div className="mt-3 flex items-center justify-between gap-3 md:h-12">
         <p className="text-[28px] font-semibold leading-9 text-neutral-900 md:text-[32px] md:leading-10">{visible ? formatPortfolioAmount(amount, locale) : t("maskedAmount")}</p>
@@ -114,15 +164,16 @@ function SummaryCards({ t, visible, onToggleVisibility, snapshot, locale, solita
           <PrioritasButtonIcon src={`/assets/member-login/eye${visible ? "" : "-off"}.svg`} />
         </button> : null}
       </div>
-      <p className={`mt-auto pt-3 text-sm font-semibold md:text-base ${change === "positive" ? "text-green-600" : change === "warning" ? "text-pgold-700" : "text-neutral-600"}`}>{t(`summary.${key}Change`)}</p>
+      <p className={`mt-auto pt-3 text-sm font-semibold md:text-base ${summaryChangeColor(key, snapshot.changes[key], solitaire)}`}>{t(`summary.${key}Change`, { change: formatPortfolioChange(snapshot.changes[key], locale) })}</p>
     </div>)}
   </div>;
 }
 
 function WealthChart({ t, interval, setInterval, visible, selectedMonth, locale, solitaire = false }: { t: ReturnType<typeof useTranslations<"memberFinancialReport">>; interval: string; setInterval: (value: string) => void; visible: boolean; selectedMonth: string; locale: string; solitaire?: boolean }) {
+  const monthlyNetWorth = getMonthlyNetWorth(solitaire);
   const selectedMonthIndex = Math.max(0, Number(selectedMonth) - 1) % monthlyNetWorth.length;
   const chartData = interval === "yearly"
-    ? [2022, 2023, 2024, 2025, 2026].map((year) => ({ label: year === 2026 ? `${t(`months.${selectedMonthIndex + 1}`)} 2026` : String(year), value: monthlyNetWorth[selectedMonthIndex] - (2026 - year) * 0.45 }))
+    ? [...years].reverse().map((year) => Number(year)).map((year) => ({ label: year === currentReportYear ? `${t(`months.${selectedMonthIndex + 1}`)} ${year}` : String(year), value: monthlyNetWorth[selectedMonthIndex] - (currentReportYear - year) * 0.45 }))
     : Array.from({ length: 6 }, (_, pointIndex) => {
       const monthIndex = (selectedMonthIndex - 5 + pointIndex + 12) % 12;
       const value = monthlyNetWorth[monthIndex] - (monthIndex > selectedMonthIndex ? 24 : 0);
@@ -211,10 +262,11 @@ function Composition({ t, visible, snapshot, locale, solitaire = false }: { t: R
 
 function CategoryCards({ t, category, visible, snapshot, locale, solitaire = false }: { t: ReturnType<typeof useTranslations<"memberFinancialReport">>; category: "assets" | "liabilities"; visible: boolean; snapshot: PortfolioSnapshot; locale: string; solitaire?: boolean }) {
   const keys = category === "assets" ? ["savings", "investments", "protection"] as const : ["consumerCredit", "workingCapital", "creditCard"] as const;
+  const favorableWhen = category === "assets" ? "increase" : "decrease";
   return <section aria-labelledby={`${category}-heading`}>
     <h2 id={`${category}-heading`} className="mb-6 text-2xl font-semibold text-neutral-800">{t(`categories.${category}`)}</h2>
     <div className={`grid overflow-hidden rounded-xl border ${solitaire ? "border-neutral-300 shadow-card" : "border-pbrown-100 shadow-prioritas"} bg-white md:grid-cols-3 md:divide-x ${solitaire ? "md:divide-neutral-300" : "md:divide-pbrown-100"}`}>
-      {keys.map((key) => <article key={key} className="flex h-36 flex-col border-b border-pbrown-100 p-4 last:border-b-0 md:h-auto md:min-h-[200px] md:border-b-0 md:p-5"><h3 className="text-base font-semibold text-neutral-800 md:text-lg">{t(`categories.${key}`)}</h3><p className="mt-3 text-[28px] font-semibold leading-9 text-neutral-900 md:text-[32px] md:leading-10">{visible ? formatPortfolioAmount(snapshot.categories[key], locale) : t("maskedAmount")}</p><p className="mt-auto pt-3 text-sm font-semibold text-green-600 md:text-base">{t("categories.change")}</p></article>)}
+      {keys.map((key) => <article key={key} className="flex h-36 flex-col border-b border-pbrown-100 p-4 last:border-b-0 md:h-auto md:min-h-[200px] md:border-b-0 md:p-5"><h3 className="text-base font-semibold text-neutral-800 md:text-lg">{t(`categories.${key}`)}</h3><p className="mt-3 text-[28px] font-semibold leading-9 text-neutral-900 md:text-[32px] md:leading-10">{visible ? formatPortfolioAmount(snapshot.categories[key], locale) : t("maskedAmount")}</p><p className={`mt-auto pt-3 text-sm font-semibold md:text-base ${insightChangeColor(snapshot.categoryChanges[key], favorableWhen, solitaire)}`}>{t("categories.change", { change: formatPortfolioChange(snapshot.categoryChanges[key], locale) })}</p></article>)}
     </div>
   </section>;
 }
@@ -226,7 +278,7 @@ export default function FinancialReportExperience({ report, portfolioSessionExpi
   const [period, setPeriod] = useState<Period>("month");
   const [year, setYear] = useState("2026");
   const [month, setMonth] = useState("6");
-  const [portfolioMonth, setPortfolioMonth] = useState("7");
+  const [portfolioMonth, setPortfolioMonth] = useState(String(currentReportMonth));
   const [interval, setInterval] = useState("yearly");
   const [notice, setNotice] = useState("");
   const [portfolioSessionExpiresAt, setPortfolioSessionExpiresAt] = useState(initialPortfolioSessionExpiresAt);
@@ -235,7 +287,8 @@ export default function FinancialReportExperience({ report, portfolioSessionExpi
   const showNotice = () => setNotice(t("previewNotice"));
   const yearOptions = years.map((item) => ({ value: item, label: item }));
   const monthOptions = months.map((item) => ({ value: item, label: t(`months.${item}`) }));
-  const portfolioSnapshot = getPortfolioSnapshot(portfolioMonth);
+  const portfolioMonthOptions = monthOptions.slice(0, currentReportMonth).map((option) => ({ ...option, label: `${option.label} ${currentReportYear}` }));
+  const portfolioSnapshot = getPortfolioSnapshot(portfolioMonth, isSolitaire);
 
   useEffect(() => {
     if (!portfolioSessionExpiresAt) return;
@@ -261,7 +314,7 @@ export default function FinancialReportExperience({ report, portfolioSessionExpi
       {report === "tax" ? <section aria-label={t("tax.title")} className={`flex w-full flex-col gap-5 rounded-xl border ${isSolitaire ? "border-neutral-300 shadow-card" : "border-pbrown-100 shadow-prioritas"} bg-white p-4 md:p-6 xl:flex-row xl:items-center xl:justify-between`}>
         <h2 className="w-full text-xl font-semibold leading-7 text-blue-800 xl:max-w-52">{t("tax.title")}</h2>
         <div className="flex w-full flex-wrap items-center gap-3 xl:w-auto xl:flex-nowrap">
-          <div role="group" aria-label={t("tax.periodLabel")} className="flex w-full gap-3 xl:w-[240px] xl:flex-none">{(["year", "month"] as const).map((value) => <button key={value} type="button" aria-pressed={period === value} onClick={() => setPeriod(value)} className="priosoli-chip priosoli-chip--medium priosoli-chip--xl-large flex-1 justify-center">{t(`tax.${value}`)}</button>)}</div>
+          <div role="group" aria-label={t("tax.periodLabel")} className="flex w-full gap-3 xl:w-[240px] xl:flex-none">{(["year", "month"] as const).map((value) => <button key={value} type="button" aria-pressed={period === value} onClick={() => setPeriod(value)} className={`priosoli-chip ${isSolitaire ? "priosoli-chip--solitaire" : ""} priosoli-chip--medium priosoli-chip--xl-large flex-1 justify-center`}>{t(`tax.${value}`)}</button>)}</div>
           <ReportDropdown id="financial-tax-year" label={t("tax.yearLabel")} value={year} onChange={setYear} options={yearOptions} className="w-full xl:w-[150px] xl:flex-none" size="medium" xlSize="large" solitaire={isSolitaire} />
           {period === "month" ? <ReportDropdown id="financial-tax-month" label={t("tax.monthLabel")} value={month} onChange={setMonth} options={monthOptions} className="w-full xl:w-[150px] xl:flex-none" size="medium" xlSize="large" solitaire={isSolitaire} /> : null}
         </div>
@@ -270,7 +323,7 @@ export default function FinancialReportExperience({ report, portfolioSessionExpi
         <div>
           <section aria-label={t("overviewLabel")} className={`overflow-hidden rounded-xl border ${isSolitaire ? "border-neutral-300 shadow-card" : "border-pbrown-100 shadow-prioritas"} bg-white`}>
             <div className={`flex items-center justify-between gap-3 border-b ${isSolitaire ? "border-neutral-300" : "border-pbrown-100"} p-4 md:p-5`}>
-              <ReportDropdown id="financial-portfolio-month" label={t("portfolio.periodLabel")} value={portfolioMonth} onChange={setPortfolioMonth} options={monthOptions.map((option) => ({ ...option, label: `${option.label} 2026` }))} className="min-w-0 flex-1 md:w-[260px] md:flex-none" size="medium" xlSize="large" solitaire={isSolitaire} />
+              <ReportDropdown id="financial-portfolio-month" label={t("portfolio.periodLabel")} value={portfolioMonth} onChange={setPortfolioMonth} options={portfolioMonthOptions} className="min-w-0 flex-1 md:w-[260px] md:flex-none" size="medium" xlSize="large" solitaire={isSolitaire} />
               <div className="md:hidden">
                 <button type="button" onClick={showNotice} aria-label={t("download")} className={(isSolitaire ? solitaireButtonClassName : prioritasButtonClassName)({ kind: "icon", variant: "secondary", size: "medium" })}>
                   <PrioritasButtonIcon src="/assets/prioritas/banking/download.svg" />

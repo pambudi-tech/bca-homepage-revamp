@@ -93,13 +93,14 @@ export default function FinancialReportOtpModal({ onClose, onVerified, phoneNumb
             <div aria-hidden className="grid grid-cols-6 gap-2">
               {Array.from({ length: 6 }, (_, index) => {
                 const hasDigit = code[index] !== undefined;
-                return <span key={index} className={`flex h-14 items-center justify-center rounded-xl border bg-neutral-200 text-2xl ${codeVerified ? "border-green-600" : "border-neutral-300"} ${hasDigit ? "text-neutral-800" : "text-neutral-600"}`}>{code[index] ?? "0"}</span>;
+                return <span key={index} className={`flex h-14 items-center justify-center rounded-xl border bg-neutral-200 text-2xl ${error ? "border-red-600" : codeVerified ? "border-green-600" : "border-neutral-300"} ${hasDigit ? "text-neutral-800" : "text-neutral-600"}`}>{code[index] ?? "0"}</span>;
               })}
             </div>
-            <input ref={codeRef} value={code} disabled={submitting} onChange={async (event) => {
+            <input ref={codeRef} value={code} disabled={submitting} aria-invalid={error} aria-describedby={error ? "financial-otp-error" : undefined} onChange={async (event) => {
               const next = event.target.value.replace(/\D/g, "").slice(0, 6);
               setCode(next);
               setCodeVerified(false);
+              setError(false);
               if (next.length === 6 && !submitting) {
                 setSubmitting(true);
                 setError(false);
@@ -112,6 +113,7 @@ export default function FinancialReportOtpModal({ onClose, onVerified, phoneNumb
               }
             }} inputMode="numeric" autoComplete="one-time-code" maxLength={6} aria-label={t("verify.codeLabel")} className="absolute inset-0 h-full w-full cursor-text opacity-0" />
           </div>
+          {error ? <p id="financial-otp-error" role="alert" className="mt-3 text-sm font-medium text-red-600">{t("verify.invalidCode")}</p> : null}
           <p className="mt-6 text-sm font-semibold text-neutral-800">{String(Math.floor(seconds / 60)).padStart(2, "0")}:{String(seconds % 60).padStart(2, "0")}</p>
           <button type="button" disabled={seconds > 0} onClick={() => { setCode(""); setSeconds(119); codeRef.current?.focus(); }} className="mt-1 text-sm font-semibold text-pbrown-600 disabled:text-neutral-500">{t("verify.resend")}</button>
         </> : null}

@@ -59,6 +59,7 @@ export default function MobileMenu({
   const otherLocales = routing.locales.filter((item) => item !== locale);
   const priorityMenu = variant === "prioritas";
   const solitaireMenu = variant === "solitaire";
+  const accountSolitaire = memberBrand === "solitaire";
   const inMemberArea = isMemberAreaPath(pathname);
   const memberLoginHref = variant === "prioritas" || variant === "solitaire" ? `/member/login?from=${variant}` : null;
   const logout = async () => {
@@ -173,11 +174,7 @@ export default function MobileMenu({
             const content = (
               <>
                 <span className={`text-base leading-6 ${item.active ? `font-bold ${priorityMenu ? "text-pbrown-500" : solitaireMenu ? "text-neutral-800" : "text-blue-500"}` : "font-semibold text-neutral-800"}`}>{item.label}</span>
-                {item.active ? (
-                  <span className={`flex h-8 items-center rounded-xl px-4 text-sm font-semibold ${priorityMenu ? "bg-pgold-100 text-pbrown-500" : solitaireMenu ? "bg-neutral-300 text-neutral-800" : "bg-blue-200 text-blue-600"}`}>{tMobile("sesiAktif")}</span>
-                ) : (
-                  <span className="flex size-10 items-center justify-center"><ChevronRight priorityMenu={priorityMenu} solitaireMenu={solitaireMenu} /></span>
-                )}
+                <span className="flex size-10 items-center justify-center"><ChevronRight priorityMenu={priorityMenu} solitaireMenu={solitaireMenu} /></span>
               </>
             );
             const className = "flex h-[72px] w-full items-center justify-between border-t border-neutral-300 text-left active:bg-neutral-200";
@@ -193,12 +190,14 @@ export default function MobileMenu({
           {memberPreviewName ? (
             <div className="flex flex-col gap-3">
               <Link href={`/${memberBrand}/member/overview`} onClick={closeMenu} className="flex h-12 items-center gap-3 rounded-xl px-2 text-sm font-bold leading-5 text-neutral-800">
-                <span aria-hidden className="flex size-10 shrink-0 items-center justify-center rounded-full" style={{ backgroundImage: "linear-gradient(262.59deg, #c2a266 0.18%, #98732c 100.18%)" }}>
-                  <img src="/assets/prioritas/member-overview/account-user.svg" alt="" className="shrink-0" />
+                <span aria-hidden className={`flex size-10 shrink-0 items-center justify-center rounded-full ${accountSolitaire ? "bg-gradient-to-r from-neutral-800 to-neutral-700" : ""}`} style={accountSolitaire ? undefined : { backgroundImage: "linear-gradient(262.59deg, #c2a266 0.18%, #98732c 100.18%)" }}>
+                  {accountSolitaire
+                    ? <span className="size-5 bg-neutral-100 [mask-image:url('/assets/prioritas/member-overview/account-user.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/prioritas/member-overview/account-user.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]" />
+                    : <img src="/assets/prioritas/member-overview/account-user.svg" alt="" className="shrink-0" />}
                 </span>
                 <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap">{memberPreviewName}</span>
               </Link>
-              <Link href={inMemberArea ? `/${memberBrand}` : `/${memberBrand}/member/overview`} onClick={closeMenu} className={`flex h-12 items-center justify-center rounded-full border bg-neutral-100 px-6 text-base font-semibold ${priorityMenu ? "border-pbrown-500 text-pbrown-500 active:bg-pgold-100" : "border-blue-500 text-blue-500 active:bg-blue-100"}`}>{inMemberArea ? tAccount("home") : tAccount("overview")}</Link>
+              <Link href={inMemberArea ? `/${memberBrand}` : `/${memberBrand}/member/overview`} onClick={closeMenu} className={`flex h-12 items-center justify-center rounded-full border bg-neutral-100 px-6 text-base font-semibold ${accountSolitaire ? "border-neutral-800 text-neutral-800 active:bg-neutral-200" : "border-pbrown-500 text-pbrown-500 active:bg-pgold-100"}`}>{inMemberArea ? tAccount("home") : tAccount("overview")}</Link>
               <button type="button" onClick={() => setLogoutConfirmOpen(true)} className="flex h-12 items-center justify-center gap-2 rounded-full border border-red-600 bg-neutral-100 px-6 text-base font-semibold text-red-600 active:bg-red-50">
                 <svg aria-hidden viewBox="0 0 32 32" fill="none" className="size-5"><path d="M11.867 10.08c.413-4.8 2.88-6.76 8.28-6.76h.173c5.96 0 8.347 2.387 8.347 8.347v8.693c0 5.96-2.387 8.347-8.347 8.347h-.173c-5.36 0-7.827-1.934-8.267-6.654" stroke="currentColor" strokeWidth="2.18" strokeLinecap="round" strokeLinejoin="round" /><path d="M2.667 16H19.84m-2.973-4.467L21.333 16l-4.466 4.467" stroke="currentColor" strokeWidth="2.18" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 {tMobile("logout")}
@@ -211,7 +210,7 @@ export default function MobileMenu({
           )}
         </div>
       </div>
-      <LogoutConfirmDialog open={logoutConfirmOpen} onCancel={() => setLogoutConfirmOpen(false)} onConfirm={() => void logout()} />
+      <LogoutConfirmDialog open={logoutConfirmOpen} tone={memberBrand} onCancel={() => setLogoutConfirmOpen(false)} onConfirm={() => void logout()} />
     </div>,
     document.body
   );

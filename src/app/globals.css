@@ -83,8 +83,10 @@
 
   /* Error ramp shades used by Figma validation and alert states. */
   --color-red-100: #fff1f0;
+  --color-red-400: #ec323b;
   --color-red-500: #cd1923;
   --color-red-600: #9f141b;
+  --color-red-700: #850e14;
 
   --color-cyan-100: #e6f3ff;
   --color-cyan-300: #d1f4ff;

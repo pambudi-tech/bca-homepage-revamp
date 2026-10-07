@@ -50,18 +50,18 @@ export default function MemberAirportTransferModule({ variant, solitaire = false
             {voucher.logo ? <img src={voucher.logo} alt="" className="size-10 shrink-0 object-contain lg:size-[54px]" /> : <img src="/assets/prioritas/member-airport-transfer/grab-logo.svg" alt="" className="h-8 w-[58px] shrink-0 object-contain" />}
             <div className="flex min-w-0 flex-1 items-center justify-between gap-3 lg:flex-col lg:items-start lg:justify-center lg:gap-0">
               <p className="text-base leading-6 text-neutral-700">{voucher.provider}</p>
-              <p className="text-lg font-semibold leading-[26px] tracking-tight text-pbrown-500 lg:mt-1">{voucher.amount}</p>
+              <p className={`text-lg font-semibold leading-[26px] tracking-tight lg:mt-1 ${solitaire ? "text-neutral-800" : "text-pbrown-500"}`}>{voucher.amount}</p>
             </div>
           </div>
-          <div className={`relative flex h-[80px] min-w-0 flex-1 flex-row flex-wrap items-center justify-between gap-4 p-4 after:absolute after:inset-x-0 after:top-0 after:h-px after:bg-[repeating-linear-gradient(to_right,var(--color-pbrown-100)_0_6px,transparent_6px_12px)] lg:h-auto lg:w-1/2 lg:flex-none lg:justify-between lg:after:hidden lg:before:absolute lg:before:inset-y-0 lg:before:left-0 lg:before:w-px lg:before:bg-[repeating-linear-gradient(to_bottom,var(--color-pbrown-100)_0_6px,transparent_6px_12px)] ${voucher.usedOn ? "bg-white" : "bg-gradient-to-r from-white to-pgold-100"}`}>
+          <div className={`relative flex h-[80px] min-w-0 flex-1 flex-row flex-wrap items-center justify-between gap-4 p-4 after:absolute after:inset-x-0 after:top-0 after:h-px after:bg-[repeating-linear-gradient(to_right,var(--color-pbrown-100)_0_6px,transparent_6px_12px)] lg:h-auto lg:w-1/2 lg:flex-none lg:justify-between lg:after:hidden lg:before:absolute lg:before:inset-y-0 lg:before:left-0 lg:before:w-px lg:before:bg-[repeating-linear-gradient(to_bottom,var(--color-pbrown-100)_0_6px,transparent_6px_12px)] ${voucher.usedOn ? "bg-white" : solitaire ? "bg-gradient-to-r from-neutral-100 to-neutral-200" : "bg-gradient-to-r from-white to-pgold-100"}`}>
             <code className={`break-all font-sans text-base font-semibold leading-6 tracking-tight ${voucher.usedOn ? "text-neutral-500 line-through" : "text-neutral-900"}`}>{voucher.code}</code>
-            {voucher.usedOn ? <PrioritasButton size="large" disabled>{t("used")}</PrioritasButton> : <PrioritasButton size="large" onClick={() => void copyCode(voucher.id, voucher.code)} trailingIcon={<img src="/assets/prioritas/member-airport-transfer/copy.svg" alt="" aria-hidden="true" className="size-5" />} aria-label={t("copyCode", { code: voucher.code })}>
+            {voucher.usedOn ? <PrioritasButton tone={solitaire ? "solitaire" : "prioritas"} size="large" disabled>{t("used")}</PrioritasButton> : <PrioritasButton tone={solitaire ? "solitaire" : "prioritas"} size="large" onClick={() => void copyCode(voucher.id, voucher.code)} trailingIcon={<img src="/assets/prioritas/member-airport-transfer/copy.svg" alt="" aria-hidden="true" className="size-5" />} aria-label={t("copyCode", { code: voucher.code })}>
               {copiedId === voucher.id ? t("copied") : t("copy")}
             </PrioritasButton>}
           </div>
         </div>
-        {voucher.usedOn ? <div className="rounded-t-none rounded-b-xl border border-t-0 border-pbrown-100 bg-pgold-100 p-4">
-          <p className="text-sm leading-5 text-pbrown-600">{t("usedOn", { date: voucher.usedOn })}</p>
+        {voucher.usedOn ? <div className={`rounded-t-none rounded-b-xl border border-t-0 p-4 ${solitaire ? "border-neutral-300 bg-neutral-200" : "border-pbrown-100 bg-pgold-100"}`}>
+          <p className={`text-sm leading-5 ${solitaire ? "text-neutral-700" : "text-pbrown-600"}`}>{t("usedOn", { date: voucher.usedOn })}</p>
         </div> : null}
       </div>
     );
@@ -83,7 +83,7 @@ export default function MemberAirportTransferModule({ variant, solitaire = false
           </div>
         </div>
       </div>
-      {vouchers.length > INITIAL_VOUCHER_COUNT ? <PrioritasButton variant="secondary" size="large" className="mt-4 w-full" onClick={() => setShowAll((current) => !current)} trailingIcon={<span aria-hidden="true" className={`size-5 bg-current transition-transform ${showAll ? "rotate-180" : ""}`} style={{ maskImage: "url(/assets/navbar/chevron-down-dark.svg)", WebkitMaskImage: "url(/assets/navbar/chevron-down-dark.svg)", maskPosition: "center", WebkitMaskPosition: "center", maskRepeat: "no-repeat", WebkitMaskRepeat: "no-repeat", maskSize: "contain" }} />} aria-expanded={showAll}>
+      {vouchers.length > INITIAL_VOUCHER_COUNT ? <PrioritasButton tone={solitaire ? "solitaire" : "prioritas"} variant="secondary" size="large" className="mt-4 w-full" onClick={() => setShowAll((current) => !current)} trailingIcon={<span aria-hidden="true" className={`size-5 bg-current transition-transform ${showAll ? "rotate-180" : ""}`} style={{ maskImage: "url(/assets/navbar/chevron-down-dark.svg)", WebkitMaskImage: "url(/assets/navbar/chevron-down-dark.svg)", maskPosition: "center", WebkitMaskPosition: "center", maskRepeat: "no-repeat", WebkitMaskRepeat: "no-repeat", maskSize: "contain" }} />} aria-expanded={showAll}>
         {showAll ? t("hideMore") : t("viewMore")}
       </PrioritasButton> : null}
       <ul className="mt-5 list-disc space-y-2 pl-5 text-sm leading-6 text-neutral-700">

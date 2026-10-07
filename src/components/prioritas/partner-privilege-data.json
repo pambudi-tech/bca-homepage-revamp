@@ -2596,10 +2596,10 @@
   ],
   "signature": [
     { "partnerId": "airport-transfer-domestik", "category": "Travel", "benefit": "Airport Transfer Domestik" },
-    { "partnerId": "airport-transfer-internasional", "category": "Travel", "benefit": "Airport Transfer Internasional" },
+    { "partnerId": "airport-transfer-internasional", "category": "Travel", "benefit": "Airport Transfer Internasional", "solitaireOnly": true },
     { "partnerId": "executive-airport-lounge", "category": "Travel", "benefit": "Executive Airport Lounge" },
-    { "partnerId": "medical-check-up-internasional", "category": "Kesehatan", "benefit": "Medical Check Up Internasional" },
-    { "partnerId": "deteksi-dini-kanker-dan-penyakit-jantung", "category": "Kesehatan", "benefit": "Deteksi Dini Kanker dan Penyakit Jantung" },
+    { "partnerId": "medical-check-up-internasional", "category": "Kesehatan", "benefit": "Medical Check Up Internasional", "solitaireOnly": true },
+    { "partnerId": "deteksi-dini-kanker-dan-penyakit-jantung", "category": "Kesehatan", "benefit": "Deteksi Dini Kanker dan Penyakit Jantung", "solitaireOnly": true },
     { "partnerId": "padel-court", "category": "Gaya Hidup", "benefit": "Padel Court" }
   ],
   "complimentary": [

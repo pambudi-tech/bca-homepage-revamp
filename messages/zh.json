@@ -1656,7 +1656,7 @@
         "shiseido": { "title": "尊享 Ultimune 精华免费肌肤分析", "brand": "Shiseido", "alt": "资生堂 Ultimune 精华" }
       }
     },
-    "dynamicModule": { "message": "登录以查看您剩余的{benefit}使用次数和礼券额度。", "loginLabel": "登录", "memberMessage": "前往会员专区查看您剩余的{benefit}礼券额度。", "memberActionLabel": "立即前往" }
+    "dynamicModule": { "message": "登录以查看您剩余的{benefit}使用次数和礼券额度。", "loginLabel": "登录", "memberMessage": "前往会员专区查看您剩余的{benefit}礼券额度。", "memberActionLabel": "立即前往", "infoTitle": "信息", "solitaireOnlyMessage": "此礼遇仅限 BCA Solitaire 客户享有。" }
   },
   "magazineIndex": { "breadcrumb": "电子杂志", "title": "陪伴每一位不断成长的您", "paginationLabel": "电子杂志页码", "readNow": "立即阅读", "coverAlt": "{title}封面", "empty": "暂无电子杂志。" },
   "bankingSolutionIndex": {
@@ -1799,7 +1799,7 @@
     "visibility": {
       "show": "显示投资组合金额", "hide": "隐藏投资组合金额", "close": "关闭对话框",
       "request": { "title": "发送验证码", "description": "要查看财务报告，验证码将发送至以下号码", "phoneLabel": "接收验证码的电话号码", "phonePlaceholder": "选择电话号码", "phoneRequired": "请先选择电话号码。", "feeNotice": "发送验证码可能产生运营商收费", "send": "发送验证码" },
-      "verify": { "title": "输入验证码", "description": "我们已向 {phone} 发送 6 位验证码", "codeLabel": "6 位验证码", "resend": "重新发送验证码" },
+      "verify": { "title": "输入验证码", "description": "我们已向 {phone} 发送 6 位验证码", "codeLabel": "6 位验证码", "invalidCode": "验证码错误，请重试。", "resend": "重新发送验证码" },
       "noPhone": { "title": "尚未登记电话号码", "description": "您尚未登记电子银行手机号码。请前往附近的 ATM 办理登记。", "back": "返回" }
     },
     "overviewLabel": "投资组合概览",
@@ -1809,13 +1809,16 @@
     "summary": {
       "netWorth": "净资产",
       "netWorthInfo": "资产减去负债",
-      "netWorthChange": "较去年增长11.8%",
+      "netWorthTooltip": "净资产是所选报告月份的资产净值，计算方式为总资产减去总负债。",
+      "netWorthChange": "较去年{change}%",
       "assets": "总资产",
       "assetsInfo": "资产总值",
-      "assetsChange": "较去年下降6.7%",
+      "assetsTooltip": "总资产是所选月份报告中列出的资产总值，尚未扣除负债。",
+      "assetsChange": "较去年{change}%",
       "liabilities": "总负债",
       "liabilitiesInfo": "负债总值",
-      "liabilitiesChange": "较去年下降6.7%"
+      "liabilitiesTooltip": "总负债是所选月份报告中列出的各项财务义务总额。计算净资产时会从总资产中扣除该金额。",
+      "liabilitiesChange": "较去年{change}%"
     },
     "chart": {
       "title": "财富增长",
@@ -1840,7 +1843,7 @@
       "consumerCredit": "消费贷款",
       "workingCapital": "流动资金贷款",
       "creditCard": "信用卡",
-      "change": "较去年增长11.8%"
+      "change": "较去年{change}%"
     },
     "portfolio": {
       "periodLabel": "投资组合报告月份"
@@ -1903,7 +1906,8 @@
     "overview": "前往概览",
     "logout": "退出账户",
     "confirmTitle": "退出账户？",
-    "confirmMessage": "确定要退出账户吗？",
+    "confirmMessage": "您将退出当前会话。再次访问账户时需要重新登录。",
+    "confirmLogout": "是，退出",
     "cancel": "取消"
   },
   "mobileMenu":   {

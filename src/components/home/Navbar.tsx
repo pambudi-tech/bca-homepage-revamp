@@ -82,13 +82,12 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
   const pathname = usePathname();
   const router = useRouter();
   const lastScrollY = useRef(0);
-  const memberBrand: MemberBrand = pathname.startsWith("/solitaire/member") ? "solitaire" : pathname.startsWith("/prioritas/member") ? "prioritas" : sessionBrand ?? (variant === "solitaire" ? "solitaire" : "prioritas");
+  const memberBrand: MemberBrand = sessionBrand ?? (pathname.startsWith("/solitaire/member") ? "solitaire" : pathname.startsWith("/prioritas/member") ? "prioritas" : variant === "solitaire" ? "solitaire" : "prioritas");
   const effectiveMemberPreviewName = memberPreviewName ?? (memberAuthenticated ? tMember(memberBrand === "solitaire" ? "solitairePreviewFullName" : "previewFullName") : undefined);
   const accountSolitaire = Boolean(effectiveMemberPreviewName) && memberBrand === "solitaire";
   const hasActiveMemberSession = memberAuthenticated || Boolean(memberPreviewName);
 
   useEffect(() => {
-    if ((variant !== "prioritas" && variant !== "solitaire") || memberPreviewName) return;
     const controller = new AbortController();
     fetch("/api/preview-logout", { signal: controller.signal, credentials: "same-origin" })
       .then((response) => response.ok ? response.json() : Promise.reject(new Error(String(response.status))))
@@ -100,7 +99,7 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
         if (!controller.signal.aborted) setMemberAuthenticated(false);
       });
     return () => controller.abort();
-  }, [variant, memberPreviewName]);
+  }, []);
 
   useEffect(() => {
     const openSearch = () => setSearchOpen(true);
@@ -259,7 +258,7 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
                       <img src="/assets/prioritas/member-overview/homepage.svg" alt="" aria-hidden className="size-5 shrink-0" />
                       {inMemberArea ? tAccount("home") : tAccount("overview")}
                     </Link>
-                    <button role="menuitem" type="button" onClick={() => { setPendingPostLogoutHref(null); setAccountMenuOpen(false); setLogoutConfirmOpen(true); }} className={`flex h-10 items-center gap-2 rounded-lg px-3 text-left text-sm font-semibold ${accountSolitaire ? "text-neutral-700 hover:bg-neutral-200 hover:text-neutral-900" : "text-red-600 hover:bg-red-50"}`}>
+                    <button role="menuitem" type="button" onClick={() => { setPendingPostLogoutHref(null); setAccountMenuOpen(false); setLogoutConfirmOpen(true); }} className="flex h-10 items-center gap-2 rounded-lg px-3 text-left text-sm font-semibold text-red-600 hover:bg-red-50">
                       <img src="/assets/prioritas/member-overview/logout.svg" alt="" aria-hidden className="size-5 shrink-0" />
                       {tAccount("logout")}
                     </button>
@@ -282,7 +281,7 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
         promoSearchItems={promoSearchItems}
         initialSegment={variant === "prioritas" ? ("Prioritas" satisfies SearchSegment) : variant === "solitaire" ? ("Solitaire" satisfies SearchSegment) : "Semua"}
       />
-      <LogoutConfirmDialog open={logoutConfirmOpen} onCancel={() => { setLogoutConfirmOpen(false); setPendingPostLogoutHref(null); }} onConfirm={() => void handleMemberLogout()} />
+      <LogoutConfirmDialog open={logoutConfirmOpen} tone={accountSolitaire ? "solitaire" : "prioritas"} onCancel={() => { setLogoutConfirmOpen(false); setPendingPostLogoutHref(null); }} onConfirm={() => void handleMemberLogout()} />
     </>
   );
 }

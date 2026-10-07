@@ -59,6 +59,11 @@
 .prio-button--default.prio-button--primary:not(.prio-button--text):is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --prio-button-fill: var(--color-pbrown-700); }
 .prio-button--default.prio-button--primary:not(.prio-button--text):disabled { --prio-button-fill: var(--color-neutral-300); --prio-button-ink: var(--color-neutral-600); }
 
+.prio-button--default.prio-button--danger:not(.prio-button--text) { --prio-button-fill: var(--color-red-500); --prio-button-ink: var(--color-neutral-100); }
+.prio-button--default.prio-button--danger:not(.prio-button--text):is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --prio-button-fill: var(--color-red-400); }
+.prio-button--default.prio-button--danger:not(.prio-button--text):is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --prio-button-fill: var(--color-red-700); }
+.prio-button--default.prio-button--danger:not(.prio-button--text):disabled { --prio-button-fill: var(--color-neutral-300); --prio-button-ink: var(--color-neutral-600); }
+
 .prio-button--default.prio-button--secondary:not(.prio-button--text) { --prio-button-fill: var(--color-neutral-100); --prio-button-border: var(--color-pbrown-600); --prio-button-ink: var(--color-pbrown-600); }
 .prio-button--default.prio-button--secondary:not(.prio-button--text):is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --prio-button-fill: var(--color-pgold-100); --prio-button-border: var(--color-pbrown-500); --prio-button-ink: var(--color-pbrown-500); }
 .prio-button--default.prio-button--secondary:not(.prio-button--text):is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --prio-button-fill: var(--color-pgold-200); --prio-button-border: var(--color-pbrown-700); --prio-button-ink: var(--color-pbrown-700); }
@@ -128,6 +133,10 @@
 .solitaire-button--default.solitaire-button--primary:not(.solitaire-button--text):is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --solitaire-button-fill: var(--color-neutral-700); }
 .solitaire-button--default.solitaire-button--primary:not(.solitaire-button--text):is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --solitaire-button-fill: var(--color-neutral-900); }
 .solitaire-button--default.solitaire-button--primary:not(.solitaire-button--text):disabled { --solitaire-button-fill: var(--color-neutral-300); --solitaire-button-ink: var(--color-neutral-600); }
+.solitaire-button--default.solitaire-button--danger:not(.solitaire-button--text) { --solitaire-button-fill: var(--color-red-500); --solitaire-button-ink: var(--color-neutral-100); }
+.solitaire-button--default.solitaire-button--danger:not(.solitaire-button--text):is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --solitaire-button-fill: var(--color-red-400); }
+.solitaire-button--default.solitaire-button--danger:not(.solitaire-button--text):is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --solitaire-button-fill: var(--color-red-700); }
+.solitaire-button--default.solitaire-button--danger:not(.solitaire-button--text):disabled { --solitaire-button-fill: var(--color-neutral-300); --solitaire-button-ink: var(--color-neutral-600); }
 .solitaire-button--default.solitaire-button--secondary:not(.solitaire-button--text) { --solitaire-button-fill: var(--color-neutral-100); --solitaire-button-border: var(--color-neutral-800); --solitaire-button-ink: var(--color-neutral-800); }
 .solitaire-button--default.solitaire-button--secondary:not(.solitaire-button--text):is(:hover:not(:disabled):not([data-preview-state]), [data-preview-state="hover"]) { --solitaire-button-fill: var(--color-neutral-200); --solitaire-button-border: var(--color-neutral-700); --solitaire-button-ink: var(--color-neutral-700); }
 .solitaire-button--default.solitaire-button--secondary:not(.solitaire-button--text):is(:active:not(:disabled):not([data-preview-state]), [data-preview-state="pressed"]) { --solitaire-button-fill: var(--color-neutral-300); --solitaire-button-border: var(--color-neutral-900); --solitaire-button-ink: var(--color-neutral-900); }

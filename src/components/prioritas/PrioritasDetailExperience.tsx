@@ -45,7 +45,9 @@ type DetailCopy = {
     title: string;
     viewMore: string;
   };
-  dynamicModule?: { message: string; actionLabel: string; memberHref: string };
+  dynamicModule?:
+    | { infoOnly: true; infoTitle: string; message: string }
+    | { infoOnly?: false; message: string; actionLabel: string; memberHref: string };
 };
 
 type DetailKind = "signature" | "lifestyle" | "complimentary" | "event" | "promo" | "about" | "banking";
@@ -373,6 +375,7 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
   const toggle = (panel: DetailPanel) => setOpenPanels((current) => current.includes(panel) ? current.filter((item) => item !== panel) : [...current, panel]);
   const brand = copy.brand?.trim();
   const isSolitaire = ((publicBasePath === "/solitaire" || generalPage) && !memberArea) || (memberArea && memberBrand === "solitaire");
+  const signatureHeroOverlapFix = isSolitaire && kind === "signature" && showHero;
   const detailBase = memberArea ? memberBase : publicBasePath;
   const directoryPath = kind === "event" ? `${detailBase}/event` : kind === "promo" ? `${detailBase}/promo` : kind === "complimentary" || kind === "signature" ? `${detailBase}/privilege` : kind === "about" ? publicBasePath : kind === "banking" ? `${detailBase}/banking-solution` : `${detailBase}/lifestyle-privilege`;
   const listingPath = memberArea
@@ -460,7 +463,7 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
         />
       </div>
 
-      <section className={`pointer-events-none relative ${generalPage ? kind === "about" ? "-mt-12 xl:-mt-12" : "mt-0" : kind === "about" && !memberArea ? "-mt-12 xl:-mt-12" : brand ? "-mt-5 xl:-mt-12" : "-mt-14 xl:-mt-12"} overflow-x-clip pb-20 xl:pb-28`}>
+      <section className={`pointer-events-none relative ${generalPage ? kind === "about" ? "-mt-12 xl:-mt-12" : "mt-0" : kind === "about" && !memberArea ? "-mt-12 xl:-mt-12" : brand || signatureHeroOverlapFix ? "-mt-5 xl:-mt-12" : "-mt-14 xl:-mt-12"} overflow-x-clip pb-20 xl:pb-28`}>
         {!isSolitaire ? <div aria-hidden className={`bg-decoration-wrapper pointer-events-none absolute inset-x-0 -z-10 overflow-hidden ${brand ? "top-5" : "top-14"} xl:top-12`}>
           <img src={`${ASSET_ROOT}/raw-01.png`} alt="" className="block h-auto w-full opacity-25" />
           <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent via-pgold-200/70 to-pgold-200" />
@@ -483,10 +486,14 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
               {kind === "complimentary" && birthdayGift ? <PromoRibbon badgeKey="popular" label={privilegeT("complimentary.birthday")} placement="hero" /> : null}
             </div> : null}
             <div className={showHero ? "" : "w-full"}>
-              {memberAirportTransfer ? <MemberAirportTransferModule variant={memberAirportTransfer} solitaire={isSolitaire} /> : memberMedicalCheckUp ? <MemberMedicalCheckUpModule solitaire={isSolitaire} /> : memberVoucherStatus ? <MemberSignatureVoucherModule status={memberVoucherStatus} solitaire={isSolitaire} /> : null}
-              {copy.dynamicModule && !memberArea && !memberSessionActive && !memberAirportTransfer && !memberMedicalCheckUp && !memberVoucherStatus ? <div className={`pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] flex flex-col gap-4 rounded-2xl bg-gradient-to-b from-white to-pgold-300 p-5 pb-10 text-sm leading-5 text-neutral-700 shadow-panel-gold ${isSolitaire ? "border border-neutral-300" : ""} sm:mx-0 sm:mb-6 sm:w-auto sm:flex-row sm:items-center sm:justify-between sm:pb-5 xl:px-6`}>
-                <p className="text-sm leading-5 text-pbrown-600 xl:text-base xl:leading-6">{copy.dynamicModule.message}</p>
-                <Link href={copy.dynamicModule.memberHref} className={prioritasButtonClassName({ size: "medium", className: "w-full self-stretch xl:w-auto xl:self-auto prio-button--xl-large" })}>{copy.dynamicModule.actionLabel}</Link>
+              {!copy.dynamicModule?.infoOnly ? (memberAirportTransfer ? <MemberAirportTransferModule variant={memberAirportTransfer} solitaire={isSolitaire} /> : memberMedicalCheckUp ? <MemberMedicalCheckUpModule solitaire={isSolitaire} /> : memberVoucherStatus ? <MemberSignatureVoucherModule status={memberVoucherStatus} solitaire={isSolitaire} /> : null) : null}
+              {copy.dynamicModule?.infoOnly ? <aside aria-label={copy.dynamicModule.infoTitle} className="pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] rounded-2xl bg-gradient-to-b from-white to-pgold-300 p-5 pb-10 text-sm leading-5 text-neutral-700 shadow-panel-gold sm:mx-0 sm:mb-6 sm:w-auto sm:pb-5 xl:px-6">
+                <h2 className="text-base font-semibold leading-6 text-pbrown-700">{copy.dynamicModule.infoTitle}</h2>
+                <p className="mt-2 text-sm leading-5 text-pbrown-600 xl:text-base xl:leading-6">{copy.dynamicModule.message}</p>
+              </aside> : null}
+              {copy.dynamicModule && !copy.dynamicModule.infoOnly && !memberArea && !memberSessionActive && !memberAirportTransfer && !memberMedicalCheckUp && !memberVoucherStatus ? <div className={`pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] flex flex-col gap-4 rounded-2xl p-5 pb-10 text-sm leading-5 sm:mx-0 sm:mb-6 sm:w-auto sm:flex-row sm:items-center sm:justify-between sm:pb-5 xl:px-6 ${isSolitaire ? "border border-neutral-300 bg-gradient-to-b from-white to-neutral-200 shadow-card" : "bg-gradient-to-b from-white to-pgold-300 shadow-panel-gold"}`}>
+                <p className={`text-sm leading-5 xl:text-base xl:leading-6 ${isSolitaire ? "text-neutral-700" : "text-pbrown-600"}`}>{copy.dynamicModule.message}</p>
+                <Link href={copy.dynamicModule.memberHref} className={(isSolitaire ? solitaireButtonClassName : prioritasButtonClassName)({ size: "medium", className: "w-full self-stretch xl:w-auto xl:self-auto prio-button--xl-large" })}>{copy.dynamicModule.actionLabel}</Link>
               </div> : null}
               <div
                   className={`pointer-events-auto relative z-10 -mx-4 flex w-[calc(100%+2rem)] flex-col gap-4 rounded-t-[20px] rounded-b-none bg-white p-2 xl:mx-0 xl:w-full xl:rounded-2xl ${generalPage || isSolitaire ? "border border-neutral-300" : ""} ${copy.dynamicModule ? "-mt-5 xl:mt-0" : memberAirportTransfer || memberMedicalCheckUp || memberVoucherStatus ? "-mt-5 xl:mt-0" : "mt-0 xl:mt-0"} ${isSolitaire || generalPage ? "shadow-card" : copy.dynamicModule || memberAirportTransfer || memberMedicalCheckUp || memberVoucherStatus ? "shadow-panel-footer" : ""}`}

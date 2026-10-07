@@ -7,7 +7,7 @@ ever disagree, the CSS is right — file an update here.
 ## The two tiers
 
 - **Core primitives** — what a value *is*. The color ramps (`neutral-*`,
-  `blue-*`, `cyan-*`, `red-100`, `red-500`, `red-600`) mirror Figma's "Foundation / Colors" page
+  `blue-*`, `cyan-*`, `red-100`, `red-400`, `red-500`, `red-600`, `red-700`) mirror Figma's "Foundation / Colors" page
   (node 1578-27737) 1:1. Don't add, remove, or re-value a rung here without
   updating Figma first.
 - **Semantic tokens** — what a value is *for* (`--color-primary`,
@@ -43,7 +43,7 @@ sits just below `blue-600` without matching it. They're named states instead
 of ramp steps so the Figma correspondence on the primitive ramp stays exact.
 
 The core ramps (`neutral-100..900`, `blue-100..800`, `cyan-100/300/400/500/700`,
-`red-100/500/600`) are usable directly as `bg-blue-700`, `text-neutral-800`, etc. —
+`red-100/400/500/600/700`) are usable directly as `bg-blue-700`, `text-neutral-800`, etc. —
 reach for a semantic token first; fall back to a primitive when there's no
 semantic meaning to name (e.g. a specific brand-blue background on a card).
 

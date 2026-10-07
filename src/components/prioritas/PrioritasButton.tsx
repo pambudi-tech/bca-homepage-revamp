@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, CSSProperties, ReactNode } from "react";
 
 export type PrioritasButtonKind = "button" | "icon" | "text";
-export type PrioritasButtonVariant = "primary" | "secondary";
+export type PrioritasButtonVariant = "primary" | "secondary" | "danger";
 export type PrioritasButtonSurface = "default" | "inverse";
 export type PrioritasButtonSize = "small" | "medium" | "large";
 export type PrioritasButtonPreviewState = "default" | "hover" | "pressed";
@@ -41,6 +41,7 @@ export function solitaireButtonClassName(options: ClassOptions = {}) {
 }
 
 type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> & ClassOptions & {
+  tone?: "prioritas" | "solitaire";
   leadingIcon?: ReactNode;
   trailingIcon?: ReactNode;
   previewState?: PrioritasButtonPreviewState;
@@ -48,6 +49,7 @@ type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> & ClassO
 
 export function PrioritasButton({
   kind = "button",
+  tone = "prioritas",
   variant = "primary",
   surface = "default",
   size = "medium",
@@ -64,7 +66,7 @@ export function PrioritasButton({
       {...props}
       type={type}
       data-preview-state={previewState}
-      className={prioritasButtonClassName({ kind, variant, surface, size, className })}
+      className={(tone === "solitaire" ? solitaireButtonClassName : prioritasButtonClassName)({ kind, variant, surface, size, className })}
     >
       {leadingIcon}
       {kind === "icon" ? children : <span className="prio-button__label">{children}</span>}

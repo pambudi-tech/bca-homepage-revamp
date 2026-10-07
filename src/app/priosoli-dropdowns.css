@@ -131,9 +131,26 @@
   transition: background-color 200ms, color 200ms;
 }
 
+.priosoli-dropdown--solitaire .priosoli-dropdown__option {
+  font-weight: 400;
+}
+
+.priosoli-dropdown--options-regular .priosoli-dropdown__option {
+  font-weight: 400;
+}
+
 .priosoli-dropdown__option[aria-selected="true"] {
   color: var(--color-pbrown-700);
   font-weight: 600;
+}
+
+.priosoli-dropdown--solitaire .priosoli-dropdown__option[aria-selected="true"] {
+  color: var(--color-neutral-800);
+  font-weight: 400;
+}
+
+.priosoli-dropdown--options-regular .priosoli-dropdown__option[aria-selected="true"] {
+  font-weight: 400;
 }
 
 .priosoli-dropdown__option:hover {
@@ -145,4 +162,9 @@
 .priosoli-dropdown--solitaire .priosoli-dropdown__option:hover {
   background: var(--color-neutral-200);
   color: var(--color-neutral-800);
+  font-weight: 600;
+}
+
+.priosoli-dropdown--options-regular .priosoli-dropdown__option:hover {
+  font-weight: 600;
 }

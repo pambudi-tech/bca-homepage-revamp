@@ -1796,7 +1796,7 @@
         "shiseido": { "title": "Enjoy a Complimentary Skin Analysis with Ultimune Serum", "brand": "Shiseido", "alt": "Shiseido Ultimune Serum" }
       }
     },
-    "dynamicModule": { "message": "Sign in to check your remaining access and voucher quota for {benefit}.", "loginLabel": "Sign In", "memberMessage": "Check your remaining {benefit} voucher quota in the member area.", "memberActionLabel": "Access Now" }
+    "dynamicModule": { "message": "Sign in to check your remaining access and voucher quota for {benefit}.", "loginLabel": "Sign In", "memberMessage": "Check your remaining {benefit} voucher quota in the member area.", "memberActionLabel": "Access Now", "infoTitle": "Information", "solitaireOnlyMessage": "This privilege is available exclusively to BCA Solitaire customers." }
   },
   "magazineIndex": {
     "breadcrumb": "e-Magazine",
@@ -1965,7 +1965,7 @@
     "visibility": {
       "show": "Show portfolio amounts", "hide": "Hide portfolio amounts", "close": "Close dialog",
       "request": { "title": "Send OTP Code", "description": "To access your Financial Report, an OTP code will be sent to the following number", "phoneLabel": "Phone number for OTP", "phonePlaceholder": "Select a phone number", "phoneRequired": "Select a phone number first.", "feeNotice": "Sending the code may incur charges according to your operator's rates", "send": "Send OTP" },
-      "verify": { "title": "Enter OTP Code", "description": "We have sent a 6-digit code to {phone}", "codeLabel": "6-digit OTP code", "resend": "Resend OTP code" },
+      "verify": { "title": "Enter OTP Code", "description": "We have sent a 6-digit code to {phone}", "codeLabel": "6-digit OTP code", "invalidCode": "Incorrect OTP code. Please try again.", "resend": "Resend OTP code" },
       "noPhone": { "title": "No Phone Number Registered", "description": "You do not have a registered e-Banking mobile number. Please register one at the nearest ATM.", "back": "Back" }
     },
     "overviewLabel": "Portfolio overview",
@@ -1975,13 +1975,16 @@
     "summary": {
       "netWorth": "Net Worth",
       "netWorthInfo": "Assets minus liabilities",
-      "netWorthChange": "+11.8% from last year",
+      "netWorthTooltip": "Net Worth is your net wealth for the selected report month, calculated by subtracting total liabilities from total assets.",
+      "netWorthChange": "{change}% from last year",
       "assets": "Total Assets",
       "assetsInfo": "Total asset value",
-      "assetsChange": "-6.7% from last year",
+      "assetsTooltip": "Total Assets is the combined value of the assets listed in the report for the selected month, before liabilities are deducted.",
+      "assetsChange": "{change}% from last year",
       "liabilities": "Total Liabilities",
       "liabilitiesInfo": "Total liability value",
-      "liabilitiesChange": "-6.7% from last year"
+      "liabilitiesTooltip": "Total Liabilities is the combined financial obligations listed in the report for the selected month. This amount is deducted from assets to calculate Net Worth.",
+      "liabilitiesChange": "{change}% from last year"
     },
     "chart": {
       "title": "Wealth Growth",
@@ -2006,7 +2009,7 @@
       "consumerCredit": "Consumer Loans",
       "workingCapital": "Working Capital Loans",
       "creditCard": "Credit Cards",
-      "change": "+11.8% from last year"
+      "change": "{change}% from last year"
     },
     "portfolio": {
       "periodLabel": "Portfolio report month"
@@ -2069,7 +2072,8 @@
     "overview": "Go to Overview",
     "logout": "Log out",
     "confirmTitle": "Log out of your account?",
-    "confirmMessage": "Are you sure you want to log out?",
+    "confirmMessage": "You will be logged out of this session. You will need to log in again to access your account.",
+    "confirmLogout": "Yes, Log Out",
     "cancel": "Cancel"
   },
   "mobileMenu":   {

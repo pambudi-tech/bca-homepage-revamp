@@ -10,6 +10,7 @@ import {
 
 export default function TextField({
   label,
+  labelClassName,
   hideLabel = false,
   fieldSize = "default",
   error,
@@ -23,6 +24,7 @@ export default function TextField({
   ...props
 }: {
   label: string;
+  labelClassName?: string;
   hideLabel?: boolean;
   fieldSize?: "default" | "medium" | "large";
   error?: string;
@@ -49,7 +51,7 @@ export default function TextField({
       <div className="flex items-center gap-1">
         <label
           htmlFor={id}
-          className={hideLabel ? "sr-only" : `${fieldSize === "default" ? "text-sm leading-5" : "text-base leading-6"} font-bold text-neutral-800`}
+          className={hideLabel ? "sr-only" : `${labelClassName ?? (fieldSize === "default" ? "text-sm leading-5" : "text-base leading-6")} font-bold text-neutral-800`}
         >
           {label}
         </label>

@@ -43,6 +43,7 @@ export default async function PartnerPrivilegeDetailPage({
   const solitaireT = await getTranslations("solitaireHero");
   const homeLabel = publicBasePath === "/solitaire" || memberArea && memberBrand === "solitaire" ? solitaireT("breadcrumbLabel") : detailT("breadcrumb.home");
   const { partner, benefit, asset, logo } = offer;
+  const solitaireOnly = section === "signature" && "solitaireOnly" in benefit && benefit.solitaireOnly === true;
   const promos = getPrivilegePromos(section);
   const current = promos.find((promo) => promo.id === partnerId);
   const remaining = promos.filter((promo) => promo.id !== partnerId);
@@ -103,7 +104,12 @@ export default async function PartnerPrivilegeDetailPage({
             viewMore: detailT("recommendations.viewMore"),
           },
           ...(isSignatureModule || partnerId === "medical-check-up-internasional" ? {
-            dynamicModule: {
+            dynamicModule: solitaireOnly && publicBasePath === "/prioritas" ? {
+              infoOnly: true as const,
+              infoTitle: detailT("dynamicModule.infoTitle"),
+              message: detailT("dynamicModule.solitaireOnlyMessage"),
+            } : {
+              infoOnly: false as const,
               message: detailT(memberPreviewName ? "dynamicModule.memberMessage" : "dynamicModule.message", { benefit: benefit.benefit }),
               actionLabel: detailT(memberPreviewName ? "dynamicModule.memberActionLabel" : "dynamicModule.loginLabel"),
               memberHref: hasMemberSession || memberArea
