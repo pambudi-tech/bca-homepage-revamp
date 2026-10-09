@@ -6,6 +6,7 @@ export type PrioritasDirectoryDropdownOption = { value: string; label: ReactNode
 export type PrioritasDirectoryDropdownSize = "medium" | "large";
 
 type PrioritasDirectoryDropdownProps = {
+  previewOpen?: boolean;
   id: string;
   label: string;
   value: string;
@@ -24,6 +25,7 @@ type PrioritasDirectoryDropdownProps = {
 };
 
 export default function PrioritasDirectoryDropdown({
+  previewOpen = false,
   id,
   label,
   value,
@@ -37,7 +39,8 @@ export default function PrioritasDirectoryDropdown({
   optionWeight,
   search,
 }: PrioritasDirectoryDropdownProps) {
-  const [open, setOpen] = useState(false);
+  const [interactiveOpen, setOpen] = useState(false);
+  const open = previewOpen || interactiveOpen;
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0, width: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -114,7 +117,7 @@ export default function PrioritasDirectoryDropdown({
         <img src="/assets/promo-page/controls/chevron-down.svg" alt="" aria-hidden className="priosoli-dropdown__chevron" />
       </button>
     </div>
-    {open ? <div style={menuPosition} className="priosoli-dropdown__menu">
+    {open ? <div style={previewOpen ? { position: "relative", top: 0, left: 0, width: "100%", marginTop: 8 } : menuPosition} className="priosoli-dropdown__menu">
       <div id={id} role="listbox" aria-label={label} data-lenis-prevent className="priosoli-dropdown__listbox">
         {options.map((option) => <button
           key={option.value}

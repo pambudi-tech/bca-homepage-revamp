@@ -38,6 +38,7 @@ function WealthGroup({ group, backdrops, tone }: { group: "house" | "market"; ba
   const t = useTranslations("bankingSolutionIndex");
   const assets = group === "house" ? insightAssets.house.slice(0, 3) : insightAssets.market;
   const cards: WealthCardData[] = assets.map(({ key, image, actionIcon }) => ({
+    eyebrow: t(`groups.${group}`),
     title: t(`insight.${key}.title`),
     image,
     imageAlt: t(`insight.${key}.alt`),

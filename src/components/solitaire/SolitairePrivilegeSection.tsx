@@ -39,8 +39,8 @@ export default function SolitairePrivilegeSection({
         <img src="/assets/solitaire/privilege/background.png" alt="" aria-hidden className="size-full object-cover" />
       </div>
       <div className="relative mx-auto w-full max-w-[1280px] px-4 xl:px-0">
-        <header className="mb-12 flex flex-col gap-6 xl:mb-14 xl:flex-row xl:items-start xl:gap-10">
-          <p className="text-eyebrow uppercase text-neutral-900 xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-lg">
+        <header className="mb-8 flex flex-col gap-6 md:mb-12 xl:mb-14 xl:flex-row xl:items-start xl:gap-10">
+          <p className="text-eyebrow-lg uppercase text-neutral-900 md:text-eyebrow xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-xl">
             {eyebrow}
           </p>
           <div className="flex flex-1 items-start justify-between gap-10">
@@ -50,7 +50,7 @@ export default function SolitairePrivilegeSection({
             <div className="hidden shrink-0 xl:block">
               <Link href="/solitaire/privilege" className={solitaireButtonClassName({ variant: "secondary", size: "large" })}>
                 <span className="prio-button__label">{viewMore}</span>
-                <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5 brightness-0" />
+                <img src="/assets/navbar/arrow-right.svg" alt="" className="size-5 brightness-0" />
               </Link>
             </div>
           </div>
@@ -61,7 +61,7 @@ export default function SolitairePrivilegeSection({
           <div className="xl:hidden">
             <Link href="/solitaire/privilege" className={solitaireButtonClassName({ variant: "secondary", size: "large", className: "w-full" })}>
               <span className="prio-button__label">{viewMore}</span>
-              <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5 brightness-0" />
+              <img src="/assets/navbar/arrow-right.svg" alt="" className="size-5 brightness-0" />
             </Link>
           </div>
         </div>

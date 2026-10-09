@@ -51,7 +51,7 @@ export default function FinancialReportSection({ copy, tone = "prioritas" }: { c
 
       <div className="relative z-10 mx-auto flex min-h-[600px] w-full max-w-[1280px] flex-col px-4 py-12 xl:min-h-[640px] xl:px-0 xl:py-20">
         <header className="flex flex-col gap-6 xl:flex-row xl:items-start xl:gap-10">
-          <p className={`text-eyebrow uppercase leading-[120%] ${isSolitaire ? "text-neutral-100" : "text-pgold-300"} xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-lg`}>{copy.eyebrow}</p>
+          <p className={`text-eyebrow-lg uppercase leading-[120%] ${isSolitaire ? "text-neutral-100" : "text-pgold-300"} md:text-eyebrow xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-xl`}>{copy.eyebrow}</p>
           <h2 className={`text-heading max-w-[560px] ${textClassName} xl:text-display`}>{copy.heading}</h2>
         </header>
 
@@ -60,8 +60,8 @@ export default function FinancialReportSection({ copy, tone = "prioritas" }: { c
             {copy.features.map((feature, index) => (
               <div
                 key={feature}
-                className={`glass-panel glass-panel-prioritas relative flex min-h-0 items-start overflow-hidden rounded-2xl px-4 pb-5 pt-4 ${index === 0 ? "col-start-1 row-start-1" : index === 1 ? "col-start-1 row-start-2" : "col-start-2 row-start-2"} md:col-auto md:row-auto md:min-h-36 md:px-6 md:py-5`}
-                style={{ backgroundColor: `color-mix(in srgb, ${isSolitaire ? "var(--color-neutral-900)" : "var(--color-pbrown-900)"} 50%, transparent)`, backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)", isolation: "isolate" }}
+                className={`glass-panel ${isSolitaire ? "glass-panel-solitaire" : "glass-panel-prioritas"} relative flex min-h-0 items-start overflow-hidden rounded-2xl px-4 pb-5 pt-4 ${index === 0 ? "col-start-1 row-start-1" : index === 1 ? "col-start-1 row-start-2" : "col-start-2 row-start-2"} md:col-auto md:row-auto md:min-h-36 md:px-6 md:py-5`}
+                style={{ backgroundColor: `color-mix(in srgb, ${isSolitaire ? "var(--color-neutral-900)" : "var(--color-pbrown-900)"} 30%, transparent)`, isolation: "isolate" }}
               >
                 <p className="text-sm font-semibold leading-5 text-neutral-100 xl:text-xl xl:leading-7 xl:tracking-[-0.4px]">{feature}</p>
               </div>

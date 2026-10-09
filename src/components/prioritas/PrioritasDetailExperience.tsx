@@ -52,18 +52,20 @@ type DetailCopy = {
 
 type DetailKind = "signature" | "lifestyle" | "complimentary" | "event" | "promo" | "about" | "banking";
 
-function DetailRow({
+export function DetailRow({
   title,
   children,
   open,
   onToggle,
   solitaire = false,
+  previewViewport,
 }: {
   title: string;
   children: React.ReactNode;
   open: boolean;
   onToggle: () => void;
   solitaire?: boolean;
+  previewViewport?: "mobile" | "desktop";
 }) {
   return (
     <section className={`group relative rounded-xl transition-colors ${solitaire ? "hover:bg-neutral-200" : "hover:bg-pgold-100"} before:absolute before:inset-x-4 before:-top-2 before:border-t before:border-neutral-300 before:content-[''] first:before:hidden`}>
@@ -71,7 +73,7 @@ function DetailRow({
         type="button"
         aria-expanded={open}
         onClick={onToggle}
-        className={`flex w-full items-center justify-between gap-6 rounded-xl bg-transparent p-2 text-left text-lg font-semibold text-neutral-900 transition-colors ${solitaire ? "group-hover:text-neutral-900" : "group-hover:text-pbrown-500"} xl:p-4 xl:text-title`}
+        className={`flex w-full items-center justify-between gap-6 rounded-xl bg-transparent text-left font-semibold text-neutral-900 transition-colors ${solitaire ? "group-hover:text-neutral-900" : "group-hover:text-pbrown-500"} ${previewViewport === "desktop" ? "p-4 text-title" : previewViewport === "mobile" ? "p-2 text-lg" : "p-2 text-lg xl:p-4 xl:text-title"}`}
       >
         <span>{title}</span>
         <span className={`flex size-10 shrink-0 items-center justify-center rounded-full ${solitaire ? "bg-neutral-300" : "bg-pgold-200"}`}>
@@ -84,7 +86,7 @@ function DetailRow({
       </button>
       <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
         <div className="overflow-hidden">
-          <div className="px-2 pb-2 text-sm leading-5 text-neutral-700 xl:px-4 xl:pb-4 xl:text-base xl:leading-6">{children}</div>
+          <div className={`text-neutral-700 ${previewViewport === "desktop" ? "px-4 pb-4 text-base leading-6" : previewViewport === "mobile" ? "px-2 pb-2 text-sm leading-5" : "px-2 pb-2 text-sm leading-5 xl:px-4 xl:pb-4 xl:text-base xl:leading-6"}`}>{children}</div>
         </div>
       </div>
     </section>
@@ -477,7 +479,7 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
                 {heroTimestampLabel ? <PrioritasEventDateTile timeLabel={heroTimestampLabel} timeIconSrc="/assets/prioritas/detail/promo/clock.svg" solitaire={isSolitaire} /> : null}
                 <div
                   aria-hidden={!showHeroTitle}
-                  className={`glass-panel glass-panel-prioritas pointer-events-none absolute inset-x-2 bottom-2 z-10 max-w-[400px] rounded-xl p-4 pb-5 text-white shadow-card backdrop-blur-md transition-[opacity,transform] duration-300 motion-reduce:transition-none xl:inset-x-4 xl:bottom-4 ${showHeroTitle ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"}`}
+                  className={`glass-panel ${isSolitaire ? "glass-panel-solitaire" : "glass-panel-prioritas"} pointer-events-none absolute inset-x-2 bottom-2 z-10 max-w-[400px] rounded-xl p-4 pb-5 text-white shadow-card transition-[opacity,transform] duration-300 motion-reduce:transition-none xl:inset-x-4 xl:bottom-4 ${showHeroTitle ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"}`}
                 >
                   <p className="text-base font-semibold leading-6 xl:text-lg xl:leading-7">{copy.title}</p>
                   {brand ? <p className="mt-2 text-sm font-semibold leading-5 text-white/80 xl:text-base">{brand}</p> : null}

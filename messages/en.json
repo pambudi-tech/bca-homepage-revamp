@@ -1,7 +1,13 @@
 {
-  "metadata": { "title": "BCA - Always By Your Side", "description": "Prototype revamp of the BCA.co.id homepage" },
+  "metadata": {
+    "title": "BCA - Always By Your Side",
+    "description": "Prototype revamp of the BCA.co.id homepage"
+  },
   "promoPage": {
-    "metadata": { "title": "BCA Promotions", "description": "Discover a range of BCA promotions for every need." },
+    "metadata": {
+      "title": "BCA Promotions",
+      "description": "Discover a range of BCA promotions for every need."
+    },
     "hero": {
       "eyebrow": "BCA Promotions",
       "title": "Enjoy a Variety of Promotions for Every Need",
@@ -26,13 +32,21 @@
       "label": "Search promotions",
       "allCategories": "All Categories",
       "categoryLabel": "Choose a promotion category",
-      "placeholders": ["Fore Coffee", "Dining discounts", "Ticket promotions", "myBCA cashback"],
+      "placeholders": [
+        "Fore Coffee",
+        "Dining discounts",
+        "Ticket promotions",
+        "myBCA cashback"
+      ],
       "popularPromos": "Popular promotions",
       "results": "Promotion search results",
       "noResults": "No promotions found yet",
       "noResultsHint": "Try another keyword or category."
     },
-    "common": { "previous": "Previous", "next": "Next" },
+    "common": {
+      "previous": "Previous",
+      "next": "Next"
+    },
     "seasonal": {
       "badge": "Gebyar BCA Special",
       "discount": "Discount",
@@ -87,7 +101,10 @@
         "Lippo Mall Puri"
       ]
     },
-    "endingSoon": { "title": "Ending Soon", "description": "Selected promotions that are about to end" },
+    "endingSoon": {
+      "title": "Ending Soon",
+      "description": "Selected promotions that are about to end"
+    },
     "categories": {
       "fnb": "Food and Beverages",
       "hobby": "Hobby",
@@ -118,7 +135,10 @@
     }
   },
   "creditCardDetail": {
-    "metadata": { "title": "BCA Credit Card", "description": "Discover a range of BCA Credit Cards to complement your lifestyle." },
+    "metadata": {
+      "title": "BCA Credit Card",
+      "description": "Discover a range of BCA Credit Cards to complement your lifestyle."
+    },
     "hero": {
       "eyebrow": "BCA Credit Card",
       "title": "A Range of Choices to Complement Your Lifestyle",
@@ -222,73 +242,111 @@
             {
               "key": "fees",
               "label": "Fees",
-              "columns": ["Fee Type", "Primary Card", "Additional Card"],
+              "columns": [
+                "Fee Type",
+                "Primary Card",
+                "Additional Card"
+              ],
               "rows": [
                 {
                   "label": "Annual Fee",
                   "cells": [
-                    { "text": "Rp500,000" },
-                    { "text": "Rp300,000" }
+                    {
+                      "text": "Rp500,000"
+                    },
+                    {
+                      "text": "Rp300,000"
+                    }
                   ]
                 },
                 {
                   "label": "Late Payment Fee",
                   "cells": [
-                    { "text": "1% of total bill, maximum Rp100,000", "colSpan": 2 }
+                    {
+                      "text": "1% of total bill, maximum Rp100,000",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "One-year Transaction Summary Request",
                   "cells": [
-                    { "text": "Rp100,000", "colSpan": 2 }
+                    {
+                      "text": "Rp100,000",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "Invoice Copy Request",
                   "cells": [
-                    { "text": "Rp30,000", "colSpan": 2 }
+                    {
+                      "text": "Rp30,000",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "Lost or Damaged Card Replacement",
                   "cells": [
-                    { "text": "Free of charge", "colSpan": 2 }
+                    {
+                      "text": "Free of charge",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "Bill Printing and Delivery",
                   "cells": [
-                    { "text": "Rp10,000", "colSpan": 2 }
+                    {
+                      "text": "Rp10,000",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "Overlimit Fee",
                   "cells": [
-                    { "text": "Free of charge", "colSpan": 2 }
+                    {
+                      "text": "Free of charge",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "Domestic and International Cash Advance",
                   "cells": [
-                    { "text": "4% of withdrawal amount or minimum Rp40,000", "colSpan": 2 }
+                    {
+                      "text": "4% of withdrawal amount or minimum Rp40,000",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "Counter Cash Advance Administration",
                   "cells": [
-                    { "text": "Rp20,000 per transaction", "colSpan": 2 }
+                    {
+                      "text": "Rp20,000 per transaction",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "Installment Cancellation",
                   "cells": [
-                    { "text": "Rp100,000", "colSpan": 2 }
+                    {
+                      "text": "Rp100,000",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "Stamp Duty",
                   "cells": [
-                    { "text": "Rp10,000 for bill payments above Rp5,000,000", "colSpan": 2 }
+                    {
+                      "text": "Rp10,000 for bill payments above Rp5,000,000",
+                      "colSpan": 2
+                    }
                   ]
                 }
               ]
@@ -296,46 +354,72 @@
             {
               "key": "limit-risk",
               "label": "Limit, Interest Rate, & Risk",
-              "columns": ["Information Type", "Primary Card", "Additional Card"],
+              "columns": [
+                "Information Type",
+                "Primary Card",
+                "Additional Card"
+              ],
               "blocks": [
                 {
                   "type": "text",
                   "heading": "Limit",
-                  "bullets": ["Minimum Credit Limit for Primary and Additional Cards"]
+                  "bullets": [
+                    "Minimum Credit Limit for Primary and Additional Cards"
+                  ]
                 },
                 {
                   "type": "table",
-                  "columns": ["Limit Type", "Primary Card", "Additional Card"],
+                  "columns": [
+                    "Limit Type",
+                    "Primary Card",
+                    "Additional Card"
+                  ],
                   "rows": [
                     {
                       "label": "BCA Singapore Airlines KrisFlyer Visa Signature",
                       "cells": [
-                        { "text": "Rp10,000,000" },
-                        { "text": "Rp5,000,000" }
+                        {
+                          "text": "Rp10,000,000"
+                        },
+                        {
+                          "text": "Rp5,000,000"
+                        }
                       ]
                     }
                   ]
                 },
-                { "type": "text", "body": "Note: The credit limit is determined based on BCA's analysis." },
+                {
+                  "type": "text",
+                  "body": "Note: The credit limit is determined based on BCA's analysis."
+                },
                 {
                   "type": "text",
                   "heading": "Transaction Limit",
-                  "bullets": ["Transaction Limits for the BCA Singapore Airlines KrisFlyer Visa Signature"]
+                  "bullets": [
+                    "Transaction Limits for the BCA Singapore Airlines KrisFlyer Visa Signature"
+                  ]
                 },
                 {
                   "type": "table",
-                  "columns": ["Transaction Type", "Limit"],
+                  "columns": [
+                    "Transaction Type",
+                    "Limit"
+                  ],
                   "rows": [
                     {
                       "label": "Contact (EDC)",
                       "cells": [
-                        { "text": "According to available credit limit" }
+                        {
+                          "text": "According to available credit limit"
+                        }
                       ]
                     },
                     {
                       "label": "Contactless with PIN",
                       "cells": [
-                        { "text": "According to available credit limit" }
+                        {
+                          "text": "According to available credit limit"
+                        }
                       ]
                     },
                     {
@@ -349,13 +433,17 @@
                     {
                       "label": "E-commerce",
                       "cells": [
-                        { "text": "According to available credit limit" }
+                        {
+                          "text": "According to available credit limit"
+                        }
                       ]
                     },
                     {
                       "label": "Cash Advance (ATM)",
                       "cells": [
-                        { "text": "20% of credit limit" }
+                        {
+                          "text": "20% of credit limit"
+                        }
                       ]
                     }
                   ]
@@ -379,62 +467,93 @@
                 {
                   "label": "Minimum Credit Limit",
                   "cells": [
-                    { "text": "Rp10,000,000" },
-                    { "text": "Rp5,000,000" }
+                    {
+                      "text": "Rp10,000,000"
+                    },
+                    {
+                      "text": "Rp5,000,000"
+                    }
                   ]
                 },
                 {
                   "label": "EDC Limit",
                   "cells": [
-                    { "text": "According to available credit limit", "colSpan": 2 }
+                    {
+                      "text": "According to available credit limit",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "Contactless with PIN",
                   "cells": [
-                    { "text": "According to available credit limit", "colSpan": 2 }
+                    {
+                      "text": "According to available credit limit",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "Contactless without PIN",
                   "cells": [
-                    { "text": "Subject to local rules; maximum Rp1,000,000 in Indonesia", "colSpan": 2 }
+                    {
+                      "text": "Subject to local rules; maximum Rp1,000,000 in Indonesia",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "E-commerce",
                   "cells": [
-                    { "text": "According to available credit limit", "colSpan": 2 }
+                    {
+                      "text": "According to available credit limit",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "ATM Cash Advance",
                   "cells": [
-                    { "text": "20% of credit limit", "colSpan": 2 }
+                    {
+                      "text": "20% of credit limit",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "Shopping and Cash Advance Interest Rate",
                   "cells": [
-                    { "text": "1.75% per month", "colSpan": 2 }
+                    {
+                      "text": "1.75% per month",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "Late Payment Risk",
                   "cells": [
-                    { "text": "May incur a late fee and affect the debtor's collectability", "colSpan": 2 }
+                    {
+                      "text": "May incur a late fee and affect the debtor's collectability",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "Early Installment Settlement Risk",
                   "cells": [
-                    { "text": "A fee may apply when settling an installment early", "colSpan": 2 }
+                    {
+                      "text": "A fee may apply when settling an installment early",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "Card Misuse Risk",
                   "cells": [
-                    { "text": "Misuse of the card, PIN/Password/OTP, or User ID/BCA ID due to customer negligence", "colSpan": 2 }
+                    {
+                      "text": "Misuse of the card, PIN/Password/OTP, or User ID/BCA ID due to customer negligence",
+                      "colSpan": 2
+                    }
                   ]
                 }
               ]
@@ -442,129 +561,219 @@
             {
               "key": "simulation",
               "label": "Simulation",
-              "columns": ["Posting Date", "Description", "Amount"],
+              "columns": [
+                "Posting Date",
+                "Description",
+                "Amount"
+              ],
               "blocks": [
-                { "type": "text", "body": "Statement calculation for the account statement date of 1 April 2024 and payment due date of 17 April 2024." },
+                {
+                  "type": "text",
+                  "body": "Statement calculation for the account statement date of 1 April 2024 and payment due date of 17 April 2024."
+                },
                 {
                   "type": "table",
-                  "columns": ["Posting Date", "Description", "Amount"],
+                  "columns": [
+                    "Posting Date",
+                    "Description",
+                    "Amount"
+                  ],
                   "rows": [
                     {
                       "label": "1 March 2024",
                       "cells": [
-                        { "text": "Previous Bill" },
-                        { "text": "Rp0" }
+                        {
+                          "text": "Previous Bill"
+                        },
+                        {
+                          "text": "Rp0"
+                        }
                       ]
                     },
                     {
                       "label": "5 March 2024",
                       "cells": [
-                        { "text": "Transaction I" },
-                        { "text": "Rp1,250,000" }
+                        {
+                          "text": "Transaction I"
+                        },
+                        {
+                          "text": "Rp1,250,000"
+                        }
                       ]
                     },
                     {
                       "label": "16 March 2024",
                       "cells": [
-                        { "text": "Transaction II" },
-                        { "text": "Rp1,750,000" }
+                        {
+                          "text": "Transaction II"
+                        },
+                        {
+                          "text": "Rp1,750,000"
+                        }
                       ]
                     },
                     {
                       "label": "New bill",
                       "labelColSpan": 2,
                       "cells": [
-                        { "text": "Rp3,000,000" }
+                        {
+                          "text": "Rp3,000,000"
+                        }
                       ]
                     }
                   ]
                 },
-                { "type": "text", "body": "Account statement cycle of 1 May 2024, interest calculation with minimum payment (payment date: 17 April 2024)." },
+                {
+                  "type": "text",
+                  "body": "Account statement cycle of 1 May 2024, interest calculation with minimum payment (payment date: 17 April 2024)."
+                },
                 {
                   "type": "table",
-                  "columns": ["Posting Date", "Description", "Amount"],
+                  "columns": [
+                    "Posting Date",
+                    "Description",
+                    "Amount"
+                  ],
                   "rows": [
                     {
                       "label": "1 April 2024",
                       "cells": [
-                        { "text": "Previous Balance" },
-                        { "text": "Rp3,000,000" }
+                        {
+                          "text": "Previous Balance"
+                        },
+                        {
+                          "text": "Rp3,000,000"
+                        }
                       ]
                     },
                     {
                       "label": "8 April 2024",
                       "cells": [
-                        { "text": "Transaction I" },
-                        { "text": "Rp1,250,000" }
+                        {
+                          "text": "Transaction I"
+                        },
+                        {
+                          "text": "Rp1,250,000"
+                        }
                       ]
                     },
                     {
                       "label": "24 April 2024",
                       "cells": [
-                        { "text": "Transaction II" },
-                        { "text": "Rp1,750,000" }
+                        {
+                          "text": "Transaction II"
+                        },
+                        {
+                          "text": "Rp1,750,000"
+                        }
                       ]
                     },
                     {
                       "label": "17 April 2024",
                       "cells": [
-                        { "text": "Payment (Min. 5% x Rp3,000,000)" },
-                        { "text": "(Rp150,000)" }
+                        {
+                          "text": "Payment (Min. 5% x Rp3,000,000)"
+                        },
+                        {
+                          "text": "(Rp150,000)"
+                        }
                       ]
                     },
                     {
                       "label": "Interest",
                       "labelColSpan": 2,
                       "cells": [
-                        { "text": "Rp87,740" }
+                        {
+                          "text": "Rp87,740"
+                        }
                       ]
                     },
                     {
                       "label": "New bill",
                       "labelColSpan": 2,
                       "cells": [
-                        { "text": "Rp4,187,740" }
+                        {
+                          "text": "Rp4,187,740"
+                        }
                       ]
                     }
                   ]
                 },
-                { "type": "text", "heading": "Interest calculation:" },
+                {
+                  "type": "text",
+                  "heading": "Interest calculation:"
+                },
                 {
                   "type": "table",
-                  "columns": ["Transaction Type", "Period", "Transaction Amount", "Interest Rate", "Calculation Formula", "Total Interest"],
-                  "columnTooltips": { "Period": "Time between the transaction date and the statement print date." },
+                  "columns": [
+                    "Transaction Type",
+                    "Period",
+                    "Transaction Amount",
+                    "Interest Rate",
+                    "Calculation Formula",
+                    "Total Interest"
+                  ],
+                  "columnTooltips": {
+                    "Period": "Time between the transaction date and the statement print date."
+                  },
                   "rows": [
                     {
                       "label": "Transaction I",
                       "cells": [
-                        { "text": "5 March 2024 – 16 April 2024 (43 days)" },
-                        { "text": "Rp1,250,000" },
-                        { "text": "1.75%", "rowSpan": 3 },
-                        { "text": "Transaction amount x interest rate x 12 months x (period/365 days)", "rowSpan": 3 },
-                        { "text": "Rp30,925" }
+                        {
+                          "text": "5 March 2024 – 16 April 2024 (43 days)"
+                        },
+                        {
+                          "text": "Rp1,250,000"
+                        },
+                        {
+                          "text": "1.75%",
+                          "rowSpan": 3
+                        },
+                        {
+                          "text": "Transaction amount x interest rate x 12 months x (period/365 days)",
+                          "rowSpan": 3
+                        },
+                        {
+                          "text": "Rp30,925"
+                        }
                       ]
                     },
                     {
                       "label": "Transaction II",
                       "cells": [
-                        { "text": "16 March 2024 – 16 April 2024 (32 days)" },
-                        { "text": "Rp1,750,000" },
-                        { "text": "Rp32,219" }
+                        {
+                          "text": "16 March 2024 – 16 April 2024 (32 days)"
+                        },
+                        {
+                          "text": "Rp1,750,000"
+                        },
+                        {
+                          "text": "Rp32,219"
+                        }
                       ]
                     },
                     {
                       "label": "Previous month's remaining payment",
                       "cells": [
-                        { "text": "17 April 2024 – 1 May 2024 (15 days)" },
-                        { "text": "Rp2,850,000" },
-                        { "text": "Rp24,596" }
+                        {
+                          "text": "17 April 2024 – 1 May 2024 (15 days)"
+                        },
+                        {
+                          "text": "Rp2,850,000"
+                        },
+                        {
+                          "text": "Rp24,596"
+                        }
                       ]
                     },
                     {
                       "label": "Total",
                       "labelColSpan": 5,
                       "cells": [
-                        { "text": "Rp87,740" }
+                        {
+                          "text": "Rp87,740"
+                        }
                       ]
                     }
                   ]
@@ -591,7 +800,14 @@
         "unionpay": "Let's Live It Up!",
         "american-express-platinum": "For the finest things in life"
       },
-      "tabs": { "benefits": "Benefits", "features": "Key Features", "fees": "Fees", "requirements": "Application Requirements", "limit": "Limit", "payments": "Interest & Payment" }
+      "tabs": {
+        "benefits": "Benefits",
+        "features": "Key Features",
+        "fees": "Fees",
+        "requirements": "Application Requirements",
+        "limit": "Limit",
+        "payments": "Interest & Payment"
+      }
     },
     "tutorial": {
       "heading": "Apply for a credit card more easily with myBCA",
@@ -606,11 +822,26 @@
       "nextStep": "Next step",
       "seeFullSteps": "View Full Steps",
       "steps": [
-        { "title": "Open myBCA", "description": "Open the myBCA app, then tap Apply for Credit Card." },
-        { "title": "Review the credit card benefits", "description": "Review BCA Credit Card benefits, then tap Continue." },
-        { "title": "Review the application requirements", "description": "Check the BCA Credit Card application requirements, then tap Start." },
-        { "title": "Choose a credit card", "description": "Choose a BCA Credit Card that suits your needs." },
-        { "title": "Choose an additional card", "description": "Choose another credit card with a shared credit limit." }
+        {
+          "title": "Open myBCA",
+          "description": "Open the myBCA app, then tap Apply for Credit Card."
+        },
+        {
+          "title": "Review the credit card benefits",
+          "description": "Review BCA Credit Card benefits, then tap Continue."
+        },
+        {
+          "title": "Review the application requirements",
+          "description": "Check the BCA Credit Card application requirements, then tap Start."
+        },
+        {
+          "title": "Choose a credit card",
+          "description": "Choose a BCA Credit Card that suits your needs."
+        },
+        {
+          "title": "Choose an additional card",
+          "description": "Choose another credit card with a shared credit limit."
+        }
       ]
     },
     "help": {
@@ -647,7 +878,9 @@
       "appPlaceholder": "Placeholder for credit card features in the app",
       "cardSpecificHeadings": {
         "krisflyer-signature": "Earn KrisFlyer Miles Faster",
-        "features": { "krisflyer-signature": "Key Features for Spending and Travel" }
+        "features": {
+          "krisflyer-signature": "Key Features for Spending and Travel"
+        }
       },
       "benefits": [
         {
@@ -655,14 +888,35 @@
           "title": "BCA Installments",
           "description": "Convert transactions into BCA Installments with interest starting at 0% and tenors of up to 36 months."
         },
-        { "key": "reward", "title": "BCA Rewards", "description": "BCA loyalty points earned from Credit Card transactions in Indonesia and abroad.", "featured": true },
-        { "key": "autopay", "title": "BCA Autopay", "description": "A solution for recurring bill payments, automatically paid through direct debit from your BCA Credit Card." },
-        { "key": "travel-insurance", "title": "Travel Insurance", "description": "Stay protected from risks throughout every journey." },
-        { "key": "credit-life", "title": "Credit Life Insurance", "description": "Protect yourself and your loved ones from unexpected risks." }
+        {
+          "key": "reward",
+          "title": "BCA Rewards",
+          "description": "BCA loyalty points earned from Credit Card transactions in Indonesia and abroad.",
+          "featured": true
+        },
+        {
+          "key": "autopay",
+          "title": "BCA Autopay",
+          "description": "A solution for recurring bill payments, automatically paid through direct debit from your BCA Credit Card."
+        },
+        {
+          "key": "travel-insurance",
+          "title": "Travel Insurance",
+          "description": "Stay protected from risks throughout every journey."
+        },
+        {
+          "key": "credit-life",
+          "title": "Credit Life Insurance",
+          "description": "Protect yourself and your loved ones from unexpected risks."
+        }
       ],
       "cardSpecificBenefits": {
         "krisflyer-signature": [
-          { "key": "krisflyer-reward", "title": "KrisFlyer Rewards", "description": "Earn 1 KrisFlyer mile for every Rp13,500 transaction." },
+          {
+            "key": "krisflyer-reward",
+            "title": "KrisFlyer Rewards",
+            "description": "Earn 1 KrisFlyer mile for every Rp13,500 transaction."
+          },
           {
             "key": "krisflyer-welcome-bonus",
             "title": "Welcome bonus up to 10,000 miles",
@@ -686,14 +940,47 @@
         ]
       },
       "features": [
-        { "key": "application", "title": "Apply for a Credit Card", "description": "Choose the right card and apply online." },
-        { "key": "add-card", "title": "Add a Card", "description": "Add a card to share needs with a combined limit." },
-        { "key": "installment", "title": "Convert Transactions to Installments", "description": "Installments from 0% interest for up to 36 months." },
-        { "key": "miles", "title": "Convert BCA Rewards to Miles", "description": "Convert your rewards into selected airline miles." },
-        { "key": "reward", "title": "Check BCA Rewards Balance", "description": "Track collected points and their validity period." },
-        { "key": "limit", "title": "Request a Limit Increase", "description": "Increase your credit card limit directly in the app." },
-        { "key": "control", "title": "Credit Card Controls", "description": "Block and manage your card anytime through the app." },
-        { "key": "contactless", "title": "Set Contactless Limit", "description": "Set a contactless transaction limit to suit your needs.", "badge": "New" }
+        {
+          "key": "application",
+          "title": "Apply for a Credit Card",
+          "description": "Choose the right card and apply online."
+        },
+        {
+          "key": "add-card",
+          "title": "Add a Card",
+          "description": "Add a card to share needs with a combined limit."
+        },
+        {
+          "key": "installment",
+          "title": "Convert Transactions to Installments",
+          "description": "Installments from 0% interest for up to 36 months."
+        },
+        {
+          "key": "miles",
+          "title": "Convert BCA Rewards to Miles",
+          "description": "Convert your rewards into selected airline miles."
+        },
+        {
+          "key": "reward",
+          "title": "Check BCA Rewards Balance",
+          "description": "Track collected points and their validity period."
+        },
+        {
+          "key": "limit",
+          "title": "Request a Limit Increase",
+          "description": "Increase your credit card limit directly in the app."
+        },
+        {
+          "key": "control",
+          "title": "Credit Card Controls",
+          "description": "Block and manage your card anytime through the app."
+        },
+        {
+          "key": "contactless",
+          "title": "Set Contactless Limit",
+          "description": "Set a contactless transaction limit to suit your needs.",
+          "badge": "New"
+        }
       ],
       "cardSpecificFeatures": {
         "krisflyer-signature": [
@@ -702,9 +989,21 @@
             "title": "Visa Merchant and ATM Transactions",
             "description": "Use the card at online and offline merchants, BCA ATMs, or ATMs displaying the Visa logo."
           },
-          { "key": "contactless", "title": "Contactless Transactions", "description": "Make contactless payments with cards that have the Contactless feature." },
-          { "key": "installment", "title": "BCA Installments", "description": "Convert eligible transactions into BCA Installments." },
-          { "key": "miles", "title": "Earn KrisFlyer Miles Faster", "description": "Earn KrisFlyer miles from transactions made with the card." }
+          {
+            "key": "contactless",
+            "title": "Contactless Transactions",
+            "description": "Make contactless payments with cards that have the Contactless feature."
+          },
+          {
+            "key": "installment",
+            "title": "BCA Installments",
+            "description": "Convert eligible transactions into BCA Installments."
+          },
+          {
+            "key": "miles",
+            "title": "Earn KrisFlyer Miles Faster",
+            "description": "Earn KrisFlyer miles from transactions made with the card."
+          }
         ]
       }
     },
@@ -743,8 +1042,22 @@
         "apply": "Apply in myBCA",
         "navigationLabel": "Credit card comparison navigation",
         "selectedCards": "Cards being compared",
-        "cardClusters": { "bca-card": "BCA Card", "visa": "Visa", "mastercard": "Mastercard", "jcb": "JCB", "unionpay": "UnionPay", "american-express": "American Express" },
-        "tabs": { "benefits": "Benefits", "features": "Key Features", "fees": "Fees", "requirements": "Application Requirements", "limit": "Limit", "payments": "Interest & Payments" },
+        "cardClusters": {
+          "bca-card": "BCA Card",
+          "visa": "Visa",
+          "mastercard": "Mastercard",
+          "jcb": "JCB",
+          "unionpay": "UnionPay",
+          "american-express": "American Express"
+        },
+        "tabs": {
+          "benefits": "Benefits",
+          "features": "Key Features",
+          "fees": "Fees",
+          "requirements": "Application Requirements",
+          "limit": "Limit",
+          "payments": "Interest & Payments"
+        },
         "benefitLabel": "Benefit {index}",
         "category": "Category",
         "annualFee": "Annual fee",
@@ -760,13 +1073,21 @@
                 "points": [
                   {
                     "label": "BCA Rewards",
-                    "bullets": ["1% for tiket.com transactions; 0.5% for other merchants", "from 1 May 2026, a 0.4% scheme applies to Blibli merchant transactions"]
+                    "bullets": [
+                      "1% for tiket.com transactions; 0.5% for other merchants",
+                      "from 1 May 2026, a 0.4% scheme applies to Blibli merchant transactions"
+                    ]
                   },
                   {
                     "label": "Welcome Bonus",
-                    "bullets": ["1% for tiket.com transactions; 0.5% for other merchants"]
+                    "bullets": [
+                      "1% for tiket.com transactions; 0.5% for other merchants"
+                    ]
                   },
-                  { "label": "Travel Points / Miles", "description": "from 1 May 2026, a 0.4% scheme applies to Blibli merchant transactions" }
+                  {
+                    "label": "Travel Points / Miles",
+                    "description": "from 1 May 2026, a 0.4% scheme applies to Blibli merchant transactions"
+                  }
                 ]
               }
             ]
@@ -777,14 +1098,30 @@
               {
                 "title": "",
                 "points": [
-                  { "label": "Contactless" },
-                  { "label": "BCA Installment" },
-                  { "label": "Travel Insurance" },
-                  { "label": "Credit Life Insurance" },
-                  { "label": "BCA Travel Services" },
-                  { "label": "AutoPay BCA" },
-                  { "label": "BCA Rewards" },
-                  { "label": "Credit Card Control" }
+                  {
+                    "label": "Contactless"
+                  },
+                  {
+                    "label": "BCA Installment"
+                  },
+                  {
+                    "label": "Travel Insurance"
+                  },
+                  {
+                    "label": "Credit Life Insurance"
+                  },
+                  {
+                    "label": "BCA Travel Services"
+                  },
+                  {
+                    "label": "AutoPay BCA"
+                  },
+                  {
+                    "label": "BCA Rewards"
+                  },
+                  {
+                    "label": "Credit Card Control"
+                  }
                 ]
               }
             ]
@@ -795,12 +1132,21 @@
               {
                 "title": "",
                 "points": [
-                  { "label": "Annual Fee", "description": "Rp125,000/year" },
+                  {
+                    "label": "Annual Fee",
+                    "description": "Rp125,000/year"
+                  },
                   {
                     "label": "Late Payment Fee",
-                    "bullets": ["1% of the bill, up to Rp100,000", "Rp100,000**"]
+                    "bullets": [
+                      "1% of the bill, up to Rp100,000",
+                      "Rp100,000**"
+                    ]
                   },
-                  { "label": "Card Replacement Fee", "description": "Rp50,000" }
+                  {
+                    "label": "Card Replacement Fee",
+                    "description": "Rp50,000"
+                  }
                 ]
               }
             ]
@@ -811,23 +1157,44 @@
               {
                 "title": "",
                 "points": [
-                  { "label": "Age", "description": "minimum 21 years old" },
-                  { "label": "Minimum Income", "description": "Minimum monthly income Rp3 million (state-owned companies / civil servants) or Rp5 million (private sector)" }
+                  {
+                    "label": "Age",
+                    "description": "minimum 21 years old"
+                  },
+                  {
+                    "label": "Minimum Income",
+                    "description": "Minimum monthly income Rp3 million (state-owned companies / civil servants) or Rp5 million (private sector)"
+                  }
                 ]
               },
               {
                 "title": "Limit",
                 "points": [
-                  { "label": "Minimum credit card limit", "description": "Rp3,000,000" },
-                  { "label": "Minimum credit card limit", "description": "Rp1,000,000" },
-                  { "label": "EDC limit", "description": "Based on the available card" }
+                  {
+                    "label": "Minimum credit card limit",
+                    "description": "Rp3,000,000"
+                  },
+                  {
+                    "label": "Minimum credit card limit",
+                    "description": "Rp1,000,000"
+                  },
+                  {
+                    "label": "EDC limit",
+                    "description": "Based on the available card"
+                  }
                 ]
               },
               {
                 "title": "Interest & Payments",
                 "points": [
-                  { "label": "Purchase interest rate", "description": "1.75% per month" },
-                  { "label": "Cash advance interest rate", "description": "1.75% per month" }
+                  {
+                    "label": "Purchase interest rate",
+                    "description": "1.75% per month"
+                  },
+                  {
+                    "label": "Cash advance interest rate",
+                    "description": "1.75% per month"
+                  }
                 ]
               }
             ]
@@ -835,10 +1202,22 @@
         ]
       },
       "filters": [
-        { "key": "all", "label": "All" },
-        { "key": "travel", "label": "Travel" },
-        { "key": "lifestyle", "label": "Lifestyle" },
-        { "key": "reward", "label": "BCA Rewards" }
+        {
+          "key": "all",
+          "label": "All"
+        },
+        {
+          "key": "travel",
+          "label": "Travel"
+        },
+        {
+          "key": "lifestyle",
+          "label": "Lifestyle"
+        },
+        {
+          "key": "reward",
+          "label": "BCA Rewards"
+        }
       ],
       "cards": [
         {
@@ -848,9 +1227,18 @@
           "imageAlt": "BCA Singapore Airlines KrisFlyer Visa Signature",
           "category": "travel",
           "benefits": [
-            { "icon": "miles", "label": "Bonus up to 10,000 KrisFlyer miles" },
-            { "icon": "spend", "label": "1 KrisFlyer mile per Rp13,500" },
-            { "icon": "fee", "label": "Annual fee Rp500 thousand" }
+            {
+              "icon": "miles",
+              "label": "Bonus up to 10,000 KrisFlyer miles"
+            },
+            {
+              "icon": "spend",
+              "label": "1 KrisFlyer mile per Rp13,500"
+            },
+            {
+              "icon": "fee",
+              "label": "Annual fee Rp500 thousand"
+            }
           ]
         },
         {
@@ -860,9 +1248,18 @@
           "imageAlt": "BCA Singapore Airlines KrisFlyer Visa Infinite",
           "category": "travel",
           "benefits": [
-            { "icon": "miles", "label": "Bonus up to 12,500 KrisFlyer miles" },
-            { "icon": "spend", "label": "1 KrisFlyer mile per Rp10,800" },
-            { "icon": "fee", "label": "Annual fee Rp1 million" }
+            {
+              "icon": "miles",
+              "label": "Bonus up to 12,500 KrisFlyer miles"
+            },
+            {
+              "icon": "spend",
+              "label": "1 KrisFlyer mile per Rp10,800"
+            },
+            {
+              "icon": "fee",
+              "label": "Annual fee Rp1 million"
+            }
           ]
         },
         {
@@ -873,9 +1270,18 @@
           "category": "travel",
           "badge": "Best Cashback",
           "benefits": [
-            { "icon": "voucher", "label": "E-voucher up to Rp1 million" },
-            { "icon": "cashback", "label": "1% Blibli Tiket Points at tiket.com" },
-            { "icon": "fee", "label": "Annual fee Rp125 thousand" }
+            {
+              "icon": "voucher",
+              "label": "E-voucher up to Rp1 million"
+            },
+            {
+              "icon": "cashback",
+              "label": "1% Blibli Tiket Points at tiket.com"
+            },
+            {
+              "icon": "fee",
+              "label": "Annual fee Rp125 thousand"
+            }
           ]
         },
         {
@@ -885,9 +1291,18 @@
           "imageAlt": "BCA Singapore Airlines PPS Club Visa Infinite",
           "category": "travel",
           "benefits": [
-            { "icon": "miles", "label": "Rp5,000 = 1 KrisFlyer mile" },
-            { "icon": "voucher", "label": "4,000 KrisFlyer miles welcome bonus" },
-            { "icon": "fee", "label": "Annual fee Rp2 million" }
+            {
+              "icon": "miles",
+              "label": "Rp5,000 = 1 KrisFlyer mile"
+            },
+            {
+              "icon": "voucher",
+              "label": "4,000 KrisFlyer miles welcome bonus"
+            },
+            {
+              "icon": "fee",
+              "label": "Annual fee Rp2 million"
+            }
           ]
         },
         {
@@ -897,9 +1312,18 @@
           "imageAlt": "BCA Everyday Card",
           "category": "reward",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward 0.3%" },
-            { "icon": "installment", "label": "BCA Installment available" },
-            { "icon": "fee", "label": "Annual fee Rp125 thousand" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward 0.3%"
+            },
+            {
+              "icon": "installment",
+              "label": "BCA Installment available"
+            },
+            {
+              "icon": "fee",
+              "label": "Annual fee Rp125 thousand"
+            }
           ]
         },
         {
@@ -910,9 +1334,18 @@
           "category": "lifestyle",
           "badge": "Popular",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward 0.3%" },
-            { "icon": "installment", "label": "BCA Installment available" },
-            { "icon": "fee", "label": "Annual fee Rp125 thousand" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward 0.3%"
+            },
+            {
+              "icon": "installment",
+              "label": "BCA Installment available"
+            },
+            {
+              "icon": "fee",
+              "label": "Annual fee Rp125 thousand"
+            }
           ]
         },
         {
@@ -922,9 +1355,18 @@
           "imageAlt": "BCA Visa Batman",
           "category": "lifestyle",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward 0.3%" },
-            { "icon": "installment", "label": "BCA Installment available" },
-            { "icon": "fee", "label": "Annual fee Rp125 thousand" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward 0.3%"
+            },
+            {
+              "icon": "installment",
+              "label": "BCA Installment available"
+            },
+            {
+              "icon": "fee",
+              "label": "Annual fee Rp125 thousand"
+            }
           ]
         },
         {
@@ -935,9 +1377,18 @@
           "category": "lifestyle",
           "badge": "Highest Limit",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward 0.3%" },
-            { "icon": "installment", "label": "BCA Installment available" },
-            { "icon": "fee", "label": "Annual fee Rp125 thousand" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward 0.3%"
+            },
+            {
+              "icon": "installment",
+              "label": "BCA Installment available"
+            },
+            {
+              "icon": "fee",
+              "label": "Annual fee Rp125 thousand"
+            }
           ]
         },
         {
@@ -947,9 +1398,18 @@
           "imageAlt": "BCA Visa Black",
           "category": "lifestyle",
           "benefits": [
-            { "icon": "reward", "label": "0.2% BCA Reward" },
-            { "icon": "travel", "label": "Travel Accident Insurance" },
-            { "icon": "fee", "label": "Annual fee Rp450 thousand" }
+            {
+              "icon": "reward",
+              "label": "0.2% BCA Reward"
+            },
+            {
+              "icon": "travel",
+              "label": "Travel Accident Insurance"
+            },
+            {
+              "icon": "fee",
+              "label": "Annual fee Rp450 thousand"
+            }
           ]
         },
         {
@@ -959,9 +1419,18 @@
           "imageAlt": "BCA Blibli Mastercard",
           "category": "reward",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward 0.3%" },
-            { "icon": "installment", "label": "BCA Installment available" },
-            { "icon": "fee", "label": "Annual fee Rp125 thousand" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward 0.3%"
+            },
+            {
+              "icon": "installment",
+              "label": "BCA Installment available"
+            },
+            {
+              "icon": "fee",
+              "label": "Annual fee Rp125 thousand"
+            }
           ]
         },
         {
@@ -971,9 +1440,18 @@
           "imageAlt": "BCA Mastercard Globe",
           "category": "lifestyle",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward" },
-            { "icon": "travel", "label": "Lifestyle merchant offers" },
-            { "icon": "fee", "label": "Annual fee per BCA terms" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward"
+            },
+            {
+              "icon": "travel",
+              "label": "Lifestyle merchant offers"
+            },
+            {
+              "icon": "fee",
+              "label": "Annual fee per BCA terms"
+            }
           ]
         },
         {
@@ -983,9 +1461,18 @@
           "imageAlt": "BCA Mastercard World",
           "category": "lifestyle",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward" },
-            { "icon": "travel", "label": "Lifestyle and travel partners" },
-            { "icon": "fee", "label": "Annual fee per BCA terms" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward"
+            },
+            {
+              "icon": "travel",
+              "label": "Lifestyle and travel partners"
+            },
+            {
+              "icon": "fee",
+              "label": "Annual fee per BCA terms"
+            }
           ]
         },
         {
@@ -995,9 +1482,18 @@
           "imageAlt": "BCA JCB Black",
           "category": "lifestyle",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward" },
-            { "icon": "travel", "label": "JCB benefits and services" },
-            { "icon": "fee", "label": "Annual fee per BCA terms" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward"
+            },
+            {
+              "icon": "travel",
+              "label": "JCB benefits and services"
+            },
+            {
+              "icon": "fee",
+              "label": "Annual fee per BCA terms"
+            }
           ]
         },
         {
@@ -1007,9 +1503,18 @@
           "imageAlt": "BCA UnionPay",
           "category": "lifestyle",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward" },
-            { "icon": "travel", "label": "UnionPay benefits and services" },
-            { "icon": "fee", "label": "Annual fee per BCA terms" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward"
+            },
+            {
+              "icon": "travel",
+              "label": "UnionPay benefits and services"
+            },
+            {
+              "icon": "fee",
+              "label": "Annual fee per BCA terms"
+            }
           ]
         },
         {
@@ -1019,9 +1524,18 @@
           "imageAlt": "BCA American Express Platinum",
           "category": "lifestyle",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward" },
-            { "icon": "travel", "label": "American Express benefits and services" },
-            { "icon": "fee", "label": "Annual fee per BCA terms" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward"
+            },
+            {
+              "icon": "travel",
+              "label": "American Express benefits and services"
+            },
+            {
+              "icon": "fee",
+              "label": "Annual fee per BCA terms"
+            }
           ]
         }
       ]
@@ -1068,18 +1582,45 @@
     "languageSwitcher": "Choose language",
     "disclaimer": "Property of Natuno. All rights reserved."
   },
-  "languages": { "id": "Indonesia", "en": "English", "zh": "简体中文" },
+  "languages": {
+    "id": "Indonesia",
+    "en": "English",
+    "zh": "简体中文"
+  },
   "hero": {
     "searchPrompt": "What can we help you with?",
-    "placeholders": ["Open a BCA account", "Activate BCA Paylater", "Apply for a credit card", "Install myBCA"],
+    "placeholders": [
+      "Open a BCA account",
+      "Activate BCA Paylater",
+      "Apply for a credit card",
+      "Install myBCA"
+    ],
     "quickActions": {
-      "login": { "title": "Log in to BCA", "subtitle": "myBCA • KlikBCA" },
-      "promo": { "title": "Latest Promos", "subtitle": "Best Offers" },
-      "halobca": { "title": "HaloBCA", "subtitle": "1500888, Chat, Email" },
-      "location": { "title": "BCA Locations", "subtitle": "Branches & ATMs" },
-      "webform": { "title": "BCA Webform", "subtitle": "Product application" }
+      "login": {
+        "title": "Log in to BCA",
+        "subtitle": "myBCA • KlikBCA"
+      },
+      "promo": {
+        "title": "Latest Promos",
+        "subtitle": "Best Offers"
+      },
+      "halobca": {
+        "title": "HaloBCA",
+        "subtitle": "1500888, Chat, Email"
+      },
+      "location": {
+        "title": "BCA Locations",
+        "subtitle": "Branches & ATMs"
+      },
+      "webform": {
+        "title": "BCA Webform",
+        "subtitle": "Product application"
+      }
     },
-    "loginCepat": { "title": "Quick Login", "subtitle": "Access BCA services" },
+    "loginCepat": {
+      "title": "Quick Login",
+      "subtitle": "Access BCA services"
+    },
     "loginMybca": "Log in to myBCA",
     "loginKlikbca": "Log in to KlikBCA",
     "closeLogin": "Close",
@@ -1103,12 +1644,20 @@
       "promo": "Events & Promos",
       "soliprio": "Solitaire & Prioritas",
       "news": "News & Education",
-      "faq": "FAQ"
+      "faq": "FAQ",
+      "scrollPrevious": "Scroll navigation left",
+      "scrollNext": "Scroll navigation right"
     }
   },
   "search": {
     "segmentLabel": "Content segment",
-    "segments": { "Semua": "All", "Individu": "Individual", "Bisnis": "Business", "Prioritas": "Prioritas", "Solitaire": "Solitaire" },
+    "segments": {
+      "Semua": "All",
+      "Individu": "Individual",
+      "Bisnis": "Business",
+      "Prioritas": "Prioritas",
+      "Solitaire": "Solitaire"
+    },
     "recentSearches": "Recent Searches",
     "clearAll": "Clear all",
     "removeTerm": "Remove {term}",
@@ -1123,7 +1672,11 @@
     "needHelp": "Need help?",
     "visitHelpCenter": "Visit Help Center",
     "close": "Close search",
-    "categories": { "produk-layanan": "Products & Services", "artikel": "Articles", "promo": "Promos" },
+    "categories": {
+      "produk-layanan": "Products & Services",
+      "artikel": "Articles",
+      "promo": "Promos"
+    },
     "popular": {
       "openAccount": "Open an Account",
       "exchangeRate": "Today's Exchange Rate",
@@ -1148,10 +1701,19 @@
     "noResultsScopedHint": "Try another keyword for Privilege or Banking Solution.",
     "noResultsSolitaireHint": "Try another keyword for Solitaire Privileges."
   },
-  "scrollCue": { "label": "Scroll to see more" },
-  "backToTop": { "label": "Back to top" },
-  "slideDots": { "play": "Resume carousel", "pause": "Pause carousel" },
-  "common": { "learnMore": "Learn more" },
+  "scrollCue": {
+    "label": "Scroll to see more"
+  },
+  "backToTop": {
+    "label": "Back to top"
+  },
+  "slideDots": {
+    "play": "Resume carousel",
+    "pause": "Pause carousel"
+  },
+  "common": {
+    "learnMore": "Learn more"
+  },
   "product": {
     "eyebrow": "Products & Services",
     "heading": "BCA Solutions for Every Financial Goal",
@@ -1169,8 +1731,15 @@
     "nextSlide": "Next event",
     "playSlide": "Play carousel",
     "pauseSlide": "Pause carousel",
-    "badge": { "almostEnd": "Ending Soon!", "popular": "Popular" },
-    "timestamp": { "expired": "Promo Ended", "hoursLeft": "Ends in {hours} hours", "until": "Until {date}" }
+    "badge": {
+      "almostEnd": "Ending Soon!",
+      "popular": "Popular"
+    },
+    "timestamp": {
+      "expired": "Promo Ended",
+      "hoursLeft": "Ends in {hours} hours",
+      "until": "Until {date}"
+    }
   },
   "soliprio": {
     "title": "Prestigious, Personal Service — Made Only for You.",
@@ -1180,17 +1749,37 @@
     "visitSolitaire": "Visit Solitaire",
     "visitPrioritas": "Visit Prioritas",
     "benefits": {
-      "lounge": { "title": "Access 200+ Airport Lounges Worldwide", "cta": "View Hospital Partners" },
-      "healthcare": { "title": "Exclusive Health Checks at Selected Premium Hospitals", "cta": "Access Lounge" },
-      "event": { "title": "Priority Access to Renowned Events", "cta": "View All Events" }
+      "lounge": {
+        "title": "Access 200+ Airport Lounges Worldwide",
+        "cta": "View Hospital Partners"
+      },
+      "healthcare": {
+        "title": "Exclusive Health Checks at Selected Premium Hospitals",
+        "cta": "Access Lounge"
+      },
+      "event": {
+        "title": "Priority Access to Renowned Events",
+        "cta": "View All Events"
+      }
     },
     "solitaireBenefits": {
-      "personalBanker": { "title": "Personal Banker for a more personal service", "cta": "Learn More" },
-      "exclusiveCommunity": { "title": "An exclusive BCA community for relationships and collaboration", "cta": "Learn More" }
+      "personalBanker": {
+        "title": "Personal Banker for a more personal service",
+        "cta": "Learn More"
+      },
+      "exclusiveCommunity": {
+        "title": "An exclusive BCA community for relationships and collaboration",
+        "cta": "Learn More"
+      }
     }
   },
   "nav": {
-    "segments": { "Individu": "Individual", "Bisnis": "Business", "Solitaire": "Solitaire", "Prioritas": "Priority" },
+    "segments": {
+      "Individu": "Individual",
+      "Bisnis": "Business",
+      "Solitaire": "Solitaire",
+      "Prioritas": "Priority"
+    },
     "produk": "Products",
     "promo": "Promo",
     "login": "Log in",
@@ -1222,6 +1811,7 @@
     "bahasa": "Language",
     "pilihSegmen": "Choose Your Segment",
     "sesiAktif": "Active session",
+    "logout": "Log out",
     "kembali": "Back",
     "menuLabel": "Main menu"
   },
@@ -1236,10 +1826,22 @@
     "rejectAll": "Reject All",
     "settings": "Manage Preferences",
     "categories": {
-      "essential": { "label": "Essential", "desc": "Keeps your login session, security, and basic site functions running. Cannot be turned off." },
-      "functional": { "label": "Functional", "desc": "Remembers your preferences, such as language and the last exchange rate viewed." },
-      "analytics": { "label": "Analytics", "desc": "Helps us understand which pages are used most often." },
-      "marketing": { "label": "Marketing", "desc": "Tailors the BCA promos and ads you see on other sites." }
+      "essential": {
+        "label": "Essential",
+        "desc": "Keeps your login session, security, and basic site functions running. Cannot be turned off."
+      },
+      "functional": {
+        "label": "Functional",
+        "desc": "Remembers your preferences, such as language and the last exchange rate viewed."
+      },
+      "analytics": {
+        "label": "Analytics",
+        "desc": "Helps us understand which pages are used most often."
+      },
+      "marketing": {
+        "label": "Marketing",
+        "desc": "Tailors the BCA promos and ads you see on other sites."
+      }
     }
   },
   "lokasi": {
@@ -1344,33 +1946,69 @@
     "linkColumns": {
       "Tentang BCA": {
         "heading": "Company",
-        "links": ["About BCA", "Careers", "Interest Rate Info", "Branch & ATM Locations"]
+        "links": [
+          "About BCA",
+          "Careers",
+          "Interest Rate Info",
+          "Branch & ATM Locations"
+        ]
       },
       "Layanan": {
         "heading": "Services",
-        "links": ["Help Center", "Customer Service", "Simulations & Calculators", "Branch Network"]
+        "links": [
+          "Help Center",
+          "Customer Service",
+          "Simulations & Calculators",
+          "Branch Network"
+        ]
       },
       "Wawasan": {
         "heading": "Insights",
-        "links": ["News & Feature", "EdukaTips", "#AwasModus", "See More"]
+        "links": [
+          "News & Feature",
+          "EdukaTips",
+          "#AwasModus",
+          "See More"
+        ]
       }
     },
     "prioritasLinkColumns": {
       "Perusahaan": {
         "heading": "Company",
-        "links": ["About Us", "Contact Us", "Find Us", "RIPLAY"]
+        "links": [
+          "About Us",
+          "Contact Us",
+          "Find Us",
+          "RIPLAY"
+        ]
       },
       "Layanan": {
         "heading": "Services",
-        "links": ["Privilege", "Banking Privilege"]
+        "links": [
+          "Privilege",
+          "Banking Privilege"
+        ]
       },
       "Wawasan": {
         "heading": "Insights",
-        "links": ["e-Magazine", "House View", "Weekly Market Insight"]
+        "links": [
+          "e-Magazine",
+          "House View",
+          "Weekly Market Insight"
+        ]
       }
     },
-    "prioritasBottomLinks": ["SBDK", "Privacy Policy", "Terms & Conditions", "bca.co.id"],
-    "bottomLinks": ["SBDK", "Privacy Policy", "Terms & Conditions"]
+    "prioritasBottomLinks": [
+      "SBDK",
+      "Privacy Policy",
+      "Terms & Conditions",
+      "bca.co.id"
+    ],
+    "bottomLinks": [
+      "SBDK",
+      "Privacy Policy",
+      "Terms & Conditions"
+    ]
   },
   "mybca": {
     "heading": "All Your Banking Needs in the Palm of Your Hand",
@@ -1383,109 +2021,257 @@
     "googlePlay": "Get it on Google Play",
     "detail": "myBCA Details"
   },
-  "news": { "eyebrow": "News & Insights", "heading": "Latest BCA Updates", "seeMore": "All News & Insights" },
-  "faq": { "eyebrow": "FREQUENTLY ASKED QUESTION", "heading": "Trusted Support, Always by Your Side", "notFound": "Can't find the answer you're looking for?", "cta": "Visit Help Center" },
+  "news": {
+    "eyebrow": "News & Insights",
+    "heading": "Latest BCA Updates",
+    "seeMore": "All News & Insights"
+  },
+  "faq": {
+    "eyebrow": "FREQUENTLY ASKED QUESTION",
+    "heading": "Trusted Support, Always by Your Side",
+    "notFound": "Can't find the answer you're looking for?",
+    "cta": "Visit Help Center"
+  },
   "megamenu": {
     "Simpanan": {
       "label": "Savings",
-      "products": ["Tahapan", "Tahapan Xpresi", "Tahapan Berjangka", "Time Deposit", "View All Savings"],
+      "products": [
+        "Tahapan",
+        "Tahapan Xpresi",
+        "Tahapan Berjangka",
+        "Time Deposit",
+        "View All Savings"
+      ],
       "ctaLabel": "Compare Savings Products",
-      "tools": ["Calculate Your Savings Potential", "Open an Account Online"],
+      "tools": [
+        "Calculate Your Savings Potential",
+        "Open an Account Online"
+      ],
       "links": [
-        { "label": "How to top up & transfer between accounts", "type": "video" },
-        { "label": "Difference between Tahapan, Tapres, and Time Deposit" },
-        { "label": "What's the minimum balance and admin fee for each savings product?" },
-        { "label": "Requirements & documents to open a BCA account" }
+        {
+          "label": "How to top up & transfer between accounts",
+          "type": "video"
+        },
+        {
+          "label": "Difference between Tahapan, Tapres, and Time Deposit"
+        },
+        {
+          "label": "What's the minimum balance and admin fee for each savings product?"
+        },
+        {
+          "label": "Requirements & documents to open a BCA account"
+        }
       ],
       "editorialTitle": "Open an Account, Get QRIS Cashback up to Rp100,000"
     },
     "Kartu Kredit": {
       "label": "Credit Card",
-      "products": ["BCA Everyday Card", "BCA Visa Batman", "BCA Mastercard Black", "Reward BCA", "View All Credit Cards"],
+      "products": [
+        "BCA Everyday Card",
+        "BCA Visa Batman",
+        "BCA Mastercard Black",
+        "Reward BCA",
+        "View All Credit Cards"
+      ],
       "ctaLabel": "Compare Credit Cards",
-      "tools": ["Credit Card Installment Simulator", "Check BCA Rewards"],
+      "tools": [
+        "Credit Card Installment Simulator",
+        "Check BCA Rewards"
+      ],
       "links": [
-        { "label": "How to apply for a credit card via website", "type": "video" },
-        { "label": "Which credit card suits me best?" },
-        { "label": "Requirements to apply for a BCA credit card" },
-        { "label": "How to pay your BCA credit card bill" }
+        {
+          "label": "How to apply for a credit card via website",
+          "type": "video"
+        },
+        {
+          "label": "Which credit card suits me best?"
+        },
+        {
+          "label": "Requirements to apply for a BCA credit card"
+        },
+        {
+          "label": "How to pay your BCA credit card bill"
+        }
       ],
       "editorialTitle": "Apply for a Credit Card Now, Free Lifetime Annual Fee & Welcome Bonus Rp500,000"
     },
     "Pinjaman": {
       "label": "Loans",
-      "products": ["Paylater BCA", "Home Loan (KPR)", "Vehicle Loan (KKB)", "BCA Personal Loan", "View All Loans"],
+      "products": [
+        "Paylater BCA",
+        "Home Loan (KPR)",
+        "Vehicle Loan (KKB)",
+        "BCA Personal Loan",
+        "View All Loans"
+      ],
       "ctaLabel": "Calculate Estimated Installments",
-      "tools": ["Calculate Your Installment", "Check Paylater BCA Limit"],
+      "tools": [
+        "Calculate Your Installment",
+        "Check Paylater BCA Limit"
+      ],
       "links": [
-        { "label": "The application process from start to disbursement", "type": "video" },
-        { "label": "How to apply for a home loan online via myBCA" },
-        { "label": "Requirements & documents to apply for a BCA loan" },
-        { "label": "What's the maximum loan amount I can apply for?" }
+        {
+          "label": "The application process from start to disbursement",
+          "type": "video"
+        },
+        {
+          "label": "How to apply for a home loan online via myBCA"
+        },
+        {
+          "label": "Requirements & documents to apply for a BCA loan"
+        },
+        {
+          "label": "What's the maximum loan amount I can apply for?"
+        }
       ],
       "editorialTitle": "Special 2.99% Home Loan Rate in the First Year"
     },
     "e-Banking": {
       "label": "e-Banking",
-      "products": ["myBCA", "KlikBCA", "Sakuku", "e-Branch", "View All e-Banking"],
+      "products": [
+        "myBCA",
+        "KlikBCA",
+        "Sakuku",
+        "e-Branch",
+        "View All e-Banking"
+      ],
       "ctaLabel": "Compare e-Banking Options",
-      "tools": ["Register & Activate myBCA", "Compare BCA Digital Services"],
+      "tools": [
+        "Register & Activate myBCA",
+        "Compare BCA Digital Services"
+      ],
       "links": [
-        { "label": "How to activate myBCA for new users", "type": "video" },
-        { "label": "How to top up Flazz via myBCA" },
-        { "label": "myBCA's standout features" },
-        { "label": "What's the difference between myBCA and KlikBCA?" }
+        {
+          "label": "How to activate myBCA for new users",
+          "type": "video"
+        },
+        {
+          "label": "How to top up Flazz via myBCA"
+        },
+        {
+          "label": "myBCA's standout features"
+        },
+        {
+          "label": "What's the difference between myBCA and KlikBCA?"
+        }
       ],
       "editorialTitle": "Pay with QRIS on myBCA, Get up to 50% Off at Selected Merchants"
     },
     "Wealth Management": {
       "label": "Wealth Management",
-      "products": ["Mutual Funds", "Bonds", "Insurance", "Customer Fund Account (RDN)", "View All Wealth Management"],
+      "products": [
+        "Mutual Funds",
+        "Bonds",
+        "Insurance",
+        "Customer Fund Account (RDN)",
+        "View All Wealth Management"
+      ],
       "ctaLabel": "Calculate Investment & Protection Potential",
-      "tools": ["Calculate Your Investment Potential", "Check Your Investment Risk Profile"],
+      "tools": [
+        "Calculate Your Investment Potential",
+        "Check Your Investment Risk Profile"
+      ],
       "links": [
-        { "label": "A guide to choosing investments that match your risk profile", "type": "video" },
-        { "label": "How to buy Mutual Funds via myBCA" },
-        { "label": "Choosing the right insurance for your family" },
-        { "label": "What's the difference between life and health insurance?" }
+        {
+          "label": "A guide to choosing investments that match your risk profile",
+          "type": "video"
+        },
+        {
+          "label": "How to buy Mutual Funds via myBCA"
+        },
+        {
+          "label": "Choosing the right insurance for your family"
+        },
+        {
+          "label": "What's the difference between life and health insurance?"
+        }
       ],
       "editorialTitle": "Investment and protection in one app, starting from Rp10,000"
     },
     "Investasi": {
       "label": "Investments",
-      "products": ["Mutual Funds", "Bonds", "Customer Fund Account (RDN)", "View All Investments"],
+      "products": [
+        "Mutual Funds",
+        "Bonds",
+        "Customer Fund Account (RDN)",
+        "View All Investments"
+      ],
       "ctaLabel": "View All Investments",
-      "tools": ["Calculate Your Investment Potential", "Check Your Investment Risk Profile"],
+      "tools": [
+        "Calculate Your Investment Potential",
+        "Check Your Investment Risk Profile"
+      ],
       "links": [
-        { "label": "Choosing investments that match your risk profile", "type": "video" },
-        { "label": "How to buy Mutual Funds via myBCA" },
-        { "label": "Explore BCA investment products" },
-        { "label": "Tips for starting your financial plan" }
+        {
+          "label": "Choosing investments that match your risk profile",
+          "type": "video"
+        },
+        {
+          "label": "How to buy Mutual Funds via myBCA"
+        },
+        {
+          "label": "Explore BCA investment products"
+        },
+        {
+          "label": "Tips for starting your financial plan"
+        }
       ],
       "editorialTitle": "Start Investing for Your Financial Goals"
     },
     "Asuransi": {
       "label": "Insurance",
-      "products": ["Life Insurance", "Health Insurance", "Vehicle Insurance", "View All Insurance"],
+      "products": [
+        "Life Insurance",
+        "Health Insurance",
+        "Vehicle Insurance",
+        "View All Insurance"
+      ],
       "ctaLabel": "View All Insurance",
-      "tools": ["Calculate Insurance Premium", "Find Insurance That Suits Your Needs"],
+      "tools": [
+        "Calculate Insurance Premium",
+        "Find Insurance That Suits Your Needs"
+      ],
       "links": [
-        { "label": "Choosing protection that suits your needs", "type": "video" },
-        { "label": "Choosing the right insurance for your family" },
-        { "label": "The difference between life and health insurance" },
-        { "label": "How to apply for BCA insurance products" }
+        {
+          "label": "Choosing protection that suits your needs",
+          "type": "video"
+        },
+        {
+          "label": "Choosing the right insurance for your family"
+        },
+        {
+          "label": "The difference between life and health insurance"
+        },
+        {
+          "label": "How to apply for BCA insurance products"
+        }
       ],
       "editorialTitle": "Protection for You, Your Family, and Your Assets"
     },
     "Transaksi": {
       "label": "Transactions",
-      "products": ["Flazz", "Firecash", "Remittance", "View All Transactions"],
+      "products": [
+        "Flazz",
+        "Firecash",
+        "Remittance",
+        "View All Transactions"
+      ],
       "ctaLabel": "Calculate Estimated Premium",
-      "tools": ["BCA Exchange Rate Calculator", "Check Transaction Status"],
+      "tools": [
+        "BCA Exchange Rate Calculator",
+        "Check Transaction Status"
+      ],
       "links": [
-        { "label": "The easy way to top up Flazz directly from myBCA", "type": "video" },
-        { "label": "Complete guide to sending money abroad" },
-        { "label": "Requirements and how to cash out Firecash funds at your nearest branch, no deductions" }
+        {
+          "label": "The easy way to top up Flazz directly from myBCA",
+          "type": "video"
+        },
+        {
+          "label": "Complete guide to sending money abroad"
+        },
+        {
+          "label": "Requirements and how to cash out Firecash funds at your nearest branch, no deductions"
+        }
       ],
       "editorialTitle": "Send Money Abroad Free of Telex Fees & Get the Most Special Exchange Rate"
     }
@@ -1504,10 +2290,21 @@
       "produk": "Product / Service",
       "produkPlaceholder": "Select a product or service"
     },
-    "products": ["Savings", "Credit Card", "Loans", "myBCA / KlikBCA", "Other"],
+    "products": [
+      "Savings",
+      "Credit Card",
+      "Loans",
+      "myBCA / KlikBCA",
+      "Other"
+    ],
     "terms": "Halo BCA Chat Terms and Conditions",
     "submit": "Start Conversation",
-    "errors": { "required": "This field is required", "email": "Invalid email format", "phone": "Invalid phone number", "captcha": "Please complete the \"I'm not a robot\" verification" },
+    "errors": {
+      "required": "This field is required",
+      "email": "Invalid email format",
+      "phone": "Invalid phone number",
+      "captcha": "Please complete the \"I'm not a robot\" verification"
+    },
     "close": "Close HaloBCA"
   },
   "prioritasKurs": {
@@ -1534,566 +2331,12 @@
     "cta": "Learn More",
     "bannerAlt": "A family enjoying time together in a living room",
     "prioritasLogoAlt": "BCA Prioritas",
-    "sectionNavLabel": "BCA Prioritas page navigation",
-    "sections": { "privilege": "Privilege", "eventPromo": "Event & Promo", "bankingSolution": "Banking Solution", "magazine": "e-Magazine", "financialReport": "Financial Report" },
-    "contact": {
-      "heading": "We're ready to support your next steps.",
-      "riplayTitle": "Product and Service Information Summary (RIPLAY)",
-      "download": "Download Document",
-      "contactTitle": "Contact Us",
-      "phone": "Call 150022"
-    },
-    "privilege": {
-      "eyebrow": "Privilege",
-      "heading": "Exclusive Access for Every Step of Your Journey",
-      "cards": {
-        "lounge": { "title": "Access Hundreds of Exclusive Airport Lounges Across Indonesia", "action": "Make a Reservation", "alt": "Exclusive airport lounge" },
-        "health": { "title": "Exclusive Health Checks at Selected Premium Hospitals", "action": "View Hospital Partners", "alt": "Premium hospital room" },
-        "event": { "title": "Priority Access to Notable Events", "action": "View All Events", "alt": "Exclusive seating at an event" }
-      },
-      "viewMore": "See More Privileges Available to You"
-    },
-    "eventPromo": {
-      "eyebrow": "EVENT & PROMO",
-      "heading": "Exclusive Offers and Experiences Just for You",
-      "featuredTitles": {
-        "javaJazz": "Complimentary Ticket to Java Jazz Festival for BCA Prioritas Customers",
-        "theWeeknd": "Complimentary Ticket to The Weeknd Concert for the First 3 Customers",
-        "brightspot": "Get VIP Tickets to Brightspot Opening Night",
-        "mercedesAds": "All-New Mercedes-Benz GLC 300 — Bringing Leading Technology to Every Journey"
-      },
-      "featuredCtas": { "mercedesAds": "Schedule Now" },
-      "featuredCta": "Learn More",
-      "viewMore": "See All Events & Promos"
-    },
-    "card": {
-      "eyebrow": "CARD",
-      "heading": "One Card for Thousands of Exclusive Benefits",
-      "description": "Available by special invitation only. Contact your Personal Banker for more information.",
-      "action": "Learn More",
-      "imageAlt": "BCA Prioritas platinum debit card"
-    },
-    "kartu": {
-      "eyebrow": "BANKING SOLUTION",
-      "heading": "Dedicated Banking Services for Your Life Journey",
-      "label": "Banking Privilege",
-      "viewMore": "View All",
-      "action": "Learn More",
-      "cards": {
-        "branch": { "title": "Specialized Services at BCA Branches", "alt": "Specialized services at BCA branches" },
-        "vehicle": { "title": "Motor Vehicle Loan (KKB)", "alt": "Motor vehicle loan" },
-        "transaction": { "title": "Special Transaction Features & Services", "alt": "Special transaction features and services" },
-        "credit": { "title": "BCA Credit Cards", "alt": "BCA Credit Cards" },
-        "home": { "title": "Home Ownership Loan", "alt": "Home ownership loan" },
-        "deposit": { "title": "Safe Deposit Box", "alt": "Safe Deposit Box" }
-      }
-    },
-    "bankingSolution": {
-      "eyebrow": "BANKING SOLUTION",
-      "heading": "Dedicated Banking Services for Your Life Journey",
-      "bankingPrivilege": "Banking Privilege",
-      "wealthInsight": "Wealth Insight",
-      "kurs": "Today's Exchange Rates",
-      "viewMore": "View All",
-      "action": "Learn More",
-      "buy": "Buy",
-      "sell": "Sell",
-      "updatedAt": "Last updated {date}",
-      "refresh": "Refresh exchange rates",
-      "previous": "Previous exchange rate",
-      "next": "Next exchange rate",
-      "cards": {
-        "branch": { "title": "Specialized Services at BCA Branches", "alt": "Specialized services at BCA branches" },
-        "vehicle": { "title": "Motor Vehicle Loan (KKB)", "alt": "Motor vehicle loan" },
-        "transaction": { "title": "Special Transaction Features & Services", "alt": "Special transaction features and services" },
-        "credit": { "title": "BCA Credit Cards", "alt": "BCA credit cards" },
-        "home": { "title": "Home Ownership Loan", "alt": "Home ownership loan" },
-        "deposit": { "title": "Safe Deposit Box", "alt": "Safe deposit box" }
-      },
-      "wealthCards": {
-        "houseView": {
-          "title": "House View June 2025 - Portfolio Strategy Amid the Rate-Cutting Cycle",
-          "date": "Wednesday, 16 June 2025 · 14.00 WIB",
-          "channel": "Live on YouTube",
-          "action": "Add to Calendar",
-          "alt": "BCA Prioritas House View event"
-        },
-        "market": {
-          "title": "Weekly Market Overview: Between De-escalation and Stagflation",
-          "date": "2 June 2026",
-          "action": "Download Report",
-          "alt": "BCA Prioritas Weekly Market Overview"
-        }
-      }
-    },
-    "magazine": {
-      "eyebrow": "E-MAGAZINE",
-      "heading": "Here for Those Who Never Stop Growing",
-      "viewMore": "View All",
-      "cards": {
-        "property": { "title": "Issue 104-XXI/2025", "action": "Read Now", "alt": "Prioritas magazine about Indonesia's property industry" },
-        "food": { "title": "Issue 105-XXII/2026", "action": "Read Now", "alt": "Prioritas magazine about the food and beverage industry" },
-        "chess": { "title": "Issue 103-XX/2025", "action": "Read Now", "alt": "Prioritas magazine about young entrepreneurs" }
-      }
-    },
-    "financialReport": {
-      "eyebrow": "FINANCIAL REPORT",
-      "heading": "Your Complete Portfolio Overview, in One View",
-      "features": { "centralized": "Centralized data from all your BCA products", "reporting": "Ready to use for various reports", "updated": "Always updated whenever you access it" },
-      "action": "Access Your Report"
-    }
-  },
-  "signaturePrivilege": {
-    "subNavLabel": "Prioritas navigation",
-    "subNav": { "privilege": "Privilege", "banking": "Banking Solution", "magazine": "e-Magazine" },
-    "breadcrumb": "Signature Privilege",
-    "title": "Exceptional Access Present at Every Step of Your Journey",
-    "eventPromoTitle": "Hundreds of Experiences & Exclusive Offers for You",
-    "tabLabel": "Privilege categories",
-    "tabs": { "signature": "Signature Privilege", "lifestyle": "Lifestyle Privilege", "event": "Event", "promo": "Promo" },
-    "description": "Exclusive services and benefits designed for your every need.",
-    "lifestyleDescription": "Special offers and exclusive benefits to enjoy a variety of lifestyle experiences.",
-    "more": "Learn more",
-    "voucherAvailability": "Available vouchers: {count}",
-    "solitaireOnlyBadge": "For BCA Solitaire customers only",
-    "showAllSignature": "View All Privileges",
-    "showLessSignature": "Show Fewer Privileges",
-    "signature": {
-      "lounge": { "title": "Executive Airport Lounge" },
-      "transfer": { "title": "Domestic Airport Transfer" },
-      "medical": { "title": "International Medical Check Up" }
-    },
-    "complimentary": {
-      "title": "Complimentary",
-      "subtitle": "No additional cost. Simply show your Prioritas card.",
-      "birthday": "Birthday Gift",
-      "viewList": "View Complimentary List",
-      "cards": {
-        "valet": { "title": "Complimentary Valet Parking", "brand": "Han Palace Restaurant" },
-        "inpatient": { "title": "Complimentary meal for VVIP inpatient companion", "brand": "Altos Hospital" },
-        "facial": { "title": "Snow White Facial valued at Rp1.2 million", "brand": "Dermatology Clinic" },
-        "laser": { "title": "Pico Dermabrasion Laser valued at Rp9.5 million", "brand": "EternaMoore Clinic" },
-        "treatment": { "title": "Hand Treatment valued at Rp200 thousand", "brand": "Molton Brown" },
-        "restaurant": { "title": "Complimentary 1 Pax Americano / Cappuccino", "brand": "Social Spoon" },
-        "glow": { "title": "Red Carpet Glow Treatment", "brand": "Amala Clinic" },
-        "dessert": { "title": "Complimentary Dessert", "brand": "Greenleaf Steak & More" },
-        "jewelry": { "title": "Exclusive Jewelry Box valued at Rp500 thousand", "brand": "Semar Nusantara" }
-      }
-    },
-    "categories": {
-      "all": "All",
-      "beauty": "Beauty",
-      "culinary": "Culinary",
-      "health": "Health",
-      "travel": "Travel",
-      "lifestyle": "Lifestyle",
-      "education": "Education",
-      "home": "Home & Living",
-      "business": "Business"
-    },
-    "categoriesScrollPrevious": "Scroll categories left",
-    "categoriesScrollNext": "Scroll categories right",
-    "searchLabel": "Search benefits",
-    "searchPlaceholder": "Search brand/partner",
-    "showing": "Showing {count} offers",
-    "empty": "No matching offers.",
-    "paginationLabel": "Benefit pages",
-    "paginationSummary": "Data {from}-{to} of {total}",
-    "paginationPrevious": "Previous page",
-    "paginationNext": "Next page",
-    "paginationJumpBackward": "Jump back {count} pages",
-    "paginationJumpForward": "Jump forward {count} pages",
-    "eventDateExpired": "Event ended",
-    "eventDirectory": {
-      "paginationLabel": "Event pages",
-      "categories": { "lifestyle": "Lifestyle & Sports", "networking": "Seminar & Networking", "arts": "Arts & Culture", "culinary": "Culinary & Dining" },
-      "period": "Event Time",
-      "all": "All Events",
-      "upcoming": "Upcoming",
-      "ended": "Past Events",
-      "showing": "Showing {count} events",
-      "empty": "No matching events."
-    }
-  },
-  "prioritasContentDetail": {
-    "fallback": {
-      "description": "Details for {title} are not yet available.",
-      "terms": "Terms and conditions are not yet available.",
-      "contact": "Contact information is not yet available.",
-      "location": "Location information is not yet available."
-    },
-    "event": {
-      "breadcrumb": "Event",
-      "recommendations": "More Recommended Events",
-      "sothebys": {
-        "title": "Charity Art Auction for Indonesian Children's Education",
-        "detail": "Enjoy exclusive access to a charity art auction with Sotheby's, featuring world-class artwork while supporting children's education in Indonesia.",
-        "terms": [
-          "Show a physical BCA Solitaire/Prioritas card or a digital card in myBCA/BCA mobile.",
-          "Pay with a BCA Solitaire/Prioritas Card, BCA Credit Card, or QRIS via BCA mobile/myBCA.",
-          "RSVP three days in advance through Sotheby's Indonesia Customer Service at 0812 3456 7890 (WhatsApp Chat). Places are limited and subject to availability.",
-          "This privilege cannot be redeemed for cash or transferred.",
-          "Valid according to the event schedule."
-        ],
-        "contact": "Sotheby's Indonesia Customer Service: 0812 3456 7890 (WhatsApp Chat)."
-      },
-      "recommendationCards": {
-        "christies": { "title": "Private Viewing of Classical Paintings with an Expert Curator", "brand": "Christie's" },
-        "symphony": { "title": "Symphony Gala with International Musicians", "brand": "Jakarta Symphony Orchestra" }
-      }
-    },
-    "promo": {
-      "breadcrumb": "Promo",
-      "recommendations": "More Recommended Promos",
-      "endedOn": "Ended {date}",
-      "porsche": {
-        "detail": "Experience Porsche's iconic design and performance firsthand through an exclusive test drive accompanied by the Porsche Center Jakarta team.",
-        "terms": [
-          "Show a physical BCA Solitaire/Prioritas card or a digital card in myBCA/BCA mobile.",
-          "Reservations must be made three days in advance through Porsche Center Jakarta Customer Service at 0812 3456 7890 (WhatsApp Chat).",
-          "Bring a valid Class A driver's license.",
-          "Test drive places are limited each day and subject to vehicle availability.",
-          "This privilege cannot be redeemed for cash or transferred.",
-          "Valid at Porsche Center Jakarta during the promo period."
-        ],
-        "contact": "Porsche Center Jakarta Customer Service: 0812 3456 7890 (WhatsApp Chat).",
-        "location": "Porsche Center Jakarta"
-      },
-      "samples": {
-        "porsche": { "title": "Experience Porsche: Enjoy an Exclusive Test Drive", "brand": "Porsche" },
-        "mercedes": { "title": "Exclusive Test Drive of the Latest Mercedes-Benz on a Private Circuit", "brand": "Mercedes-Benz" },
-        "landRover": { "title": "Exclusive Preview and Test Drive of the All-New Range Rover in Jakarta", "brand": "Land Rover" },
-        "audi": { "title": "Explore the Latest Audi Performance with an Exclusive Test Drive", "brand": "Audi" }
-      }
-    }
-  },
-  "lifestylePrivilegeDetail": {
-    "subNavLabel": "Prioritas navigation",
-    "validUntil": "Validity period",
-    "subNav": { "privilege": "Privilege", "banking": "Banking Solution", "magazine": "e-Magazine" },
-    "breadcrumb": { "home": "Prioritas", "category": "Lifestyle Privilege", "current": "Beauty" },
-    "title": "Hand Treatment Discount Valued at Rp200 Thousand",
-    "brand": "Molton Brown",
-    "detail": { "title": "Privilege Details", "content": "Molton Brown Hand Treatment discount valued at Rp200 thousand." },
-    "terms": {
-      "title": "Terms & Conditions",
-      "items": [
-        "Present a physical BCA Solitaire/Prioritas card or the digital card in the myBCA/BCA mobile application.",
-        "Pay using a BCA Solitaire/Prioritas Card, BCA Credit Card, or QRIS BCA mobile/myBCA.",
-        "RSVP one day in advance through Molton Brown Customer Service at 0816 1807 088 (WhatsApp Chat).",
-        "This privilege cannot be exchanged for cash or transferred.",
-        "Valid at all Molton Brown branches."
-      ]
-    },
-    "contact": { "title": "Profile & Contact", "content": "Contact Molton Brown Customer Service for treatment information and reservations." },
-    "location": { "title": "Location", "content": "Valid at all Molton Brown branches." },
-    "loungeTable": { "number": "No", "name": "Name", "airport": "Airport", "lounge": "Lounge/Merchant", "solitaireOnly": "Exclusive to BCA Solitaire customers", "solitaireAndPrioritas": "For BCA Solitaire & Prioritas customers" },
-    "recommendations": {
-      "title": "More Privilege Recommendations",
-      "viewMore": "See More",
-      "action": "Learn More",
-      "cards": {
-        "sisley": { "title": "Experience an Exclusive Signature Facial Treatment, Enjoy Up to 20% Off", "brand": "Sisley Paris", "alt": "Sisley Paris skincare products" },
-        "skii": { "title": "Red Carpet Glow Treatment (Rp1.8 million) + Welcoming Massage + Light Extraction", "brand": "SK-II Boutique Spa", "alt": "SK-II Boutique Spa facial treatment" },
-        "shiseido": { "title": "Enjoy a Complimentary Skin Analysis with Ultimune Serum", "brand": "Shiseido", "alt": "Shiseido Ultimune Serum" }
-      }
-    },
-    "dynamicModule": { "message": "Sign in to check your remaining access and voucher quota for {benefit}.", "loginLabel": "Sign In", "memberMessage": "Check your remaining {benefit} voucher quota in the member area.", "memberActionLabel": "Access Now", "infoTitle": "Information", "solitaireOnlyMessage": "This privilege is available exclusively to BCA Solitaire customers." }
-  },
-  "magazineIndex": {
-    "breadcrumb": "e-Magazine",
-    "title": "Here for Those Who Never Stop Growing",
-    "paginationLabel": "e-Magazine pages",
-    "readNow": "Read Now",
-    "coverAlt": "Cover of {title}",
-    "empty": "No e-Magazine issues are available yet."
-  },
-  "bankingSolutionIndex": {
-    "breadcrumb": "Banking Solution",
-    "title": "Specialized Banking Services for Your Life Journey",
-    "tabLabel": "Banking Solution categories",
-    "clusters": { "cards": "Cards & Payments", "financing": "Financing & Protection", "transactions": "Transactions & Foreign Exchange", "personal": "Personal Services" },
-    "previousCards": "Previous card in {cluster}",
-    "nextCards": "Next card in {cluster}",
-    "tabs": { "privilege": "Banking Privilege", "wealth": "Wealth Insight", "kurs": "Exchange Rates" },
-    "more": "Learn More",
-    "groups": { "house": "House View Report", "market": "Weekly Market Overview" },
-    "calendarAction": "Add to Calendar",
-    "downloadAction": "Download PDF",
-    "privilege": {
-      "jcb": "BCA JCB Black Credit Card",
-      "vehicle": "Vehicle Loan (KKB)",
-      "branch": "Special Services at BCA Branches",
-      "insurance": "Insurance",
-      "fees": "Special Transaction Fees",
-      "transaction": "Special Transaction Features & Services",
-      "media": "Information Media",
-      "advisor": "Dedicated Personal Banker",
-      "family": "BCA Young Community",
-      "contact": "Contact Center",
-      "credit": "BCA Credit Card",
-      "home": "Home Loan",
-      "motorcycle": "Motorcycle Loan",
-      "merchant": "BCA EDC Merchant",
-      "deposit": "Safe Deposit Box",
-      "forex": "Foreign Exchange"
-    },
-    "insight": {
-      "portfolio": {
-        "title": "June 2025 House View - Portfolio Strategy Amid a Rate-Cutting Cycle",
-        "date": "Wednesday, 16 June 2026 · 14:00 WIB",
-        "channel": "Live on YouTube",
-        "alt": "Ice floating in polar waters"
-      },
-      "inflation": { "title": "June 2025 House View - Impact of the US-Iran War on Inflation and Economic Growth", "date": "16 April 2026", "alt": "Iceberg beneath the sea surface" },
-      "oil": { "title": "May 2025 House View - Impact of US-Iran Talks on Oil Prices and Global Inflation", "date": "16 May 2026", "alt": "Hot air balloons in the sky" },
-      "house0908": { "title": "US Inflation and the Fed’s Hawkish Stance Lift UST Yields", "date": "8 September 2026", "alt": "Autumn leaves in sunlight" },
-      "house0804": { "title": "Cooling US Inflation, Global Risks and China’s Slowdown Weigh on Markets", "date": "4 August 2026", "alt": "A green forest with a stream" },
-      "house0701": { "title": "US Inflation and Iran Conflict Raise Rate-Hike Expectations", "date": "1 July 2026", "alt": "Glacier ice across polar waters" },
-      "house0608": { "title": "US-Iran Conflict Keeps Oil High and Central Banks Turning to Rate Hikes", "date": "8 June 2026", "alt": "Hot air balloons in the sky" },
-      "crossroads": { "title": "Weekly Market Overview: Between De-escalation and Stagflation, Global Markets at a Crossroads", "date": "2 June 2026", "alt": "Red world map" },
-      "global": { "title": "Weekly Market Overview: Stagflation and Strategic Opportunities in Global Markets", "date": "29 May 2026", "alt": "Globe showing world regions" },
-      "insights": { "title": "Weekly Market Insights: Stagflation and De-escalation, Indonesia Faces Dual Challenges", "date": "22 May 2026", "alt": "Binoculars on a table" },
-      "weekly0921": { "title": "The Fed Resumes Rate Hikes, Lifting the Dollar and UST Yields", "date": "21 September 2026", "alt": "An investor analyzing financial market reports" },
-      "weekly0914": { "title": "Oil and Persistent Inflation Push UST Yields Near 5%", "date": "14 September 2026", "alt": "A globe showing a world map" },
-      "weekly0907": { "title": "US-Iran Tensions and Jobs Data Fuel Fed Rate-Hike Bets", "date": "7 September 2026", "alt": "Cargo containers being handled at a port" },
-      "weekly0831": { "title": "Geopolitics and Inflation Lift the Dollar and Short-Term UST Yields", "date": "31 August 2026", "alt": "Documents and reports on a desk" },
-      "weekly0824": { "title": "Middle East and US Fiscal Risks Push UST Yields Higher", "date": "24 August 2026", "alt": "A truck carrying a shipping container" },
-      "weekly0818": { "title": "US Inflation Eases, but UST Auction Yields Hit a 25-Year High", "date": "18 August 2026", "alt": "Binoculars on a table" }
-    }
-  },
-  "solitaireHero": {
-    "title": "Prestigious and Personal Services, Exclusively for You.",
-    "cta": "Learn More",
-    "viewMore": "View All",
-    "bannerAlt": "A family enjoying time together in a living room",
-    "breadcrumbLabel": "Solitaire",
-    "solitaireLogoAlt": "BCA Solitaire"
-  },
-  "memberAirportTransfer": {
-    "title": "Facilities",
-    "description": "You can enjoy the Airport Transfer facility with the following codes:",
-    "voucherTitle": "Domestic Voucher",
-    "copy": "Copy",
-    "copied": "Copied",
-    "copyCode": "Copy voucher code {code}",
-    "used": "Used",
-    "usedOn": "Voucher used on {date}",
-    "viewMore": "View More Vouchers",
-    "hideMore": "Hide More Vouchers",
-    "notes": {
-      "updated": "Voucher data is updated periodically on the 1st of each month at [time] WIB.",
-      "contact": "If you have any questions or notice different information, please contact Halo BCA for further assistance."
-    }
-  },
-  "memberMedicalCheckUp": {
-    "title": "International Medical Check Up Facility",
-    "description": "Use your unique voucher code for an Executive Health Screening at Parkway Shenton Singapore.",
-    "provider": "Parkway Shenton",
-    "voucherValue": "SGD 400",
-    "voucherLabel": "After tax",
-    "codeLabel": "Unique voucher code",
-    "copy": "Copy",
-    "copied": "Copied",
-    "copyCode": "Copy voucher code {code}",
-    "locationLabel": "Choose screening location",
-    "locations": ["Executive Health Screeners (Mount Elizabeth Hospital)", "Executive Health Screeners (Gleneagles Hospital)", "Executive Health Screeners (Republic Plaza)", "Executive Health Screeners (Paragon)", "Parkway MediCentre (The Woodleigh Mall)", "Executive Health Screeners (Bedok Central)"],
-    "book": "Book via WhatsApp",
-    "whatsappMessage": "Hello, I would like to book an Executive Health Screening at {location}. Voucher code: {code}.",
-    "eligibility": "For selected BCA Solitaire customers with average AUM above Rp50 billion over the last 3 months and no more than 2 service fees in the last 12 months.",
-    "bookingTerms": "Book at least 7 days before the screening via WhatsApp Business, Monday–Friday, 8:30 am–5:00 pm WIB. Attach the patient's passport photo and voucher code.",
-    "paymentTerms": "The voucher covers up to SGD 400 after tax. Any balance must be paid with a BCA Solitaire Debit Card or BCA Credit Card.",
-    "validityTerms": "Valid for screenings from January to December 2026. The voucher is non-refundable and cannot be combined with other promotions.",
-    "cancellationTerms": "Cancellations must be made at least 3 days before the appointment."
-  },
-  "memberSignatureVoucher": {
-    "title": "Voucher Availability",
-    "available": "{count} vouchers available",
-    "unlimited": "Unlimited Vouchers",
-    "exhausted": "Voucher Quota Exhausted",
-    "penaltyBadge": "Not available yet",
-    "penaltyMessage": "You cannot use this facility yet because your average combined daily balance last month did not meet the BCA Prioritas membership requirements.",
-    "learn": "Learn More"
-  },
-  "memberOverview": {
-    "previewFullName": "Andhini Putri",
-    "solitairePreviewFullName": "Andhika Putra",
-    "previewFirstName": "Andhini",
-    "solitairePreviewFirstName": "Andhika",
-    "welcome": "Welcome, {name}",
-    "lastLogin": "Last login: 27 August 2026 - 08:54 WIB",
-    "back": "Back to Homepage",
-    "viewAll": "View All",
-    "nav": {
-      "label": "Prioritas dashboard navigation",
-      "overview": "Overview",
-      "privilege": "Privilege",
-      "banking": "Banking Solution",
-      "magazine": "e-Magazine",
-      "financial": "Financial Report"
-    },
-    "signature": {
-      "title": "Signature Privilege",
-      "all": "View All Privileges",
-      "lounge": "Airport Lounge",
-      "transfer": "Domestic Airport Transfer",
-      "padel": "Weekend Padel Court Access",
-      "medical": "Early Cancer and Heart Disease Detection",
-      "fifty": "50 vouchers available",
-      "four": "4 vouchers available",
-      "details": "Learn More",
-      "voucher": "Show Voucher Code"
-    },
-    "financial": { "title": "Financial Report", "description": "Track your net worth, assets, and liabilities in one place", "action": "View Report" },
-    "magazine": { "title": "e-Magazine", "read": "Read Now", "coverAlt": "{title} cover" },
-    "event": { "title": "Exceptional experiences this month" },
-    "promo": { "title": "Selected offers for your lifestyle" }
-  },
-  "memberFinancialReport": {
-    "title": "Financial Report",
-    "tabs": {
-      "label": "Financial report type",
-      "portfolio": "Portfolio Report",
-      "tax": "Tax Withholding Report"
-    },
-    "download": "Download Report",
-    "maskedAmount": "Rp•••",
-    "previewAmounts": {
-      "netWorth": "Rp376.5 B", "assets": "Rp410.1 B", "liabilities": "Rp33.6 B",
-      "chart": { "0": "600 B", "1": "500 B", "2": "400 B", "3": "300 B", "4": "200 B", "5": "100 B" },
-      "composition": { "savings": "Rp164.0 B", "deposit": "Rp123.0 B", "current": "Rp82.0 B", "securities": "Rp41.0 B" },
-      "categories": { "savings": "Rp120.0 B", "investments": "Rp210.0 B", "protection": "Rp80.0 B", "consumerCredit": "Rp12.0 B", "workingCapital": "Rp14.0 B", "creditCard": "Rp7.6 B" }
-    },
-    "visibility": {
-      "show": "Show portfolio amounts", "hide": "Hide portfolio amounts", "close": "Close dialog",
-      "request": { "title": "Send OTP Code", "description": "To access your Financial Report, an OTP code will be sent to the following number", "phoneLabel": "Phone number for OTP", "phonePlaceholder": "Select a phone number", "phoneRequired": "Select a phone number first.", "feeNotice": "Sending the code may incur charges according to your operator's rates", "send": "Send OTP" },
-      "verify": { "title": "Enter OTP Code", "description": "We have sent a 6-digit code to {phone}", "codeLabel": "6-digit OTP code", "invalidCode": "Incorrect OTP code. Please try again.", "resend": "Resend OTP code" },
-      "noPhone": { "title": "No Phone Number Registered", "description": "You do not have a registered e-Banking mobile number. Please register one at the nearest ATM.", "back": "Back" }
-    },
-    "overviewLabel": "Portfolio overview",
-    "updated": "Last updated on 03 June 2026 at 12:47 WIB",
-    "previewNotice": "Personal report data is unavailable in this preview. Sign in to the official BCA service to download your report.",
-    "viewDetails": "View Details",
-    "summary": {
-      "netWorth": "Net Worth",
-      "netWorthInfo": "Assets minus liabilities",
-      "netWorthTooltip": "Net Worth is your net wealth for the selected report month, calculated by subtracting total liabilities from total assets.",
-      "netWorthChange": "{change}% from last year",
-      "assets": "Total Assets",
-      "assetsInfo": "Total asset value",
-      "assetsTooltip": "Total Assets is the combined value of the assets listed in the report for the selected month, before liabilities are deducted.",
-      "assetsChange": "{change}% from last year",
-      "liabilities": "Total Liabilities",
-      "liabilitiesInfo": "Total liability value",
-      "liabilitiesTooltip": "Total Liabilities is the combined financial obligations listed in the report for the selected month. This amount is deducted from assets to calculate Net Worth.",
-      "liabilitiesChange": "{change}% from last year"
-    },
-    "chart": {
-      "title": "Wealth Growth",
-      "intervalLabel": "Chart interval",
-      "yearly": "Yearly",
-      "monthly": "Monthly",
-      "lastPeriod": "July 2026"
-    },
-    "composition": {
-      "title": "Asset Composition",
-      "savings": "Savings",
-      "deposit": "Time Deposits",
-      "current": "Current Accounts",
-      "securities": "BCA Securities"
-    },
-    "categories": {
-      "assets": "Assets",
-      "liabilities": "Liabilities",
-      "savings": "Savings",
-      "investments": "Investments",
-      "protection": "Protection",
-      "consumerCredit": "Consumer Loans",
-      "workingCapital": "Working Capital Loans",
-      "creditCard": "Credit Cards",
-      "change": "{change}% from last year"
-    },
-    "portfolio": {
-      "periodLabel": "Portfolio report month"
-    },
-    "tax": {
-      "title": "Download Supporting Tax Report",
-      "periodLabel": "Tax report period",
-      "year": "Yearly",
-      "month": "Monthly",
-      "yearLabel": "Tax report year",
-      "monthLabel": "Tax report month"
-    },
-    "months": {
-      "1": "January",
-      "2": "February",
-      "3": "March",
-      "4": "April",
-      "5": "May",
-      "6": "June",
-      "7": "July",
-      "8": "August",
-      "9": "September",
-      "10": "October",
-      "11": "November",
-      "12": "December"
-    }
-  },
-  "buttonAudit": {
-    "component": "COMPONENT",
-    "title": "Button",
-    "button": "Button",
-    "icon": "Icon Button",
-    "text": "Text Button",
-    "default": "Default",
-    "inverse": "Inverse",
-    "primary": "Primary",
-    "secondary": "Secondary",
-    "small": "Small",
-    "medium": "Medium",
-    "large": "Large",
-    "hover": "Hover",
-    "pressed": "Pressed",
-    "disabled": "Disabled",
-    "label": "Label",
-    "states": "Button states",
-    "usage": "Class example:"
-  },
-  "contentCardAudit": {
-    "component": "COMPONENT",
-    "title": "Content Card",
-    "description": "One card structure with variants selected by data context.",
-    "complimentary": "Privilege Card — Complimentary",
-    "lifestyle": "Privilege Card — Lifestyle Privilege",
-    "event": "Event Card",
-    "promo": "Promo Card"
-  }
-,
-  "accountMenu":   {
-    "home": "Go to Homepage",
-    "overview": "Go to Overview",
-    "logout": "Log out",
-    "confirmTitle": "Log out of your account?",
-    "confirmMessage": "You will be logged out of this session. You will need to log in again to access your account.",
-    "confirmLogout": "Yes, Log Out",
-    "cancel": "Cancel"
-  },
-  "mobileMenu":   {
-    "tutupMenu": "Close menu",
-    "bukaMenu": "Open menu",
-    "bahasa": "Language",
-    "pilihSegmen": "Choose Your Segment",
-    "sesiAktif": "Active session",
-    "logout": "Log out",
-    "kembali": "Back",
-    "menuLabel": "Main menu"
-  },
-  "prioritasHero":   {
-    "title": "Your Life Journey is Our Priority.",
-    "cta": "Learn More",
-    "bannerAlt": "A family enjoying time together in a living room",
-    "prioritasLogoAlt": "BCA Prioritas",
-    "searchPlaceholders": ["Exclusive airport lounges", "Hotel and dining offers", "Health privileges", "Safe Deposit Box"],
+    "searchPlaceholders": [
+      "Exclusive airport lounges",
+      "Hotel and dining offers",
+      "Health privileges",
+      "Safe Deposit Box"
+    ],
     "campaigns": {
       "weekndAlt": "BCA Presale The Weeknd",
       "weekndTitle": "BCA Presale: The Weeknd After Hours Til Dawn Tour in Jakarta",
@@ -2283,7 +2526,681 @@
       "action": "Access Your Report"
     }
   },
-  "bankingPrivilegeDetail":   {
+  "signaturePrivilege": {
+    "subNavLabel": "Prioritas navigation",
+    "subNav": {
+      "privilege": "Privilege",
+      "banking": "Banking Solution",
+      "magazine": "e-Magazine"
+    },
+    "breadcrumb": "Signature Privilege",
+    "title": "Exceptional Access Present at Every Step of Your Journey",
+    "eventPromoTitle": "Hundreds of Experiences & Exclusive Offers for You",
+    "tabLabel": "Privilege categories",
+    "tabs": {
+      "signature": "Signature Privilege",
+      "lifestyle": "Lifestyle Privilege",
+      "event": "Event",
+      "promo": "Promo"
+    },
+    "description": "Exclusive services and benefits designed for your every need.",
+    "lifestyleDescription": "Special offers and exclusive benefits to enjoy a variety of lifestyle experiences.",
+    "more": "Learn more",
+    "voucherAvailability": "Available vouchers: {count}",
+    "solitaireOnlyBadge": "For BCA Solitaire customers only",
+    "showAllSignature": "View All Privileges",
+    "showLessSignature": "Show Fewer Privileges",
+    "signature": {
+      "lounge": {
+        "title": "Executive Airport Lounge"
+      },
+      "transfer": {
+        "title": "Domestic Airport Transfer"
+      },
+      "medical": {
+        "title": "International Medical Check Up"
+      }
+    },
+    "complimentary": {
+      "title": "Complimentary",
+      "subtitle": "No additional cost. Simply show your Prioritas card.",
+      "birthday": "Birthday Gift",
+      "viewList": "View Complimentary List",
+      "cards": {
+        "valet": {
+          "title": "Complimentary Valet Parking",
+          "brand": "Han Palace Restaurant"
+        },
+        "inpatient": {
+          "title": "Complimentary meal for VVIP inpatient companion",
+          "brand": "Altos Hospital"
+        },
+        "facial": {
+          "title": "Snow White Facial valued at Rp1.2 million",
+          "brand": "Dermatology Clinic"
+        },
+        "laser": {
+          "title": "Pico Dermabrasion Laser valued at Rp9.5 million",
+          "brand": "EternaMoore Clinic"
+        },
+        "treatment": {
+          "title": "Hand Treatment valued at Rp200 thousand",
+          "brand": "Molton Brown"
+        },
+        "restaurant": {
+          "title": "Complimentary 1 Pax Americano / Cappuccino",
+          "brand": "Social Spoon"
+        },
+        "glow": {
+          "title": "Red Carpet Glow Treatment",
+          "brand": "Amala Clinic"
+        },
+        "dessert": {
+          "title": "Complimentary Dessert",
+          "brand": "Greenleaf Steak & More"
+        },
+        "jewelry": {
+          "title": "Exclusive Jewelry Box valued at Rp500 thousand",
+          "brand": "Semar Nusantara"
+        }
+      }
+    },
+    "categories": {
+      "all": "All",
+      "beauty": "Beauty",
+      "culinary": "Culinary",
+      "health": "Health",
+      "travel": "Travel",
+      "lifestyle": "Lifestyle",
+      "education": "Education",
+      "home": "Home & Living",
+      "business": "Business"
+    },
+    "categoriesScrollPrevious": "Scroll categories left",
+    "categoriesScrollNext": "Scroll categories right",
+    "searchLabel": "Search benefits",
+    "searchPlaceholder": "Search brand/partner",
+    "showing": "Showing {count} offers",
+    "empty": "No matching offers.",
+    "paginationLabel": "Benefit pages",
+    "paginationSummary": "Data {from}-{to} of {total}",
+    "paginationPrevious": "Previous page",
+    "paginationNext": "Next page",
+    "paginationJumpBackward": "Jump back {count} pages",
+    "paginationJumpForward": "Jump forward {count} pages",
+    "eventDateExpired": "Event ended",
+    "eventDirectory": {
+      "paginationLabel": "Event pages",
+      "categories": {
+        "lifestyle": "Lifestyle & Sports",
+        "networking": "Seminar & Networking",
+        "arts": "Arts & Culture",
+        "culinary": "Culinary & Dining"
+      },
+      "period": "Event Time",
+      "all": "All Events",
+      "upcoming": "Upcoming",
+      "ended": "Past Events",
+      "showing": "Showing {count} events",
+      "empty": "No matching events."
+    }
+  },
+  "prioritasContentDetail": {
+    "fallback": {
+      "description": "Details for {title} are not yet available.",
+      "terms": "Terms and conditions are not yet available.",
+      "contact": "Contact information is not yet available.",
+      "location": "Location information is not yet available."
+    },
+    "event": {
+      "breadcrumb": "Event",
+      "recommendations": "More Recommended Events",
+      "sothebys": {
+        "title": "Charity Art Auction for Indonesian Children's Education",
+        "detail": "Enjoy exclusive access to a charity art auction with Sotheby's, featuring world-class artwork while supporting children's education in Indonesia.",
+        "terms": [
+          "Show a physical BCA Solitaire/Prioritas card or a digital card in myBCA/BCA mobile.",
+          "Pay with a BCA Solitaire/Prioritas Card, BCA Credit Card, or QRIS via BCA mobile/myBCA.",
+          "RSVP three days in advance through Sotheby's Indonesia Customer Service at 0812 3456 7890 (WhatsApp Chat). Places are limited and subject to availability.",
+          "This privilege cannot be redeemed for cash or transferred.",
+          "Valid according to the event schedule."
+        ],
+        "contact": "Sotheby's Indonesia Customer Service: 0812 3456 7890 (WhatsApp Chat)."
+      },
+      "recommendationCards": {
+        "christies": {
+          "title": "Private Viewing of Classical Paintings with an Expert Curator",
+          "brand": "Christie's"
+        },
+        "symphony": {
+          "title": "Symphony Gala with International Musicians",
+          "brand": "Jakarta Symphony Orchestra"
+        }
+      }
+    },
+    "promo": {
+      "breadcrumb": "Promo",
+      "recommendations": "More Recommended Promos",
+      "endedOn": "Ended {date}",
+      "porsche": {
+        "detail": "Experience Porsche's iconic design and performance firsthand through an exclusive test drive accompanied by the Porsche Center Jakarta team.",
+        "terms": [
+          "Show a physical BCA Solitaire/Prioritas card or a digital card in myBCA/BCA mobile.",
+          "Reservations must be made three days in advance through Porsche Center Jakarta Customer Service at 0812 3456 7890 (WhatsApp Chat).",
+          "Bring a valid Class A driver's license.",
+          "Test drive places are limited each day and subject to vehicle availability.",
+          "This privilege cannot be redeemed for cash or transferred.",
+          "Valid at Porsche Center Jakarta during the promo period."
+        ],
+        "contact": "Porsche Center Jakarta Customer Service: 0812 3456 7890 (WhatsApp Chat).",
+        "location": "Porsche Center Jakarta"
+      },
+      "samples": {
+        "porsche": {
+          "title": "Experience Porsche: Enjoy an Exclusive Test Drive",
+          "brand": "Porsche"
+        },
+        "mercedes": {
+          "title": "Exclusive Test Drive of the Latest Mercedes-Benz on a Private Circuit",
+          "brand": "Mercedes-Benz"
+        },
+        "landRover": {
+          "title": "Exclusive Preview and Test Drive of the All-New Range Rover in Jakarta",
+          "brand": "Land Rover"
+        },
+        "audi": {
+          "title": "Explore the Latest Audi Performance with an Exclusive Test Drive",
+          "brand": "Audi"
+        }
+      }
+    }
+  },
+  "lifestylePrivilegeDetail": {
+    "subNavLabel": "Prioritas navigation",
+    "validUntil": "Validity period",
+    "subNav": {
+      "privilege": "Privilege",
+      "banking": "Banking Solution",
+      "magazine": "e-Magazine"
+    },
+    "breadcrumb": {
+      "home": "Prioritas",
+      "category": "Lifestyle Privilege",
+      "current": "Beauty"
+    },
+    "title": "Hand Treatment Discount Valued at Rp200 Thousand",
+    "brand": "Molton Brown",
+    "detail": {
+      "title": "Privilege Details",
+      "content": "Molton Brown Hand Treatment discount valued at Rp200 thousand."
+    },
+    "terms": {
+      "title": "Terms & Conditions",
+      "items": [
+        "Present a physical BCA Solitaire/Prioritas card or the digital card in the myBCA/BCA mobile application.",
+        "Pay using a BCA Solitaire/Prioritas Card, BCA Credit Card, or QRIS BCA mobile/myBCA.",
+        "RSVP one day in advance through Molton Brown Customer Service at 0816 1807 088 (WhatsApp Chat).",
+        "This privilege cannot be exchanged for cash or transferred.",
+        "Valid at all Molton Brown branches."
+      ]
+    },
+    "contact": {
+      "title": "Profile & Contact",
+      "content": "Contact Molton Brown Customer Service for treatment information and reservations."
+    },
+    "location": {
+      "title": "Location",
+      "content": "Valid at all Molton Brown branches."
+    },
+    "loungeTable": {
+      "number": "No",
+      "name": "Name",
+      "airport": "Airport",
+      "lounge": "Lounge/Merchant",
+      "solitaireOnly": "Exclusive to BCA Solitaire customers",
+      "solitaireAndPrioritas": "For BCA Solitaire & Prioritas customers"
+    },
+    "recommendations": {
+      "title": "More Privilege Recommendations",
+      "viewMore": "See More",
+      "action": "Learn More",
+      "cards": {
+        "sisley": {
+          "title": "Experience an Exclusive Signature Facial Treatment, Enjoy Up to 20% Off",
+          "brand": "Sisley Paris",
+          "alt": "Sisley Paris skincare products"
+        },
+        "skii": {
+          "title": "Red Carpet Glow Treatment (Rp1.8 million) + Welcoming Massage + Light Extraction",
+          "brand": "SK-II Boutique Spa",
+          "alt": "SK-II Boutique Spa facial treatment"
+        },
+        "shiseido": {
+          "title": "Enjoy a Complimentary Skin Analysis with Ultimune Serum",
+          "brand": "Shiseido",
+          "alt": "Shiseido Ultimune Serum"
+        }
+      }
+    },
+    "dynamicModule": {
+      "message": "Sign in to check your remaining access and voucher quota for {benefit}.",
+      "loginLabel": "Sign In",
+      "memberMessage": "Check your remaining {benefit} voucher quota in the member area.",
+      "memberActionLabel": "Access Now",
+      "infoTitle": "Information",
+      "solitaireOnlyMessage": "This privilege is available exclusively to BCA Solitaire customers."
+    }
+  },
+  "magazineIndex": {
+    "breadcrumb": "e-Magazine",
+    "title": "Here for Those Who Never Stop Growing",
+    "paginationLabel": "e-Magazine pages",
+    "readNow": "Read Now",
+    "coverAlt": "Cover of {title}",
+    "empty": "No e-Magazine issues are available yet."
+  },
+  "bankingSolutionIndex": {
+    "breadcrumb": "Banking Solution",
+    "title": "Specialized Banking Services for Your Life Journey",
+    "tabLabel": "Banking Solution categories",
+    "clusters": {
+      "cards": "Cards & Payments",
+      "financing": "Financing & Protection",
+      "transactions": "Transactions & Foreign Exchange",
+      "personal": "Personal Services"
+    },
+    "previousCards": "Previous card in {cluster}",
+    "nextCards": "Next card in {cluster}",
+    "tabs": {
+      "privilege": "Banking Privilege",
+      "wealth": "Wealth Insight",
+      "kurs": "Exchange Rates"
+    },
+    "more": "Learn More",
+    "groups": {
+      "house": "House View Report",
+      "market": "Weekly Market Overview"
+    },
+    "calendarAction": "Add to Calendar",
+    "downloadAction": "Download PDF",
+    "privilege": {
+      "jcb": "BCA JCB Black Credit Card",
+      "vehicle": "Vehicle Loan (KKB)",
+      "branch": "Special Services at BCA Branches",
+      "insurance": "Insurance",
+      "fees": "Special Transaction Fees",
+      "transaction": "Special Transaction Features & Services",
+      "media": "Information Media",
+      "advisor": "Dedicated Personal Banker",
+      "family": "BCA Young Community",
+      "contact": "Contact Center",
+      "credit": "BCA Credit Card",
+      "home": "Home Loan",
+      "motorcycle": "Motorcycle Loan",
+      "merchant": "BCA EDC Merchant",
+      "deposit": "Safe Deposit Box",
+      "forex": "Foreign Exchange"
+    },
+    "insight": {
+      "portfolio": {
+        "title": "June 2025 House View - Portfolio Strategy Amid a Rate-Cutting Cycle",
+        "date": "Wednesday, 16 June 2026 · 14:00 WIB",
+        "channel": "Live on YouTube",
+        "alt": "Ice floating in polar waters"
+      },
+      "inflation": {
+        "title": "June 2025 House View - Impact of the US-Iran War on Inflation and Economic Growth",
+        "date": "16 April 2026",
+        "alt": "Iceberg beneath the sea surface"
+      },
+      "oil": {
+        "title": "May 2025 House View - Impact of US-Iran Talks on Oil Prices and Global Inflation",
+        "date": "16 May 2026",
+        "alt": "Hot air balloons in the sky"
+      },
+      "house0908": {
+        "title": "US Inflation and the Fed’s Hawkish Stance Lift UST Yields",
+        "date": "8 September 2026",
+        "alt": "Autumn leaves in sunlight"
+      },
+      "house0804": {
+        "title": "Cooling US Inflation, Global Risks and China’s Slowdown Weigh on Markets",
+        "date": "4 August 2026",
+        "alt": "A green forest with a stream"
+      },
+      "house0701": {
+        "title": "US Inflation and Iran Conflict Raise Rate-Hike Expectations",
+        "date": "1 July 2026",
+        "alt": "Glacier ice across polar waters"
+      },
+      "house0608": {
+        "title": "US-Iran Conflict Keeps Oil High and Central Banks Turning to Rate Hikes",
+        "date": "8 June 2026",
+        "alt": "Hot air balloons in the sky"
+      },
+      "crossroads": {
+        "title": "Weekly Market Overview: Between De-escalation and Stagflation, Global Markets at a Crossroads",
+        "date": "2 June 2026",
+        "alt": "Red world map"
+      },
+      "global": {
+        "title": "Weekly Market Overview: Stagflation and Strategic Opportunities in Global Markets",
+        "date": "29 May 2026",
+        "alt": "Globe showing world regions"
+      },
+      "insights": {
+        "title": "Weekly Market Insights: Stagflation and De-escalation, Indonesia Faces Dual Challenges",
+        "date": "22 May 2026",
+        "alt": "Binoculars on a table"
+      },
+      "weekly0921": {
+        "title": "The Fed Resumes Rate Hikes, Lifting the Dollar and UST Yields",
+        "date": "21 September 2026",
+        "alt": "An investor analyzing financial market reports"
+      },
+      "weekly0914": {
+        "title": "Oil and Persistent Inflation Push UST Yields Near 5%",
+        "date": "14 September 2026",
+        "alt": "A globe showing a world map"
+      },
+      "weekly0907": {
+        "title": "US-Iran Tensions and Jobs Data Fuel Fed Rate-Hike Bets",
+        "date": "7 September 2026",
+        "alt": "Cargo containers being handled at a port"
+      },
+      "weekly0831": {
+        "title": "Geopolitics and Inflation Lift the Dollar and Short-Term UST Yields",
+        "date": "31 August 2026",
+        "alt": "Documents and reports on a desk"
+      },
+      "weekly0824": {
+        "title": "Middle East and US Fiscal Risks Push UST Yields Higher",
+        "date": "24 August 2026",
+        "alt": "A truck carrying a shipping container"
+      },
+      "weekly0818": {
+        "title": "US Inflation Eases, but UST Auction Yields Hit a 25-Year High",
+        "date": "18 August 2026",
+        "alt": "Binoculars on a table"
+      }
+    }
+  },
+  "solitaireHero": {
+    "title": "Prestigious and Personal Services, Exclusively for You.",
+    "cta": "Learn More",
+    "viewMore": "View All",
+    "bannerAlt": "A family enjoying time together in a living room",
+    "breadcrumbLabel": "Solitaire",
+    "solitaireLogoAlt": "BCA Solitaire"
+  },
+  "memberAirportTransfer": {
+    "title": "Facilities",
+    "description": "You can enjoy the Airport Transfer facility with the following codes:",
+    "voucherTitle": "Domestic Voucher",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyCode": "Copy voucher code {code}",
+    "used": "Used",
+    "usedOn": "Voucher used on {date}",
+    "viewMore": "View More Vouchers",
+    "hideMore": "Hide More Vouchers",
+    "notes": {
+      "updated": "Voucher data is updated periodically on the 1st of each month at [time] WIB.",
+      "contact": "If you have any questions or notice different information, please contact Halo BCA for further assistance."
+    }
+  },
+  "memberMedicalCheckUp": {
+    "title": "International Medical Check Up Facility",
+    "description": "Use your unique voucher code for an Executive Health Screening at Parkway Shenton Singapore.",
+    "provider": "Parkway Shenton",
+    "voucherValue": "SGD 400",
+    "voucherLabel": "After tax",
+    "codeLabel": "Unique voucher code",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyCode": "Copy voucher code {code}",
+    "locationLabel": "Choose screening location",
+    "locations": [
+      "Executive Health Screeners (Mount Elizabeth Hospital)",
+      "Executive Health Screeners (Gleneagles Hospital)",
+      "Executive Health Screeners (Republic Plaza)",
+      "Executive Health Screeners (Paragon)",
+      "Parkway MediCentre (The Woodleigh Mall)",
+      "Executive Health Screeners (Bedok Central)"
+    ],
+    "book": "Book via WhatsApp",
+    "whatsappMessage": "Hello, I would like to book an Executive Health Screening at {location}. Voucher code: {code}.",
+    "eligibility": "For selected BCA Solitaire customers with average AUM above Rp50 billion over the last 3 months and no more than 2 service fees in the last 12 months.",
+    "bookingTerms": "Book at least 7 days before the screening via WhatsApp Business, Monday–Friday, 8:30 am–5:00 pm WIB. Attach the patient's passport photo and voucher code.",
+    "paymentTerms": "The voucher covers up to SGD 400 after tax. Any balance must be paid with a BCA Solitaire Debit Card or BCA Credit Card.",
+    "validityTerms": "Valid for screenings from January to December 2026. The voucher is non-refundable and cannot be combined with other promotions.",
+    "cancellationTerms": "Cancellations must be made at least 3 days before the appointment."
+  },
+  "memberSignatureVoucher": {
+    "title": "Voucher Availability",
+    "available": "{count} vouchers available",
+    "unlimited": "Unlimited Vouchers",
+    "exhausted": "Voucher Quota Exhausted",
+    "penaltyBadge": "Not available yet",
+    "penaltyMessage": "You cannot use this facility yet because your average combined daily balance last month did not meet the BCA Prioritas membership requirements.",
+    "learn": "Learn More"
+  },
+  "memberOverview": {
+    "previewFullName": "Andhini Putri",
+    "solitairePreviewFullName": "Andhika Putra",
+    "previewFirstName": "Andhini",
+    "solitairePreviewFirstName": "Andhika",
+    "welcome": "Welcome, {name}",
+    "lastLogin": "Last login: 27 August 2026 - 08:54 WIB",
+    "back": "Back to Homepage",
+    "viewAll": "View All",
+    "nav": {
+      "label": "Prioritas dashboard navigation",
+      "overview": "Overview",
+      "privilege": "Privilege",
+      "banking": "Banking Solution",
+      "magazine": "e-Magazine",
+      "financial": "Financial Report"
+    },
+    "signature": {
+      "title": "Signature Privilege",
+      "all": "View All Privileges",
+      "lounge": "Airport Lounge",
+      "transfer": "Domestic Airport Transfer",
+      "padel": "Weekend Padel Court Access",
+      "medical": "Early Cancer and Heart Disease Detection",
+      "fifty": "50 vouchers available",
+      "four": "4 vouchers available",
+      "details": "Learn More",
+      "voucher": "Show Voucher Code"
+    },
+    "financial": {
+      "title": "Financial Report",
+      "description": "Track your net worth, assets, and liabilities in one place",
+      "action": "View Report"
+    },
+    "magazine": {
+      "title": "e-Magazine",
+      "read": "Read Now",
+      "coverAlt": "{title} cover"
+    },
+    "event": {
+      "title": "Exceptional experiences this month"
+    },
+    "promo": {
+      "title": "Selected offers for your lifestyle"
+    }
+  },
+  "memberFinancialReport": {
+    "title": "Financial Report",
+    "tabs": {
+      "label": "Financial report type",
+      "portfolio": "Portfolio Report",
+      "tax": "Tax Withholding Report"
+    },
+    "download": "Download Report",
+    "maskedAmount": "Rp•••",
+    "previewAmounts": {
+      "netWorth": "Rp376.5 B",
+      "assets": "Rp410.1 B",
+      "liabilities": "Rp33.6 B",
+      "chart": {
+        "0": "600 B",
+        "1": "500 B",
+        "2": "400 B",
+        "3": "300 B",
+        "4": "200 B",
+        "5": "100 B"
+      },
+      "composition": {
+        "savings": "Rp164.0 B",
+        "deposit": "Rp123.0 B",
+        "current": "Rp82.0 B",
+        "securities": "Rp41.0 B"
+      },
+      "categories": {
+        "savings": "Rp120.0 B",
+        "investments": "Rp210.0 B",
+        "protection": "Rp80.0 B",
+        "consumerCredit": "Rp12.0 B",
+        "workingCapital": "Rp14.0 B",
+        "creditCard": "Rp7.6 B"
+      }
+    },
+    "visibility": {
+      "show": "Show portfolio amounts",
+      "hide": "Hide portfolio amounts",
+      "close": "Close dialog",
+      "request": {
+        "title": "Send OTP Code",
+        "description": "To access your Financial Report, an OTP code will be sent to the following number",
+        "phoneLabel": "Phone number for OTP",
+        "phonePlaceholder": "Select a phone number",
+        "phoneRequired": "Select a phone number first.",
+        "feeNotice": "Sending the code may incur charges according to your operator's rates",
+        "send": "Send OTP"
+      },
+      "verify": {
+        "title": "Enter OTP Code",
+        "description": "We have sent a 6-digit code to {phone}",
+        "codeLabel": "6-digit OTP code",
+        "invalidCode": "Incorrect OTP code. Please try again.",
+        "resend": "Resend OTP code"
+      },
+      "noPhone": {
+        "title": "No Phone Number Registered",
+        "description": "You do not have a registered e-Banking mobile number. Please register one at the nearest ATM.",
+        "back": "Back"
+      }
+    },
+    "overviewLabel": "Portfolio overview",
+    "updated": "Last updated on 03 June 2026 at 12:47 WIB",
+    "previewNotice": "Personal report data is unavailable in this preview. Sign in to the official BCA service to download your report.",
+    "viewDetails": "View Details",
+    "summary": {
+      "netWorth": "Net Worth",
+      "netWorthInfo": "Assets minus liabilities",
+      "netWorthTooltip": "Net Worth is your net wealth for the selected report month, calculated by subtracting total liabilities from total assets.",
+      "netWorthChange": "{change}% from last year",
+      "assets": "Total Assets",
+      "assetsInfo": "Total asset value",
+      "assetsTooltip": "Total Assets is the combined value of the assets listed in the report for the selected month, before liabilities are deducted.",
+      "assetsChange": "{change}% from last year",
+      "liabilities": "Total Liabilities",
+      "liabilitiesInfo": "Total liability value",
+      "liabilitiesTooltip": "Total Liabilities is the combined financial obligations listed in the report for the selected month. This amount is deducted from assets to calculate Net Worth.",
+      "liabilitiesChange": "{change}% from last year"
+    },
+    "chart": {
+      "title": "Wealth Growth",
+      "intervalLabel": "Chart interval",
+      "yearly": "Yearly",
+      "monthly": "Monthly",
+      "lastPeriod": "July 2026"
+    },
+    "composition": {
+      "title": "Asset Composition",
+      "savings": "Savings",
+      "deposit": "Time Deposits",
+      "current": "Current Accounts",
+      "securities": "BCA Securities"
+    },
+    "categories": {
+      "assets": "Assets",
+      "liabilities": "Liabilities",
+      "savings": "Savings",
+      "investments": "Investments",
+      "protection": "Protection",
+      "consumerCredit": "Consumer Loans",
+      "workingCapital": "Working Capital Loans",
+      "creditCard": "Credit Cards",
+      "change": "{change}% from last year"
+    },
+    "portfolio": {
+      "periodLabel": "Portfolio report month"
+    },
+    "tax": {
+      "title": "Download Supporting Tax Report",
+      "periodLabel": "Tax report period",
+      "year": "Yearly",
+      "month": "Monthly",
+      "yearLabel": "Tax report year",
+      "monthLabel": "Tax report month"
+    },
+    "months": {
+      "1": "January",
+      "2": "February",
+      "3": "March",
+      "4": "April",
+      "5": "May",
+      "6": "June",
+      "7": "July",
+      "8": "August",
+      "9": "September",
+      "10": "October",
+      "11": "November",
+      "12": "December"
+    }
+  },
+  "buttonAudit": {
+    "component": "COMPONENT",
+    "title": "Button",
+    "button": "Button",
+    "icon": "Icon Button",
+    "text": "Text Button",
+    "default": "Default",
+    "inverse": "Inverse",
+    "primary": "Primary",
+    "secondary": "Secondary",
+    "small": "Small",
+    "medium": "Medium",
+    "large": "Large",
+    "hover": "Hover",
+    "pressed": "Pressed",
+    "disabled": "Disabled",
+    "label": "Label",
+    "states": "Button states",
+    "usage": "Class example:"
+  },
+  "contentCardAudit": {
+    "component": "COMPONENT",
+    "title": "Content Card",
+    "description": "One card structure with variants selected by data context.",
+    "complimentary": "Privilege Card — Complimentary",
+    "lifestyle": "Privilege Card — Lifestyle Privilege",
+    "event": "Event Card",
+    "promo": "Promo Card"
+  },
+  "accountMenu": {
+    "home": "Go to Homepage",
+    "overview": "Go to Overview",
+    "logout": "Log out",
+    "confirmTitle": "Log out of your account?",
+    "confirmMessage": "You will be logged out of this session. You will need to log in again to access your account.",
+    "confirmLogout": "Yes, Log Out",
+    "cancel": "Cancel"
+  },
+  "bankingPrivilegeDetail": {
     "title": "Banking Privileges",
     "detailTitle": "Privilege Details",
     "contactTitle": "Further Information",
@@ -2308,5 +3225,276 @@
       "safe-deposit-box": "Enjoy special benefits on Safe Deposit Box rental.",
       "valuta-asing": "Get special exchange rates when purchasing foreign currency."
     }
+  },
+  "componentCatalog": {
+    "eyebrow": "PRIORITAS / SOLITAIRE",
+    "title": "Component Catalog",
+    "subtitle": "Explore interface components used across Prioritas and Solitaire. Select an entry for a visual example, context and implementation source.",
+    "components": "components",
+    "browse": "Browse components",
+    "searchLabel": "Search components",
+    "searchPlaceholder": "Component name or purpose",
+    "groupLabel": "Component groups",
+    "all": "All",
+    "results": "results",
+    "noResults": "No matching components.",
+    "preview": "Actual components · variants & states",
+    "previewNote": "Measurements follow the rendered component and current viewport. Enable Blueprint to see the boundaries and dimensions of component parts.",
+    "usage": "Purpose",
+    "implementation": "Implementation source",
+    "copyPath": "Copy path",
+    "copied": "Copied",
+    "brandLabel": "Brand appearance",
+    "prioritas": "Prioritas",
+    "solitaire": "Solitaire",
+    "groups": {
+      "controls": "Controls",
+      "cards": "Cards",
+      "navigation": "Navigation",
+      "display": "Display",
+      "feedback": "Feedback"
+    },
+    "sample": {
+      "action": "Learn More",
+      "secondary": "View All",
+      "select": "Choose category",
+      "first": "First option",
+      "second": "Second option",
+      "third": "Third option",
+      "field": "BCA ID",
+      "placeholder": "Enter BCA ID",
+      "cardTitle": "Content title",
+      "cardDescription": "A short content description.",
+      "page": "Page",
+      "bannerTitle": "Featured Event",
+      "buy": "Buy",
+      "sell": "Sell",
+      "search": "Search information",
+      "breadcrumb": "Home / Category",
+      "headerTitle": "Page title",
+      "headerDescription": "Short page description"
+    },
+    "items": {
+      "button": {
+        "title": "Button",
+        "description": "Primary, secondary, icon and text actions in three sizes.",
+        "detail": "Small, Medium and Large; Primary, Secondary and Danger; Default and Inverse surfaces. Danger Inverse is unavailable."
+      },
+      "dropdown": {
+        "title": "Dropdown",
+        "description": "Single selection for filters and forms.",
+        "detail": "Medium/Large sizes and Select/Search modes. Open and selected colors follow the brand palette."
+      },
+      "category-chip": {
+        "title": "Category Chip",
+        "description": "Category or period choices in a horizontal rail.",
+        "detail": "Label-only or label-with-icon modes; default, hover, selected and focus states."
+      },
+      "tab": {
+        "title": "Tab",
+        "description": "Curved and underline navigation for directories and member areas.",
+        "detail": "Curved for directories and Underline for sections/member areas. The active indicator follows the palette."
+      },
+      "text-field": {
+        "title": "Text Field",
+        "description": "Labeled input with help, icons and error feedback.",
+        "detail": "Default, Medium and Large sizes; supports icons, help and inline errors. Focus has no brand-specific variant."
+      },
+      "content-card": {
+        "title": "Content Card",
+        "description": "A card for Complimentary, Lifestyle, Event and Promo content.",
+        "detail": "Content type determines the date, ribbon or time label slot. Detail routes follow Prioritas or Solitaire."
+      },
+      "privilege-card": {
+        "title": "Privilege Card",
+        "description": "Photo privilege card with a glass panel and detail action.",
+        "detail": "Full photo, glass panel, title and text action. Mobile rail and desktop grid use different geometry."
+      },
+      "banking-privilege-card": {
+        "title": "Banking Privilege Card",
+        "description": "Banking service card with image, title and button.",
+        "detail": "Full-card image with title and inverse button over a brown or neutral radial wash."
+      },
+      "wealth-insight-card": {
+        "title": "Wealth Insight Card",
+        "description": "Publication card with cover, metadata and report access.",
+        "detail": "Cover, metadata, glass panel and report button. Panel height follows its content."
+      },
+      "magazine-card": {
+        "title": "e-Magazine Card",
+        "description": "Magazine cover with an action revealed on hover or focus.",
+        "detail": "Cover reveals tint and CTA on hover or focus; homepage and directory sizes differ."
+      },
+      "date-badge": {
+        "title": "Date Badge / Validity Label",
+        "description": "Event date badge or validity label over an image.",
+        "detail": "Single date, range, expired or validity-label modes. It does not calculate expiration automatically."
+      },
+      "pagination": {
+        "title": "Pagination",
+        "description": "Page navigation with numbers and previous or next controls.",
+        "detail": "Page numbers, previous/next arrows and range jumps; active state follows the palette."
+      },
+      "directory-panel": {
+        "title": "Directory Panel",
+        "description": "Directory result panel with grid and page controls.",
+        "detail": "Result grid with filters and pagination; column count adapts to viewport width."
+      },
+      "detail-accordion": {
+        "title": "Detail & Document Accordion",
+        "description": "Expandable panels for details, terms and documents.",
+        "detail": "Expandable detail rows for descriptions, terms, contacts, locations or documents."
+      },
+      "hero": {
+        "title": "Homepage Hero",
+        "description": "Main homepage banner with title, image and action.",
+        "detail": "Layered imagery, title, CTA and carousel behavior that adapts to the viewport."
+      },
+      "navbar": {
+        "title": "Navbar & Subnavigation",
+        "description": "Main navigation and contextual navigation on detail pages.",
+        "detail": "Main navigation handles brand switching, search, language and member access; subnavigation keeps detail context."
+      },
+      "section-nav": {
+        "title": "Homepage Section Navigation",
+        "description": "Anchor tabs that follow the current homepage section.",
+        "detail": "Anchors follow the active section while scrolling; rail position adapts to navbar visibility."
+      },
+      "privilege-feature": {
+        "title": "Privilege Card · Feature",
+        "description": "Large feature card in the Prioritas homepage Privilege section.",
+        "detail": "Prioritas: the first card becomes a wide desktop feature; mobile uses an active-card rail."
+      },
+      "privilege-accordion": {
+        "title": "Privilege Card · Accordion",
+        "description": "Solitaire Privilege card that expands when selected on desktop.",
+        "detail": "Solitaire: the active desktop card expands; mobile uses a rail without loop clones."
+      },
+      "featured-event": {
+        "title": "Featured Event Banner",
+        "description": "Main banner slider in the Event & Promo section.",
+        "detail": "Prioritas uses this banner at all widths; Solitaire uses it on mobile with Solitaire button styling."
+      },
+      "event-overlap": {
+        "title": "Event Carousel · Overlapping Panel",
+        "description": "Solitaire desktop slider with a panel extending below the image.",
+        "detail": "Solitaire desktop: the glass panel extends below the image; mobile uses Featured Event Banner."
+      },
+      "kurs-carousel": {
+        "title": "Exchange Rate Carousel",
+        "description": "Three currencies with buy and sell rates, refresh and navigation.",
+        "detail": "Three currencies appear at once; they advance automatically or by arrow, with a separate refresh control."
+      },
+      "floating-action": {
+        "title": "Floating Action & Back to Top",
+        "description": "Floating quick actions and a back-to-top control.",
+        "detail": "Back-to-top follows scroll; selected shortcuts appear in specific page contexts."
+      },
+      "alert-feedback": {
+        "title": "Login Alert",
+        "description": "The actual error message, icon and layout from member login.",
+        "detail": "The same LoginAlert used by MemberLoginExperience: bg-red-100, text-red-600, close.svg icon, 56px minimum height and 16px padding."
+      },
+      "search-overlay": {
+        "title": "Search Overlay",
+        "description": "Full-screen navbar search with history and results.",
+        "detail": "Opened from the navbar; includes input, recommendations, contextual history, results and Escape dismissal."
+      },
+      "contact-footer": {
+        "title": "Contact & Footer",
+        "description": "Contact panels and footer navigation.",
+        "detail": "Contact panels precede the footer; the footer arranges links, official information and legal copy."
+      },
+      "page-header": {
+        "title": "Directory & Detail Header",
+        "description": "Title banner with breadcrumb, subtitle and optional logo.",
+        "detail": "Directory shows a category title; detail can add a subtitle and logo. Tone follows brand and member context."
+      }
+    },
+    "spec": "Key details",
+    "board": {
+      "homepage": "Homepage",
+      "public": "Public",
+      "member": "Member",
+      "directory": "Directory / rail",
+      "validity": "Validity label",
+      "inspect": "Inspect element",
+      "dimensions": "Width × height",
+      "type": "Typography · size / line-height · weight",
+      "allSpecs": "Specs",
+      "viewport": "Viewport",
+      "previewWidth": "Screen width",
+      "previewScale": "Preview scale",
+      "fitPreview": "Fit to space",
+      "interactive": "Interactive instance",
+      "danger": "Danger",
+      "buttonLabel": "Learn More",
+      "open": "Open",
+      "closed": "Closed",
+      "category": "Category",
+      "search": "Search",
+      "selected": "Selected",
+      "default": "Default",
+      "hover": "Hover",
+      "focus": "Focus",
+      "filled": "Filled",
+      "error": "Error",
+      "disabled": "Disabled",
+      "fieldError": "This field is required.",
+      "complimentary": "Complimentary",
+      "lifestyle": "Lifestyle",
+      "event": "Event",
+      "promo": "Promo",
+      "singleDate": "Single date",
+      "dateRange": "Date range",
+      "expired": "Expired",
+      "backToTop": "Back to top",
+      "openSearch": "Open search",
+      "measured": "Measurements follow the rendered component and current viewport. Enable Blueprint to see the boundaries and dimensions of component parts.",
+      "statesNote": "States are shown together. Hover and focus use the application’s own CSS rules; dimensions and tokens are read from the rendered elements.",
+      "live": "Open usage page",
+      "tokens": "Tokens",
+      "spacing": "Spacing",
+      "colors": "Colors",
+      "classes": "CSS classes",
+      "inspectActive": "Pick element",
+      "inspectHint": "Click the part of the preview you want to measure.",
+      "blueprint": "Blueprint",
+      "blueprintView": "Show",
+      "blueprintElement": "Component part",
+      "blueprintModes": {
+        "size": "Size",
+        "padding": "Padding",
+        "inset": "Inset"
+      },
+      "blueprintParts": {
+        "component": "Component",
+        "image": "Image",
+        "panel": "Panel",
+        "text": "Text",
+        "control": "Control"
+      },
+      "ribbonContext": "Ribbon context",
+      "noRibbon": "No ribbon",
+      "single": "Single date",
+      "period": "Period · same month",
+      "crossMonth": "Period · across months",
+      "eventCase": "Date case"
+    },
+    "docs": {
+      "examples": "Examples & states",
+      "kind": "Kind",
+      "surface": "Surface",
+      "size": "Size",
+      "preview": "Preview",
+      "variant": "Variant",
+      "context": "Context",
+      "underline": "Underline",
+      "curved": "Curved",
+      "card": "Content Card",
+      "detail": "Event detail"
+    },
+    "mobile": "Mobile",
+    "desktop": "Desktop"
   }
 }

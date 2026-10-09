@@ -56,6 +56,7 @@ export default async function PrioritasPage({
       <div className="page-stack relative z-10 bg-pgold-100">
       <Navbar variant="prioritas" />
       <HeroSection
+          brandedHomepage
           slides={[
             {
               image: HERO_IMAGE,
@@ -164,6 +165,7 @@ export default async function PrioritasPage({
           ],
           wealthCards: [
             {
+              eyebrow: tWealth("groups.house"),
               title: tWealth(`insight.${latestHouseView.key}.title`),
               metadata: [{ icon: "/assets/prioritas/banking/calendar.svg", label: tWealth(`insight.${latestHouseView.key}.date`) }],
               action: tWealth("downloadAction"),
@@ -174,6 +176,7 @@ export default async function PrioritasPage({
               href: "https://prioritas.bca.co.id/en/Wealth-Management/Market-Insight/House-View-Report",
             },
             {
+              eyebrow: tWealth("groups.market"),
               title: tWealth(`insight.${latestWeeklyMarket.key}.title`),
               metadata: [{ icon: "/assets/prioritas/banking/calendar.svg", label: tWealth(`insight.${latestWeeklyMarket.key}.date`) }],
               action: tWealth("downloadAction"),

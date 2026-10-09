@@ -67,7 +67,7 @@ export default function PrioritasFeaturedBanner({ titles, cta, backdrops, slideH
   return (
     <div
       ref={rootRef}
-      className="relative h-[400px] w-full overflow-hidden rounded-xl border border-neutral-100/10 bg-pbrown-900 xl:h-[400px]"
+      className="relative h-[400px] w-full overflow-hidden rounded-2xl border border-neutral-100/10 bg-pbrown-900 xl:h-[400px]"
       style={{ backgroundColor: activeBackdrop }}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
@@ -90,15 +90,17 @@ export default function PrioritasFeaturedBanner({ titles, cta, backdrops, slideH
 
       <div
         aria-hidden={Boolean(slideHrefs)}
-        className={`glass-panel glass-panel-prioritas absolute inset-x-2 bottom-[72px] z-20 flex w-auto flex-col items-start overflow-hidden rounded-2xl px-4 pb-5 pt-4 xl:inset-x-auto xl:bottom-auto xl:left-4 xl:top-4 xl:w-[360px] xl:max-w-[calc(100%-2rem)] xl:justify-between ${activeSlide.brandLogo ? "h-56 justify-between xl:h-64" : "h-[160px] justify-start gap-6 xl:h-[180px]"} ${slideHrefs ? "pointer-events-none" : ""}`}
-        style={{ backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)", isolation: "isolate" }}
+        className={`glass-panel ${buttonTheme === "solitaire" ? "glass-panel-solitaire" : "glass-panel-prioritas"} absolute inset-x-2 bottom-[72px] z-20 flex h-auto w-auto flex-col items-start gap-6 overflow-hidden rounded-2xl px-4 pb-5 pt-4 xl:inset-x-auto xl:bottom-auto xl:left-4 xl:top-4 xl:w-[400px] xl:max-w-[calc(100%-2rem)] ${slideHrefs ? "pointer-events-none" : ""}`}
+        style={{ isolation: "isolate" }}
       >
-        {activeSlide.brandLogo ? <div className="flex w-full flex-col items-start gap-3">
-          <span className="flex h-11 items-center rounded-md bg-white px-3 py-2">
-            <img src={activeSlide.brandLogo} alt="" className="h-7 w-28 object-contain" />
-          </span>
-          <h3 className="h-20 max-w-full overflow-hidden text-subtitle text-white line-clamp-3 xl:h-[96px] xl:text-heading">{titles[activeIndex]}</h3>
-        </div> : <h3 className="h-20 max-w-full overflow-hidden text-subtitle text-white line-clamp-3 xl:h-[96px] xl:text-heading">{titles[activeIndex]}</h3>}
+        {activeSlide.brandLogo ? (
+          <div className="flex w-full flex-col items-start gap-3">
+            <span className="flex h-8 items-center rounded-md bg-white px-2 xl:h-10">
+              <img src={activeSlide.brandLogo} alt="" className="h-[20.5px] w-auto object-contain xl:h-6" />
+            </span>
+            <h3 className="min-h-20 max-w-full overflow-hidden text-subtitle text-white line-clamp-4 xl:min-h-[96px] xl:text-heading">{titles[activeIndex]}</h3>
+          </div>
+        ) : <h3 className="min-h-20 max-w-full overflow-hidden text-subtitle text-white line-clamp-4 xl:min-h-[96px] xl:text-heading">{titles[activeIndex]}</h3>}
         {buttonTheme === "solitaire" ? (
           <button type="button" className={solitaireButtonClassName({ kind: "text", surface: "inverse", size: "large" })}>
             <span className="prio-button__label">{activeCta}</span>

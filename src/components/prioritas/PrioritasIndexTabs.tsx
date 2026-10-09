@@ -34,7 +34,6 @@ export default function PrioritasIndexTabs({ activeTab, surface = "default", bas
   const tabRefs = useRef<Partial<Record<PrioritasTabKey, HTMLAnchorElement | null>>>({});
   const requestedTabRef = useRef<PrioritasTabKey | null>(null);
   const [scrolled, setScrolled] = useState(false);
-
   useEffect(() => {
     const update = () => setScrolled(window.scrollY > 8);
     update();

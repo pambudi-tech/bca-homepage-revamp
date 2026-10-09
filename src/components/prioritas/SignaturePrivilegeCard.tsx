@@ -15,8 +15,8 @@ export default function SignaturePrivilegeCard({ promo, href, tone = "prioritas"
       <img src={promo.cover} alt="" className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105" />
       <div className="absolute inset-0 bg-gradient-to-t from-pbrown-900/90 via-pbrown-900/20 to-transparent" />
       <div
-        className={`glass-panel ${solitaire ? "" : "glass-panel-prioritas"} absolute inset-x-2 bottom-2 z-10 flex h-[120px] flex-col justify-between rounded-xl p-4 sm:h-auto`}
-        style={{ backgroundColor: solitaire ? "rgba(0,0,0,0.3)" : undefined, backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)", isolation: "isolate" }}
+        className={`glass-panel ${solitaire ? "glass-panel-solitaire" : "glass-panel-prioritas"} absolute inset-x-2 bottom-2 z-10 flex h-[120px] flex-col justify-between rounded-xl p-4 sm:h-auto`}
+        style={{ isolation: "isolate" }}
       >
         <h2 className="min-h-14 text-subtitle text-white">{promo.title}</h2>
         <span className={buttonClassName({ kind: "text", surface: "inverse", size: "large", className: "mt-2 self-start" })}>

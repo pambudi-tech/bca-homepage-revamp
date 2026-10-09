@@ -1,8 +1,19 @@
 {
-  "metadata": { "title": "BCA - 始终在您身边", "description": "BCA.co.id 主页改版原型" },
+  "metadata": {
+    "title": "BCA - 始终在您身边",
+    "description": "BCA.co.id 主页改版原型"
+  },
   "promoPage": {
-    "metadata": { "title": "BCA 优惠", "description": "探索满足各种需求的 BCA 优惠。" },
-    "hero": { "eyebrow": "BCA 优惠", "title": "畅享满足各种需求的丰富优惠", "cta": "探索所有优惠", "imageAlt": "一对情侣享受多种活动和 BCA 生活方式优惠" },
+    "metadata": {
+      "title": "BCA 优惠",
+      "description": "探索满足各种需求的 BCA 优惠。"
+    },
+    "hero": {
+      "eyebrow": "BCA 优惠",
+      "title": "畅享满足各种需求的丰富优惠",
+      "cta": "探索所有优惠",
+      "imageAlt": "一对情侣享受多种活动和 BCA 生活方式优惠"
+    },
     "categoryRail": {
       "kuliner": "餐饮",
       "hobby": "爱好",
@@ -21,14 +32,29 @@
       "label": "搜索优惠",
       "allCategories": "所有类别",
       "categoryLabel": "选择优惠类别",
-      "placeholders": ["Fore Coffee", "餐饮折扣", "票务优惠", "myBCA 返现"],
+      "placeholders": [
+        "Fore Coffee",
+        "餐饮折扣",
+        "票务优惠",
+        "myBCA 返现"
+      ],
       "popularPromos": "热门优惠",
       "results": "优惠搜索结果",
       "noResults": "暂未找到优惠",
       "noResultsHint": "请尝试其他关键词或类别。"
     },
-    "common": { "previous": "上一个", "next": "下一个" },
-    "seasonal": { "badge": "Gebyar BCA 特别优惠", "discount": "超值", "emphasis": "折扣", "partner": "BCA 精选合作伙伴", "quota": "名额有限！", "quotaHint": "结束前立即领取" },
+    "common": {
+      "previous": "上一个",
+      "next": "下一个"
+    },
+    "seasonal": {
+      "badge": "Gebyar BCA 特别优惠",
+      "discount": "超值",
+      "emphasis": "折扣",
+      "partner": "BCA 精选合作伙伴",
+      "quota": "名额有限！",
+      "quotaHint": "结束前立即领取"
+    },
     "allPromos": {
       "title": "全部优惠",
       "showCount": "显示 {total} 个优惠中的 {from}-{to} 个",
@@ -75,7 +101,10 @@
         "Lippo Mall Puri"
       ]
     },
-    "endingSoon": { "title": "即将结束", "description": "即将结束的精选优惠" },
+    "endingSoon": {
+      "title": "即将结束",
+      "description": "即将结束的精选优惠"
+    },
     "categories": {
       "fnb": "餐饮",
       "hobby": "兴趣爱好",
@@ -106,7 +135,10 @@
     }
   },
   "creditCardDetail": {
-    "metadata": { "title": "BCA 信用卡", "description": "探索多种 BCA 信用卡选择，满足您的生活方式需求。" },
+    "metadata": {
+      "title": "BCA 信用卡",
+      "description": "探索多种 BCA 信用卡选择，满足您的生活方式需求。"
+    },
     "hero": {
       "eyebrow": "BCA 信用卡",
       "title": "多种选择，满足您的生活方式",
@@ -116,7 +148,16 @@
       "scrollCue": "向下滚动",
       "cardsSection": "信用卡选择",
       "imageAlt": "一名男子在钱包上方手持 BCA 信用卡",
-      "sectionNav": { "label": "信用卡页面导航", "cards": "卡片选择", "benefits": "权益", "features": "功能", "promos": "优惠", "tutorials": "教程", "news": "资讯", "help": "帮助" }
+      "sectionNav": {
+        "label": "信用卡页面导航",
+        "cards": "卡片选择",
+        "benefits": "权益",
+        "features": "功能",
+        "promos": "优惠",
+        "tutorials": "教程",
+        "news": "资讯",
+        "help": "帮助"
+      }
     },
     "comparisonPage": {
       "eyebrow": "信用卡",
@@ -201,73 +242,111 @@
             {
               "key": "fees",
               "label": "费用",
-              "columns": ["费用类型", "主卡", "附属卡"],
+              "columns": [
+                "费用类型",
+                "主卡",
+                "附属卡"
+              ],
               "rows": [
                 {
                   "label": "年费",
                   "cells": [
-                    { "text": "Rp500,000" },
-                    { "text": "Rp300,000" }
+                    {
+                      "text": "Rp500,000"
+                    },
+                    {
+                      "text": "Rp300,000"
+                    }
                   ]
                 },
                 {
                   "label": "逾期付款费用",
                   "cells": [
-                    { "text": "账单总额的 1%，最高 Rp100,000", "colSpan": 2 }
+                    {
+                      "text": "账单总额的 1%，最高 Rp100,000",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "一年交易摘要申请",
                   "cells": [
-                    { "text": "Rp100,000", "colSpan": 2 }
+                    {
+                      "text": "Rp100,000",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "账单副本申请",
                   "cells": [
-                    { "text": "Rp30,000", "colSpan": 2 }
+                    {
+                      "text": "Rp30,000",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "遗失或损坏卡片更换",
                   "cells": [
-                    { "text": "免费", "colSpan": 2 }
+                    {
+                      "text": "免费",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "账单打印与寄送",
                   "cells": [
-                    { "text": "Rp10,000", "colSpan": 2 }
+                    {
+                      "text": "Rp10,000",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "超额费用",
                   "cells": [
-                    { "text": "免费", "colSpan": 2 }
+                    {
+                      "text": "免费",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "国内及国际现金预借",
                   "cells": [
-                    { "text": "提款金额的 4%，或最低 Rp40,000", "colSpan": 2 }
+                    {
+                      "text": "提款金额的 4%，或最低 Rp40,000",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "柜台现金预借管理费",
                   "cells": [
-                    { "text": "每笔 Rp20,000", "colSpan": 2 }
+                    {
+                      "text": "每笔 Rp20,000",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "取消分期付款",
                   "cells": [
-                    { "text": "Rp100,000", "colSpan": 2 }
+                    {
+                      "text": "Rp100,000",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "印花税",
                   "cells": [
-                    { "text": "账单付款超过 Rp5,000,000 时收取 Rp10,000", "colSpan": 2 }
+                    {
+                      "text": "账单付款超过 Rp5,000,000 时收取 Rp10,000",
+                      "colSpan": 2
+                    }
                   ]
                 }
               ]
@@ -275,135 +354,206 @@
             {
               "key": "limit-risk",
               "label": "额度、利率与风险",
-              "columns": ["信息类型", "主卡", "附属卡"],
+              "columns": [
+                "信息类型",
+                "主卡",
+                "附属卡"
+              ],
               "blocks": [
                 {
                   "type": "text",
                   "heading": "额度",
-                  "bullets": ["主卡与附属卡的最低信用额度"]
+                  "bullets": [
+                    "主卡与附属卡的最低信用额度"
+                  ]
                 },
                 {
                   "type": "table",
-                  "columns": ["额度类型", "主卡", "附属卡"],
+                  "columns": [
+                    "额度类型",
+                    "主卡",
+                    "附属卡"
+                  ],
                   "rows": [
                     {
                       "label": "BCA Singapore Airlines KrisFlyer Visa Signature",
                       "cells": [
-                        { "text": "Rp10,000,000" },
-                        { "text": "Rp5,000,000" }
+                        {
+                          "text": "Rp10,000,000"
+                        },
+                        {
+                          "text": "Rp5,000,000"
+                        }
                       ]
                     }
                   ]
                 },
-                { "type": "text", "body": "说明：信用额度将根据 BCA 的分析结果确定。" },
+                {
+                  "type": "text",
+                  "body": "说明：信用额度将根据 BCA 的分析结果确定。"
+                },
                 {
                   "type": "text",
                   "heading": "交易额度",
-                  "bullets": ["BCA Singapore Airlines KrisFlyer Visa Signature 的交易额度"]
+                  "bullets": [
+                    "BCA Singapore Airlines KrisFlyer Visa Signature 的交易额度"
+                  ]
                 },
                 {
                   "type": "table",
-                  "columns": ["交易类型", "额度"],
+                  "columns": [
+                    "交易类型",
+                    "额度"
+                  ],
                   "rows": [
                     {
                       "label": "Contact（EDC）",
                       "cells": [
-                        { "text": "根据可用信用额度" }
+                        {
+                          "text": "根据可用信用额度"
+                        }
                       ]
                     },
                     {
                       "label": "使用 PIN 的非接触式交易",
                       "cells": [
-                        { "text": "根据可用信用额度" }
+                        {
+                          "text": "根据可用信用额度"
+                        }
                       ]
                     },
                     {
                       "label": "无需 PIN 的非接触式交易",
                       "cells": [
-                        { "text": "最高交易额度遵循当地规定；在印度尼西亚最高 Rp1,000,000。可通过 myBCA/BCA mobile 设置每日额度，最高 Rp200,000,000 或可用信用额度。" }
+                        {
+                          "text": "最高交易额度遵循当地规定；在印度尼西亚最高 Rp1,000,000。可通过 myBCA/BCA mobile 设置每日额度，最高 Rp200,000,000 或可用信用额度。"
+                        }
                       ]
                     },
                     {
                       "label": "网上交易",
                       "cells": [
-                        { "text": "根据可用信用额度" }
+                        {
+                          "text": "根据可用信用额度"
+                        }
                       ]
                     },
                     {
                       "label": "ATM 现金预借",
                       "cells": [
-                        { "text": "信用额度的 20%" }
+                        {
+                          "text": "信用额度的 20%"
+                        }
                       ]
                     }
                   ]
                 },
-                { "type": "text", "heading": "利率", "body": "现金预借和消费交易的利率为每月 1.75%，具体以印度尼西亚银行现行规定为准。" },
+                {
+                  "type": "text",
+                  "heading": "利率",
+                  "body": "现金预借和消费交易的利率为每月 1.75%，具体以印度尼西亚银行现行规定为准。"
+                },
                 {
                   "type": "text",
                   "heading": "风险",
-                  "bullets": ["逾期支付账单可能产生逾期费用并影响债务人信用记录。", "提前结清分期交易可能产生费用。", "因客户疏忽，卡片、PIN/Password/OTP 或 User ID/BCA ID 可能被滥用。"]
+                  "bullets": [
+                    "逾期支付账单可能产生逾期费用并影响债务人信用记录。",
+                    "提前结清分期交易可能产生费用。",
+                    "因客户疏忽，卡片、PIN/Password/OTP 或 User ID/BCA ID 可能被滥用。"
+                  ]
                 }
               ],
               "rows": [
                 {
                   "label": "最低信用额度",
                   "cells": [
-                    { "text": "Rp10,000,000" },
-                    { "text": "Rp5,000,000" }
+                    {
+                      "text": "Rp10,000,000"
+                    },
+                    {
+                      "text": "Rp5,000,000"
+                    }
                   ]
                 },
                 {
                   "label": "EDC 额度",
                   "cells": [
-                    { "text": "根据可用信用额度", "colSpan": 2 }
+                    {
+                      "text": "根据可用信用额度",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "使用 PIN 的非接触式交易",
                   "cells": [
-                    { "text": "根据可用信用额度", "colSpan": 2 }
+                    {
+                      "text": "根据可用信用额度",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "无需 PIN 的非接触式交易",
                   "cells": [
-                    { "text": "遵循当地规定；在印度尼西亚最高 Rp1,000,000", "colSpan": 2 }
+                    {
+                      "text": "遵循当地规定；在印度尼西亚最高 Rp1,000,000",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "网上交易",
                   "cells": [
-                    { "text": "根据可用信用额度", "colSpan": 2 }
+                    {
+                      "text": "根据可用信用额度",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "ATM 现金预借",
                   "cells": [
-                    { "text": "信用额度的 20%", "colSpan": 2 }
+                    {
+                      "text": "信用额度的 20%",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "消费及现金预借利率",
                   "cells": [
-                    { "text": "每月 1.75%", "colSpan": 2 }
+                    {
+                      "text": "每月 1.75%",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "逾期付款风险",
                   "cells": [
-                    { "text": "可能产生逾期费用并影响债务人信用记录", "colSpan": 2 }
+                    {
+                      "text": "可能产生逾期费用并影响债务人信用记录",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "提前结清分期风险",
                   "cells": [
-                    { "text": "提前结清分期交易可能产生费用", "colSpan": 2 }
+                    {
+                      "text": "提前结清分期交易可能产生费用",
+                      "colSpan": 2
+                    }
                   ]
                 },
                 {
                   "label": "卡片滥用风险",
                   "cells": [
-                    { "text": "因客户疏忽导致卡片、PIN/Password/OTP 或 User ID/BCA ID 被滥用", "colSpan": 2 }
+                    {
+                      "text": "因客户疏忽导致卡片、PIN/Password/OTP 或 User ID/BCA ID 被滥用",
+                      "colSpan": 2
+                    }
                   ]
                 }
               ]
@@ -411,129 +561,219 @@
             {
               "key": "simulation",
               "label": "模拟",
-              "columns": ["过账日期", "说明", "金额"],
+              "columns": [
+                "过账日期",
+                "说明",
+                "金额"
+              ],
               "blocks": [
-                { "type": "text", "body": "账单日为 2024 年 4 月 1 日、付款到期日为 2024 年 4 月 17 日的账单计算。" },
+                {
+                  "type": "text",
+                  "body": "账单日为 2024 年 4 月 1 日、付款到期日为 2024 年 4 月 17 日的账单计算。"
+                },
                 {
                   "type": "table",
-                  "columns": ["过账日期", "说明", "金额"],
+                  "columns": [
+                    "过账日期",
+                    "说明",
+                    "金额"
+                  ],
                   "rows": [
                     {
                       "label": "2024 年 3 月 1 日",
                       "cells": [
-                        { "text": "上一期账单" },
-                        { "text": "Rp0" }
+                        {
+                          "text": "上一期账单"
+                        },
+                        {
+                          "text": "Rp0"
+                        }
                       ]
                     },
                     {
                       "label": "2024 年 3 月 5 日",
                       "cells": [
-                        { "text": "交易 I" },
-                        { "text": "Rp1,250,000" }
+                        {
+                          "text": "交易 I"
+                        },
+                        {
+                          "text": "Rp1,250,000"
+                        }
                       ]
                     },
                     {
                       "label": "2024 年 3 月 16 日",
                       "cells": [
-                        { "text": "交易 II" },
-                        { "text": "Rp1,750,000" }
+                        {
+                          "text": "交易 II"
+                        },
+                        {
+                          "text": "Rp1,750,000"
+                        }
                       ]
                     },
                     {
                       "label": "新账单",
                       "labelColSpan": 2,
                       "cells": [
-                        { "text": "Rp3,000,000" }
+                        {
+                          "text": "Rp3,000,000"
+                        }
                       ]
                     }
                   ]
                 },
-                { "type": "text", "body": "账单周期为 2024 年 5 月 1 日，按最低付款计算利息（付款日期：2024 年 4 月 17 日）。" },
+                {
+                  "type": "text",
+                  "body": "账单周期为 2024 年 5 月 1 日，按最低付款计算利息（付款日期：2024 年 4 月 17 日）。"
+                },
                 {
                   "type": "table",
-                  "columns": ["过账日期", "说明", "金额"],
+                  "columns": [
+                    "过账日期",
+                    "说明",
+                    "金额"
+                  ],
                   "rows": [
                     {
                       "label": "2024 年 4 月 1 日",
                       "cells": [
-                        { "text": "上一期余额" },
-                        { "text": "Rp3,000,000" }
+                        {
+                          "text": "上一期余额"
+                        },
+                        {
+                          "text": "Rp3,000,000"
+                        }
                       ]
                     },
                     {
                       "label": "2024 年 4 月 8 日",
                       "cells": [
-                        { "text": "交易 I" },
-                        { "text": "Rp1,250,000" }
+                        {
+                          "text": "交易 I"
+                        },
+                        {
+                          "text": "Rp1,250,000"
+                        }
                       ]
                     },
                     {
                       "label": "2024 年 4 月 24 日",
                       "cells": [
-                        { "text": "交易 II" },
-                        { "text": "Rp1,750,000" }
+                        {
+                          "text": "交易 II"
+                        },
+                        {
+                          "text": "Rp1,750,000"
+                        }
                       ]
                     },
                     {
                       "label": "2024 年 4 月 17 日",
                       "cells": [
-                        { "text": "付款（最低 5% x Rp3,000,000）" },
-                        { "text": "(Rp150,000)" }
+                        {
+                          "text": "付款（最低 5% x Rp3,000,000）"
+                        },
+                        {
+                          "text": "(Rp150,000)"
+                        }
                       ]
                     },
                     {
                       "label": "利息",
                       "labelColSpan": 2,
                       "cells": [
-                        { "text": "Rp87,740" }
+                        {
+                          "text": "Rp87,740"
+                        }
                       ]
                     },
                     {
                       "label": "新账单",
                       "labelColSpan": 2,
                       "cells": [
-                        { "text": "Rp4,187,740" }
+                        {
+                          "text": "Rp4,187,740"
+                        }
                       ]
                     }
                   ]
                 },
-                { "type": "text", "heading": "利息计算：" },
+                {
+                  "type": "text",
+                  "heading": "利息计算："
+                },
                 {
                   "type": "table",
-                  "columns": ["交易类型", "期间", "交易金额", "利率", "计算公式", "利息总额"],
-                  "columnTooltips": { "期间": "从交易日期到账单打印日期的时间间隔。" },
+                  "columns": [
+                    "交易类型",
+                    "期间",
+                    "交易金额",
+                    "利率",
+                    "计算公式",
+                    "利息总额"
+                  ],
+                  "columnTooltips": {
+                    "期间": "从交易日期到账单打印日期的时间间隔。"
+                  },
                   "rows": [
                     {
                       "label": "交易 I",
                       "cells": [
-                        { "text": "2024 年 3 月 5 日 – 2024 年 4 月 16 日（43 天）" },
-                        { "text": "Rp1,250,000" },
-                        { "text": "1.75%", "rowSpan": 3 },
-                        { "text": "交易金额 x 利率 x 12 个月 x（期间/365 天）", "rowSpan": 3 },
-                        { "text": "Rp30,925" }
+                        {
+                          "text": "2024 年 3 月 5 日 – 2024 年 4 月 16 日（43 天）"
+                        },
+                        {
+                          "text": "Rp1,250,000"
+                        },
+                        {
+                          "text": "1.75%",
+                          "rowSpan": 3
+                        },
+                        {
+                          "text": "交易金额 x 利率 x 12 个月 x（期间/365 天）",
+                          "rowSpan": 3
+                        },
+                        {
+                          "text": "Rp30,925"
+                        }
                       ]
                     },
                     {
                       "label": "交易 II",
                       "cells": [
-                        { "text": "2024 年 3 月 16 日 – 2024 年 4 月 16 日（32 天）" },
-                        { "text": "Rp1,750,000" },
-                        { "text": "Rp32,219" }
+                        {
+                          "text": "2024 年 3 月 16 日 – 2024 年 4 月 16 日（32 天）"
+                        },
+                        {
+                          "text": "Rp1,750,000"
+                        },
+                        {
+                          "text": "Rp32,219"
+                        }
                       ]
                     },
                     {
                       "label": "上月剩余付款",
                       "cells": [
-                        { "text": "2024 年 4 月 17 日 – 2024 年 5 月 1 日（15 天）" },
-                        { "text": "Rp2,850,000" },
-                        { "text": "Rp24,596" }
+                        {
+                          "text": "2024 年 4 月 17 日 – 2024 年 5 月 1 日（15 天）"
+                        },
+                        {
+                          "text": "Rp2,850,000"
+                        },
+                        {
+                          "text": "Rp24,596"
+                        }
                       ]
                     },
                     {
                       "label": "总计",
                       "labelColSpan": 5,
                       "cells": [
-                        { "text": "Rp87,740" }
+                        {
+                          "text": "Rp87,740"
+                        }
                       ]
                     }
                   ]
@@ -560,7 +800,14 @@
         "unionpay": "Let's Live It Up!",
         "american-express-platinum": "For the finest things in life"
       },
-      "tabs": { "benefits": "权益", "features": "主要功能", "fees": "费用", "requirements": "申请条件", "limit": "额度", "payments": "利率与还款" }
+      "tabs": {
+        "benefits": "权益",
+        "features": "主要功能",
+        "fees": "费用",
+        "requirements": "申请条件",
+        "limit": "额度",
+        "payments": "利率与还款"
+      }
     },
     "tutorial": {
       "heading": "通过 myBCA 轻松申请信用卡",
@@ -575,11 +822,26 @@
       "nextStep": "下一步",
       "seeFullSteps": "查看完整步骤",
       "steps": [
-        { "title": "打开 myBCA", "description": "打开 myBCA 应用，然后点击申请信用卡。" },
-        { "title": "查看信用卡权益", "description": "查看 BCA 信用卡权益，然后点击继续。" },
-        { "title": "确认申请条件", "description": "确认 BCA 信用卡申请条件，然后点击开始。" },
-        { "title": "选择信用卡", "description": "选择符合您需求的 BCA 信用卡。" },
-        { "title": "选择附属卡", "description": "选择另一张共享额度的信用卡。" }
+        {
+          "title": "打开 myBCA",
+          "description": "打开 myBCA 应用，然后点击申请信用卡。"
+        },
+        {
+          "title": "查看信用卡权益",
+          "description": "查看 BCA 信用卡权益，然后点击继续。"
+        },
+        {
+          "title": "确认申请条件",
+          "description": "确认 BCA 信用卡申请条件，然后点击开始。"
+        },
+        {
+          "title": "选择信用卡",
+          "description": "选择符合您需求的 BCA 信用卡。"
+        },
+        {
+          "title": "选择附属卡",
+          "description": "选择另一张共享额度的信用卡。"
+        }
       ]
     },
     "help": {
@@ -592,9 +854,18 @@
         "key": "credit-card",
         "label": "信用卡",
         "items": [
-          { "question": "如果忘记 BCA 信用卡 PIN 码怎么办？", "answer": "您可以通过 myBCA、BCA mobile、BCA ATM，或访问 bca.co.id/creditcard 的电子账单与 PIN 激活菜单重新激活信用卡 PIN 码。" },
-          { "question": "如果 BCA 信用卡遗失或被盗，该怎么办？", "answer": "请立即通过 myBCA、BCA mobile 或拨打 1500888 联系 Halo BCA 挂失。因遗失或被盗而挂失的卡片需要更换后才能继续使用。" },
-          { "question": "如何支付 BCA 信用卡账单？", "answer": "在 myBCA 中选择账单与充值，然后选择信用卡与 Paylater。选择卡片和扣款账户，输入付款金额，核对信息后输入 PIN 确认。" }
+          {
+            "question": "如果忘记 BCA 信用卡 PIN 码怎么办？",
+            "answer": "您可以通过 myBCA、BCA mobile、BCA ATM，或访问 bca.co.id/creditcard 的电子账单与 PIN 激活菜单重新激活信用卡 PIN 码。"
+          },
+          {
+            "question": "如果 BCA 信用卡遗失或被盗，该怎么办？",
+            "answer": "请立即通过 myBCA、BCA mobile 或拨打 1500888 联系 Halo BCA 挂失。因遗失或被盗而挂失的卡片需要更换后才能继续使用。"
+          },
+          {
+            "question": "如何支付 BCA 信用卡账单？",
+            "answer": "在 myBCA 中选择账单与充值，然后选择信用卡与 Paylater。选择卡片和扣款账户，输入付款金额，核对信息后输入 PIN 确认。"
+          }
         ]
       }
     },
@@ -607,40 +878,132 @@
       "appPlaceholder": "应用内信用卡功能界面占位图",
       "cardSpecificHeadings": {
         "krisflyer-signature": "更快累积 KrisFlyer 里程",
-        "features": { "krisflyer-signature": "消费与旅行主要功能" }
+        "features": {
+          "krisflyer-signature": "消费与旅行主要功能"
+        }
       },
       "benefits": [
-        { "key": "installment", "title": "BCA 分期", "description": "将交易转为 BCA 分期，利率低至 0%，期限最长 36 个月。" },
-        { "key": "reward", "title": "BCA 积分", "description": "在印度尼西亚及海外使用信用卡交易均可获得 BCA 积分。", "featured": true },
-        { "key": "autopay", "title": "BCA 自动付款", "description": "定期账单支付方案，可通过 BCA 信用卡自动扣款完成支付。" },
-        { "key": "travel-insurance", "title": "旅行保险", "description": "每一次旅程都能安心应对各种风险。" },
-        { "key": "credit-life", "title": "信用人寿保险", "description": "为您和所爱之人抵御意外风险。" }
+        {
+          "key": "installment",
+          "title": "BCA 分期",
+          "description": "将交易转为 BCA 分期，利率低至 0%，期限最长 36 个月。"
+        },
+        {
+          "key": "reward",
+          "title": "BCA 积分",
+          "description": "在印度尼西亚及海外使用信用卡交易均可获得 BCA 积分。",
+          "featured": true
+        },
+        {
+          "key": "autopay",
+          "title": "BCA 自动付款",
+          "description": "定期账单支付方案，可通过 BCA 信用卡自动扣款完成支付。"
+        },
+        {
+          "key": "travel-insurance",
+          "title": "旅行保险",
+          "description": "每一次旅程都能安心应对各种风险。"
+        },
+        {
+          "key": "credit-life",
+          "title": "信用人寿保险",
+          "description": "为您和所爱之人抵御意外风险。"
+        }
       ],
       "cardSpecificBenefits": {
         "krisflyer-signature": [
-          { "key": "krisflyer-reward", "title": "KrisFlyer 奖赏", "description": "每消费 Rp13,500 可获得 1 KrisFlyer 里程。" },
-          { "key": "krisflyer-welcome-bonus", "title": "最高 10,000 里程迎新奖励", "description": "激活并完成首次交易后获得 3,000 里程；获批后 2 个月内消费至少 Rp5,000,000，再获得额外 7,000 里程。" },
-          { "key": "krisflyer-monthly-bonus", "title": "每月额外奖励", "description": "每月消费至少 Rp20,000,000，可获得额外 1,000 KrisFlyer 里程。" },
-          { "key": "krisflyer-merchant-offers", "title": "商户优惠", "description": "在餐厅、时装、网上旅游和市场平台等线上线下商户享受优惠。" },
-          { "key": "krisflyer-travel-services", "title": "旅行设施", "description": "享有自动扣款、BCA Credit Life、旅行意外保险和 BCA Travel Service 等额外设施。" }
+          {
+            "key": "krisflyer-reward",
+            "title": "KrisFlyer 奖赏",
+            "description": "每消费 Rp13,500 可获得 1 KrisFlyer 里程。"
+          },
+          {
+            "key": "krisflyer-welcome-bonus",
+            "title": "最高 10,000 里程迎新奖励",
+            "description": "激活并完成首次交易后获得 3,000 里程；获批后 2 个月内消费至少 Rp5,000,000，再获得额外 7,000 里程。"
+          },
+          {
+            "key": "krisflyer-monthly-bonus",
+            "title": "每月额外奖励",
+            "description": "每月消费至少 Rp20,000,000，可获得额外 1,000 KrisFlyer 里程。"
+          },
+          {
+            "key": "krisflyer-merchant-offers",
+            "title": "商户优惠",
+            "description": "在餐厅、时装、网上旅游和市场平台等线上线下商户享受优惠。"
+          },
+          {
+            "key": "krisflyer-travel-services",
+            "title": "旅行设施",
+            "description": "享有自动扣款、BCA Credit Life、旅行意外保险和 BCA Travel Service 等额外设施。"
+          }
         ]
       },
       "features": [
-        { "key": "application", "title": "申请信用卡", "description": "选择适合您需求的卡片并在线申请。" },
-        { "key": "add-card", "title": "添加卡片", "description": "通过共享额度添加卡片，满足不同需求。" },
-        { "key": "installment", "title": "将交易转为分期", "description": "分期利率低至0%，期限最长36个月。" },
-        { "key": "miles", "title": "将 BCA 积分兑换为里程", "description": "将积分兑换为指定航空公司的里程。" },
-        { "key": "reward", "title": "查看 BCA 积分余额", "description": "追踪累计积分及其有效期。" },
-        { "key": "limit", "title": "申请提高额度", "description": "直接在应用中提高您的信用卡额度。" },
-        { "key": "control", "title": "信用卡管理", "description": "随时通过应用冻结和管理您的卡片。" },
-        { "key": "contactless", "title": "设置非接触式额度", "description": "根据需求设置非接触式交易额度。", "badge": "新功能" }
+        {
+          "key": "application",
+          "title": "申请信用卡",
+          "description": "选择适合您需求的卡片并在线申请。"
+        },
+        {
+          "key": "add-card",
+          "title": "添加卡片",
+          "description": "通过共享额度添加卡片，满足不同需求。"
+        },
+        {
+          "key": "installment",
+          "title": "将交易转为分期",
+          "description": "分期利率低至0%，期限最长36个月。"
+        },
+        {
+          "key": "miles",
+          "title": "将 BCA 积分兑换为里程",
+          "description": "将积分兑换为指定航空公司的里程。"
+        },
+        {
+          "key": "reward",
+          "title": "查看 BCA 积分余额",
+          "description": "追踪累计积分及其有效期。"
+        },
+        {
+          "key": "limit",
+          "title": "申请提高额度",
+          "description": "直接在应用中提高您的信用卡额度。"
+        },
+        {
+          "key": "control",
+          "title": "信用卡管理",
+          "description": "随时通过应用冻结和管理您的卡片。"
+        },
+        {
+          "key": "contactless",
+          "title": "设置非接触式额度",
+          "description": "根据需求设置非接触式交易额度。",
+          "badge": "新功能"
+        }
       ],
       "cardSpecificFeatures": {
         "krisflyer-signature": [
-          { "key": "transactions", "title": "Visa 商户与 ATM 交易", "description": "可在网上和线下商户、BCA ATM 或带有 Visa 标志的 ATM 使用卡片。" },
-          { "key": "contactless", "title": "非接触式交易", "description": "使用具备非接触式功能的卡片进行非接触式付款。" },
-          { "key": "installment", "title": "BCA 分期", "description": "将符合条件的交易转换为 BCA 分期。" },
-          { "key": "miles", "title": "更快累积 KrisFlyer 里程", "description": "使用卡片进行交易即可获得 KrisFlyer 里程。" }
+          {
+            "key": "transactions",
+            "title": "Visa 商户与 ATM 交易",
+            "description": "可在网上和线下商户、BCA ATM 或带有 Visa 标志的 ATM 使用卡片。"
+          },
+          {
+            "key": "contactless",
+            "title": "非接触式交易",
+            "description": "使用具备非接触式功能的卡片进行非接触式付款。"
+          },
+          {
+            "key": "installment",
+            "title": "BCA 分期",
+            "description": "将符合条件的交易转换为 BCA 分期。"
+          },
+          {
+            "key": "miles",
+            "title": "更快累积 KrisFlyer 里程",
+            "description": "使用卡片进行交易即可获得 KrisFlyer 里程。"
+          }
         ]
       }
     },
@@ -679,8 +1042,22 @@
         "apply": "在 myBCA 申请",
         "navigationLabel": "信用卡比较导航",
         "selectedCards": "正在比较的卡片",
-        "cardClusters": { "bca-card": "BCA Card", "visa": "Visa", "mastercard": "Mastercard", "jcb": "JCB", "unionpay": "UnionPay", "american-express": "American Express" },
-        "tabs": { "benefits": "权益", "features": "主要功能", "fees": "费用", "requirements": "申请条件", "limit": "额度", "payments": "利率与还款" },
+        "cardClusters": {
+          "bca-card": "BCA Card",
+          "visa": "Visa",
+          "mastercard": "Mastercard",
+          "jcb": "JCB",
+          "unionpay": "UnionPay",
+          "american-express": "American Express"
+        },
+        "tabs": {
+          "benefits": "权益",
+          "features": "主要功能",
+          "fees": "费用",
+          "requirements": "申请条件",
+          "limit": "额度",
+          "payments": "利率与还款"
+        },
         "benefitLabel": "权益 {index}",
         "category": "类别",
         "annualFee": "年费",
@@ -696,13 +1073,21 @@
                 "points": [
                   {
                     "label": "BCA 奖赏",
-                    "bullets": ["tiket.com 交易 1%；其他商户交易 0.5%", "自 2026 年 5 月 1 日起，Blibli 商户交易适用 0.4% 方案"]
+                    "bullets": [
+                      "tiket.com 交易 1%；其他商户交易 0.5%",
+                      "自 2026 年 5 月 1 日起，Blibli 商户交易适用 0.4% 方案"
+                    ]
                   },
                   {
                     "label": "首刷奖励",
-                    "bullets": ["tiket.com 交易 1%；其他商户交易 0.5%"]
+                    "bullets": [
+                      "tiket.com 交易 1%；其他商户交易 0.5%"
+                    ]
                   },
-                  { "label": "旅行积分 / 里程", "description": "自 2026 年 5 月 1 日起，Blibli 商户交易适用 0.4% 方案" }
+                  {
+                    "label": "旅行积分 / 里程",
+                    "description": "自 2026 年 5 月 1 日起，Blibli 商户交易适用 0.4% 方案"
+                  }
                 ]
               }
             ]
@@ -713,14 +1098,30 @@
               {
                 "title": "",
                 "points": [
-                  { "label": "非接触式支付" },
-                  { "label": "BCA 分期" },
-                  { "label": "旅行保险" },
-                  { "label": "信用卡寿险" },
-                  { "label": "BCA 旅行服务" },
-                  { "label": "BCA 自动还款" },
-                  { "label": "BCA 奖赏" },
-                  { "label": "信用卡管理" }
+                  {
+                    "label": "非接触式支付"
+                  },
+                  {
+                    "label": "BCA 分期"
+                  },
+                  {
+                    "label": "旅行保险"
+                  },
+                  {
+                    "label": "信用卡寿险"
+                  },
+                  {
+                    "label": "BCA 旅行服务"
+                  },
+                  {
+                    "label": "BCA 自动还款"
+                  },
+                  {
+                    "label": "BCA 奖赏"
+                  },
+                  {
+                    "label": "信用卡管理"
+                  }
                 ]
               }
             ]
@@ -731,12 +1132,21 @@
               {
                 "title": "",
                 "points": [
-                  { "label": "年费", "description": "Rp125,000/年" },
+                  {
+                    "label": "年费",
+                    "description": "Rp125,000/年"
+                  },
                   {
                     "label": "逾期付款费用",
-                    "bullets": ["账单金额的 1%，最高 Rp100,000", "Rp100,000**"]
+                    "bullets": [
+                      "账单金额的 1%，最高 Rp100,000",
+                      "Rp100,000**"
+                    ]
                   },
-                  { "label": "补卡费用", "description": "Rp50,000" }
+                  {
+                    "label": "补卡费用",
+                    "description": "Rp50,000"
+                  }
                 ]
               }
             ]
@@ -747,23 +1157,44 @@
               {
                 "title": "",
                 "points": [
-                  { "label": "年龄", "description": "至少 21 岁" },
-                  { "label": "最低收入", "description": "每月最低收入：国企 / 公务员 Rp3 百万，私营部门 Rp5 百万" }
+                  {
+                    "label": "年龄",
+                    "description": "至少 21 岁"
+                  },
+                  {
+                    "label": "最低收入",
+                    "description": "每月最低收入：国企 / 公务员 Rp3 百万，私营部门 Rp5 百万"
+                  }
                 ]
               },
               {
                 "title": "额度",
                 "points": [
-                  { "label": "最低信用卡额度", "description": "Rp3,000,000" },
-                  { "label": "最低信用卡额度", "description": "Rp1,000,000" },
-                  { "label": "EDC 额度", "description": "根据可用卡片而定" }
+                  {
+                    "label": "最低信用卡额度",
+                    "description": "Rp3,000,000"
+                  },
+                  {
+                    "label": "最低信用卡额度",
+                    "description": "Rp1,000,000"
+                  },
+                  {
+                    "label": "EDC 额度",
+                    "description": "根据可用卡片而定"
+                  }
                 ]
               },
               {
                 "title": "利率与还款",
                 "points": [
-                  { "label": "消费利率", "description": "每月 1.75%" },
-                  { "label": "取现利率", "description": "每月 1.75%" }
+                  {
+                    "label": "消费利率",
+                    "description": "每月 1.75%"
+                  },
+                  {
+                    "label": "取现利率",
+                    "description": "每月 1.75%"
+                  }
                 ]
               }
             ]
@@ -771,10 +1202,22 @@
         ]
       },
       "filters": [
-        { "key": "all", "label": "全部" },
-        { "key": "travel", "label": "旅行" },
-        { "key": "lifestyle", "label": "生活方式" },
-        { "key": "reward", "label": "BCA 奖赏" }
+        {
+          "key": "all",
+          "label": "全部"
+        },
+        {
+          "key": "travel",
+          "label": "旅行"
+        },
+        {
+          "key": "lifestyle",
+          "label": "生活方式"
+        },
+        {
+          "key": "reward",
+          "label": "BCA 奖赏"
+        }
       ],
       "cards": [
         {
@@ -784,9 +1227,18 @@
           "imageAlt": "BCA Singapore Airlines KrisFlyer Visa Signature",
           "category": "travel",
           "benefits": [
-            { "icon": "miles", "label": "最高10,000 KrisFlyer里程奖励" },
-            { "icon": "spend", "label": "每Rp13,500可获1 KrisFlyer里程" },
-            { "icon": "fee", "label": "年费Rp500千" }
+            {
+              "icon": "miles",
+              "label": "最高10,000 KrisFlyer里程奖励"
+            },
+            {
+              "icon": "spend",
+              "label": "每Rp13,500可获1 KrisFlyer里程"
+            },
+            {
+              "icon": "fee",
+              "label": "年费Rp500千"
+            }
           ]
         },
         {
@@ -796,9 +1248,18 @@
           "imageAlt": "BCA Singapore Airlines KrisFlyer Visa Infinite",
           "category": "travel",
           "benefits": [
-            { "icon": "miles", "label": "最高12,500 KrisFlyer里程奖励" },
-            { "icon": "spend", "label": "每Rp10,800可获1 KrisFlyer里程" },
-            { "icon": "fee", "label": "年费Rp1百万" }
+            {
+              "icon": "miles",
+              "label": "最高12,500 KrisFlyer里程奖励"
+            },
+            {
+              "icon": "spend",
+              "label": "每Rp10,800可获1 KrisFlyer里程"
+            },
+            {
+              "icon": "fee",
+              "label": "年费Rp1百万"
+            }
           ]
         },
         {
@@ -809,9 +1270,18 @@
           "category": "travel",
           "badge": "最高返现",
           "benefits": [
-            { "icon": "voucher", "label": "电子优惠券最高Rp1百万" },
-            { "icon": "cashback", "label": "在tiket.com获1% Blibli Tiket积分" },
-            { "icon": "fee", "label": "年费Rp125千" }
+            {
+              "icon": "voucher",
+              "label": "电子优惠券最高Rp1百万"
+            },
+            {
+              "icon": "cashback",
+              "label": "在tiket.com获1% Blibli Tiket积分"
+            },
+            {
+              "icon": "fee",
+              "label": "年费Rp125千"
+            }
           ]
         },
         {
@@ -821,9 +1291,18 @@
           "imageAlt": "BCA Singapore Airlines PPS Club Visa Infinite",
           "category": "travel",
           "benefits": [
-            { "icon": "miles", "label": "Rp5,000 = 1 KrisFlyer里程" },
-            { "icon": "voucher", "label": "4,000 KrisFlyer里程迎新奖励" },
-            { "icon": "fee", "label": "年费Rp2百万" }
+            {
+              "icon": "miles",
+              "label": "Rp5,000 = 1 KrisFlyer里程"
+            },
+            {
+              "icon": "voucher",
+              "label": "4,000 KrisFlyer里程迎新奖励"
+            },
+            {
+              "icon": "fee",
+              "label": "年费Rp2百万"
+            }
           ]
         },
         {
@@ -833,9 +1312,18 @@
           "imageAlt": "BCA Everyday Card",
           "category": "reward",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward 0.3%" },
-            { "icon": "installment", "label": "支持BCA分期" },
-            { "icon": "fee", "label": "年费Rp125千" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward 0.3%"
+            },
+            {
+              "icon": "installment",
+              "label": "支持BCA分期"
+            },
+            {
+              "icon": "fee",
+              "label": "年费Rp125千"
+            }
           ]
         },
         {
@@ -846,9 +1334,18 @@
           "category": "lifestyle",
           "badge": "热门",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward 0.3%" },
-            { "icon": "installment", "label": "支持BCA分期" },
-            { "icon": "fee", "label": "年费Rp125千" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward 0.3%"
+            },
+            {
+              "icon": "installment",
+              "label": "支持BCA分期"
+            },
+            {
+              "icon": "fee",
+              "label": "年费Rp125千"
+            }
           ]
         },
         {
@@ -858,9 +1355,18 @@
           "imageAlt": "BCA Visa Batman",
           "category": "lifestyle",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward 0.3%" },
-            { "icon": "installment", "label": "支持BCA分期" },
-            { "icon": "fee", "label": "年费Rp125千" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward 0.3%"
+            },
+            {
+              "icon": "installment",
+              "label": "支持BCA分期"
+            },
+            {
+              "icon": "fee",
+              "label": "年费Rp125千"
+            }
           ]
         },
         {
@@ -871,9 +1377,18 @@
           "category": "lifestyle",
           "badge": "最高额度",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward 0.3%" },
-            { "icon": "installment", "label": "支持BCA分期" },
-            { "icon": "fee", "label": "年费Rp125千" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward 0.3%"
+            },
+            {
+              "icon": "installment",
+              "label": "支持BCA分期"
+            },
+            {
+              "icon": "fee",
+              "label": "年费Rp125千"
+            }
           ]
         },
         {
@@ -883,9 +1398,18 @@
           "imageAlt": "BCA Visa Black",
           "category": "lifestyle",
           "benefits": [
-            { "icon": "reward", "label": "0.2% BCA Reward" },
-            { "icon": "travel", "label": "旅行意外保险" },
-            { "icon": "fee", "label": "年费Rp450千" }
+            {
+              "icon": "reward",
+              "label": "0.2% BCA Reward"
+            },
+            {
+              "icon": "travel",
+              "label": "旅行意外保险"
+            },
+            {
+              "icon": "fee",
+              "label": "年费Rp450千"
+            }
           ]
         },
         {
@@ -895,9 +1419,18 @@
           "imageAlt": "BCA Blibli Mastercard",
           "category": "reward",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward 0.3%" },
-            { "icon": "installment", "label": "支持BCA分期" },
-            { "icon": "fee", "label": "年费Rp125千" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward 0.3%"
+            },
+            {
+              "icon": "installment",
+              "label": "支持BCA分期"
+            },
+            {
+              "icon": "fee",
+              "label": "年费Rp125千"
+            }
           ]
         },
         {
@@ -907,9 +1440,18 @@
           "imageAlt": "BCA Mastercard Globe",
           "category": "lifestyle",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward" },
-            { "icon": "travel", "label": "生活方式商户优惠" },
-            { "icon": "fee", "label": "按BCA规定收取年费" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward"
+            },
+            {
+              "icon": "travel",
+              "label": "生活方式商户优惠"
+            },
+            {
+              "icon": "fee",
+              "label": "按BCA规定收取年费"
+            }
           ]
         },
         {
@@ -919,9 +1461,18 @@
           "imageAlt": "BCA Mastercard World",
           "category": "lifestyle",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward" },
-            { "icon": "travel", "label": "生活方式及旅行合作商户" },
-            { "icon": "fee", "label": "按BCA规定收取年费" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward"
+            },
+            {
+              "icon": "travel",
+              "label": "生活方式及旅行合作商户"
+            },
+            {
+              "icon": "fee",
+              "label": "按BCA规定收取年费"
+            }
           ]
         },
         {
@@ -931,9 +1482,18 @@
           "imageAlt": "BCA JCB Black",
           "category": "lifestyle",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward" },
-            { "icon": "travel", "label": "JCB优惠与服务" },
-            { "icon": "fee", "label": "按BCA规定收取年费" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward"
+            },
+            {
+              "icon": "travel",
+              "label": "JCB优惠与服务"
+            },
+            {
+              "icon": "fee",
+              "label": "按BCA规定收取年费"
+            }
           ]
         },
         {
@@ -943,9 +1503,18 @@
           "imageAlt": "BCA UnionPay",
           "category": "lifestyle",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward" },
-            { "icon": "travel", "label": "UnionPay优惠与服务" },
-            { "icon": "fee", "label": "按BCA规定收取年费" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward"
+            },
+            {
+              "icon": "travel",
+              "label": "UnionPay优惠与服务"
+            },
+            {
+              "icon": "fee",
+              "label": "按BCA规定收取年费"
+            }
           ]
         },
         {
@@ -955,9 +1524,18 @@
           "imageAlt": "BCA American Express Platinum",
           "category": "lifestyle",
           "benefits": [
-            { "icon": "reward", "label": "BCA Reward" },
-            { "icon": "travel", "label": "American Express优惠与服务" },
-            { "icon": "fee", "label": "按BCA规定收取年费" }
+            {
+              "icon": "reward",
+              "label": "BCA Reward"
+            },
+            {
+              "icon": "travel",
+              "label": "American Express优惠与服务"
+            },
+            {
+              "icon": "fee",
+              "label": "按BCA规定收取年费"
+            }
           ]
         }
       ]
@@ -1004,18 +1582,45 @@
     "languageSwitcher": "选择语言",
     "disclaimer": "Property of Natuno. All rights reserved."
   },
-  "languages": { "id": "Indonesia", "en": "English", "zh": "简体中文" },
+  "languages": {
+    "id": "Indonesia",
+    "en": "English",
+    "zh": "简体中文"
+  },
   "hero": {
     "searchPrompt": "有什么可以帮您？",
-    "placeholders": ["开设BCA账户", "激活BCA Paylater", "申请信用卡", "安装 myBCA"],
+    "placeholders": [
+      "开设BCA账户",
+      "激活BCA Paylater",
+      "申请信用卡",
+      "安装 myBCA"
+    ],
     "quickActions": {
-      "login": { "title": "登录BCA", "subtitle": "myBCA • KlikBCA" },
-      "promo": { "title": "最新优惠", "subtitle": "超值优惠" },
-      "halobca": { "title": "HaloBCA", "subtitle": "1500888，聊天，邮件" },
-      "location": { "title": "BCA网点", "subtitle": "分行与ATM" },
-      "webform": { "title": "BCA在线表单", "subtitle": "产品申请" }
+      "login": {
+        "title": "登录BCA",
+        "subtitle": "myBCA • KlikBCA"
+      },
+      "promo": {
+        "title": "最新优惠",
+        "subtitle": "超值优惠"
+      },
+      "halobca": {
+        "title": "HaloBCA",
+        "subtitle": "1500888，聊天，邮件"
+      },
+      "location": {
+        "title": "BCA网点",
+        "subtitle": "分行与ATM"
+      },
+      "webform": {
+        "title": "BCA在线表单",
+        "subtitle": "产品申请"
+      }
     },
-    "loginCepat": { "title": "快速登录", "subtitle": "进入 BCA 服务" },
+    "loginCepat": {
+      "title": "快速登录",
+      "subtitle": "进入 BCA 服务"
+    },
     "loginMybca": "登录 myBCA",
     "loginKlikbca": "登录 KlikBCA",
     "closeLogin": "关闭",
@@ -1033,11 +1638,26 @@
     "loginCard": "登录 {service}",
     "kursERate": "BCA E-Rate 汇率",
     "viewAll": "查看全部",
-    "sectionAnchor": { "label": "页面栏目导航", "products": "产品与服务", "promo": "活动与优惠", "soliprio": "Solitaire 与 Prioritas", "news": "新闻与教育", "faq": "常见问题" }
+    "sectionAnchor": {
+      "label": "页面栏目导航",
+      "products": "产品与服务",
+      "promo": "活动与优惠",
+      "soliprio": "Solitaire 与 Prioritas",
+      "news": "新闻与教育",
+      "faq": "常见问题",
+      "scrollPrevious": "向左滚动导航",
+      "scrollNext": "向右滚动导航"
+    }
   },
   "search": {
     "segmentLabel": "内容分类",
-    "segments": { "Semua": "全部", "Individu": "个人", "Bisnis": "企业", "Prioritas": "优先", "Solitaire": "尊尚" },
+    "segments": {
+      "Semua": "全部",
+      "Individu": "个人",
+      "Bisnis": "企业",
+      "Prioritas": "优先",
+      "Solitaire": "尊尚"
+    },
     "recentSearches": "最近搜索",
     "clearAll": "清除全部",
     "removeTerm": "删除 {term}",
@@ -1052,7 +1672,11 @@
     "needHelp": "需要帮助？",
     "visitHelpCenter": "访问帮助中心",
     "close": "关闭搜索",
-    "categories": { "produk-layanan": "产品与服务", "artikel": "文章", "promo": "促销" },
+    "categories": {
+      "produk-layanan": "产品与服务",
+      "artikel": "文章",
+      "promo": "促销"
+    },
     "popular": {
       "openAccount": "开户",
       "exchangeRate": "今日汇率",
@@ -1068,15 +1692,35 @@
       "healthPrivilege": "健康礼遇",
       "exclusivePrivilege": "专属礼遇"
     },
-    "topics": { "topic-rekening": "开户与储蓄", "topic-kartu": "信用卡与 Paylater", "topic-kredit": "房贷与车贷", "topic-investasi": "投资与共同基金" },
+    "topics": {
+      "topic-rekening": "开户与储蓄",
+      "topic-kartu": "信用卡与 Paylater",
+      "topic-kredit": "房贷与车贷",
+      "topic-investasi": "投资与共同基金"
+    },
     "noResultsScopedHint": "请尝试其他礼遇或银行服务关键词。",
     "noResultsSolitaireHint": "请尝试其他 Solitaire 礼遇关键词。"
   },
-  "scrollCue": { "label": "滚动查看更多" },
-  "backToTop": { "label": "返回顶部" },
-  "slideDots": { "play": "继续轮播", "pause": "暂停轮播" },
-  "common": { "learnMore": "了解更多" },
-  "product": { "eyebrow": "产品与服务", "heading": "为您的每一个财务目标提供BCA解决方案", "ctaHint": "为您找到合适的{category}", "ctaLabel": "打开 GoodPlan BCA", "mobileCtaHint": "为您找到合适的产品与服务" },
+  "scrollCue": {
+    "label": "滚动查看更多"
+  },
+  "backToTop": {
+    "label": "返回顶部"
+  },
+  "slideDots": {
+    "play": "继续轮播",
+    "pause": "暂停轮播"
+  },
+  "common": {
+    "learnMore": "了解更多"
+  },
+  "product": {
+    "eyebrow": "产品与服务",
+    "heading": "为您的每一个财务目标提供BCA解决方案",
+    "ctaHint": "为您找到合适的{category}",
+    "ctaLabel": "打开 GoodPlan BCA",
+    "mobileCtaHint": "为您找到合适的产品与服务"
+  },
   "promo": {
     "eyebrow": "优惠",
     "heading": "为您献上最佳礼遇",
@@ -1087,8 +1731,15 @@
     "nextSlide": "下一个活动",
     "playSlide": "播放轮播",
     "pauseSlide": "暂停轮播",
-    "badge": { "almostEnd": "即将结束！", "popular": "热门" },
-    "timestamp": { "expired": "活动已结束", "hoursLeft": "{hours}小时后结束", "until": "截止至{date}" }
+    "badge": {
+      "almostEnd": "即将结束！",
+      "popular": "热门"
+    },
+    "timestamp": {
+      "expired": "活动已结束",
+      "hoursLeft": "{hours}小时后结束",
+      "until": "截止至{date}"
+    }
   },
   "soliprio": {
     "title": "尊崇专属的礼遇，只为您而设。",
@@ -1098,17 +1749,37 @@
     "visitSolitaire": "访问 Solitaire",
     "visitPrioritas": "访问 Prioritas",
     "benefits": {
-      "lounge": { "title": "尊享全球 200 多家机场贵宾室", "cta": "查看合作医院" },
-      "healthcare": { "title": "于精选高端医院享受专属健康检查", "cta": "进入贵宾室" },
-      "event": { "title": "优先参与知名活动", "cta": "查看所有活动" }
+      "lounge": {
+        "title": "尊享全球 200 多家机场贵宾室",
+        "cta": "查看合作医院"
+      },
+      "healthcare": {
+        "title": "于精选高端医院享受专属健康检查",
+        "cta": "进入贵宾室"
+      },
+      "event": {
+        "title": "优先参与知名活动",
+        "cta": "查看所有活动"
+      }
     },
     "solitaireBenefits": {
-      "personalBanker": { "title": "专属私人银行家，提供更个性化的服务", "cta": "了解更多" },
-      "exclusiveCommunity": { "title": "专属 BCA 社群，拓展关系与合作", "cta": "了解更多" }
+      "personalBanker": {
+        "title": "专属私人银行家，提供更个性化的服务",
+        "cta": "了解更多"
+      },
+      "exclusiveCommunity": {
+        "title": "专属 BCA 社群，拓展关系与合作",
+        "cta": "了解更多"
+      }
     }
   },
   "nav": {
-    "segments": { "Individu": "个人", "Bisnis": "企业", "Solitaire": "尊尚", "Prioritas": "优先" },
+    "segments": {
+      "Individu": "个人",
+      "Bisnis": "企业",
+      "Solitaire": "尊尚",
+      "Prioritas": "优先"
+    },
     "produk": "产品",
     "promo": "优惠",
     "login": "登录",
@@ -1125,9 +1796,25 @@
     "pilihSegmen": "选择细分",
     "primary": "主导航",
     "skipToContent": "跳到主要内容",
-    "aboutTabs": { "korporasi": "企业信息", "hubunganInvestor": "投资者关系", "tataKelola": "公司治理", "sustainability": "可持续发展", "csr": "社会责任", "mediaRiset": "媒体与研究" }
+    "aboutTabs": {
+      "korporasi": "企业信息",
+      "hubunganInvestor": "投资者关系",
+      "tataKelola": "公司治理",
+      "sustainability": "可持续发展",
+      "csr": "社会责任",
+      "mediaRiset": "媒体与研究"
+    }
   },
-  "mobileMenu": { "tutupMenu": "关闭菜单", "bukaMenu": "打开菜单", "bahasa": "语言", "pilihSegmen": "选择您的客户类型", "sesiAktif": "当前会话", "kembali": "返回", "menuLabel": "主菜单" },
+  "mobileMenu": {
+    "tutupMenu": "关闭菜单",
+    "bukaMenu": "打开菜单",
+    "bahasa": "语言",
+    "pilihSegmen": "选择您的客户类型",
+    "sesiAktif": "当前会话",
+    "logout": "退出登录",
+    "kembali": "返回",
+    "menuLabel": "主菜单"
+  },
   "cookieBanner": {
     "ariaLabel": "Cookie 提示",
     "heading": "我们使用 Cookie",
@@ -1139,10 +1826,22 @@
     "rejectAll": "拒绝全部",
     "settings": "管理偏好设置",
     "categories": {
-      "essential": { "label": "必要", "desc": "维持登录会话、安全性及网站基本功能，无法关闭。" },
-      "functional": { "label": "功能性", "desc": "记住您的偏好设置，例如语言和最近查看的汇率。" },
-      "analytics": { "label": "分析", "desc": "帮助我们了解哪些页面被最常使用。" },
-      "marketing": { "label": "营销", "desc": "定制您在其他网站上看到的 BCA 优惠和广告。" }
+      "essential": {
+        "label": "必要",
+        "desc": "维持登录会话、安全性及网站基本功能，无法关闭。"
+      },
+      "functional": {
+        "label": "功能性",
+        "desc": "记住您的偏好设置，例如语言和最近查看的汇率。"
+      },
+      "analytics": {
+        "label": "分析",
+        "desc": "帮助我们了解哪些页面被最常使用。"
+      },
+      "marketing": {
+        "label": "营销",
+        "desc": "定制您在其他网站上看到的 BCA 优惠和广告。"
+      }
     }
   },
   "lokasi": {
@@ -1247,33 +1946,69 @@
     "linkColumns": {
       "Tentang BCA": {
         "heading": "企业",
-        "links": ["关于BCA", "招聘信息", "利率信息", "分行与ATM位置"]
+        "links": [
+          "关于BCA",
+          "招聘信息",
+          "利率信息",
+          "分行与ATM位置"
+        ]
       },
       "Layanan": {
         "heading": "服务",
-        "links": ["帮助中心", "客户服务", "模拟计算器", "分行网络"]
+        "links": [
+          "帮助中心",
+          "客户服务",
+          "模拟计算器",
+          "分行网络"
+        ]
       },
       "Wawasan": {
         "heading": "资讯",
-        "links": ["新闻与专题", "理财小贴士", "#诈骗预警", "查看更多"]
+        "links": [
+          "新闻与专题",
+          "理财小贴士",
+          "#诈骗预警",
+          "查看更多"
+        ]
       }
     },
     "prioritasLinkColumns": {
       "Perusahaan": {
         "heading": "公司",
-        "links": ["关于我们", "联系我们", "找到我们", "RIPLAY"]
+        "links": [
+          "关于我们",
+          "联系我们",
+          "找到我们",
+          "RIPLAY"
+        ]
       },
       "Layanan": {
         "heading": "服务",
-        "links": ["专属礼遇", "优先银行服务"]
+        "links": [
+          "专属礼遇",
+          "优先银行服务"
+        ]
       },
       "Wawasan": {
         "heading": "资讯",
-        "links": ["电子杂志", "House View", "每周市场洞察"]
+        "links": [
+          "电子杂志",
+          "House View",
+          "每周市场洞察"
+        ]
       }
     },
-    "prioritasBottomLinks": ["SBDK", "隐私政策", "条款与条件", "bca.co.id"],
-    "bottomLinks": ["SBDK", "隐私政策", "条款与条件"]
+    "prioritasBottomLinks": [
+      "SBDK",
+      "隐私政策",
+      "条款与条件",
+      "bca.co.id"
+    ],
+    "bottomLinks": [
+      "SBDK",
+      "隐私政策",
+      "条款与条件"
+    ]
   },
   "mybca": {
     "heading": "所有银行业务需求，尽在掌握",
@@ -1286,109 +2021,257 @@
     "googlePlay": "Get it on Google Play",
     "detail": "myBCA 详情"
   },
-  "news": { "eyebrow": "新闻与洞察", "heading": "BCA 最新动态", "seeMore": "全部新闻与洞察" },
-  "faq": { "eyebrow": "常见问题", "heading": "值得信赖的支持，随时在您身边", "notFound": "没有找到您想要的答案？", "cta": "访问帮助中心" },
+  "news": {
+    "eyebrow": "新闻与洞察",
+    "heading": "BCA 最新动态",
+    "seeMore": "全部新闻与洞察"
+  },
+  "faq": {
+    "eyebrow": "常见问题",
+    "heading": "值得信赖的支持，随时在您身边",
+    "notFound": "没有找到您想要的答案？",
+    "cta": "访问帮助中心"
+  },
   "megamenu": {
     "Simpanan": {
       "label": "储蓄",
-      "products": ["Tahapan", "Tahapan Xpresi", "Tahapan Berjangka", "定期存款", "查看全部储蓄产品"],
+      "products": [
+        "Tahapan",
+        "Tahapan Xpresi",
+        "Tahapan Berjangka",
+        "定期存款",
+        "查看全部储蓄产品"
+      ],
       "ctaLabel": "比较储蓄产品",
-      "tools": ["计算储蓄潜力", "在线开户"],
+      "tools": [
+        "计算储蓄潜力",
+        "在线开户"
+      ],
       "links": [
-        { "label": "如何在账户间充值和转账", "type": "video" },
-        { "label": "Tahapan、Tapres 与定期存款的区别" },
-        { "label": "各储蓄产品的最低余额和管理费是多少？" },
-        { "label": "开设BCA账户所需的条件与文件" }
+        {
+          "label": "如何在账户间充值和转账",
+          "type": "video"
+        },
+        {
+          "label": "Tahapan、Tapres 与定期存款的区别"
+        },
+        {
+          "label": "各储蓄产品的最低余额和管理费是多少？"
+        },
+        {
+          "label": "开设BCA账户所需的条件与文件"
+        }
       ],
       "editorialTitle": "开户即可获得高达10万印尼盾的QRIS返现"
     },
     "Kartu Kredit": {
       "label": "信用卡",
-      "products": ["BCA Everyday Card", "BCA Visa Batman", "BCA Mastercard Black", "Reward BCA", "查看全部信用卡"],
+      "products": [
+        "BCA Everyday Card",
+        "BCA Visa Batman",
+        "BCA Mastercard Black",
+        "Reward BCA",
+        "查看全部信用卡"
+      ],
       "ctaLabel": "比较信用卡",
-      "tools": ["信用卡分期模拟", "查询BCA奖励"],
+      "tools": [
+        "信用卡分期模拟",
+        "查询BCA奖励"
+      ],
       "links": [
-        { "label": "如何通过网站申请信用卡", "type": "video" },
-        { "label": "哪种信用卡最适合我？" },
-        { "label": "申请BCA信用卡的条件" },
-        { "label": "如何偿还BCA信用卡账单" }
+        {
+          "label": "如何通过网站申请信用卡",
+          "type": "video"
+        },
+        {
+          "label": "哪种信用卡最适合我？"
+        },
+        {
+          "label": "申请BCA信用卡的条件"
+        },
+        {
+          "label": "如何偿还BCA信用卡账单"
+        }
       ],
       "editorialTitle": "立即申请信用卡，终身免年费并享50万印尼盾欢迎奖励"
     },
     "Pinjaman": {
       "label": "贷款",
-      "products": ["Paylater BCA", "住房贷款（KPR）", "车辆贷款（KKB）", "BCA个人贷款", "查看全部贷款"],
+      "products": [
+        "Paylater BCA",
+        "住房贷款（KPR）",
+        "车辆贷款（KKB）",
+        "BCA个人贷款",
+        "查看全部贷款"
+      ],
       "ctaLabel": "计算预估分期还款",
-      "tools": ["计算分期付款", "查询Paylater BCA额度"],
+      "tools": [
+        "计算分期付款",
+        "查询Paylater BCA额度"
+      ],
       "links": [
-        { "label": "从申请到放款的完整流程", "type": "video" },
-        { "label": "如何通过myBCA在线申请住房贷款" },
-        { "label": "申请BCA贷款所需的条件与文件" },
-        { "label": "我最多可以申请多少贷款额度？" }
+        {
+          "label": "从申请到放款的完整流程",
+          "type": "video"
+        },
+        {
+          "label": "如何通过myBCA在线申请住房贷款"
+        },
+        {
+          "label": "申请BCA贷款所需的条件与文件"
+        },
+        {
+          "label": "我最多可以申请多少贷款额度？"
+        }
       ],
       "editorialTitle": "首年住房贷款特惠利率2.99%"
     },
     "e-Banking": {
       "label": "网上银行",
-      "products": ["myBCA", "KlikBCA", "Sakuku", "e-Branch", "查看全部网上银行服务"],
+      "products": [
+        "myBCA",
+        "KlikBCA",
+        "Sakuku",
+        "e-Branch",
+        "查看全部网上银行服务"
+      ],
       "ctaLabel": "比较网上银行服务",
-      "tools": ["注册并激活myBCA", "比较BCA数字服务"],
+      "tools": [
+        "注册并激活myBCA",
+        "比较BCA数字服务"
+      ],
       "links": [
-        { "label": "新用户如何激活myBCA", "type": "video" },
-        { "label": "如何通过myBCA为Flazz充值" },
-        { "label": "myBCA的特色功能" },
-        { "label": "myBCA与KlikBCA有什么区别？" }
+        {
+          "label": "新用户如何激活myBCA",
+          "type": "video"
+        },
+        {
+          "label": "如何通过myBCA为Flazz充值"
+        },
+        {
+          "label": "myBCA的特色功能"
+        },
+        {
+          "label": "myBCA与KlikBCA有什么区别？"
+        }
       ],
       "editorialTitle": "在myBCA使用QRIS消费，指定商户享最高50%折扣"
     },
     "Wealth Management": {
       "label": "财富管理",
-      "products": ["共同基金", "债券", "保险", "客户资金账户 (RDN)", "查看全部财富管理产品"],
+      "products": [
+        "共同基金",
+        "债券",
+        "保险",
+        "客户资金账户 (RDN)",
+        "查看全部财富管理产品"
+      ],
       "ctaLabel": "计算投资与保障潜力",
-      "tools": ["计算投资潜力", "查看投资风险偏好"],
+      "tools": [
+        "计算投资潜力",
+        "查看投资风险偏好"
+      ],
       "links": [
-        { "label": "根据风险偏好选择投资产品指南", "type": "video" },
-        { "label": "如何通过myBCA购买共同基金" },
-        { "label": "为家人选择合适的保险" },
-        { "label": "人寿保险与健康保险有什么区别？" }
+        {
+          "label": "根据风险偏好选择投资产品指南",
+          "type": "video"
+        },
+        {
+          "label": "如何通过myBCA购买共同基金"
+        },
+        {
+          "label": "为家人选择合适的保险"
+        },
+        {
+          "label": "人寿保险与健康保险有什么区别？"
+        }
       ],
       "editorialTitle": "投资与保障一站式服务，最低1万印尼盾起"
     },
     "Investasi": {
       "label": "投资",
-      "products": ["共同基金", "债券", "客户资金账户（RDN）", "查看全部投资产品"],
+      "products": [
+        "共同基金",
+        "债券",
+        "客户资金账户（RDN）",
+        "查看全部投资产品"
+      ],
       "ctaLabel": "查看全部投资产品",
-      "tools": ["计算投资潜力", "查看投资风险偏好"],
+      "tools": [
+        "计算投资潜力",
+        "查看投资风险偏好"
+      ],
       "links": [
-        { "label": "根据风险偏好选择投资产品", "type": "video" },
-        { "label": "如何通过myBCA购买共同基金" },
-        { "label": "了解BCA投资产品" },
-        { "label": "为财务目标开始投资的技巧" }
+        {
+          "label": "根据风险偏好选择投资产品",
+          "type": "video"
+        },
+        {
+          "label": "如何通过myBCA购买共同基金"
+        },
+        {
+          "label": "了解BCA投资产品"
+        },
+        {
+          "label": "为财务目标开始投资的技巧"
+        }
       ],
       "editorialTitle": "为您的财务目标开启投资"
     },
     "Asuransi": {
       "label": "保险",
-      "products": ["人寿保险", "健康保险", "车辆保险", "查看全部保险产品"],
+      "products": [
+        "人寿保险",
+        "健康保险",
+        "车辆保险",
+        "查看全部保险产品"
+      ],
       "ctaLabel": "查看全部保险产品",
-      "tools": ["计算保险保费", "查找适合您需求的保险"],
+      "tools": [
+        "计算保险保费",
+        "查找适合您需求的保险"
+      ],
       "links": [
-        { "label": "选择适合需求的保障方案", "type": "video" },
-        { "label": "为家人选择合适的保险" },
-        { "label": "人寿保险与健康保险的区别" },
-        { "label": "如何申请BCA保险产品" }
+        {
+          "label": "选择适合需求的保障方案",
+          "type": "video"
+        },
+        {
+          "label": "为家人选择合适的保险"
+        },
+        {
+          "label": "人寿保险与健康保险的区别"
+        },
+        {
+          "label": "如何申请BCA保险产品"
+        }
       ],
       "editorialTitle": "守护您、家人与珍贵资产"
     },
     "Transaksi": {
       "label": "交易",
-      "products": ["Flazz", "Firecash", "汇款", "查看全部交易服务"],
+      "products": [
+        "Flazz",
+        "Firecash",
+        "汇款",
+        "查看全部交易服务"
+      ],
       "ctaLabel": "计算预估保费",
-      "tools": ["BCA汇率计算器", "查询交易状态"],
+      "tools": [
+        "BCA汇率计算器",
+        "查询交易状态"
+      ],
       "links": [
-        { "label": "通过myBCA直接为Flazz充值的便捷方式", "type": "video" },
-        { "label": "海外汇款完整指南" },
-        { "label": "在附近分行提取Firecash资金且无手续费的条件与方法" }
+        {
+          "label": "通过myBCA直接为Flazz充值的便捷方式",
+          "type": "video"
+        },
+        {
+          "label": "海外汇款完整指南"
+        },
+        {
+          "label": "在附近分行提取Firecash资金且无手续费的条件与方法"
+        }
       ],
       "editorialTitle": "海外汇款免电汇费，享最优惠汇率"
     }
@@ -1407,10 +2290,21 @@
       "produk": "产品 / 服务",
       "produkPlaceholder": "请选择产品或服务"
     },
-    "products": ["储蓄", "信用卡", "贷款", "myBCA / KlikBCA", "其他"],
+    "products": [
+      "储蓄",
+      "信用卡",
+      "贷款",
+      "myBCA / KlikBCA",
+      "其他"
+    ],
     "terms": "Halo BCA Chat 条款与条件",
     "submit": "开始对话",
-    "errors": { "required": "此项为必填", "email": "电子邮箱格式无效", "phone": "电话号码无效", "captcha": "请完成\"我不是机器人\"验证" },
+    "errors": {
+      "required": "此项为必填",
+      "email": "电子邮箱格式无效",
+      "phone": "电话号码无效",
+      "captcha": "请完成\"我不是机器人\"验证"
+    },
     "close": "关闭 HaloBCA"
   },
   "prioritasKurs": {
@@ -1437,497 +2331,12 @@
     "cta": "了解更多",
     "bannerAlt": "一家人在客厅共度时光",
     "prioritasLogoAlt": "BCA Prioritas",
-    "sectionNavLabel": "BCA Prioritas 页面导航",
-    "sections": { "privilege": "尊享礼遇", "eventPromo": "活动与优惠", "bankingSolution": "银行解决方案", "magazine": "电子杂志", "financialReport": "财务报告" },
-    "contact": { "heading": "我们随时准备陪伴您迈向下一段旅程。", "riplayTitle": "产品与服务信息摘要（RIPLAY）", "download": "下载文件", "contactTitle": "联系我们", "phone": "拨打 150022" },
-    "privilege": {
-      "eyebrow": "尊享礼遇",
-      "heading": "伴随您人生旅程每一步的尊贵礼遇",
-      "cards": {
-        "lounge": { "title": "尊享印度尼西亚数百家机场贵宾休息室", "action": "立即预订", "alt": "机场贵宾休息室" },
-        "health": { "title": "精选高端医院尊享健康检查", "action": "查看合作医院", "alt": "高端医院房间" },
-        "event": { "title": "尊享热门活动优先入场礼遇", "action": "查看所有活动", "alt": "活动现场尊享座位" }
-      },
-      "viewMore": "查看您拥有的更多尊享礼遇"
-    },
-    "eventPromo": {
-      "eyebrow": "活动与优惠",
-      "heading": "为您专属打造的优惠与精彩体验",
-      "featuredTitles": { "javaJazz": "为BCA Prioritas客户赠送Java Jazz音乐节门票", "theWeeknd": "The Weeknd 演唱会赠票，限前三位客户", "brightspot": "获取Brightspot开幕之夜VIP门票", "mercedesAds": "全新 Mercedes-Benz GLC 300——以领先科技开启每一段旅程" },
-      "featuredCtas": { "mercedesAds": "立即预约" },
-      "featuredCta": "了解更多",
-      "viewMore": "查看所有活动与优惠"
-    },
-    "card": { "eyebrow": "银行卡", "heading": "一张卡片，尊享千项专属礼遇", "description": "仅限特别邀请。请联系您的 Personal Banker 了解更多信息。", "action": "了解更多", "imageAlt": "BCA Prioritas 铂金借记卡" },
-    "kartu": {
-      "eyebrow": "银行解决方案",
-      "heading": "陪伴您人生旅程的专属银行服务",
-      "label": "专属银行礼遇",
-      "viewMore": "查看全部",
-      "action": "了解更多",
-      "cards": {
-        "branch": { "title": "BCA 分行专属服务", "alt": "BCA 分行专属服务" },
-        "vehicle": { "title": "机动车贷款（KKB）", "alt": "机动车贷款" },
-        "transaction": { "title": "专属交易功能与服务", "alt": "专属交易功能与服务" },
-        "credit": { "title": "BCA 信用卡", "alt": "BCA 信用卡" },
-        "home": { "title": "房屋所有权贷款", "alt": "房屋所有权贷款" },
-        "deposit": { "title": "保险箱", "alt": "保险箱" }
-      }
-    },
-    "bankingSolution": {
-      "eyebrow": "银行解决方案",
-      "heading": "陪伴您人生旅程的专属银行服务",
-      "bankingPrivilege": "专属银行礼遇",
-      "wealthInsight": "财富洞察",
-      "kurs": "今日汇率",
-      "viewMore": "查看全部",
-      "action": "了解更多",
-      "buy": "买入",
-      "sell": "卖出",
-      "updatedAt": "最后更新于 {date}",
-      "refresh": "刷新汇率",
-      "previous": "上一项汇率",
-      "next": "下一项汇率",
-      "cards": {
-        "branch": { "title": "BCA 分行专属服务", "alt": "BCA 分行专属服务" },
-        "vehicle": { "title": "机动车贷款（KKB）", "alt": "机动车贷款" },
-        "transaction": { "title": "专属交易功能与服务", "alt": "专属交易功能与服务" },
-        "credit": { "title": "BCA 信用卡", "alt": "BCA 信用卡" },
-        "home": { "title": "房屋所有权贷款", "alt": "房屋所有权贷款" },
-        "deposit": { "title": "保险箱", "alt": "保险箱" }
-      },
-      "wealthCards": {
-        "houseView": { "title": "2025年6月观点：降息周期中的投资组合策略", "date": "2025年6月16日，星期三 · 14.00 WIB", "channel": "YouTube 直播", "action": "添加到日历", "alt": "BCA Prioritas House View 活动" },
-        "market": { "title": "每周市场概览：缓和与滞胀之间", "date": "2026年6月2日", "action": "下载报告", "alt": "BCA Prioritas 每周市场概览" }
-      }
-    },
-    "magazine": {
-      "eyebrow": "电子杂志",
-      "heading": "陪伴每一位不断成长的您",
-      "viewMore": "查看全部",
-      "cards": {
-        "property": { "title": "第104期-XXI/2025", "action": "立即阅读", "alt": "关于印度尼西亚房地产行业的优先杂志" },
-        "food": { "title": "第105期-XXII/2026", "action": "立即阅读", "alt": "关于餐饮行业的优先杂志" },
-        "chess": { "title": "第103期-XX/2025", "action": "立即阅读", "alt": "关于年轻企业家的优先杂志" }
-      }
-    },
-    "financialReport": {
-      "eyebrow": "财务报告",
-      "heading": "一览您的完整投资组合",
-      "features": { "centralized": "集中展示您所有 BCA 产品的数据", "reporting": "可用于各种报告", "updated": "每次访问时都会及时更新" },
-      "action": "查看您的报告"
-    }
-  },
-  "signaturePrivilege": {
-    "subNavLabel": "Prioritas 导航",
-    "subNav": { "privilege": "礼遇", "banking": "银行服务", "magazine": "电子杂志" },
-    "breadcrumb": "尊享礼遇",
-    "title": "每一步旅程，都有尊贵礼遇相伴",
-    "eventPromoTitle": "为您呈献数百种体验与独家优惠",
-    "tabLabel": "礼遇类别",
-    "tabs": { "signature": "尊享礼遇", "lifestyle": "生活礼遇", "event": "活动", "promo": "优惠" },
-    "description": "为满足您的多元需求而设计的专属服务与礼遇。",
-    "lifestyleDescription": "专属优惠与礼遇，让您尽享多元生活方式体验。",
-    "more": "了解更多",
-    "voucherAvailability": "{count} 张礼券可用",
-    "solitaireOnlyBadge": "仅限 BCA Solitaire 客户",
-    "showAllSignature": "查看所有礼遇",
-    "showLessSignature": "收起礼遇",
-    "signature": {
-      "lounge": { "title": "行政机场贵宾厅" },
-      "transfer": { "title": "国内机场接送" },
-      "medical": { "title": "国际健康检查" }
-    },
-    "complimentary": {
-      "title": "免费礼遇",
-      "subtitle": "无需额外费用，只需出示您的 Prioritas 卡。",
-      "birthday": "生日礼物",
-      "viewList": "查看免费礼遇列表",
-      "cards": {
-        "valet": { "title": "免费代客泊车", "brand": "Han Palace Restaurant" },
-        "inpatient": { "title": "VVIP 住院陪护免费餐点", "brand": "Altos Hospital" },
-        "facial": { "title": "价值 120 万印尼盾的 Snow White 面部护理", "brand": "Dermatology Clinic" },
-        "laser": { "title": "价值 950 万印尼盾的 Pico Dermabrasion 激光护理", "brand": "EternaMoore Clinic" },
-        "treatment": { "title": "价值 20 万印尼盾的手部护理", "brand": "Molton Brown" },
-        "restaurant": { "title": "免费一人份美式咖啡或卡布奇诺", "brand": "Social Spoon" },
-        "glow": { "title": "红毯焕亮护理", "brand": "Amala Clinic" },
-        "dessert": { "title": "免费甜点", "brand": "Greenleaf Steak & More" },
-        "jewelry": { "title": "价值 50 万印尼盾的专属珠宝盒", "brand": "Semar Nusantara" }
-      }
-    },
-    "categories": { "all": "全部", "beauty": "美容", "culinary": "餐饮", "health": "健康", "travel": "旅行", "lifestyle": "生活方式", "education": "教育", "home": "家居生活", "business": "商业" },
-    "categoriesScrollPrevious": "向左滚动类别",
-    "categoriesScrollNext": "向右滚动类别",
-    "searchLabel": "搜索礼遇",
-    "searchPlaceholder": "搜索品牌或合作伙伴",
-    "showing": "显示 {count} 项优惠",
-    "empty": "没有符合条件的优惠。",
-    "paginationLabel": "礼遇页面",
-    "paginationSummary": "第 {from}-{to} 项，共 {total} 项",
-    "paginationPrevious": "上一页",
-    "paginationNext": "下一页",
-    "paginationJumpBackward": "向后跳转 {count} 页",
-    "paginationJumpForward": "向前跳转 {count} 页",
-    "eventDateExpired": "活动已结束",
-    "eventDirectory": {
-      "paginationLabel": "活动页面",
-      "categories": { "lifestyle": "生活方式与运动", "networking": "研讨会与社交", "arts": "艺术与文化", "culinary": "餐饮与美食" },
-      "period": "活动时间",
-      "all": "全部活动",
-      "upcoming": "即将举行",
-      "ended": "已结束",
-      "showing": "显示 {count} 个活动",
-      "empty": "没有符合条件的活动。"
-    }
-  },
-  "prioritasContentDetail": {
-    "fallback": { "description": "{title}的详细信息尚未提供。", "terms": "条款与条件尚未提供。", "contact": "联系信息尚未提供。", "location": "地点信息尚未提供。" },
-    "event": {
-      "breadcrumb": "活动",
-      "recommendations": "更多推荐活动",
-      "sothebys": {
-        "title": "支持印尼儿童教育的慈善艺术拍卖晚会",
-        "detail": "尊享苏富比慈善艺术拍卖晚会，欣赏世界级艺术作品，并支持印尼儿童教育项目。",
-        "terms": [
-          "出示BCA Solitaire/Prioritas实体卡，或myBCA/BCA mobile中的电子卡。",
-          "使用BCA Solitaire/Prioritas卡、BCA信用卡或通过BCA mobile/myBCA的QRIS付款。",
-          "请提前三天通过苏富比印尼客户服务预约，电话0812 3456 7890（WhatsApp聊天）。名额有限，视实际情况而定。",
-          "此礼遇不可兑换现金或转让。",
-          "仅在指定活动日期有效。"
-        ],
-        "contact": "苏富比印尼客户服务：0812 3456 7890（WhatsApp聊天）。"
-      },
-      "recommendationCards": {
-        "christies": { "title": "与专业策展人一起私享古典绘画展", "brand": "佳士得" },
-        "symphony": { "title": "与国际音乐家共赏交响乐盛典", "brand": "雅加达交响乐团" }
-      }
-    },
-    "promo": {
-      "breadcrumb": "优惠",
-      "recommendations": "更多推荐优惠",
-      "endedOn": "结束于{date}",
-      "porsche": {
-        "detail": "在雅加达保时捷中心专业团队陪同下，亲身体验保时捷的经典设计与性能，尊享试驾。",
-        "terms": [
-          "出示BCA Solitaire/Prioritas实体卡，或myBCA/BCA mobile中的电子卡。",
-          "请提前三天通过雅加达保时捷中心客户服务预约，电话0812 3456 7890（WhatsApp聊天）。",
-          "请携带有效的A类驾驶执照。",
-          "每日试驾名额有限，具体视车辆供应情况而定。",
-          "此礼遇不可兑换现金或转让。",
-          "优惠期间仅适用于雅加达保时捷中心。"
-        ],
-        "contact": "雅加达保时捷中心客户服务：0812 3456 7890（WhatsApp聊天）。",
-        "location": "雅加达保时捷中心"
-      },
-      "samples": {
-        "porsche": { "title": "感受保时捷驾趣：尊享专属试驾", "brand": "保时捷" },
-        "mercedes": { "title": "在私人赛道尊享全新梅赛德斯-奔驰试驾", "brand": "梅赛德斯-奔驰" },
-        "landRover": { "title": "在雅加达抢先体验并试驾全新揽胜", "brand": "路虎" },
-        "audi": { "title": "尊享试驾，探索全新奥迪性能", "brand": "奥迪" }
-      }
-    }
-  },
-  "lifestylePrivilegeDetail": {
-    "subNavLabel": "Prioritas 导航",
-    "validUntil": "有效期",
-    "subNav": { "privilege": "礼遇", "banking": "银行服务", "magazine": "电子杂志" },
-    "breadcrumb": { "home": "Prioritas", "category": "生活礼遇", "current": "美容" },
-    "title": "价值 20 万印尼盾的手部护理折扣",
-    "brand": "Molton Brown",
-    "detail": { "title": "礼遇详情", "content": "Molton Brown 手部护理折扣，价值 20 万印尼盾。" },
-    "terms": {
-      "title": "条款与条件",
-      "items": [
-        "出示实体 BCA Solitaire/Prioritas 卡，或 myBCA/BCA mobile 应用中的电子卡。",
-        "使用 BCA Solitaire/Prioritas 卡、BCA 信用卡或 QRIS BCA mobile/myBCA 付款。",
-        "请于一天前通过 Molton Brown 客服 0816 1807 088（WhatsApp Chat）预约。",
-        "该礼遇不可兑换现金或转让。",
-        "适用于所有 Molton Brown 门店。"
-      ]
-    },
-    "contact": { "title": "品牌与联系方式", "content": "请联系 Molton Brown 客服了解护理信息及预约。" },
-    "location": { "title": "地点", "content": "适用于所有 Molton Brown 门店。" },
-    "loungeTable": { "number": "序号", "name": "城市", "airport": "机场", "lounge": "贵宾室/商户", "solitaireOnly": "仅限 BCA Solitaire 客户", "solitaireAndPrioritas": "适用于 BCA Solitaire 和 Prioritas 客户" },
-    "recommendations": {
-      "title": "更多礼遇推荐",
-      "viewMore": "查看更多",
-      "action": "了解更多",
-      "cards": {
-        "sisley": { "title": "体验专属 Signature 面部护理，享受高达 20% 折扣", "brand": "Sisley Paris", "alt": "Sisley Paris 护肤产品" },
-        "skii": { "title": "红毯焕亮护理（180 万印尼盾）+ 欢迎按摩 + 轻度清洁", "brand": "SK-II Boutique Spa", "alt": "SK-II Boutique Spa 面部护理" },
-        "shiseido": { "title": "尊享 Ultimune 精华免费肌肤分析", "brand": "Shiseido", "alt": "资生堂 Ultimune 精华" }
-      }
-    },
-    "dynamicModule": { "message": "登录以查看您剩余的{benefit}使用次数和礼券额度。", "loginLabel": "登录", "memberMessage": "前往会员专区查看您剩余的{benefit}礼券额度。", "memberActionLabel": "立即前往", "infoTitle": "信息", "solitaireOnlyMessage": "此礼遇仅限 BCA Solitaire 客户享有。" }
-  },
-  "magazineIndex": { "breadcrumb": "电子杂志", "title": "陪伴每一位不断成长的您", "paginationLabel": "电子杂志页码", "readNow": "立即阅读", "coverAlt": "{title}封面", "empty": "暂无电子杂志。" },
-  "bankingSolutionIndex": {
-    "breadcrumb": "银行解决方案",
-    "title": "陪伴您人生旅程的专属银行服务",
-    "tabLabel": "银行解决方案类别",
-    "clusters": { "cards": "卡片与支付", "financing": "融资与保障", "transactions": "交易与外汇", "personal": "专属服务" },
-    "previousCards": "{cluster}中的上一张卡片",
-    "nextCards": "{cluster}中的下一张卡片",
-    "tabs": { "privilege": "银行礼遇", "wealth": "财富洞察", "kurs": "汇率" },
-    "more": "了解更多",
-    "groups": { "house": "市场观点报告", "market": "每周市场概览" },
-    "calendarAction": "添加到日历",
-    "downloadAction": "下载 PDF",
-    "privilege": {
-      "jcb": "BCA JCB Black信用卡",
-      "vehicle": "汽车贷款 (KKB)",
-      "branch": "BCA 分行专属服务",
-      "insurance": "保险",
-      "fees": "专属交易费用",
-      "transaction": "专属交易功能与服务",
-      "media": "资讯服务",
-      "advisor": "专属Personal Banker",
-      "family": "BCA Young Community",
-      "contact": "客户服务中心",
-      "credit": "BCA 信用卡",
-      "home": "住房贷款",
-      "motorcycle": "摩托车贷款",
-      "merchant": "BCA EDC 商户服务",
-      "deposit": "保险箱",
-      "forex": "外汇"
-    },
-    "insight": {
-      "portfolio": { "title": "2025 年 6 月市场观点：降息周期中的投资组合策略", "date": "2026 年 6 月 16 日 14:00 WIB", "channel": "YouTube 直播", "alt": "极地水域中的浮冰" },
-      "inflation": { "title": "2025 年 6 月市场观点：美伊战争对通胀及经济增长的影响", "date": "2026 年 4 月 16 日", "alt": "海面下的冰山" },
-      "oil": { "title": "2025 年 5 月市场观点：美伊谈判对油价及全球通胀的影响", "date": "2026 年 5 月 16 日", "alt": "空中的热气球" },
-      "house0908": { "title": "美国通胀与美联储鹰派立场推高美国国债收益率", "date": "2026 年 9 月 8 日", "alt": "阳光下的秋叶" },
-      "house0804": { "title": "美国通胀降温、全球风险与中国经济放缓影响市场", "date": "2026 年 8 月 4 日", "alt": "有溪流的绿色森林" },
-      "house0701": { "title": "美国通胀与伊朗冲突推高加息预期", "date": "2026 年 7 月 1 日", "alt": "极地水域中的冰川" },
-      "house0608": { "title": "美伊冲突令油价居高不下，各国央行转向加息", "date": "2026 年 6 月 8 日", "alt": "空中的热气球" },
-      "crossroads": { "title": "每周市场概览：缓和与滞胀之间的全球市场", "date": "2026 年 6 月 2 日", "alt": "红色世界地图" },
-      "global": { "title": "每周市场概览：全球市场的滞胀与战略机遇", "date": "2026 年 5 月 29 日", "alt": "展示世界地区的地球仪" },
-      "insights": { "title": "每周市场洞察：滞胀与局势缓和带来的双重挑战", "date": "2026 年 5 月 22 日", "alt": "桌上的望远镜" },
-      "weekly0921": { "title": "美联储重启加息，美元与美国国债收益率走强", "date": "2026 年 9 月 21 日", "alt": "投资者分析金融市场报告" },
-      "weekly0914": { "title": "油价上涨与通胀居高不下推动美国国债收益率逼近 5%", "date": "2026 年 9 月 14 日", "alt": "展示世界地图的地球仪" },
-      "weekly0907": { "title": "美伊紧张局势与就业数据推高美联储加息预期", "date": "2026 年 9 月 7 日", "alt": "港口装卸货运集装箱" },
-      "weekly0831": { "title": "地缘政治与通胀推动美元及短期美国国债收益率走高", "date": "2026 年 8 月 31 日", "alt": "桌上的文件与报告" },
-      "weekly0824": { "title": "中东局势与美国财政风险推高美国国债收益率", "date": "2026 年 8 月 24 日", "alt": "运送集装箱的卡车" },
-      "weekly0818": { "title": "美国通胀降温，但美国国债拍卖收益率创 25 年新高", "date": "2026 年 8 月 18 日", "alt": "桌上的望远镜" }
-    }
-  },
-  "solitaireHero": { "title": "尊贵而专属的服务，只为您而来。", "cta": "了解更多", "viewMore": "查看全部", "bannerAlt": "一家人在客厅共享美好时光", "breadcrumbLabel": "Solitaire", "solitaireLogoAlt": "BCA Solitaire" },
-  "memberAirportTransfer": {
-    "title": "服务",
-    "description": "您可以使用以下代码享受机场接送服务：",
-    "voucherTitle": "国内接送礼券",
-    "copy": "复制",
-    "copied": "已复制",
-    "copyCode": "复制礼券代码 {code}",
-    "used": "已使用",
-    "usedOn": "礼券已于 {date} 使用",
-    "viewMore": "查看更多礼券",
-    "hideMore": "收起其他礼券",
-    "notes": {
-      "updated": "礼券数据会定期于每月1日[时间] WIB更新。",
-      "contact": "如有疑问或信息不一致，请联系 Halo BCA 了解详情。"
-    }
-  },
-  "memberMedicalCheckUp": {
-    "title": "国际医疗检查礼遇",
-    "description": "使用您的专属礼券代码，在 Parkway Shenton Singapore 预约 Executive Health Screening。",
-    "provider": "Parkway Shenton",
-    "voucherValue": "SGD 400",
-    "voucherLabel": "含税金额",
-    "codeLabel": "专属礼券代码",
-    "copy": "复制",
-    "copied": "已复制",
-    "copyCode": "复制礼券代码 {code}",
-    "locationLabel": "选择检查地点",
-    "locations": ["Executive Health Screeners (Mount Elizabeth Hospital)", "Executive Health Screeners (Gleneagles Hospital)", "Executive Health Screeners (Republic Plaza)", "Executive Health Screeners (Paragon)", "Parkway MediCentre (The Woodleigh Mall)", "Executive Health Screeners (Bedok Central)"],
-    "book": "通过 WhatsApp 预约",
-    "whatsappMessage": "您好，我想预约在 {location} 进行 Executive Health Screening。礼券代码：{code}。",
-    "eligibility": "仅限符合条件的 BCA Solitaire 客户：过去 3 个月平均 AUM 超过 500 亿印尼盾，且过去 12 个月服务费收取次数不超过 2 次。",
-    "bookingTerms": "请至少提前 7 天通过 WhatsApp Business 预约，服务时间为周一至周五 WIB 08:30–17:00。请附上患者护照照片及礼券代码。",
-    "paymentTerms": "礼券含税额度最高为 SGD 400。超出部分须使用 BCA Solitaire 借记卡或 BCA 信用卡支付。",
-    "validityTerms": "适用于 2026 年 1 月至 12 月的检查。礼券不可退款，也不可与其他优惠同时使用。",
-    "cancellationTerms": "取消预约须至少提前 3 天办理。"
-  },
-  "memberSignatureVoucher": {
-    "title": "礼券可用情况",
-    "available": "可用礼券 {count} 张",
-    "unlimited": "无限礼券",
-    "exhausted": "礼券额度已用尽",
-    "penaltyBadge": "暂不可使用",
-    "penaltyMessage": "由于您上个月的每日合并平均余额未达到 BCA Prioritas 会员要求，您暂时无法使用此服务。",
-    "learn": "了解详情"
-  },
-  "memberOverview": {
-    "previewFullName": "Andhini Putri",
-    "solitairePreviewFullName": "Andhika Putra",
-    "previewFirstName": "Andhini",
-    "solitairePreviewFirstName": "Andhika",
-    "welcome": "欢迎，{name}",
-    "lastLogin": "上次登录：2026年8月27日 08:54 WIB",
-    "back": "返回首页",
-    "viewAll": "查看全部",
-    "nav": { "label": "Prioritas 会员总览导航", "overview": "总览", "privilege": "礼遇", "banking": "银行服务", "magazine": "电子杂志", "financial": "财务报告" },
-    "signature": {
-      "title": "专属礼遇",
-      "all": "查看所有礼遇",
-      "lounge": "机场贵宾室",
-      "transfer": "国内机场接送",
-      "padel": "周末板式网球场使用权",
-      "medical": "癌症与心脏疾病早期筛查",
-      "fifty": "提供 50 张优惠券",
-      "four": "提供 4 张优惠券",
-      "details": "了解详情",
-      "voucher": "显示优惠码"
-    },
-    "financial": { "title": "财务报告", "description": "在一个地方查看您的净资产、资产和负债", "action": "查看报告" },
-    "magazine": { "title": "电子杂志", "read": "立即阅读", "coverAlt": "{title} 封面" },
-    "event": { "title": "本月精彩体验" },
-    "promo": { "title": "为您的生活方式精选的优惠" }
-  },
-  "memberFinancialReport": {
-    "title": "财务报告",
-    "tabs": {
-      "label": "财务报告类型",
-      "portfolio": "投资组合报告",
-      "tax": "税务扣缴报告"
-    },
-    "download": "下载报告",
-    "maskedAmount": "Rp•••",
-    "previewAmounts": {
-      "netWorth": "Rp376.5 十亿", "assets": "Rp410.1 十亿", "liabilities": "Rp33.6 十亿",
-      "chart": { "0": "600 十亿", "1": "500 十亿", "2": "400 十亿", "3": "300 十亿", "4": "200 十亿", "5": "100 十亿" },
-      "composition": { "savings": "Rp164.0 十亿", "deposit": "Rp123.0 十亿", "current": "Rp82.0 十亿", "securities": "Rp41.0 十亿" },
-      "categories": { "savings": "Rp120.0 十亿", "investments": "Rp210.0 十亿", "protection": "Rp80.0 十亿", "consumerCredit": "Rp12.0 十亿", "workingCapital": "Rp14.0 十亿", "creditCard": "Rp7.6 十亿" }
-    },
-    "visibility": {
-      "show": "显示投资组合金额", "hide": "隐藏投资组合金额", "close": "关闭对话框",
-      "request": { "title": "发送验证码", "description": "要查看财务报告，验证码将发送至以下号码", "phoneLabel": "接收验证码的电话号码", "phonePlaceholder": "选择电话号码", "phoneRequired": "请先选择电话号码。", "feeNotice": "发送验证码可能产生运营商收费", "send": "发送验证码" },
-      "verify": { "title": "输入验证码", "description": "我们已向 {phone} 发送 6 位验证码", "codeLabel": "6 位验证码", "invalidCode": "验证码错误，请重试。", "resend": "重新发送验证码" },
-      "noPhone": { "title": "尚未登记电话号码", "description": "您尚未登记电子银行手机号码。请前往附近的 ATM 办理登记。", "back": "返回" }
-    },
-    "overviewLabel": "投资组合概览",
-    "updated": "最后更新于2026年6月3日12:47 WIB",
-    "previewNotice": "此预览不提供个人报告数据。请登录 BCA 官方服务下载您的报告。",
-    "viewDetails": "查看详情",
-    "summary": {
-      "netWorth": "净资产",
-      "netWorthInfo": "资产减去负债",
-      "netWorthTooltip": "净资产是所选报告月份的资产净值，计算方式为总资产减去总负债。",
-      "netWorthChange": "较去年{change}%",
-      "assets": "总资产",
-      "assetsInfo": "资产总值",
-      "assetsTooltip": "总资产是所选月份报告中列出的资产总值，尚未扣除负债。",
-      "assetsChange": "较去年{change}%",
-      "liabilities": "总负债",
-      "liabilitiesInfo": "负债总值",
-      "liabilitiesTooltip": "总负债是所选月份报告中列出的各项财务义务总额。计算净资产时会从总资产中扣除该金额。",
-      "liabilitiesChange": "较去年{change}%"
-    },
-    "chart": {
-      "title": "财富增长",
-      "intervalLabel": "图表周期",
-      "yearly": "按年",
-      "monthly": "按月",
-      "lastPeriod": "2026年7月"
-    },
-    "composition": {
-      "title": "资产构成",
-      "savings": "储蓄",
-      "deposit": "定期存款",
-      "current": "活期账户",
-      "securities": "BCA证券"
-    },
-    "categories": {
-      "assets": "资产",
-      "liabilities": "负债",
-      "savings": "储蓄",
-      "investments": "投资",
-      "protection": "保障",
-      "consumerCredit": "消费贷款",
-      "workingCapital": "流动资金贷款",
-      "creditCard": "信用卡",
-      "change": "较去年{change}%"
-    },
-    "portfolio": {
-      "periodLabel": "投资组合报告月份"
-    },
-    "tax": {
-      "title": "下载税务辅助报告",
-      "periodLabel": "税务报告周期",
-      "year": "年度",
-      "month": "月度",
-      "yearLabel": "税务报告年份",
-      "monthLabel": "税务报告月份"
-    },
-    "months": {
-      "1": "一月",
-      "2": "二月",
-      "3": "三月",
-      "4": "四月",
-      "5": "五月",
-      "6": "六月",
-      "7": "七月",
-      "8": "八月",
-      "9": "九月",
-      "10": "十月",
-      "11": "十一月",
-      "12": "十二月"
-    }
-  },
-  "buttonAudit": {
-    "component": "COMPONENT",
-    "title": "Button",
-    "button": "Button",
-    "icon": "Icon Button",
-    "text": "Text Button",
-    "default": "Default",
-    "inverse": "Inverse",
-    "primary": "Primary",
-    "secondary": "Secondary",
-    "small": "Small",
-    "medium": "Medium",
-    "large": "Large",
-    "hover": "Hover",
-    "pressed": "Pressed",
-    "disabled": "Disabled",
-    "label": "Label",
-    "states": "Button states",
-    "usage": "类名示例："
-  },
-  "contentCardAudit": {
-    "component": "组件",
-    "title": "Content Card",
-    "description": "统一的卡片结构，根据数据场景切换变体。",
-    "complimentary": "礼遇卡 — Complimentary",
-    "lifestyle": "礼遇卡 — Lifestyle Privilege",
-    "event": "活动卡",
-    "promo": "优惠卡"
-  }
-,
-  "accountMenu":   {
-    "home": "前往主页",
-    "overview": "前往概览",
-    "logout": "退出账户",
-    "confirmTitle": "退出账户？",
-    "confirmMessage": "您将退出当前会话。再次访问账户时需要重新登录。",
-    "confirmLogout": "是，退出",
-    "cancel": "取消"
-  },
-  "mobileMenu":   {
-    "tutupMenu": "关闭菜单",
-    "bukaMenu": "打开菜单",
-    "bahasa": "语言",
-    "pilihSegmen": "选择您的客户类型",
-    "sesiAktif": "当前会话",
-    "logout": "退出登录",
-    "kembali": "返回",
-    "menuLabel": "主菜单"
-  },
-  "prioritasHero":   {
-    "title": "您的人生旅程，是我们的优先考量。",
-    "cta": "了解更多",
-    "bannerAlt": "一家人在客厅共度时光",
-    "prioritasLogoAlt": "BCA Prioritas",
-    "searchPlaceholders": ["专属机场贵宾室", "酒店与餐饮优惠", "专属健康礼遇", "保险箱服务"],
+    "searchPlaceholders": [
+      "专属机场贵宾室",
+      "酒店与餐饮优惠",
+      "专属健康礼遇",
+      "保险箱服务"
+    ],
     "campaigns": {
       "weekndAlt": "BCA The Weeknd 预售",
       "weekndTitle": "BCA The Weeknd《After Hours Til Dawn》雅加达演唱会预售",
@@ -2117,7 +2526,681 @@
       "action": "查看您的报告"
     }
   },
-  "bankingPrivilegeDetail":   {
+  "signaturePrivilege": {
+    "subNavLabel": "Prioritas 导航",
+    "subNav": {
+      "privilege": "礼遇",
+      "banking": "银行服务",
+      "magazine": "电子杂志"
+    },
+    "breadcrumb": "尊享礼遇",
+    "title": "每一步旅程，都有尊贵礼遇相伴",
+    "eventPromoTitle": "为您呈献数百种体验与独家优惠",
+    "tabLabel": "礼遇类别",
+    "tabs": {
+      "signature": "尊享礼遇",
+      "lifestyle": "生活礼遇",
+      "event": "活动",
+      "promo": "优惠"
+    },
+    "description": "为满足您的多元需求而设计的专属服务与礼遇。",
+    "lifestyleDescription": "专属优惠与礼遇，让您尽享多元生活方式体验。",
+    "more": "了解更多",
+    "voucherAvailability": "{count} 张礼券可用",
+    "solitaireOnlyBadge": "仅限 BCA Solitaire 客户",
+    "showAllSignature": "查看所有礼遇",
+    "showLessSignature": "收起礼遇",
+    "signature": {
+      "lounge": {
+        "title": "行政机场贵宾厅"
+      },
+      "transfer": {
+        "title": "国内机场接送"
+      },
+      "medical": {
+        "title": "国际健康检查"
+      }
+    },
+    "complimentary": {
+      "title": "免费礼遇",
+      "subtitle": "无需额外费用，只需出示您的 Prioritas 卡。",
+      "birthday": "生日礼物",
+      "viewList": "查看免费礼遇列表",
+      "cards": {
+        "valet": {
+          "title": "免费代客泊车",
+          "brand": "Han Palace Restaurant"
+        },
+        "inpatient": {
+          "title": "VVIP 住院陪护免费餐点",
+          "brand": "Altos Hospital"
+        },
+        "facial": {
+          "title": "价值 120 万印尼盾的 Snow White 面部护理",
+          "brand": "Dermatology Clinic"
+        },
+        "laser": {
+          "title": "价值 950 万印尼盾的 Pico Dermabrasion 激光护理",
+          "brand": "EternaMoore Clinic"
+        },
+        "treatment": {
+          "title": "价值 20 万印尼盾的手部护理",
+          "brand": "Molton Brown"
+        },
+        "restaurant": {
+          "title": "免费一人份美式咖啡或卡布奇诺",
+          "brand": "Social Spoon"
+        },
+        "glow": {
+          "title": "红毯焕亮护理",
+          "brand": "Amala Clinic"
+        },
+        "dessert": {
+          "title": "免费甜点",
+          "brand": "Greenleaf Steak & More"
+        },
+        "jewelry": {
+          "title": "价值 50 万印尼盾的专属珠宝盒",
+          "brand": "Semar Nusantara"
+        }
+      }
+    },
+    "categories": {
+      "all": "全部",
+      "beauty": "美容",
+      "culinary": "餐饮",
+      "health": "健康",
+      "travel": "旅行",
+      "lifestyle": "生活方式",
+      "education": "教育",
+      "home": "家居生活",
+      "business": "商业"
+    },
+    "categoriesScrollPrevious": "向左滚动类别",
+    "categoriesScrollNext": "向右滚动类别",
+    "searchLabel": "搜索礼遇",
+    "searchPlaceholder": "搜索品牌或合作伙伴",
+    "showing": "显示 {count} 项优惠",
+    "empty": "没有符合条件的优惠。",
+    "paginationLabel": "礼遇页面",
+    "paginationSummary": "第 {from}-{to} 项，共 {total} 项",
+    "paginationPrevious": "上一页",
+    "paginationNext": "下一页",
+    "paginationJumpBackward": "向后跳转 {count} 页",
+    "paginationJumpForward": "向前跳转 {count} 页",
+    "eventDateExpired": "活动已结束",
+    "eventDirectory": {
+      "paginationLabel": "活动页面",
+      "categories": {
+        "lifestyle": "生活方式与运动",
+        "networking": "研讨会与社交",
+        "arts": "艺术与文化",
+        "culinary": "餐饮与美食"
+      },
+      "period": "活动时间",
+      "all": "全部活动",
+      "upcoming": "即将举行",
+      "ended": "已结束",
+      "showing": "显示 {count} 个活动",
+      "empty": "没有符合条件的活动。"
+    }
+  },
+  "prioritasContentDetail": {
+    "fallback": {
+      "description": "{title}的详细信息尚未提供。",
+      "terms": "条款与条件尚未提供。",
+      "contact": "联系信息尚未提供。",
+      "location": "地点信息尚未提供。"
+    },
+    "event": {
+      "breadcrumb": "活动",
+      "recommendations": "更多推荐活动",
+      "sothebys": {
+        "title": "支持印尼儿童教育的慈善艺术拍卖晚会",
+        "detail": "尊享苏富比慈善艺术拍卖晚会，欣赏世界级艺术作品，并支持印尼儿童教育项目。",
+        "terms": [
+          "出示BCA Solitaire/Prioritas实体卡，或myBCA/BCA mobile中的电子卡。",
+          "使用BCA Solitaire/Prioritas卡、BCA信用卡或通过BCA mobile/myBCA的QRIS付款。",
+          "请提前三天通过苏富比印尼客户服务预约，电话0812 3456 7890（WhatsApp聊天）。名额有限，视实际情况而定。",
+          "此礼遇不可兑换现金或转让。",
+          "仅在指定活动日期有效。"
+        ],
+        "contact": "苏富比印尼客户服务：0812 3456 7890（WhatsApp聊天）。"
+      },
+      "recommendationCards": {
+        "christies": {
+          "title": "与专业策展人一起私享古典绘画展",
+          "brand": "佳士得"
+        },
+        "symphony": {
+          "title": "与国际音乐家共赏交响乐盛典",
+          "brand": "雅加达交响乐团"
+        }
+      }
+    },
+    "promo": {
+      "breadcrumb": "优惠",
+      "recommendations": "更多推荐优惠",
+      "endedOn": "结束于{date}",
+      "porsche": {
+        "detail": "在雅加达保时捷中心专业团队陪同下，亲身体验保时捷的经典设计与性能，尊享试驾。",
+        "terms": [
+          "出示BCA Solitaire/Prioritas实体卡，或myBCA/BCA mobile中的电子卡。",
+          "请提前三天通过雅加达保时捷中心客户服务预约，电话0812 3456 7890（WhatsApp聊天）。",
+          "请携带有效的A类驾驶执照。",
+          "每日试驾名额有限，具体视车辆供应情况而定。",
+          "此礼遇不可兑换现金或转让。",
+          "优惠期间仅适用于雅加达保时捷中心。"
+        ],
+        "contact": "雅加达保时捷中心客户服务：0812 3456 7890（WhatsApp聊天）。",
+        "location": "雅加达保时捷中心"
+      },
+      "samples": {
+        "porsche": {
+          "title": "感受保时捷驾趣：尊享专属试驾",
+          "brand": "保时捷"
+        },
+        "mercedes": {
+          "title": "在私人赛道尊享全新梅赛德斯-奔驰试驾",
+          "brand": "梅赛德斯-奔驰"
+        },
+        "landRover": {
+          "title": "在雅加达抢先体验并试驾全新揽胜",
+          "brand": "路虎"
+        },
+        "audi": {
+          "title": "尊享试驾，探索全新奥迪性能",
+          "brand": "奥迪"
+        }
+      }
+    }
+  },
+  "lifestylePrivilegeDetail": {
+    "subNavLabel": "Prioritas 导航",
+    "validUntil": "有效期",
+    "subNav": {
+      "privilege": "礼遇",
+      "banking": "银行服务",
+      "magazine": "电子杂志"
+    },
+    "breadcrumb": {
+      "home": "Prioritas",
+      "category": "生活礼遇",
+      "current": "美容"
+    },
+    "title": "价值 20 万印尼盾的手部护理折扣",
+    "brand": "Molton Brown",
+    "detail": {
+      "title": "礼遇详情",
+      "content": "Molton Brown 手部护理折扣，价值 20 万印尼盾。"
+    },
+    "terms": {
+      "title": "条款与条件",
+      "items": [
+        "出示实体 BCA Solitaire/Prioritas 卡，或 myBCA/BCA mobile 应用中的电子卡。",
+        "使用 BCA Solitaire/Prioritas 卡、BCA 信用卡或 QRIS BCA mobile/myBCA 付款。",
+        "请于一天前通过 Molton Brown 客服 0816 1807 088（WhatsApp Chat）预约。",
+        "该礼遇不可兑换现金或转让。",
+        "适用于所有 Molton Brown 门店。"
+      ]
+    },
+    "contact": {
+      "title": "品牌与联系方式",
+      "content": "请联系 Molton Brown 客服了解护理信息及预约。"
+    },
+    "location": {
+      "title": "地点",
+      "content": "适用于所有 Molton Brown 门店。"
+    },
+    "loungeTable": {
+      "number": "序号",
+      "name": "城市",
+      "airport": "机场",
+      "lounge": "贵宾室/商户",
+      "solitaireOnly": "仅限 BCA Solitaire 客户",
+      "solitaireAndPrioritas": "适用于 BCA Solitaire 和 Prioritas 客户"
+    },
+    "recommendations": {
+      "title": "更多礼遇推荐",
+      "viewMore": "查看更多",
+      "action": "了解更多",
+      "cards": {
+        "sisley": {
+          "title": "体验专属 Signature 面部护理，享受高达 20% 折扣",
+          "brand": "Sisley Paris",
+          "alt": "Sisley Paris 护肤产品"
+        },
+        "skii": {
+          "title": "红毯焕亮护理（180 万印尼盾）+ 欢迎按摩 + 轻度清洁",
+          "brand": "SK-II Boutique Spa",
+          "alt": "SK-II Boutique Spa 面部护理"
+        },
+        "shiseido": {
+          "title": "尊享 Ultimune 精华免费肌肤分析",
+          "brand": "Shiseido",
+          "alt": "资生堂 Ultimune 精华"
+        }
+      }
+    },
+    "dynamicModule": {
+      "message": "登录以查看您剩余的{benefit}使用次数和礼券额度。",
+      "loginLabel": "登录",
+      "memberMessage": "前往会员专区查看您剩余的{benefit}礼券额度。",
+      "memberActionLabel": "立即前往",
+      "infoTitle": "信息",
+      "solitaireOnlyMessage": "此礼遇仅限 BCA Solitaire 客户享有。"
+    }
+  },
+  "magazineIndex": {
+    "breadcrumb": "电子杂志",
+    "title": "陪伴每一位不断成长的您",
+    "paginationLabel": "电子杂志页码",
+    "readNow": "立即阅读",
+    "coverAlt": "{title}封面",
+    "empty": "暂无电子杂志。"
+  },
+  "bankingSolutionIndex": {
+    "breadcrumb": "银行解决方案",
+    "title": "陪伴您人生旅程的专属银行服务",
+    "tabLabel": "银行解决方案类别",
+    "clusters": {
+      "cards": "卡片与支付",
+      "financing": "融资与保障",
+      "transactions": "交易与外汇",
+      "personal": "专属服务"
+    },
+    "previousCards": "{cluster}中的上一张卡片",
+    "nextCards": "{cluster}中的下一张卡片",
+    "tabs": {
+      "privilege": "银行礼遇",
+      "wealth": "财富洞察",
+      "kurs": "汇率"
+    },
+    "more": "了解更多",
+    "groups": {
+      "house": "市场观点报告",
+      "market": "每周市场概览"
+    },
+    "calendarAction": "添加到日历",
+    "downloadAction": "下载 PDF",
+    "privilege": {
+      "jcb": "BCA JCB Black信用卡",
+      "vehicle": "汽车贷款 (KKB)",
+      "branch": "BCA 分行专属服务",
+      "insurance": "保险",
+      "fees": "专属交易费用",
+      "transaction": "专属交易功能与服务",
+      "media": "资讯服务",
+      "advisor": "专属Personal Banker",
+      "family": "BCA Young Community",
+      "contact": "客户服务中心",
+      "credit": "BCA 信用卡",
+      "home": "住房贷款",
+      "motorcycle": "摩托车贷款",
+      "merchant": "BCA EDC 商户服务",
+      "deposit": "保险箱",
+      "forex": "外汇"
+    },
+    "insight": {
+      "portfolio": {
+        "title": "2025 年 6 月市场观点：降息周期中的投资组合策略",
+        "date": "2026 年 6 月 16 日 14:00 WIB",
+        "channel": "YouTube 直播",
+        "alt": "极地水域中的浮冰"
+      },
+      "inflation": {
+        "title": "2025 年 6 月市场观点：美伊战争对通胀及经济增长的影响",
+        "date": "2026 年 4 月 16 日",
+        "alt": "海面下的冰山"
+      },
+      "oil": {
+        "title": "2025 年 5 月市场观点：美伊谈判对油价及全球通胀的影响",
+        "date": "2026 年 5 月 16 日",
+        "alt": "空中的热气球"
+      },
+      "house0908": {
+        "title": "美国通胀与美联储鹰派立场推高美国国债收益率",
+        "date": "2026 年 9 月 8 日",
+        "alt": "阳光下的秋叶"
+      },
+      "house0804": {
+        "title": "美国通胀降温、全球风险与中国经济放缓影响市场",
+        "date": "2026 年 8 月 4 日",
+        "alt": "有溪流的绿色森林"
+      },
+      "house0701": {
+        "title": "美国通胀与伊朗冲突推高加息预期",
+        "date": "2026 年 7 月 1 日",
+        "alt": "极地水域中的冰川"
+      },
+      "house0608": {
+        "title": "美伊冲突令油价居高不下，各国央行转向加息",
+        "date": "2026 年 6 月 8 日",
+        "alt": "空中的热气球"
+      },
+      "crossroads": {
+        "title": "每周市场概览：缓和与滞胀之间的全球市场",
+        "date": "2026 年 6 月 2 日",
+        "alt": "红色世界地图"
+      },
+      "global": {
+        "title": "每周市场概览：全球市场的滞胀与战略机遇",
+        "date": "2026 年 5 月 29 日",
+        "alt": "展示世界地区的地球仪"
+      },
+      "insights": {
+        "title": "每周市场洞察：滞胀与局势缓和带来的双重挑战",
+        "date": "2026 年 5 月 22 日",
+        "alt": "桌上的望远镜"
+      },
+      "weekly0921": {
+        "title": "美联储重启加息，美元与美国国债收益率走强",
+        "date": "2026 年 9 月 21 日",
+        "alt": "投资者分析金融市场报告"
+      },
+      "weekly0914": {
+        "title": "油价上涨与通胀居高不下推动美国国债收益率逼近 5%",
+        "date": "2026 年 9 月 14 日",
+        "alt": "展示世界地图的地球仪"
+      },
+      "weekly0907": {
+        "title": "美伊紧张局势与就业数据推高美联储加息预期",
+        "date": "2026 年 9 月 7 日",
+        "alt": "港口装卸货运集装箱"
+      },
+      "weekly0831": {
+        "title": "地缘政治与通胀推动美元及短期美国国债收益率走高",
+        "date": "2026 年 8 月 31 日",
+        "alt": "桌上的文件与报告"
+      },
+      "weekly0824": {
+        "title": "中东局势与美国财政风险推高美国国债收益率",
+        "date": "2026 年 8 月 24 日",
+        "alt": "运送集装箱的卡车"
+      },
+      "weekly0818": {
+        "title": "美国通胀降温，但美国国债拍卖收益率创 25 年新高",
+        "date": "2026 年 8 月 18 日",
+        "alt": "桌上的望远镜"
+      }
+    }
+  },
+  "solitaireHero": {
+    "title": "尊贵而专属的服务，只为您而来。",
+    "cta": "了解更多",
+    "viewMore": "查看全部",
+    "bannerAlt": "一家人在客厅共享美好时光",
+    "breadcrumbLabel": "Solitaire",
+    "solitaireLogoAlt": "BCA Solitaire"
+  },
+  "memberAirportTransfer": {
+    "title": "服务",
+    "description": "您可以使用以下代码享受机场接送服务：",
+    "voucherTitle": "国内接送礼券",
+    "copy": "复制",
+    "copied": "已复制",
+    "copyCode": "复制礼券代码 {code}",
+    "used": "已使用",
+    "usedOn": "礼券已于 {date} 使用",
+    "viewMore": "查看更多礼券",
+    "hideMore": "收起其他礼券",
+    "notes": {
+      "updated": "礼券数据会定期于每月1日[时间] WIB更新。",
+      "contact": "如有疑问或信息不一致，请联系 Halo BCA 了解详情。"
+    }
+  },
+  "memberMedicalCheckUp": {
+    "title": "国际医疗检查礼遇",
+    "description": "使用您的专属礼券代码，在 Parkway Shenton Singapore 预约 Executive Health Screening。",
+    "provider": "Parkway Shenton",
+    "voucherValue": "SGD 400",
+    "voucherLabel": "含税金额",
+    "codeLabel": "专属礼券代码",
+    "copy": "复制",
+    "copied": "已复制",
+    "copyCode": "复制礼券代码 {code}",
+    "locationLabel": "选择检查地点",
+    "locations": [
+      "Executive Health Screeners (Mount Elizabeth Hospital)",
+      "Executive Health Screeners (Gleneagles Hospital)",
+      "Executive Health Screeners (Republic Plaza)",
+      "Executive Health Screeners (Paragon)",
+      "Parkway MediCentre (The Woodleigh Mall)",
+      "Executive Health Screeners (Bedok Central)"
+    ],
+    "book": "通过 WhatsApp 预约",
+    "whatsappMessage": "您好，我想预约在 {location} 进行 Executive Health Screening。礼券代码：{code}。",
+    "eligibility": "仅限符合条件的 BCA Solitaire 客户：过去 3 个月平均 AUM 超过 500 亿印尼盾，且过去 12 个月服务费收取次数不超过 2 次。",
+    "bookingTerms": "请至少提前 7 天通过 WhatsApp Business 预约，服务时间为周一至周五 WIB 08:30–17:00。请附上患者护照照片及礼券代码。",
+    "paymentTerms": "礼券含税额度最高为 SGD 400。超出部分须使用 BCA Solitaire 借记卡或 BCA 信用卡支付。",
+    "validityTerms": "适用于 2026 年 1 月至 12 月的检查。礼券不可退款，也不可与其他优惠同时使用。",
+    "cancellationTerms": "取消预约须至少提前 3 天办理。"
+  },
+  "memberSignatureVoucher": {
+    "title": "礼券可用情况",
+    "available": "可用礼券 {count} 张",
+    "unlimited": "无限礼券",
+    "exhausted": "礼券额度已用尽",
+    "penaltyBadge": "暂不可使用",
+    "penaltyMessage": "由于您上个月的每日合并平均余额未达到 BCA Prioritas 会员要求，您暂时无法使用此服务。",
+    "learn": "了解详情"
+  },
+  "memberOverview": {
+    "previewFullName": "Andhini Putri",
+    "solitairePreviewFullName": "Andhika Putra",
+    "previewFirstName": "Andhini",
+    "solitairePreviewFirstName": "Andhika",
+    "welcome": "欢迎，{name}",
+    "lastLogin": "上次登录：2026年8月27日 08:54 WIB",
+    "back": "返回首页",
+    "viewAll": "查看全部",
+    "nav": {
+      "label": "Prioritas 会员总览导航",
+      "overview": "总览",
+      "privilege": "礼遇",
+      "banking": "银行服务",
+      "magazine": "电子杂志",
+      "financial": "财务报告"
+    },
+    "signature": {
+      "title": "专属礼遇",
+      "all": "查看所有礼遇",
+      "lounge": "机场贵宾室",
+      "transfer": "国内机场接送",
+      "padel": "周末板式网球场使用权",
+      "medical": "癌症与心脏疾病早期筛查",
+      "fifty": "提供 50 张优惠券",
+      "four": "提供 4 张优惠券",
+      "details": "了解详情",
+      "voucher": "显示优惠码"
+    },
+    "financial": {
+      "title": "财务报告",
+      "description": "在一个地方查看您的净资产、资产和负债",
+      "action": "查看报告"
+    },
+    "magazine": {
+      "title": "电子杂志",
+      "read": "立即阅读",
+      "coverAlt": "{title} 封面"
+    },
+    "event": {
+      "title": "本月精彩体验"
+    },
+    "promo": {
+      "title": "为您的生活方式精选的优惠"
+    }
+  },
+  "memberFinancialReport": {
+    "title": "财务报告",
+    "tabs": {
+      "label": "财务报告类型",
+      "portfolio": "投资组合报告",
+      "tax": "税务扣缴报告"
+    },
+    "download": "下载报告",
+    "maskedAmount": "Rp•••",
+    "previewAmounts": {
+      "netWorth": "Rp376.5 十亿",
+      "assets": "Rp410.1 十亿",
+      "liabilities": "Rp33.6 十亿",
+      "chart": {
+        "0": "600 十亿",
+        "1": "500 十亿",
+        "2": "400 十亿",
+        "3": "300 十亿",
+        "4": "200 十亿",
+        "5": "100 十亿"
+      },
+      "composition": {
+        "savings": "Rp164.0 十亿",
+        "deposit": "Rp123.0 十亿",
+        "current": "Rp82.0 十亿",
+        "securities": "Rp41.0 十亿"
+      },
+      "categories": {
+        "savings": "Rp120.0 十亿",
+        "investments": "Rp210.0 十亿",
+        "protection": "Rp80.0 十亿",
+        "consumerCredit": "Rp12.0 十亿",
+        "workingCapital": "Rp14.0 十亿",
+        "creditCard": "Rp7.6 十亿"
+      }
+    },
+    "visibility": {
+      "show": "显示投资组合金额",
+      "hide": "隐藏投资组合金额",
+      "close": "关闭对话框",
+      "request": {
+        "title": "发送验证码",
+        "description": "要查看财务报告，验证码将发送至以下号码",
+        "phoneLabel": "接收验证码的电话号码",
+        "phonePlaceholder": "选择电话号码",
+        "phoneRequired": "请先选择电话号码。",
+        "feeNotice": "发送验证码可能产生运营商收费",
+        "send": "发送验证码"
+      },
+      "verify": {
+        "title": "输入验证码",
+        "description": "我们已向 {phone} 发送 6 位验证码",
+        "codeLabel": "6 位验证码",
+        "invalidCode": "验证码错误，请重试。",
+        "resend": "重新发送验证码"
+      },
+      "noPhone": {
+        "title": "尚未登记电话号码",
+        "description": "您尚未登记电子银行手机号码。请前往附近的 ATM 办理登记。",
+        "back": "返回"
+      }
+    },
+    "overviewLabel": "投资组合概览",
+    "updated": "最后更新于2026年6月3日12:47 WIB",
+    "previewNotice": "此预览不提供个人报告数据。请登录 BCA 官方服务下载您的报告。",
+    "viewDetails": "查看详情",
+    "summary": {
+      "netWorth": "净资产",
+      "netWorthInfo": "资产减去负债",
+      "netWorthTooltip": "净资产是所选报告月份的资产净值，计算方式为总资产减去总负债。",
+      "netWorthChange": "较去年{change}%",
+      "assets": "总资产",
+      "assetsInfo": "资产总值",
+      "assetsTooltip": "总资产是所选月份报告中列出的资产总值，尚未扣除负债。",
+      "assetsChange": "较去年{change}%",
+      "liabilities": "总负债",
+      "liabilitiesInfo": "负债总值",
+      "liabilitiesTooltip": "总负债是所选月份报告中列出的各项财务义务总额。计算净资产时会从总资产中扣除该金额。",
+      "liabilitiesChange": "较去年{change}%"
+    },
+    "chart": {
+      "title": "财富增长",
+      "intervalLabel": "图表周期",
+      "yearly": "按年",
+      "monthly": "按月",
+      "lastPeriod": "2026年7月"
+    },
+    "composition": {
+      "title": "资产构成",
+      "savings": "储蓄",
+      "deposit": "定期存款",
+      "current": "活期账户",
+      "securities": "BCA证券"
+    },
+    "categories": {
+      "assets": "资产",
+      "liabilities": "负债",
+      "savings": "储蓄",
+      "investments": "投资",
+      "protection": "保障",
+      "consumerCredit": "消费贷款",
+      "workingCapital": "流动资金贷款",
+      "creditCard": "信用卡",
+      "change": "较去年{change}%"
+    },
+    "portfolio": {
+      "periodLabel": "投资组合报告月份"
+    },
+    "tax": {
+      "title": "下载税务辅助报告",
+      "periodLabel": "税务报告周期",
+      "year": "年度",
+      "month": "月度",
+      "yearLabel": "税务报告年份",
+      "monthLabel": "税务报告月份"
+    },
+    "months": {
+      "1": "一月",
+      "2": "二月",
+      "3": "三月",
+      "4": "四月",
+      "5": "五月",
+      "6": "六月",
+      "7": "七月",
+      "8": "八月",
+      "9": "九月",
+      "10": "十月",
+      "11": "十一月",
+      "12": "十二月"
+    }
+  },
+  "buttonAudit": {
+    "component": "COMPONENT",
+    "title": "Button",
+    "button": "Button",
+    "icon": "Icon Button",
+    "text": "Text Button",
+    "default": "Default",
+    "inverse": "Inverse",
+    "primary": "Primary",
+    "secondary": "Secondary",
+    "small": "Small",
+    "medium": "Medium",
+    "large": "Large",
+    "hover": "Hover",
+    "pressed": "Pressed",
+    "disabled": "Disabled",
+    "label": "Label",
+    "states": "Button states",
+    "usage": "类名示例："
+  },
+  "contentCardAudit": {
+    "component": "组件",
+    "title": "Content Card",
+    "description": "统一的卡片结构，根据数据场景切换变体。",
+    "complimentary": "礼遇卡 — Complimentary",
+    "lifestyle": "礼遇卡 — Lifestyle Privilege",
+    "event": "活动卡",
+    "promo": "优惠卡"
+  },
+  "accountMenu": {
+    "home": "前往主页",
+    "overview": "前往概览",
+    "logout": "退出账户",
+    "confirmTitle": "退出账户？",
+    "confirmMessage": "您将退出当前会话。再次访问账户时需要重新登录。",
+    "confirmLogout": "是，退出",
+    "cancel": "取消"
+  },
+  "bankingPrivilegeDetail": {
     "title": "专属银行礼遇",
     "detailTitle": "礼遇详情",
     "contactTitle": "了解更多",
@@ -2142,5 +3225,276 @@
       "safe-deposit-box": "租用Safe Deposit Box可享专属礼遇。",
       "valuta-asing": "购买外币可享专属汇率。"
     }
+  },
+  "componentCatalog": {
+    "eyebrow": "PRIORITAS / SOLITAIRE",
+    "title": "组件目录",
+    "subtitle": "浏览 Prioritas 和 Solitaire 界面所用组件。选择条目查看示例、用途及实现来源。",
+    "components": "个组件",
+    "browse": "浏览组件",
+    "searchLabel": "搜索组件",
+    "searchPlaceholder": "组件名称或用途",
+    "groupLabel": "组件分组",
+    "all": "全部",
+    "results": "个结果",
+    "noResults": "没有匹配的组件。",
+    "preview": "原始组件 · 变体与状态",
+    "previewNote": "尺寸取自当前视口中渲染的组件。开启蓝图可查看组件各部分的边界和尺寸。",
+    "usage": "用途",
+    "implementation": "实现来源",
+    "copyPath": "复制路径",
+    "copied": "已复制",
+    "brandLabel": "品牌外观",
+    "prioritas": "Prioritas",
+    "solitaire": "Solitaire",
+    "groups": {
+      "controls": "控件",
+      "cards": "卡片",
+      "navigation": "导航",
+      "display": "展示",
+      "feedback": "反馈"
+    },
+    "sample": {
+      "action": "了解更多",
+      "secondary": "查看全部",
+      "select": "选择类别",
+      "first": "选项一",
+      "second": "选项二",
+      "third": "选项三",
+      "field": "BCA ID",
+      "placeholder": "输入 BCA ID",
+      "cardTitle": "内容标题",
+      "cardDescription": "简短的内容说明。",
+      "page": "页面",
+      "bannerTitle": "精选活动",
+      "buy": "买入",
+      "sell": "卖出",
+      "search": "搜索信息",
+      "breadcrumb": "首页 / 类别",
+      "headerTitle": "页面标题",
+      "headerDescription": "简短的页面说明"
+    },
+    "items": {
+      "button": {
+        "title": "按钮",
+        "description": "三种尺寸的主要、次要、图标和文字操作。",
+        "detail": "小、中、大三种尺寸；主要、次要、危险三类；默认及反色表面。危险反色尚未提供。"
+      },
+      "dropdown": {
+        "title": "下拉选择",
+        "description": "用于筛选和表单的单项选择。",
+        "detail": "中/大尺寸及选择/搜索模式。展开和选中颜色随品牌色变化。"
+      },
+      "category-chip": {
+        "title": "分类标签",
+        "description": "横向排列的类别或时段选项。",
+        "detail": "仅文字或文字加图标；包含默认、悬停、选中及聚焦状态。"
+      },
+      "tab": {
+        "title": "标签页",
+        "description": "用于目录和会员区域的弧形及下划线导航。",
+        "detail": "目录使用弧形样式，分区及会员区域使用下划线样式。活动指示随品牌色变化。"
+      },
+      "text-field": {
+        "title": "文本输入框",
+        "description": "带标签、图标和错误提示的输入控件。",
+        "detail": "默认、中、大尺寸；支持图标、帮助及行内错误。聚焦样式尚无品牌变体。"
+      },
+      "content-card": {
+        "title": "内容卡片",
+        "description": "用于礼遇、生活、活动和促销内容的卡片。",
+        "detail": "内容类型决定日期、丝带或时间标签槽位。详情路径随 Prioritas 或 Solitaire 切换。"
+      },
+      "privilege-card": {
+        "title": "礼遇卡片",
+        "description": "带玻璃面板及详情操作的照片卡片。",
+        "detail": "整幅照片、玻璃面板、标题及文字操作。移动横列与桌面网格采用不同尺寸。"
+      },
+      "banking-privilege-card": {
+        "title": "银行礼遇卡片",
+        "description": "含图片、标题及按钮的银行服务卡片。",
+        "detail": "图片铺满卡片；标题及反色按钮置于棕色或中性色径向渐层之上。"
+      },
+      "wealth-insight-card": {
+        "title": "财富洞察卡片",
+        "description": "带封面、资料及报告入口的出版物卡片。",
+        "detail": "封面、资料、玻璃面板及报告按钮。面板高度随内容变化。"
+      },
+      "magazine-card": {
+        "title": "电子杂志卡片",
+        "description": "悬停或聚焦时显示操作的杂志封面。",
+        "detail": "封面在悬停或聚焦时显示色层和操作；首页与目录尺寸不同。"
+      },
+      "date-badge": {
+        "title": "日期徽标／有效期标签",
+        "description": "显示在图片上的活动日期或有效期标签。",
+        "detail": "支持单日期、日期范围、过期或有效期标签；不会自动计算过期时间。"
+      },
+      "pagination": {
+        "title": "分页",
+        "description": "带页码及上一页、下一页控件的导航。",
+        "detail": "页码、上一页/下一页箭头及区间跳转；活动状态随品牌色变化。"
+      },
+      "directory-panel": {
+        "title": "目录面板",
+        "description": "带网格及分页控件的目录结果面板。",
+        "detail": "带筛选及分页的结果网格；列数随视口宽度调整。"
+      },
+      "detail-accordion": {
+        "title": "详情与文档折叠面板",
+        "description": "用于详情、条款及文档的可展开面板。",
+        "detail": "可展开详情行，展示说明、条款、联系、地点或文档。"
+      },
+      "hero": {
+        "title": "首页主视觉",
+        "description": "带标题、图片及操作的首页主横幅。",
+        "detail": "叠层图片、标题、操作按钮及适应视口的轮播行为。"
+      },
+      "navbar": {
+        "title": "导航栏与次级导航",
+        "description": "主导航及详情页的上下文导航。",
+        "detail": "主导航处理品牌切换、搜索、语言及会员入口；次级导航保留详情上下文。"
+      },
+      "section-nav": {
+        "title": "首页分区导航",
+        "description": "跟随当前阅读区域的锚点标签。",
+        "detail": "滚动时锚点跟随活动分区；导航条位置适应主导航显示状态。"
+      },
+      "privilege-feature": {
+        "title": "礼遇卡片 · 特色版",
+        "description": "Prioritas 首页礼遇区域的大型特色卡片。",
+        "detail": "Prioritas：首张卡片在桌面端加宽；移动端使用活动卡片横列。"
+      },
+      "privilege-accordion": {
+        "title": "礼遇卡片 · 折叠版",
+        "description": "Solitaire 桌面端选中后展开的礼遇卡片。",
+        "detail": "Solitaire：桌面端活动卡片展开；移动端使用不复制循环的横列。"
+      },
+      "featured-event": {
+        "title": "精选活动横幅",
+        "description": "活动与促销区域的主横幅轮播。",
+        "detail": "Prioritas 在所有宽度使用此横幅；Solitaire 在移动端采用其品牌按钮样式。"
+      },
+      "event-overlap": {
+        "title": "活动轮播 · 叠加面板",
+        "description": "面板延伸至图片下方的 Solitaire 桌面轮播。",
+        "detail": "Solitaire 桌面端：玻璃面板伸出图片下方；移动端使用精选活动横幅。"
+      },
+      "kurs-carousel": {
+        "title": "汇率轮播",
+        "description": "显示三种货币买卖汇率及刷新、导航控件。",
+        "detail": "同时显示三种货币；可自动或通过箭头切换，并设有独立刷新控件。"
+      },
+      "floating-action": {
+        "title": "悬浮操作与返回顶部",
+        "description": "悬浮快捷操作及返回顶部控件。",
+        "detail": "返回顶部控件随滚动显示；特定快捷操作按页面上下文出现。"
+      },
+      "alert-feedback": {
+        "title": "Login Alert",
+        "description": "会员登录页面的原始错误信息、图标和布局。",
+        "detail": "与 MemberLoginExperience 共用 LoginAlert：bg-red-100、text-red-600、close.svg 图标、最小高度 56px、内边距 16px。"
+      },
+      "search-overlay": {
+        "title": "搜索浮层",
+        "description": "由导航栏打开、含历史记录和结果的全屏搜索。",
+        "detail": "由导航栏打开；包含输入、推荐、分场景历史、结果及 Escape 关闭。"
+      },
+      "contact-footer": {
+        "title": "联系与页脚",
+        "description": "联系面板及页脚导航。",
+        "detail": "联系面板位于页脚之前；页脚排列链接、官方信息及法律文本。"
+      },
+      "page-header": {
+        "title": "目录与详情页页眉",
+        "description": "带面包屑、说明及可选标志的标题横幅。",
+        "detail": "目录显示类别标题；详情可添加副标题和标志。色调随品牌及会员场景变化。"
+      }
+    },
+    "spec": "主要规格",
+    "board": {
+      "homepage": "首页",
+      "public": "公开页面",
+      "member": "会员页面",
+      "directory": "目录 / 滑轨",
+      "validity": "有效期标签",
+      "inspect": "检查元素",
+      "dimensions": "宽 × 高",
+      "type": "字体 · 字号 / 行高 · 字重",
+      "allSpecs": "规格",
+      "viewport": "视口",
+      "previewWidth": "屏幕宽度",
+      "previewScale": "预览比例",
+      "fitPreview": "适应空间",
+      "interactive": "交互组件",
+      "danger": "危险操作",
+      "buttonLabel": "了解更多",
+      "open": "展开",
+      "closed": "收起",
+      "category": "分类",
+      "search": "搜索",
+      "selected": "已选择",
+      "default": "默认",
+      "hover": "悬停",
+      "focus": "聚焦",
+      "filled": "已填写",
+      "error": "错误",
+      "disabled": "禁用",
+      "fieldError": "此项为必填项。",
+      "complimentary": "免费礼遇",
+      "lifestyle": "生活方式",
+      "event": "活动",
+      "promo": "优惠",
+      "singleDate": "单个日期",
+      "dateRange": "日期范围",
+      "expired": "已结束",
+      "backToTop": "返回顶部",
+      "openSearch": "打开搜索",
+      "measured": "尺寸取自当前视口中渲染的组件。开启蓝图可查看组件各部分的边界和尺寸。",
+      "statesNote": "各状态并列展示。悬停与聚焦使用应用的原始 CSS 规则；尺寸和令牌直接取自渲染元素。",
+      "live": "打开使用页面",
+      "tokens": "设计变量",
+      "spacing": "间距与形状",
+      "colors": "颜色",
+      "classes": "CSS 类",
+      "inspectActive": "选择元素",
+      "inspectHint": "点击预览中要测量的部分。",
+      "blueprint": "蓝图",
+      "blueprintView": "显示",
+      "blueprintElement": "组件部分",
+      "blueprintModes": {
+        "size": "尺寸",
+        "padding": "内边距",
+        "inset": "间距"
+      },
+      "blueprintParts": {
+        "component": "组件",
+        "image": "图片",
+        "panel": "面板",
+        "text": "文字",
+        "control": "控件"
+      },
+      "ribbonContext": "标带场景",
+      "noRibbon": "无标带",
+      "single": "单日",
+      "period": "同月期间",
+      "crossMonth": "跨月期间",
+      "eventCase": "日期场景"
+    },
+    "docs": {
+      "examples": "示例与状态",
+      "kind": "类型",
+      "surface": "背景",
+      "size": "尺寸",
+      "preview": "预览",
+      "variant": "变体",
+      "context": "使用场景",
+      "underline": "下划线",
+      "curved": "曲线",
+      "card": "内容卡片",
+      "detail": "活动详情"
+    },
+    "mobile": "移动端",
+    "desktop": "桌面端"
   }
 }

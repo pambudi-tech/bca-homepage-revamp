@@ -13,6 +13,7 @@ export default function TextField({
   labelClassName,
   hideLabel = false,
   fieldSize = "default",
+  tone = "default",
   error,
   as = "input",
   options,
@@ -27,6 +28,7 @@ export default function TextField({
   labelClassName?: string;
   hideLabel?: boolean;
   fieldSize?: "default" | "medium" | "large";
+  tone?: "default" | "prioritas" | "solitaire";
   error?: string;
   as?: "input" | "select";
   options?: string[];
@@ -42,12 +44,14 @@ export default function TextField({
     "outline-none transition-colors placeholder:text-neutral-600",
     "disabled:text-neutral-500",
     leadingIcon ? "pl-11" : "",
-    error ? "border-red-500" : "border-neutral-300 focus:border-cyan-400",
+    tone === "default"
+      ? error ? "border-red-500" : "border-neutral-300 focus:border-cyan-400"
+      : "priosoli-text-field",
     className,
   ].join(" ");
 
   return (
-    <div className="flex w-full flex-col gap-2">
+    <div className={`flex w-full flex-col gap-2 ${tone === "default" ? "" : `priosoli-dropdown--${fieldSize === "large" ? "large" : "medium"} ${tone === "solitaire" ? "priosoli-dropdown--solitaire" : ""}`}`}>
       <div className="flex items-center gap-1">
         <label
           htmlFor={id}

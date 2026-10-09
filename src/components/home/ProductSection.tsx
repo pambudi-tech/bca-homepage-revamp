@@ -156,7 +156,7 @@ function ProductCard({
     // A click means the pointer is over this card, so the badge should be up the
     // moment it becomes active — without waiting for the next mouse move.
     setIsHovered(true);
-    if (href) {
+    if (active && href) {
       router.push(href);
       return;
     }
@@ -290,12 +290,14 @@ function CardContent({
           becoming active slides this one up into place from just below while
           it fades in from 0 to full opacity; losing active reverses it. */}
       <div
-        className={`glass-panel absolute z-10 flex flex-col items-start overflow-clip rounded-2xl transition-[transform,opacity] duration-500 ease-in-out ${layout === "solitaire" ? "bottom-4 left-4 h-[180px] w-[360px] max-w-[calc(100%-2rem)] justify-between px-4 pb-5 pt-4" : "bottom-2 left-2 px-5 pb-6 pt-4"}`}
+        className={`glass-panel ${layout === "solitaire" ? "glass-panel-solitaire" : ""} absolute z-10 flex flex-col items-start overflow-clip rounded-2xl transition-[transform,opacity] duration-500 ease-in-out ${layout === "solitaire" ? "bottom-4 left-4 h-[180px] w-[360px] max-w-[calc(100%-2rem)] justify-between px-4 pb-5 pt-4" : "bottom-2 left-2 px-5 pb-6 pt-4"}`}
         style={{
           width: layout === "solitaire" ? 360 : 280,
-          backgroundColor: "rgba(0,0,0,0.3)",
-          backdropFilter: "blur(16px) saturate(1.25)",
-          WebkitBackdropFilter: "blur(16px) saturate(1.25)",
+          ...(layout === "solitaire" ? {} : {
+            backgroundColor: "rgba(0,0,0,0.3)",
+            backdropFilter: "blur(16px) saturate(1.25)",
+            WebkitBackdropFilter: "blur(16px) saturate(1.25)",
+          }),
           isolation: "isolate",
           transform: active ? "translateY(0)" : "translateY(20px)",
           opacity: active ? 1 : 0,
@@ -345,11 +347,13 @@ function CardContent({
           reading direction inside the same glass language as the active card.
           It slides down and fades out as the card becomes active. */}
       <div
-        className={`glass-panel absolute inset-x-2 bottom-2 z-10 flex overflow-clip rounded-2xl p-4 transition-[transform,opacity] duration-500 ease-in-out ${layout === "solitaire" ? "hidden" : ""}`}
+        className={`glass-panel ${layout === "solitaire" ? "glass-panel-solitaire" : ""} absolute inset-x-2 bottom-2 z-10 flex overflow-clip rounded-2xl p-4 transition-[transform,opacity] duration-500 ease-in-out ${layout === "solitaire" ? "hidden" : ""}`}
         style={{
-          backgroundColor: "rgba(0,0,0,0.3)",
-          backdropFilter: "blur(16px) saturate(1.25)",
-          WebkitBackdropFilter: "blur(16px) saturate(1.25)",
+          ...(layout === "solitaire" ? {} : {
+            backgroundColor: "rgba(0,0,0,0.3)",
+            backdropFilter: "blur(16px) saturate(1.25)",
+            WebkitBackdropFilter: "blur(16px) saturate(1.25)",
+          }),
           isolation: "isolate",
           transform: active ? "translateY(20px)" : "translateY(0)",
           opacity: active ? 0 : 1,
@@ -429,7 +433,7 @@ function MobileProductCard({
   const router = useRouter();
 
   const handleSelect = () => {
-    if (href) {
+    if (active && href) {
       router.push(href);
       return;
     }
@@ -521,11 +525,13 @@ function MobileCardContent({
       />
 
       <div
-        className="glass-panel absolute inset-x-2 bottom-2 flex flex-col items-start overflow-clip rounded-2xl px-4 pb-5 pt-4"
+        className={`glass-panel ${layout === "solitaire" ? "glass-panel-solitaire" : ""} absolute inset-x-2 bottom-2 flex flex-col items-start overflow-clip rounded-2xl px-4 pb-5 pt-4`}
         style={{
-          backgroundColor: "rgba(0,0,0,0.3)",
-          backdropFilter: "blur(10px) saturate(1.2)",
-          WebkitBackdropFilter: "blur(10px) saturate(1.2)",
+          ...(layout === "solitaire" ? {} : {
+            backgroundColor: "rgba(0,0,0,0.3)",
+            backdropFilter: "blur(10px) saturate(1.2)",
+            WebkitBackdropFilter: "blur(10px) saturate(1.2)",
+          }),
           isolation: "isolate",
         }}
       >
@@ -583,6 +589,7 @@ function MobileProductCarousel({
   entered,
   pausedRef,
   layout,
+  previewViewport,
 }: {
   products: Product[];
   outgoingProducts: Product[] | null;
@@ -597,6 +604,7 @@ function MobileProductCarousel({
   entered: boolean;
   pausedRef: React.RefObject<boolean>;
   layout: "default" | "solitaire";
+  previewViewport?: "mobile" | "desktop";
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const n = products.length;
@@ -748,7 +756,7 @@ function MobileProductCarousel({
       ref={scrollRef}
       onTouchStart={() => (pausedRef.current = true)}
       onTouchEnd={() => (pausedRef.current = false)}
-      className={`hide-scrollbar -mx-4 flex h-[360px] snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4 [scrollbar-width:none] transition-opacity duration-700 ease-out xl:hidden ${entered ? "opacity-100" : "opacity-0"
+      className={`hide-scrollbar -mx-4 flex h-[360px] snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4 [scrollbar-width:none] transition-opacity duration-700 ease-out ${previewViewport ? previewViewport === "desktop" ? "hidden" : "" : "xl:hidden"} ${entered ? "opacity-100" : "opacity-0"
         }`}
       style={{ transitionDelay: entered ? "250ms" : "0ms" }}
     >
@@ -1660,11 +1668,13 @@ export function ProductAccordion({
   defaultKey,
   layout = "default",
   controls = false,
+  previewViewport,
 }: {
   items: ProductAccordionItem[];
   defaultKey?: string;
   layout?: "default" | "solitaire";
   controls?: boolean;
+  previewViewport?: "mobile" | "desktop";
 }) {
   const initialIndex = Math.max(0, items.findIndex((item) => item.key === defaultKey));
   const [activeIndex, setActiveIndex] = useState(initialIndex);
@@ -1676,6 +1686,7 @@ export function ProductAccordion({
   const progressRefs = useMemo(() => [progressRef, mobileProgressRef], []);
   const rootRef = useRef<HTMLDivElement>(null);
   const live = useIsLive(rootRef);
+  const desktop = previewViewport ? previewViewport === "desktop" : isDesktop;
   const products = useMemo<Product[]>(
     () => items.map((item) => ({ title: item.title, subtitle: item.description, image: item.image, action: item.action })),
     [items]
@@ -1712,9 +1723,9 @@ export function ProductAccordion({
     progressRef: progressRefs,
     pausedRef,
     live,
-    loop: layout !== "solitaire" || isDesktop,
+    loop: layout !== "solitaire" || desktop,
     onAdvance: () => setActiveIndex((index) => (
-      layout === "solitaire" && !isDesktop
+      layout === "solitaire" && !desktop
         ? Math.min(index + 1, products.length - 1)
         : (index + 1) % products.length
     )),
@@ -1727,7 +1738,7 @@ export function ProductAccordion({
       onMouseEnter={() => (pausedRef.current = true)}
       onMouseLeave={() => (pausedRef.current = false)}
     >
-      <div className={`hidden gap-3 xl:flex ${layout === "solitaire" ? "items-end" : "justify-center"}`}>
+      <div className={`gap-3 ${previewViewport ? desktop ? "flex" : "hidden" : "hidden xl:flex"} ${layout === "solitaire" ? "items-end" : "justify-center"}`}>
         {products.map((product, index) => (
           <ProductCard
             key={items[index].key}
@@ -1747,7 +1758,7 @@ export function ProductAccordion({
       </div>
 
       {controls ? (
-        <div className="mt-8 hidden justify-end gap-4 xl:flex">
+        <div className={`mt-8 justify-end gap-4 ${previewViewport ? desktop ? "flex" : "hidden" : "hidden xl:flex"}`}>
           <button
             type="button"
             onClick={() => setActiveIndex((index) => (index - 1 + products.length) % products.length)}
@@ -1781,6 +1792,7 @@ export function ProductAccordion({
         entered={entered}
         pausedRef={pausedRef}
         layout={layout}
+        previewViewport={previewViewport}
       />
 
       {layout !== "solitaire" ? (

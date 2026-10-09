@@ -36,7 +36,7 @@ export default async function SolitaireEventPromoSection({
   ));
 
   return (
-    <section id="event-promo" className="relative isolate min-h-[720px] overflow-hidden py-12 text-neutral-900 xl:min-h-[800px] xl:py-20" style={{ backgroundImage: "linear-gradient(to bottom, var(--color-neutral-400) 0%, var(--color-neutral-600) 50%, var(--color-neutral-400) 100%)" }}>
+    <section id="event-promo" className="relative isolate min-h-[720px] overflow-hidden py-12 text-neutral-900 xl:min-h-[800px] xl:py-20" style={{ backgroundImage: "linear-gradient(to bottom, var(--color-neutral-400) 30%, var(--color-neutral-600) 60%, var(--color-neutral-400) 90%)" }}>
       <img
         src="/assets/solitaire/event-promo/background.jpeg?v=1"
         alt=""
@@ -45,8 +45,8 @@ export default async function SolitaireEventPromoSection({
       />
 
       <div className="relative mx-auto w-full max-w-[1280px] px-4 xl:px-0">
-        <header className="mb-12 flex flex-col gap-6 xl:mb-8 xl:flex-row xl:items-start xl:gap-10">
-          <p className="text-eyebrow uppercase text-neutral-900 xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-lg">
+        <header className="mb-8 flex flex-col gap-6 md:mb-12 xl:mb-8 xl:flex-row xl:items-start xl:gap-10">
+          <p className="text-eyebrow-lg uppercase text-neutral-900 md:text-eyebrow xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-xl">
             {eyebrow}
           </p>
           <div className="flex flex-col gap-6 xl:flex-1 xl:flex-row xl:items-start xl:justify-between xl:gap-10">

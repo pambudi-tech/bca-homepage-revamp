@@ -138,7 +138,7 @@ export function PrioritasDirectoryFilters({ children, count }: { children: React
   </div>;
 }
 
-function PrioritasDirectoryPagination({ page, total, pageSize, onPageChange, label, placement = "bottom", desktopPageItems, tone = "prioritas" }: {
+export function PrioritasDirectoryPagination({ page, total, pageSize, onPageChange, label, placement = "bottom", desktopPageItems, tone = "prioritas" }: {
   page: number;
   total: number;
   pageSize: number;

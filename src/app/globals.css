@@ -142,6 +142,11 @@
   --text-eyebrow-lg--letter-spacing: 0.15em;              /* 2.1px */
   --text-eyebrow-lg--font-weight: 600;
 
+  --text-eyebrow-xl: 1rem;                                /* 16px */
+  --text-eyebrow-xl--line-height: 1;                      /* 16px */
+  --text-eyebrow-xl--letter-spacing: 0.15em;              /* 2.4px */
+  --text-eyebrow-xl--font-weight: 600;
+
   --text-subtitle: 1.125rem;                              /* 18px */
   --text-subtitle--line-height: calc(26 / 18);            /* 26px */
   --text-subtitle--letter-spacing: -0.02em;               /* -0.36px */
@@ -859,8 +864,20 @@ a:focus-visible > .soliprio-card .soliprio-beam {
   }
 }
 
-@utility glass-panel-prioritas {
+.glass-panel {
+  background-color: color-mix(in srgb, var(--color-black) 30%, transparent);
+}
+
+.glass-panel-prioritas {
   background-color: color-mix(in srgb, var(--color-pbrown-900) 30%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.25);
+  backdrop-filter: blur(16px) saturate(1.25);
+}
+
+.glass-panel-solitaire {
+  background-color: color-mix(in srgb, var(--color-black) 30%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.25);
+  backdrop-filter: blur(16px) saturate(1.25);
 }
 
 /* The shared panel name is the former hero-search surface. */
@@ -1490,4 +1507,24 @@ html.lenis, html.lenis body {
 @media (prefers-reduced-motion: reduce) {
   .bca-locate-icon[data-spinning="true"],
   .bca-origin-user .bca-origin-pulse { animation: none; }
+}
+
+/* shadcn/ui documentation chrome. Separate tokens preserve BCA specimens. */
+@theme {
+  --font-docs: var(--font-bca-sans);
+  --color-docs-background: oklch(1 0 0);
+  --color-docs-foreground: oklch(0.145 0 0);
+  --color-docs-primary: oklch(0.205 0 0);
+  --color-docs-primary-foreground: oklch(0.985 0 0);
+  --color-docs-secondary: oklch(0.97 0 0);
+  --color-docs-secondary-foreground: oklch(0.205 0 0);
+  --color-docs-muted: oklch(0.97 0 0);
+  --color-docs-muted-foreground: oklch(0.556 0 0);
+  --color-docs-accent: oklch(0.97 0 0);
+  --color-docs-accent-foreground: oklch(0.205 0 0);
+  --color-docs-destructive: oklch(0.577 0.245 27.325);
+  --color-docs-destructive-foreground: oklch(0.985 0 0);
+  --color-docs-border: oklch(0.922 0 0);
+  --color-docs-input: oklch(0.922 0 0);
+  --color-docs-ring: oklch(0.708 0 0);
 }

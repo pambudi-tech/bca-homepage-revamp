@@ -30,6 +30,7 @@ const CSP = [
 ].join("; ");
 
 const nextConfig: NextConfig = {
+  devIndicators: false,
   experimental: {
     // Lets the navbar's own elements (segment pill, active tab fill, tab
     // row) morph smoothly between routes instead of hard-swapping — see
@@ -47,6 +48,21 @@ const nextConfig: NextConfig = {
           { key: "Content-Security-Policy", value: CSP },
         ],
       },
+      // The catalog embeds only its own specimen route to preserve real
+      // responsive breakpoints and contain fixed navigation/overlay components.
+      ...["/component-catalog", "/:locale(id|en|zh)/component-catalog"].flatMap((source) => [
+        {
+          source,
+          headers: [{ key: "Content-Security-Policy", value: CSP.replace("frame-src https://www.google.com", "frame-src 'self' https://www.google.com") }],
+        },
+        {
+          source: `${source}/stage`,
+          headers: [
+            { key: "X-Frame-Options", value: "SAMEORIGIN" },
+            { key: "Content-Security-Policy", value: CSP.replace("frame-ancestors 'none'", "frame-ancestors 'self'") },
+          ],
+        },
+      ]),
     ];
   },
 };

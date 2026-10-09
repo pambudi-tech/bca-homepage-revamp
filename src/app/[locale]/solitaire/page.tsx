@@ -7,6 +7,7 @@ import HeroSection from "@/components/home/HeroSection";
 import ScrollCue from "@/components/home/ScrollCue";
 import SectionAnchor, { type SectionAnchorItem } from "@/components/home/SectionAnchor";
 import SolitairePrivilegeSection from "@/components/solitaire/SolitairePrivilegeSection";
+import { SOLITAIRE_EVENT_SLIDES } from "@/components/solitaire/event-slides";
 import SolitaireEventPromoSection from "@/components/solitaire/SolitaireEventPromoSection";
 import CardSection from "@/components/prioritas/CardSection";
 import BankingSolutionSection from "@/components/prioritas/BankingSolutionSection";
@@ -48,6 +49,7 @@ export default async function SolitairePage({
       <div className="page-stack relative z-10 bg-neutral-900">
         <Navbar variant="solitaire" />
         <HeroSection
+          brandedHomepage
           slides={[{
             image: HERO_IMAGE,
             alt: t("bannerAlt"),
@@ -117,38 +119,7 @@ export default async function SolitairePage({
           eyebrow={tPrioritas("eventPromo.eyebrow")}
           heading={tPrioritas("eventPromo.heading")}
           viewMore={t("viewMore")}
-          slides={[
-            {
-              image: "/assets/solitaire/event-promo/rolex.png?v=1",
-              title: "Rolex Private Preview — The Hour Glass Horology Showcase 2026",
-              action: "Reservasi Kehadiran",
-              alt: "Rolex watch displayed on a reflective beach at sunrise",
-            },
-            {
-              image: "/assets/solitaire/event-promo/brightspot.png?v=1",
-              title: "Brightspot Creative Metropolis",
-              action: "Lihat Selengkapnya",
-              alt: "Brightspot creative metropolis event illustration",
-            },
-            {
-              image: "/assets/solitaire/event-promo/java-jazz.png?v=1",
-              title: "International Java Jazz Festival 2026",
-              action: "Lihat Semua Event",
-              alt: "International Java Jazz Festival 2026 poster",
-            },
-            {
-              image: "/assets/solitaire/event-promo/rolex.png?v=1",
-              title: "Experience the Extraordinary",
-              action: "Lihat Selengkapnya",
-              alt: "Rolex watch displayed on a reflective beach at sunrise",
-            },
-            {
-              image: "/assets/solitaire/event-promo/brightspot.png?v=1",
-              title: "Exclusive Experiences for You",
-              action: "Lihat Selengkapnya",
-              alt: "Brightspot creative metropolis event illustration",
-            },
-          ]}
+          slides={SOLITAIRE_EVENT_SLIDES}
         />
         <CardSection
           imageSrc="/assets/solitaire/solitaire-card.webp"
@@ -189,6 +160,7 @@ export default async function SolitairePage({
             ],
             wealthCards: [
               {
+                eyebrow: tWealth("groups.house"),
                 title: tWealth(`insight.${latestHouseView.key}.title`),
                 metadata: [{ icon: "/assets/prioritas/banking/calendar.svg", label: tWealth(`insight.${latestHouseView.key}.date`) }],
                 action: tWealth("downloadAction"),
@@ -199,6 +171,7 @@ export default async function SolitairePage({
                 href: "https://prioritas.bca.co.id/en/Wealth-Management/Market-Insight/House-View-Report",
               },
               {
+                eyebrow: tWealth("groups.market"),
                 title: tWealth(`insight.${latestWeeklyMarket.key}.title`),
                 metadata: [{ icon: "/assets/prioritas/banking/calendar.svg", label: tWealth(`insight.${latestWeeklyMarket.key}.date`) }],
                 action: tWealth("downloadAction"),

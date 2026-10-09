@@ -31,7 +31,7 @@ function ArrowAction({ children }: { children: ReactNode }) {
   );
 }
 
-function PrivilegeCard({
+export function PrivilegeCard({
   copy,
   image,
   href,
@@ -40,6 +40,7 @@ function PrivilegeCard({
   onSelect,
   cardRef,
   progress = 0,
+  previewViewport,
 }: {
   copy: PrivilegeCardCopy;
   image: string;
@@ -49,15 +50,17 @@ function PrivilegeCard({
   onSelect?: () => void;
   cardRef?: (node: HTMLElement | null) => void;
   progress?: number;
+  previewViewport?: "mobile" | "desktop";
 }) {
   const circumference = 2 * Math.PI * 14;
+  const desktop = previewViewport === "desktop";
   return (
     <Link
       href={href}
       ref={cardRef}
       onClick={onSelect}
       aria-label={`${copy.title} ${copy.action}`}
-      className={`group relative w-[280px] shrink-0 snap-center overflow-hidden rounded-3xl transition-[height] duration-500 ease-in-out xl:w-auto xl:shrink xl:snap-none ${feature ? "h-[360px] xl:col-span-2" : active ? "h-[360px]" : "h-[328px] xl:h-[400px]"}`}
+      className={`group relative shrink-0 snap-center overflow-hidden rounded-3xl transition-[height] duration-500 ease-in-out ${previewViewport ? desktop ? `w-full ${feature ? "h-[360px] col-span-2" : "h-[400px]"}` : `w-[280px] ${active ? "h-[360px]" : "h-[328px]"}` : `w-[280px] xl:w-auto xl:shrink xl:snap-none ${feature ? "h-[360px] xl:col-span-2" : active ? "h-[360px]" : "h-[328px] xl:h-[400px]"}`}`}
     >
       <img
         src={image}
@@ -69,7 +72,7 @@ function PrivilegeCard({
         aria-hidden
         className={`pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-pgold-500/85 via-pgold-500/15 to-transparent transition-opacity duration-300 ${active ? "opacity-100" : "opacity-0"}`}
       />
-      <div className="absolute left-4 top-4 z-30 xl:hidden">
+      <div className={`absolute left-4 top-4 z-30 ${previewViewport ? desktop ? "hidden" : "" : "xl:hidden"}`}>
         <svg viewBox="0 0 32 32" className={`size-8 -rotate-90 transition-opacity duration-300 ${active ? "opacity-100" : "opacity-0"}`} aria-hidden>
           <circle cx="16" cy="16" r="16" fill="rgba(0,0,0,0.28)" />
           <circle cx="16" cy="16" r="14" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" />
@@ -77,10 +80,10 @@ function PrivilegeCard({
         </svg>
       </div>
       <div
-        className="glass-panel glass-panel-prioritas absolute inset-x-2 bottom-2 z-20 flex h-[160px] w-auto flex-col items-start justify-between overflow-hidden rounded-2xl px-4 pb-5 pt-4 xl:inset-x-auto xl:bottom-4 xl:left-4 xl:h-[180px] xl:w-[360px] xl:max-w-[calc(100%-2rem)]"
-        style={{ backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)", isolation: "isolate" }}
+        className={`glass-panel glass-panel-prioritas absolute z-20 flex flex-col items-start justify-between overflow-hidden rounded-2xl px-4 pb-5 pt-4 ${previewViewport ? desktop ? "bottom-4 left-4 h-[180px] w-[400px] max-w-[calc(100%-2rem)]" : "inset-x-2 bottom-2 h-[160px] w-auto" : "inset-x-2 bottom-2 h-[160px] w-auto xl:inset-x-auto xl:bottom-4 xl:left-4 xl:h-[180px] xl:w-[400px] xl:max-w-[calc(100%-2rem)]"}`}
+        style={{ isolation: "isolate" }}
       >
-        <h3 className="text-subtitle max-w-full text-white xl:text-heading">
+        <h3 className={`max-w-full text-white ${previewViewport ? desktop ? "text-heading" : "text-subtitle" : "text-subtitle xl:text-heading"}`}>
           {copy.title}
         </h3>
         <ArrowAction>{copy.action}</ArrowAction>
@@ -89,7 +92,7 @@ function PrivilegeCard({
   );
 }
 
-export default function PrivilegeSection({ copy }: { copy: PrivilegeSectionCopy }) {
+export default function PrivilegeSection({ copy, previewViewport }: { copy: PrivilegeSectionCopy; previewViewport?: "mobile" | "desktop" }) {
   const [activeCard, setActiveCard] = useState(0);
   const [progress, setProgress] = useState(0);
   const pausedRef = useRef(false);
@@ -151,8 +154,17 @@ export default function PrivilegeSection({ copy }: { copy: PrivilegeSectionCopy 
     }
   };
 
+  if (previewViewport) {
+    const desktop = previewViewport === "desktop";
+    return <section ref={sectionRef} onMouseEnter={() => {pausedRef.current = true;}} onMouseLeave={() => {pausedRef.current = false;}}>
+      <div ref={desktop ? undefined : railRef} onScroll={desktop ? undefined : handleRailScroll} className={desktop ? "grid grid-cols-2 gap-6" : "hide-scrollbar -mx-4 flex h-[360px] snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4 [scrollbar-width:none]"}>
+        {cards.map((card,index) => <PrivilegeCard key={card.href} {...card} feature={desktop && index === 0} active={!desktop && activeCard === index} progress={activeCard === index ? progress : 0} cardRef={node => {cardRefs.current[index] = node;}} onSelect={desktop ? undefined : () => selectMobileCard(index,true)} previewViewport={previewViewport}/>) }
+      </div>
+    </section>;
+  }
+
   return (
-    <section ref={sectionRef} id="privilege" className="relative isolate overflow-hidden bg-pbrown-600 py-12 text-white xl:min-h-[1200px] xl:py-20">
+    <section ref={sectionRef} id="privilege" className="relative isolate overflow-hidden bg-pbrown-600 py-12 text-white xl:py-20">
       <img
         src={`${ASSET_ROOT}/decoration.svg`}
         alt=""
@@ -161,8 +173,8 @@ export default function PrivilegeSection({ copy }: { copy: PrivilegeSectionCopy 
       />
 
       <div className="relative mx-auto w-full max-w-[1280px] px-4 xl:px-0">
-        <header className="mb-12 flex flex-col gap-6 xl:mb-14 xl:flex-row xl:items-start xl:gap-10">
-          <p className="text-eyebrow uppercase text-pgold-300 xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-lg">
+        <header className="mb-8 flex flex-col gap-6 md:mb-12 xl:mb-14 xl:flex-row xl:items-start xl:gap-10">
+          <p className="text-eyebrow-lg uppercase text-pgold-300 md:text-eyebrow xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-xl">
             {copy.eyebrow}
           </p>
           <h2 className="text-heading max-w-[560px] text-pgold-100 xl:text-display">
@@ -170,7 +182,7 @@ export default function PrivilegeSection({ copy }: { copy: PrivilegeSectionCopy 
           </h2>
         </header>
 
-        <div className="flex flex-col gap-8 xl:block">
+        <div className="flex flex-col gap-4 xl:block">
           <div
             ref={railRef}
             onScroll={handleRailScroll}

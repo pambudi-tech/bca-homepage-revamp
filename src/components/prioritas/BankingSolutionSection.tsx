@@ -12,6 +12,7 @@ export type PrivilegeCard = {
 };
 
 export type WealthCardData = {
+  eyebrow: string;
   title: string;
   metadata: { icon: string; label: string }[];
   action: string;
@@ -55,17 +56,18 @@ function ViewMore({ label, href = "/kartu-kredit", tone = "prioritas" }: { label
   );
 }
 
-export function BankingPrivilegeCard({ card, action, directory = false, tone = "prioritas" }: { card: PrivilegeCard; action: string; directory?: boolean; tone?: "prioritas" | "solitaire" }) {
+export function BankingPrivilegeCard({ card, action, directory = false, tone = "prioritas", previewViewport }: { card: PrivilegeCard; action: string; directory?: boolean; tone?: "prioritas" | "solitaire"; previewViewport?: "mobile" | "desktop" }) {
   const buttonClassName = tone === "solitaire" ? solitaireButtonClassName : prioritasButtonClassName;
+  const desktop = previewViewport === "desktop";
   return (
-    <article className={`group relative h-[360px] shrink-0 snap-center overflow-hidden rounded-xl md:h-[300px] md:shrink md:snap-none ${directory ? "w-full" : "w-[280px] md:w-auto"}`}>
+    <article className={`group relative shrink-0 snap-center overflow-hidden rounded-xl ${previewViewport ? desktop ? "h-[300px]" : "h-[360px]" : "h-[360px] md:h-[300px] md:shrink md:snap-none"} ${directory ? "w-full" : previewViewport ? desktop ? "w-full" : "w-[280px]" : "w-[280px] md:w-auto"}`}>
       <img src={card.image} alt={card.alt} loading="lazy" decoding="async" style={card.imagePosition ? { objectPosition: card.imagePosition } : undefined} className="absolute inset-0 size-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
       <div className={`absolute inset-0 ${tone === "solitaire" ? "bg-[radial-gradient(110%_125%_at_0%_110%,var(--color-neutral-800)_20%,transparent_70%)]" : "bg-[radial-gradient(110%_125%_at_0%_110%,var(--color-pbrown-800)_20%,transparent_70%)]"}`} />
-      <h3 className="absolute bottom-20 left-4 w-[min(301px,calc(100%-2rem))] text-subtitle text-neutral-100 [text-shadow:0_3px_4px_rgb(0_0_0_/_0.25)] md:bottom-[88px] md:left-6 md:w-[min(301px,calc(100%-3rem))] md:text-title">
+      <h3 className={`absolute text-neutral-100 [text-shadow:0_3px_4px_rgb(0_0_0_/_0.25)] ${previewViewport ? desktop ? "bottom-[88px] left-6 w-[min(301px,calc(100%-3rem))] text-title" : "bottom-20 left-4 w-[min(301px,calc(100%-2rem))] text-subtitle" : "bottom-20 left-4 w-[min(301px,calc(100%-2rem))] text-subtitle md:bottom-[88px] md:left-6 md:w-[min(301px,calc(100%-3rem))] md:text-title"}`}>
         {card.title}
       </h3>
       <Link href={card.href ?? "/kartu-kredit"} aria-label={`${card.title} — ${action}`} className="absolute inset-0 z-10">
-        <span aria-hidden="true" className={buttonClassName({ variant: "secondary", surface: "inverse", size: "medium", className: "absolute bottom-4 left-4 md:bottom-6 md:left-6" })}>
+        <span aria-hidden="true" className={buttonClassName({ variant: "secondary", surface: "inverse", size: "medium", className: previewViewport ? desktop ? "absolute bottom-6 left-6" : "absolute bottom-4 left-4" : "absolute bottom-4 left-4 md:bottom-6 md:left-6" })}>
           <span className="prio-button__label">{action}</span>
         </span>
       </Link>
@@ -77,20 +79,21 @@ export function WealthCard({ card, tone = "prioritas" }: { card: WealthCardData;
   const buttonClassName = tone === "solitaire" ? solitaireButtonClassName : prioritasButtonClassName;
   const isSolitaire = tone === "solitaire";
   return (
-    <article className={`group relative h-[360px] overflow-hidden rounded-xl ${isSolitaire ? "border border-neutral-300 shadow-panel" : "shadow-prioritas"}`} style={{ backgroundColor: isSolitaire ? "var(--color-neutral-800)" : card.backdrop ?? "var(--color-pbrown-900)" }}>
+    <article className={`group relative h-[360px] overflow-hidden rounded-xl xl:h-[400px] ${isSolitaire ? "border border-neutral-300 shadow-panel" : "shadow-prioritas"}`} style={{ backgroundColor: isSolitaire ? "var(--color-neutral-800)" : card.backdrop ?? "var(--color-pbrown-900)" }}>
       <img src={card.image} alt={card.imageAlt} loading="lazy" decoding="async" className="absolute inset-x-0 top-0 h-3/4 w-full max-w-none object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 top-[45%]" style={{ backgroundImage: `linear-gradient(to bottom, transparent 0%, ${card.backdrop ?? "var(--color-pbrown-900)"} 55%, ${card.backdrop ?? "var(--color-pbrown-900)"} 100%)` }} />
       <div
-        className={`glass-panel ${isSolitaire ? "" : "glass-panel-prioritas"} absolute inset-x-2 bottom-2 flex h-auto flex-col gap-6 overflow-hidden rounded-2xl p-4 ${isSolitaire ? "bg-neutral-800/70" : ""}`}
-        style={{ backdropFilter: "blur(16px) saturate(1.25)", WebkitBackdropFilter: "blur(16px) saturate(1.25)", isolation: "isolate" }}
+        className={`glass-panel ${isSolitaire ? "glass-panel-solitaire" : "glass-panel-prioritas"} absolute inset-x-2 bottom-2 flex h-auto flex-col gap-6 overflow-hidden rounded-2xl p-4`}
+        style={{ backgroundColor: isSolitaire ? "color-mix(in srgb, var(--color-neutral-800) 30%, transparent)" : undefined, isolation: "isolate" }}
       >
         <div className="flex flex-col gap-4">
-          <h3 className="text-lg font-semibold leading-[1.3] text-neutral-100">{card.title}</h3>
+          <p className="text-eyebrow uppercase text-neutral-100/80 xl:text-eyebrow-lg">{card.eyebrow}</p>
+          <h3 className="text-lg font-semibold leading-[1.3] text-neutral-100 xl:text-xl">{card.title}</h3>
           <div className="flex flex-col gap-4">
             {card.metadata.map((item) => (
               <div className="flex items-center gap-2" key={item.label}>
                 <img src={item.icon} alt="" className="size-5" />
-                <p className="text-sm font-semibold leading-5 text-neutral-300">{item.label}</p>
+                <p className="text-sm font-semibold leading-5 text-neutral-300 xl:text-base">{item.label}</p>
               </div>
             ))}
           </div>
@@ -119,13 +122,13 @@ export default function BankingSolutionSection({ copy, kurs, tone = "prioritas",
           <img src="/assets/prioritas/banking-solution/bg-decoration-1.svg" alt="" className="absolute left-1/2 top-0 block w-[153%] max-w-none -translate-x-1/2" />
         </div>
       ) : null}
-      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-col gap-12 px-4 xl:gap-14 xl:px-0">
+      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-col gap-8 px-4 md:gap-12 xl:gap-14 xl:px-0">
         <header className="flex flex-col gap-6 xl:flex-row xl:gap-10">
-          <p className={`text-eyebrow uppercase ${isSolitaire ? "text-neutral-900" : "text-pgold-300"} xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-lg`}>{copy.eyebrow}</p>
+          <p className={`text-eyebrow-lg uppercase ${isSolitaire ? "text-neutral-900" : "text-pgold-300"} md:text-eyebrow xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-xl`}>{copy.eyebrow}</p>
           <h2 className={`text-heading max-w-[560px] ${isSolitaire ? "text-neutral-900" : "text-pgold-100"} xl:text-display`}>{copy.heading}</h2>
         </header>
 
-        <section className="flex flex-col gap-6">
+        <section className="flex flex-col gap-4 md:gap-6">
           <div className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
             <h3 className={`text-lg font-semibold ${isSolitaire ? "text-neutral-900" : "text-pgold-100"} xl:text-heading`}>{copy.bankingPrivilege}</h3>
             <div className="hidden md:block"><ViewMore label={copy.viewMore} href={`${publicBasePath}/banking-solution`} tone={tone} /></div>
@@ -136,7 +139,7 @@ export default function BankingSolutionSection({ copy, kurs, tone = "prioritas",
           <div className="md:hidden"><ViewMore label={copy.viewMore} href={`${publicBasePath}/banking-solution`} tone={tone} /></div>
         </section>
 
-        <section className="flex flex-col gap-6">
+        <section className="flex flex-col gap-4 md:gap-6">
           <div className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
             <h3 className={`text-lg font-semibold ${isSolitaire ? "text-neutral-900" : "text-pgold-100"} xl:text-heading`}>{copy.wealthInsight}</h3>
             <div className="hidden md:block"><ViewMore label={copy.viewMore} href={`${publicBasePath}/banking-solution/wealth-insight`} tone={tone} /></div>
@@ -147,7 +150,7 @@ export default function BankingSolutionSection({ copy, kurs, tone = "prioritas",
           <div className="md:hidden"><ViewMore label={copy.viewMore} href={`${publicBasePath}/banking-solution/wealth-insight`} tone={tone} /></div>
         </section>
 
-        <section className="flex flex-col gap-6">
+        <section className="flex flex-col gap-4 md:gap-6">
           <div className="flex items-center justify-between gap-4">
             <h3 className={`text-lg font-semibold ${isSolitaire ? "text-neutral-800" : "text-pgold-200"} xl:text-heading`}>{copy.kurs}</h3>
             <div className="hidden md:block"><ViewMore label={copy.viewMore} href={`${publicBasePath}/banking-solution/kurs`} tone={tone} /></div>

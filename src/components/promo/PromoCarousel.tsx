@@ -8,7 +8,7 @@ import PromoCard from "./PromoCard";
 import type { PrivilegePromo } from "@/lib/partner-privileges";
 import SignaturePrivilegeCard from "@/components/prioritas/SignaturePrivilegeCard";
 
-const CARD_GAP = 16;
+const DEFAULT_CARD_GAP = 16;
 
 /** Shared looping, centre-snapping promo rail used on the homepage and promo page. */
 export default function PromoCarousel({
@@ -26,6 +26,8 @@ export default function PromoCarousel({
   partnerPrivilege = false,
   showEventDate = false,
   usePrioritasButtonLibrary = false,
+  showPromoTimestamp = false,
+  cardGap = DEFAULT_CARD_GAP,
   contentCardVariant,
   tone = "prioritas",
 }: {
@@ -46,6 +48,8 @@ export default function PromoCarousel({
   partnerPrivilege?: boolean;
   showEventDate?: boolean;
   usePrioritasButtonLibrary?: boolean;
+  showPromoTimestamp?: boolean;
+  cardGap?: number;
   contentCardVariant?: "signature" | "complimentary" | "lifestyle" | "event" | "promo";
   tone?: "prioritas" | "solitaire";
 }) {
@@ -110,7 +114,7 @@ export default function PromoCarousel({
   return (
     <div ref={scrollRef} className={`hide-scrollbar -my-6 flex snap-x snap-mandatory items-start overflow-x-auto py-6 [scrollbar-width:none] ${bleed ? "-mx-4 px-4" : "px-8"}`}>
       {slots.map((item, index) => (
-        <div key={`${item}-${index}`} className={`snap-center ${compact ? "w-[200px] shrink-0" : ""}`} style={{ marginRight: CARD_GAP }}>
+        <div key={`${item}-${index}`} className={`snap-center ${compact ? "w-[200px] shrink-0" : ""}`} style={{ marginRight: cardGap }}>
           {campaignCover && item === 0 ? (
             <a href="#semua-promo" aria-label={campaignAlt} className={`block shrink-0 overflow-clip rounded-3xl border border-neutral-300 bg-white ${compact ? "h-[268px] w-full" : "h-[360px] w-[280px] xl:w-[302px]"}`}>
               <img src={campaignCover} alt={campaignAlt ?? ""} className="size-full object-cover" />
@@ -148,6 +152,27 @@ export default function PromoCarousel({
               fill={false}
               detailHref={detailHrefBase ? `${detailHrefBase}/${promos[item - (campaignCover ? 1 : 0)].id}` : undefined}
             />
+          ) : variant === "prioritas" && showEventDate ? (
+            <ContentCard
+              item={promos[item - (campaignCover ? 1 : 0)] as EventPromo}
+              variant="event"
+              solitaire={tone === "solitaire"}
+              now={now}
+              fill={false}
+              compact={compact}
+              detailHref={detailHrefBase ? `${detailHrefBase}/${promos[item - (campaignCover ? 1 : 0)].id}` : undefined}
+            />
+          ) : variant === "prioritas" ? (
+            <ContentCard
+              item={promos[item - (campaignCover ? 1 : 0)]}
+              variant="promo"
+              solitaire={tone === "solitaire"}
+              now={now}
+              fill={false}
+              compact={compact}
+              showPromoTimestamp={showPromoTimestamp}
+              detailHref={detailHrefBase ? `${detailHrefBase}/${promos[item - (campaignCover ? 1 : 0)].id}` : undefined}
+            />
           ) : (
             <PromoCard
               promo={promos[item - (campaignCover ? 1 : 0)]}
@@ -159,6 +184,7 @@ export default function PromoCarousel({
               detail={detail}
               partnerPrivilege={partnerPrivilege}
               usePrioritasButtonLibrary={usePrioritasButtonLibrary}
+              showPromoTimestamp={showPromoTimestamp}
               detailHref={detailHrefBase ? `${detailHrefBase}/${promos[item - (campaignCover ? 1 : 0)].id}` : undefined}
               eventDate={showEventDate ? (promos[item - (campaignCover ? 1 : 0)] as Promo & { dateTile?: React.ComponentProps<typeof PromoCard>["eventDate"] }).dateTile : undefined}
             />

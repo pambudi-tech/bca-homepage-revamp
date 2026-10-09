@@ -56,6 +56,7 @@ this design those four are never chosen independently.
 |---|---|---|---|---|
 | `--text-eyebrow` | 12px | 12px | +1.8px (0.15em) | 600 |
 | `--text-eyebrow-lg` | 14px | 14px | +2.1px (0.15em) | 600 |
+| `--text-eyebrow-xl` | 16px | 16px | +2.4px (0.15em) | 600 |
 | `--text-subtitle` | 18px | 26px | −0.36px (−0.02em) | 600 |
 | `--text-title` | 20px | 28px | −0.4px (−0.02em) | 600 |
 | `--text-heading` | 24px | 32px | −0.48px (−0.02em) | 600 |

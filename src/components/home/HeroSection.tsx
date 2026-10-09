@@ -48,10 +48,12 @@ export default function HeroSection({
   slides = SLIDES,
   mobileStack,
   desktopStack,
+  brandedHomepage = false,
 }: {
   slides?: Slide[];
   mobileStack?: ReactNode;
   desktopStack?: ReactNode;
+  brandedHomepage?: boolean;
 }) {
   const t = useTranslations("hero");
   const count = slides.length;
@@ -147,7 +149,7 @@ export default function HeroSection({
   return (
     <div
       ref={rootRef}
-      className="relative h-[min(640px,calc(90svh-48px))] min-h-[560px] overflow-x-visible overflow-y-clip bg-blue-500 xl:h-[80svh] xl:min-h-0"
+      className={`relative overflow-x-visible overflow-y-clip bg-blue-500 xl:h-[80svh] xl:min-h-0 ${brandedHomepage ? "h-[80svh] md:h-[min(640px,calc(90svh-48px))] md:min-h-[560px]" : "h-[min(640px,calc(90svh-48px))] min-h-[560px]"}`}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >

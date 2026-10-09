@@ -69,7 +69,7 @@ export default function SolitaireEventPromoDesktopSlider({ slides }: { slides: [
         ))}
       </div>
 
-      <div className="glass-panel absolute -bottom-[72px] left-6 z-10 flex h-[200px] w-[400px] max-w-[calc(100%-2rem)] flex-col items-start overflow-clip rounded-2xl bg-neutral-800/50 p-6 text-white backdrop-blur-xl backdrop-brightness-50">
+      <div className="glass-panel glass-panel-solitaire absolute -bottom-[72px] left-6 z-10 flex h-[200px] w-[400px] max-w-[calc(100%-2rem)] flex-col items-start overflow-clip rounded-2xl p-6 text-white" style={{ backgroundColor: "color-mix(in srgb, var(--color-neutral-800) 50%, transparent)" }}>
         <p className="max-w-[336px] text-heading">{activeSlide.title}</p>
         <button type="button" className="mt-auto flex items-center gap-0.5 text-base font-semibold text-neutral-100">
           <span>{activeSlide.action}</span>
@@ -108,15 +108,21 @@ export default function SolitaireEventPromoDesktopSlider({ slides }: { slides: [
             className="relative h-1.5 min-w-0 flex-1 overflow-hidden rounded-xl bg-neutral-900/25"
           >
             {index === activeIndex && (
-              <span
-                key={`${activeIndex}-${timerEpoch}`}
-                aria-hidden="true"
-                className="absolute inset-y-0 left-0 w-full origin-left rounded-xl bg-neutral-800"
-                style={{
-                  animation: `solitaire-carousel-progress ${AUTO_ADVANCE_MS}ms linear forwards`,
-                  animationPlayState: paused || !live ? "paused" : "running",
-                }}
-              />
+              <>
+                <span
+                  aria-hidden="true"
+                  className="absolute left-0 top-1/2 z-10 h-1.5 w-6 -translate-y-1/2 rounded-full bg-neutral-800"
+                />
+                <span
+                  key={`${activeIndex}-${timerEpoch}`}
+                  aria-hidden="true"
+                  className="absolute inset-y-0 left-0 w-full origin-left rounded-xl bg-neutral-800"
+                  style={{
+                    animation: `solitaire-carousel-progress ${AUTO_ADVANCE_MS}ms linear forwards`,
+                    animationPlayState: paused || !live ? "paused" : "running",
+                  }}
+                />
+              </>
             )}
           </button>
         ))}
