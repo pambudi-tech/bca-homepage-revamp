@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 
-export default function WorkspaceTitle({ href }: { href?: '/asset-bank' | '/site-map' | '/design-tokens' | '/user-flows' }) {
+export default function WorkspaceTitle({ href }: { href?: '/asset-bank' | '/site-map' | '/design-tokens' | '/user-flows' | '/project-index' }) {
   const t = useTranslations('siteMap');
   const title = t('workspaceTitle');
   const className = 'line-clamp-3 min-w-0 text-size-body-l font-semibold leading-5';

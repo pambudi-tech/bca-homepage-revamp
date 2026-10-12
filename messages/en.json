@@ -3830,7 +3830,8 @@
       "assets": "Asset Bank",
       "map": "Site Map",
       "tokens": "Design Tokens",
-      "flows": "User Flows"
+      "flows": "User Flows",
+      "index": "Project Index"
     },
     "brands": {
       "prioritas": "BCA Prioritas",
@@ -5256,5 +5257,64 @@
       "select": "Select",
       "response": "Response"
     }
+  },
+  "projectIndex": {
+    "pageTitle": "Project Index | BCA Prioritas & Solitaire",
+    "eyebrow": "BCA Prioritas & Solitaire",
+    "title": "Project index",
+    "subtitle": "Access the prototype, design documentation, and demo member accounts in one place.",
+    "brands": {
+      "prioritas": "BCA Prioritas",
+      "solitaire": "BCA Solitaire"
+    },
+    "prototype": {
+      "title": "Prototype",
+      "description": "Open public pages or sign in to the member area for each service.",
+      "general": "BCA.co.id",
+      "generalDescription": "The general homepage and access to BCA services.",
+      "prioritas": "Public pages and member services for BCA Prioritas.",
+      "solitaire": "Public pages and member services for BCA Solitaire."
+    },
+    "documentation": {
+      "title": "Documentation",
+      "description": "Project components, assets, design tokens, and page structure.",
+      "catalog": {
+        "title": "Component Catalog",
+        "description": "Explore components in use, their variants, and specifications."
+      },
+      "assets": {
+        "title": "Asset Bank",
+        "description": "Browse Prioritas/Solitaire images, logos, and icons."
+      },
+      "tokens": {
+        "title": "Design Tokens",
+        "description": "Reference for colors, typography, and design tokens."
+      },
+      "map": {
+        "title": "Site Map",
+        "description": "Explore the page structure and open available routes."
+      }
+    },
+    "access": {
+      "title": "Member area access",
+      "description": "Sign in with a BCA ID or email below and the password for the corresponding service."
+    },
+    "bcaId": "BCA ID",
+    "email": "Email",
+    "password": "Password",
+    "publicArea": "Public area",
+    "memberArea": "Member area",
+    "openLogin": "Open login",
+    "copyField": "Copy {label}",
+    "copied": "Copied",
+    "copyFailed": "Unable to copy. Select and copy the text manually.",
+    "otp": {
+      "title": "Financial Report OTP",
+      "description": "Use any 6 digits except 000000. Example: 123456. No OTP is emailed; portfolio access lasts 10 minutes.",
+      "example": "Example OTP"
+    },
+    "demoNote": "These accounts are for the prototype demo. Portfolio and voucher information uses sample data.",
+    "openPrototype": "Access Prototype",
+    "opensNewTab": "(opens in a new tab)"
   }
 }

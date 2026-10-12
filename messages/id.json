@@ -4230,7 +4230,8 @@
       "assets": "Asset Bank",
       "map": "Site Map",
       "tokens": "Design Tokens",
-      "flows": "User Flows"
+      "flows": "User Flows",
+      "index": "Daftar Isi"
     },
     "brands": {
       "prioritas": "BCA Prioritas",
@@ -5656,5 +5657,64 @@
       "select": "Pilih",
       "response": "Respons"
     }
+  },
+  "projectIndex": {
+    "pageTitle": "Daftar Isi | BCA Prioritas & Solitaire",
+    "eyebrow": "BCA Prioritas & Solitaire",
+    "title": "Daftar isi proyek",
+    "subtitle": "Akses prototype, dokumentasi desain, dan akun demo member area dalam satu halaman.",
+    "brands": {
+      "prioritas": "BCA Prioritas",
+      "solitaire": "BCA Solitaire"
+    },
+    "prototype": {
+      "title": "Prototype",
+      "description": "Buka halaman publik atau masuk ke member area masing-masing layanan.",
+      "general": "BCA.co.id",
+      "generalDescription": "Homepage umum dan akses ke layanan BCA.",
+      "prioritas": "Halaman publik dan layanan member BCA Prioritas.",
+      "solitaire": "Halaman publik dan layanan member BCA Solitaire."
+    },
+    "documentation": {
+      "title": "Dokumentasi",
+      "description": "Komponen, aset, token desain, dan struktur halaman proyek.",
+      "catalog": {
+        "title": "Katalog Komponen",
+        "description": "Lihat komponen yang digunakan, variasi, dan spesifikasinya."
+      },
+      "assets": {
+        "title": "Asset Bank",
+        "description": "Jelajahi gambar, logo, dan ikon Prioritas/Solitaire."
+      },
+      "tokens": {
+        "title": "Design Tokens",
+        "description": "Referensi warna, tipografi, dan token desain."
+      },
+      "map": {
+        "title": "Site Map",
+        "description": "Lihat struktur halaman dan buka rute yang tersedia."
+      }
+    },
+    "access": {
+      "title": "Akses member area",
+      "description": "Login dengan BCA ID atau email berikut dan password sesuai layanan."
+    },
+    "bcaId": "BCA ID",
+    "email": "Email",
+    "password": "Password",
+    "publicArea": "Area publik",
+    "memberArea": "Member area",
+    "openLogin": "Buka login",
+    "copyField": "Salin {label}",
+    "copied": "Tersalin",
+    "copyFailed": "Tidak dapat menyalin. Pilih dan salin teks secara manual.",
+    "otp": {
+      "title": "OTP Financial Report",
+      "description": "Gunakan 6 digit angka selain 000000. Contoh: 123456. OTP tidak dikirim ke email; akses portofolio aktif selama 10 menit.",
+      "example": "Contoh OTP"
+    },
+    "demoNote": "Akun ini khusus demo prototype. Data portofolio dan voucher menggunakan data contoh.",
+    "openPrototype": "Akses Prototype",
+    "opensNewTab": "(terbuka di tab baru)"
   }
 }

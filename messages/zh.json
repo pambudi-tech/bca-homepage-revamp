@@ -3830,7 +3830,8 @@
       "assets": "素材库",
       "map": "网站地图",
       "tokens": "设计令牌",
-      "flows": "用户流程"
+      "flows": "用户流程",
+      "index": "项目目录"
     },
     "brands": {
       "prioritas": "BCA Prioritas",
@@ -5256,5 +5257,64 @@
       "select": "选择",
       "response": "响应"
     }
+  },
+  "projectIndex": {
+    "pageTitle": "项目目录 | BCA Prioritas & Solitaire",
+    "eyebrow": "BCA Prioritas & Solitaire",
+    "title": "项目目录",
+    "subtitle": "在一个页面访问原型、设计文档及会员区演示账户。",
+    "brands": {
+      "prioritas": "BCA Prioritas",
+      "solitaire": "BCA Solitaire"
+    },
+    "prototype": {
+      "title": "原型",
+      "description": "打开各服务的公开页面或登录会员区。",
+      "general": "BCA.co.id",
+      "generalDescription": "通用首页及 BCA 服务入口。",
+      "prioritas": "BCA Prioritas 的公开页面和会员服务。",
+      "solitaire": "BCA Solitaire 的公开页面和会员服务。"
+    },
+    "documentation": {
+      "title": "文档",
+      "description": "项目组件、素材、设计变量及页面结构。",
+      "catalog": {
+        "title": "组件目录",
+        "description": "查看使用中的组件、变体及规格。"
+      },
+      "assets": {
+        "title": "素材库",
+        "description": "浏览 Prioritas/Solitaire 的图片、标志及图标。"
+      },
+      "tokens": {
+        "title": "设计变量",
+        "description": "颜色、字体及设计变量参考。"
+      },
+      "map": {
+        "title": "网站地图",
+        "description": "查看页面结构并打开可用页面。"
+      }
+    },
+    "access": {
+      "title": "会员区访问",
+      "description": "使用下方 BCA ID 或邮箱及相应服务的密码登录。"
+    },
+    "bcaId": "BCA ID",
+    "email": "邮箱",
+    "password": "密码",
+    "publicArea": "公开页面",
+    "memberArea": "会员区",
+    "openLogin": "打开登录页面",
+    "copyField": "复制{label}",
+    "copied": "已复制",
+    "copyFailed": "无法复制。请选中文本并手动复制。",
+    "otp": {
+      "title": "财务报告验证码",
+      "description": "使用除 000000 以外的任意六位数字，例如 123456。验证码不会发送至邮箱；投资组合访问有效期为 10 分钟。",
+      "example": "验证码示例"
+    },
+    "demoNote": "这些账户仅用于原型演示。投资组合与优惠券信息均为示例数据。",
+    "openPrototype": "访问原型",
+    "opensNewTab": "（在新标签页打开）"
   }
 }

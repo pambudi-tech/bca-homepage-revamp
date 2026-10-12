@@ -13,6 +13,7 @@ let nativeLockCount = 0;
 let nativeBodyOverflow = "";
 
 const documentationRoutes = [
+  "/project-index",
   "/component-catalog", "/asset-bank", "/design-tokens", "/site-map", "/user-flows",
   "/prioritas/button-audit", "/prioritas/content-card-audit",
 ];
