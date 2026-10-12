@@ -1,8 +1,8 @@
 import { setRequestLocale } from "next-intl/server";
 import PublicPrivilegePage from "@/components/prioritas/PublicPrivilegePage";
 
-export default async function PublicPrivilegeRoute({ params, searchParams }: { params: Promise<{ locale: string }>; searchParams: Promise<{ section?: string | string[] }> }) {
-  const [{ locale }, query] = await Promise.all([params, searchParams]);
+export default async function PublicPrivilegeRoute({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   setRequestLocale(locale);
-  return <PublicPrivilegePage brand="prioritas" section={query.section} />;
+  return <PublicPrivilegePage brand="prioritas" />;
 }

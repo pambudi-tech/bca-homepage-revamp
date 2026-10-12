@@ -41,6 +41,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     // Old listing URLs open the corresponding hub tab; asset aliases stay valid.
     return [
+      ...["", "/:locale(id|en|zh)"].flatMap(prefix => ["overview", "overview/privilege"].map(path => ({
+        source: `${prefix}/prioritas/${path}`,
+        destination: `${prefix ? "/:locale" : ""}/prioritas/member/${path === "overview" ? "overview" : "privilege"}`,
+        permanent: false,
+      }))),
       ...["", "/:locale(id|en|zh)"].flatMap(prefix => [
         { path: "lifestyle-privilege", section: "lifestyle" },
         { path: "event", section: "event" },

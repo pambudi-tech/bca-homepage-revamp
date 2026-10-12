@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack && npm run check:vercel-functions",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "assets:refresh": "node scripts/build-asset-bank.mjs"
+    "assets:refresh": "node scripts/build-asset-bank.mjs",
+    "check:vercel-functions": "node scripts/check-vercel-functions.mjs"
   },
   "dependencies": {
     "@radix-ui/react-select": "^2.3.8",
@@ -32,6 +33,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vercel/next": "22.0.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
     "tailwindcss": "^4",
