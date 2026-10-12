@@ -1,4 +1,6 @@
-import { useEffect, useState, type RefObject } from "react";
+import { useContext, useEffect, useState, type RefObject } from "react";
+
+import { PreviewFrozenContext } from "./PreviewViewport";
 
 /**
  * True while `ref`'s element is worth animating: on screen *and* in a visible
@@ -18,6 +20,7 @@ import { useEffect, useState, type RefObject } from "react";
  * render is rare.
  */
 export function useIsLive(ref: RefObject<HTMLElement | null>): boolean {
+  const frozen = useContext(PreviewFrozenContext);
   const [live, setLive] = useState(false);
 
   useEffect(() => {
@@ -45,5 +48,5 @@ export function useIsLive(ref: RefObject<HTMLElement | null>): boolean {
     };
   }, [ref]);
 
-  return live;
+  return live && !frozen;
 }

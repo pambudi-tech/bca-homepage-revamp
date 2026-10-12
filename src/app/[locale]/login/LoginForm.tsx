@@ -16,6 +16,7 @@ type LoginFormProps = {
   wrongPassword: string;
   successMessage: string;
   submit: string;
+  preview?: "idle" | "error" | "success";
 };
 
 export default function LoginForm({
@@ -26,19 +27,20 @@ export default function LoginForm({
   wrongPassword,
   successMessage,
   submit,
+  preview,
 }: LoginFormProps) {
   const router = useRouter();
   const [state, formAction, pending] = useActionState<LoginState, FormData>(login, "idle");
 
   useEffect(() => {
-    if (state !== "success") return;
+    if (preview || state !== "success") return;
 
     const timeout = window.setTimeout(() => router.replace(redirectTo), SUCCESS_TOAST_DELAY_MS);
     return () => window.clearTimeout(timeout);
-  }, [redirectTo, router, state]);
+  }, [redirectTo, router, state, preview]);
 
-  const hasError = state === "error";
-  const isSuccessful = state === "success";
+  const hasError = (preview ?? state) === "error";
+  const isSuccessful = (preview ?? state) === "success";
 
   return (
     <>
@@ -47,25 +49,25 @@ export default function LoginForm({
         className="w-full max-w-[360px] rounded-2xl border border-neutral-300 bg-white p-8 shadow-card"
       >
         <h1 className="text-heading text-neutral-900">{heading}</h1>
-        <p className="mt-2 text-sm text-neutral-700">{subheading}</p>
+        <p className="mt-2 text-size-body-m text-neutral-700">{subheading}</p>
 
         <input
           id={PASSWORD_FIELD_ID}
           type="password"
           name="password"
           placeholder={passwordPlaceholder}
-          autoFocus
+          autoFocus={!preview}
           required
           disabled={isSuccessful}
           aria-invalid={hasError || undefined}
           aria-describedby={hasError ? PASSWORD_ERROR_ID : undefined}
-          className={`mt-6 h-12 w-full rounded-xl border bg-neutral-200 px-3.5 text-sm leading-5 text-neutral-700 outline-none transition-colors placeholder:text-neutral-600 disabled:cursor-not-allowed disabled:opacity-60 ${
+          className={`mt-6 h-12 w-full rounded-xl border bg-neutral-200 px-3.5 text-size-body-m leading-5 text-neutral-700 outline-none transition-colors placeholder:text-neutral-600 disabled:cursor-not-allowed disabled:opacity-60 ${
             hasError ? "border-red-500" : "border-neutral-300 focus:border-cyan-500"
           }`}
         />
 
         {hasError && (
-          <p id={PASSWORD_ERROR_ID} role="alert" className="mt-2 text-sm text-red-500">
+          <p id={PASSWORD_ERROR_ID} role="alert" className="mt-2 text-size-body-m text-red-500">
             {wrongPassword}
           </p>
         )}
@@ -80,11 +82,11 @@ export default function LoginForm({
       </form>
 
       {isSuccessful && (
-        <div className="pointer-events-none fixed inset-x-4 top-6 z-[110] flex justify-center">
+        <div className={`pointer-events-none ${preview ? "absolute" : "fixed"} inset-x-4 top-6 z-[110] flex justify-center`}>
           <p
             role="status"
             aria-live="polite"
-            className="login-success-toast rounded-xl bg-blue-500 px-5 py-3 text-sm font-semibold text-neutral-100 shadow-panel"
+            className="login-success-toast rounded-xl bg-blue-500 px-5 py-3 text-size-body-m font-semibold text-neutral-100 shadow-panel"
           >
             {successMessage}
           </p>

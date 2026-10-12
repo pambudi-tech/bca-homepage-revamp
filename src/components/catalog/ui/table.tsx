@@ -10,7 +10,7 @@ const Table = React.forwardRef<
   <div className="relative w-full overflow-auto">
     <table
       ref={ref}
-      className={cn("w-full caption-bottom text-sm", className)}
+      className={cn("w-full caption-bottom text-size-body-m", className)}
       {...props}
     />
   </div>
@@ -44,7 +44,7 @@ const TableFooter = React.forwardRef<
   <tfoot
     ref={ref}
     className={cn(
-      "border-t border-docs-border bg-docs-muted/50 font-medium [&>tr]:last:border-b-0",
+      "border-t border-neutral-400 bg-neutral-200/50 font-medium [&>tr]:last:border-b-0",
       className
     )}
     {...props}
@@ -59,7 +59,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "border-b border-docs-border transition-colors hover:bg-docs-muted/50 data-[state=selected]:bg-docs-muted",
+      "border-b border-neutral-400 transition-colors hover:bg-neutral-200/50 data-[state=selected]:bg-neutral-200",
       className
     )}
     {...props}
@@ -74,7 +74,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "h-10 px-2 text-left align-middle font-medium text-docs-muted-docs-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+      "h-10 px-2 text-left align-middle font-medium text-neutral-700 [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
       className
     )}
     {...props}
@@ -103,7 +103,7 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <caption
     ref={ref}
-    className={cn("mt-4 text-sm text-docs-muted-docs-foreground", className)}
+    className={cn("mt-4 text-size-body-m text-neutral-700", className)}
     {...props}
   />
 ))

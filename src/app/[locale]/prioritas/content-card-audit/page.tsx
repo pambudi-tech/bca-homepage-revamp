@@ -26,7 +26,7 @@ export default async function ContentCardLibraryPage({ params }: { params: Promi
         <header className="mb-8 xl:mb-12">
           <p className="text-eyebrow uppercase text-pbrown-600">{t("component")}</p>
           <h1 className="mt-2 text-display">{t("title")}</h1>
-          <p className="mt-4 max-w-[640px] text-base leading-6 text-pbrown-700">{t("description")}</p>
+          <p className="mt-4 max-w-[640px] text-size-body-l leading-6 text-pbrown-700">{t("description")}</p>
         </header>
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
           {cards.map(({ variant, card }) => (

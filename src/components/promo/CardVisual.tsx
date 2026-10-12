@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useTranslations } from "next-intl";
 import {
   getPromoBadge,
@@ -29,7 +31,11 @@ export default function CardVisual({
   showPromoTimestamp = false,
   className = "",
   previewViewport,
+  titleMaxLines = 2,
+  brandMaxLines = 2,
 }: {
+  titleMaxLines?: 2 | 3;
+  brandMaxLines?: 1 | 2;
   promo: Promo;
   now: Date;
   reveal?: boolean;
@@ -79,7 +85,7 @@ export default function CardVisual({
     >
       <div className={`absolute inset-0 flex flex-col items-start overflow-clip rounded-3xl border transition-colors duration-300 ${solitaireTone ? "border-neutral-300 bg-neutral-100 group-hover:border-neutral-800" : detailTone ? "border-neutral-300 bg-neutral-100 group-hover:border-pgold-600" : variant === "prioritas" ? "border-pbrown-500 bg-pbrown-500 group-hover:border-pgold-500" : "border-neutral-300 bg-white group-hover:border-cyan-500"}`}>
         <div className={`relative w-full shrink-0 overflow-clip ${prioritasCompact ? "h-20" : compact ? "h-24" : "h-40"}`}>
-          {promo.cover ? <img loading="lazy" decoding="async" src={promo.cover} alt="" className="absolute inset-0 size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105" /> : <div aria-hidden className="absolute inset-0 bg-pgold-200" />}
+          {promo.cover ? <img data-blueprint-part="cover" loading="lazy" decoding="async" src={promo.cover} alt="" className="absolute inset-0 size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105" /> : <div aria-hidden className="absolute inset-0 bg-pgold-200" />}
           {eventDate ? <PrioritasEventDateTile date={eventDate} solitaire={solitaireTone} previewViewport={previewViewport} /> : null}
           <div aria-hidden className={`absolute inset-x-0 bottom-0 h-[120px] bg-gradient-to-b from-transparent ${solitaireTone ? "to-neutral-300" : variant === "prioritas" ? "to-pgold-500" : "to-blue-500"} opacity-0 transition-opacity duration-300 group-hover:opacity-100`} />
           <svg viewBox="0 0 24 24" fill="none" className="absolute bottom-2 right-4 size-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -88,10 +94,10 @@ export default function CardVisual({
         </div>
         <div className="relative w-full flex-1">
           <div className={`absolute flex flex-col items-start ${prioritasCompact ? "left-3 right-3 top-7 gap-1" : compact ? "left-3 right-3 top-9 gap-1.5" : "left-5 right-5 top-12 gap-2"}`}>
-            <p className={`line-clamp-2 w-full font-semibold tracking-normal transition-colors duration-300 group-hover:font-bold ${solitaireTone ? "text-neutral-800 group-hover:text-neutral-800" : detailTone ? "text-neutral-800 group-hover:text-pgold-600" : variant === "prioritas" ? "text-pgold-100 group-hover:text-white" : "text-neutral-800 group-hover:text-blue-500"} ${prioritasCompact ? "text-sm leading-5" : compact ? "text-sm leading-5" : detailTone ? "text-base leading-6" : "text-base leading-6 xl:text-[18px] xl:leading-[1.2]"}`}>
+            <p data-blueprint-part="cardTitle" className={`${titleMaxLines === 3 ? "line-clamp-3" : "line-clamp-2"} w-full font-semibold tracking-normal transition-colors duration-300 group-hover:font-bold ${solitaireTone ? "text-neutral-800 group-hover:text-neutral-800" : detailTone ? "text-neutral-800 group-hover:text-pgold-600" : variant === "prioritas" ? "text-pgold-100 group-hover:text-white" : "text-neutral-800 group-hover:text-blue-500"} ${prioritasCompact ? "text-size-body-m leading-5" : compact ? "text-size-body-m leading-5" : detailTone ? "text-size-body-l leading-6" : "text-size-body-l leading-6 xl:text-[18px] xl:leading-[1.2]"}`}>
               {promo.title}
             </p>
-            <p className={`line-clamp-2 w-full font-semibold ${solitaireTone || detailTone ? "text-neutral-600" : variant === "prioritas" ? "text-pbrown-100" : "text-neutral-600"} ${promoPage && compact ? "text-xs leading-4" : "text-sm leading-5"}`}>{promo.brand}</p>
+            <p data-blueprint-part="brand" className={`${brandMaxLines === 1 ? "line-clamp-1" : "line-clamp-2"} w-full font-semibold ${solitaireTone || detailTone ? "text-neutral-600" : variant === "prioritas" ? "text-pbrown-100" : "text-neutral-600"} ${promoPage && compact ? "text-size-body-s leading-4" : "text-size-body-m leading-5"}`}>{promo.brand}</p>
           </div>
           <div className={`absolute flex items-center gap-1.5 ${prioritasCompact ? "bottom-3 left-3" : compact ? "bottom-3 left-3" : "bottom-5 left-5 gap-2"}`}>
             {(variant !== "prioritas" || promoPage || showPromoTimestamp) && <span aria-hidden="true" className={`shrink-0 bg-current ${timestampColor} ${compact ? "size-4" : "size-5"} [mask-image:url('/assets/promo/icon-clock.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/promo/icon-clock.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]`} />}
@@ -101,10 +107,10 @@ export default function CardVisual({
                 <PrioritasButtonIcon src={solitaireTone ? "/assets/cycle1/chevron-right-1.svg" : detailTone ? "/assets/prioritas/detail/molton-brown/arrow-right.svg" : "/assets/prioritas/privilege/arrow-small.svg"} />
               </span>
             ) : <>
-            <span className={`whitespace-nowrap font-semibold ${timestampColor} ${promoPage ? "text-sm leading-5" : detailTone ? previewViewport ? previewViewport === "desktop" ? "text-base leading-6" : "text-sm leading-5" : "text-sm leading-5 xl:text-base xl:leading-6" : compact ? "text-[11px] leading-4" : "text-sm leading-5"}`}>
+            <span className={`whitespace-nowrap font-semibold ${timestampColor} ${promoPage ? "text-size-body-m leading-5" : detailTone ? previewViewport ? previewViewport === "desktop" ? "text-size-body-l leading-6" : "text-size-body-m leading-5" : "text-size-body-m leading-5 xl:text-size-body-l xl:leading-6" : compact ? "text-[11px] leading-4" : "text-size-body-m leading-5"}`}>
               {variant === "prioritas" && !promoPage && !showPromoTimestamp ? privilegeT("more") : timestamp}
             </span>
-            {detailTone && !promoPage && !showPromoTimestamp ? <img src="/assets/prioritas/detail/molton-brown/arrow-right.svg" alt="" aria-hidden="true" className="size-5 shrink-0" /> : variant === "prioritas" && !promoPage && !showPromoTimestamp ? <img src="/assets/prioritas/privilege/arrow-small.svg" alt="" aria-hidden="true" className="size-5 shrink-0" /> : null}
+            {detailTone && !promoPage && !showPromoTimestamp ? <IconAsset src="/assets/prioritas/detail/molton-brown/arrow-right.svg" alt="" aria-hidden="true" className="size-5 shrink-0" /> : variant === "prioritas" && !promoPage && !showPromoTimestamp ? <IconAsset src="/assets/prioritas/privilege/arrow-small.svg" alt="" aria-hidden="true" className="size-5 shrink-0" /> : null}
             </>}
           </div>
         </div>
@@ -113,7 +119,7 @@ export default function CardVisual({
       <div aria-hidden className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ boxShadow: "var(--shadow-card)" }} />
 
       <div className={`absolute overflow-clip rounded-xl border border-neutral-300 shadow-card ${darkLogoBackground ? "bg-pbrown-500" : "bg-white"} ${prioritasCompact ? "left-3 top-[56px] size-12" : compact ? "left-3 top-[72px] size-12" : "left-5 top-[124px] size-[72px]"}`}>
-        {promo.logo ? <img loading="lazy" decoding="async" src={promo.logo} alt="" className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded object-contain ${compact ? "size-9" : "size-14"}`} /> : <span aria-hidden className="absolute inset-1 flex items-center justify-center text-center text-xs font-semibold leading-tight text-pbrown-700"><span className="line-clamp-3 break-words">{brandFallback}</span></span>}
+        {promo.logo ? <img data-blueprint-part="logo" loading="lazy" decoding="async" src={promo.logo} alt="" className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded object-contain ${compact ? "size-9" : "size-14"}`} /> : <span aria-hidden className="absolute inset-1 flex items-center justify-center text-center text-size-body-s font-semibold leading-tight text-pbrown-700"><span className="line-clamp-3 break-words">{brandFallback}</span></span>}
       </div>
 
       {birthdayGift ? <PromoRibbon badgeKey="popular" label={privilegeT("complimentary.birthday")} /> : !partnerPrivilege && !eventDate && badge.key !== "default" ? <PromoRibbon badgeKey={badge.key} label={t(`badge.${badge.key}`)} /> : null}

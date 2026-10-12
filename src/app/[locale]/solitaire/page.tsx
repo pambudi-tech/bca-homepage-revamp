@@ -151,12 +151,12 @@ export default async function SolitairePage({
             previous: tPrioritas("bankingSolution.previous"),
             next: tPrioritas("bankingSolution.next"),
             cards: [
-              { title: tPrioritas("bankingSolution.cards.branch.title"), alt: tPrioritas("bankingSolution.cards.branch.alt"), image: "/assets/prioritas/banking/privilege-branch.png", href: "/solitaire/banking-solution/privilege/layanan-cabang" },
-              { title: tPrioritas("bankingSolution.cards.vehicle.title"), alt: tPrioritas("bankingSolution.cards.vehicle.alt"), image: "/assets/prioritas/banking/privilege-vehicle.png", href: "/solitaire/banking-solution/privilege/kkb" },
-              { title: tPrioritas("bankingSolution.cards.transaction.title"), alt: tPrioritas("bankingSolution.cards.transaction.alt"), image: "/assets/prioritas/banking/privilege-transaction.png", href: "/solitaire/banking-solution/privilege/fitur-transaksi" },
-              { title: tPrioritas("bankingSolution.cards.credit.title"), alt: tPrioritas("bankingSolution.cards.credit.alt"), image: "/assets/prioritas/banking/privilege-credit.png", href: "/solitaire/banking-solution/privilege/kartu-kredit" },
-              { title: tPrioritas("bankingSolution.cards.home.title"), alt: tPrioritas("bankingSolution.cards.home.alt"), image: "/assets/prioritas/banking/privilege-home.png", href: "/solitaire/banking-solution/privilege/kpr" },
-              { title: tPrioritas("bankingSolution.cards.deposit.title"), alt: tPrioritas("bankingSolution.cards.deposit.alt"), image: "/assets/prioritas/banking/privilege-deposit.png", href: "/solitaire/banking-solution/privilege/safe-deposit-box" },
+              { title: tPrioritas("bankingSolution.cards.branch.title"), alt: tPrioritas("bankingSolution.cards.branch.alt"), image: "/assets/prioritas/banking/privilege-branch.webp", href: "/solitaire/banking-solution/privilege/layanan-cabang" },
+              { title: tPrioritas("bankingSolution.cards.vehicle.title"), alt: tPrioritas("bankingSolution.cards.vehicle.alt"), image: "/assets/prioritas/banking/privilege-vehicle.webp", href: "/solitaire/banking-solution/privilege/kkb" },
+              { title: tPrioritas("bankingSolution.cards.transaction.title"), alt: tPrioritas("bankingSolution.cards.transaction.alt"), image: "/assets/prioritas/banking/privilege-transaction.webp", href: "/solitaire/banking-solution/privilege/fitur-transaksi" },
+              { title: tPrioritas("bankingSolution.cards.credit.title"), alt: tPrioritas("bankingSolution.cards.credit.alt"), image: "/assets/prioritas/banking/privilege-credit.webp", href: "/solitaire/banking-solution/privilege/kartu-kredit" },
+              { title: tPrioritas("bankingSolution.cards.home.title"), alt: tPrioritas("bankingSolution.cards.home.alt"), image: "/assets/prioritas/banking/privilege-home.webp", href: "/solitaire/banking-solution/privilege/kpr" },
+              { title: tPrioritas("bankingSolution.cards.deposit.title"), alt: tPrioritas("bankingSolution.cards.deposit.alt"), image: "/assets/prioritas/banking/privilege-deposit.webp", href: "/solitaire/banking-solution/privilege/safe-deposit-box" },
             ],
             wealthCards: [
               {

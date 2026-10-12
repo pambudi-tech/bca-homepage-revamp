@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import {
   useId,
   type InputHTMLAttributes,
@@ -40,7 +42,7 @@ export default function TextField({
   const id = useId();
   const errorId = `${id}-error`;
   const box = [
-    `${fieldSize === "large" ? "h-14" : "h-12"} ${fieldSize === "default" ? "text-sm leading-5" : "text-base leading-6"} w-full rounded-xl border bg-neutral-200 px-3.5 text-neutral-700`,
+    `${fieldSize === "large" ? "h-14" : "h-12"} ${fieldSize === "default" ? "text-size-body-m leading-5" : "text-size-body-l leading-6"} w-full rounded-xl border bg-neutral-200 px-3.5 text-neutral-700`,
     "outline-none transition-colors placeholder:text-neutral-600",
     "disabled:text-neutral-500",
     leadingIcon ? "pl-11" : "",
@@ -55,7 +57,7 @@ export default function TextField({
       <div className="flex items-center gap-1">
         <label
           htmlFor={id}
-          className={hideLabel ? "sr-only" : `${labelClassName ?? (fieldSize === "default" ? "text-sm leading-5" : "text-base leading-6")} font-bold text-neutral-800`}
+          className={hideLabel ? "sr-only" : `${labelClassName ?? (fieldSize === "default" ? "text-size-body-m leading-5" : "text-size-body-l leading-6")} font-bold text-neutral-800`}
         >
           {label}
         </label>
@@ -77,13 +79,8 @@ export default function TextField({
               </option>
             ))}
           </select>
-          <svg
-            viewBox="0 0 12 8"
-            aria-hidden
-            className="pointer-events-none absolute right-3.5 top-1/2 w-3 -translate-y-1/2 text-neutral-600"
-          >
-            <path d="M1 1.5 6 6.5l5-5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <IconAsset src="/assets/asset-bank/icons/TextField-e54e14f546e6b50a.svg" aria-hidden
+            className="pointer-events-none absolute right-3.5 top-1/2 w-3 -translate-y-1/2 text-neutral-600" viewBox="3.9 6.4 12.2 7.2" />
         </div>
       ) : (
         <div className="relative w-full">
@@ -108,7 +105,7 @@ export default function TextField({
         </div>
       )}
       {error ? (
-        <p id={errorId} className="text-xs leading-[18px] text-red-500">
+        <p id={errorId} className="text-size-body-s leading-[18px] text-red-500">
           {error}
         </p>
       ) : null}

@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { PrioritasButton } from "@/components/prioritas/PrioritasButton";
@@ -26,11 +28,12 @@ const internationalVouchers: AirportTransferVoucher[] = [
 ];
 const INITIAL_VOUCHER_COUNT = 2;
 
-export default function MemberAirportTransferModule({ variant, solitaire = false }: { variant: "domestic" | "international"; solitaire?: boolean }) {
+export default function MemberAirportTransferModule({ variant, solitaire = false, preview }: { variant: "domestic" | "international"; solitaire?: boolean; preview?: { expanded?: boolean; copied?: boolean } }) {
   const t = useTranslations("memberAirportTransfer");
-  const vouchers = variant === "international" ? internationalVouchers : domesticVouchers;
-  const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [showAll, setShowAll] = useState(false);
+  const allVouchers = variant === "international" ? internationalVouchers : domesticVouchers;
+  const vouchers = allVouchers;
+  const [copiedId, setCopiedId] = useState<string | null>(preview?.copied ? vouchers[0].id : null);
+  const [showAll, setShowAll] = useState(preview?.expanded ?? false);
 
   async function copyCode(id: string, code: string) {
     try {
@@ -44,24 +47,24 @@ export default function MemberAirportTransferModule({ variant, solitaire = false
 
   function renderVoucher(voucher: (typeof vouchers)[number]) {
     return (
-      <div key={voucher.id} className="flex flex-col gap-0">
+      <div key={voucher.id} data-transfer-voucher={voucher.usedOn ? "used" : "available"} className="flex flex-col gap-0">
         <div className={`flex flex-col overflow-hidden rounded-t-xl ${voucher.usedOn ? "rounded-b-none" : "rounded-b-xl"} border border-neutral-300 lg:h-[88px] lg:flex-row`}>
           <div className="flex h-[80px] min-w-0 flex-1 items-center justify-between gap-4 p-4 lg:h-[88px] lg:w-1/2 lg:flex-none">
             {voucher.logo ? <img src={voucher.logo} alt="" className="size-10 shrink-0 object-contain lg:size-[54px]" /> : <img src="/assets/prioritas/member-airport-transfer/grab-logo.svg" alt="" className="h-8 w-[58px] shrink-0 object-contain" />}
             <div className="flex min-w-0 flex-1 items-center justify-between gap-3 lg:flex-col lg:items-start lg:justify-center lg:gap-0">
-              <p className="text-base leading-6 text-neutral-700">{voucher.provider}</p>
-              <p className={`text-lg font-semibold leading-[26px] tracking-tight lg:mt-1 ${solitaire ? "text-neutral-800" : "text-pbrown-500"}`}>{voucher.amount}</p>
+              <p className="text-size-body-l leading-6 text-neutral-700">{voucher.provider}</p>
+              <p className={`text-size-body-xl font-semibold leading-[26px] tracking-tight lg:mt-1 ${solitaire ? "text-neutral-800" : "text-pbrown-500"}`}>{voucher.amount}</p>
             </div>
           </div>
           <div className={`relative flex h-[80px] min-w-0 flex-1 flex-row flex-wrap items-center justify-between gap-4 p-4 after:absolute after:inset-x-0 after:top-0 after:h-px after:bg-[repeating-linear-gradient(to_right,var(--color-pbrown-100)_0_6px,transparent_6px_12px)] lg:h-auto lg:w-1/2 lg:flex-none lg:justify-between lg:after:hidden lg:before:absolute lg:before:inset-y-0 lg:before:left-0 lg:before:w-px lg:before:bg-[repeating-linear-gradient(to_bottom,var(--color-pbrown-100)_0_6px,transparent_6px_12px)] ${voucher.usedOn ? "bg-white" : solitaire ? "bg-gradient-to-r from-neutral-100 to-neutral-200" : "bg-gradient-to-r from-white to-pgold-100"}`}>
-            <code className={`break-all font-sans text-base font-semibold leading-6 tracking-tight ${voucher.usedOn ? "text-neutral-500 line-through" : "text-neutral-900"}`}>{voucher.code}</code>
-            {voucher.usedOn ? <PrioritasButton tone={solitaire ? "solitaire" : "prioritas"} size="large" disabled>{t("used")}</PrioritasButton> : <PrioritasButton tone={solitaire ? "solitaire" : "prioritas"} size="large" onClick={() => void copyCode(voucher.id, voucher.code)} trailingIcon={<img src="/assets/prioritas/member-airport-transfer/copy.svg" alt="" aria-hidden="true" className="size-5" />} aria-label={t("copyCode", { code: voucher.code })}>
+            <code className={`break-all font-sans text-size-body-l font-semibold leading-6 tracking-tight ${voucher.usedOn ? "text-neutral-500 line-through" : "text-neutral-900"}`}>{voucher.code}</code>
+            {voucher.usedOn ? <PrioritasButton tone={solitaire ? "solitaire" : "prioritas"} size="large" disabled>{t("used")}</PrioritasButton> : <PrioritasButton tone={solitaire ? "solitaire" : "prioritas"} size="large" onClick={() => void copyCode(voucher.id, voucher.code)} trailingIcon={<IconAsset src="/assets/prioritas/member-airport-transfer/copy.svg" alt="" aria-hidden="true" className="size-5" />} aria-label={t("copyCode", { code: voucher.code })}>
               {copiedId === voucher.id ? t("copied") : t("copy")}
             </PrioritasButton>}
           </div>
         </div>
         {voucher.usedOn ? <div className={`rounded-t-none rounded-b-xl border border-t-0 p-4 ${solitaire ? "border-neutral-300 bg-neutral-200" : "border-pbrown-100 bg-pgold-100"}`}>
-          <p className={`text-sm leading-5 ${solitaire ? "text-neutral-700" : "text-pbrown-600"}`}>{t("usedOn", { date: voucher.usedOn })}</p>
+          <p className={`text-size-body-m leading-5 ${solitaire ? "text-neutral-700" : "text-pbrown-600"}`}>{t("usedOn", { date: voucher.usedOn })}</p>
         </div> : null}
       </div>
     );
@@ -70,8 +73,8 @@ export default function MemberAirportTransferModule({ variant, solitaire = false
   return (
     <section aria-labelledby="member-airport-transfer-title" className={`pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] rounded-t-[20px] rounded-b-none bg-white px-4 pb-11 pt-6 shadow-none ${solitaire ? "border border-neutral-300" : ""} xl:mx-0 xl:mb-5 xl:w-full xl:rounded-xl xl:p-6 xl:shadow-prioritas`}>
       <div className="flex flex-col gap-0.5 lg:gap-2">
-        <h2 id="member-airport-transfer-title" className="text-lg font-semibold leading-7 tracking-tight text-neutral-900 xl:text-xl">{t("title")}</h2>
-        <p className="text-sm leading-6 text-neutral-700 xl:text-base">{t("description")}</p>
+        <h2 id="member-airport-transfer-title" className="text-size-body-xl font-semibold leading-7 tracking-tight text-neutral-900 xl:text-size-display-s">{t("title")}</h2>
+        <p className="text-size-body-m leading-6 text-neutral-700 xl:text-size-body-l">{t("description")}</p>
       </div>
       <div className="mt-4 flex flex-col gap-4">
         {vouchers.slice(0, INITIAL_VOUCHER_COUNT).map(renderVoucher)}
@@ -86,7 +89,7 @@ export default function MemberAirportTransferModule({ variant, solitaire = false
       {vouchers.length > INITIAL_VOUCHER_COUNT ? <PrioritasButton tone={solitaire ? "solitaire" : "prioritas"} variant="secondary" size="large" className="mt-4 w-full" onClick={() => setShowAll((current) => !current)} trailingIcon={<span aria-hidden="true" className={`size-5 bg-current transition-transform ${showAll ? "rotate-180" : ""}`} style={{ maskImage: "url(/assets/navbar/chevron-down-dark.svg)", WebkitMaskImage: "url(/assets/navbar/chevron-down-dark.svg)", maskPosition: "center", WebkitMaskPosition: "center", maskRepeat: "no-repeat", WebkitMaskRepeat: "no-repeat", maskSize: "contain" }} />} aria-expanded={showAll}>
         {showAll ? t("hideMore") : t("viewMore")}
       </PrioritasButton> : null}
-      <ul className="mt-5 list-disc space-y-2 pl-5 text-sm leading-6 text-neutral-700">
+      <ul className="mt-5 list-disc space-y-2 pl-5 text-size-body-m leading-6 text-neutral-700">
         <li>{t("notes.updated")}</li>
         <li>{t("notes.contact")}</li>
       </ul>

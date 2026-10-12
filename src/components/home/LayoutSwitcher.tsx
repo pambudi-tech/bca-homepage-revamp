@@ -124,11 +124,11 @@ export default function LayoutSwitcher<T extends string>({
                   )}
                 </span>
                 <span className="flex flex-col gap-0.5">
-                  <span className={`text-sm font-semibold leading-5 ${active ? "text-blue-700" : "text-neutral-800"}`}>
+                  <span className={`text-size-body-m font-semibold leading-5 ${active ? "text-blue-700" : "text-neutral-800"}`}>
                     {opt.name}
                   </span>
                   {opt.description && (
-                    <span className="text-xs leading-4 text-neutral-500">{opt.description}</span>
+                    <span className="text-size-body-s leading-4 text-neutral-500">{opt.description}</span>
                   )}
                 </span>
               </button>

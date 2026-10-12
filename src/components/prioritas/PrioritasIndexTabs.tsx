@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
+import { useContext, useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { useTranslations } from "next-intl";
+import { PreviewFrozenContext } from "@/lib/PreviewViewport";
 import { TabLink } from "@/components/ui/Tab";
 import { usePathname } from "@/i18n/navigation";
 
@@ -10,10 +11,10 @@ type PrioritasOverviewTab = "overview" | "privilege" | "banking" | "magazine" | 
 type PrioritasTabKey = PrioritasIndexTab | PrioritasOverviewTab;
 
 const tabs: Array<{ key: PrioritasIndexTab; href: string }> = [
-  { key: "signature", href: "/prioritas/privilege" },
-  { key: "lifestyle", href: "/prioritas/lifestyle-privilege" },
-  { key: "event", href: "/prioritas/event" },
-  { key: "promo", href: "/prioritas/promo" },
+  { key: "signature", href: "/prioritas/privilege?section=signature" },
+  { key: "lifestyle", href: "/prioritas/privilege?section=lifestyle" },
+  { key: "event", href: "/prioritas/privilege?section=event" },
+  { key: "promo", href: "/prioritas/privilege?section=promo" },
 ];
 
 const overviewTabs: Array<{ key: PrioritasOverviewTab; href: string }> = [
@@ -24,10 +25,11 @@ const overviewTabs: Array<{ key: PrioritasOverviewTab; href: string }> = [
   { key: "financial", href: "/prioritas/member/financial-report" },
 ];
 
-export default function PrioritasIndexTabs({ activeTab, surface = "default", basePath = "/prioritas", visibleTabs, tone = "prioritas" }: { activeTab: PrioritasTabKey; surface?: "default" | "overview" | "member"; basePath?: string; visibleTabs?: PrioritasIndexTab[]; tone?: "prioritas" | "solitaire" }) {
+export default function PrioritasIndexTabs({ activeTab, surface = "default", basePath = "/prioritas", visibleTabs, tone = "prioritas", memberBasePath }: { activeTab: PrioritasTabKey; surface?: "default" | "overview" | "member"; basePath?: string; visibleTabs?: PrioritasIndexTab[]; tone?: "prioritas" | "solitaire"; memberBasePath?: string }) {
+  const frozen = useContext(PreviewFrozenContext);
   const t = useTranslations(surface !== "default" ? "memberOverview" : "signaturePrivilege");
   const pathname = usePathname();
-  const memberBase = pathname.startsWith("/solitaire/member") ? "/solitaire/member" : "/prioritas/member";
+  const memberBase = memberBasePath ?? (pathname.startsWith("/solitaire/member") ? "/solitaire/member" : "/prioritas/member");
   const solitaireMember = surface === "overview" && memberBase === "/solitaire/member";
   const activeTone = solitaireMember ? "solitaire" : tone;
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -35,11 +37,12 @@ export default function PrioritasIndexTabs({ activeTab, surface = "default", bas
   const requestedTabRef = useRef<PrioritasTabKey | null>(null);
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
+    if (frozen) return;
     const update = () => setScrolled(window.scrollY > 8);
     update();
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
-  }, []);
+  }, [frozen]);
 
   const centerTab = useCallback((key: PrioritasTabKey, behavior: ScrollBehavior = "smooth") => {
     const viewport = viewportRef.current;
@@ -57,6 +60,7 @@ export default function PrioritasIndexTabs({ activeTab, surface = "default", bas
   }, []);
 
   useEffect(() => {
+    if (frozen) return;
     if (requestedTabRef.current === activeTab) {
       requestedTabRef.current = null;
       return;
@@ -64,7 +68,7 @@ export default function PrioritasIndexTabs({ activeTab, surface = "default", bas
 
     const frame = requestAnimationFrame(() => centerTab(activeTab, "auto"));
     return () => cancelAnimationFrame(frame);
-  }, [activeTab, centerTab]);
+  }, [activeTab, centerTab, frozen]);
 
   const memberUnderline = surface === "member";
   return (
@@ -98,7 +102,7 @@ export default function PrioritasIndexTabs({ activeTab, surface = "default", bas
               {...tabVisual}
               className={surface === "overview" ? `xl:flex-1 xl:justify-center ${solitaireMember ? "prioritas-index-tab-solitaire-member" : ""}` : undefined}
             >
-              {surface === "overview" ? t(`nav.${key}`) : t(`tabs.${key}`)}
+              {surface === "overview" ? t(`nav.${key}`) : surface === "default" && key === "signature" ? t("signatureTab") : t(`tabs.${key}`)}
             </TabLink>
           );
         })}

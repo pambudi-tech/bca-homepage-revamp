@@ -1,9 +1,12 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useIsLive } from "@/lib/useIsLive";
 import { Link } from "@/i18n/navigation";
 import { prioritasButtonClassName, PrioritasButtonIcon } from "@/components/prioritas/PrioritasButton";
+import { privilegeArtwork } from "./privilege-assets";
 
 const AUTO_ADVANCE_MS = 6000;
 
@@ -83,7 +86,7 @@ export function PrivilegeCard({
         className={`glass-panel glass-panel-prioritas absolute z-20 flex flex-col items-start justify-between overflow-hidden rounded-2xl px-4 pb-5 pt-4 ${previewViewport ? desktop ? "bottom-4 left-4 h-[180px] w-[400px] max-w-[calc(100%-2rem)]" : "inset-x-2 bottom-2 h-[160px] w-auto" : "inset-x-2 bottom-2 h-[160px] w-auto xl:inset-x-auto xl:bottom-4 xl:left-4 xl:h-[180px] xl:w-[400px] xl:max-w-[calc(100%-2rem)]"}`}
         style={{ isolation: "isolate" }}
       >
-        <h3 className={`max-w-full text-white ${previewViewport ? desktop ? "text-heading" : "text-subtitle" : "text-subtitle xl:text-heading"}`}>
+        <h3 data-blueprint-part="cardTitle" className={`line-clamp-3 max-w-full text-white ${previewViewport ? desktop ? "text-heading" : "text-subtitle" : "text-subtitle xl:text-heading"}`}>
           {copy.title}
         </h3>
         <ArrowAction>{copy.action}</ArrowAction>
@@ -101,9 +104,9 @@ export default function PrivilegeSection({ copy, previewViewport }: { copy: Priv
   const sectionRef = useRef<HTMLElement>(null);
   const live = useIsLive(sectionRef);
   const cards = [
-    { copy: copy.cards[0], image: `${ASSET_ROOT}/lounge.webp`, href: "/prioritas/privilege/executive-airport-lounge" },
-    { copy: copy.cards[1], image: `${ASSET_ROOT}/hospital.webp`, href: "/prioritas/lifestyle-privilege?category=health" },
-    { copy: copy.cards[2], image: `${ASSET_ROOT}/event.webp`, href: "/prioritas/event" },
+    { copy: copy.cards[0], image: privilegeArtwork.prioritasLounge, href: "/prioritas/signature-privilege/executive-airport-lounge" },
+    { copy: copy.cards[1], image: privilegeArtwork.health, href: "/prioritas/lifestyle-privilege?category=health" },
+    { copy: copy.cards[2], image: privilegeArtwork.prioritasEvent, href: "/prioritas/event" },
   ];
 
   const selectMobileCard = (index: number, scroll = false) => {
@@ -177,7 +180,7 @@ export default function PrivilegeSection({ copy, previewViewport }: { copy: Priv
           <p className="text-eyebrow-lg uppercase text-pgold-300 md:text-eyebrow xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-xl">
             {copy.eyebrow}
           </p>
-          <h2 className="text-heading max-w-[560px] text-pgold-100 xl:text-display">
+          <h2 className="text-display-m max-w-[560px] text-pgold-100 xl:text-display">
             {copy.heading}
           </h2>
         </header>
@@ -208,10 +211,10 @@ export default function PrivilegeSection({ copy, previewViewport }: { copy: Priv
 
           <Link
             href="/prioritas/privilege"
-            className="flex h-16 w-full items-center justify-center gap-4 rounded-full border border-pgold-100/25 bg-[linear-gradient(24deg,var(--color-pbrown-500)_0%,var(--color-pgold-500)_71%,var(--color-pgold-400)_86%,var(--color-pgold-500)_100%)] px-6 py-6 text-center text-base font-semibold text-pgold-100 transition-[filter,transform] hover:brightness-110 active:scale-[0.99] xl:hidden"
+            className="flex h-16 w-full items-center justify-center gap-4 rounded-full border border-pgold-100/25 bg-[linear-gradient(24deg,var(--color-pbrown-500)_0%,var(--color-pgold-500)_71%,var(--color-pgold-400)_86%,var(--color-pgold-500)_100%)] px-6 py-6 text-center text-size-body-l font-semibold text-pgold-100 transition-[filter,transform] hover:brightness-110 active:scale-[0.99] xl:hidden"
           >
             <span>{copy.viewMore}</span>
-            <img src={`${ASSET_ROOT}/arrow-right.svg`} alt="" className="size-6" />
+            <IconAsset src={`${ASSET_ROOT}/arrow-right.svg`} alt="" className="size-6" />
           </Link>
 
           <div className="hidden grid-cols-1 gap-8 xl:grid xl:grid-cols-2 xl:gap-6">
@@ -224,7 +227,7 @@ export default function PrivilegeSection({ copy, previewViewport }: { copy: Priv
               className="text-subtitle col-span-1 flex h-16 items-center justify-center gap-4 rounded-full border border-pgold-100/25 bg-[linear-gradient(24deg,var(--color-pbrown-500)_0%,var(--color-pgold-500)_71%,var(--color-pgold-400)_86%,var(--color-pgold-500)_100%)] px-6 py-6 text-center text-pgold-100 transition-[filter,transform] hover:brightness-110 active:scale-[0.99] xl:col-span-2"
             >
               <span>{copy.viewMore}</span>
-              <img src={`${ASSET_ROOT}/arrow-right.svg`} alt="" className="size-8" />
+              <IconAsset src={`${ASSET_ROOT}/arrow-right.svg`} alt="" className="size-8" />
             </Link>
           </div>
         </div>

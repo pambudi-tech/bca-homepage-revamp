@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useTranslations } from "next-intl";
 import { AIRPORT_LOUNGE_VOUCHER_COUNT, type MemberSignatureVoucherStatus } from "@/lib/member-signature-voucher";
 
@@ -11,13 +13,13 @@ export default function MemberSignatureVoucherModule({ status, solitaire = false
   return (
     <section aria-label={t("title")} className={`pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] rounded-t-[20px] rounded-b-none bg-white p-4 pb-9 shadow-none ${solitaire ? "border border-neutral-300" : ""} xl:mx-0 xl:mb-5 xl:w-full xl:rounded-xl xl:p-6 xl:shadow-card`}>
       <div className="flex flex-nowrap items-center justify-between gap-3">
-        <h2 className="text-lg font-semibold text-neutral-900 xl:text-xl">{t("title")}</h2>
-        <span className={`inline-flex min-h-10 items-center rounded-xl px-4 py-2 text-sm font-semibold ${exhausted ? "bg-voucher-exhausted text-voucher-exhausted-ink" : "bg-voucher-available text-voucher-available-ink"}`}>
+        <h2 className="text-size-body-xl font-semibold text-neutral-900 xl:text-size-display-s">{t("title")}</h2>
+        <span className={`inline-flex min-h-10 items-center rounded-xl px-4 py-2 text-size-body-m font-semibold ${exhausted ? "bg-red-300 text-red-700" : "bg-green-300 text-green-700"}`}>
           {badgeLabel}
         </span>
       </div>
-      {status === "penalty" ? <div role="status" className="mt-4 flex items-start gap-3 rounded-xl bg-voucher-warning p-4 text-sm leading-6 text-voucher-warning-ink">
-        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" className="mt-0.5 size-5 shrink-0"><path d="M12 3 2.5 20h19L12 3Z" fill="currentColor" /><path d="M12 9v5m0 3h.01" stroke="white" strokeWidth="2" strokeLinecap="round" /></svg>
+      {status === "penalty" ? <div role="status" className="mt-4 flex items-start gap-3 rounded-xl bg-yellow-100 p-4 text-size-body-m leading-6 text-yellow-700">
+        <IconAsset src="/assets/asset-bank/icons/MemberSignatureVoucherModule-f781f2369d4fdda4.svg" aria-hidden="true" className="mt-0.5 size-5 shrink-0" />
         <p>{t("penaltyMessage")}</p>
       </div> : null}
     </section>

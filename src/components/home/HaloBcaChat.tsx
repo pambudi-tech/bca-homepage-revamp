@@ -357,8 +357,8 @@ export default function HaloBcaChat() {
                 block, so the button in the footer below stays fixed on
                 screen while the fields scroll underneath it. */}
             <div data-lenis-prevent className="min-h-0 flex-1 overflow-y-auto px-6 pt-6 xl:pt-6">
-              <h2 className="text-lg leading-6 font-bold tracking-[-0.02em] text-neutral-900">{t("title")}</h2>
-              <p className="mt-2 text-sm leading-5 text-neutral-600">{t("subtitle")}</p>
+              <h2 className="text-size-body-xl leading-6 font-bold tracking-[-0.02em] text-neutral-900">{t("title")}</h2>
+              <p className="mt-2 text-size-body-m leading-5 text-neutral-600">{t("subtitle")}</p>
 
               <form id="halobca-form" onSubmit={submit} className="mt-6 flex flex-col gap-4">
                 <TextField label={t("fields.nama")} placeholder={t("fields.namaPlaceholder")} value={values.nama} onChange={set("nama")} error={errors.nama} />
@@ -373,10 +373,10 @@ export default function HaloBcaChat() {
                   <div ref={recaptchaRef} />
                 </div>
                 {captchaTouched && !captchaToken ? (
-                  <p className="-mt-2 text-center text-xs leading-[18px] text-red-500">{t("errors.captcha")}</p>
+                  <p className="-mt-2 text-center text-size-body-s leading-[18px] text-red-500">{t("errors.captcha")}</p>
                 ) : null}
 
-                <a href="#" className="text-center text-sm text-blue-500 underline">
+                <a href="#" className="text-center text-size-body-m text-blue-500 underline">
                   {t("terms")}
                 </a>
               </form>
@@ -389,7 +389,7 @@ export default function HaloBcaChat() {
               <button
                 type="submit"
                 form="halobca-form"
-                className="btn-base btn-primary w-full gap-0 text-base font-semibold"
+                className="btn-base btn-primary w-full gap-0 text-size-body-l font-semibold"
               >
                 {t("submit")}
               </button>
@@ -408,7 +408,7 @@ export default function HaloBcaChat() {
         data-open={open}
         aria-label={open ? t("close") : t("label")}
         className={`halobca-fab group relative flex items-center justify-center rounded-full border border-neutral-300 bg-neutral-100 px-4 py-4 text-blue-500 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-[background-color,color,transform,gap] duration-500 ease-out hover:bg-blue-500 hover:text-neutral-100 data-[open=true]:bg-blue-500 data-[open=true]:text-neutral-100 xl:hover:gap-2 xl:data-[open=true]:gap-2 ${ready ? "translate-y-0" : "translate-y-4"}`}
-        style={{ "--beam": "var(--color-primary-hover)", "--beam-radius": "9999px" } as React.CSSProperties}
+        style={{ "--beam": "var(--color-blue-400)", "--beam-radius": "9999px" } as React.CSSProperties}
       >
         {/* Same border-beam mechanism as SoliprioCard — a light sweeping the
             edge to mark the button as interactive before anyone hovers it.
@@ -418,7 +418,7 @@ export default function HaloBcaChat() {
             second-click-to-close affordance. */}
         {open ? <CloseIcon className="size-6" /> : <HelpIcon className="size-6" />}
         <span className="hidden grid-cols-[0fr] overflow-hidden whitespace-nowrap transition-[grid-template-columns] duration-300 xl:grid xl:group-hover:grid-cols-[1fr]">
-          <span className="overflow-hidden text-sm font-bold">{t("label")}</span>
+          <span className="overflow-hidden text-size-body-m font-bold">{t("label")}</span>
         </span>
       </button>
     </div>

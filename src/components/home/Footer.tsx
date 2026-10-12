@@ -25,7 +25,7 @@ function ContactRow({ icon, label, iconSizeClassName = "size-5" }: { icon: strin
   return (
     <div className="flex items-center gap-3">
       <img loading="lazy" decoding="async" src={icon} alt="" className={`${iconSizeClassName} shrink-0`} />
-      <p className="text-sm text-white">{label}</p>
+      <p className="text-size-body-m text-white">{label}</p>
     </div>
   );
 }
@@ -35,7 +35,7 @@ function FooterLinks({ column, align = "start" }: { column: FooterColumn; align?
     <div className={`flex flex-col gap-4 ${align === "end" ? "items-end gap-6" : "items-start"}`}>
       {column.links.map((link, index) => {
         const href = column.hrefs[index];
-        const className = `text-sm text-white/70 transition-colors hover:text-white ${align === "end" ? "text-right" : "text-left"}`;
+        const className = `text-size-body-m text-white/70 transition-colors hover:text-white ${align === "end" ? "text-right" : "text-left"}`;
         if (href?.startsWith("/")) {
           return <Link key={link} href={href} className={className}>{link}</Link>;
         }
@@ -108,11 +108,15 @@ export default function Footer({ variant = "default", tone = "prioritas", hideMa
 
   const legalLinks = (
     <div className="flex flex-wrap gap-x-6 gap-y-3">
-      {bottomLinks.map((link, index) => (
-        <a key={link} href={BOTTOM_LINK_HREFS[index]} target="_blank" rel="noopener noreferrer" className="whitespace-nowrap text-sm font-semibold text-white transition-colors hover:text-white/80">
-          {link}
-        </a>
-      ))}
+      {bottomLinks.map((link, index) => {
+        const href = variant === "prioritas" && (index === 1 || index === 2)
+          ? `/${tone}/${index === 1 ? "kebijakan-privasi" : "ketentuan"}`
+          : BOTTOM_LINK_HREFS[index];
+        const className = "whitespace-nowrap text-size-body-m font-semibold text-white transition-colors hover:text-white/80";
+        return href.startsWith("/")
+          ? <Link key={link} href={href} className={className}>{link}</Link>
+          : <a key={link} href={href} target="_blank" rel="noopener noreferrer" className={className}>{link}</a>;
+      })}
     </div>
   );
 
@@ -127,15 +131,15 @@ export default function Footer({ variant = "default", tone = "prioritas", hideMa
         <div className="flex flex-col items-start gap-6">
           <img loading="lazy" decoding="async" src="/assets/cycle1/bca-logo.svg" alt="BCA" className="h-8 w-[102px]" />
           <div className="flex flex-col gap-2">
-            <p className="text-base font-semibold text-white">{t("kantorPusat")}</p>
-            <p className="whitespace-pre-line text-sm leading-5 text-white/70">{t("alamat")}</p>
+            <p className="text-size-body-l font-semibold text-white">{t("kantorPusat")}</p>
+            <p className="whitespace-pre-line text-size-body-m leading-5 text-white/70">{t("alamat")}</p>
           </div>
         </div>
 
         <div className="mt-10 divide-y divide-white/15 border-y border-white/15">
           {linkColumns.map((column) => (
             <details key={column.key} className="group">
-              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 text-base font-semibold text-white marker:content-none">
+              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 text-size-body-l font-semibold text-white marker:content-none">
                 {column.heading}
                 <AccordionChevron />
               </summary>
@@ -143,7 +147,7 @@ export default function Footer({ variant = "default", tone = "prioritas", hideMa
             </details>
           ))}
           <details className="group">
-            <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 text-base font-semibold text-white marker:content-none">
+            <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 text-size-body-l font-semibold text-white marker:content-none">
               {t("mediaSocialHeading")}
               <AccordionChevron />
             </summary>
@@ -153,7 +157,7 @@ export default function Footer({ variant = "default", tone = "prioritas", hideMa
                   <ContactRow icon={social.icon} label={social.label} />
                 </a>
               ))}
-              <a href={ALL_SOCIAL_MEDIA_LINK.href} target="_blank" rel="noopener noreferrer" className="text-sm text-white underline transition-colors hover:text-white/80">
+              <a href={ALL_SOCIAL_MEDIA_LINK.href} target="_blank" rel="noopener noreferrer" className="text-size-body-m text-white underline transition-colors hover:text-white/80">
                 {t("allSocialMedia")}
               </a>
             </div>
@@ -162,7 +166,7 @@ export default function Footer({ variant = "default", tone = "prioritas", hideMa
 
         <div className="mt-8">
           {legalLinks}
-          <div className="mt-6 flex flex-col gap-3 text-xs leading-[18px] text-white/60">
+          <div className="mt-6 flex flex-col gap-3 text-size-body-s leading-[18px] text-white/60">
             <p>{t("ojkLine")}</p>
             <p>{t("lpsLinePrefix")} <a href="https://apps.lps.go.id/BankPesertaLPSRate" target="_blank" rel="noopener noreferrer" className="underline">{t("lpsLinkLabel")}</a></p>
             <p>{copyright}</p>
@@ -180,15 +184,15 @@ export default function Footer({ variant = "default", tone = "prioritas", hideMa
                 <ContactRow icon={social.icon} label={social.label} />
               </a>
             ))}
-            <a href={ALL_SOCIAL_MEDIA_LINK.href} target="_blank" rel="noopener noreferrer" className="flex items-center text-sm text-white underline transition-colors hover:text-white/80">{t("allSocialMedia")}</a>
+            <a href={ALL_SOCIAL_MEDIA_LINK.href} target="_blank" rel="noopener noreferrer" className="flex items-center text-size-body-m text-white underline transition-colors hover:text-white/80">{t("allSocialMedia")}</a>
           </div>
         </div>
 
         <div className="flex items-start justify-between">
           <div className="flex flex-col items-start gap-8">
             <div className="flex flex-col items-start gap-2">
-              <p className="w-[222px] text-base font-semibold text-white">{t("kantorPusat")}</p>
-              <p className="w-[222px] whitespace-pre-line text-sm leading-5 text-white/70">{t("alamat")}</p>
+              <p className="w-[222px] text-size-body-l font-semibold text-white">{t("kantorPusat")}</p>
+              <p className="w-[222px] whitespace-pre-line text-size-body-m leading-5 text-white/70">{t("alamat")}</p>
             </div>
             <div className="flex flex-col items-start gap-4">
               <ContactRow icon="/assets/footer/outline-phone.svg" label="Halo BCA 1500998" iconSizeClassName="size-6" />
@@ -199,7 +203,7 @@ export default function Footer({ variant = "default", tone = "prioritas", hideMa
           <div className="flex flex-nowrap justify-end gap-8 text-right text-white">
             {linkColumns.map((column) => (
               <div key={column.key} className="flex w-[200px] flex-col items-end gap-10">
-                <p className="text-xs font-semibold uppercase tracking-[1.8px]">{column.heading}</p>
+                <p className="text-size-body-s font-semibold uppercase tracking-[1.8px]">{column.heading}</p>
                 <FooterLinks column={column} align="end" />
               </div>
             ))}
@@ -209,9 +213,9 @@ export default function Footer({ variant = "default", tone = "prioritas", hideMa
         <div className="flex items-start justify-between">
           <div className="flex flex-col items-start gap-6">
             {legalLinks}
-            <p className="w-[445px] text-xs leading-[18px] text-white/60">{copyright}</p>
+            <p className="w-[445px] text-size-body-s leading-[18px] text-white/60">{copyright}</p>
           </div>
-          <div className="flex w-[545px] flex-col items-end gap-3 text-right text-xs text-white/60">
+          <div className="flex w-[545px] flex-col items-end gap-3 text-right text-size-body-s text-white/60">
             <p className="whitespace-nowrap leading-tight">{t("ojkLine")}</p>
             <p className="leading-[1.5]">{t("lpsLinePrefix")} <a href="https://apps.lps.go.id/BankPesertaLPSRate" target="_blank" rel="noopener noreferrer" className="underline">{t("lpsLinkLabel")}</a></p>
           </div>

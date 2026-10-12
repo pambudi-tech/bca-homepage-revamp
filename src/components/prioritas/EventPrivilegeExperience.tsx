@@ -54,8 +54,8 @@ export default function EventPrivilegeExperience({ promos, initialCategory = "al
     window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
   }
 
-  return <main id="main-content" className={`min-h-screen overflow-x-clip ${isSolitaire ? "bg-neutral-200" : "bg-pgold-200"} text-pbrown-800`}>
-    <section className={`relative isolate overflow-x-clip ${isSolitaire ? "bg-neutral-200" : "bg-pgold-200"} py-8`}>
+  return <main id="main-content" className={`min-h-screen overflow-x-clip text-pbrown-800`}>
+    <section className="relative isolate overflow-x-clip py-8">
       <div className="relative mx-auto max-w-[1280px] px-4 xl:px-0">
         <PrioritasFeaturedBanner
           slides={isSolitaire ? FEATURED_BANNER_SLIDES : PRIORITAS_EVENT_FEATURED_BANNER_SLIDES}

@@ -108,15 +108,15 @@ function FeatureCard({ item }: { item: FeatureItem }) {
       className="relative h-full w-full rounded-xl border border-neutral-300 bg-white p-4 shadow-card transition-transform duration-200 xl:hover:-translate-y-1"
     >
       {item.badge ? (
-        <span className="absolute right-3 top-0 -translate-y-1/2 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">
+        <span className="absolute right-3 top-0 -translate-y-1/2 rounded-full bg-blue-500 px-3 py-1 text-size-body-s font-semibold text-white">
           {item.badge}
         </span>
       ) : null}
       <div className="mb-2 flex size-12 items-center justify-center">
         <FeatureIcon src={FEATURE_ICONS[item.key]} />
       </div>
-      <h3 className="text-base font-semibold text-blue-700">{item.title}</h3>
-      <p className="mt-2 text-sm leading-5 text-neutral-600">{item.description}</p>
+      <h3 className="text-size-body-l font-semibold text-blue-700">{item.title}</h3>
+      <p className="mt-2 text-size-body-m leading-5 text-neutral-600">{item.description}</p>
     </article>
   );
 }

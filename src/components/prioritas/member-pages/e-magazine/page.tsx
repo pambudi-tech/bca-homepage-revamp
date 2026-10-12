@@ -1,3 +1,4 @@
+import MemberPageSurface from "@/components/prioritas/MemberPageSurface";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import MagazineIndexExperience from "@/components/prioritas/MagazineIndexExperience";
 import PrioritasMemberHeader from "@/components/prioritas/PrioritasMemberHeader";
@@ -9,6 +10,8 @@ export default async function PrioritasMemberMagazinePage({ params }: { params: 
 
   return <>
     <PrioritasMemberHeader activeTab="magazine" title={t("breadcrumb")} compactTitleTabGap />
+    <MemberPageSurface>
     <MagazineIndexExperience memberLayout />
+    </MemberPageSurface>
   </>;
 }

@@ -47,7 +47,7 @@ export default function KrisflyerMileageSection({ cards, initialCardId }: { card
         <div className="max-w-[560px]">
           <p className="text-eyebrow uppercase text-blue-500 xl:text-eyebrow-lg">{t("eyebrow")}</p>
           <h2 id="simulasi-mileage-title" className="mt-4 text-heading text-blue-700 xl:text-display">{t("heading")}</h2>
-          <p className="mt-4 max-w-[640px] text-base leading-6 text-neutral-700">{t("description")}</p>
+          <p className="mt-4 max-w-[640px] text-size-body-l leading-6 text-neutral-700">{t("description")}</p>
         </div>
 
         <div className="mt-8 max-w-[560px]">
@@ -58,8 +58,8 @@ export default function KrisflyerMileageSection({ cards, initialCardId }: { card
                   <img src={card.image} alt={card.imageAlt} className="size-full object-contain" />
                 </div>
                 <div className="min-w-0">
-                  <p className={`text-sm font-semibold leading-5 ${selectedCard.id === card.id ? "text-blue-500" : "text-neutral-800"}`}>{card.title}</p>
-                  <p className="mt-2 text-xs text-neutral-700">{t("mileageRate", { amount: formatRupiah(card.rate) })}</p>
+                  <p className={`text-size-body-m font-semibold leading-5 ${selectedCard.id === card.id ? "text-blue-500" : "text-neutral-800"}`}>{card.title}</p>
+                  <p className="mt-2 text-size-body-s text-neutral-700">{t("mileageRate", { amount: formatRupiah(card.rate) })}</p>
                 </div>
               </button>
             ))}
@@ -74,30 +74,30 @@ export default function KrisflyerMileageSection({ cards, initialCardId }: { card
               step="50000"
               value={amount}
               onChange={(event) => setAmount(Number(event.target.value) || 0)}
-              leadingIcon={<span className="text-base text-neutral-700">IDR</span>}
+              leadingIcon={<span className="text-size-body-l text-neutral-700">IDR</span>}
               aria-label={t("transactionAmount")}
-              className="!text-base font-bold text-blue-500"
+              className="!text-size-body-l font-bold text-blue-500"
             />
           </div>
 
           <div className="hide-scrollbar mt-4 flex gap-2 overflow-x-auto pb-1" role="group" aria-label={t("amountOptionsLabel")}>
             {AMOUNT_OPTIONS.map((option) => (
-              <button key={option} type="button" onClick={() => setAmount(option)} aria-pressed={amount === option} className={`shrink-0 rounded-xl border px-4 py-2 text-sm transition-colors ${amount === option ? "border-cyan-500 bg-cyan-100 font-semibold text-blue-500" : "border-neutral-400 bg-transparent text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100"}`}>
+              <button key={option} type="button" onClick={() => setAmount(option)} aria-pressed={amount === option} className={`shrink-0 rounded-xl border px-4 py-2 text-size-body-m transition-colors ${amount === option ? "border-cyan-500 bg-cyan-100 font-semibold text-blue-500" : "border-neutral-400 bg-transparent text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100"}`}>
                 {formatAmountChip(option)}
               </button>
             ))}
           </div>
 
           <div className="mt-5 rounded-2xl bg-blue-500 p-5 text-white sm:p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/80">{t("resultLabel")}</p>
+            <p className="text-size-body-s font-semibold uppercase tracking-[0.12em] text-white/80">{t("resultLabel")}</p>
             <div className="mt-3 flex items-end gap-2">
-              <strong className="text-4xl font-bold leading-none sm:text-5xl">{result.toLocaleString("id-ID")}</strong>
-              <span className="pb-1 text-sm text-white/90">{t("miles")}</span>
+              <strong className="text-display-2xl sm:text-size-display-4xl sm:font-bold sm:leading-none">{result.toLocaleString("id-ID")}</strong>
+              <span className="pb-1 text-size-body-m text-white/90">{t("miles")}</span>
             </div>
-            <p className="mt-1 text-xs text-white/70">{t("calculation", { amount: formatRupiah(amount) })}</p>
+            <p className="mt-1 text-size-body-s text-white/70">{t("calculation", { amount: formatRupiah(amount) })}</p>
             <div className="mt-5 border-t border-white/20 pt-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">{t("equivalentLabel")}</p>
-              <p className="mt-2 text-sm font-semibold">{t("equivalent", { progress: progress.toFixed(1) })}</p>
+              <p className="text-size-body-s font-semibold uppercase tracking-[0.12em] text-white/70">{t("equivalentLabel")}</p>
+              <p className="mt-2 text-size-body-m font-semibold">{t("equivalent", { progress: progress.toFixed(1) })}</p>
               <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/20"><div className="h-full rounded-full bg-cyan-400" style={{ width: `${Math.max(progress, 2)}%` }} /></div>
             </div>
             <ApplyInMyBcaLink className="btn-base btn-primary mt-6 w-full justify-center bg-white font-semibold text-blue-500 hover:bg-cyan-100">{t("apply")}</ApplyInMyBcaLink>

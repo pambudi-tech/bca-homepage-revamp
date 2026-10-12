@@ -1,0 +1,23 @@
+# Site Map
+
+Open `/site-map`, `/en/site-map`, or `/zh/site-map`. Shared workspace navigation connects it to the Component Catalog and Asset Bank.
+
+The interactive tree covers implemented Prioritas and Solitaire navigation in Public and Member Areas. Select a node to inspect its purpose, navigation trail, localized URL, and access behavior; open its destination in a new tab. Search keeps matching branches and their ancestors visible. Brand and area filters, branch expansion, expand/collapse all, and shareable selection hashes support exploration on desktop and mobile.
+
+`src/components/site-map/site-map-data.ts` records route families and in-page tabs. Detail examples use IDs from the same bundled registries as the route implementations, without sending those full registries to the browser. Detail pages with a shared structure are represented by one entry with an example link. The map omits technical page/tab counts, language variants, audit pages, and legacy aliases. Tree edges express navigation grouping, rather than a literal filesystem hierarchy.
+
+The shared login route is `/member/login?from=prioritas|solitaire`. Protected member destinations retain their existing login redirects. The map describes demo portfolio OTP and brand-specific privilege access; it does not start sessions or bypass access rules.
+
+Update the registry and matching `siteMap` keys in all three message files when adding routes or changing navigation. Public directories, member catch-all dispatchers, and member tab definitions are the owning references.
+
+Public Privilege mirrors the member hierarchy: Signature & Complimentary, Lifestyle, Event, and Promo are tabs at `/{brand}/privilege?section=...`. Legacy public listing URLs redirect to these tabs, preserving filters; existing detail URLs remain valid.
+
+Signature & Complimentary has two distinct detail branches in both areas and brands: Signature benefit detail and Complimentary partner offer detail. Their examples come from separate datasets and lead to different pages. Public Prioritas uses `/prioritas/signature-privilege/[benefitId]` and `/prioritas/complimentary/[benefitId]`; legacy `/prioritas/privilege/[benefitId]` links redirect by benefit type, retaining the locale. Member and Solitaire detail routes retain `/privilege/[benefitId]`. Voucher access notes apply to member Signature detail only.
+
+Public Banking Solution also mirrors the member hierarchy: Banking Privilege is a tab containing banking benefit detail pages, Wealth Insight is a sibling tab, and Kurs remains a separate page. Public hub tabs use `/{brand}/banking-solution?section=privilege|wealth`; legacy Wealth Insight listing URLs redirect to the Wealth tab.
+
+The right detail panel includes existing-site provenance from `site-map-origins.ts`: original links, former names, and the owner's migration decisions (retained, renamed, split, combined, moved, or a new group). These mappings describe content provenance, not redirects or one-to-one legacy benefit detail URLs. Prioritas and Solitaire share the same existing Prioritas website sources; there was no separate existing Solitaire website. Login maps to `/en/Login`, and e-Magazine maps to Majalah Prioritas at `/en/E-Magazine`. Unmapped pages remain explicitly marked as not yet mapped. Search includes source names, URLs, and migration explanations.
+
+Banking Solution is a new grouping for BCA Privilege → Banking Privilege, Market Insight → Wealth Insight (House View Report and Weekly Market Overview), and Kurs. Partner Privilege was audited into Signature, Complimentary, and Lifestyle. Existing Promo was split into Event and Promo; promotional Wealth Updates content joins the Business category in Promo. Homepage provenance includes a collapsed note for News and Business Community, which remain on hold. Terms, Privacy Policy, and Contact Us are public information routes for both brands (`/{brand}/ketentuan`, `/{brand}/kebijakan-privasi`, `/{brand}/hubungi-kami`), with Terms and Privacy using the About/RIPLAY detail template and Contact using a dedicated contact layout. Footer links and provenance now point to these routes. Terms and Privacy Policy reproduce the complete existing Indonesian documents, including nested lists, tables, links, Business Community terms, and every security tip. The original legal wording is retained in all locales. Contact Us displays channel cards for Halo BCA Prioritas, X @HaloBCA, and branch lookup, plus visible head-office details. It has no accordions or message form.
+
+Member Overview is a new revamp page with no existing equivalent. Financial Report and its revamp sections use the existing `/en/laporan-finansial/` page as their content source for both brands.

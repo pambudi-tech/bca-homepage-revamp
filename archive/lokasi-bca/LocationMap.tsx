@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Map as MapLibreMap, Marker } from "maplibre-gl";
 import { BCA_MAP_STYLE } from "./bca-map-style";
 import type { NearbyLocation } from "./location-data";
+import LocationMapUnavailable from "./LocationMapUnavailable";
 
 /* MapLibre's stylesheet, loaded with this chunk rather than the page: the whole
    component is behind a `next/dynamic` boundary (see LocationFinder), so a
@@ -421,11 +422,7 @@ export default function LocationMap({
   }, [failed]);
 
   if (failed) {
-    return (
-      <div className={`flex size-full items-center justify-center px-6 text-center ${tone === "solitaire" ? "bg-neutral-300" : "bg-blue-100"}`}>
-        <p className="text-sm text-neutral-700">{labels.unavailable}</p>
-      </div>
-    );
+    return <LocationMapUnavailable tone={tone} label={labels.unavailable} />;
   }
 
   return (

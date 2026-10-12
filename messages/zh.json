@@ -2527,6 +2527,8 @@
     }
   },
   "signaturePrivilege": {
+    "publicSignatureTab": "Signature 与 Complimentary",
+    "signatureTab": "Signature",
     "subNavLabel": "Prioritas 导航",
     "subNav": {
       "privilege": "礼遇",
@@ -3239,7 +3241,6 @@
     "results": "个结果",
     "noResults": "没有匹配的组件。",
     "preview": "原始组件 · 变体与状态",
-    "previewNote": "尺寸取自当前视口中渲染的组件。开启蓝图可查看组件各部分的边界和尺寸。",
     "usage": "用途",
     "implementation": "实现来源",
     "copyPath": "复制路径",
@@ -3298,7 +3299,7 @@
       "text-field": {
         "title": "文本输入框",
         "description": "带标签、图标和错误提示的输入控件。",
-        "detail": "默认、中、大尺寸；支持图标、帮助及行内错误。聚焦样式尚无品牌变体。"
+        "detail": "大尺寸，提供默认、Prioritas 和 Solitaire 样式、帮助文字及行内错误提示。"
       },
       "content-card": {
         "title": "内容卡片",
@@ -3391,9 +3392,8 @@
         "detail": "返回顶部控件随滚动显示；特定快捷操作按页面上下文出现。"
       },
       "alert-feedback": {
-        "title": "Login Alert",
-        "description": "会员登录页面的原始错误信息、图标和布局。",
-        "detail": "与 MemberLoginExperience 共用 LoginAlert：bg-red-100、text-red-600、close.svg 图标、最小高度 56px、内边距 16px。"
+        "title": "提示",
+        "description": "信息、警告、危险和成功消息，配有相应图标和颜色。"
       },
       "search-overlay": {
         "title": "搜索浮层",
@@ -3411,7 +3411,6 @@
         "detail": "目录显示类别标题；详情可添加副标题和标志。色调随品牌及会员场景变化。"
       }
     },
-    "spec": "主要规格",
     "board": {
       "homepage": "首页",
       "public": "公开页面",
@@ -3422,6 +3421,9 @@
       "dimensions": "宽 × 高",
       "type": "字体 · 字号 / 行高 · 字重",
       "allSpecs": "规格",
+      "subnav": "子导航",
+      "withoutSubnav": "无子导航",
+      "withSubnav": "含子导航",
       "viewport": "视口",
       "previewWidth": "屏幕宽度",
       "previewScale": "预览比例",
@@ -3465,7 +3467,68 @@
       "blueprintModes": {
         "size": "尺寸",
         "padding": "内边距",
-        "inset": "间距"
+        "margin": "外边距",
+        "gap": "间距"
+      },
+      "sizingAxes": {
+        "width": "宽度",
+        "height": "高度"
+      },
+      "sizingKinds": {
+        "fixed": "固定",
+        "dynamic": "动态",
+        "content": "动态 · 跟随内容"
+      },
+      "lockedRatio": "锁定比例",
+      "componentVariants": {
+        "prioritas": "Prioritas",
+        "solitaire": "Solitaire",
+        "button": "Button",
+        "icon": "Icon Button",
+        "text": "Text Button",
+        "primary": "Primary",
+        "secondary": "Secondary",
+        "danger": "Danger",
+        "default": "Default",
+        "inverse": "Inverse",
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large",
+        "underline": "下划线",
+        "curved": "曲线"
+      },
+      "blueprintRoles": {
+        "cover": "封面图片",
+        "contentPanel": "信息面板",
+        "publicationType": "出版类型",
+        "articleTitle": "文章标题",
+        "publicationDate": "发布日期",
+        "calendarIcon": "日历图标",
+        "downloadIcon": "下载图标",
+        "downloadAction": "下载按钮",
+        "magazineCover": "杂志封面",
+        "magazineTitle": "杂志标题",
+        "button": "按钮",
+        "input": "输入框",
+        "select": "下拉菜单",
+        "fieldLabel": "字段标签",
+        "title": "标题",
+        "arrowIcon": "箭头图标",
+        "logo": "标志",
+        "icon": "图标",
+        "actionLabel": "操作标签",
+        "errorMessage": "错误信息",
+        "eyebrow": "类别标签",
+        "description": "描述",
+        "articleCover": "文章封面",
+        "cardTitle": "卡片标题",
+        "brand": "品牌名称",
+        "privilegeCard": "尊享卡片",
+        "productCard": "产品卡片",
+        "card": "卡片",
+        "tab": "标签页",
+        "accordionHeader": "折叠面板标题栏",
+        "searchField": "搜索栏"
       },
       "blueprintParts": {
         "component": "组件",
@@ -3479,7 +3542,89 @@
       "single": "单日",
       "period": "同月期间",
       "crossMonth": "跨月期间",
-      "eventCase": "日期场景"
+      "eventCase": "日期场景",
+      "specDetails": {
+        "fontFamily": "字体",
+        "fontSize": "字号",
+        "lineHeight": "行高",
+        "fontWeight": "字重",
+        "letterSpacing": "字间距",
+        "paddingHorizontal": "左 / 右内边距",
+        "paddingVertical": "上 / 下内边距",
+        "paddingTop": "上内边距",
+        "paddingRight": "右内边距",
+        "paddingBottom": "下内边距",
+        "paddingLeft": "左内边距",
+        "rowGap": "行间距",
+        "columnGap": "列间距",
+        "radius": "圆角",
+        "borderWidth": "边框宽度",
+        "opacity": "透明度",
+        "background": "背景",
+        "text": "文字",
+        "border": "边框",
+        "indicator": "指示线",
+        "transparent": "透明",
+        "colors": "颜色",
+        "layout": "间距与形状",
+        "typography": "排版",
+        "weights": {
+          "100": "Thin",
+          "200": "Extra Light",
+          "300": "Light",
+          "400": "Regular",
+          "500": "Medium",
+          "600": "Semibold",
+          "700": "Bold",
+          "800": "Extra Bold",
+          "900": "Black"
+        },
+        "gap": "元素间距",
+        "backgroundFill": "背景填充",
+        "gradient": "渐变 / 图片",
+        "wholeComponent": "整个组件",
+        "decorativeBorderWidth": "装饰边框厚度",
+        "decorativeBorder": "装饰边框",
+        "ringWidth": "环线厚度",
+        "ringColor": "环线",
+        "outlineWidth": "轮廓厚度",
+        "outlineColor": "轮廓"
+      },
+      "edgeCase": "边界情况",
+      "edgeSamples": {
+        "dropdown": {
+          "beauty": "为全家提供专业美容护理、肌肤健康咨询、舒缓放松体验及多种专属健康服务",
+          "culinary": "汇集世界各地特色美食和独家佳肴的国际餐饮体验，为家庭聚会提供丰富选择",
+          "travel": "为家庭提供国际目的地专属旅行、舒适住宿及多种优质度假服务"
+        },
+        "cardTitle": "享受免费客房升级、陪同餐饮、健康咨询及专属接送服务，与家人一起度过更加舒适的入住时光并体验丰富的优质礼遇",
+        "brand": "International Healthcare, Wellness & Hospitality Specialist Medical Center",
+        "heroTitle": "通过专属银行服务、专业财富管理及各种特别礼遇，规划家人的美好未来，在人生旅程的每个阶段享受贴心支持与舒适体验",
+        "eventTitle": "在特别周末庆典中与亲朋好友一起欣赏国际音乐演出、精彩艺术展览及特色美食，尽享丰富多彩的专属体验与难忘时光",
+        "headerTitle": "探索全年各地的独家活动、优惠及精彩体验，为全家的旅程增添丰富选择并创造值得珍藏的美好回忆",
+        "privilegeTitle": "享受印度尼西亚各地机场行政贵宾休息室的专属服务，体验优质舒适环境、多种特别设施以及贴心礼遇",
+        "bankingTitle": "在 BCA 分行享受专属银行服务、个人协助和特别设施，以满足您及家人的各种财务需求并体验优质贴心的金融服务",
+        "wealthTitle": "美国通胀动态、美联储利率政策以及全球债券市场发展影响全年投资组合管理策略，为长期财富规划与资产配置带来重要变化",
+        "featureTitle": "享受数百家优质机场贵宾休息室的专属服务、多种特别设施以及贴心个人服务，让全家的旅程更加舒适愉快并创造难忘体验"
+      },
+      "ads": "广告",
+      "alertVariants": {
+        "info": "信息",
+        "warning": "警告",
+        "danger": "危险",
+        "success": "成功"
+      },
+      "alertMessages": {
+        "info": "输入您的 BCA ID 以继续使用会员服务。",
+        "warning": "您的会话即将到期，请重新登录。",
+        "danger": "您输入的邮箱或密码不正确。",
+        "success": "您的密码已成功更新。"
+      },
+      "blueprintEmpty": {
+        "padding": "无内边距。",
+        "margin": "无外边距。",
+        "gap": "此元素布局没有间距。"
+      }
     },
     "docs": {
       "examples": "示例与状态",
@@ -3495,6 +3640,1621 @@
       "detail": "活动详情"
     },
     "mobile": "移动端",
-    "desktop": "桌面端"
+    "desktop": "桌面端",
+    "rulesTitle": "规则与行为",
+    "rules": {
+      "dropdown": [
+        "下拉选项标签最多 2 行，超出部分用省略号截断。"
+      ],
+      "content-card": [
+        "标题最多 3 行，品牌名称最多 1 行，超出部分用省略号截断。文字宽度随卡片空间变化。",
+        "无标志时以品牌名称替代，最多 3 行。"
+      ],
+      "magazine-card": [
+        "封面比例锁定为 3:4；高度随宽度变化以避免变形。"
+      ],
+      "pagination": [
+        "省略号按钮可跳转 5 页，目标限制在首页和末页之间。"
+      ],
+      "featured-event": [
+        "标题最多 3 行，超出部分用省略号截断。预留标题空间以保持操作位置一致。"
+      ],
+      "hero": [
+        "桌面端 Prio/Soli 主视觉标题最多 3 行，超出部分截断。"
+      ],
+      "page-header": [
+        "详情标题在移动端和桌面端最多 3 行。目录标题在桌面端最多 3 行；副标题不限行数。"
+      ],
+      "privilege-card": [
+        "标题最多 2 行，超出部分用省略号截断。"
+      ],
+      "banking-privilege-card": [
+        "标题最多 2 行，超出部分用省略号截断。"
+      ],
+      "wealth-insight-card": [
+        "标题最多 3 行，超出部分用省略号截断。"
+      ],
+      "privilege-feature": [
+        "标题最多 3 行，超出部分用省略号截断。"
+      ]
+    },
+    "assetBank": "素材库"
+  },
+  "assetBank": {
+    "title": "素材库",
+    "eyebrow": "设计资源",
+    "workspace": "设计工作区",
+    "catalog": "组件目录",
+    "collections": "素材分类",
+    "subtitle": "浏览 Prioritas 和 Solitaire 的图片、图标及视觉图层。选择素材即可查看尺寸、切换预览背景并下载素材。",
+    "scope": "仅收录 Prioritas 和 Solitaire 的素材及其共用素材。目录图片仅包含 Banking Privilege；Complimentary、Lifestyle Privilege、Event 及 Promo 的目录照片不包含在内。",
+    "search": "搜索素材",
+    "searchPlaceholder": "搜索名称、版块或文件路径…",
+    "brand": "品牌",
+    "format": "格式",
+    "allFormats": "所有格式",
+    "sort": "排序",
+    "sorting": {
+      "collection": "按分类",
+      "name": "名称 A–Z",
+      "size": "文件从大到小"
+    },
+    "view": "图库视图",
+    "grid": "网格视图",
+    "list": "列表视图",
+    "resultCount": "{count} 个素材",
+    "reset": "清除筛选",
+    "inspect": "查看 {name}",
+    "emptyTitle": "未找到素材",
+    "emptyDescription": "请尝试其他关键词或清除筛选。",
+    "showing": "已显示 {shown} / {total} 个素材",
+    "loadMore": "显示更多素材",
+    "preview": "素材预览",
+    "zoomPreview": "素材缩放区域",
+    "zoomControls": "缩放控制",
+    "zoomIn": "放大",
+    "zoomOut": "缩小",
+    "zoomLevel": "缩放比例",
+    "zoomReset": "重置缩放",
+    "zoomHint": "双指捏合缩放。拖动或双指滚动可移动放大的图像。",
+    "previous": "上一个素材",
+    "next": "下一个素材",
+    "close": "关闭预览",
+    "background": "预览背景",
+    "surfaces": {
+      "checker": "透明背景",
+      "light": "浅色",
+      "dark": "深色"
+    },
+    "dimensions": "尺寸",
+    "fileSize": "文件大小",
+    "path": "文件路径",
+    "download": "下载素材",
+    "copyPath": "复制路径",
+    "copied": "路径已复制",
+    "copyFailed": "无法复制，请选中并复制上方路径。",
+    "openOriginal": "打开文件",
+    "sources": "源代码引用",
+    "sourceUnavailable": "未找到直接的源代码引用。",
+    "inlineNote": "此 SVG 从代码中的内联图标提取。原始组件仍为权威来源。",
+    "brands": {
+      "all": "所有品牌",
+      "prioritas": "Prioritas",
+      "solitaire": "Solitaire",
+      "shared": "Prio 与 Solitaire"
+    },
+    "groups": {
+      "all": "所有素材",
+      "hero": "主视觉与横幅",
+      "banking": "Banking Privilege",
+      "financial": "财务报告",
+      "logos": "标志与品牌",
+      "icons": "图标",
+      "decorations": "背景与装饰",
+      "products": "卡片与银行服务",
+      "illustrations": "插图与编辑素材",
+      "flags": "国家旗帜"
+    },
+    "names": {
+      "heroPrioritas": "Prioritas 主视觉",
+      "heroSolitaire": "Solitaire 主视觉",
+      "cardPrioritas": "Prioritas 卡片视觉",
+      "cardSolitaire": "Solitaire 卡片视觉",
+      "financialPrioritas": "Prioritas 财务报告",
+      "financialSolitaire": "Solitaire 财务报告",
+      "logoBca": "BCA 标志",
+      "logoPrioritas": "Prioritas 标志",
+      "logoSolitaire": "Solitaire 标志",
+      "health": "医疗服务",
+      "loungePrioritas": "Prioritas 机场贵宾休息室",
+      "loungeSolitaire": "Solitaire 机场贵宾休息室",
+      "eventPrioritas": "Prioritas 活动",
+      "eventSolitaire": "Solitaire 活动",
+      "personalBanker": "专属理财顾问",
+      "visualGold": "Prioritas 视觉背景 · 金色",
+      "visualGrey": "Solitaire 视觉背景 · 灰色",
+      "otpEmailPrioritas": "Prioritas OTP 邮件 · 金色",
+      "otpEmailSolitaire": "Solitaire OTP 邮件 · 灰色",
+      "backgroundBankingSolitaire": "银行服务背景 · Solitaire",
+      "backgroundEventSolitaire": "活动与优惠背景 · Solitaire",
+      "wavePrivilegeSolitaire": "尊享权益波纹 · Solitaire",
+      "decorationBankingPrioritas": "银行服务装饰 · Prioritas",
+      "decorationEventPrioritas": "活动与优惠装饰 · Prioritas",
+      "backgroundPageSolitaire": "页面与会员专区背景 · Solitaire",
+      "backgroundPagePrioritas": "页面与会员专区背景 · Prioritas",
+      "decorationPrivilegePrioritas": "尊享权益装饰 · Prioritas",
+      "backgroundMemberLogin": "会员登录背景",
+      "glowPrioritas": "卡片与页首光晕 · Prioritas",
+      "patternSoliprio": "Prioritas 与 Solitaire 图案",
+      "maskCardPrioritas": "卡片视觉蒙版 · Prioritas"
+    }
+  },
+  "siteMap": {
+    "title": "网站地图",
+    "workspace": "项目文档",
+    "workspaceTitle": "BCA Prioritas–Solitaire 改版文档",
+    "eyebrow": "Prioritas 与 Solitaire · 文档",
+    "heading": "网站地图",
+    "subtitle": "BCA Prioritas 与 Solitaire 的页面结构和导航，涵盖公开区域和会员区域。",
+    "brand": "选择品牌",
+    "area": "按区域筛选",
+    "search": "搜索页面或网址",
+    "searchPlaceholder": "搜索页面或网址…",
+    "instruction": "点击名称了解页面，点击箭头展开分支。",
+    "results": "{count} 个匹配条目 · 保留父分支",
+    "reset": "重置筛选",
+    "expandAll": "全部展开",
+    "collapseAll": "全部收起",
+    "expandBranch": "展开 {name}",
+    "collapseBranch": "收起 {name}",
+    "loginRequired": "需要登录",
+    "publicAccess": "公开访问",
+    "legendDetail": "详情 = 多个内容或合作伙伴共用的模式",
+    "legendTab": "标签 = 同一页面内的另一视图",
+    "detailPanel": "关于此页面",
+    "position": "导航位置",
+    "routePattern": "网址模式",
+    "url": "页面网址",
+    "patternHelp": "方括号中的部分随内容而变化。下方按钮可打开一个现有示例。",
+    "behavior": "访问方式",
+    "memberHelp": "需要 {brand} 会员会话。未登录时将跳转到登录表单。",
+    "openExample": "打开详情示例",
+    "openPage": "打开页面",
+    "newTab": "在新标签页中打开",
+    "children": "从这里继续",
+    "emptyTitle": "未找到页面",
+    "emptyDescription": "请尝试其他关键词或重置区域筛选。",
+    "scopeNote": "此地图涵盖已实现的 Prioritas 和 Solitaire 页面。连线表示导航关系和内容分组。结构相同的详情页面以一个条目展示，并附有示例链接。",
+    "nav": {
+      "catalog": "组件目录",
+      "assets": "素材库",
+      "map": "网站地图",
+      "tokens": "设计令牌",
+      "flows": "用户流程"
+    },
+    "brands": {
+      "prioritas": "BCA Prioritas",
+      "solitaire": "BCA Solitaire"
+    },
+    "filters": {
+      "all": "所有区域",
+      "public": "公开区域",
+      "member": "会员区域"
+    },
+    "kinds": {
+      "home": "首页",
+      "directory": "目录",
+      "detail": "详情",
+      "information": "信息",
+      "login": "登录",
+      "tab": "标签"
+    },
+    "areas": {
+      "public": {
+        "title": "公开区域",
+        "description": "以会员身份登录前，浏览服务和专属权益。"
+      },
+      "member": {
+        "title": "会员区域",
+        "description": "登录 → 会员概览 → 专属权益、服务和个人报告。"
+      }
+    },
+    "notes": {
+      "otp": "查看投资组合需要额外的演示 OTP 验证，通过后可获得 10 分钟查看会话。",
+      "voucherPrioritas": "Signature 详情遵循 Prioritas 访问规则。Solitaire 专属权益可能显示访问提示。",
+      "voucherSolitaire": "Solitaire 会员可访问 Signature Privilege 模块。券操作依具体权益而定，例如休息室或机场接送。",
+      "magazine": "选择期刊后通过会员登录流程打开杂志。各期刊在此地图中不作为独立详情页面。",
+      "login": "两个品牌共用登录表单。from 参数选择 Prioritas 或 Solitaire 场景；登录后进入会员概览或指定目标。",
+      "wealth": "Wealth Insight 是 Banking Solution 的一个标签，用于浏览教育内容和金融洞察。"
+    },
+    "pages": {
+      "home": {
+        "title": "主页",
+        "description": "品牌的主要入口：主视觉、精选权益、Banking Solution 和会员访问。"
+      },
+      "privilege": {
+        "title": "专属权益",
+        "description": "Privilege 主页，包含 Signature 与 Complimentary、Lifestyle、Event 和 Promo 标签。"
+      },
+      "signatureTab": {
+        "title": "Signature 与 Complimentary",
+        "description": "Privilege 的主要标签，在同一视图展示 Signature 权益和 Complimentary 目录。"
+      },
+      "signatureDetail": {
+        "title": "Signature 详情",
+        "description": "Signature 权益详情页，例如机场接送或贵宾室服务，包含服务介绍、条款及相应的访问或优惠券流程。"
+      },
+      "complimentaryDetail": {
+        "title": "Complimentary 详情",
+        "description": "合作伙伴 Complimentary 优惠详情页，包含免费权益、条款、有效期、联系方式及合作伙伴地址。"
+      },
+      "lifestyle": {
+        "title": "生活方式权益",
+        "description": "可按类别和搜索浏览的生活方式优惠。"
+      },
+      "lifestyleDetail": {
+        "title": "生活方式详情",
+        "description": "合作伙伴生活方式优惠，包括条款、地点和联系信息。"
+      },
+      "event": {
+        "title": "活动",
+        "description": "包含类别、搜索和活动日期的活动目录。"
+      },
+      "eventDetail": {
+        "title": "活动详情",
+        "description": "所选活动的日期、内容、条款、地点和推荐。"
+      },
+      "promo": {
+        "title": "优惠",
+        "description": "使用类别和筛选寻找合适优惠的优惠列表。"
+      },
+      "promoDetail": {
+        "title": "优惠详情",
+        "description": "优惠信息、有效期、条款和相关联系信息。"
+      },
+      "banking": {
+        "title": "银行解决方案",
+        "description": "银行服务主页，包含 Banking Privilege 和 Wealth Insight 标签，以及汇率页面入口。"
+      },
+      "bankingTab": {
+        "title": "银行权益",
+        "description": "展示客户可享银行权益和服务的标签。"
+      },
+      "bankingDetail": {
+        "title": "银行权益详情",
+        "description": "卡片、融资或网点服务等特定银行权益的详情。"
+      },
+      "wealth": {
+        "title": "财富洞察",
+        "description": "金融教育以及市场和财富管理洞察。"
+      },
+      "kurs": {
+        "title": "汇率",
+        "description": "汇率信息，包含货币选择和汇率详情。"
+      },
+      "magazine": {
+        "title": "电子杂志",
+        "description": "展示封面和每期阅读入口的数字杂志目录。"
+      },
+      "about": {
+        "title": "关于我们",
+        "description": "所选品牌的服务和客户体验信息。"
+      },
+      "locations": {
+        "title": "找到我们",
+        "description": "通过地点列表和地图寻找网点及休息室。"
+      },
+      "riplay": {
+        "title": "产品及服务概要",
+        "description": "产品和服务信息概要，以及相关文档入口。"
+      },
+      "login": {
+        "title": "会员登录",
+        "description": "会员区域入口。表单根据所选品牌调整，然后创建演示会员会话。"
+      },
+      "overview": {
+        "title": "会员概览",
+        "description": "登录后的首页，展示账户概要和所有会员模块的快捷入口。"
+      },
+      "financial": {
+        "title": "财务报告",
+        "description": "个人报告中心，提供投资组合概要和税务报告视图。"
+      },
+      "portfolio": {
+        "title": "投资组合概要",
+        "description": "演示 OTP 验证后展示客户资产和金融产品概要。"
+      },
+      "tax": {
+        "title": "税务报告",
+        "description": "Financial Report 内的客户税务报告视图。"
+      },
+      "terms": {
+        "title": "条款与条件",
+        "description": "Berikut ini adalah ketentuan dalam mengakses Situs BCA Solitaire & Prioritas (https://prioritas.bca.co.id)."
+      },
+      "privacy": {
+        "title": "隐私政策",
+        "description": "Berikut ini adalah kebijakan PT Bank Central Asia Tbk (‘BCA”) dan tindakan yang dilakukan oleh BCA untuk menjaga privasi dan keamanan data Anda pada saat mengunjungi situs BCA Solitaire & Prioritas."
+      },
+      "contact": {
+        "title": "联系我们",
+        "description": "Informasi lebih lanjut dan saran mengenai BCA Prioritas, silakan isi pesan di bawah ini atau hubungi kami"
+      }
+    },
+    "origin": {
+      "heading": "现有网站中的来源",
+      "previous": "原名称：{name}",
+      "categorySource": "以上链接指向原分类页面。各项权益的现有详情网址尚未逐一映射。",
+      "memberSource": "此映射说明内容来源。会员区的访问权限和流程遵循改版实现。",
+      "unmapped": "此页面的现有来源尚未映射。",
+      "pendingHeading": "暂缓页面",
+      "held": "News 和 Business Community 暂缓处理，尚未纳入当前改版。",
+      "deferred": "以下三个页脚页面也暂缓处理，目前尚无改版页面：",
+      "status": {
+        "retained": "保留",
+        "renamed": "更名",
+        "split": "拆分",
+        "combined": "合并",
+        "new": "新分组",
+        "moved": "迁移",
+        "newPage": "新页面"
+      },
+      "sources": {
+        "partner": "Partner Privilege",
+        "banking": "BCA Privilege",
+        "promo": "Promo",
+        "updates": "Wealth Updates",
+        "house": "House View Report",
+        "weekly": "Weekly Market Overview",
+        "riplay": "RIPLAY",
+        "home": "Prioritas 首页",
+        "kurs": "汇率",
+        "about": "关于我们",
+        "locations": "查找我们",
+        "terms": "条款",
+        "privacy": "隐私政策",
+        "contact": "联系我们",
+        "login": "Login",
+        "magazine": "Majalah Prioritas",
+        "financial": "财务报告"
+      },
+      "notes": {
+        "home": "现有首页是 Prioritas 和 Solitaire 改版首页的共同来源。查找我们、关于我们和 RIPLAY 已映射至页脚。",
+        "privilege": "改版的 Privilege 将审核后的 Partner Privilege 内容分为 Signature、Complimentary 和 Lifestyle，并将 Event 与 Promo 分开。BCA Privilege 更名为 Banking Privilege，移至 Banking Solution。",
+        "partner": "Partner Privilege 经审核后拆分为 Signature、Complimentary 和 Lifestyle Privilege。Signature 与 Complimentary 共用一个列表选项卡，但各有独立详情页面。",
+        "signature": "审核后的 Partner Privilege 权益归入 Signature。列表位于 Signature & Complimentary 选项卡；改版详情地址为 {path}。",
+        "complimentary": "审核后的 Partner Privilege 优惠归入 Complimentary。列表位于 Signature & Complimentary 选项卡；改版详情地址为 {path}。",
+        "lifestyle": "审核后的 Partner Privilege 优惠归入 Lifestyle Privilege，现位于 Privilege 下的 Lifestyle 选项卡。",
+        "event": "现有 Promo 页面拆分为 Event 与 Promo。活动内容现位于 Privilege 下的 Event 选项卡。",
+        "promo": "现有 Promo 拆分为 Event 与 Promo。具有促销性质的 Wealth Updates 内容也归入 Promo 的 Bisnis 分类。",
+        "bankingHub": "Banking Solution 是新分组，涵盖 Banking Privilege（原 BCA Privilege）、Wealth Insight（原 Market Insight）和汇率。现有网站没有单一对应页面；以下来源为组成页面。",
+        "banking": "BCA Privilege 更名为 Banking Privilege，并迁至 Banking Solution。银行权益及其详情位于 Banking Privilege 选项卡。",
+        "wealth": "Market Insight 更名为 Wealth Insight，并迁至 Banking Solution。House View Report 和 Weekly Market Overview 位于此选项卡内。",
+        "kurs": "现有 Kurs-Detail 页面的汇率内容现位于 Banking Solution > 汇率。",
+        "footer": "此现有页面已映射至同名改版页面，可通过页脚访问。",
+        "login": "现有 Login 页面是改版会员区登录流程的来源。两个品牌共用登录表单；from 参数决定 Prioritas 或 Solitaire 上下文。",
+        "magazine": "现有网站的 Majalah Prioritas 在改版中成为 e-Magazine，Prioritas 和 Solitaire 使用相同来源。",
+        "overview": "Member Overview 是改版新增页面，作为登录后的首页，提供账户摘要和会员模块快捷入口。现有网站没有对应页面。",
+        "financial": "现有 Laporan Finansial 页面在改版会员区中成为 Financial Report，现位于 Member Overview 下。",
+        "financialTab": "此部分属于改版的 Financial Report。其现有来源为 Laporan Finansial 页面；此映射不表示现有网站具有相同选项卡。"
+      },
+      "sharedSite": "现有 Prioritas 网站同时服务 Prioritas 和 Solitaire 客户；此前没有独立的 Solitaire 网站。"
+    }
+  },
+  "brandInformation": {
+    "relatedTitle": "相关信息",
+    "pages": {
+      "terms": {
+        "title": "条款与条件",
+        "description": "Berikut ini adalah ketentuan dalam mengakses Situs BCA Solitaire & Prioritas (https://prioritas.bca.co.id).",
+        "sections": {
+          "introduction": {
+            "title": "Ketentuan",
+            "contentHtml": "<p>Berikut ini adalah ketentuan dalam mengakses Situs BCA Solitaire & Prioritas (https://prioritas.bca.co.id).</p>"
+          },
+          "section1": {
+            "title": "Pendaftaran dan Aktivasi",
+            "contentHtml": "<div> <div> <ul> <li>Situs BCA Solitaire &amp; Prioritas adalah situs yang hanya dapat diakses oleh anggota Situs BCA Solitaire &amp; Prioritas (“<em>Member</em>”). Setiap nasabah BCA Solitaire &amp; Prioritas (“Nasabah”) berhak untuk menjadi <em>Member</em>. Agar Nasabah dapat mengakses Situs BCA Solitaire &amp; Prioritas secara penuh dan mendapatkan manfaat dari Situs BCA Solitaire &amp; Prioritas, maka Nasabah wajib mendaftarkan diri terlebih dahulu sebagai <em>Member</em>.</li> <li>Untuk menjadi <em>Member</em>, Nasabah harus melakukan proses registrasi melalui fitur Sign Up pada Situs BCA Solitaire &amp; Prioritas dan melakukan aktivasi <em>User ID</em>. Nasabah hanya berhak untuk mempunyai satu <em>User ID</em> pada Situs BCA Solitaire &amp; Prioritas.</li> </ul> </div> </div>"
+          },
+          "section2": {
+            "title": "Ubah Data Diri",
+            "contentHtml": "<div> <ul> <li>Setiap <em>Member</em> memiliki hak untuk mengubah data diri yang dimasukkan saat pendaftaran, kecuali User ID, nama Nasabah, dan keterangan status nasabah di BCA (segmen Nasabah).</li> </ul> </div>"
+          },
+          "section3": {
+            "title": "Kata Sandi",
+            "contentHtml": "<div> <div> <ul> <li>Jika Member lupa kata sandi (<em>password</em>) untuk masuk ke dalam Situs BCA Solitaire &amp; Prioritas, untuk melakukan <em>reset</em> kata sandi (<em>password</em>) <em>Member</em> dapat menggunakan fitur “<em>Forgot Password</em>” pada halaman <em>login</em> dan mengikuti semua prosedur yang dicantumkan dalam Situs BCA Solitaire &amp; Prioritas. <em>Member</em> wajib merahasiakan dan bertanggung jawab sepenuhnya atas keamanan kata sandi (password) User ID.</li> </ul> </div> </div>"
+          },
+          "section4": {
+            "title": "Hak Akses",
+            "contentHtml": "<div> <div> <ul> <li> <p>Atas pertimbangan tertentu BCA setiap saat berhak menghapus atau membekukan akses <em>Member</em> ke fitur Situs BCA Solitaire &amp; Prioritas.</p> </li> </ul> </div> </div>"
+          },
+          "section5": {
+            "title": "Majalah BCA Solitaire & Prioritas Online",
+            "contentHtml": "<div> <div> <ul> <li>Majalah BCA Prioritas Online disajikan secara gratis kepada Member. Member dapat melihat koleksi Majalah BCA Prioritas Online sampai 8 (delapan) edisi ke belakang.</li> </ul> </div> </div>"
+          },
+          "section6": {
+            "title": "Antar Muka Google Maps",
+            "contentHtml": "<div> <div> <ul> <li>Pada Situs BCA Solitaire &amp; Prioritas tersedia fitur “<em>Find Us</em>” yang akan menyediakan koneksi ke fitur Google Maps yang disediakan oleh Google. Segala syarat dan ketentuan serta kebijakan <em>privasi</em> terkait Google Maps mengacu pada ketentuan yang ditetapkan oleh Google. Detail syarat dan ketentuan dan kebijakan privasi Google Maps dapat dilihat di <a href=\"https://developers.google.com/maps/terms?hl=en\" target=\"_blank\" rel=\"noopener noreferrer\"><span>https://developers.google.com/maps/terms?hl=en</span></a> dan <a href=\"http://www.google.com/policies/privacy/\" target=\"_blank\" rel=\"noopener noreferrer\"><span>http://www.google.com/policies/privacy/</span></a>.</li> <li>BCA tidak bertanggung jawab jika terjadi kesalahan program pada Google yang mengakibatkan tampilan fitur “Find Us” tidak muncul, tidak dapat dilihat oleh pengunjung fitur atau tidak akurat.</li> </ul> </div> </div>"
+          },
+          "section7": {
+            "title": "Lain-lain",
+            "contentHtml": "<div> <div> <ul> <li> <p>Dengan menggunakan Situs BCA Solitaire &amp; Prioritas, Nasabah setuju untuk tunduk dan terikat pada Ketentuan Situs BCA Solitaire &amp; Prioritas. BCA setiap saat berhak untuk mengubah, melengkapi, atau Ketentuan Situs BCA Solitaire &amp; Prioritas ini yang akan diberitahukan oleh BCA kepada Nasabah dalam bentuk dan melalui sarana apapun.</p> </li> </ul> <p><strong>BUSINESS COMMUNITY</strong></p> <p><strong></strong>Business Community merupakan salah satu menu di situs BCA Solitaire &amp; Prioritas yang merupakan wadah komunitas BCA Solitaire &amp; Prioritas untuk menciptakan interkoneksi antar nasabah dan tercipta peluang-peluang usaha yang bisa dijalankan bersama. Menu ini berisi daftar bisnis para anggota Business Community yang dilengkapi fasilitas untuk mencari, mengubah, dan atau menambahkan detail bisnis beserta detail produk yang dihasilkan.</p> <p><strong>Cara dan Syarat Menjadi Anggota</strong></p> <ul> <li>Terdaftar sebagai nasabah BCA Solitaire / Prioritas</li> <li><span>Memiliki ID dan Password untuk login di situs BCA Solitaire &amp; Prioritas :<a href=\"https://prioritas.bca.co.id/\" target=\"_blank\" rel=\"noopener noreferrer\"><span>https://prioritas.bca.co.id/</span></a></span></li> </ul> <p><strong>MEKANISME REGISTRASI</strong></p> <p><strong></strong><span>Calon anggota <em>Business Community</em> yang belum memiliki akun di situs BCA Solitaire &amp; Prioritas, silakan registrasi di <a href=\"https://prioritas.bca.co.id/\" target=\"_blank\" rel=\"noopener noreferrer\"><span></span></a><span><a href=\"https://prioritas.bca.co.id/\" target=\"_blank\" rel=\"noopener noreferrer\">https://prioritas.bca.co.id/</a></span> dengan cara sebagai berikut:</span></p> <ul> <li><span>Masuk halaman login dan klik tool box “Daftar” di sebelah kanan.</span></li> <li> <p><span>Semua kolom tersebut wajib diisi dengan data yang valid sesuai dengan data Prioritas Anda.</span></p> </li> <li> <p>Jika semua kolom sudah diisi, klik <em>tool box</em> “Kirim”.</p> </li> <li> <p>Data yang masuk ke situs BCA Solitaire &amp; Prioritas akan diperiksa validitasnya terlebih dahulu oleh BCA. BCA akan mengirimkan <em>status Sign Up</em> ke email yang telah anda daftarkan sebelumnya.</p> </li> </ul> <p><strong>FASILITAS-FASILITAS</strong></p> <p>Anggota Business Community akan mendapat fasilitas khusus :</p> <ul> <li>Akses ke daftar bisnis anggota <em>Business Community</em><a><em></em>.</a></li> <li><a></a>Akses ke halaman profil pribadi anda, dengan materi dan konfigurasi diatur sesuai kebutuhan anda. Profil pribadi anda dapat dibaca oleh anggota <em>Business Community</em><a>.</a></li> <li><a></a>Melakukan komunikasi pribadi dan tertutup melalui Pesan Pribadi dengan anggota <em>Business Community</em> lainnya.</li> <li>Menampilkan profil bisnis, produk,dan layanan bisnis apa yang ditawarkan dalam <em>Business Community</em>, sehingga mudah dicari anggota <em>Business Community</em> lainnya.</li> </ul> <p><strong>ATURAN DAN LARANGAN</strong></p> <ol> <li>Agar postingan Profil Bisnis anda dapat disetujui oleh admin, mohon untuk memperhatikan beberapa hal berikut: <ul> <li>Menggunakan foto profil dengan kualitas gambar yang jelas serta relevan dengan profil bisnis;</li> <li>Menampilkan alamat bisnis yang jelas serta nomor <em>handphone</em> yang aktif dan dapat dihubungi;</li> <li>Isi detail profil bisnis.</li> </ul> </li> <li>Dalam mem-posting Profil Bisnis, anda dilarang untuk: <ul> <li>Menggunakan foto, gambar, tulisan dan materi lainnya yang: <ul> <li>Memuat unsur Suku, Agama, Ras dan Antar Golongan (SARA;)</li> <li>Memuat unsur pornografi dan pornoaksi;</li> <li>Menghina, menyindir atau mengolok-olok, bernada negatif, menyudutkan, sarkastis, memprovokasi, mengintimidasi dan dapat menimbulkan keresahan.</li> </ul> </li> <li>Mempromosikan bisnis/produk: <ul> <li>Yang bertentangan dengan hukum;</li> <li>Jual-beli barang-barang pribadi, seperti rumah, mobil, pakaian dll;</li> <li><em>Multi-level marketing;</em></li> <li>Jasa keuangan.</li> </ul> </li> </ul> </li> <li>BCA sebagai moderator berhak untuk: <ul> <li>Menolak atau menunda publikasi profil bisnis apabila terdapat ketidaksesuaian dengan ketentuan butir i dan ii di atas</li> <li>Melakukan <em>screening</em> terhadap semua tulisan, foto, gambar dan materi lainnya yang di-<em>upload</em>.</li> </ul> </li> <li>Anda dengan ini menjamin bahwa tulisan, gambar, foto dan atau materi lainnya yang anda <em>upload</em> tidak melanggar hak kekayaan intelektual pihak lain.Sehubungan dengan tulisan, gambar, foto dan atau materi lainnya yang anda <em>upload</em>, anda dengan ini membebaskan BCA dari segala gugatan dan atau tuntutan dari pihak manapun.</li> </ol> </div> </div>"
+          }
+        }
+      },
+      "privacy": {
+        "title": "隐私政策",
+        "description": "Berikut ini adalah kebijakan PT Bank Central Asia Tbk (‘BCA”) dan tindakan yang dilakukan oleh BCA untuk menjaga privasi dan keamanan data Anda pada saat mengunjungi situs BCA Solitaire & Prioritas.",
+        "sections": {
+          "introduction": {
+            "title": "KEBIJAKAN PRIVASI DAN PENGAMANAN (ONLINE PRIVACY AND SECURITY)",
+            "contentHtml": "<p>Berikut ini adalah kebijakan PT Bank Central Asia Tbk (‘BCA”) dan tindakan yang dilakukan oleh BCA untuk menjaga privasi dan keamanan data Anda pada saat mengunjungi situs BCA Solitaire & Prioritas.</p>"
+          },
+          "section1": {
+            "title": "Kebijakan Privasi",
+            "contentHtml": "<div> <div> <div> <h3><strong>Pendahuluan</strong></h3> <p> Dalam rangka meningkatkan layanan PT Bank Central Asia Tbk (“<strong>BCA</strong>”), kami senantiasa berkomitmen untuk melindungi dan menjaga informasi/data tentang orang perseorangan yang teridentifikasi atau dapat diidentifikasi secara tersendiri atau dikombinasi dengan informasi lainnya baik secara langsung maupun tidak langsung melalui sistem elektronik atau nonelektronik (“<strong>Data Pribadi</strong>”). Hal ini sejalan dengan ketentuan sebagaimana diatur dalam Undang-Undang Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi (“<strong>UU PDP</strong>”). </p> <p> Pemberitahuan Privasi ini merupakan pemberitahuan mengenai standar yang diterapkan oleh BCA dalam melakukan pemrosesan atas Data Pribadi Anda yang berinteraksi dengan BCA seperti: </p> <ul> <li>pengunjung <em>website </em>BCA;</li> <li>nasabah dan pihak lain yang terkait dengan nasabah;</li> <li><em>vendor</em> atau mitra BCA; dan</li> <li> setiap pihak yang menggunakan produk dan/atau layanan yang BCA sediakan maupun produk dan/atau layanan pihak lain yang bekerja sama dengan BCA; </li> </ul> dengan tetap memperhatikan prinsip-prinsip pemrosesan Data Pribadi sesuai dengan ketentuan hukum yang berlaku. <h3><strong>Ruang Lingkup Data Pribadi</strong></h3> <p> Data Pribadi yang dikumpulkan oleh BCA meliputi Data Pribadi yang bersifat spesifik dan Data Pribadi yang bersifat umum. </p> <ol> <li> <strong>Data Pribadi yang bersifat spesifik</strong><br> Data Pribadi yang bersifat spesifik, antara lain: </li> <ol> <li>data dan informasi kesehatan;</li> <li> data biometrik yang memungkinkan identifikasi unik terhadap individu, seperti gambar wajah, rekam sidik jari, dan rekam suara; </li> <li>data anak;</li> <li> data keuangan pribadi, seperti simpanan pada bank dan data kartu kredit; dan </li> <li> data lainnya sesuai dengan ketentuan peraturan perundang-undangan. </li> </ol> <li> <strong>Data Pribadi yang bersifat umum</strong><br> Data Pribadi yang bersifat umum, antara lain: </li> <ol> <li>nama lengkap;</li> <li>Nomor Induk Kependudukan (NIK);</li> <li>jenis kelamin;</li> <li>kewarganegaraan;</li> <li>agama;</li> <li>status perkawinan;</li> <li>alamat;</li> <li>tempat dan tanggal lahir;</li> <li>nama gadis ibu kandung;</li> <li>pekerjaan; dan/atau</li> <li> data pribadi yang dikombinasikan untuk mengidentifikasi seseorang, seperti nomor telepon seluler dan <em>IP Address</em>. </li> </ol> </ol> <h3> <strong>Bagaimana BCA Memperoleh dan Mengumpulkan Data Pribadi</strong> </h3> <p> BCA memperoleh dan mengumpulkan Data Pribadi melalui berbagai sarana dan aktivitas antara lain: </p> <ol> <li> pada saat Anda mengajukan permohonan layanan/fasilitas perbankan BCA dan/atau layanan/fasilitas pihak lain yang bekerja sama dengan BCA baik dengan mengisi formulir, melengkapi data permohonan layanan/fasilitas melalui <em>website</em>, aplikasi BCA, dan media lainnya yang disediakan oleh BCA maupun pihak lain yang bekerja sama dengan BCA; </li> <li> pada saat Anda melakukan pendaftaran sebagai mitra/<em>vendor</em> BCA; </li> <li> pada saat Anda melakukan pengkinian data melalui sarana yang disediakan oleh BCA; </li> <li> pada saat Anda melakukan transaksi melalui layanan/fasilitas perbankan BCA; </li> <li> pada saat Anda melakukan komunikasi dan interaksi dengan BCA, antara lain pada saat Anda menghubungi <em>call center </em>BCA, menjawab pertanyaan, menyampaikan keluhan, memberikan informasi atau masukan, atau berpartisipasi dalam promosi, kontes, survei, atau kegiatan yang diselenggarakan oleh BCA; </li> <li> pada saat Anda dan/atau perwakilan resmi Anda melakukan transaksi dengan atau melalui sarana yang disediakan oleh BCA; </li> <li> melalui aplikasi/<em>platform</em> dan media sosial BCA yang Anda gunakan/akses atau melalui forum <em>online </em>BCA yang Anda akses; </li> <li> dari perangkat yang Anda gunakan pada saat mengakses <em>website</em> atau aplikasi yang disediakan oleh BCA atau pihak yang bekerja sama dengan BCA; </li> <li> ketika Anda dan/atau perwakilan Anda mengunjungi cabang, kantor, dan lokasi fisik lainnya yang berkaitan dengan BCA; </li> <li> dari alat pemroses atau pengolah data visual yang terdapat di cabang, kantor, dan lokasi fisik lainnya yang berkaitan dengan BCA (seperti: CCTV); dan/atau </li> <li> dari pihak terafiliasi BCA atau pihak lainnya yang bekerja sama dengan BCA. </li> </ol> <h3> <strong>Dasar BCA Melakukan Pemrosesan Data Pribadi</strong> </h3> <p> BCA melakukan pemrosesan Data Pribadi yang diperoleh maupun dikumpulkan oleh BCA atas dasar pemrosesan sebagai berikut: </p> <div> <table> <thead> <tr> <td> <strong>No</strong> </td> <td> <strong>Dasar Pemrosesan Data Pribadi</strong> </td> <td> <strong>Deskripsi</strong> </td> </tr> </thead> <tbody> <tr> <td> <p>1</p> </td> <td> <p> Pemenuhan kewajiban perjanjian (<em>Contractual Obligation</em>) </p> </td> <td> <p> BCA dapat melakukan pemrosesan atas Data Pribadi Anda untuk memenuhi kewajiban perjanjian antara Anda dengan BCA atau untuk memenuhi permintaan Anda </p> </td> </tr> <tr> <td> <p>2</p> </td> <td> <p>Persetujuan (<em>Consent</em>)</p> </td> <td> <p> BCA dapat melakukan pemrosesan atas Data Pribadi Anda berdasarkan persetujuan yang telah Anda berikan kepada BCA </p> </td> </tr> <tr> <td> <p>3</p> </td> <td> <p> Pemenuhan kewajiban hukum (<em>Legal Obligation</em>) </p> </td> <td> <p> BCA dapat melakukan pemrosesan atas Data Pribadi Anda berdasarkan kewajiban hukum sesuai dengan ketentuan peraturan perundang-undangan yang berlaku </p> </td> </tr> <tr> <td> <p>4</p> </td> <td> <p> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </p> </td> <td> <p> BCA dapat melakukan pemrosesan atas Data Pribadi Anda untuk memenuhi kepentingan yang sah lainnya dengan memperhatikan tujuan, kebutuhan, dan keseimbangan kepentingan antara BCA dengan hak Anda selaku subjek Data Pribadi </p> </td> </tr> <tr> <td> 5</td> <td> <em>Public Interest</em> </td> <td> BCA dapat melakukan pemrosesan atas Data Pribadi Anda untuk memenuhi kepentingan umum, pelayanan publik, atau pelaksanaan kewenangan BCA berdasarkan peraturan perundang-undangan </td> </tr> <tr> <td> 6</td> <td> <em>Vital Interest</em> </td> <td> BCA dapat melakukan pemrosesan atas Data Pribadi Anda untuk melindungi kepentingan vital Anda selaku subjek Data Pribadi. </td> </tr> </tbody> </table> </div> <h3> <strong>Tujuan BCA Melakukan Pemrosesan Data Pribadi</strong> </h3> <p> BCA akan melakukan pemrosesan atas Data Pribadi yang diperoleh maupun dikumpulkan oleh BCA untuk tujuan antara lain: </p> <div> <table> <thead> <tr> <td> <strong>No</strong> </td> <td> <strong>Tujuan Pemrosesan Data Pribadi</strong> </td> <td> <strong>Deskripsi</strong> </td> <td> <strong>Dasar Pemrosesan Data Pribadi</strong> </td> </tr> </thead> <tbody> <tr> <td> <p>1</p> </td> <td> <p>Penyediaan produk dan/atau jasa perbankan</p> </td> <td> <ul> <li> menyediakan produk dan/atau jasa perbankan BCA bagi Anda; </li> <li> memberikan personalisasi produk dan/atau jasa perbankan BCA yang disediakan untuk Anda. </li> </ul> </td> <td rowspan=\"2\"> <ul> <li> Pemenuhan kewajiban perjanjian (<em>Contractual Obligation</em>); dan/atau </li> <li> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </li> </ul> </td> </tr> <tr> <td> <p>2</p> </td> <td> <p>Pemrosesan transaksi perbankan</p> </td> <td> <p> menjalankan transaksi perbankan yang Anda instruksikan kepada BCA, seperti: transfer dana dan <em>Outward Remmitance</em>. </p> </td> </tr> <tr> <td> <p>3</p> </td> <td> <p><em>Complaint Handling</em></p> </td> <td> <ul> <li> menindaklanjuti setiap keluhan atas produk dan/atau jasa perbankan BCA atau pihak lain yang bekerja sama dengan BCA; </li> <li> menyelesaikan setiap permasalahan terkait akses Anda terhadap produk dan/atau jasa perbankan BCA. </li> </ul> </td> <td> <ul> <li> Pemenuhan kewajiban perjanjian (<em>Contractual Obligation</em>); </li> <li> Pemenuhan kewajiban hukum (<em>Legal Obligation</em>); dan/atau </li> <li> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </li> </ul> </td> </tr> <tr> <td> <p>4</p> </td> <td> <p>Keamanan</p> </td> <td> <p> menjaga keamanan cabang, kantor, dan lokasi fisik lainnya yang berkaitan dengan BCA melalui pemasangan alat pemroses atau pengolah data visual (seperti: CCTV). </p> </td> <td> <p> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </p> </td> </tr> <tr> <td> <p>5</p> </td> <td> <p>Kepatuhan terhadap ketentuan hukum yang berlaku</p> </td> <td> <ul> <li> menjalankan prinsip <em>Customer Due Diligence </em>(CDD) sesuai ketentuan hukum yang berlaku; </li> <li> pelaporan kepada regulator termasuk namun tidak terbatas pada laporan terkait dengan program Anti Pencucian Uang, Pencegahan Pendanaan Terorisme, dan Pencegahan Pendanaan Proliferasi Senjata Pemusnah Massal (APU-PPT dan PPPSPM). </li> <li> kepatuhan terhadap ketentuan hukum lainnya yang berlaku. </li> </ul> </td> <td> <p> Pemenuhan kewajiban hukum (<em>Legal Obligation</em>) </p> </td> </tr> <tr> <td> <p>6</p> </td> <td> <p><em>Monitoring </em>dan Audit</p> </td> <td> <ul> <li> melakukan <em>monitoring </em>atas penyediaan dan penggunaan layanan dan/atau produk perbankan BCA; </li> <li> melakukan audit secara berkala, baik oleh auditor internal maupun auditor eksternal. </li> </ul> </td> <td> <ul> <li> Pemenuhan kewajiban hukum (<em>Legal Obligation</em>); dan/atau </li> <li> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </li> </ul> </td> </tr> <tr> <td> <p>7</p> </td> <td> <p>Survei dan Riset</p> </td> <td> <p> melakukan evaluasi, peningkatan, dan/atau pembaruan fitur produk dan/atau jasa perbankan BCA dari waktu ke waktu. </p> </td> <td> <p> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </p> </td> </tr> <tr> <td> <p>8</p> </td> <td> <p><em>Marketing</em> dan <em>Campaign</em></p> </td> <td> <ul> <li> melakukan penawaran iklan/promosi maupun pemasaran atas produk dan/atau jasa perbankan BCA atau pihak lain yang bekerja sama dengan BCA; </li> <li> penyelenggaraan <em>loyalty program, </em>kepada nasabah seperti <em>gift</em>, undian, dan lainnya </li> </ul> </td> <td> <p>Persetujuan (<em>Consent</em>)</p> <p> </p> </td> </tr> <tr> <td> <p>9</p> </td> <td> <p>Kerja Sama</p> </td> <td> <ul> <li> untuk keperluan pelaksanaan kerja sama yang telah Anda buat dengan BCA. </li> </ul> </td> <td> <ul> <li> Pemenuhan kewajiban perjanjian (<em>Contractual Obligation</em>); </li> <li>Persetujuan (<em>Consent</em>); dan/atau</li> <li> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </li> </ul> </td> </tr> </tbody> </table> </div> <h3> <strong> Pengungkapan Data Pribadi kepada Pihak lain</strong> </h3> <p> BCA dapat mengungkapkan Data Pribadi Anda kepada afiliasi BCA atau pihak lainnya yang bekerja sama dengan BCA, baik yang berlokasi di Indonesia atau di negara lain, untuk melaksanakan tujuan pemrosesan Data Pribadi sebagaimana dimaksud dalam Pemberitahuan Privasi ini dengan hubungan peran sebagai berikut: </p> <ul> <li> Pengendali Data Pribadi – Pengendali Data Pribadi; </li> <li> Pengendali Data Pribadi dan Prosesor Data Pribadi; dan/atau </li> <li>Pengendali Data Pribadi Bersama.</li> </ul> <div> <table> <thead> <tr> <td> <strong>No</strong> </td> <td> <strong>Pihak lain yang Menerima Data Pribadi Anda</strong> </td> <td> <strong>Deskripsi</strong> </td> </tr> </thead> <tbody> <tr> <td> <p>1</p> </td> <td> <p>Afiliasi BCA</p> </td> <td> <p> BCA dapat mengungkapkan Data Pribadi Anda kepada afiliasi BCA untuk keperluan penawaran produk dan/atau layanan milik afiliasi BCA dan analisis atas permohonan produk dan/atau layanan yang Anda ajukan kepada BCA dan/atau afiliasi BCA. </p> </td> </tr> <tr> <td> <p>2</p> </td> <td> <p><em>Vendor</em></p> </td> <td> <p> BCA dapat mengungkapkan Data Pribadi Anda kepada <em>vendor</em> untuk keperluan penyediaan layanan kepada Anda, seperti: perusahaan ekspedisi. </p> </td> </tr> <tr> <td> <p>3</p> </td> <td> <p>Penasihat atau Auditor</p> </td> <td> <p> BCA dapat mengungkapkan Data Pribadi Anda kepada akuntan, auditor, <em>lawyer</em>, dan/atau penasihat lainnya yang jasanya kami gunakan. </p> </td> </tr> <tr> <td> <p>4</p> </td> <td> <p>Instansi Berwenang</p> </td> <td> <p> BCA dapat mengungkapkan Data Pribadi Anda apabila: </p> <ul> <li> instansi berwenang meminta Data Pribadi Anda kepada kami; </li> <li> kami diwajibkan untuk melakukan pelaporan kepada instansi berwenang. </li> </ul> </td> </tr> <tr> <td> <p>5</p> </td> <td> <p>Pihak lainnya yang bekerja sama dengan BCA</p> </td> <td> <p> BCA dapat mengungkapkan Data Pribadi Anda kepada pihak lain yang bekerja sama dengan BCA untuk tujuan pemrosesan Data Pribadi sebagaimana dimaksud dalam Pemberitahuan Privasi ini </p> </td> </tr> </tbody> </table> </div> <p> Dalam hal BCA mengungkapkan Data Pribadi Anda kepada afiliasi BCA, mitra BCA, auditor, dan pihak lainnya yang bekerja sama dengan BCA, BCA akan senantiasa meminta kepada afiliasi BCA, mitra BCA, auditor, dan pihak lainnya yang bekerja sama dengan BCA untuk menjaga kerahasiaan dan keamanan atas Data Pribadi Anda sesuai dengan ketentuan yang berlaku. </p> <h3><strong>Hak Subjek Data Pribadi</strong></h3> <p> BCA senantiasa berkomitmen untuk memenuhi hak Anda sebagai Subjek Data Pribadi. Anda dapat meminta kepada BCA untuk: </p> <ul> <li> melengkapi, memperbarui, dan/atau memperbaiki kesalahan dan/atau ketidakakuratan Data Pribadi Anda (Pasal 6 UU PDP); </li> <li> mengakhiri pemrosesan, menghapus, dan/atau memusnahkan Data Pribadi Anda (Pasal 8 UU PDP); </li> <li> tidak melakukan pemrosesan Data Pribadi Anda tanpa dasar pemrosesan Data Pribadi (<em>legal basis</em>); </li> <li> menarik kembali persetujuan pemrosesan Data Pribadi Anda (Pasal 9 UU PDP); </li> <li> menunda atau membatasi pemrosesan Data Pribadi secara proporsional sesuai dengan tujuan pemrosesan Data Pribadi (Pasal 11); </li> <li> melakukan tindakan lainnya sesuai dengan ketentuan hukum yang berlaku yang mengatur mengenai pelindungan Data Pribadi; </li> </ul> <p> yang berada di bawah kendali BCA dengan tetap memperhatikan ketentuan hukum yang berlaku. Namun demikian, BCA berhak untuk tidak memenuhi permintaan Anda antara lain apabila: </p> <ul> <li> Data Pribadi tersebut masih diperlukan untuk pencapaian tujuan pemrosesan Data Pribadi; </li> <li> berdampak pada pengungkapan Data Pribadi milik orang lain; </li> <li> bertentangan dengan kepentingan pertahanan dan keamanan nasional; </li> <li> diperkenankan menurut ketentuan hukum yang berlaku atau permintaan Anda bertentangan dengan kepentingan hukum yang berlaku. </li> </ul> <h3><strong>Penyimpanan Data Pribadi</strong></h3> <p> BCA melakukan penyimpanan data sesuai dengan ketentuan retensi penyimpanan data di BCA. Sebagai contoh, BCA akan menyimpan Data Pribadi Anda dalam jangka waktu tertentu sejak Anda berinteraksi dengan BCA. BCA dapat menyimpan Data Pribadi Anda lebih lama dari batas waktu yang ditentukan jika hal tersebut diperlukan untuk kebutuhan hukum, pembuktian di kemudian hari, membantu mendeteksi kejahatan keuangan, menjawab permintaan regulator atau aparat yang berwenang, dan hal lainnya. Data Pribadi Anda disimpan selama tujuan pengumpulannya masih diperlukan untuk tujuan hukum atau kepentingan bisnis lainnya. Jika BCA tidak membutuhkan lagi informasi terkait Data Pribadi Anda atau masa penyimpanan Data Pribadi telah berakhir sesuai dengan ketentuan hukum yang berlaku atau ketentuan yang berlaku di BCA, maka BCA dapat menghapus atau memusnahkan Data Pribadi Anda. </p> <h3><strong> Pengamanan Data Pribadi</strong></h3> <p> BCA menggunakan berbagai cara untuk menjaga Data Pribadi Anda tetap aman dan terlindungi. Di samping itu, BCA senantiasa memberikan edukasi kepada setiap staf BCA yang mengakses Data Pribadi menjaga kerahasiaan dan keamanan Data Pribadi. BCA juga mewajibkan staf BCA dan pihak lain yang bekerja sama dengan BCA untuk patuh dan menaati seluruh ketentuan yang berlaku terkait pelindungan Data Pribadi dan menerapkan langkah-langkah pengamanan dalam melakukan pemrosesan Data Pribadi. </p> <h3> <strong>Perubahan <em>Pemberitahuan Privasi</em> </strong> </h3> <p> BCA dapat mengubah, melengkapi, dan/atau mengganti Pemberitahuan Privasi ini dari waktu ke waktu untuk memastikan bahwa Pemberitahuan Privasi ini sejalan dengan ketentuan hukum yang berlaku, prosedur, dan praktik yang dijalankan oleh BCA dalam melakukan pemrosesan Data Pribadi. BCA akan menyediakan Pemberitahuan Privasi terkini melalui <em>website</em> BCA di <a href=\"http://www.bca.co.id\" target=\"_blank\" rel=\"noopener noreferrer\">www.bca.co.id</a>. </p> <h3> <strong> Bahasa</strong> </h3> <p> Pemberitahuan Privasi ini dibuat dan diterbitkan dalam Bahasa Indonesia dan Bahasa Inggris. Apabila terdapat penjelasan/ketentuan yang berbeda antara versi Bahasa Indonesia dan Bahasa Inggris atau terjadi sengketa atas penafsiran suatu ketentuan, maka versi Bahasa Indonesia yang berlaku. </p> <h3><strong>Hubungi BCA</strong></h3> <p> Untuk informasi lebih lanjut, Anda dapat menghubungi BCA di <em>hotline</em> 24 jam Halo BCA 1500 888 atau <em>emai</em>l BCA di <a href=\"mailto:halobca@bca.co.id\">halobca@bca.co.id</a>. </p> </div>  </div> </div>"
+          },
+          "section2": {
+            "title": "Sistem Pengamanan",
+            "contentHtml": "<div> <div> <ol> <li> BCA menggunakan 2 (dua) lapis sistem pengamanan untuk melindungi akses dan kegiatan Anda di situs BCA Solitaire &amp; Prioritas yaitu : <ul> <li> <em>Secure Socket Layer</em> (&quot;SSL&quot;) adalah teknologi pengamanan yang &#x27;mengacak&#x27; jalur komunikasi antar komputer sehingga komunikasi tersebut tidak dapat diketahui oleh pihak lain. </li> <li> ID pada situs BCA Solitaire &amp; Prioritas (“<span>ID Solitaire/Prioritas</span>”) dan sandi rahasia. </li> </ul> </li> <li> BCA hanya menyediakan fitur keamanan yang hanya dapat diakses dengan menggunakan minimal Microsoft Edge, Mozilla Firefox mulai versi 52, Google Chrome mulai versi 60, Safari IOS Mobile mulai seri 10, dan Mac OS Device YosemiteOS. </li> </ol> </div> </div>"
+          },
+          "section3": {
+            "title": "Proteksi Akses Situs BCA Solitaire & Prioritas",
+            "contentHtml": "<div> <div> <p> BCA mewajibkan Anda untuk memasukkan ID Solitaire/Prioritas dan sandi rahasia sebelum Anda melakukan akses ke situs BCA Solitaire &amp; Prioritas secara penuh. </p> </div> <div> Untuk memastikan keamanan bagi data Anda dalam melakukan akses situs BCA Solitaire &amp; Prioritas, mohon lakukan hal-hal sebagai berikut: <ul> <li> Jagalah kerahasiaan ID Solitaire/Prioritas dan sandi rahasia Anda, jangan diberitahukan kepada orang lain, dan jangan disimpan dalam browser Anda. </li> <li> Jangan memberitahukan sandi rahasia atau sebagian sandi rahasia Anda kepada pihak lain. BCA tidak pernah menanyakan sandi rahasia Anda. </li> <li> Gantilah sandi rahasia Anda secara periodik di situs BCA Solitaire &amp; Prioritas pada menu Profile – Ubah Password, atau jika Anda tidak yakin terhadap kerahasiaan sandi rahasia Anda. Jangan menggunakan sandi rahasia yang mudah diterka seperti: 111111, 222222, 123456, 654321, tanggal lahir, nomor mobil, alamat dan lain-lain. Jangan menuliskan sandi rahasia Anda di tempat dimana orang lain dapat membacanya. </li> <li> Gunakan sandi rahasia situs BCA Solitaire &amp; Prioritas yang berbeda dengan sandi rahasia yang Anda gunakan untuk mengakses situs lain. </li> <li> Jika Anda lupa sandi rahasia Anda, gunakan fitur “Lupa Password” dan ikuti instruksi yang ada untuk mengaktifkan mendapatkan sandi rahasia yang baru. </li> </ul> </div> </div>"
+          },
+          "section4": {
+            "title": "ID Solitaire/Prioritas dan Alamat Email",
+            "contentHtml": "<div> <div> <p> </p> <span>BCA mewajibkan Anda untuk memberikan nomor kartu BCA Solitaire / Prioritas dan alamat e-mail Anda kepada BCA melalui Situs BCA Solitaire &amp; Prioritas saat anda melakukan registrasi. BCA akan menggunakan nomor kartu BCA Solitaire &amp; Prioritas anda untuk melakukan validasi bahwa anda adalah nasabah BCA Solitaire &amp; Prioritas dan berhak menggunakan fitur yang disediakan situs BCA Solitaire / Prioritas. BCA akan menggunakan alamat e-mail anda untuk mengirimkan informasi transaksi nonfinansial, yaitu saat pendaftaran pertama kali, aktivasi akun situs BCA Solitaire / Prioritas, dan validasi proses “<em>Forgot Password</em>”. Selain itu BCA juga menggunakan alamat e-mail Anda untuk kepentingan promosi, undangan <em>gathering</em>, dan informasi lainnya.Untuk memastikan keamanan pengiriman informasi ke alamat e-mail anda, mohon lakukan hal-hal sebagai berikut:</span> <p> </p> <ul> <li> Berikan kepada BCA alamat e-mail pribadi anda. Jangan menggunakan alamat e-mail orang lain, atau email yang tidak valid. </li> <li> Ubahlah segera alamat e-mail anda yang terdaftar di situs BCA Solitaire &amp; Prioritas jika Anda mengganti alamat e-mail anda. </li> <li> Jika anda menghubungi BCA melalui e-mail, jangan mengirimkan informasi apapun yang bersifat rahasia, termasuk sandi rahasia anda. </li> </ul> </div> </div>"
+          },
+          "section5": {
+            "title": "Situs BCA Solitaire & Prioritas",
+            "contentHtml": "<div> <div> <p> </p> <span>Di dalam situs BCA Solitaire &amp; Prioritas, BCA dapat menyediakan <em>URL link</em><span> ke situs lain yang tidak dikendalikan/dikontrol oleh BCA. BCA tidak bertanggung jawab atas isi dan keamanan dari situs tersebut. Jika anda mengakses situs tersebut, silakan anda memeriksa kebijakan privasi dan pengamanan situs tersebut.<br> <span> Jika anda mengakses situs BCA Solitaire &amp; Prioritas melalui <em>URL link</em> dari situs lain, mohon pastikan kebenaran alamat yang anda akses yaitu <a href=\"https://prioritas.bca.co.id/\" target=\"_blank\" rel=\"noopener noreferrer\">https://prioritas.bca.co.id</a><span>. </span></span></span></span> <p> BCA dapat mengubah kebijakan privasi dan informasi pengamanan ini setiap saat agar sesuai/<em>compatible </em>dengan situasi dan teknologi terbaru. Anda setiap saat dapat membaca informasi dan kebijakan privasi situs BCA Solitaire &amp; Prioritas yang terbaru di <a href=\"https://prioritas.bca.co.id/\" target=\"_blank\" rel=\"noopener noreferrer\">https://prioritas.bca.co.id</a> . </p> </div> </div>"
+          },
+          "section6": {
+            "title": "Kiat-Kiat Menggunakan Situs BCA Solitaire & Prioritas dengan Lebih Aman",
+            "contentHtml": "<div> <div> <p> Pada dasarnya sistem maupun jaringan situs BCA Solitaire &amp; Prioritas telah menggunakan sistem pengamanan yang optimal. Kondisi pengamanan situs BCA Solitaire &amp; Prioritas selalu dipantau dan ditingkatkan sejalan dengan perkembangan teknologi dan ancaman yang ada. </p> <p> Ancaman pada sistem dapat dialami oleh semua pengguna internet termasuk situs BCA Solitaire &amp; Prioritas. Oleh karena itu BCA meminta anda sebagai pengguna situs BCA Solitaire &amp; Prioritas untuk memperhatikan beberapa jenis ancaman yang mungkin anda temui ketika mengakses internet. Kiat-kiat pengamanan yang dapat dilakukan sewaktu anda menggunakan situs BCA Solitaire &amp; Prioritas, adalah sebagai berikut : </p> <ol> <li> <strong><em>Phising<br> </em></strong><em>Phising</em> adalah cara-cara penipuan yang dilakukan oleh pihak-pihak tertentu untuk mendapatkan informasi-informasi rahasia seorang nasabah seperti <em>User ID, password</em> dan <em>Personal Identity Number</em> (PIN). </li> <p> Ada beberapa cara, antara lain : </p> <ul> <li> Berpura-pura sebagai seseorang dari pihak bank dan meminta data nasabah dengan alasan-alasan tertentu </li> <li> Mengirim email yang berisi login screen dan meminta nasabah melakukan login dengan memasukkan ID Solitaire/Prioritas dan sandi rahasia. </li> <li> Mengirim email yang berisi login screen dan meminta nasabah melakukan login dengan memasukkan ID Solitaire/Prioritas dan sandi rahasia. </li> <li> Mengirim <em>URL link</em> ke situs yang dibuat semirip mungkin dengan situs resmi milik bank namun ternyata palsu. </li> </ul> <p> <span>Kiat-kiat pengamanan:</span> </p> <p> </p> <ul> <li> Perlu diketahui bahwa BCA tidak pernah mengirim email seperti yang dijelaskan di atas kepada nasabah. Apabila anda menerima email semacam itu yang kelihatannya berasal dari BCA, anda dapat langsung menghapus email tersebut. </li> <li> Apabila anda terlanjur mengisi informasi yang diminta atau merasa bahwa User ID dan sandi rahasia anda sudah diketahui oleh pihak lain, segera ganti sandi rahasia anda atau hubungi Halo BCA jika anda tidak bisa melakukan proses <em>login</em>. </li> </ul> <li> <strong>Virus / <em>Worm<br> </em></strong>Virus Komputer/<em>Worm</em> adalah program-program komputer yang dibuat dengan tujuan-tujuan tertentu. Pada umumnya virus merusak sistem operasi, aplikasi dan data di komputer yang terinfeksi. Virus dapat menyebar melalui banyak media, antara lain : e-mail, disket, CD, USB drive, flash memory, program dari internet maupun jaringan, dan juga dari halaman situs yang &#x27;jahat&#x27;. </li> <p> <span>Beberapa contoh dampak dari infeksi virus:</span> </p> <p> </p> <ul> <li> Komputer menjadi tidak stabil dan sering &#x27;hang&#x27; (macet). </li> <li>Komputer menjadi lambat.</li> <li> Data di <em>harddisk</em> terhapus. </li> <li> Program aplikasi tidak dapat digunakan. </li> </ul> <p> Yang mirip dengan virus adalah <em>Worm</em> yang dibuat untuk dapat menyebar dengan cepat ke banyak komputer. Walaupun umumnya <em>Worm</em> tidak menimbulkan kerusakan seperti virus, namun <em>Worm</em> dapat digunakan untuk membawa berbagai macam muatan/<em>attachment </em>yang berbahaya. </p> <p> <span>Kiat-kiat pengamanan:</span> </p> <p> </p> <ul> <li> Gunakan anti-virus ter-<em>update</em> di komputer anda, dan pastikan bahwa komputer anda di-<em>scan</em> secara berkala. </li> <li> Banyak virus yang datang melalui e-mail yang diterima, sehingga anda harus lebih hati-hati pada waktu menggunakan e-mail. Hapus e-mail yang mencurigakan atau yang datang dari pengirim yang tidak dikenal, dan scan e-mail <em>attachment</em> sebelum dibuka. </li> <li> Gunakan <em>firewall</em> pada sistem operasi di komputer anda atau instal personal <em>firewall</em> dan pastikan bahwa pengaturan <em>firewall</em> yang terpasang dapat mengamankan komputer anda. </li> <li> Sebaiknya anda tidak mengakses atau men-<em>download</em> file/program-program di internet dari situs yang tidak dikenal/tidak dapat diyakini keabsahannya. </li> <li> Scan file yang berasal dari disket, CD maupun <em>USB drive</em> yang Anda terima. </li> <li> Pastikan bahwa sistem operasi maupun aplikasi di komputer anda sudah dilindungi dengan sistem proteksi terkini. </li> </ul> <li> <strong><em>Spyware<br> </em></strong><em>Spyware</em> adalah sejenis komputer program yang diprogram untuk &#x27;mencuri&#x27; informasi-informasi penting/pribadi dari komputer yang terinfeksi dan mengirimnya ke lokasi tertentu di internet untuk kemudian diambil oleh pembuat <em>Spyware</em>. Informasi yang menjadi target utama contohnya: nomor kartu kredit, <em>User ID</em> dan PIN/<em>password</em>, nomor rekening, alamat e-mail, dan lain-lain.<br> <em>Spyware</em> dapat terinstall melalui e-mail attachment, program yang diinstal dari sumber yang tidak jelas, ataupun oleh web site yang &#x27;jahat&#x27;.<br> Virus dapat diprogram untuk menyebarkan <em>Spyware</em>. Namun, berbeda dengan Virus yang sifatnya lebih merusak, <em>Spyware</em> bekerja secara diam-diam agar tidak terlacak sehingga lebih mudah mengumpulkan informasi yang diinginkan sang pembuat/penyebar <em>Spyware</em>. </li> <p> <span>Kiat-kiat pengamanan:</span> </p> <p> </p> <ul> <li> Gunakan anti-virus ter-update di komputer anda, dan pastikan bahwa komputer anda di-scan secara berkala. </li> <li> Banyak virus yang datang melalui e-mail yang diterima, sehingga anda harus lebih hati-hati pada waktu menggunakan e-mail. Hapus e-mail yang mencurigakan atau yang datang dari pengirim yang tidak dikenal, dan scan e-mail <em>attachment</em> sebelum dibuka. </li> <li> Gunakan <em>firewall</em> pada sistem operasi di komputer anda atau instal <em>personal firewall </em>dan pastikan bahwa pengaturan firewall yang terpasang dapat mengamankan komputer anda. </li> <li> Sebaiknya anda tidak mengakses atau bahkan men-<em>download file</em>/program di internet dari situs yang tidak dikenal/tidak dapat diyakini keabsahannya. </li> <li> Scan file yang berasal dari disket, CD maupun <em>USB drive</em> yang Anda terima. </li> <li> Pastikan bahwa sistem operasi maupun aplikasi di komputer anda sudah dilindungi dengan sistem proteksi terkini. </li> </ul> <li> <strong><em>Bot (roBot)<br> </em></strong><em>Bot (roBot)</em> adalah sejenis komputer program yang apabila terinstal di komputer anda, dapat menyebabkan komputer anda dikendalikan oleh orang lain secara <em>remote</em> melalui jaringan sehingga pembuat/penyebar <em>Bot</em> dapat berbuat apapun terhadap komputer anda.<br> Umumnya komputer yang telah dikendalikan oleh penyebar <em>Bot</em> (dikenal sebagai Botnet) akan digunakan untuk mengirim <em>SPAM, Virus, Worm</em> atau untuk menyerang komputer lain yang terkoneksi ke jaringan. </li> <p> <span>Kiat-kiat pengamanan:</span> </p> <p> </p> <ul> <li> Gunakan anti-virus ter-<em>update</em> di komputer anda, dan pastikan bahwa komputer anda di-<em>scan</em> secara berkala. </li> <li> Banyak virus yang datang melalui e-mail yang diterima, sehingga anda harus lebih hati-hati pada waktu menggunakan e-mail. Hapus e-mail yang mencurigakan atau yang datang dari pengirim yang tidak dikenal, dan <em>scan</em> e-mail <em>attachment</em> sebelum dibuka. </li> <li> Gunakan <em>firewall</em> pada sistem operasi di komputer anda atau install personal <em>firewall</em> dan pastikan bahwa pengaturan firewall yang terpasang dapat mengamankan komputer anda. </li> <li> Sebaiknya anda tidak mengakses atau men-<em>download</em> file/program di internet dari situs yang tidak dikenal/tidak dapat diyakini keabsahannya. </li> <li> Scan file yang berasal dari disket, CD maupun <em>USB drive</em> yang anda terima. </li> <li> Pastikan bahwa sistem operasi maupun aplikasi di komputer anda sudah dilindungi dengan sistem proteksi terkini. </li> </ul> </ol> </div> </div>"
+          }
+        }
+      },
+      "contact": {
+        "title": "联系我们",
+        "description": "联系我们，了解 BCA Prioritas 和 Solitaire 服务的更多信息或提出建议。",
+        "sections": {
+          "channels": {
+            "title": "联系我们",
+            "contentHtml": "<ul><li><a href=\"tel:1500222\">Halo BCA Prioritas<br>1500222</a></li><li><a href=\"https://x.com/HaloBCA\" target=\"_blank\" rel=\"noopener noreferrer\">X<br>@HaloBCA</a></li><li><a href=\"/BRAND/temukan-kami\">Cabang BCA</a></li></ul>"
+          },
+          "office": {
+            "title": "Kantor Pusat BCA",
+            "contentHtml": "<div> <strong>Kantor Pusat BCA</strong> <br> Menara BCA, Grand Indonesia<br>Jl. MH Thamrin No. 1, Jakarta 10310<br> Telepon/Fax : (021) 235 88000 </div>"
+          }
+        }
+      }
+    },
+    "contactChannels": {
+      "phone": "Halo BCA Prioritas — 1500222",
+      "twitter": "X — @HaloBCA",
+      "branch": "Cabang BCA",
+      "cancel": "取消",
+      "continue": "继续",
+      "phoneNotice": "<div> <p>Anda akan melakukan komunikasi langsung</p> <p>Dengan mengklik &quot;Lanjutkan&quot;, Anda akan diarahkan untuk menggunakan aplikasi panggilan suara, dan akan dikenakan biaya sesuai dengan ketentuan operator yang Anda gunakan.</p> </div>",
+      "twitterNotice": "<div> <p>Anda akan meninggalkan www.prioritas.bca.co.id</p> <p>Dengan mengklik &quot;Lanjutkan&quot;, Anda akan diarahkan menuju website di luar www.prioritas.bca.co.id yang tidak terafiliasi dengan BCA dan mungkin memiliki tingkat sekuriti yang berbeda. BCA tidak bertanggung jawab dan tidak mendukung, menjamin, mengendalikan konten, mengendalikan ketersediaan dan perspektif atas produk-produk atau layanan-layanan yang ditawarkan atau dinyatakan oleh website tersebut.</p> </div>",
+      "phoneTitle": "Halo BCA Prioritas",
+      "twitterTitle": "X",
+      "branchTitle": "前往分行",
+      "phoneDescription": "致电 Halo BCA Prioritas。",
+      "twitterDescription": "通过 X 联系 Halo BCA。",
+      "branchDescription": "查找 BCA 分行，获取现场服务。",
+      "phoneAction": "立即致电",
+      "twitterAction": "打开 X",
+      "branchAction": "查找分行"
+    }
+  },
+  "designTokens": {
+    "title": "设计令牌",
+    "subtitle": "将 Figma 参考与网站实现合并为一个颜色、字体、尺寸和效果目录。查看对应的 CSS token 以及需要决定的差异。",
+    "categories": "令牌类别",
+    "palettes": "颜色分组",
+    "total": "{count} 个令牌与规则",
+    "search": "搜索名称、数值或工具类…",
+    "copy": "复制 {value}",
+    "copied": "已复制",
+    "copyFailed": "复制失败。请选择文本并手动复制。",
+    "results": "{count} 个结果",
+    "clear": "清除搜索",
+    "empty": "没有匹配的令牌。请尝试其他名称或数值。",
+    "sample": "始终伴您左右",
+    "glassSample": "玻璃面板",
+    "effectSample": "面板示例",
+    "pill": "胶囊 / 全圆角",
+    "sources": {
+      "project": "项目令牌",
+      "tailwind": "Tailwind",
+      "recipe": "组件规则",
+      "figma": "Figma"
+    },
+    "colorUsage": {
+      "neutral": "用于背景、文字、边框和中性色元素；从白色到深色的色阶也支持 Solitaire 界面。",
+      "blue": "BCA 品牌色，用于主要操作、链接和需要强调的区域。",
+      "cyan": "明亮的点缀色，与 Blue 搭配用于高亮和辅助元素。",
+      "green": "用于成功状态、确认信息和积极反馈。",
+      "yellow": "用于警告和需要关注的信息。",
+      "red": "用于错误、验证失败和需要采取行动的反馈。",
+      "bermuda": "蓝灰色辅助色板，包含从浅色到深色的变化。",
+      "brown": "暖棕色辅助色板，包含从浅色到深色的变化。",
+      "muddy": "橄榄绿色辅助色板，包含从浅色到深色的变化。",
+      "orange": "橙色辅助色板，用于点缀和色彩变化。",
+      "purple": "紫色辅助色板，用于点缀和色彩变化。",
+      "tosca": "青绿色辅助色板，用于点缀和色彩变化。",
+      "teal": "蓝绿色辅助色板，用于点缀和色彩变化。",
+      "pgold": "Prioritas 金色色板，用于 Prioritas 区域的背景、点缀和品牌元素。",
+      "pbrown": "Prioritas 棕色色板，用于文字、深色背景，并与 Prioritas Gold 搭配。",
+      "assets": "资产类别颜色，用于区分储蓄、定期存款、活期账户和证券。"
+    },
+    "groups": {
+      "all": "全部",
+      "pgold": "Prioritas 金色",
+      "pbrown": "Prioritas 棕色",
+      "neutral": "Neutral",
+      "blue": "Blue",
+      "cyan": "青色",
+      "red": "Red",
+      "assets": "资产构成",
+      "green": "Green",
+      "yellow": "Yellow",
+      "bermuda": "Bermuda",
+      "brown": "棕色",
+      "muddy": "Muddy",
+      "orange": "橙色",
+      "purple": "紫色",
+      "tosca": "Tosca",
+      "teal": "Teal"
+    },
+    "sections": {
+      "colors": {
+        "title": "颜色",
+        "description": "按色系和用途分组的色板。每张卡片展示颜色值和网站 CSS token。"
+      },
+      "typography": {
+        "title": "字体",
+        "description": "在同一目录中查看 Figma 字体样式、CSS token、别名和项目补充。"
+      },
+      "spacing": {
+        "title": "间距与尺寸",
+        "description": "用于间隙、内边距、外边距、宽度和高度的共用间距尺度精选。工具类中的数字乘以基础单位。"
+      },
+      "radius": {
+        "title": "圆角",
+        "description": "用于卡片、面板、输入框和按钮的 Tailwind 默认圆角尺度。特殊数值由各组件需求决定。"
+      },
+      "effects": {
+        "title": "玻璃面板",
+        "description": "Prioritas 和 Solitaire 的半透明背景与模糊玻璃面板。"
+      },
+      "breakpoints": {
+        "title": "断点",
+        "description": "调整视口宽度，查看首页、列表页和详情页的布局变化。"
+      },
+      "motion": {
+        "title": "动效",
+        "description": "项目与 Tailwind 的缓动曲线。图表显示从开始到结束的动画进度。"
+      }
+    },
+    "type": {
+      "family": "BCA Sans",
+      "weights": "常规 400 · 半粗体 600 · 粗体 700",
+      "editSample": "示例文本 — 可编辑",
+      "fontSize": "字号",
+      "lineHeight": "行高",
+      "tracking": "字距",
+      "weight": "字重",
+      "categories": "字体类别",
+      "trim": "垂直修剪",
+      "trimBoth": "顶部与底部",
+      "noTrim": "不修剪",
+      "inherited": "继承组件设置"
+    },
+    "spacingRule": "例如 gap-6、p-6、m-6、w-6 和 h-6 均为基础间距单位的 6 倍。这里只展示精选尺度，并非 Tailwind 可生成的全部尺寸。像素换算以 1rem = 16px 为基础。",
+    "glassRule": "Prioritas 和 Solitaire 玻璃面板使用 16px 模糊、1.25 饱和度与 30% 填充。这些是共用类规则；圆角、尺寸与位置由各组件设置。",
+    "breakpoint": {
+      "preview": "响应式页面预览",
+      "width": "模拟视口宽度",
+      "mobile": "手机",
+      "tablet": "平板",
+      "desktop": "桌面",
+      "mobileRule": "Prioritas–Solitaire 首页主视觉高度：80svh。",
+      "tabletRule": "Prioritas–Solitaire 首页主视觉：min(640px, 90svh − 48px)，最小高度 560px。",
+      "desktopRule": "桌面布局从 xl（1280px）开始。Prioritas–Solitaire 首页主视觉高度：80svh。",
+      "rule": "预览使用真实的 Prioritas 页面。视口随模拟宽度变化，画面会缩小以适应面板。页面控件不可操作。响应式工具类从其最小宽度开始生效；主要桌面布局从 xl（1280px）开始。",
+      "minimum": "从 {value}px 起",
+      "page": "示例页面",
+      "pages": {
+        "homepage": "首页",
+        "index": "列表页",
+        "detail": "详情页"
+      },
+      "examples": {
+        "homepage": "BCA Prioritas 首页",
+        "index": "BCA Prioritas 礼遇列表页",
+        "detail": "Executive Airport Lounge 详情页"
+      },
+      "readOnly": "仅供预览 · 不可交互",
+      "loading": "正在加载页面预览…",
+      "frameTitle": "{page}预览，宽度为 {width}px"
+    },
+    "sourceNote": "Figma 颜色来自 bca-variable-color.json；字体遵循提供的截图及确认的字重。构建时从项目 CSS 与 Tailwind 读取实现数值。",
+    "promotionRule": "在两处使用的数值可提升为共用令牌。单个组件独有的数值可根据该组件的需求设置。",
+    "referenceOnly": "Figma 参考",
+    "implementation": {
+      "match": "与参考一致",
+      "different": "需要决定：数值不同",
+      "missing": "尚未定义为项目 token",
+      "current": "网站",
+      "reference": "参考",
+      "token": "网站 CSS token",
+      "aliasOf": "CSS 别名指向",
+      "aliases": "项目别名",
+      "comparedWith": "对比参考",
+      "property": "属性",
+      "value": "颜色"
+    },
+    "typeGroups": {
+      "all": "全部",
+      "display": "Display",
+      "eyebrow": "Eyebrow",
+      "heading": "Heading",
+      "body": "Body",
+      "label": "Label",
+      "extensions": "项目补充",
+      "semantic": "项目令牌"
+    },
+    "typeUsage": {
+      "display": "用于页面重点内容，例如主标题、hero 标题和简短推广信息。",
+      "eyebrow": "用于标题上方的主题或分类标识，在主标题之前提供上下文。",
+      "heading": "用于区块与子区块标题，建立页面内容的层级结构。",
+      "body": "用于段落、描述和说明。Article 适合长篇阅读；Semibold 与 Bold 用于强调。",
+      "label": "用于按钮、导航、表单标签和标记中的短文本。Vertical trim 有助于组件内的文字对齐。",
+      "extensions": "用于项目中已有、尚无对应 Figma 参考样式的特殊字号变体及样式。",
+      "semantic": "按具体用途命名的字体 token，将字号、行高、字间距和字重组合在一起。"
+    },
+    "colorCategories": {
+      "main": {
+        "title": "Main Color",
+        "description": "用于品牌、背景、文字和操作的主要颜色：Neutral、Prioritas Brown、Prioritas Gold、Blue 和 Cyan。"
+      },
+      "semantic": {
+        "title": "Semantic Color",
+        "description": "状态和反馈颜色：Green 表示成功或可用，Yellow 表示警告，Red 表示错误或已用尽。"
+      },
+      "accent": {
+        "title": "Accent Color",
+        "description": "用于强调和视觉变化的辅助色板：Bermuda、Brown、Muddy、Orange、Purple、Tosca 和 Teal。"
+      },
+      "assets": {
+        "title": "资产构成",
+        "description": "资产构成图表的专用颜色。在映射到主色板之前保留现有色值。"
+      }
+    },
+    "colorCollection": {
+      "title": "使用令牌",
+      "label": "{color} 的使用令牌：{count} 个令牌",
+      "description": "引用此颜色的专用令牌。具体值取决于下方的使用场景和状态。",
+      "empty": "目前没有专用的语义或组件令牌引用此颜色。"
+    },
+    "typeCollection": {
+      "title": "使用令牌",
+      "label": "{style} 的使用令牌：{count} 个令牌",
+      "description": "引用此排版样式的派生令牌，以及对应的值和使用场景。",
+      "empty": "目前没有专用的派生令牌引用此排版样式。"
+    }
+  },
+  "userFlows": {
+    "journeys": {
+      "navigation": {
+        "title": "浏览网站",
+        "description": "首页、菜单、页签、语言和旧链接。",
+        "entry": "打开 Prioritas 或 Solitaire 首页。",
+        "decision": "选择目标页面或切换页面环境。",
+        "scenarios": {
+          "menu": {
+            "title": "菜单 → 目标页面",
+            "condition": "选择桌面菜单或打开手机菜单。",
+            "response": "链接打开当前品牌和语言的目标页面。",
+            "recovery": "使用面包屑或菜单继续浏览。"
+          },
+          "tabs": {
+            "title": "直接打开指定页签",
+            "condition": "使用 section=lifestyle、event 或 promo 打开 Privilege。",
+            "response": "查询参数选中对应页签；未知 section 回退到 Signature & Complimentary。",
+            "recovery": "选择其他页签后，目标网址随之变化。"
+          },
+          "legacy": {
+            "title": "旧列表链接",
+            "condition": "访客打开合并入口之前的列表网址。",
+            "response": "旧列表重定向至对应入口页签，旧详情按现有路由映射处理。",
+            "recovery": "从入口继续；保留的筛选条件取决于各重定向规则。"
+          },
+          "language": {
+            "title": "切换语言",
+            "condition": "选择 Indonesia、English 或中文。",
+            "response": "导航切换语言；条款和隐私文件保留印尼语原文。",
+            "recovery": "请重新检查页签和筛选：通用语言切换仅保留路径，不保留所有查询参数或锚点。"
+          },
+          "closeMenu": {
+            "title": "关闭菜单而不跳转",
+            "condition": "打开菜单后关闭，或按 Escape。",
+            "response": "菜单关闭，访客留在原页面。",
+            "recovery": "重新打开菜单或继续阅读。"
+          }
+        }
+      },
+      "search": {
+        "title": "搜索信息",
+        "description": "品牌内搜索、推荐、历史记录和无结果。",
+        "entry": "从导航打开搜索。",
+        "decision": "输入关键词或选择推荐。",
+        "scenarios": {
+          "results": {
+            "title": "找到结果",
+            "condition": "关键词匹配当前品牌内容。",
+            "response": "Prioritas/Solitaire 结果显示在浮层中，选择结果链接打开目标页面。",
+            "recovery": "若目标为会员页面，将检查会话和品牌。"
+          },
+          "empty": {
+            "title": "无搜索结果",
+            "condition": "关键词未匹配任何可搜索内容。",
+            "response": "浮层显示无结果状态。",
+            "recovery": "修改关键词、选择推荐或切换搜索品牌。"
+          },
+          "blank": {
+            "title": "关键词为空",
+            "condition": "打开搜索但未输入，或仅提交空格。",
+            "response": "可查看推荐和历史记录；空提交不会打开新目标。",
+            "recovery": "选择推荐或输入关键词。"
+          },
+          "history": {
+            "title": "使用或删除历史记录",
+            "condition": "选择之前的词条或清除本地历史。",
+            "response": "词条被重新使用，或从该搜索环境的浏览器历史中删除。",
+            "recovery": "下次打开时重新读取历史并清空输入框。"
+          },
+          "cancel": {
+            "title": "取消搜索",
+            "condition": "关闭搜索或按 Escape。",
+            "response": "浮层关闭，焦点返回搜索触发按钮。",
+            "recovery": "继续使用原页面。"
+          },
+          "storage": {
+            "title": "浏览器存储受限",
+            "condition": "浏览器拒绝写入搜索历史。",
+            "response": "搜索继续可用；无法保存的历史在下次访问时不保留。",
+            "recovery": "可不使用历史记录进行搜索，或启用浏览器存储。"
+          }
+        }
+      },
+      "directory": {
+        "title": "筛选和浏览列表",
+        "description": "Signature、Complimentary、Lifestyle、Event 和 Promo。",
+        "entry": "在公开或会员区域打开 Privilege 入口。",
+        "decision": "选择页签、类别、关键词或列表页码。",
+        "scenarios": {
+          "browse": {
+            "title": "列表 → 详情",
+            "condition": "选择可用内容卡片。",
+            "response": "卡片根据内容类型和区域打开详情。",
+            "recovery": "使用面包屑或推荐继续浏览。"
+          },
+          "combined": {
+            "title": "组合筛选条件",
+            "condition": "选择类别并输入名称或标题。",
+            "response": "列表匹配组合筛选；筛选变更后页码返回起点。",
+            "recovery": "如果结果过少，请减少筛选条件。"
+          },
+          "none": {
+            "title": "筛选后无内容",
+            "condition": "类别和关键词组合无匹配项。",
+            "response": "面板显示空结果提示。",
+            "recovery": "清空关键词或取消已选类别。"
+          },
+          "pagination": {
+            "title": "下一页和列表边界",
+            "condition": "使用分页控件切换页面。",
+            "response": "卡片随当前页变化；控件反映结果总数和页码边界。",
+            "recovery": "修改筛选以返回第一页。"
+          },
+          "birthday": {
+            "title": "生日礼遇",
+            "condition": "在 Complimentary 列表中启用生日礼遇。",
+            "response": "列表显示带 birthdayGift 标记的优惠。",
+            "recovery": "关闭该选项查看其他优惠。"
+          },
+          "tabChange": {
+            "title": "筛选启用时切换页签",
+            "condition": "从 Lifestyle 切换至 Event 或 Promo。",
+            "response": "新页签载入新的列表；本地筛选不会自动跨所有页签保留。",
+            "recovery": "在目标页签重新设置筛选。"
+          }
+        }
+      },
+      "detail": {
+        "title": "礼遇详情和资格",
+        "description": "查看礼遇、登录会员区域并了解品牌限制。",
+        "entry": "打开 Signature、Complimentary、Lifestyle、Event 或 Promo 详情。",
+        "decision": "阅读信息或选择详情中的操作。",
+        "scenarios": {
+          "read": {
+            "title": "阅读条款和地点",
+            "condition": "访客未登录会员会话即打开礼遇信息。",
+            "response": "可查看现有公开信息、条款、联系方式、地点和推荐。",
+            "recovery": "选择推荐或返回列表。"
+          },
+          "signIn": {
+            "title": "礼遇 → 会员登录",
+            "condition": "在支持会员模块的礼遇中选择登录按钮。",
+            "response": "登录保留品牌和目标会员详情的 redirectTo。",
+            "recovery": "同品牌账户返回详情，其他品牌账户打开其自身概览。"
+          },
+          "restricted": {
+            "title": "Solitaire 专属礼遇",
+            "condition": "Prioritas 用户打开 Solitaire 专属 Signature 礼遇。",
+            "response": "详情说明限制；Prioritas 账户不获得专属模块。",
+            "recovery": "选择与账户品牌匹配的礼遇。"
+          },
+          "solitaire": {
+            "title": "Solitaire 访问 Signature",
+            "condition": "Solitaire 账户在其会员区域打开 Signature 礼遇。",
+            "response": "显示现有会员模块，包括 Solitaire 专属礼遇；会员礼遇数据仍为演示数据。",
+            "recovery": "继续查看券状态或现有合作伙伴操作。"
+          },
+          "missing": {
+            "title": "未知详情 ID",
+            "condition": "链接使用了内容注册表中不存在的 ID。",
+            "response": "详情路由返回 notFound，不会根据任意 ID 生成礼遇页面。",
+            "recovery": "使用浏览器返回，再选择现有列表卡片。"
+          }
+        }
+      },
+      "login": {
+        "title": "会员登录",
+        "description": "BCA ID/邮箱、验证、跨品牌账户和取消。",
+        "entry": "直接打开会员登录，或从受保护页面进入。",
+        "decision": "选择 BCA ID 或邮箱，填写凭据并登录。",
+        "scenarios": {
+          "valid": {
+            "title": "演示凭据正确",
+            "condition": "标识和密码匹配演示账户。",
+            "response": "创建八小时会员会话；使用安全的同品牌目标，否则打开会员概览。",
+            "recovery": "继续前往原目标或在概览中选择功能。"
+          },
+          "email": {
+            "title": "使用邮箱登录",
+            "condition": "切换至邮箱页签并使用演示账户邮箱。",
+            "response": "验证邮箱格式；同一登录操作检查账户和密码。",
+            "recovery": "若匹配则按账户品牌继续。"
+          },
+          "invalidFormat": {
+            "title": "标识格式无效",
+            "condition": "BCA ID 少于六个字符或邮箱无效。",
+            "response": "字段操作后显示格式提示；登录禁用，BCA ID 最多二十一个字符。",
+            "recovery": "修正标识并填写密码。"
+          },
+          "blankPassword": {
+            "title": "密码为空",
+            "condition": "标识有效但未填写密码。",
+            "response": "登录按钮保持禁用。",
+            "recovery": "填写密码；眼睛图标仅切换文本显示。"
+          },
+          "wrong": {
+            "title": "账户或密码错误",
+            "condition": "格式有效但凭据不匹配演示账户。",
+            "response": "登录失败，凭据提示显示约五秒，不创建新会话。",
+            "recovery": "检查并修正输入，再次提交。"
+          },
+          "otherBrand": {
+            "title": "账户品牌与入口品牌不同",
+            "condition": "从 Prioritas 入口登录 Solitaire 账户，或反之。",
+            "response": "账户品牌决定会话；忽略跨品牌 redirectTo，打开账户概览。",
+            "recovery": "使用该账户品牌的会员导航。"
+          },
+          "unsafe": {
+            "title": "返回目标不安全",
+            "condition": "redirectTo 包含外部网址或不允许的会员区域之外的目标。",
+            "response": "拒绝该目标；登录成功后打开账户品牌概览。",
+            "recovery": "从会员菜单选择目标。"
+          },
+          "cancel": {
+            "title": "不登录直接返回",
+            "condition": "登录成功前选择返回。",
+            "response": "若有安全的本地来源则浏览器返回，否则打开品牌首页。",
+            "recovery": "公开内容仍可访问，但受预览访问限制。"
+          },
+          "help": {
+            "title": "忘记密码或注册",
+            "condition": "选择忘记密码、注册或 BCA ID 教程。",
+            "response": "仅显示原型提示，未执行账户重置或注册。",
+            "recovery": "需求：确定账户恢复路由和服务集成。"
+          },
+          "requestFailed": {
+            "title": "登录请求失败",
+            "condition": "连接中断或登录操作报错。",
+            "response": "凭据提示处理错误账户，但请求错误缺少专门反馈和重试。",
+            "recovery": "需求：区分服务错误与凭据错误，并允许重试。"
+          }
+        }
+      },
+      "access": {
+        "title": "会话和受保护页面",
+        "description": "直接链接、会话丢失、品牌不匹配和未知路由。",
+        "entry": "打开会员区域网址。",
+        "decision": "系统检查会话和目标品牌。",
+        "scenarios": {
+          "active": {
+            "title": "同品牌会话",
+            "condition": "会员会话 cookie 匹配目标品牌。",
+            "response": "显示已知会员页面。",
+            "recovery": "正常浏览会员功能。"
+          },
+          "missing": {
+            "title": "未登录或会话过期",
+            "condition": "会员页面请求中会话 cookie 缺失或无法识别。",
+            "response": "代理携带 from 和 redirectTo 重定向到登录，并保留目标查询参数。",
+            "recovery": "使用同品牌账户重新登录以返回。"
+          },
+          "mismatch": {
+            "title": "其他品牌会话",
+            "condition": "Prioritas 会话打开 /solitaire/member，或反之。",
+            "response": "拒绝访问，显示目标品牌登录。",
+            "recovery": "使用目标账户登录，或返回自身账户品牌区域。"
+          },
+          "unknown": {
+            "title": "未知会员路由",
+            "condition": "通过会话验证后，slug 未匹配会员路由分发器。",
+            "response": "页面返回 notFound。",
+            "recovery": "返回并使用会员导航中的链接。"
+          },
+          "openExpiry": {
+            "title": "页面打开期间会话过期",
+            "condition": "会员 cookie 过期时页面未重新导航。",
+            "response": "打开的页面无专用会员过期弹窗；代理检查下一次请求。",
+            "recovery": "需求：一致的数据清除、通知和重新认证规则。"
+          },
+          "cookieBlocked": {
+            "title": "会话 cookie 被阻止",
+            "condition": "登录通过但浏览器未保存会话 cookie。",
+            "response": "下一次会员请求返回登录；无专用 cookie 阻止提示。",
+            "recovery": "需求：检测未保存的会话，并提供明确浏览器设置指引。"
+          },
+          "otherTab": {
+            "title": "其他标签页切换账户",
+            "condition": "同一浏览器的另一标签页登录不同品牌。",
+            "response": "两个品牌共用一个会员 cookie；最新登录替换会话，打开页面不会自动同步全部账户状态。",
+            "recovery": "新请求使用最新会话；需求：跨标签页同步退出与账户变化。"
+          }
+        }
+      },
+      "portfolio": {
+        "title": "财务报告和 OTP",
+        "description": "金额隐藏、OTP 验证、重发和十分钟查看会话。",
+        "entry": "会员打开投资组合报告；无有效查看会话时金额被隐藏。",
+        "decision": "选择显示金额并按流程请求 OTP。",
+        "scenarios": {
+          "verified": {
+            "title": "演示 OTP 通过",
+            "condition": "选择号码、请求验证码并输入除 000000 外的六位数字。",
+            "response": "自动验证显示金额并创建十分钟查看会话；不发送真实短信，也不匹配服务器发出的验证码。",
+            "recovery": "继续阅读；会员会话与投资组合会话相互独立。"
+          },
+          "noSelection": {
+            "title": "未选择号码",
+            "condition": "未选择号码即请求 OTP。",
+            "response": "显示号码必填提示，尚未开始验证。",
+            "recovery": "选择可用号码并重新请求。"
+          },
+          "partial": {
+            "title": "OTP 未填写完整",
+            "condition": "输入少于六位数字或非数字字符。",
+            "response": "输入会去除非数字并限制六位，填写完整后才验证。",
+            "recovery": "填写完整六位数字。"
+          },
+          "rejected": {
+            "title": "演示 OTP 被拒绝",
+            "condition": "输入 000000。",
+            "response": "显示验证码无效提示，金额保持隐藏。",
+            "recovery": "修正验证码；倒计时结束后可重发。"
+          },
+          "resend": {
+            "title": "等待后重新发送",
+            "condition": "一百一十九秒倒计时归零。",
+            "response": "启用重发，清空验证码并重新倒计时，不发送真实短信。",
+            "recovery": "再次输入演示验证码或关闭弹窗。"
+          },
+          "expiredCode": {
+            "title": "倒计时结束后输入验证码",
+            "condition": "倒计时归零后输入验证码。",
+            "response": "倒计时仅控制重发；操作尚未验证验证码有效期、尝试次数或发送限制。",
+            "recovery": "需求：服务器验证、有效期、频率限制和 OTP 恢复。"
+          },
+          "noPhone": {
+            "title": "无登记号码",
+            "condition": "弹窗组件收到空号码列表。",
+            "response": "noPhone 状态显示信息和返回按钮；当前页面使用默认演示号码，此情况未连接真实用户资料。",
+            "recovery": "需求：登记号码数据及官方号码更新流程。"
+          },
+          "cancel": {
+            "title": "关闭 OTP 弹窗",
+            "condition": "验证成功前关闭、点击遮罩或按 Escape。",
+            "response": "弹窗关闭；成功前取消不会授予新的查看会话。",
+            "recovery": "再次选择显示金额重试。"
+          },
+          "hideAgain": {
+            "title": "隐藏后再次显示",
+            "condition": "金额已显示且查看会话仍有效。",
+            "response": "眼睛图标隐藏金额；同一有效会话内再次显示无需新的 OTP。",
+            "recovery": "会话过期后需重新验证。"
+          },
+          "expiry": {
+            "title": "投资组合会话过期",
+            "condition": "验证通过后经过十分钟。",
+            "response": "计时器再次隐藏金额；重新访问时，过期 cookie 不会显示金额。",
+            "recovery": "选择眼睛图标并重新验证。"
+          },
+          "failure": {
+            "title": "验证请求故障",
+            "condition": "服务器操作失败或连接中断。",
+            "response": "OTP 处理器缺少完整网络错误恢复，提交状态可能停滞。",
+            "recovery": "需求：结束等待、显示提示，并在保持金额隐藏的情况下允许重试。"
+          },
+          "reload": {
+            "title": "查看会话内重新访问",
+            "condition": "OTP 已通过，十分钟内刷新投资组合页面。",
+            "response": "cookie 有效期尚未结束，因此无需新 OTP 即显示金额。",
+            "recovery": "访问期限遵循原有效期；刷新不会延长十分钟。"
+          },
+          "reportUnknown": {
+            "title": "未知报告类型",
+            "condition": "report 查询不是 tax 或 portfolio。",
+            "response": "页面默认选择投资组合；金额显示仍由查看会话决定。",
+            "recovery": "选择现有投资组合或税务报告页签。"
+          }
+        }
+      },
+      "vouchers": {
+        "title": "礼券和机场接送",
+        "description": "配额、无限、罚金、用尽、复制代码和已使用礼券。",
+        "entry": "会员打开带礼券模块的礼遇。",
+        "decision": "检查贵宾厅状态或选择机场接送代码。",
+        "scenarios": {
+          "available": {
+            "title": "配额可用",
+            "condition": "贵宾厅状态为 available。",
+            "response": "徽章显示五十张礼券；这是演示数据，模块不执行发券或核销交易。",
+            "recovery": "阅读使用条款；实际使用流程在原型之外。"
+          },
+          "unlimited": {
+            "title": "无限配额",
+            "condition": "以 voucherStatus=unlimited 打开详情。",
+            "response": "显示 unlimited 徽章，属于演示状态。",
+            "recovery": "该状态并不证明真实账户资格。"
+          },
+          "penalty": {
+            "title": "存在罚金",
+            "condition": "以 voucherStatus=penalty 打开详情。",
+            "response": "可用配额附带罚金提示；页面不处理罚金支付。",
+            "recovery": "遵循礼遇详情中的信息和联系渠道。"
+          },
+          "exhausted": {
+            "title": "配额用尽",
+            "condition": "以 voucherStatus=exhausted 打开详情。",
+            "response": "显示用尽徽章；页面不发放替代礼券。",
+            "recovery": "阅读条款或联系该礼遇的支持渠道。"
+          },
+          "copy": {
+            "title": "复制接送代码",
+            "condition": "对未使用的接送券选择复制。",
+            "response": "代码写入剪贴板，已复制提示显示约两秒；复制不会核销礼券。",
+            "recovery": "按条款通过合作伙伴渠道使用代码。"
+          },
+          "used": {
+            "title": "接送券已使用",
+            "condition": "礼券在演示数据中有 usedOn。",
+            "response": "代码带删除线、按钮禁用并显示使用日期。",
+            "recovery": "选择其他可用礼券。"
+          },
+          "copyDenied": {
+            "title": "剪贴板拒绝复制",
+            "condition": "剪贴板权限或浏览器阻止 writeText。",
+            "response": "不显示已复制状态；暂无专用失败提示，代码仍可见。",
+            "recovery": "可手动复制文本；后续界面需明确提示和备用方案。"
+          },
+          "expand": {
+            "title": "查看更多礼券",
+            "condition": "接送券列表超过两张。",
+            "response": "先显示两张卡片；查看更多展开其余内容，可再次收起。",
+            "recovery": "各礼券状态仍决定可用操作。"
+          }
+        }
+      },
+      "medical": {
+        "title": "预约体检",
+        "description": "选择地点、复制礼券并前往合作伙伴 WhatsApp。",
+        "entry": "Solitaire 账户打开国际体检礼遇。",
+        "decision": "选择服务地点或预约操作。",
+        "scenarios": {
+          "book": {
+            "title": "地点 → 合作伙伴 WhatsApp",
+            "condition": "选择地点后点击预约。",
+            "response": "新标签页打开 WhatsApp，预填含礼券代码和地点的消息，不会自动发送。",
+            "recovery": "用户自行审核并发送消息，合作伙伴确认预约时间。"
+          },
+          "copy": {
+            "title": "预约前复制代码",
+            "condition": "选择复制体检代码。",
+            "response": "复制演示代码并显示临时反馈。",
+            "recovery": "选择地点并前往合作伙伴预约。"
+          },
+          "partnerUnavailable": {
+            "title": "WhatsApp 或合作伙伴不可用",
+            "condition": "外部链接打不开或合作伙伴尚未回应。",
+            "response": "网站不接收消息送达或预约确认状态。",
+            "recovery": "返回详情并使用现有合作伙伴联系方式。"
+          },
+          "cancel": {
+            "title": "在合作伙伴应用中取消",
+            "condition": "关闭 WhatsApp 而未发送消息。",
+            "response": "网站未确认任何预约。",
+            "recovery": "如需继续，返回并重新选择地点或操作。"
+          }
+        }
+      },
+      "banking": {
+        "title": "Banking Solution 和汇率",
+        "description": "Banking Privilege、Wealth Insight、汇率和外部报告。",
+        "entry": "在公开或会员区域打开 Banking Solution。",
+        "decision": "选择 Banking Privilege、Wealth Insight 或汇率。",
+        "scenarios": {
+          "benefit": {
+            "title": "Banking Privilege → 详情",
+            "condition": "选择银行服务卡片。",
+            "response": "在对应区域打开礼遇详情；内容介绍服务，不是产品申请表。",
+            "recovery": "阅读条款并使用现有联系渠道。"
+          },
+          "wealth": {
+            "title": "Wealth Insight → 报告来源",
+            "condition": "选择 House View Report 或 Weekly Market Overview 卡片。",
+            "response": "链接打开现有网站的报告页面；原型不保证直接下载 PDF。",
+            "recovery": "通过来源页面阅读或下载。"
+          },
+          "rates": {
+            "title": "查看汇率和货币",
+            "condition": "打开汇率并选择可用货币。",
+            "response": "页面使用原型汇率；买卖价按参考值计算，并非 BCA 官方交易汇率集成。",
+            "recovery": "查看更新时间，交易时使用官方渠道。"
+          },
+          "rateFallback": {
+            "title": "汇率来源失败",
+            "condition": "汇率 API 失败、响应无效或缺少货币值。",
+            "response": "备用数据填充汇率，模块继续显示；备用值并不证明实时价格。",
+            "recovery": "集成需求：区分来源与时效，明确显示数据状态。"
+          },
+          "converter": {
+            "title": "换算和交换货币",
+            "condition": "选择源货币、目标货币并输入金额。",
+            "response": "浏览器根据页面汇率计算估算值，选项排除相同货币对；交换按钮反转方向。",
+            "recovery": "修改金额或货币对查看其他估算值，不执行外汇交易。"
+          },
+          "invalidAmount": {
+            "title": "换算金额无效",
+            "condition": "输入非数字文本、空值或负数。",
+            "response": "非数字或空输入产生零，负数仍可计算；暂无专门金额验证错误。",
+            "recovery": "修正金额；需求：格式规则、数值限制和验证提示。"
+          },
+          "refresh": {
+            "title": "刷新汇率页面",
+            "condition": "选择汇率刷新图标。",
+            "response": "整个页面刷新，换算输入恢复默认；来源缓存可能使汇率不变。",
+            "recovery": "重新设置金额或货币对并查看更新时间。"
+          }
+        }
+      },
+      "magazine": {
+        "title": "电子杂志",
+        "description": "浏览期刊并了解登录后继续流程的限制。",
+        "entry": "打开电子杂志列表。",
+        "decision": "选择列表页或要阅读的期刊。",
+        "scenarios": {
+          "list": {
+            "title": "浏览期刊",
+            "condition": "使用期刊列表分页。",
+            "response": "列表按每页十二期显示本地注册表内容。",
+            "recovery": "选择期刊卡片继续。"
+          },
+          "read": {
+            "title": "立即阅读 → 登录",
+            "condition": "从公开列表选择期刊。",
+            "response": "登录接受有效 magazine 参数，但成功后打开概览；尚未连接对应阅读器或 PDF。",
+            "recovery": "需求：保留所选期刊，登录后进入阅读器。"
+          },
+          "memberRead": {
+            "title": "会员选择期刊",
+            "condition": "在会员电子杂志列表选择卡片。",
+            "response": "会员列表卡片也指向登录；有效会话不会将其变为阅读器链接。",
+            "recovery": "需求：为有权限的会员提供直接阅读链接。"
+          },
+          "invalidIssue": {
+            "title": "未知期刊参数",
+            "condition": "登录网址使用注册表中不存在的 magazine。",
+            "response": "忽略该参数，登录页面仍可使用。",
+            "recovery": "从原型列表选择期刊。"
+          }
+        }
+      },
+      "branches": {
+        "title": "查找网点",
+        "description": "默认位置、GPS、拒绝权限、地点搜索和路线。",
+        "entry": "打开查找我们，已显示默认地点附近三个位置。",
+        "decision": "使用我的位置、搜索地点或选择位置卡片。",
+        "scenarios": {
+          "default": {
+            "title": "使用默认地点",
+            "condition": "访客不分享自身位置。",
+            "response": "仍可读取初始列表；默认地点不是访客位置。",
+            "recovery": "搜索其他区域或选择卡片上的路线。"
+          },
+          "gps": {
+            "title": "允许位置权限",
+            "condition": "选择我的位置并允许浏览器定位。",
+            "response": "收到响应后按新位置更新附近结果和区域标签。",
+            "recovery": "选择位置并打开路线。"
+          },
+          "denied": {
+            "title": "拒绝位置权限",
+            "condition": "浏览器拒绝定位权限。",
+            "response": "显示权限指引，列表仍可使用。",
+            "recovery": "手动搜索地点，或修改浏览器权限后重试。"
+          },
+          "unavailable": {
+            "title": "GPS 不可用或超时",
+            "condition": "不支持定位、位置不可用或请求超时。",
+            "response": "不可用状态提供重试指引，已有结果保持可用。",
+            "recovery": "重试或手动搜索地点。"
+          },
+          "place": {
+            "title": "手动搜索地点",
+            "condition": "输入至少两个字符并选择地点建议。",
+            "response": "搜索中心改变，附近结果更新；更短输入不显示建议。",
+            "recovery": "选择卡片、标记或其他地点。"
+          },
+          "noPlace": {
+            "title": "无地点建议",
+            "condition": "关键词未匹配地点列表。",
+            "response": "没有可选建议；之前的位置结果保持可用。",
+            "recovery": "修改拼写或搜索附近城市或区域。"
+          },
+          "nearbyFailure": {
+            "title": "附近位置更新失败",
+            "condition": "搜索中心改变后附近结果请求失败。",
+            "response": "保留之前的卡片；缺少完整过时或错误反馈，定位状态可能未完成。",
+            "recovery": "更换地点或刷新；后续需明确错误提示和重试。"
+          },
+          "directions": {
+            "title": "打开路线",
+            "condition": "为某位置选择路线。",
+            "response": "链接打开外部地图服务；网站不跟踪出行或到达。",
+            "recovery": "在地图应用中设置路线或返回列表。"
+          },
+          "mapFailed": {
+            "title": "地图加载失败",
+            "condition": "WebGL 不可用或地图样式十秒内未完成加载。",
+            "response": "地图进入失败状态，位置卡片仍作为主要查找方式。",
+            "recovery": "使用位置卡片和路线，或连接恢复后刷新。"
+          },
+          "fastTyping": {
+            "title": "快速输入或切换地点",
+            "condition": "上次搜索未完成前输入新查询。",
+            "response": "防抖与 AbortController 取消先前请求；少于两个字符的输入隐藏建议。",
+            "recovery": "等待最新查询建议后选择地点。"
+          }
+        }
+      },
+      "contact": {
+        "title": "信息与帮助",
+        "description": "关于、RIPLAY、条款、隐私、联系方式和外部渠道。",
+        "entry": "打开信息页面或联系我们。",
+        "decision": "阅读文件或选择可用帮助渠道。",
+        "scenarios": {
+          "documents": {
+            "title": "阅读完整文件",
+            "condition": "打开条款或隐私政策。",
+            "response": "原始文件含列表、表格和链接；手机端宽表格可滚动。",
+            "recovery": "选择相关信息以打开同品牌其他页面。"
+          },
+          "channel": {
+            "title": "选择联系渠道",
+            "condition": "选择 Halo BCA Prioritas 或 X @HaloBCA。",
+            "response": "渠道按联系链接或说明及现有披露处理；对话在网站之外进行。",
+            "recovery": "用户自行拨打电话或发送消息，网站不保证回应。"
+          },
+          "branch": {
+            "title": "通过网点获取帮助",
+            "condition": "从联系我们选择查找网点。",
+            "response": "打开当前品牌的查找我们。",
+            "recovery": "查找位置并继续路线流程。"
+          },
+          "messageForm": {
+            "title": "想从网站发送消息",
+            "condition": "访客寻找消息表单或工单状态。",
+            "response": "联系页面不提供表单、消息发送或工单追踪。",
+            "recovery": "使用现有联系渠道；新表单需单独确定范围和集成。"
+          },
+          "cancelDisclosure": {
+            "title": "打开联系渠道前取消",
+            "condition": "联系卡片打开披露弹窗后，用户选择取消或 Escape。",
+            "response": "原生弹窗关闭，不打开电话应用或 X。",
+            "recovery": "选择其他渠道或继续阅读。"
+          }
+        }
+      },
+      "logout": {
+        "title": "退出登录和切换板块",
+        "description": "确认、取消退出、清除会话和返回会员页面。",
+        "entry": "会员打开账户菜单或选择其他导航板块。",
+        "decision": "选择退出或继续需要退出的切换。",
+        "scenarios": {
+          "confirm": {
+            "title": "确认退出",
+            "condition": "在确认弹窗选择退出。",
+            "response": "删除会员和投资组合 cookie，然后打开品牌首页。",
+            "recovery": "下次访问会员页面需重新登录。"
+          },
+          "cancel": {
+            "title": "取消退出",
+            "condition": "选择取消或点击弹窗遮罩。",
+            "response": "弹窗关闭，会话和会员页面保持不变。",
+            "recovery": "继续使用会员功能。"
+          },
+          "segment": {
+            "title": "切换至 Prioritas/Solitaire 之外的板块",
+            "condition": "已登录桌面导航选择 Prioritas 或 Solitaire 之外的板块。",
+            "response": "退出确认保留目标；确认后清除会话并打开目标。",
+            "recovery": "取消则留在会员区域。"
+          },
+          "back": {
+            "title": "退出后返回会员网址",
+            "condition": "删除会话后重新打开或刷新会员网址。",
+            "response": "代理检查新请求并重定向至登录；浏览器快照或缓存不证明会话有效。",
+            "recovery": "重新登录访问会员区域。"
+          },
+          "failure": {
+            "title": "退出请求故障",
+            "condition": "退出操作失败或完成前连接中断。",
+            "response": "暂无专用失败提示或重试，不能假定会话已删除。",
+            "recovery": "需求：显示错误、允许重试，仅在成功删除后跳转。"
+          }
+        }
+      },
+      "resilience": {
+        "title": "报告、数据和故障",
+        "description": "报告筛选、演示下载、备用数据、离线和等待请求。",
+        "entry": "打开报告或依赖数据的内容。",
+        "decision": "选择期间、下载或在服务异常时继续。",
+        "scenarios": {
+          "period": {
+            "title": "切换报告期间",
+            "condition": "选择税务或投资组合报告、年份、月份或图表区间。",
+            "response": "控件更新界面和现有演示快照，不获取真实客户投资组合。",
+            "recovery": "按期间和金额显示状态查看结果。"
+          },
+          "download": {
+            "title": "下载财务报告",
+            "condition": "在投资组合或税务报告中选择下载。",
+            "response": "显示原型提示，不生成或下载报告文件。",
+            "recovery": "需求：文件接口、权限、期间和下载错误处理。"
+          },
+          "fallback": {
+            "title": "数据来源失败 → 备用数据",
+            "condition": "支持备用机制的数据请求失败，或缺少服务环境配置。",
+            "response": "请求使用打包数据填充模块，不证明实时集成成功。",
+            "recovery": "上线前确定各功能的数据来源和时效标识。"
+          },
+          "offline": {
+            "title": "离线或服务器无法访问",
+            "condition": "页面、数据或操作加载完成前断网。",
+            "response": "没有全局离线流程，也不保证所有页面可用；服务器备用数据不等于浏览器离线缓存。",
+            "recovery": "恢复连接并刷新；每个写入操作都需明确重试状态。"
+          },
+          "pending": {
+            "title": "请求缓慢或等待中",
+            "condition": "登录、OTP 或退出操作尚未完成。",
+            "response": "部分按钮有等待或禁用状态，但各功能的超时和恢复尚不一致。",
+            "recovery": "需求：各操作的加载、超时、重试和重复提交防护规则。"
+          },
+          "externalFailure": {
+            "title": "外部链接打不开",
+            "condition": "浏览器、目标应用或外部网站拒绝链接。",
+            "response": "原型不接收外部服务成功状态，跳转不代表操作完成。",
+            "recovery": "返回来源页面重试链接，或使用现有联系渠道。"
+          }
+        }
+      },
+      "preview": {
+        "title": "项目预览访问",
+        "description": "预览访问限制独立于会员登录。",
+        "entry": "打开原型网站。",
+        "decision": "若启用预览限制，请输入预览密码。",
+        "scenarios": {
+          "disabled": {
+            "title": "未启用访问限制",
+            "condition": "启用标志与预览密码未同时配置。",
+            "response": "公开页面无需预览密码；会员页面仍检查会员会话。",
+            "recovery": "继续浏览或按需登录会员。"
+          },
+          "correct": {
+            "title": "预览密码正确",
+            "condition": "已启用限制，密码匹配配置。",
+            "response": "创建预览 cookie 并打开目标页面，不创建会员会话。",
+            "recovery": "受保护会员目标仍需会员登录。"
+          },
+          "wrong": {
+            "title": "预览密码错误",
+            "condition": "密码不匹配预览配置。",
+            "response": "预览登录失败，访客留在访问限制页面。",
+            "recovery": "检查预览密码后重试。"
+          },
+          "idle": {
+            "title": "八小时无操作",
+            "condition": "预览计时器八小时未收到指针、键盘、滚动或触摸操作。",
+            "response": "客户端请求退出预览并打开 /login；此计时器独立于会员和投资组合会话。",
+            "recovery": "重新登录预览；会员访问取决于仍有效的 cookie。"
+          }
+        }
+      }
+    },
+    "title": "用户流程 | BCA Prioritas & Solitaire",
+    "heading": "查看每个情况，了解每个阶段。",
+    "eyebrow": "用户流程",
+    "subtitle": "选择要比较的情况，再点击流程图中的阶段。单个界面预览显示所选状态，无需执行整个流程。",
+    "scope": "基于 2026 年 10 月 12 日实现的 Prioritas 和 Solitaire 原型行为指南。覆盖现有路径和已识别异常；功能变化时需重新审核。",
+    "safe": "界面预览仅供查看。文档控件切换情况、阶段和屏幕尺寸；预览中的按钮和输入框无法操作。",
+    "journeyCount": "{count} 个流程",
+    "scenarioCount": "{count} 个场景",
+    "gapCount": "{count} 项待处理",
+    "explore": "探索流程",
+    "coverage": "场景覆盖",
+    "search": "搜索流程或条件",
+    "searchPlaceholder": "例如：OTP 错误、会话过期…",
+    "all": "全部",
+    "brand": "品牌",
+    "kind": "场景类型",
+    "status": "实现状态",
+    "journeysLabel": "选择用户流程",
+    "scenarioLabel": "选择场景",
+    "results": "{count} 个匹配场景",
+    "reset": "重置筛选",
+    "emptyTitle": "无匹配场景",
+    "emptyBody": "尝试其他关键词或减少筛选。",
+    "diagram": "步骤图",
+    "step": "第 {number} 步",
+    "steps": "{count} 个步骤",
+    "start": "开始",
+    "decision": "用户操作",
+    "response": "系统响应",
+    "recovery": "下一步",
+    "condition": "触发条件",
+    "whatNext": "接下来会发生什么？",
+    "openPage": "打开相关页面",
+    "copyLink": "复制场景链接",
+    "copied": "链接已复制",
+    "copyFailed": "无法复制，请从浏览器复制页面网址。",
+    "source": "实现参考",
+    "sourceHelp": "场景行为和状态参考以下来源；页面链接打开实际原型。",
+    "coverageHelp": "此列表用于审核和 QA；状态表示实现边界，并非自动测试结果。",
+    "openScenario": "查看流程",
+    "scenarioHeader": "场景和结果",
+    "kinds": {
+      "normal": "正常",
+      "negative": "失败",
+      "alternative": "替代",
+      "recovery": "恢复",
+      "edge": "边界情况"
+    },
+    "statuses": {
+      "available": "已提供",
+      "demo": "演示",
+      "gap": "待处理",
+      "external": "外部渠道"
+    },
+    "statusHelp": {
+      "available": "当前实现已有此行为。",
+      "demo": "此流程使用模拟数据或验证，不代表运营服务。",
+      "gap": "行为不完整、未连接或缺少明确恢复流程。",
+      "external": "网站转至其他渠道，不确认最终结果。"
+    },
+    "areas": {
+      "public": "公开区域",
+      "member": "会员区域",
+      "both": "公开及会员区域",
+      "preview": "预览区域"
+    },
+    "brands": {
+      "both": "两个品牌",
+      "prioritas": "Prioritas",
+      "solitaire": "Solitaire"
+    },
+    "ui": {
+      "allCases": "此流程中的所有情况",
+      "caseHelp": "直接选择任意情况，无需点击播放或完成其他阶段。当前筛选条件会缩小列表范围。",
+      "flowchart": "所选情况的流程图",
+      "flowchartHelp": "选择条件或结果查看界面。",
+      "stages": "流程阶段",
+      "before": "操作之前",
+      "result": "屏幕显示结果",
+      "preview": "界面预览",
+      "static": "静态 · 按钮和输入框不可操作",
+      "device": "预览尺寸",
+      "desktop": "桌面",
+      "mobile": "手机",
+      "excerpt": "界面片段使用原型的组件和素材。外部或尚未处理的情况可能保持相同界面，请阅读上方的阶段说明。",
+      "previewAlt": "情况 {case} 的静态预览，第 {stage} 阶段。",
+      "notFound": "This page could not be found."
+    },
+    "graph": {
+      "title": "流程分支",
+      "help": "选择条件或结果查看界面。",
+      "path": "起始路径",
+      "branch": "选项 / 条件",
+      "condition": "场景 / 条件",
+      "outcome": "屏幕结果",
+      "continue": "后续：{case}",
+      "nodes": {
+        "homepage": "首页",
+        "navigation": "导航",
+        "search": "搜索",
+        "privilege": "权益中心",
+        "filters": "筛选与列表",
+        "benefitDetail": "权益详情",
+        "login": "会员登录",
+        "credentials": "输入身份和密码",
+        "memberUrl": "会员网址",
+        "financialReport": "财务报告",
+        "otp": "OTP验证",
+        "memberBenefit": "会员权益",
+        "medical": "体检",
+        "location": "选择地点",
+        "banking": "银行服务",
+        "magazine": "电子杂志",
+        "issue": "选择期刊",
+        "branches": "查找网点",
+        "origin": "选择位置起点",
+        "information": "信息与帮助",
+        "memberArea": "会员专区",
+        "logout": "确认退出",
+        "reportOrContent": "报告 / 内容",
+        "website": "打开网站",
+        "previewGate": "预览入口"
+      }
+    },
+    "lobby": {
+      "title": "流程列表",
+      "help": "选择流程，查看场景、步骤和界面预览。",
+      "cases": "{count} 个场景",
+      "back": "返回流程列表"
+    },
+    "board": {
+      "back": "流程列表",
+      "cases": "场景",
+      "selectedCase": "所选场景",
+      "stages": "场景步骤",
+      "next": "后续",
+      "explanation": "响应说明与参考",
+      "static": "静态界面",
+      "wholeScreen": "完整画面",
+      "focusUI": "聚焦界面"
+    },
+    "actions": {
+      "click": "点击",
+      "input": "在此输入",
+      "select": "选择",
+      "response": "响应"
+    }
   }
 }

@@ -47,10 +47,10 @@ export default function SoliprioMobile({
         className="absolute inset-x-4 top-8 flex flex-col items-start gap-4"
       >
         <div className="flex max-w-[360px] flex-col items-start gap-3">
-          <p className="text-left text-2xl leading-[1.2] tracking-[-0.48px] text-white">
+          <p className="text-left text-size-display-m leading-[1.2] tracking-[-0.48px] text-white">
             {title}
           </p>
-          <p className="text-left text-sm leading-5 text-white/70">
+          <p className="text-left text-size-body-m leading-5 text-white/70">
             {description}
           </p>
         </div>

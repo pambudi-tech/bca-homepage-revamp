@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import MobileMenu from "./MobileMenu";
 import SearchPlaceholderCarousel from "./SearchPlaceholderCarousel";
 import type { ProductCategory } from "./product-data";
 import type { MegaMenuContent } from "@/lib/megamenu";
+import { PreviewFrozenContext, PreviewNavigationContext } from "@/lib/PreviewViewport";
 import { Link } from "@/i18n/navigation";
 import type { MemberBrand } from "@/lib/member-auth";
 
@@ -48,14 +49,17 @@ export default function MobileNav({
   memberPreviewName?: string;
   memberBrand?: MemberBrand;
 }) {
+  const frozen = useContext(PreviewFrozenContext);
   const t = useTranslations("mobileMenu");
   const tNav = useTranslations("nav");
   const tPromo = useTranslations("promoPage");
-  const [menuOpen, setMenuOpen] = useState(false);
+  const navigationPreview = useContext(PreviewNavigationContext);
+  const [menuOpen, setMenuOpen] = useState(navigationPreview?.mobileMenuOpen ?? false);
 
   useEffect(() => {
+    if (frozen) return;
     window.dispatchEvent(new CustomEvent<boolean>(MOBILE_MENU_EVENT, { detail: menuOpen }));
-  }, [menuOpen]);
+  }, [menuOpen, frozen]);
 
   return (
     <>
@@ -87,7 +91,7 @@ export default function MobileNav({
               visible={!searchOpen}
               live={!searchOpen}
               lineHeight={40}
-              className="inset-y-0 left-11 right-3 text-sm"
+              className="inset-y-0 left-11 right-3 text-size-body-m"
             />
           ) : null}
         </button>
@@ -97,7 +101,7 @@ export default function MobileNav({
           aria-expanded={menuOpen}
           className={`flex items-center gap-2 rounded-full border border-white/15 bg-[rgba(5,13,25,0.2)] backdrop-blur-[40px] transition-transform active:scale-95 ${variant === "promo" ? "size-10 justify-center" : "h-10 py-1 pl-1 pr-3"}`}
         >
-          {variant !== "promo" ? <span className={`flex h-8 w-24 items-center justify-center rounded-full px-5 text-sm font-semibold ${variant === "prioritas" ? "bg-pgold-500 text-white" : variant === "solitaire" ? "bg-neutral-500 text-neutral-800" : "bg-neutral-100 text-blue-500"}`}>{variant === "prioritas" ? tNav("segments.Prioritas") : variant === "solitaire" ? tNav("segments.Solitaire") : tNav("segments.Individu")}</span> : null}
+          {variant !== "promo" ? <span className={`flex h-8 w-24 items-center justify-center rounded-full px-5 text-size-body-m font-semibold ${variant === "prioritas" ? "bg-pgold-500 text-white" : variant === "solitaire" ? "bg-neutral-500 text-neutral-800" : "bg-neutral-100 text-blue-500"}`}>{variant === "prioritas" ? tNav("segments.Prioritas") : variant === "solitaire" ? tNav("segments.Solitaire") : tNav("segments.Individu")}</span> : null}
           <img src="/assets/cycle1/outline-menu.svg" alt="" className="size-6" />
         </button>
       </div>

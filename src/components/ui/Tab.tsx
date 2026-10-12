@@ -19,7 +19,7 @@ const underlineTones = {
 
 function tabClasses(visual: TabVisual, className?: string) {
   if (visual.variant === "curved") {
-    const size = visual.size === "medium" ? "px-3 text-sm xl:px-8 xl:text-base" : "px-6 text-base xl:px-8";
+    const size = visual.size === "medium" ? "px-3 text-size-body-m xl:px-8 xl:text-size-body-l" : "px-6 text-size-body-l xl:px-8";
     const solitaire = visual.tone === "solitaire";
     const active = visual.active
       ? solitaire
@@ -34,7 +34,7 @@ function tabClasses(visual: TabVisual, className?: string) {
   const size = visual.size === "large"
     ? "h-14 px-3 xl:px-5"
     : "h-12 px-3 xl:px-4";
-  const typography = visual.size === "large" ? "text-base leading-normal" : "text-sm leading-[14px]";
+  const typography = visual.size === "large" ? "text-size-body-l leading-normal" : "text-size-body-m leading-[14px]";
   const textTone = visual.tone === "solitaire" && !visual.active
     ? "text-neutral-500 group-hover:text-neutral-100"
     : visual.tone === "solitaireMember" && !visual.active
@@ -60,14 +60,14 @@ function TabContent({ variant, tone, active, children }: TabContentProps) {
 
 export function TabButton({ variant, size, tone, active, className, children, ...props }: TabButtonProps) {
   const visual = variant === "curved" ? { variant, size, tone, active } as const : { variant, size: size!, tone: tone!, active } as const;
-  return <button type="button" {...props} className={tabClasses(visual, className)}>
+  return <button type="button" {...props} data-blueprint-component="tab" data-blueprint-part="tab" data-blueprint-label={typeof children === "string" ? children : undefined} data-blueprint-variant={variant} data-blueprint-size={size ?? "medium"} data-blueprint-tone={tone} className={tabClasses(visual, className)}>
     <TabContent {...visual}>{children}</TabContent>
   </button>;
 }
 
 export function TabLink({ variant, size, tone, active, className, children, ...props }: TabLinkProps) {
   const visual = variant === "curved" ? { variant, size, tone, active } as const : { variant, size: size!, tone: tone!, active } as const;
-  return <Link {...props} className={tabClasses(visual, className)}>
+  return <Link {...props} data-blueprint-component="tab" data-blueprint-part="tab" data-blueprint-label={typeof children === "string" ? children : undefined} data-blueprint-variant={variant} data-blueprint-size={size ?? "medium"} data-blueprint-tone={tone} className={tabClasses(visual, className)}>
     <TabContent {...visual}>{children}</TabContent>
   </Link>;
 }

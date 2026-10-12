@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useScrollLock } from "@/components/SmoothScroll";
@@ -188,9 +190,9 @@ export default function ProductMegaMenuOverlay({
                   className="flex min-w-0 flex-col items-center gap-2 text-center text-neutral-700"
                 >
                   <span className="flex size-14 items-center justify-center rounded-full bg-cyan-100">
-                    <img src={category.icon} alt="" className="size-10" />
+                    <IconAsset src={category.icon} alt="" className="size-10" />
                   </span>
-                  <span className="text-xs font-semibold leading-4">{category.label}</span>
+                  <span className="text-size-body-s font-semibold leading-4">{category.label}</span>
                 </button>
               ))}
             </div>
@@ -212,7 +214,7 @@ export default function ProductMegaMenuOverlay({
                   <path d="m15 5-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
-              <h2 className="min-w-0 flex-1 truncate text-xl font-semibold text-neutral-900">{selected.label}</h2>
+              <h2 className="min-w-0 flex-1 truncate text-size-display-s font-semibold text-neutral-900">{selected.label}</h2>
             </header>
 
             <div ref={mobileDetailScrollRef} data-lenis-prevent className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
@@ -221,8 +223,8 @@ export default function ProductMegaMenuOverlay({
                   const content = (
                     <>
                       <span className="min-w-0 flex-1">
-                        <span className="block text-base font-semibold leading-6 text-neutral-900">{product.title}</span>
-                        {product.description ? <span className="mt-0.5 block text-sm leading-5 text-neutral-600">{product.description}</span> : null}
+                        <span className="block text-size-body-l font-semibold leading-6 text-neutral-900">{product.title}</span>
+                        {product.description ? <span className="mt-0.5 block text-size-body-m leading-5 text-neutral-600">{product.description}</span> : null}
                       </span>
                       <ArrowRight className="size-5 shrink-0 text-blue-500" />
                     </>
@@ -238,11 +240,11 @@ export default function ProductMegaMenuOverlay({
                   );
                 })}
                 {selected.key === "Kartu Kredit" ? (
-                  <Link href="/kartu-kredit" className="mt-2 flex items-center gap-1 px-2 py-3 text-sm font-semibold text-blue-500">
+                  <Link href="/kartu-kredit" className="mt-2 flex items-center gap-1 px-2 py-3 text-size-body-m font-semibold text-blue-500">
                     {selected.ctaLabel}<ArrowRight className="size-4" />
                   </Link>
                 ) : (
-                  <button type="button" className="mt-2 flex items-center gap-1 px-2 py-3 text-sm font-semibold text-blue-500">
+                  <button type="button" className="mt-2 flex items-center gap-1 px-2 py-3 text-size-body-m font-semibold text-blue-500">
                     {selected.ctaLabel}<ArrowRight className="size-4" />
                   </button>
                 )}
@@ -253,13 +255,13 @@ export default function ProductMegaMenuOverlay({
                   {tools.map((tool) => (
                     <button key={tool.label} type="button" className="flex min-h-20 items-center gap-3 rounded-xl border border-neutral-300 bg-neutral-100 p-3 text-left text-blue-500">
                       <span className="shrink-0"><UtilityIcon type={tool.icon} /></span>
-                      <span className="text-sm font-semibold leading-5 text-neutral-800">{tool.label}</span>
+                      <span className="text-size-body-m font-semibold leading-5 text-neutral-800">{tool.label}</span>
                     </button>
                   ))}
                 </div>
                 <div className="mt-3 flex flex-col">
                   {supportingLinks.map((link) => (
-                    <button key={link.label} type="button" className="flex items-center gap-3 py-3 text-left text-sm font-semibold leading-5 text-neutral-800">
+                    <button key={link.label} type="button" className="flex items-center gap-3 py-3 text-left text-size-body-m font-semibold leading-5 text-neutral-800">
                       <span className="min-w-0 flex-1">{link.label}</span>
                       <ArrowRight className="size-5 shrink-0 text-neutral-600" />
                     </button>
@@ -277,7 +279,7 @@ export default function ProductMegaMenuOverlay({
         <span aria-hidden className="absolute top-1/2 -right-2.5 hidden size-5 -translate-y-1/2 rotate-45 rounded-sm bg-white xl:block" />
 
         <header className="flex h-16 shrink-0 items-center justify-between border-b border-neutral-300 px-4 xl:hidden">
-          <h2 className="text-xl font-semibold text-neutral-900">{tNav("produk")}</h2>
+          <h2 className="text-size-display-s font-semibold text-neutral-900">{tNav("produk")}</h2>
           <button
             type="button"
             aria-label={tMobileMenu("tutupMenu")}
@@ -294,11 +296,11 @@ export default function ProductMegaMenuOverlay({
           <div className="flex items-center justify-between gap-4 pb-3">
             <h2 className="text-title text-neutral-800">{selected.label}</h2>
             {selected.key === "Kartu Kredit" ? (
-              <Link href="/kartu-kredit" className="flex shrink-0 items-center gap-1 text-sm font-semibold text-blue-500">
+              <Link href="/kartu-kredit" className="flex shrink-0 items-center gap-1 text-size-body-m font-semibold text-blue-500">
                 {selected.ctaLabel}<ArrowRight />
               </Link>
             ) : (
-              <button type="button" className="flex shrink-0 items-center gap-1 text-sm font-semibold text-blue-500">
+              <button type="button" className="flex shrink-0 items-center gap-1 text-size-body-m font-semibold text-blue-500">
                 {selected.ctaLabel}<ArrowRight />
               </button>
             )}
@@ -322,8 +324,8 @@ export default function ProductMegaMenuOverlay({
                 {selected.products.map((product) => {
                   const content = (
                     <>
-                      <span className="block text-base font-semibold leading-6 text-neutral-900 transition-colors group-hover:text-blue-500">{product.title}</span>
-                      {product.description ? <span className="mt-0.5 block text-xs leading-[18px] text-neutral-600">{product.description}</span> : null}
+                      <span className="block text-size-body-l font-semibold leading-6 text-neutral-900 transition-colors group-hover:text-blue-500">{product.title}</span>
+                      {product.description ? <span className="mt-0.5 block text-size-body-s leading-[18px] text-neutral-600">{product.description}</span> : null}
                     </>
                   );
                   return product.href ? (
@@ -344,13 +346,13 @@ export default function ProductMegaMenuOverlay({
                 {tools.map((tool) => (
                   <button key={tool.label} type="button" className="flex min-h-28 flex-col items-start gap-3 rounded-xl border border-neutral-300 p-3 text-left text-blue-500 transition-colors hover:bg-cyan-100">
                     <span className="shrink-0"><UtilityIcon type={tool.icon} /></span>
-                    <span className="text-sm font-semibold leading-5 text-neutral-800">{tool.label}</span>
+                    <span className="text-size-body-m font-semibold leading-5 text-neutral-800">{tool.label}</span>
                   </button>
                 ))}
               </div>
               <div className="mt-auto flex flex-col pt-3">
                 {supportingLinks.map((link) => (
-                  <button key={link.label} type="button" className="flex items-center gap-3 rounded-xl px-2 py-3 text-left text-sm font-semibold leading-5 text-neutral-800 transition-colors hover:bg-cyan-100">
+                  <button key={link.label} type="button" className="flex items-center gap-3 rounded-xl px-2 py-3 text-left text-size-body-m font-semibold leading-5 text-neutral-800 transition-colors hover:bg-cyan-100">
                     <span className="min-w-0 flex-1">{link.label}</span>
                     <ArrowRight className="size-5 shrink-0 text-blue-500" />
                   </button>
@@ -374,8 +376,8 @@ export default function ProductMegaMenuOverlay({
                   onFocus={() => setSelectedKey(category.key)}
                   className={`flex w-[92px] shrink-0 flex-col items-center justify-center gap-2 rounded-xl px-2 py-2 text-center transition-colors xl:h-[88px] xl:w-[120px] ${active ? "bg-cyan-100 text-blue-500 outline outline-1 outline-cyan-500" : "text-neutral-700 hover:bg-neutral-200"}`}
                 >
-                  <img src={category.icon} alt="" className="size-9 xl:size-10" />
-                  <span className={`text-sm leading-5 ${active ? "font-bold" : "font-semibold"}`}>{category.label}</span>
+                  <IconAsset src={category.icon} alt="" className="size-9 xl:size-10" />
+                  <span className={`text-size-body-m leading-5 ${active ? "font-bold" : "font-semibold"}`}>{category.label}</span>
                 </button>
               );
             })}

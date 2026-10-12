@@ -1,3 +1,4 @@
+import { privilegeDetailBase } from "@/lib/privilege-paths";
 import { getPrivilegePromos } from "@/lib/partner-privileges";
 import { rankBySearchScored } from "./search-engine";
 import type { ProductRec, SearchRecommendations, SearchSegment } from "./search-data";
@@ -83,7 +84,7 @@ export function getPriosoliSearchRecommendations(
           id: `Prioritas-${section}-${offer.id}`,
           title: `${offer.brand} — ${offer.title}`,
           description: copy.signatureLabel,
-          href: hrefFor(locale, `/prioritas/${section === "lifestyle" ? "lifestyle-privilege" : "privilege"}/${offer.id}`),
+          href: hrefFor(locale, `${privilegeDetailBase("/prioritas", section)}/${offer.id}`),
           icon: "star",
           tags: [offer.brand, offer.title, offer.privilegeCategory, "privilege", segment],
         });

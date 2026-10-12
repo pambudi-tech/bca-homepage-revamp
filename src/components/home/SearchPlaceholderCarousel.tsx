@@ -30,7 +30,7 @@ export default function SearchPlaceholderCarousel({
   visible,
   live,
   lineHeight = 48,
-  className = "inset-0 px-6 text-base",
+  className = "inset-0 px-6 text-size-body-l",
 }: {
   placeholders: string[];
   visible: boolean;

@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 export type PrioritasDirectoryDropdownOption = { value: string; label: ReactNode; accessibleLabel?: string; horizontal?: boolean };
@@ -80,7 +82,7 @@ export default function PrioritasDirectoryDropdown({
   return <div ref={containerRef} data-open={open} className={`priosoli-dropdown ${tone === "solitaire" ? "priosoli-dropdown--solitaire" : ""} ${optionWeight ? `priosoli-dropdown--options-${optionWeight}` : ""} priosoli-dropdown--${size} ${xlSize ? `priosoli-dropdown--xl-${xlSize}` : ""} w-full ${widthClassName}`}>
     <span className="sr-only">{label}</span>
     <div className="priosoli-dropdown__control">
-      {search ? <img src="/assets/promo-page/controls/search.svg" alt="" aria-hidden className="priosoli-dropdown__search-icon" /> : null}
+      {search ? <IconAsset src="/assets/promo-page/controls/search.svg" alt="" aria-hidden className="priosoli-dropdown__search-icon" /> : null}
       {search ? <input
         ref={inputRef}
         value={value}
@@ -104,7 +106,7 @@ export default function PrioritasDirectoryDropdown({
         aria-controls={id}
         onClick={() => setOpen((current) => !current)}
         className="priosoli-dropdown__trigger"
-      ><span className={`flex min-w-0 items-center gap-2 ${!selected && placeholder ? "text-neutral-600" : ""}`}>{selected?.label ?? placeholder ?? value}</span></button>}
+      ><span className={`${selected?.horizontal ? "flex min-w-0 items-center gap-2" : "line-clamp-2 min-w-0"} ${!selected && placeholder ? "text-neutral-600" : ""}`}>{selected?.label ?? placeholder ?? value}</span></button>}
       <button
         type="button"
         aria-label={label}
@@ -114,7 +116,7 @@ export default function PrioritasDirectoryDropdown({
         onClick={() => setOpen((current) => !current)}
         className="priosoli-dropdown__toggle"
       >
-        <img src="/assets/promo-page/controls/chevron-down.svg" alt="" aria-hidden className="priosoli-dropdown__chevron" />
+        <IconAsset src="/assets/promo-page/controls/chevron-down.svg" alt="" aria-hidden className="priosoli-dropdown__chevron" />
       </button>
     </div>
     {open ? <div style={previewOpen ? { position: "relative", top: 0, left: 0, width: "100%", marginTop: 8 } : menuPosition} className="priosoli-dropdown__menu">

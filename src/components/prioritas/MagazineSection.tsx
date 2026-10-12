@@ -23,7 +23,7 @@ export default function MagazineSection({ copy }: { copy: Copy }) {
         <header className="flex flex-col gap-6 xl:flex-row xl:items-start xl:gap-10">
           <div className="flex flex-1 flex-col gap-6 xl:flex-row xl:gap-10">
             <p className="text-eyebrow-lg uppercase text-pgold-300 md:text-eyebrow xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-xl">{copy.eyebrow}</p>
-            <h2 className="text-heading max-w-[520px] text-pgold-100 xl:text-display">{copy.heading}</h2>
+            <h2 className="text-display-m max-w-[520px] text-pgold-100 xl:text-display">{copy.heading}</h2>
           </div>
           <div className="hidden md:block">
             <Link href="/prioritas/e-magazine" className={prioritasButtonClassName({ surface: "inverse", size: "large", className: "w-fit" })}>

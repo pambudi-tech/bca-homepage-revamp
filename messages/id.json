@@ -2927,6 +2927,8 @@
     }
   },
   "signaturePrivilege": {
+    "publicSignatureTab": "Signature & Complimentary",
+    "signatureTab": "Signature",
     "subNavLabel": "Navigasi Prioritas",
     "subNav": {
       "privilege": "Privilege",
@@ -3639,7 +3641,6 @@
     "results": "hasil",
     "noResults": "Tidak ada komponen yang cocok.",
     "preview": "Komponen asli · varian & state",
-    "previewNote": "Ukuran mengikuti komponen yang dirender dan viewport saat ini. Aktifkan Blueprint untuk melihat batas dan ukuran bagian komponen.",
     "usage": "Fungsi",
     "implementation": "Sumber implementasi",
     "copyPath": "Salin path",
@@ -3698,7 +3699,7 @@
       "text-field": {
         "title": "Text Field",
         "description": "Input berlabel dengan bantuan, ikon, dan pesan kesalahan.",
-        "detail": "Ukuran Default, Medium, Large; dapat menampilkan ikon, bantuan, dan error inline. Focus belum punya varian brand."
+        "detail": "Ukuran Large; tersedia tampilan Default, Prioritas, dan Solitaire, dengan bantuan dan pesan kesalahan inline."
       },
       "content-card": {
         "title": "Content Card",
@@ -3791,9 +3792,8 @@
         "detail": "Kontrol kembali ke atas mengikuti scroll; shortcut tertentu muncul sesuai konteks halaman."
       },
       "alert-feedback": {
-        "title": "Login Alert",
-        "description": "Pesan kesalahan login dengan ikon dan layout asli dari halaman member.",
-        "detail": "LoginAlert yang sama dipakai oleh MemberLoginExperience: bg-red-100, text-red-600, ikon close.svg, min-height 56px dan padding 16px."
+        "title": "Alert",
+        "description": "Pesan Info, Warning, Danger, dan Success dengan ikon serta warna sesuai konteks."
       },
       "search-overlay": {
         "title": "Search Overlay",
@@ -3811,7 +3811,6 @@
         "detail": "Directory memakai judul kategori; detail dapat menambah subtitle dan logo. Tone mengikuti brand dan konteks member."
       }
     },
-    "spec": "Spesifikasi ringkas",
     "board": {
       "homepage": "Homepage",
       "public": "Publik",
@@ -3822,6 +3821,9 @@
       "dimensions": "Width × height",
       "type": "Tipografi · size / line-height · weight",
       "allSpecs": "Specs",
+      "subnav": "Subnav",
+      "withoutSubnav": "Tanpa subnav",
+      "withSubnav": "Dengan subnav",
       "viewport": "Viewport",
       "previewWidth": "Lebar layar",
       "previewScale": "Skala preview",
@@ -3865,7 +3867,68 @@
       "blueprintModes": {
         "size": "Ukuran",
         "padding": "Padding",
-        "inset": "Inset"
+        "margin": "Margin",
+        "gap": "Gap"
+      },
+      "sizingAxes": {
+        "width": "Lebar",
+        "height": "Tinggi"
+      },
+      "sizingKinds": {
+        "fixed": "Fixed",
+        "dynamic": "Dinamis",
+        "content": "Dinamis · mengikuti konten"
+      },
+      "lockedRatio": "Rasio terkunci",
+      "componentVariants": {
+        "prioritas": "Prioritas",
+        "solitaire": "Solitaire",
+        "button": "Button",
+        "icon": "Icon Button",
+        "text": "Text Button",
+        "primary": "Primary",
+        "secondary": "Secondary",
+        "danger": "Danger",
+        "default": "Default",
+        "inverse": "Inverse",
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large",
+        "underline": "Underline",
+        "curved": "Curved"
+      },
+      "blueprintRoles": {
+        "cover": "Gambar Cover",
+        "contentPanel": "Panel Informasi",
+        "publicationType": "Jenis Publikasi",
+        "articleTitle": "Judul Artikel",
+        "publicationDate": "Tanggal Publikasi",
+        "calendarIcon": "Ikon Kalender",
+        "downloadIcon": "Ikon Unduh",
+        "downloadAction": "Tombol Unduh",
+        "magazineCover": "Cover Majalah",
+        "magazineTitle": "Judul Majalah",
+        "button": "Tombol",
+        "input": "Kolom Input",
+        "select": "Dropdown",
+        "fieldLabel": "Label Kolom",
+        "title": "Judul",
+        "arrowIcon": "Ikon Panah",
+        "logo": "Logo",
+        "icon": "Ikon",
+        "actionLabel": "Label Aksi",
+        "errorMessage": "Pesan Kesalahan",
+        "eyebrow": "Label Kategori",
+        "description": "Deskripsi",
+        "articleCover": "Cover Artikel",
+        "cardTitle": "Judul Kartu",
+        "brand": "Nama Brand",
+        "privilegeCard": "Kartu Privilege",
+        "productCard": "Kartu Produk",
+        "card": "Kartu",
+        "tab": "Tab",
+        "accordionHeader": "Header accordion",
+        "searchField": "Kolom pencarian"
       },
       "blueprintParts": {
         "component": "Komponen",
@@ -3879,7 +3942,89 @@
       "single": "Tanggal tunggal",
       "period": "Periode satu bulan",
       "crossMonth": "Periode beda bulan",
-      "eventCase": "Kondisi tanggal"
+      "eventCase": "Kondisi tanggal",
+      "specDetails": {
+        "fontFamily": "Font",
+        "fontSize": "Ukuran teks",
+        "lineHeight": "Tinggi baris",
+        "fontWeight": "Ketebalan",
+        "letterSpacing": "Jarak huruf",
+        "paddingHorizontal": "Padding kiri / kanan",
+        "paddingVertical": "Padding atas / bawah",
+        "paddingTop": "Padding atas",
+        "paddingRight": "Padding kanan",
+        "paddingBottom": "Padding bawah",
+        "paddingLeft": "Padding kiri",
+        "rowGap": "Jarak antar baris",
+        "columnGap": "Jarak antar kolom",
+        "radius": "Radius sudut",
+        "borderWidth": "Tebal border",
+        "opacity": "Opasitas",
+        "background": "Background",
+        "text": "Teks",
+        "border": "Border",
+        "indicator": "Garis indikator",
+        "transparent": "Transparan",
+        "colors": "Warna",
+        "layout": "Jarak & bentuk",
+        "typography": "Tipografi",
+        "weights": {
+          "100": "Thin",
+          "200": "Extra Light",
+          "300": "Light",
+          "400": "Regular",
+          "500": "Medium",
+          "600": "Semibold",
+          "700": "Bold",
+          "800": "Extra Bold",
+          "900": "Black"
+        },
+        "gap": "Jarak antar elemen",
+        "backgroundFill": "Isian background",
+        "gradient": "Gradien / gambar",
+        "wholeComponent": "Keseluruhan komponen",
+        "decorativeBorderWidth": "Tebal border dekoratif",
+        "decorativeBorder": "Border dekoratif",
+        "ringWidth": "Tebal ring",
+        "ringColor": "Ring",
+        "outlineWidth": "Tebal outline",
+        "outlineColor": "Outline"
+      },
+      "edgeCase": "Edge case",
+      "edgeSamples": {
+        "dropdown": {
+          "beauty": "Perawatan kecantikan, kesehatan kulit, dan relaksasi tubuh untuk seluruh anggota keluarga",
+          "culinary": "Pengalaman kuliner internasional dengan pilihan hidangan eksklusif dari berbagai negara",
+          "travel": "Perjalanan dan akomodasi eksklusif untuk liburan keluarga ke berbagai destinasi internasional"
+        },
+        "cardTitle": "Nikmati complimentary upgrade kamar, makanan pendamping, konsultasi kesehatan, dan layanan antar jemput eksklusif untuk pengalaman menginap bersama keluarga yang lebih nyaman",
+        "brand": "International Healthcare, Wellness & Hospitality Specialist Medical Center",
+        "heroTitle": "Wujudkan rencana masa depan keluarga melalui layanan perbankan eksklusif, pengelolaan kekayaan, dan berbagai privilege istimewa yang mendampingi setiap perjalanan Anda",
+        "eventTitle": "Pengalaman eksklusif menikmati pertunjukan musik internasional, pameran seni, dan kuliner istimewa bersama keluarga serta sahabat dalam rangkaian acara spesial sepanjang akhir pekan",
+        "headerTitle": "Pilihan event, promo, dan pengalaman eksklusif untuk menemani perjalanan keluarga Anda ke berbagai destinasi istimewa sepanjang tahun",
+        "privilegeTitle": "Nikmati akses eksklusif ke Executive Airport Lounge dengan kenyamanan premium dan berbagai fasilitas istimewa di bandara seluruh Indonesia",
+        "bankingTitle": "Layanan perbankan eksklusif dengan pendampingan personal dan fasilitas istimewa untuk memenuhi seluruh kebutuhan finansial Anda di Cabang BCA",
+        "wealthTitle": "Dinamika inflasi Amerika Serikat, kebijakan suku bunga The Fed, dan perkembangan pasar obligasi global memengaruhi strategi pengelolaan portofolio investasi sepanjang tahun",
+        "featureTitle": "Nikmati akses eksklusif ke ratusan airport lounge premium dengan beragam fasilitas istimewa dan layanan personal untuk perjalanan nyaman bersama seluruh keluarga"
+      },
+      "ads": "Ads",
+      "alertVariants": {
+        "info": "Info",
+        "warning": "Warning",
+        "danger": "Danger",
+        "success": "Success"
+      },
+      "alertMessages": {
+        "info": "Masukkan BCA ID untuk melanjutkan ke layanan member.",
+        "warning": "Sesi Anda akan segera berakhir. Silakan masuk kembali.",
+        "danger": "Email atau password yang Anda masukkan salah.",
+        "success": "Password Anda berhasil diperbarui."
+      },
+      "blueprintEmpty": {
+        "padding": "Tidak ada padding.",
+        "margin": "Tidak ada margin.",
+        "gap": "Tidak ada gap pada susunan elemen ini."
+      }
     },
     "docs": {
       "examples": "Contoh & state",
@@ -3895,6 +4040,1621 @@
       "detail": "Detail event"
     },
     "mobile": "Mobile",
-    "desktop": "Desktop"
+    "desktop": "Desktop",
+    "rulesTitle": "Aturan & perilaku",
+    "rules": {
+      "dropdown": [
+        "Label opsi dropdown maksimal 2 baris; teks selebihnya dipotong dengan elipsis."
+      ],
+      "content-card": [
+        "Judul maksimal 3 baris dan nama brand maksimal 1 baris; teks selebihnya dipotong dengan elipsis. Lebar teks mengikuti ruang kartu.",
+        "Jika logo tidak tersedia, nama brand menjadi pengganti dengan maksimal 3 baris."
+      ],
+      "magazine-card": [
+        "Rasio cover terkunci 3:4; tinggi mengikuti perubahan lebar agar cover tidak terdistorsi."
+      ],
+      "pagination": [
+        "Elipsis dapat diklik untuk melompat 5 halaman, dengan tujuan dibatasi pada halaman pertama dan terakhir."
+      ],
+      "featured-event": [
+        "Judul maksimal 3 baris; teks selebihnya dipotong dengan elipsis. Ruang judul disediakan agar posisi aksi konsisten."
+      ],
+      "hero": [
+        "Judul hero Prio/Soli di desktop maksimal 3 baris; teks selebihnya dipotong."
+      ],
+      "page-header": [
+        "Judul detail maksimal 3 baris di mobile dan desktop. Judul directory dibatasi 3 baris di desktop; subtitle tidak memakai line clamp."
+      ],
+      "privilege-card": [
+        "Judul maksimal 2 baris; teks selebihnya dipotong dengan elipsis."
+      ],
+      "banking-privilege-card": [
+        "Judul maksimal 2 baris; teks selebihnya dipotong dengan elipsis."
+      ],
+      "wealth-insight-card": [
+        "Judul maksimal 3 baris; teks selebihnya dipotong dengan elipsis."
+      ],
+      "privilege-feature": [
+        "Judul maksimal 3 baris; teks selebihnya dipotong dengan elipsis."
+      ]
+    },
+    "assetBank": "Asset Bank"
+  },
+  "assetBank": {
+    "title": "Asset Bank",
+    "eyebrow": "Sumber daya desain",
+    "workspace": "Ruang kerja desain",
+    "catalog": "Katalog komponen",
+    "collections": "Koleksi",
+    "subtitle": "Telusuri gambar, ikon, dan lapisan visual Prioritas dan Solitaire. Pilih aset untuk melihat ukuran, mencoba latar preview, dan mengunduh aset.",
+    "scope": "Hanya aset Prioritas dan Solitaire, termasuk aset bersama yang dipakai keduanya. Gambar directory dibatasi ke Banking Privilege; foto directory Complimentary, Lifestyle Privilege, Event, dan Promo tidak disertakan.",
+    "search": "Cari aset",
+    "searchPlaceholder": "Cari nama, section, atau path file…",
+    "brand": "Brand",
+    "format": "Format",
+    "allFormats": "Semua format",
+    "sort": "Urutkan aset",
+    "sorting": {
+      "collection": "Per koleksi",
+      "name": "Nama A–Z",
+      "size": "File terbesar"
+    },
+    "view": "Tampilan galeri",
+    "grid": "Tampilan grid",
+    "list": "Tampilan daftar",
+    "resultCount": "{count} aset",
+    "reset": "Reset filter",
+    "inspect": "Lihat {name}",
+    "emptyTitle": "Aset tidak ditemukan",
+    "emptyDescription": "Coba kata kunci lain atau reset filter.",
+    "showing": "Menampilkan {shown} dari {total} aset",
+    "loadMore": "Tampilkan aset lainnya",
+    "preview": "Preview aset",
+    "zoomPreview": "Area zoom aset",
+    "zoomControls": "Kontrol zoom",
+    "zoomIn": "Perbesar",
+    "zoomOut": "Perkecil",
+    "zoomLevel": "Tingkat zoom",
+    "zoomReset": "Reset zoom",
+    "zoomHint": "Pinch untuk zoom. Drag atau geser dua jari untuk memindahkan gambar yang diperbesar.",
+    "previous": "Aset sebelumnya",
+    "next": "Aset berikutnya",
+    "close": "Tutup preview",
+    "background": "Latar preview",
+    "surfaces": {
+      "checker": "Transparansi",
+      "light": "Terang",
+      "dark": "Gelap"
+    },
+    "dimensions": "Dimensi",
+    "fileSize": "Ukuran file",
+    "path": "Path file",
+    "download": "Unduh aset",
+    "copyPath": "Salin path",
+    "copied": "Path tersalin",
+    "copyFailed": "Tidak dapat menyalin. Pilih dan salin path di atas.",
+    "openOriginal": "Buka file",
+    "sources": "Referensi sumber",
+    "sourceUnavailable": "Referensi langsung belum ditemukan.",
+    "inlineNote": "SVG ini dikumpulkan dari ikon inline dalam kode. Komponen asli tetap menjadi sumber utama.",
+    "brands": {
+      "all": "Semua brand",
+      "prioritas": "Prioritas",
+      "solitaire": "Solitaire",
+      "shared": "Prio & Solitaire"
+    },
+    "groups": {
+      "all": "Semua aset",
+      "hero": "Hero & banner",
+      "banking": "Banking Privilege",
+      "financial": "Laporan Finansial",
+      "logos": "Logo & brand",
+      "icons": "Ikon",
+      "decorations": "Latar & dekorasi",
+      "products": "Kartu & perbankan",
+      "illustrations": "Ilustrasi & editorial",
+      "flags": "Bendera negara"
+    },
+    "names": {
+      "heroPrioritas": "Hero Prioritas",
+      "heroSolitaire": "Hero Solitaire",
+      "cardPrioritas": "Visual kartu Prioritas",
+      "cardSolitaire": "Visual kartu Solitaire",
+      "financialPrioritas": "Laporan Finansial Prioritas",
+      "financialSolitaire": "Laporan Finansial Solitaire",
+      "logoBca": "Logo BCA",
+      "logoPrioritas": "Logo Prioritas",
+      "logoSolitaire": "Logo Solitaire",
+      "health": "Healthcare",
+      "loungePrioritas": "Airport Lounge Prioritas",
+      "loungeSolitaire": "Airport Lounge Solitaire",
+      "eventPrioritas": "Event Prioritas",
+      "eventSolitaire": "Event Solitaire",
+      "personalBanker": "Personal Banker",
+      "visualGold": "Latar visual Prioritas · emas",
+      "visualGrey": "Latar visual Solitaire · abu-abu",
+      "otpEmailPrioritas": "OTP email Prioritas · emas",
+      "otpEmailSolitaire": "OTP email Solitaire · abu-abu",
+      "backgroundBankingSolitaire": "Latar Banking Solution · Solitaire",
+      "backgroundEventSolitaire": "Latar Event & Promo · Solitaire",
+      "wavePrivilegeSolitaire": "Gelombang Privilege · Solitaire",
+      "decorationBankingPrioritas": "Dekorasi Banking Solution · Prioritas",
+      "decorationEventPrioritas": "Dekorasi Event & Promo · Prioritas",
+      "backgroundPageSolitaire": "Latar halaman & area member · Solitaire",
+      "backgroundPagePrioritas": "Latar halaman & area member · Prioritas",
+      "decorationPrivilegePrioritas": "Dekorasi Privilege · Prioritas",
+      "backgroundMemberLogin": "Latar login member",
+      "glowPrioritas": "Cahaya kartu & header · Prioritas",
+      "patternSoliprio": "Pola Prioritas & Solitaire",
+      "maskCardPrioritas": "Mask visual kartu · Prioritas"
+    }
+  },
+  "siteMap": {
+    "title": "Site Map",
+    "workspace": "Dokumentasi proyek",
+    "workspaceTitle": "Dokumentasi BCA Prioritas–Solitaire Revamp",
+    "eyebrow": "Prioritas & Solitaire · Dokumentasi",
+    "heading": "Site Map",
+    "subtitle": "Struktur halaman dan navigasi BCA Prioritas & Solitaire, mencakup Public Area dan Member Area.",
+    "brand": "Pilih brand",
+    "area": "Filter area",
+    "search": "Cari halaman atau URL",
+    "searchPlaceholder": "Cari halaman atau URL…",
+    "instruction": "Klik nama untuk memahami halaman. Klik panah untuk membuka cabangnya.",
+    "results": "{count} entri cocok · cabang induk tetap ditampilkan",
+    "reset": "Reset filter",
+    "expandAll": "Buka semua",
+    "collapseAll": "Tutup semua",
+    "expandBranch": "Buka cabang {name}",
+    "collapseBranch": "Tutup cabang {name}",
+    "loginRequired": "Perlu login",
+    "publicAccess": "Akses publik",
+    "legendDetail": "Detail = pola untuk banyak konten atau partner",
+    "legendTab": "Tab = tampilan lain di halaman yang sama",
+    "detailPanel": "Tentang halaman ini",
+    "position": "Posisi dalam navigasi",
+    "routePattern": "Pola URL",
+    "url": "URL halaman",
+    "patternHelp": "Bagian dalam kurung siku berubah sesuai konten. Tombol di bawah membuka satu contoh yang tersedia.",
+    "behavior": "Perilaku akses",
+    "memberHelp": "Memerlukan sesi member {brand}. Jika belum login, halaman akan mengarahkan ke form login.",
+    "openExample": "Buka contoh detail",
+    "openPage": "Buka halaman",
+    "newTab": "Terbuka di tab baru",
+    "children": "Lanjut dari sini",
+    "emptyTitle": "Halaman belum ditemukan",
+    "emptyDescription": "Coba kata kunci lain atau reset filter area.",
+    "scopeNote": "Peta ini mencakup halaman Prioritas dan Solitaire yang sudah diimplementasikan. Garis menunjukkan hubungan navigasi dan pengelompokan konten. Halaman detail dengan struktur serupa diwakili oleh satu entri dengan tautan contoh.",
+    "nav": {
+      "catalog": "Katalog Komponen",
+      "assets": "Asset Bank",
+      "map": "Site Map",
+      "tokens": "Design Tokens",
+      "flows": "User Flows"
+    },
+    "brands": {
+      "prioritas": "BCA Prioritas",
+      "solitaire": "BCA Solitaire"
+    },
+    "filters": {
+      "all": "Semua area",
+      "public": "Public",
+      "member": "Member"
+    },
+    "kinds": {
+      "home": "Beranda",
+      "directory": "Direktori",
+      "detail": "Detail",
+      "information": "Informasi",
+      "login": "Login",
+      "tab": "Tab"
+    },
+    "areas": {
+      "public": {
+        "title": "Public Area",
+        "description": "Eksplorasi layanan dan privilege sebelum masuk sebagai member."
+      },
+      "member": {
+        "title": "Member Area",
+        "description": "Login → Member Overview → privilege, layanan, dan laporan pribadi."
+      }
+    },
+    "notes": {
+      "otp": "Portofolio membutuhkan verifikasi OTP demo tambahan. Verifikasi ini membuka sesi lihat portofolio selama 10 menit.",
+      "voucherPrioritas": "Detail Signature mengikuti batas akses Prioritas. Halaman dapat menampilkan pemberitahuan jika benefit khusus Solitaire.",
+      "voucherSolitaire": "Member Solitaire dapat mengakses modul Signature Privilege. Tindakan voucher muncul sesuai benefit, misalnya lounge atau airport transfer.",
+      "magazine": "Memilih edisi menuju alur login member untuk membuka majalah. Edisi majalah bukan halaman detail terpisah dalam peta ini.",
+      "login": "Form login dipakai bersama oleh kedua brand. Parameter from menentukan konteks Prioritas atau Solitaire; setelah login, pengguna menuju Member Overview atau tujuan yang diminta.",
+      "wealth": "Wealth Insight adalah tab pada Banking Solution untuk menelusuri konten edukasi dan wawasan finansial."
+    },
+    "pages": {
+      "home": {
+        "title": "Homepage",
+        "description": "Pintu masuk utama brand: hero, pilihan privilege, Banking Solution, dan akses member."
+      },
+      "privilege": {
+        "title": "Privilege",
+        "description": "Halaman utama Privilege dengan tab Signature & Complimentary, Lifestyle, Event, dan Promo."
+      },
+      "signatureTab": {
+        "title": "Signature & Complimentary",
+        "description": "Tab utama Privilege, menampilkan benefit Signature dan daftar Complimentary dalam satu tampilan."
+      },
+      "signatureDetail": {
+        "title": "Detail Signature",
+        "description": "Halaman detail benefit Signature, seperti airport transfer dan lounge. Berisi penjelasan layanan, ketentuan, serta alur akses atau voucher sesuai benefit."
+      },
+      "complimentaryDetail": {
+        "title": "Detail Complimentary",
+        "description": "Halaman detail penawaran Complimentary dari partner. Berisi benefit tanpa biaya tambahan, syarat, periode berlaku, kontak, dan lokasi partner."
+      },
+      "lifestyle": {
+        "title": "Lifestyle Privilege",
+        "description": "Daftar penawaran lifestyle yang bisa ditelusuri menggunakan kategori dan pencarian."
+      },
+      "lifestyleDetail": {
+        "title": "Detail lifestyle",
+        "description": "Informasi penawaran lifestyle dari partner, termasuk syarat, lokasi, dan kontak."
+      },
+      "event": {
+        "title": "Event",
+        "description": "Direktori acara dengan kategori, pencarian, dan informasi waktu pelaksanaan."
+      },
+      "eventDetail": {
+        "title": "Detail event",
+        "description": "Informasi acara yang dipilih: waktu, detail kegiatan, syarat, lokasi, dan rekomendasi."
+      },
+      "promo": {
+        "title": "Promo",
+        "description": "Daftar promo dengan kategori dan filter untuk mencari penawaran yang sesuai."
+      },
+      "promoDetail": {
+        "title": "Detail promo",
+        "description": "Halaman informasi penawaran, periode berlaku, syarat, dan kontak terkait."
+      },
+      "banking": {
+        "title": "Banking Solution",
+        "description": "Halaman utama layanan perbankan dengan tab Banking Privilege dan Wealth Insight, serta akses ke halaman Kurs."
+      },
+      "bankingTab": {
+        "title": "Banking Privilege",
+        "description": "Tab benefit dan layanan perbankan yang tersedia untuk nasabah."
+      },
+      "bankingDetail": {
+        "title": "Detail banking privilege",
+        "description": "Penjelasan benefit perbankan tertentu, seperti kartu, pembiayaan, atau layanan cabang."
+      },
+      "wealth": {
+        "title": "Wealth Insight",
+        "description": "Konten edukasi finansial serta wawasan tentang pasar dan pengelolaan kekayaan."
+      },
+      "kurs": {
+        "title": "Kurs",
+        "description": "Informasi nilai tukar mata uang dengan pilihan mata uang dan detail kurs."
+      },
+      "magazine": {
+        "title": "e-Magazine",
+        "description": "Katalog edisi majalah digital dengan cover dan akses baca setiap edisi."
+      },
+      "about": {
+        "title": "Tentang Kami",
+        "description": "Informasi mengenai layanan dan pengalaman nasabah pada brand yang dipilih."
+      },
+      "locations": {
+        "title": "Temukan Kami",
+        "description": "Pencarian lokasi cabang dan lounge melalui daftar lokasi serta peta."
+      },
+      "riplay": {
+        "title": "RIPLAY",
+        "description": "Ringkasan informasi produk dan layanan, beserta akses dokumen terkait."
+      },
+      "login": {
+        "title": "Login Member",
+        "description": "Pintu masuk Member Area. Form menyesuaikan brand yang dipilih sebelum membuat sesi member demo."
+      },
+      "overview": {
+        "title": "Member Overview",
+        "description": "Beranda setelah login, berisi ringkasan akun dan pintasan menuju seluruh modul member."
+      },
+      "financial": {
+        "title": "Financial Report",
+        "description": "Pusat laporan pribadi dengan pilihan Portfolio Summary dan Tax Report."
+      },
+      "portfolio": {
+        "title": "Portfolio Summary",
+        "description": "Ringkasan aset dan produk finansial nasabah, ditampilkan setelah verifikasi OTP demo."
+      },
+      "tax": {
+        "title": "Tax Report",
+        "description": "Tampilan laporan pajak nasabah di dalam Financial Report."
+      },
+      "terms": {
+        "title": "Ketentuan",
+        "description": "Berikut ini adalah ketentuan dalam mengakses Situs BCA Solitaire & Prioritas (https://prioritas.bca.co.id)."
+      },
+      "privacy": {
+        "title": "Kebijakan Privasi",
+        "description": "Berikut ini adalah kebijakan PT Bank Central Asia Tbk (‘BCA”) dan tindakan yang dilakukan oleh BCA untuk menjaga privasi dan keamanan data Anda pada saat mengunjungi situs BCA Solitaire & Prioritas."
+      },
+      "contact": {
+        "title": "Hubungi Kami",
+        "description": "Informasi lebih lanjut dan saran mengenai BCA Prioritas, silakan isi pesan di bawah ini atau hubungi kami"
+      }
+    },
+    "origin": {
+      "heading": "Asal di website existing",
+      "previous": "Sebelumnya: {name}",
+      "categorySource": "Tautan di atas adalah halaman kategori asal. URL detail existing tiap benefit belum dipetakan satu per satu.",
+      "memberSource": "Mapping ini menjelaskan asal konten. Akses dan alur Member Area mengikuti implementasi revamp.",
+      "unmapped": "Sumber existing untuk halaman ini belum dipetakan.",
+      "pendingHeading": "Halaman yang ditunda",
+      "held": "News dan Business Community di-hold; belum masuk revamp saat ini.",
+      "deferred": "Tiga halaman footer ini juga ditunda dan belum memiliki halaman revamp:",
+      "status": {
+        "retained": "Dilanjutkan",
+        "renamed": "Ganti nama",
+        "split": "Dipecah",
+        "combined": "Digabung",
+        "new": "Kelompok baru",
+        "moved": "Dipindahkan",
+        "newPage": "Halaman baru"
+      },
+      "sources": {
+        "partner": "Partner Privilege",
+        "banking": "BCA Privilege",
+        "promo": "Promo",
+        "updates": "Wealth Updates",
+        "house": "House View Report",
+        "weekly": "Weekly Market Overview",
+        "riplay": "RIPLAY",
+        "home": "Homepage Prioritas",
+        "kurs": "Kurs",
+        "about": "Tentang Kami",
+        "locations": "Temukan Kami",
+        "terms": "Ketentuan",
+        "privacy": "Kebijakan Privasi",
+        "contact": "Hubungi Kami",
+        "login": "Login",
+        "magazine": "Majalah Prioritas",
+        "financial": "Laporan Finansial"
+      },
+      "notes": {
+        "home": "Homepage website existing menjadi sumber beranda Prioritas dan Solitaire di revamp. Halaman yang sudah dimapping di footer: Temukan Kami, Tentang Kami, dan RIPLAY.",
+        "privilege": "Privilege di revamp mengelompokkan hasil audit Partner Privilege menjadi Signature, Complimentary, dan Lifestyle, serta memisahkan Event dan Promo. BCA Privilege dipindahkan ke Banking Solution dengan nama Banking Privilege.",
+        "partner": "Partner Privilege diaudit dan dipecah menjadi tiga kategori: Signature, Complimentary, dan Lifestyle Privilege. Signature dan Complimentary ditampilkan dalam satu tab, dengan halaman detail masing-masing.",
+        "signature": "Benefit hasil audit Partner Privilege masuk kategori Signature. Listing-nya berada di tab Signature & Complimentary; alamat detail pada revamp: {path}.",
+        "complimentary": "Penawaran hasil audit Partner Privilege masuk kategori Complimentary. Listing-nya berada di tab Signature & Complimentary; alamat detail pada revamp: {path}.",
+        "lifestyle": "Penawaran hasil audit Partner Privilege masuk kategori Lifestyle Privilege, sekarang berada di tab Lifestyle di bawah Privilege.",
+        "event": "Halaman Promo existing dipecah menjadi Event dan Promo. Konten acara sekarang masuk tab Event di bawah Privilege.",
+        "promo": "Promo existing dipecah menjadi Event dan Promo. Konten Wealth Updates yang bersifat promosi juga masuk Promo, pada kategori Bisnis.",
+        "bankingHub": "Banking Solution adalah kelompok baru yang menaungi Banking Privilege (sebelumnya BCA Privilege), Wealth Insight (sebelumnya Market Insight), dan Kurs. Tidak ada satu halaman existing yang setara; sumber di bawah adalah halaman penyusunnya.",
+        "banking": "BCA Privilege diganti nama menjadi Banking Privilege dan dipindahkan ke Banking Solution. Benefit perbankan beserta halaman detailnya berada di tab Banking Privilege.",
+        "wealth": "Market Insight diganti nama menjadi Wealth Insight, sekarang berada di Banking Solution. House View Report dan Weekly Market Overview menjadi konten di dalam tab ini.",
+        "kurs": "Kurs dari halaman Kurs-Detail existing sekarang berada di Banking Solution > Kurs.",
+        "footer": "Halaman existing ini sudah dimapping ke halaman revamp dengan nama yang sama dan dapat diakses melalui footer.",
+        "login": "Login existing menjadi sumber alur masuk Member Area di revamp. Form login digunakan bersama; parameter from menentukan konteks Prioritas atau Solitaire.",
+        "magazine": "Majalah Prioritas pada website existing menjadi e-Magazine di revamp, dengan sumber yang sama untuk Prioritas dan Solitaire.",
+        "overview": "Member Overview adalah halaman baru di revamp sebagai beranda setelah login, berisi ringkasan akun dan pintasan ke modul member. Tidak ada halaman existing yang setara.",
+        "financial": "Halaman Laporan Finansial existing menjadi Financial Report di Member Area revamp, sekarang berada di bawah Member Overview.",
+        "financialTab": "Bagian ini berada di Financial Report revamp. Sumber existing-nya adalah halaman Laporan Finansial; mapping ini tidak menyatakan adanya tab yang sama pada website existing."
+      },
+      "sharedSite": "Website existing Prioritas digunakan bersama oleh nasabah Prioritas dan Solitaire; sebelumnya belum ada website Solitaire terpisah."
+    }
+  },
+  "brandInformation": {
+    "relatedTitle": "Informasi terkait",
+    "pages": {
+      "terms": {
+        "title": "Ketentuan",
+        "description": "Berikut ini adalah ketentuan dalam mengakses Situs BCA Solitaire & Prioritas (https://prioritas.bca.co.id).",
+        "sections": {
+          "introduction": {
+            "title": "Ketentuan",
+            "contentHtml": "<p>Berikut ini adalah ketentuan dalam mengakses Situs BCA Solitaire & Prioritas (https://prioritas.bca.co.id).</p>"
+          },
+          "section1": {
+            "title": "Pendaftaran dan Aktivasi",
+            "contentHtml": "<div> <div> <ul> <li>Situs BCA Solitaire &amp; Prioritas adalah situs yang hanya dapat diakses oleh anggota Situs BCA Solitaire &amp; Prioritas (“<em>Member</em>”). Setiap nasabah BCA Solitaire &amp; Prioritas (“Nasabah”) berhak untuk menjadi <em>Member</em>. Agar Nasabah dapat mengakses Situs BCA Solitaire &amp; Prioritas secara penuh dan mendapatkan manfaat dari Situs BCA Solitaire &amp; Prioritas, maka Nasabah wajib mendaftarkan diri terlebih dahulu sebagai <em>Member</em>.</li> <li>Untuk menjadi <em>Member</em>, Nasabah harus melakukan proses registrasi melalui fitur Sign Up pada Situs BCA Solitaire &amp; Prioritas dan melakukan aktivasi <em>User ID</em>. Nasabah hanya berhak untuk mempunyai satu <em>User ID</em> pada Situs BCA Solitaire &amp; Prioritas.</li> </ul> </div> </div>"
+          },
+          "section2": {
+            "title": "Ubah Data Diri",
+            "contentHtml": "<div> <ul> <li>Setiap <em>Member</em> memiliki hak untuk mengubah data diri yang dimasukkan saat pendaftaran, kecuali User ID, nama Nasabah, dan keterangan status nasabah di BCA (segmen Nasabah).</li> </ul> </div>"
+          },
+          "section3": {
+            "title": "Kata Sandi",
+            "contentHtml": "<div> <div> <ul> <li>Jika Member lupa kata sandi (<em>password</em>) untuk masuk ke dalam Situs BCA Solitaire &amp; Prioritas, untuk melakukan <em>reset</em> kata sandi (<em>password</em>) <em>Member</em> dapat menggunakan fitur “<em>Forgot Password</em>” pada halaman <em>login</em> dan mengikuti semua prosedur yang dicantumkan dalam Situs BCA Solitaire &amp; Prioritas. <em>Member</em> wajib merahasiakan dan bertanggung jawab sepenuhnya atas keamanan kata sandi (password) User ID.</li> </ul> </div> </div>"
+          },
+          "section4": {
+            "title": "Hak Akses",
+            "contentHtml": "<div> <div> <ul> <li> <p>Atas pertimbangan tertentu BCA setiap saat berhak menghapus atau membekukan akses <em>Member</em> ke fitur Situs BCA Solitaire &amp; Prioritas.</p> </li> </ul> </div> </div>"
+          },
+          "section5": {
+            "title": "Majalah BCA Solitaire & Prioritas Online",
+            "contentHtml": "<div> <div> <ul> <li>Majalah BCA Prioritas Online disajikan secara gratis kepada Member. Member dapat melihat koleksi Majalah BCA Prioritas Online sampai 8 (delapan) edisi ke belakang.</li> </ul> </div> </div>"
+          },
+          "section6": {
+            "title": "Antar Muka Google Maps",
+            "contentHtml": "<div> <div> <ul> <li>Pada Situs BCA Solitaire &amp; Prioritas tersedia fitur “<em>Find Us</em>” yang akan menyediakan koneksi ke fitur Google Maps yang disediakan oleh Google. Segala syarat dan ketentuan serta kebijakan <em>privasi</em> terkait Google Maps mengacu pada ketentuan yang ditetapkan oleh Google. Detail syarat dan ketentuan dan kebijakan privasi Google Maps dapat dilihat di <a href=\"https://developers.google.com/maps/terms?hl=en\" target=\"_blank\" rel=\"noopener noreferrer\"><span>https://developers.google.com/maps/terms?hl=en</span></a> dan <a href=\"http://www.google.com/policies/privacy/\" target=\"_blank\" rel=\"noopener noreferrer\"><span>http://www.google.com/policies/privacy/</span></a>.</li> <li>BCA tidak bertanggung jawab jika terjadi kesalahan program pada Google yang mengakibatkan tampilan fitur “Find Us” tidak muncul, tidak dapat dilihat oleh pengunjung fitur atau tidak akurat.</li> </ul> </div> </div>"
+          },
+          "section7": {
+            "title": "Lain-lain",
+            "contentHtml": "<div> <div> <ul> <li> <p>Dengan menggunakan Situs BCA Solitaire &amp; Prioritas, Nasabah setuju untuk tunduk dan terikat pada Ketentuan Situs BCA Solitaire &amp; Prioritas. BCA setiap saat berhak untuk mengubah, melengkapi, atau Ketentuan Situs BCA Solitaire &amp; Prioritas ini yang akan diberitahukan oleh BCA kepada Nasabah dalam bentuk dan melalui sarana apapun.</p> </li> </ul> <p><strong>BUSINESS COMMUNITY</strong></p> <p><strong></strong>Business Community merupakan salah satu menu di situs BCA Solitaire &amp; Prioritas yang merupakan wadah komunitas BCA Solitaire &amp; Prioritas untuk menciptakan interkoneksi antar nasabah dan tercipta peluang-peluang usaha yang bisa dijalankan bersama. Menu ini berisi daftar bisnis para anggota Business Community yang dilengkapi fasilitas untuk mencari, mengubah, dan atau menambahkan detail bisnis beserta detail produk yang dihasilkan.</p> <p><strong>Cara dan Syarat Menjadi Anggota</strong></p> <ul> <li>Terdaftar sebagai nasabah BCA Solitaire / Prioritas</li> <li><span>Memiliki ID dan Password untuk login di situs BCA Solitaire &amp; Prioritas :<a href=\"https://prioritas.bca.co.id/\" target=\"_blank\" rel=\"noopener noreferrer\"><span>https://prioritas.bca.co.id/</span></a></span></li> </ul> <p><strong>MEKANISME REGISTRASI</strong></p> <p><strong></strong><span>Calon anggota <em>Business Community</em> yang belum memiliki akun di situs BCA Solitaire &amp; Prioritas, silakan registrasi di <a href=\"https://prioritas.bca.co.id/\" target=\"_blank\" rel=\"noopener noreferrer\"><span></span></a><span><a href=\"https://prioritas.bca.co.id/\" target=\"_blank\" rel=\"noopener noreferrer\">https://prioritas.bca.co.id/</a></span> dengan cara sebagai berikut:</span></p> <ul> <li><span>Masuk halaman login dan klik tool box “Daftar” di sebelah kanan.</span></li> <li> <p><span>Semua kolom tersebut wajib diisi dengan data yang valid sesuai dengan data Prioritas Anda.</span></p> </li> <li> <p>Jika semua kolom sudah diisi, klik <em>tool box</em> “Kirim”.</p> </li> <li> <p>Data yang masuk ke situs BCA Solitaire &amp; Prioritas akan diperiksa validitasnya terlebih dahulu oleh BCA. BCA akan mengirimkan <em>status Sign Up</em> ke email yang telah anda daftarkan sebelumnya.</p> </li> </ul> <p><strong>FASILITAS-FASILITAS</strong></p> <p>Anggota Business Community akan mendapat fasilitas khusus :</p> <ul> <li>Akses ke daftar bisnis anggota <em>Business Community</em><a><em></em>.</a></li> <li><a></a>Akses ke halaman profil pribadi anda, dengan materi dan konfigurasi diatur sesuai kebutuhan anda. Profil pribadi anda dapat dibaca oleh anggota <em>Business Community</em><a>.</a></li> <li><a></a>Melakukan komunikasi pribadi dan tertutup melalui Pesan Pribadi dengan anggota <em>Business Community</em> lainnya.</li> <li>Menampilkan profil bisnis, produk,dan layanan bisnis apa yang ditawarkan dalam <em>Business Community</em>, sehingga mudah dicari anggota <em>Business Community</em> lainnya.</li> </ul> <p><strong>ATURAN DAN LARANGAN</strong></p> <ol> <li>Agar postingan Profil Bisnis anda dapat disetujui oleh admin, mohon untuk memperhatikan beberapa hal berikut: <ul> <li>Menggunakan foto profil dengan kualitas gambar yang jelas serta relevan dengan profil bisnis;</li> <li>Menampilkan alamat bisnis yang jelas serta nomor <em>handphone</em> yang aktif dan dapat dihubungi;</li> <li>Isi detail profil bisnis.</li> </ul> </li> <li>Dalam mem-posting Profil Bisnis, anda dilarang untuk: <ul> <li>Menggunakan foto, gambar, tulisan dan materi lainnya yang: <ul> <li>Memuat unsur Suku, Agama, Ras dan Antar Golongan (SARA;)</li> <li>Memuat unsur pornografi dan pornoaksi;</li> <li>Menghina, menyindir atau mengolok-olok, bernada negatif, menyudutkan, sarkastis, memprovokasi, mengintimidasi dan dapat menimbulkan keresahan.</li> </ul> </li> <li>Mempromosikan bisnis/produk: <ul> <li>Yang bertentangan dengan hukum;</li> <li>Jual-beli barang-barang pribadi, seperti rumah, mobil, pakaian dll;</li> <li><em>Multi-level marketing;</em></li> <li>Jasa keuangan.</li> </ul> </li> </ul> </li> <li>BCA sebagai moderator berhak untuk: <ul> <li>Menolak atau menunda publikasi profil bisnis apabila terdapat ketidaksesuaian dengan ketentuan butir i dan ii di atas</li> <li>Melakukan <em>screening</em> terhadap semua tulisan, foto, gambar dan materi lainnya yang di-<em>upload</em>.</li> </ul> </li> <li>Anda dengan ini menjamin bahwa tulisan, gambar, foto dan atau materi lainnya yang anda <em>upload</em> tidak melanggar hak kekayaan intelektual pihak lain.Sehubungan dengan tulisan, gambar, foto dan atau materi lainnya yang anda <em>upload</em>, anda dengan ini membebaskan BCA dari segala gugatan dan atau tuntutan dari pihak manapun.</li> </ol> </div> </div>"
+          }
+        }
+      },
+      "privacy": {
+        "title": "Kebijakan Privasi",
+        "description": "Berikut ini adalah kebijakan PT Bank Central Asia Tbk (‘BCA”) dan tindakan yang dilakukan oleh BCA untuk menjaga privasi dan keamanan data Anda pada saat mengunjungi situs BCA Solitaire & Prioritas.",
+        "sections": {
+          "introduction": {
+            "title": "KEBIJAKAN PRIVASI DAN PENGAMANAN (ONLINE PRIVACY AND SECURITY)",
+            "contentHtml": "<p>Berikut ini adalah kebijakan PT Bank Central Asia Tbk (‘BCA”) dan tindakan yang dilakukan oleh BCA untuk menjaga privasi dan keamanan data Anda pada saat mengunjungi situs BCA Solitaire & Prioritas.</p>"
+          },
+          "section1": {
+            "title": "Kebijakan Privasi",
+            "contentHtml": "<div> <div> <div> <h3><strong>Pendahuluan</strong></h3> <p> Dalam rangka meningkatkan layanan PT Bank Central Asia Tbk (“<strong>BCA</strong>”), kami senantiasa berkomitmen untuk melindungi dan menjaga informasi/data tentang orang perseorangan yang teridentifikasi atau dapat diidentifikasi secara tersendiri atau dikombinasi dengan informasi lainnya baik secara langsung maupun tidak langsung melalui sistem elektronik atau nonelektronik (“<strong>Data Pribadi</strong>”). Hal ini sejalan dengan ketentuan sebagaimana diatur dalam Undang-Undang Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi (“<strong>UU PDP</strong>”). </p> <p> Pemberitahuan Privasi ini merupakan pemberitahuan mengenai standar yang diterapkan oleh BCA dalam melakukan pemrosesan atas Data Pribadi Anda yang berinteraksi dengan BCA seperti: </p> <ul> <li>pengunjung <em>website </em>BCA;</li> <li>nasabah dan pihak lain yang terkait dengan nasabah;</li> <li><em>vendor</em> atau mitra BCA; dan</li> <li> setiap pihak yang menggunakan produk dan/atau layanan yang BCA sediakan maupun produk dan/atau layanan pihak lain yang bekerja sama dengan BCA; </li> </ul> dengan tetap memperhatikan prinsip-prinsip pemrosesan Data Pribadi sesuai dengan ketentuan hukum yang berlaku. <h3><strong>Ruang Lingkup Data Pribadi</strong></h3> <p> Data Pribadi yang dikumpulkan oleh BCA meliputi Data Pribadi yang bersifat spesifik dan Data Pribadi yang bersifat umum. </p> <ol> <li> <strong>Data Pribadi yang bersifat spesifik</strong><br> Data Pribadi yang bersifat spesifik, antara lain: </li> <ol> <li>data dan informasi kesehatan;</li> <li> data biometrik yang memungkinkan identifikasi unik terhadap individu, seperti gambar wajah, rekam sidik jari, dan rekam suara; </li> <li>data anak;</li> <li> data keuangan pribadi, seperti simpanan pada bank dan data kartu kredit; dan </li> <li> data lainnya sesuai dengan ketentuan peraturan perundang-undangan. </li> </ol> <li> <strong>Data Pribadi yang bersifat umum</strong><br> Data Pribadi yang bersifat umum, antara lain: </li> <ol> <li>nama lengkap;</li> <li>Nomor Induk Kependudukan (NIK);</li> <li>jenis kelamin;</li> <li>kewarganegaraan;</li> <li>agama;</li> <li>status perkawinan;</li> <li>alamat;</li> <li>tempat dan tanggal lahir;</li> <li>nama gadis ibu kandung;</li> <li>pekerjaan; dan/atau</li> <li> data pribadi yang dikombinasikan untuk mengidentifikasi seseorang, seperti nomor telepon seluler dan <em>IP Address</em>. </li> </ol> </ol> <h3> <strong>Bagaimana BCA Memperoleh dan Mengumpulkan Data Pribadi</strong> </h3> <p> BCA memperoleh dan mengumpulkan Data Pribadi melalui berbagai sarana dan aktivitas antara lain: </p> <ol> <li> pada saat Anda mengajukan permohonan layanan/fasilitas perbankan BCA dan/atau layanan/fasilitas pihak lain yang bekerja sama dengan BCA baik dengan mengisi formulir, melengkapi data permohonan layanan/fasilitas melalui <em>website</em>, aplikasi BCA, dan media lainnya yang disediakan oleh BCA maupun pihak lain yang bekerja sama dengan BCA; </li> <li> pada saat Anda melakukan pendaftaran sebagai mitra/<em>vendor</em> BCA; </li> <li> pada saat Anda melakukan pengkinian data melalui sarana yang disediakan oleh BCA; </li> <li> pada saat Anda melakukan transaksi melalui layanan/fasilitas perbankan BCA; </li> <li> pada saat Anda melakukan komunikasi dan interaksi dengan BCA, antara lain pada saat Anda menghubungi <em>call center </em>BCA, menjawab pertanyaan, menyampaikan keluhan, memberikan informasi atau masukan, atau berpartisipasi dalam promosi, kontes, survei, atau kegiatan yang diselenggarakan oleh BCA; </li> <li> pada saat Anda dan/atau perwakilan resmi Anda melakukan transaksi dengan atau melalui sarana yang disediakan oleh BCA; </li> <li> melalui aplikasi/<em>platform</em> dan media sosial BCA yang Anda gunakan/akses atau melalui forum <em>online </em>BCA yang Anda akses; </li> <li> dari perangkat yang Anda gunakan pada saat mengakses <em>website</em> atau aplikasi yang disediakan oleh BCA atau pihak yang bekerja sama dengan BCA; </li> <li> ketika Anda dan/atau perwakilan Anda mengunjungi cabang, kantor, dan lokasi fisik lainnya yang berkaitan dengan BCA; </li> <li> dari alat pemroses atau pengolah data visual yang terdapat di cabang, kantor, dan lokasi fisik lainnya yang berkaitan dengan BCA (seperti: CCTV); dan/atau </li> <li> dari pihak terafiliasi BCA atau pihak lainnya yang bekerja sama dengan BCA. </li> </ol> <h3> <strong>Dasar BCA Melakukan Pemrosesan Data Pribadi</strong> </h3> <p> BCA melakukan pemrosesan Data Pribadi yang diperoleh maupun dikumpulkan oleh BCA atas dasar pemrosesan sebagai berikut: </p> <div> <table> <thead> <tr> <td> <strong>No</strong> </td> <td> <strong>Dasar Pemrosesan Data Pribadi</strong> </td> <td> <strong>Deskripsi</strong> </td> </tr> </thead> <tbody> <tr> <td> <p>1</p> </td> <td> <p> Pemenuhan kewajiban perjanjian (<em>Contractual Obligation</em>) </p> </td> <td> <p> BCA dapat melakukan pemrosesan atas Data Pribadi Anda untuk memenuhi kewajiban perjanjian antara Anda dengan BCA atau untuk memenuhi permintaan Anda </p> </td> </tr> <tr> <td> <p>2</p> </td> <td> <p>Persetujuan (<em>Consent</em>)</p> </td> <td> <p> BCA dapat melakukan pemrosesan atas Data Pribadi Anda berdasarkan persetujuan yang telah Anda berikan kepada BCA </p> </td> </tr> <tr> <td> <p>3</p> </td> <td> <p> Pemenuhan kewajiban hukum (<em>Legal Obligation</em>) </p> </td> <td> <p> BCA dapat melakukan pemrosesan atas Data Pribadi Anda berdasarkan kewajiban hukum sesuai dengan ketentuan peraturan perundang-undangan yang berlaku </p> </td> </tr> <tr> <td> <p>4</p> </td> <td> <p> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </p> </td> <td> <p> BCA dapat melakukan pemrosesan atas Data Pribadi Anda untuk memenuhi kepentingan yang sah lainnya dengan memperhatikan tujuan, kebutuhan, dan keseimbangan kepentingan antara BCA dengan hak Anda selaku subjek Data Pribadi </p> </td> </tr> <tr> <td> 5</td> <td> <em>Public Interest</em> </td> <td> BCA dapat melakukan pemrosesan atas Data Pribadi Anda untuk memenuhi kepentingan umum, pelayanan publik, atau pelaksanaan kewenangan BCA berdasarkan peraturan perundang-undangan </td> </tr> <tr> <td> 6</td> <td> <em>Vital Interest</em> </td> <td> BCA dapat melakukan pemrosesan atas Data Pribadi Anda untuk melindungi kepentingan vital Anda selaku subjek Data Pribadi. </td> </tr> </tbody> </table> </div> <h3> <strong>Tujuan BCA Melakukan Pemrosesan Data Pribadi</strong> </h3> <p> BCA akan melakukan pemrosesan atas Data Pribadi yang diperoleh maupun dikumpulkan oleh BCA untuk tujuan antara lain: </p> <div> <table> <thead> <tr> <td> <strong>No</strong> </td> <td> <strong>Tujuan Pemrosesan Data Pribadi</strong> </td> <td> <strong>Deskripsi</strong> </td> <td> <strong>Dasar Pemrosesan Data Pribadi</strong> </td> </tr> </thead> <tbody> <tr> <td> <p>1</p> </td> <td> <p>Penyediaan produk dan/atau jasa perbankan</p> </td> <td> <ul> <li> menyediakan produk dan/atau jasa perbankan BCA bagi Anda; </li> <li> memberikan personalisasi produk dan/atau jasa perbankan BCA yang disediakan untuk Anda. </li> </ul> </td> <td rowspan=\"2\"> <ul> <li> Pemenuhan kewajiban perjanjian (<em>Contractual Obligation</em>); dan/atau </li> <li> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </li> </ul> </td> </tr> <tr> <td> <p>2</p> </td> <td> <p>Pemrosesan transaksi perbankan</p> </td> <td> <p> menjalankan transaksi perbankan yang Anda instruksikan kepada BCA, seperti: transfer dana dan <em>Outward Remmitance</em>. </p> </td> </tr> <tr> <td> <p>3</p> </td> <td> <p><em>Complaint Handling</em></p> </td> <td> <ul> <li> menindaklanjuti setiap keluhan atas produk dan/atau jasa perbankan BCA atau pihak lain yang bekerja sama dengan BCA; </li> <li> menyelesaikan setiap permasalahan terkait akses Anda terhadap produk dan/atau jasa perbankan BCA. </li> </ul> </td> <td> <ul> <li> Pemenuhan kewajiban perjanjian (<em>Contractual Obligation</em>); </li> <li> Pemenuhan kewajiban hukum (<em>Legal Obligation</em>); dan/atau </li> <li> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </li> </ul> </td> </tr> <tr> <td> <p>4</p> </td> <td> <p>Keamanan</p> </td> <td> <p> menjaga keamanan cabang, kantor, dan lokasi fisik lainnya yang berkaitan dengan BCA melalui pemasangan alat pemroses atau pengolah data visual (seperti: CCTV). </p> </td> <td> <p> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </p> </td> </tr> <tr> <td> <p>5</p> </td> <td> <p>Kepatuhan terhadap ketentuan hukum yang berlaku</p> </td> <td> <ul> <li> menjalankan prinsip <em>Customer Due Diligence </em>(CDD) sesuai ketentuan hukum yang berlaku; </li> <li> pelaporan kepada regulator termasuk namun tidak terbatas pada laporan terkait dengan program Anti Pencucian Uang, Pencegahan Pendanaan Terorisme, dan Pencegahan Pendanaan Proliferasi Senjata Pemusnah Massal (APU-PPT dan PPPSPM). </li> <li> kepatuhan terhadap ketentuan hukum lainnya yang berlaku. </li> </ul> </td> <td> <p> Pemenuhan kewajiban hukum (<em>Legal Obligation</em>) </p> </td> </tr> <tr> <td> <p>6</p> </td> <td> <p><em>Monitoring </em>dan Audit</p> </td> <td> <ul> <li> melakukan <em>monitoring </em>atas penyediaan dan penggunaan layanan dan/atau produk perbankan BCA; </li> <li> melakukan audit secara berkala, baik oleh auditor internal maupun auditor eksternal. </li> </ul> </td> <td> <ul> <li> Pemenuhan kewajiban hukum (<em>Legal Obligation</em>); dan/atau </li> <li> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </li> </ul> </td> </tr> <tr> <td> <p>7</p> </td> <td> <p>Survei dan Riset</p> </td> <td> <p> melakukan evaluasi, peningkatan, dan/atau pembaruan fitur produk dan/atau jasa perbankan BCA dari waktu ke waktu. </p> </td> <td> <p> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </p> </td> </tr> <tr> <td> <p>8</p> </td> <td> <p><em>Marketing</em> dan <em>Campaign</em></p> </td> <td> <ul> <li> melakukan penawaran iklan/promosi maupun pemasaran atas produk dan/atau jasa perbankan BCA atau pihak lain yang bekerja sama dengan BCA; </li> <li> penyelenggaraan <em>loyalty program, </em>kepada nasabah seperti <em>gift</em>, undian, dan lainnya </li> </ul> </td> <td> <p>Persetujuan (<em>Consent</em>)</p> <p> </p> </td> </tr> <tr> <td> <p>9</p> </td> <td> <p>Kerja Sama</p> </td> <td> <ul> <li> untuk keperluan pelaksanaan kerja sama yang telah Anda buat dengan BCA. </li> </ul> </td> <td> <ul> <li> Pemenuhan kewajiban perjanjian (<em>Contractual Obligation</em>); </li> <li>Persetujuan (<em>Consent</em>); dan/atau</li> <li> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </li> </ul> </td> </tr> </tbody> </table> </div> <h3> <strong> Pengungkapan Data Pribadi kepada Pihak lain</strong> </h3> <p> BCA dapat mengungkapkan Data Pribadi Anda kepada afiliasi BCA atau pihak lainnya yang bekerja sama dengan BCA, baik yang berlokasi di Indonesia atau di negara lain, untuk melaksanakan tujuan pemrosesan Data Pribadi sebagaimana dimaksud dalam Pemberitahuan Privasi ini dengan hubungan peran sebagai berikut: </p> <ul> <li> Pengendali Data Pribadi – Pengendali Data Pribadi; </li> <li> Pengendali Data Pribadi dan Prosesor Data Pribadi; dan/atau </li> <li>Pengendali Data Pribadi Bersama.</li> </ul> <div> <table> <thead> <tr> <td> <strong>No</strong> </td> <td> <strong>Pihak lain yang Menerima Data Pribadi Anda</strong> </td> <td> <strong>Deskripsi</strong> </td> </tr> </thead> <tbody> <tr> <td> <p>1</p> </td> <td> <p>Afiliasi BCA</p> </td> <td> <p> BCA dapat mengungkapkan Data Pribadi Anda kepada afiliasi BCA untuk keperluan penawaran produk dan/atau layanan milik afiliasi BCA dan analisis atas permohonan produk dan/atau layanan yang Anda ajukan kepada BCA dan/atau afiliasi BCA. </p> </td> </tr> <tr> <td> <p>2</p> </td> <td> <p><em>Vendor</em></p> </td> <td> <p> BCA dapat mengungkapkan Data Pribadi Anda kepada <em>vendor</em> untuk keperluan penyediaan layanan kepada Anda, seperti: perusahaan ekspedisi. </p> </td> </tr> <tr> <td> <p>3</p> </td> <td> <p>Penasihat atau Auditor</p> </td> <td> <p> BCA dapat mengungkapkan Data Pribadi Anda kepada akuntan, auditor, <em>lawyer</em>, dan/atau penasihat lainnya yang jasanya kami gunakan. </p> </td> </tr> <tr> <td> <p>4</p> </td> <td> <p>Instansi Berwenang</p> </td> <td> <p> BCA dapat mengungkapkan Data Pribadi Anda apabila: </p> <ul> <li> instansi berwenang meminta Data Pribadi Anda kepada kami; </li> <li> kami diwajibkan untuk melakukan pelaporan kepada instansi berwenang. </li> </ul> </td> </tr> <tr> <td> <p>5</p> </td> <td> <p>Pihak lainnya yang bekerja sama dengan BCA</p> </td> <td> <p> BCA dapat mengungkapkan Data Pribadi Anda kepada pihak lain yang bekerja sama dengan BCA untuk tujuan pemrosesan Data Pribadi sebagaimana dimaksud dalam Pemberitahuan Privasi ini </p> </td> </tr> </tbody> </table> </div> <p> Dalam hal BCA mengungkapkan Data Pribadi Anda kepada afiliasi BCA, mitra BCA, auditor, dan pihak lainnya yang bekerja sama dengan BCA, BCA akan senantiasa meminta kepada afiliasi BCA, mitra BCA, auditor, dan pihak lainnya yang bekerja sama dengan BCA untuk menjaga kerahasiaan dan keamanan atas Data Pribadi Anda sesuai dengan ketentuan yang berlaku. </p> <h3><strong>Hak Subjek Data Pribadi</strong></h3> <p> BCA senantiasa berkomitmen untuk memenuhi hak Anda sebagai Subjek Data Pribadi. Anda dapat meminta kepada BCA untuk: </p> <ul> <li> melengkapi, memperbarui, dan/atau memperbaiki kesalahan dan/atau ketidakakuratan Data Pribadi Anda (Pasal 6 UU PDP); </li> <li> mengakhiri pemrosesan, menghapus, dan/atau memusnahkan Data Pribadi Anda (Pasal 8 UU PDP); </li> <li> tidak melakukan pemrosesan Data Pribadi Anda tanpa dasar pemrosesan Data Pribadi (<em>legal basis</em>); </li> <li> menarik kembali persetujuan pemrosesan Data Pribadi Anda (Pasal 9 UU PDP); </li> <li> menunda atau membatasi pemrosesan Data Pribadi secara proporsional sesuai dengan tujuan pemrosesan Data Pribadi (Pasal 11); </li> <li> melakukan tindakan lainnya sesuai dengan ketentuan hukum yang berlaku yang mengatur mengenai pelindungan Data Pribadi; </li> </ul> <p> yang berada di bawah kendali BCA dengan tetap memperhatikan ketentuan hukum yang berlaku. Namun demikian, BCA berhak untuk tidak memenuhi permintaan Anda antara lain apabila: </p> <ul> <li> Data Pribadi tersebut masih diperlukan untuk pencapaian tujuan pemrosesan Data Pribadi; </li> <li> berdampak pada pengungkapan Data Pribadi milik orang lain; </li> <li> bertentangan dengan kepentingan pertahanan dan keamanan nasional; </li> <li> diperkenankan menurut ketentuan hukum yang berlaku atau permintaan Anda bertentangan dengan kepentingan hukum yang berlaku. </li> </ul> <h3><strong>Penyimpanan Data Pribadi</strong></h3> <p> BCA melakukan penyimpanan data sesuai dengan ketentuan retensi penyimpanan data di BCA. Sebagai contoh, BCA akan menyimpan Data Pribadi Anda dalam jangka waktu tertentu sejak Anda berinteraksi dengan BCA. BCA dapat menyimpan Data Pribadi Anda lebih lama dari batas waktu yang ditentukan jika hal tersebut diperlukan untuk kebutuhan hukum, pembuktian di kemudian hari, membantu mendeteksi kejahatan keuangan, menjawab permintaan regulator atau aparat yang berwenang, dan hal lainnya. Data Pribadi Anda disimpan selama tujuan pengumpulannya masih diperlukan untuk tujuan hukum atau kepentingan bisnis lainnya. Jika BCA tidak membutuhkan lagi informasi terkait Data Pribadi Anda atau masa penyimpanan Data Pribadi telah berakhir sesuai dengan ketentuan hukum yang berlaku atau ketentuan yang berlaku di BCA, maka BCA dapat menghapus atau memusnahkan Data Pribadi Anda. </p> <h3><strong> Pengamanan Data Pribadi</strong></h3> <p> BCA menggunakan berbagai cara untuk menjaga Data Pribadi Anda tetap aman dan terlindungi. Di samping itu, BCA senantiasa memberikan edukasi kepada setiap staf BCA yang mengakses Data Pribadi menjaga kerahasiaan dan keamanan Data Pribadi. BCA juga mewajibkan staf BCA dan pihak lain yang bekerja sama dengan BCA untuk patuh dan menaati seluruh ketentuan yang berlaku terkait pelindungan Data Pribadi dan menerapkan langkah-langkah pengamanan dalam melakukan pemrosesan Data Pribadi. </p> <h3> <strong>Perubahan <em>Pemberitahuan Privasi</em> </strong> </h3> <p> BCA dapat mengubah, melengkapi, dan/atau mengganti Pemberitahuan Privasi ini dari waktu ke waktu untuk memastikan bahwa Pemberitahuan Privasi ini sejalan dengan ketentuan hukum yang berlaku, prosedur, dan praktik yang dijalankan oleh BCA dalam melakukan pemrosesan Data Pribadi. BCA akan menyediakan Pemberitahuan Privasi terkini melalui <em>website</em> BCA di <a href=\"http://www.bca.co.id\" target=\"_blank\" rel=\"noopener noreferrer\">www.bca.co.id</a>. </p> <h3> <strong> Bahasa</strong> </h3> <p> Pemberitahuan Privasi ini dibuat dan diterbitkan dalam Bahasa Indonesia dan Bahasa Inggris. Apabila terdapat penjelasan/ketentuan yang berbeda antara versi Bahasa Indonesia dan Bahasa Inggris atau terjadi sengketa atas penafsiran suatu ketentuan, maka versi Bahasa Indonesia yang berlaku. </p> <h3><strong>Hubungi BCA</strong></h3> <p> Untuk informasi lebih lanjut, Anda dapat menghubungi BCA di <em>hotline</em> 24 jam Halo BCA 1500 888 atau <em>emai</em>l BCA di <a href=\"mailto:halobca@bca.co.id\">halobca@bca.co.id</a>. </p> </div>  </div> </div>"
+          },
+          "section2": {
+            "title": "Sistem Pengamanan",
+            "contentHtml": "<div> <div> <ol> <li> BCA menggunakan 2 (dua) lapis sistem pengamanan untuk melindungi akses dan kegiatan Anda di situs BCA Solitaire &amp; Prioritas yaitu : <ul> <li> <em>Secure Socket Layer</em> (&quot;SSL&quot;) adalah teknologi pengamanan yang &#x27;mengacak&#x27; jalur komunikasi antar komputer sehingga komunikasi tersebut tidak dapat diketahui oleh pihak lain. </li> <li> ID pada situs BCA Solitaire &amp; Prioritas (“<span>ID Solitaire/Prioritas</span>”) dan sandi rahasia. </li> </ul> </li> <li> BCA hanya menyediakan fitur keamanan yang hanya dapat diakses dengan menggunakan minimal Microsoft Edge, Mozilla Firefox mulai versi 52, Google Chrome mulai versi 60, Safari IOS Mobile mulai seri 10, dan Mac OS Device YosemiteOS. </li> </ol> </div> </div>"
+          },
+          "section3": {
+            "title": "Proteksi Akses Situs BCA Solitaire & Prioritas",
+            "contentHtml": "<div> <div> <p> BCA mewajibkan Anda untuk memasukkan ID Solitaire/Prioritas dan sandi rahasia sebelum Anda melakukan akses ke situs BCA Solitaire &amp; Prioritas secara penuh. </p> </div> <div> Untuk memastikan keamanan bagi data Anda dalam melakukan akses situs BCA Solitaire &amp; Prioritas, mohon lakukan hal-hal sebagai berikut: <ul> <li> Jagalah kerahasiaan ID Solitaire/Prioritas dan sandi rahasia Anda, jangan diberitahukan kepada orang lain, dan jangan disimpan dalam browser Anda. </li> <li> Jangan memberitahukan sandi rahasia atau sebagian sandi rahasia Anda kepada pihak lain. BCA tidak pernah menanyakan sandi rahasia Anda. </li> <li> Gantilah sandi rahasia Anda secara periodik di situs BCA Solitaire &amp; Prioritas pada menu Profile – Ubah Password, atau jika Anda tidak yakin terhadap kerahasiaan sandi rahasia Anda. Jangan menggunakan sandi rahasia yang mudah diterka seperti: 111111, 222222, 123456, 654321, tanggal lahir, nomor mobil, alamat dan lain-lain. Jangan menuliskan sandi rahasia Anda di tempat dimana orang lain dapat membacanya. </li> <li> Gunakan sandi rahasia situs BCA Solitaire &amp; Prioritas yang berbeda dengan sandi rahasia yang Anda gunakan untuk mengakses situs lain. </li> <li> Jika Anda lupa sandi rahasia Anda, gunakan fitur “Lupa Password” dan ikuti instruksi yang ada untuk mengaktifkan mendapatkan sandi rahasia yang baru. </li> </ul> </div> </div>"
+          },
+          "section4": {
+            "title": "ID Solitaire/Prioritas dan Alamat Email",
+            "contentHtml": "<div> <div> <p> </p> <span>BCA mewajibkan Anda untuk memberikan nomor kartu BCA Solitaire / Prioritas dan alamat e-mail Anda kepada BCA melalui Situs BCA Solitaire &amp; Prioritas saat anda melakukan registrasi. BCA akan menggunakan nomor kartu BCA Solitaire &amp; Prioritas anda untuk melakukan validasi bahwa anda adalah nasabah BCA Solitaire &amp; Prioritas dan berhak menggunakan fitur yang disediakan situs BCA Solitaire / Prioritas. BCA akan menggunakan alamat e-mail anda untuk mengirimkan informasi transaksi nonfinansial, yaitu saat pendaftaran pertama kali, aktivasi akun situs BCA Solitaire / Prioritas, dan validasi proses “<em>Forgot Password</em>”. Selain itu BCA juga menggunakan alamat e-mail Anda untuk kepentingan promosi, undangan <em>gathering</em>, dan informasi lainnya.Untuk memastikan keamanan pengiriman informasi ke alamat e-mail anda, mohon lakukan hal-hal sebagai berikut:</span> <p> </p> <ul> <li> Berikan kepada BCA alamat e-mail pribadi anda. Jangan menggunakan alamat e-mail orang lain, atau email yang tidak valid. </li> <li> Ubahlah segera alamat e-mail anda yang terdaftar di situs BCA Solitaire &amp; Prioritas jika Anda mengganti alamat e-mail anda. </li> <li> Jika anda menghubungi BCA melalui e-mail, jangan mengirimkan informasi apapun yang bersifat rahasia, termasuk sandi rahasia anda. </li> </ul> </div> </div>"
+          },
+          "section5": {
+            "title": "Situs BCA Solitaire & Prioritas",
+            "contentHtml": "<div> <div> <p> </p> <span>Di dalam situs BCA Solitaire &amp; Prioritas, BCA dapat menyediakan <em>URL link</em><span> ke situs lain yang tidak dikendalikan/dikontrol oleh BCA. BCA tidak bertanggung jawab atas isi dan keamanan dari situs tersebut. Jika anda mengakses situs tersebut, silakan anda memeriksa kebijakan privasi dan pengamanan situs tersebut.<br> <span> Jika anda mengakses situs BCA Solitaire &amp; Prioritas melalui <em>URL link</em> dari situs lain, mohon pastikan kebenaran alamat yang anda akses yaitu <a href=\"https://prioritas.bca.co.id/\" target=\"_blank\" rel=\"noopener noreferrer\">https://prioritas.bca.co.id</a><span>. </span></span></span></span> <p> BCA dapat mengubah kebijakan privasi dan informasi pengamanan ini setiap saat agar sesuai/<em>compatible </em>dengan situasi dan teknologi terbaru. Anda setiap saat dapat membaca informasi dan kebijakan privasi situs BCA Solitaire &amp; Prioritas yang terbaru di <a href=\"https://prioritas.bca.co.id/\" target=\"_blank\" rel=\"noopener noreferrer\">https://prioritas.bca.co.id</a> . </p> </div> </div>"
+          },
+          "section6": {
+            "title": "Kiat-Kiat Menggunakan Situs BCA Solitaire & Prioritas dengan Lebih Aman",
+            "contentHtml": "<div> <div> <p> Pada dasarnya sistem maupun jaringan situs BCA Solitaire &amp; Prioritas telah menggunakan sistem pengamanan yang optimal. Kondisi pengamanan situs BCA Solitaire &amp; Prioritas selalu dipantau dan ditingkatkan sejalan dengan perkembangan teknologi dan ancaman yang ada. </p> <p> Ancaman pada sistem dapat dialami oleh semua pengguna internet termasuk situs BCA Solitaire &amp; Prioritas. Oleh karena itu BCA meminta anda sebagai pengguna situs BCA Solitaire &amp; Prioritas untuk memperhatikan beberapa jenis ancaman yang mungkin anda temui ketika mengakses internet. Kiat-kiat pengamanan yang dapat dilakukan sewaktu anda menggunakan situs BCA Solitaire &amp; Prioritas, adalah sebagai berikut : </p> <ol> <li> <strong><em>Phising<br> </em></strong><em>Phising</em> adalah cara-cara penipuan yang dilakukan oleh pihak-pihak tertentu untuk mendapatkan informasi-informasi rahasia seorang nasabah seperti <em>User ID, password</em> dan <em>Personal Identity Number</em> (PIN). </li> <p> Ada beberapa cara, antara lain : </p> <ul> <li> Berpura-pura sebagai seseorang dari pihak bank dan meminta data nasabah dengan alasan-alasan tertentu </li> <li> Mengirim email yang berisi login screen dan meminta nasabah melakukan login dengan memasukkan ID Solitaire/Prioritas dan sandi rahasia. </li> <li> Mengirim email yang berisi login screen dan meminta nasabah melakukan login dengan memasukkan ID Solitaire/Prioritas dan sandi rahasia. </li> <li> Mengirim <em>URL link</em> ke situs yang dibuat semirip mungkin dengan situs resmi milik bank namun ternyata palsu. </li> </ul> <p> <span>Kiat-kiat pengamanan:</span> </p> <p> </p> <ul> <li> Perlu diketahui bahwa BCA tidak pernah mengirim email seperti yang dijelaskan di atas kepada nasabah. Apabila anda menerima email semacam itu yang kelihatannya berasal dari BCA, anda dapat langsung menghapus email tersebut. </li> <li> Apabila anda terlanjur mengisi informasi yang diminta atau merasa bahwa User ID dan sandi rahasia anda sudah diketahui oleh pihak lain, segera ganti sandi rahasia anda atau hubungi Halo BCA jika anda tidak bisa melakukan proses <em>login</em>. </li> </ul> <li> <strong>Virus / <em>Worm<br> </em></strong>Virus Komputer/<em>Worm</em> adalah program-program komputer yang dibuat dengan tujuan-tujuan tertentu. Pada umumnya virus merusak sistem operasi, aplikasi dan data di komputer yang terinfeksi. Virus dapat menyebar melalui banyak media, antara lain : e-mail, disket, CD, USB drive, flash memory, program dari internet maupun jaringan, dan juga dari halaman situs yang &#x27;jahat&#x27;. </li> <p> <span>Beberapa contoh dampak dari infeksi virus:</span> </p> <p> </p> <ul> <li> Komputer menjadi tidak stabil dan sering &#x27;hang&#x27; (macet). </li> <li>Komputer menjadi lambat.</li> <li> Data di <em>harddisk</em> terhapus. </li> <li> Program aplikasi tidak dapat digunakan. </li> </ul> <p> Yang mirip dengan virus adalah <em>Worm</em> yang dibuat untuk dapat menyebar dengan cepat ke banyak komputer. Walaupun umumnya <em>Worm</em> tidak menimbulkan kerusakan seperti virus, namun <em>Worm</em> dapat digunakan untuk membawa berbagai macam muatan/<em>attachment </em>yang berbahaya. </p> <p> <span>Kiat-kiat pengamanan:</span> </p> <p> </p> <ul> <li> Gunakan anti-virus ter-<em>update</em> di komputer anda, dan pastikan bahwa komputer anda di-<em>scan</em> secara berkala. </li> <li> Banyak virus yang datang melalui e-mail yang diterima, sehingga anda harus lebih hati-hati pada waktu menggunakan e-mail. Hapus e-mail yang mencurigakan atau yang datang dari pengirim yang tidak dikenal, dan scan e-mail <em>attachment</em> sebelum dibuka. </li> <li> Gunakan <em>firewall</em> pada sistem operasi di komputer anda atau instal personal <em>firewall</em> dan pastikan bahwa pengaturan <em>firewall</em> yang terpasang dapat mengamankan komputer anda. </li> <li> Sebaiknya anda tidak mengakses atau men-<em>download</em> file/program-program di internet dari situs yang tidak dikenal/tidak dapat diyakini keabsahannya. </li> <li> Scan file yang berasal dari disket, CD maupun <em>USB drive</em> yang Anda terima. </li> <li> Pastikan bahwa sistem operasi maupun aplikasi di komputer anda sudah dilindungi dengan sistem proteksi terkini. </li> </ul> <li> <strong><em>Spyware<br> </em></strong><em>Spyware</em> adalah sejenis komputer program yang diprogram untuk &#x27;mencuri&#x27; informasi-informasi penting/pribadi dari komputer yang terinfeksi dan mengirimnya ke lokasi tertentu di internet untuk kemudian diambil oleh pembuat <em>Spyware</em>. Informasi yang menjadi target utama contohnya: nomor kartu kredit, <em>User ID</em> dan PIN/<em>password</em>, nomor rekening, alamat e-mail, dan lain-lain.<br> <em>Spyware</em> dapat terinstall melalui e-mail attachment, program yang diinstal dari sumber yang tidak jelas, ataupun oleh web site yang &#x27;jahat&#x27;.<br> Virus dapat diprogram untuk menyebarkan <em>Spyware</em>. Namun, berbeda dengan Virus yang sifatnya lebih merusak, <em>Spyware</em> bekerja secara diam-diam agar tidak terlacak sehingga lebih mudah mengumpulkan informasi yang diinginkan sang pembuat/penyebar <em>Spyware</em>. </li> <p> <span>Kiat-kiat pengamanan:</span> </p> <p> </p> <ul> <li> Gunakan anti-virus ter-update di komputer anda, dan pastikan bahwa komputer anda di-scan secara berkala. </li> <li> Banyak virus yang datang melalui e-mail yang diterima, sehingga anda harus lebih hati-hati pada waktu menggunakan e-mail. Hapus e-mail yang mencurigakan atau yang datang dari pengirim yang tidak dikenal, dan scan e-mail <em>attachment</em> sebelum dibuka. </li> <li> Gunakan <em>firewall</em> pada sistem operasi di komputer anda atau instal <em>personal firewall </em>dan pastikan bahwa pengaturan firewall yang terpasang dapat mengamankan komputer anda. </li> <li> Sebaiknya anda tidak mengakses atau bahkan men-<em>download file</em>/program di internet dari situs yang tidak dikenal/tidak dapat diyakini keabsahannya. </li> <li> Scan file yang berasal dari disket, CD maupun <em>USB drive</em> yang Anda terima. </li> <li> Pastikan bahwa sistem operasi maupun aplikasi di komputer anda sudah dilindungi dengan sistem proteksi terkini. </li> </ul> <li> <strong><em>Bot (roBot)<br> </em></strong><em>Bot (roBot)</em> adalah sejenis komputer program yang apabila terinstal di komputer anda, dapat menyebabkan komputer anda dikendalikan oleh orang lain secara <em>remote</em> melalui jaringan sehingga pembuat/penyebar <em>Bot</em> dapat berbuat apapun terhadap komputer anda.<br> Umumnya komputer yang telah dikendalikan oleh penyebar <em>Bot</em> (dikenal sebagai Botnet) akan digunakan untuk mengirim <em>SPAM, Virus, Worm</em> atau untuk menyerang komputer lain yang terkoneksi ke jaringan. </li> <p> <span>Kiat-kiat pengamanan:</span> </p> <p> </p> <ul> <li> Gunakan anti-virus ter-<em>update</em> di komputer anda, dan pastikan bahwa komputer anda di-<em>scan</em> secara berkala. </li> <li> Banyak virus yang datang melalui e-mail yang diterima, sehingga anda harus lebih hati-hati pada waktu menggunakan e-mail. Hapus e-mail yang mencurigakan atau yang datang dari pengirim yang tidak dikenal, dan <em>scan</em> e-mail <em>attachment</em> sebelum dibuka. </li> <li> Gunakan <em>firewall</em> pada sistem operasi di komputer anda atau install personal <em>firewall</em> dan pastikan bahwa pengaturan firewall yang terpasang dapat mengamankan komputer anda. </li> <li> Sebaiknya anda tidak mengakses atau men-<em>download</em> file/program di internet dari situs yang tidak dikenal/tidak dapat diyakini keabsahannya. </li> <li> Scan file yang berasal dari disket, CD maupun <em>USB drive</em> yang anda terima. </li> <li> Pastikan bahwa sistem operasi maupun aplikasi di komputer anda sudah dilindungi dengan sistem proteksi terkini. </li> </ul> </ol> </div> </div>"
+          }
+        }
+      },
+      "contact": {
+        "title": "Hubungi Kami",
+        "description": "Hubungi kami untuk informasi lebih lanjut dan saran mengenai layanan BCA Prioritas dan Solitaire.",
+        "sections": {
+          "channels": {
+            "title": "Hubungi kami",
+            "contentHtml": "<ul><li><a href=\"tel:1500222\">Halo BCA Prioritas<br>1500222</a></li><li><a href=\"https://x.com/HaloBCA\" target=\"_blank\" rel=\"noopener noreferrer\">X<br>@HaloBCA</a></li><li><a href=\"/BRAND/temukan-kami\">Cabang BCA</a></li></ul>"
+          },
+          "office": {
+            "title": "Kantor Pusat BCA",
+            "contentHtml": "<div> <strong>Kantor Pusat BCA</strong> <br> Menara BCA, Grand Indonesia<br>Jl. MH Thamrin No. 1, Jakarta 10310<br> Telepon/Fax : (021) 235 88000 </div>"
+          }
+        }
+      }
+    },
+    "contactChannels": {
+      "phone": "Halo BCA Prioritas — 1500222",
+      "twitter": "X — @HaloBCA",
+      "branch": "Cabang BCA",
+      "cancel": "Batal",
+      "continue": "Lanjutkan",
+      "phoneNotice": "<div> <p>Anda akan melakukan komunikasi langsung</p> <p>Dengan mengklik &quot;Lanjutkan&quot;, Anda akan diarahkan untuk menggunakan aplikasi panggilan suara, dan akan dikenakan biaya sesuai dengan ketentuan operator yang Anda gunakan.</p> </div>",
+      "twitterNotice": "<div> <p>Anda akan meninggalkan www.prioritas.bca.co.id</p> <p>Dengan mengklik &quot;Lanjutkan&quot;, Anda akan diarahkan menuju website di luar www.prioritas.bca.co.id yang tidak terafiliasi dengan BCA dan mungkin memiliki tingkat sekuriti yang berbeda. BCA tidak bertanggung jawab dan tidak mendukung, menjamin, mengendalikan konten, mengendalikan ketersediaan dan perspektif atas produk-produk atau layanan-layanan yang ditawarkan atau dinyatakan oleh website tersebut.</p> </div>",
+      "phoneTitle": "Halo BCA Prioritas",
+      "twitterTitle": "X",
+      "branchTitle": "Kunjungi cabang",
+      "phoneDescription": "Hubungi Halo BCA Prioritas melalui telepon.",
+      "twitterDescription": "Berkomunikasi dengan Halo BCA melalui X.",
+      "branchDescription": "Temukan lokasi cabang BCA untuk layanan langsung.",
+      "phoneAction": "Telepon sekarang",
+      "twitterAction": "Buka X",
+      "branchAction": "Cari cabang"
+    }
+  },
+  "designTokens": {
+    "title": "Design Tokens",
+    "subtitle": "Referensi Figma dan implementasi website digabung dalam satu katalog warna, typography, ukuran, dan efek. Lihat padanan token CSS serta perbedaan yang perlu diputuskan.",
+    "categories": "Kategori token",
+    "palettes": "Kelompok warna",
+    "total": "{count} token & aturan",
+    "search": "Cari nama, nilai, atau utility…",
+    "copy": "Salin {value}",
+    "copied": "Tersalin",
+    "copyFailed": "Gagal menyalin. Pilih teks dan salin manual.",
+    "results": "{count} hasil",
+    "clear": "Hapus pencarian",
+    "empty": "Tidak ada token yang cocok. Coba nama atau nilai lain.",
+    "sample": "Senantiasa di Sisi Anda",
+    "glassSample": "Glass panel",
+    "effectSample": "Contoh panel",
+    "pill": "Pill / penuh",
+    "sources": {
+      "project": "Token proyek",
+      "tailwind": "Tailwind",
+      "recipe": "Aturan komponen",
+      "figma": "Figma"
+    },
+    "colorUsage": {
+      "neutral": "Untuk latar, teks, border, dan elemen netral; rentang putih hingga gelap juga mendukung tampilan Solitaire.",
+      "blue": "Warna identitas BCA untuk aksi utama, tautan, dan area yang perlu mendapat penekanan.",
+      "cyan": "Aksen terang untuk melengkapi Blue pada highlight dan elemen pendukung.",
+      "green": "Untuk status berhasil, konfirmasi, dan feedback positif.",
+      "yellow": "Untuk peringatan dan informasi yang membutuhkan perhatian.",
+      "red": "Untuk status error, validasi yang gagal, dan feedback yang membutuhkan tindakan.",
+      "bermuda": "Palet pendukung bernuansa biru keabu-abuan, dengan variasi terang hingga gelap.",
+      "brown": "Palet pendukung bernuansa cokelat hangat, dengan variasi terang hingga gelap.",
+      "muddy": "Palet pendukung bernuansa hijau zaitun, dengan variasi terang hingga gelap.",
+      "orange": "Palet pendukung bernuansa oranye untuk aksen dan variasi warna.",
+      "purple": "Palet pendukung bernuansa ungu untuk aksen dan variasi warna.",
+      "tosca": "Palet pendukung bernuansa toska untuk aksen dan variasi warna.",
+      "teal": "Palet pendukung bernuansa hijau kebiruan untuk aksen dan variasi warna.",
+      "pgold": "Palet emas Prioritas untuk latar, aksen, dan elemen identitas pada area Prioritas.",
+      "pbrown": "Palet cokelat Prioritas untuk teks, latar gelap, dan pasangan warna Prioritas Gold.",
+      "assets": "Warna kategori aset untuk membedakan tabungan, deposito, giro, dan surat berharga."
+    },
+    "groups": {
+      "all": "Semua",
+      "pgold": "Prioritas Gold",
+      "pbrown": "Prioritas Brown",
+      "neutral": "Neutral",
+      "blue": "Blue",
+      "cyan": "Cyan",
+      "red": "Red",
+      "assets": "Komposisi aset",
+      "green": "Green",
+      "yellow": "Yellow",
+      "bermuda": "Bermuda",
+      "brown": "Brown",
+      "muddy": "Muddy",
+      "orange": "Orange",
+      "purple": "Purple",
+      "tosca": "Tosca",
+      "teal": "Teal"
+    },
+    "sections": {
+      "colors": {
+        "title": "Warna",
+        "description": "Palet warna dikelompokkan menurut keluarga dan kegunaannya. Setiap kartu memuat nilai warna dan token CSS website."
+      },
+      "typography": {
+        "title": "Typography",
+        "description": "Style typography Figma, token CSS, alias, dan tambahan proyek dalam satu katalog."
+      },
+      "spacing": {
+        "title": "Spacing & size",
+        "description": "Skala pilihan berbasis unit spacing yang sama untuk gap, padding, margin, width, dan height. Angka utility dikalikan unit dasarnya."
+      },
+      "radius": {
+        "title": "Rounded corner",
+        "description": "Skala radius bawaan Tailwind untuk sudut kartu, panel, input, dan tombol. Nilai khusus tetap mengikuti kebutuhan komponen."
+      },
+      "effects": {
+        "title": "Glass panel",
+        "description": "Glass panel Prioritas dan Solitaire dengan latar transparan dan efek blur."
+      },
+      "breakpoints": {
+        "title": "Breakpoint",
+        "description": "Lihat perubahan layout Homepage, Index, dan Detail saat lebar viewport berubah."
+      },
+      "motion": {
+        "title": "Motion",
+        "description": "Kurva easing proyek dan Tailwind. Grafik menunjukkan kemajuan gerakan dari awal sampai akhir."
+      }
+    },
+    "type": {
+      "family": "BCA Sans",
+      "weights": "Regular 400 · Semibold 600 · Bold 700",
+      "editSample": "Teks contoh — bisa diubah",
+      "fontSize": "Font size",
+      "lineHeight": "Line height",
+      "tracking": "Letter spacing",
+      "weight": "Font weight",
+      "categories": "Kategori typography",
+      "trim": "Vertical trim",
+      "trimBoth": "Atas & bawah",
+      "noTrim": "Tanpa trim",
+      "inherited": "Mengikuti komponen"
+    },
+    "spacingRule": "Contoh: gap-6, p-6, m-6, w-6, dan h-6 memakai 6 × unit spacing. Ini skala pilihan, bukan seluruh ukuran yang dapat dibuat Tailwind. Nilai px menggunakan dasar 1rem = 16px.",
+    "glassRule": "Glass panel Prioritas dan Solitaire memakai blur 16px dan saturate 1.25 dengan fill 30%. Ini resep class bersama; radius, ukuran, dan posisi diatur setiap komponen.",
+    "breakpoint": {
+      "preview": "Preview halaman responsive",
+      "width": "Lebar viewport simulasi",
+      "mobile": "Mobile",
+      "tablet": "Tablet",
+      "desktop": "Desktop",
+      "mobileRule": "Homepage Prioritas–Solitaire: hero 80svh.",
+      "tabletRule": "Homepage Prioritas–Solitaire: hero min(640px, 90svh − 48px), dengan minimum 560px.",
+      "desktopRule": "Layout desktop aktif pada xl (1280px). Hero homepage Prioritas–Solitaire: 80svh.",
+      "rule": "Preview memakai halaman Prioritas yang sebenarnya. Lebar viewport mengikuti simulasi; tampilan diperkecil agar muat di panel. Isi halaman tidak bisa dioperasikan. Utility responsive berlaku mulai batas minimumnya; layout desktop utama aktif pada xl (1280px).",
+      "minimum": "Mulai {value}px",
+      "page": "Contoh halaman",
+      "pages": {
+        "homepage": "Homepage",
+        "index": "Index",
+        "detail": "Detail"
+      },
+      "examples": {
+        "homepage": "Homepage BCA Prioritas",
+        "index": "Index Privilege BCA Prioritas",
+        "detail": "Detail Executive Airport Lounge"
+      },
+      "readOnly": "Preview saja · tanpa interaksi",
+      "loading": "Memuat preview halaman…",
+      "frameTitle": "Preview {page} pada lebar {width}px"
+    },
+    "sourceNote": "Warna Figma berasal dari bca-variable-color.json; typography mengikuti screenshot dan weight yang dikonfirmasi. Nilai implementasi dibaca dari CSS proyek dan Tailwind saat build.",
+    "promotionRule": "Nilai yang dipakai di dua lokasi dapat dijadikan token bersama. Nilai khusus satu komponen tetap boleh mengikuti kebutuhan komponen.",
+    "referenceOnly": "Referensi Figma",
+    "implementation": {
+      "match": "Sesuai dengan acuan",
+      "different": "Perlu keputusan: nilai berbeda",
+      "missing": "Belum menjadi token proyek",
+      "current": "Website",
+      "reference": "Acuan",
+      "token": "Token CSS website",
+      "aliasOf": "Alias CSS ke",
+      "aliases": "Alias proyek",
+      "comparedWith": "Dibandingkan dengan",
+      "property": "Properti",
+      "value": "Warna"
+    },
+    "typeGroups": {
+      "all": "Semua",
+      "display": "Display",
+      "eyebrow": "Eyebrow",
+      "heading": "Heading",
+      "body": "Body",
+      "label": "Label",
+      "extensions": "Tambahan proyek",
+      "semantic": "Token proyek"
+    },
+    "typeUsage": {
+      "display": "Untuk headline utama, judul hero, dan pesan promosi singkat yang menjadi fokus halaman.",
+      "eyebrow": "Untuk penanda topik atau kategori di atas judul, agar konteksnya terbaca sebelum headline.",
+      "heading": "Untuk judul section dan subsection yang menyusun hierarki konten halaman.",
+      "body": "Untuk paragraf, deskripsi, dan penjelasan. Varian Article dipakai untuk bacaan panjang; Semibold dan Bold memberi penekanan.",
+      "label": "Untuk teks singkat pada tombol, navigasi, label form, dan tag. Vertical trim membantu penyelarasan teks dalam komponen.",
+      "extensions": "Untuk varian ukuran dan style khusus yang sudah dipakai di proyek serta belum memiliki padanan dalam acuan Figma.",
+      "semantic": "Token typography bernama yang menggabungkan ukuran, line height, tracking, dan weight untuk peran tertentu."
+    },
+    "colorCategories": {
+      "main": {
+        "title": "Main Color",
+        "description": "Warna utama untuk identitas brand, latar, teks, dan aksi: Neutral, Prioritas Brown, Prioritas Gold, Blue, dan Cyan."
+      },
+      "semantic": {
+        "title": "Semantic Color",
+        "description": "Warna untuk status dan feedback: Green untuk berhasil atau tersedia, Yellow untuk peringatan, dan Red untuk error atau habis."
+      },
+      "accent": {
+        "title": "Accent Color",
+        "description": "Palet pendukung untuk aksen dan variasi visual: Bermuda, Brown, Muddy, Orange, Purple, Tosca, dan Teal."
+      },
+      "assets": {
+        "title": "Komposisi aset",
+        "description": "Warna khusus grafik komposisi aset. Nilainya dipertahankan sambil menunggu pemetaan ke palet utama."
+      }
+    },
+    "colorCollection": {
+      "title": "Token pemakaian",
+      "label": "Token pemakaian {color}: {count} token",
+      "description": "Token khusus yang merujuk warna ini. Nilainya mengikuti konteks dan state di bawah.",
+      "empty": "Belum ada token semantic atau component khusus yang merujuk warna ini."
+    },
+    "typeCollection": {
+      "title": "Token pemakaian",
+      "label": "Token pemakaian {style}: {count} token",
+      "description": "Token turunan yang merujuk style typography ini, beserta nilai dan konteks pemakaiannya.",
+      "empty": "Belum ada token turunan khusus yang merujuk style typography ini."
+    }
+  },
+  "userFlows": {
+    "journeys": {
+      "navigation": {
+        "title": "Menjelajahi website",
+        "description": "Homepage, menu, tab, bahasa, dan tautan lama.",
+        "entry": "Buka homepage Prioritas atau Solitaire.",
+        "decision": "Pilih tujuan atau ubah konteks halaman.",
+        "scenarios": {
+          "menu": {
+            "title": "Menu → halaman tujuan",
+            "condition": "Pilih menu di desktop atau buka menu mobile.",
+            "response": "Tautan membuka halaman sesuai brand dan bahasa aktif.",
+            "recovery": "Gunakan breadcrumb atau menu untuk berpindah lagi."
+          },
+          "tabs": {
+            "title": "Langsung ke tab tertentu",
+            "condition": "Buka Privilege dengan section=lifestyle, event, atau promo.",
+            "response": "Tab sesuai query aktif. Signature & Complimentary menjadi pilihan awal jika section tidak dikenal.",
+            "recovery": "Pilih tab lain; URL tujuan berubah mengikuti tab."
+          },
+          "legacy": {
+            "title": "Tautan listing lama",
+            "condition": "Pengunjung membuka URL listing sebelum penggabungan hub.",
+            "response": "Listing lama mengarah ke tab hub yang sesuai. Detail lama mengikuti mapping rute yang tersedia.",
+            "recovery": "Lanjutkan dari hub; filter yang diteruskan mengikuti masing-masing redirect."
+          },
+          "language": {
+            "title": "Ganti bahasa",
+            "condition": "Pilih Indonesia, English, atau 中文.",
+            "response": "Navigasi beralih ke locale tujuan. Dokumen Ketentuan dan Privasi tetap memakai teks asli Indonesia.",
+            "recovery": "Periksa tab/filter kembali: switcher umum hanya membawa pathname, bukan semua query atau hash."
+          },
+          "closeMenu": {
+            "title": "Tutup menu tanpa berpindah",
+            "condition": "Buka menu lalu pilih tutup atau Escape.",
+            "response": "Menu ditutup dan pengguna tetap di halaman semula.",
+            "recovery": "Buka kembali menu atau lanjutkan membaca."
+          }
+        }
+      },
+      "search": {
+        "title": "Mencari informasi",
+        "description": "Pencarian dalam brand, rekomendasi, riwayat, dan hasil kosong.",
+        "entry": "Buka pencarian dari navigasi.",
+        "decision": "Masukkan kata kunci atau pilih rekomendasi.",
+        "scenarios": {
+          "results": {
+            "title": "Hasil ditemukan",
+            "condition": "Kata kunci cocok dengan konten brand aktif.",
+            "response": "Hasil Prioritas/Solitaire tampil di overlay. Pilih tautan hasil untuk membuka tujuan.",
+            "recovery": "Jika tujuan adalah member, ikuti pemeriksaan sesi dan brand."
+          },
+          "empty": {
+            "title": "Tidak ada hasil",
+            "condition": "Kata kunci tidak cocok dengan konten pencarian.",
+            "response": "Overlay menampilkan kondisi tanpa hasil.",
+            "recovery": "Ubah kata kunci, pilih rekomendasi, atau ganti brand pencarian."
+          },
+          "blank": {
+            "title": "Kata kunci kosong",
+            "condition": "Buka pencarian tanpa mengetik atau kirim spasi saja.",
+            "response": "Rekomendasi/riwayat tersedia; submit kosong tidak membuka tujuan baru.",
+            "recovery": "Pilih rekomendasi atau ketik kata kunci."
+          },
+          "history": {
+            "title": "Pakai atau hapus riwayat",
+            "condition": "Pilih istilah sebelumnya atau hapus riwayat lokal.",
+            "response": "Istilah dipakai kembali atau dihapus dari riwayat browser untuk konteks pencarian terkait.",
+            "recovery": "Pembukaan berikutnya membaca riwayat lagi dan mengosongkan field."
+          },
+          "cancel": {
+            "title": "Batal mencari",
+            "condition": "Pilih tutup atau tekan Escape.",
+            "response": "Overlay ditutup dan fokus dikembalikan ke pemicu pencarian.",
+            "recovery": "Halaman sebelumnya tetap bisa dilanjutkan."
+          },
+          "storage": {
+            "title": "Penyimpanan browser dibatasi",
+            "condition": "Browser menolak penulisan riwayat pencarian.",
+            "response": "Pencarian tetap berjalan; riwayat yang gagal disimpan tidak bertahan pada kunjungan berikutnya.",
+            "recovery": "Gunakan pencarian tanpa riwayat atau aktifkan penyimpanan browser."
+          }
+        }
+      },
+      "directory": {
+        "title": "Filter dan daftar konten",
+        "description": "Signature, Complimentary, Lifestyle, Event, dan Promo.",
+        "entry": "Buka hub Privilege di area public atau member.",
+        "decision": "Pilih tab, kategori, kata kunci, atau halaman daftar.",
+        "scenarios": {
+          "browse": {
+            "title": "Daftar → detail",
+            "condition": "Pilih kartu konten yang tersedia.",
+            "response": "Kartu membuka detail sesuai jenis konten dan konteks area.",
+            "recovery": "Gunakan breadcrumb atau rekomendasi untuk melanjutkan."
+          },
+          "combined": {
+            "title": "Gabungkan beberapa filter",
+            "condition": "Pilih kategori dan ketik nama/judul.",
+            "response": "Daftar mengikuti kombinasi filter; perubahan filter mengembalikan pagination ke awal.",
+            "recovery": "Kurangi filter jika hasil terlalu sempit."
+          },
+          "none": {
+            "title": "Filter menghasilkan nol konten",
+            "condition": "Kombinasi kategori/kata kunci tidak punya hasil.",
+            "response": "Panel menampilkan pesan hasil kosong.",
+            "recovery": "Hapus kata kunci atau batalkan kategori yang dipilih."
+          },
+          "pagination": {
+            "title": "Halaman berikutnya dan batas daftar",
+            "condition": "Pindah halaman melalui kontrol pagination.",
+            "response": "Kartu mengikuti halaman aktif; kontrol mengikuti jumlah hasil dan batas halaman.",
+            "recovery": "Ubah filter untuk kembali ke halaman awal."
+          },
+          "birthday": {
+            "title": "Birthday Gift",
+            "condition": "Aktifkan Birthday Gift pada daftar Complimentary.",
+            "response": "Daftar menampilkan penawaran dengan penanda birthdayGift.",
+            "recovery": "Matikan pilihan untuk melihat penawaran lain."
+          },
+          "tabChange": {
+            "title": "Ganti tab saat filter aktif",
+            "condition": "Pindah dari Lifestyle ke Event atau Promo.",
+            "response": "Tab memuat pengalaman daftar baru; filter lokal tidak otomatis dibawa ke semua tab.",
+            "recovery": "Atur filter kembali pada tab tujuan."
+          }
+        }
+      },
+      "detail": {
+        "title": "Detail dan akses benefit",
+        "description": "Membaca benefit, masuk untuk akses member, dan pembatasan brand.",
+        "entry": "Buka detail Signature, Complimentary, Lifestyle, Event, atau Promo.",
+        "decision": "Baca informasi atau pilih tindakan pada detail.",
+        "scenarios": {
+          "read": {
+            "title": "Baca syarat dan lokasi",
+            "condition": "Pengunjung membuka informasi benefit tanpa sesi member.",
+            "response": "Informasi public, syarat, kontak, lokasi, dan rekomendasi yang tersedia dapat dibaca.",
+            "recovery": "Pilih rekomendasi atau kembali ke daftar."
+          },
+          "signIn": {
+            "title": "Benefit → login member",
+            "condition": "Pilih CTA login pada benefit yang mendukung modul member.",
+            "response": "Login membawa konteks brand dan redirectTo ke detail member terkait.",
+            "recovery": "Akun dengan brand yang sesuai kembali ke detail; brand lain menuju overview akunnya."
+          },
+          "restricted": {
+            "title": "Benefit khusus Solitaire",
+            "condition": "Pengguna Prioritas membuka benefit Signature khusus Solitaire.",
+            "response": "Detail menampilkan informasi pembatasan; modul khusus tidak diberikan kepada akun Prioritas.",
+            "recovery": "Pilih benefit yang sesuai dengan brand akun."
+          },
+          "solitaire": {
+            "title": "Solitaire mengakses Signature",
+            "condition": "Akun Solitaire membuka benefit Signature dari area member Solitaire.",
+            "response": "Modul member yang tersedia tampil, termasuk benefit khusus Solitaire. Data benefit member masih demo.",
+            "recovery": "Lanjutkan ke status voucher atau tindakan partner yang tersedia."
+          },
+          "missing": {
+            "title": "ID detail tidak ditemukan",
+            "condition": "Tautan memakai ID yang tidak ada dalam registry konten.",
+            "response": "Route detail mengembalikan notFound; halaman benefit tidak dibuat dari ID sembarang.",
+            "recovery": "Kembali melalui browser dan pilih kartu dari daftar yang tersedia."
+          }
+        }
+      },
+      "login": {
+        "title": "Login member",
+        "description": "BCA ID/email, validasi, akun berbeda brand, dan pembatalan.",
+        "entry": "Buka login member, langsung atau dari halaman yang dilindungi.",
+        "decision": "Pilih BCA ID/email, isi identitas dan password, lalu masuk.",
+        "scenarios": {
+          "valid": {
+            "title": "Kredensial demo benar",
+            "condition": "Identitas dan password cocok dengan akun demo.",
+            "response": "Sesi member dibuat selama 8 jam. Tujuan aman dengan brand sama dipakai; selain itu menuju Member Overview.",
+            "recovery": "Lanjutkan ke tujuan awal atau pilih fitur dari overview."
+          },
+          "email": {
+            "title": "Masuk memakai email",
+            "condition": "Pindah ke tab email dan gunakan email akun demo.",
+            "response": "Format email divalidasi; akun dan password diperiksa oleh action login yang sama.",
+            "recovery": "Jika cocok, lanjutkan sesuai brand akun."
+          },
+          "invalidFormat": {
+            "title": "Format identitas tidak valid",
+            "condition": "BCA ID kurang dari 6 karakter atau email tidak valid.",
+            "response": "Setelah field tersentuh, pesan format tampil. Tombol masuk belum aktif; BCA ID dibatasi hingga 21 karakter.",
+            "recovery": "Perbaiki identitas dan isi password."
+          },
+          "blankPassword": {
+            "title": "Password kosong",
+            "condition": "Identitas valid tetapi password belum diisi.",
+            "response": "Tombol masuk tetap nonaktif.",
+            "recovery": "Isi password; ikon mata hanya mengubah visibilitas teks."
+          },
+          "wrong": {
+            "title": "Akun atau password salah",
+            "condition": "Format valid tetapi kredensial tidak cocok dengan akun demo.",
+            "response": "Login gagal dan alert kredensial muncul sekitar 5 detik. Sesi baru tidak dibuat.",
+            "recovery": "Periksa input, perbaiki, dan kirim kembali."
+          },
+          "otherBrand": {
+            "title": "Akun berbeda dengan brand asal",
+            "condition": "Login dari Prioritas memakai akun Solitaire, atau sebaliknya.",
+            "response": "Brand akun menentukan sesi. redirectTo brand lain diabaikan dan overview akun dibuka.",
+            "recovery": "Gunakan navigasi member pada brand akun tersebut."
+          },
+          "unsafe": {
+            "title": "Tujuan kembali tidak aman",
+            "condition": "redirectTo berisi URL eksternal atau tujuan di luar area member yang diizinkan.",
+            "response": "Tujuan ditolak; login berhasil menuju overview sesuai brand akun.",
+            "recovery": "Pilih tujuan dari menu member."
+          },
+          "cancel": {
+            "title": "Kembali tanpa login",
+            "condition": "Pilih tombol kembali sebelum login berhasil.",
+            "response": "Jika referrer lokal aman tersedia, browser kembali; jika tidak, homepage brand menjadi tujuan.",
+            "recovery": "Konten public tetap dapat dibaca sesuai preview gate."
+          },
+          "help": {
+            "title": "Lupa password atau registrasi",
+            "condition": "Pilih lupa password, registrasi, atau tutorial BCA ID.",
+            "response": "Hanya pemberitahuan prototype yang tampil; reset/registrasi akun belum dilakukan.",
+            "recovery": "Kebutuhan: rute pemulihan akun dan integrasi layanan yang disepakati."
+          },
+          "requestFailed": {
+            "title": "Request login gagal",
+            "condition": "Koneksi terputus atau action login mengalami error.",
+            "response": "Alert kredensial menangani akun salah; error request belum punya feedback dan retry khusus.",
+            "recovery": "Kebutuhan: bedakan gangguan layanan dari kredensial salah dan izinkan retry."
+          }
+        }
+      },
+      "access": {
+        "title": "Sesi dan halaman terlindungi",
+        "description": "Tautan langsung, sesi hilang, brand berbeda, dan rute tidak dikenal.",
+        "entry": "Buka URL area member.",
+        "decision": "Sistem memeriksa sesi dan brand tujuan.",
+        "scenarios": {
+          "active": {
+            "title": "Sesi sesuai brand",
+            "condition": "Cookie sesi member sesuai brand URL tujuan.",
+            "response": "Halaman member yang dikenal ditampilkan.",
+            "recovery": "Navigasikan fitur member seperti biasa."
+          },
+          "missing": {
+            "title": "Belum login atau sesi berakhir",
+            "condition": "Cookie sesi tidak ada atau tidak dikenali pada request halaman member.",
+            "response": "Proxy mengarahkan ke login dengan from dan redirectTo, termasuk query tujuan.",
+            "recovery": "Login ulang dengan akun brand yang sesuai untuk kembali."
+          },
+          "mismatch": {
+            "title": "Sesi brand lain",
+            "condition": "Sesi Prioritas membuka /solitaire/member atau sebaliknya.",
+            "response": "Akses tidak diberikan; login untuk brand tujuan ditampilkan.",
+            "recovery": "Masuk dengan akun tujuan atau kembali ke area member brand sendiri."
+          },
+          "unknown": {
+            "title": "Rute member tidak dikenal",
+            "condition": "Setelah sesi lolos, slug tidak cocok dengan dispatcher member.",
+            "response": "Halaman mengembalikan notFound.",
+            "recovery": "Kembali dan gunakan tautan dari navigasi member."
+          },
+          "openExpiry": {
+            "title": "Sesi berakhir saat halaman tetap terbuka",
+            "condition": "Halaman tidak dinavigasikan ulang ketika cookie member berakhir.",
+            "response": "Tidak ada dialog kedaluwarsa member khusus pada halaman terbuka; request berikutnya diperiksa proxy.",
+            "recovery": "Kebutuhan: aturan clear data, pemberitahuan, dan login ulang yang konsisten."
+          },
+          "cookieBlocked": {
+            "title": "Cookie sesi diblokir",
+            "condition": "Login diterima tetapi browser tidak menyimpan cookie sesi.",
+            "response": "Request member berikutnya kembali ke login; belum ada pesan khusus untuk cookie yang diblokir.",
+            "recovery": "Kebutuhan: deteksi sesi tidak tersimpan dan petunjuk pengaturan browser yang jelas."
+          },
+          "otherTab": {
+            "title": "Akun berubah di tab lain",
+            "condition": "Tab lain login brand berbeda pada browser yang sama.",
+            "response": "Kedua brand memakai satu cookie member; login terbaru mengganti sesi. Halaman terbuka tidak otomatis menyelaraskan semua state akun.",
+            "recovery": "Request baru mengikuti sesi terbaru. Kebutuhan: sinkronisasi logout/perubahan akun lintas tab."
+          }
+        }
+      },
+      "portfolio": {
+        "title": "Financial Report dan OTP",
+        "description": "Nominal tersembunyi, verifikasi OTP, kirim ulang, dan sesi 10 menit.",
+        "entry": "Member membuka laporan portfolio; tanpa sesi portfolio aktif, nominal disamarkan.",
+        "decision": "Pilih tampilkan nominal lalu ikuti permintaan OTP.",
+        "scenarios": {
+          "verified": {
+            "title": "OTP demo diterima",
+            "condition": "Pilih nomor, kirim, dan isi enam digit selain 000000.",
+            "response": "Verifikasi otomatis membuka nominal dan membuat sesi portfolio 10 menit. Tidak ada SMS sungguhan; kode tidak dicocokkan dengan kiriman server.",
+            "recovery": "Lanjutkan membaca; sesi member tetap terpisah dari sesi portfolio."
+          },
+          "noSelection": {
+            "title": "Nomor belum dipilih",
+            "condition": "Pilih kirim OTP tanpa memilih nomor.",
+            "response": "Pesan nomor wajib tampil; tahap verifikasi belum dimulai.",
+            "recovery": "Pilih nomor yang tersedia lalu kirim kembali."
+          },
+          "partial": {
+            "title": "OTP belum lengkap",
+            "condition": "Isi kurang dari enam digit atau ketik karakter selain angka.",
+            "response": "Input menyaring nonangka dan membatasi enam digit; verifikasi baru berjalan setelah lengkap.",
+            "recovery": "Lengkapi enam digit."
+          },
+          "rejected": {
+            "title": "OTP demo ditolak",
+            "condition": "Isi 000000.",
+            "response": "Pesan kode tidak valid tampil; nominal tetap disamarkan.",
+            "recovery": "Perbaiki kode; ketika countdown habis, tombol kirim ulang tersedia."
+          },
+          "resend": {
+            "title": "Tunggu lalu kirim ulang",
+            "condition": "Countdown 119 detik mencapai nol.",
+            "response": "Kirim ulang aktif dan mengosongkan kode serta memulai countdown lagi. Tidak ada pengiriman SMS nyata.",
+            "recovery": "Masukkan kode demo lagi atau tutup dialog."
+          },
+          "expiredCode": {
+            "title": "Kode setelah countdown habis",
+            "condition": "Masukkan kode ketika countdown sudah nol.",
+            "response": "Countdown hanya mengatur kirim ulang; action belum memvalidasi umur kode, jumlah percobaan, atau batas pengiriman.",
+            "recovery": "Kebutuhan: verifikasi server, expiry, rate limit, dan pemulihan OTP."
+          },
+          "noPhone": {
+            "title": "Tidak punya nomor terdaftar",
+            "condition": "Komponen modal menerima daftar nomor kosong.",
+            "response": "State noPhone menampilkan informasi dan tombol kembali. Halaman saat ini memakai nomor demo bawaan, sehingga kasus ini belum terhubung ke profil nyata.",
+            "recovery": "Kebutuhan: sumber nomor terdaftar dan alur pembaruan nomor melalui kanal resmi."
+          },
+          "cancel": {
+            "title": "Tutup dialog OTP",
+            "condition": "Pilih tutup, klik backdrop, atau tekan Escape sebelum verifikasi berhasil.",
+            "response": "Dialog ditutup; pembatalan sebelum berhasil tidak memberi sesi portfolio baru.",
+            "recovery": "Pilih tampilkan nominal untuk mencoba lagi."
+          },
+          "hideAgain": {
+            "title": "Sembunyikan lalu tampilkan lagi",
+            "condition": "Nominal sudah dibuka dan sesi portfolio masih berlaku.",
+            "response": "Ikon mata menyamarkan nominal; membukanya lagi dalam sesi yang sama tidak meminta OTP baru.",
+            "recovery": "Setelah sesi habis, verifikasi diperlukan kembali."
+          },
+          "expiry": {
+            "title": "Sesi portfolio habis",
+            "condition": "Sepuluh menit berlalu sejak verifikasi diterima.",
+            "response": "Timer menyamarkan nominal kembali. Pada kunjungan ulang, cookie yang telah kedaluwarsa tidak membuka nominal.",
+            "recovery": "Pilih ikon mata dan lakukan verifikasi lagi."
+          },
+          "failure": {
+            "title": "Verifikasi mengalami gangguan",
+            "condition": "Server action ditolak atau koneksi terputus.",
+            "response": "Belum ada pemulihan error jaringan lengkap pada handler OTP; status submit dapat tertahan.",
+            "recovery": "Kebutuhan: hentikan pending, tampilkan pesan, dan izinkan retry tanpa membuka nominal."
+          },
+          "reload": {
+            "title": "Kunjungi ulang dalam sesi portfolio",
+            "condition": "OTP sudah diterima dan halaman portfolio dimuat ulang sebelum 10 menit.",
+            "response": "Expiry dari cookie masih valid, sehingga nominal portfolio tampil kembali tanpa OTP baru.",
+            "recovery": "Masa akses tetap mengikuti expiry sebelumnya; reload tidak menambah 10 menit."
+          },
+          "reportUnknown": {
+            "title": "Jenis laporan tidak dikenal",
+            "condition": "Query report bukan tax atau portfolio.",
+            "response": "Halaman memilih portfolio sebagai fallback. Pemeriksaan visibilitas tetap mengikuti sesi portfolio.",
+            "recovery": "Pilih tab laporan portfolio atau pajak yang tersedia."
+          }
+        }
+      },
+      "vouchers": {
+        "title": "Voucher dan airport transfer",
+        "description": "Kuota, unlimited, penalty, habis, salin kode, dan voucher terpakai.",
+        "entry": "Member membuka benefit dengan modul voucher.",
+        "decision": "Periksa status lounge atau pilih kode airport transfer.",
+        "scenarios": {
+          "available": {
+            "title": "Kuota tersedia",
+            "condition": "Status lounge available dipakai.",
+            "response": "Badge menampilkan 50 voucher. Angka ini demo; tidak ada transaksi penerbitan atau redemption di modul.",
+            "recovery": "Baca syarat pemakaian; proses pemakaian operasional berada di luar prototype."
+          },
+          "unlimited": {
+            "title": "Kuota unlimited",
+            "condition": "Detail dibuka dengan voucherStatus=unlimited.",
+            "response": "Badge unlimited ditampilkan sebagai variasi state demo.",
+            "recovery": "State tidak membuktikan eligibility akun nyata."
+          },
+          "penalty": {
+            "title": "Dikenakan penalty",
+            "condition": "Detail dibuka dengan voucherStatus=penalty.",
+            "response": "Kuota tersedia disertai pesan penalty. Tidak ada pembayaran penalty di halaman ini.",
+            "recovery": "Ikuti informasi dan kanal yang tertulis pada detail benefit."
+          },
+          "exhausted": {
+            "title": "Kuota habis",
+            "condition": "Detail dibuka dengan voucherStatus=exhausted.",
+            "response": "Badge habis ditampilkan; halaman tidak menerbitkan voucher pengganti.",
+            "recovery": "Baca ketentuan atau hubungi kanal bantuan terkait benefit."
+          },
+          "copy": {
+            "title": "Salin kode transfer",
+            "condition": "Pilih salin pada voucher transfer yang belum terpakai.",
+            "response": "Clipboard menerima kode dan label tersalin tampil sekitar 2 detik. Salin tidak mengubah status pemakaian.",
+            "recovery": "Gunakan kode melalui kanal partner sesuai ketentuan."
+          },
+          "used": {
+            "title": "Voucher transfer sudah dipakai",
+            "condition": "Voucher memiliki usedOn dalam dataset demo.",
+            "response": "Kode dicoret, tombol dinonaktifkan, dan tanggal pemakaian ditampilkan.",
+            "recovery": "Pilih voucher lain yang masih tersedia."
+          },
+          "copyDenied": {
+            "title": "Clipboard menolak salin",
+            "condition": "Izin clipboard atau browser menghalangi writeText.",
+            "response": "State tersalin tidak ditampilkan; belum ada pesan kegagalan khusus. Kode tetap terlihat.",
+            "recovery": "Salin teks secara manual; kebutuhan UI berikutnya adalah pesan dan fallback yang jelas."
+          },
+          "expand": {
+            "title": "Lihat lebih banyak voucher",
+            "condition": "Daftar transfer memiliki lebih dari dua voucher.",
+            "response": "Dua kartu awal ditampilkan; Lihat lebih banyak membuka sisanya dan dapat ditutup kembali.",
+            "recovery": "Status setiap voucher tetap menentukan tindakan yang tersedia."
+          }
+        }
+      },
+      "medical": {
+        "title": "Reservasi medical check-up",
+        "description": "Pilih lokasi, salin voucher, lalu lanjutkan ke WhatsApp partner.",
+        "entry": "Akun Solitaire membuka benefit medical check-up internasional.",
+        "decision": "Pilih lokasi pelayanan atau tindakan reservasi.",
+        "scenarios": {
+          "book": {
+            "title": "Lokasi → WhatsApp partner",
+            "condition": "Pilih lokasi lalu tekan reservasi.",
+            "response": "Tab baru membuka WhatsApp dengan teks yang memuat kode voucher dan lokasi. Pesan belum dikirim otomatis.",
+            "recovery": "Pengguna meninjau lalu mengirim pesan sendiri; konfirmasi jadwal dilakukan oleh partner."
+          },
+          "copy": {
+            "title": "Salin kode sebelum reservasi",
+            "condition": "Pilih salin pada kode medical check-up.",
+            "response": "Kode demo disalin dan label tersalin muncul sementara.",
+            "recovery": "Pilih lokasi lalu lanjutkan ke partner untuk reservasi."
+          },
+          "partnerUnavailable": {
+            "title": "WhatsApp atau partner tidak tersedia",
+            "condition": "Tautan eksternal gagal dibuka atau partner belum merespons.",
+            "response": "Website tidak menerima status pengiriman pesan atau konfirmasi reservasi.",
+            "recovery": "Kembali ke detail dan gunakan informasi kontak partner yang tersedia."
+          },
+          "cancel": {
+            "title": "Batal di aplikasi partner",
+            "condition": "Tutup WhatsApp tanpa mengirim pesan.",
+            "response": "Tidak ada reservasi yang dikonfirmasi oleh website.",
+            "recovery": "Kembali dan pilih lokasi/tindakan lagi jika ingin melanjutkan."
+          }
+        }
+      },
+      "banking": {
+        "title": "Banking Solution dan Kurs",
+        "description": "Banking Privilege, Wealth Insight, kurs, dan laporan eksternal.",
+        "entry": "Buka Banking Solution di public atau member.",
+        "decision": "Pilih Banking Privilege, Wealth Insight, atau Kurs.",
+        "scenarios": {
+          "benefit": {
+            "title": "Banking Privilege → detail",
+            "condition": "Pilih kartu solusi perbankan.",
+            "response": "Detail sesuai benefit dan area terbuka. Konten menjelaskan layanan; bukan formulir pengajuan produk.",
+            "recovery": "Baca syarat dan gunakan kanal kontak yang tersedia."
+          },
+          "wealth": {
+            "title": "Wealth Insight → sumber laporan",
+            "condition": "Pilih kartu House View Report atau Weekly Market Overview.",
+            "response": "Tautan menuju halaman laporan di website existing. Unduhan PDF langsung tidak dijamin oleh prototype.",
+            "recovery": "Lanjutkan membaca atau mengunduh melalui halaman sumber."
+          },
+          "rates": {
+            "title": "Lihat kurs dan mata uang",
+            "condition": "Buka Kurs dan pilih mata uang yang tersedia.",
+            "response": "Tampilan memakai data kurs prototype; nilai beli/jual dihitung dari referensi, bukan integrasi kurs transaksi resmi BCA.",
+            "recovery": "Baca waktu pembaruan dan gunakan kanal resmi untuk kebutuhan transaksi."
+          },
+          "rateFallback": {
+            "title": "Sumber kurs gagal",
+            "condition": "API kurs gagal, respons tidak valid, atau nilai mata uang hilang.",
+            "response": "Dataset fallback mengisi kurs sehingga section tetap tampil. Fallback tidak membuktikan nilai terkini.",
+            "recovery": "Kebutuhan integrasi: bedakan sumber/freshness dan tampilkan status data yang jelas."
+          },
+          "converter": {
+            "title": "Konversi dan tukar mata uang",
+            "condition": "Pilih mata uang asal/tujuan dan isi nominal.",
+            "response": "Estimasi dihitung di browser dari data kurs halaman. Opsi mengecualikan pasangan yang sama; tombol swap menukar arah.",
+            "recovery": "Ubah nominal atau pasangan untuk estimasi lain. Tidak ada transaksi valuta asing."
+          },
+          "invalidAmount": {
+            "title": "Nominal konverter tidak valid",
+            "condition": "Isi teks bukan angka, kosong, atau nilai negatif.",
+            "response": "Teks bukan angka/kosong menghasilkan nol; nilai negatif dapat dihitung. Belum ada validasi error nominal khusus.",
+            "recovery": "Perbaiki nominal. Kebutuhan: aturan format, batas angka, dan pesan validasi."
+          },
+          "refresh": {
+            "title": "Refresh halaman kurs",
+            "condition": "Tekan ikon refresh kurs.",
+            "response": "Seluruh halaman dimuat ulang; input konverter kembali ke nilai awal. Cache sumber dapat membuat kurs tetap sama.",
+            "recovery": "Atur kembali nominal/pasangan dan periksa waktu pembaruan."
+          }
+        }
+      },
+      "magazine": {
+        "title": "e-Magazine",
+        "description": "Menjelajahi edisi dan batas kelanjutan setelah login.",
+        "entry": "Buka daftar e-Magazine.",
+        "decision": "Pilih halaman daftar atau edisi yang ingin dibaca.",
+        "scenarios": {
+          "list": {
+            "title": "Telusuri edisi",
+            "condition": "Gunakan pagination daftar edisi.",
+            "response": "Daftar menampilkan 12 edisi per halaman dari registry lokal.",
+            "recovery": "Pilih kartu edisi untuk tindakan berikutnya."
+          },
+          "read": {
+            "title": "Baca sekarang → login",
+            "condition": "Pilih edisi dari daftar public.",
+            "response": "Login menerima parameter magazine yang valid, tetapi setelah berhasil menuju overview. Reader/PDF edisi belum dihubungkan.",
+            "recovery": "Kebutuhan: pertahankan edisi dan lanjutkan ke reader setelah login."
+          },
+          "memberRead": {
+            "title": "Member memilih edisi",
+            "condition": "Pilih kartu pada daftar e-Magazine member.",
+            "response": "Kartu daftar member juga menuju login; sesi aktif belum mengubahnya menjadi tautan reader.",
+            "recovery": "Kebutuhan: tautan baca langsung bagi member yang memiliki akses."
+          },
+          "invalidIssue": {
+            "title": "Parameter edisi tidak dikenal",
+            "condition": "URL login memakai magazine yang tidak ada di registry.",
+            "response": "Parameter diabaikan; halaman login tetap dapat dipakai.",
+            "recovery": "Pilih edisi dari daftar resmi prototype."
+          }
+        }
+      },
+      "branches": {
+        "title": "Temukan cabang",
+        "description": "Lokasi default, GPS, izin ditolak, pencarian tempat, dan petunjuk arah.",
+        "entry": "Buka Temukan Kami; tiga lokasi terdekat dari titik default sudah tersedia.",
+        "decision": "Gunakan lokasi saya, cari tempat, atau pilih kartu lokasi.",
+        "scenarios": {
+          "default": {
+            "title": "Gunakan titik default",
+            "condition": "Pengguna tidak membagikan posisi.",
+            "response": "Daftar awal tetap bisa dibaca; lokasi default bukan posisi pengguna.",
+            "recovery": "Cari area lain atau pilih petunjuk arah pada kartu."
+          },
+          "gps": {
+            "title": "Izin lokasi diberikan",
+            "condition": "Pilih lokasi saya dan izinkan browser mengakses GPS.",
+            "response": "Posisi baru memperbarui daftar terdekat dan label area ketika respons tersedia.",
+            "recovery": "Pilih lokasi lalu buka petunjuk arah."
+          },
+          "denied": {
+            "title": "Izin lokasi ditolak",
+            "condition": "Browser menolak izin lokasi.",
+            "response": "Petunjuk izin ditampilkan; daftar tetap dapat digunakan.",
+            "recovery": "Cari tempat secara manual atau ubah izin browser lalu coba lagi."
+          },
+          "unavailable": {
+            "title": "GPS tidak tersedia atau timeout",
+            "condition": "Geolocation tidak didukung, posisi tidak tersedia, atau request mencapai timeout.",
+            "response": "State unavailable memberi petunjuk mencoba lagi; hasil yang ada tetap tersedia.",
+            "recovery": "Coba lagi atau cari tempat manual."
+          },
+          "place": {
+            "title": "Cari tempat manual",
+            "condition": "Ketik sedikitnya dua karakter lalu pilih saran tempat.",
+            "response": "Titik pencarian berubah dan daftar terdekat diperbarui. Input yang lebih pendek tidak menampilkan saran.",
+            "recovery": "Pilih kartu, marker, atau cari tempat lain."
+          },
+          "noPlace": {
+            "title": "Saran tempat tidak ditemukan",
+            "condition": "Kata kunci tidak cocok dengan daftar tempat.",
+            "response": "Tidak ada saran yang dapat dipilih; hasil lokasi sebelumnya tetap tersedia.",
+            "recovery": "Ubah ejaan atau cari kota/area terdekat."
+          },
+          "nearbyFailure": {
+            "title": "Pembaruan lokasi gagal",
+            "condition": "Request daftar terdekat gagal setelah titik berubah.",
+            "response": "Kartu sebelumnya dipertahankan. Belum ada feedback stale/error lengkap, dan status locating dapat belum selesai.",
+            "recovery": "Ubah titik atau muat ulang; kebutuhan berikutnya adalah error dan retry yang jelas."
+          },
+          "directions": {
+            "title": "Buka petunjuk arah",
+            "condition": "Pilih petunjuk arah pada lokasi.",
+            "response": "Tautan membuka layanan peta eksternal; website tidak melacak perjalanan atau kedatangan.",
+            "recovery": "Atur rute di aplikasi peta atau kembali ke daftar."
+          },
+          "mapFailed": {
+            "title": "Peta gagal dimuat",
+            "condition": "WebGL tidak tersedia atau style peta gagal selesai dalam 10 detik.",
+            "response": "Peta beralih ke state gagal; daftar lokasi tetap tersedia sebagai jalur pencarian utama.",
+            "recovery": "Pakai kartu lokasi dan petunjuk arah, atau muat ulang ketika koneksi membaik."
+          },
+          "fastTyping": {
+            "title": "Mengetik cepat atau mengganti lokasi",
+            "condition": "Query baru dimasukkan sebelum pencarian sebelumnya selesai.",
+            "response": "Debounce dan AbortController membatalkan request sebelumnya; input kurang dari dua karakter menyembunyikan saran.",
+            "recovery": "Tunggu saran query terbaru lalu pilih tempat."
+          }
+        }
+      },
+      "contact": {
+        "title": "Informasi dan bantuan",
+        "description": "Tentang, RIPLAY, Ketentuan, Privasi, kontak, dan kanal eksternal.",
+        "entry": "Buka halaman informasi atau Hubungi Kami.",
+        "decision": "Baca dokumen atau pilih kanal bantuan yang tersedia.",
+        "scenarios": {
+          "documents": {
+            "title": "Baca dokumen lengkap",
+            "condition": "Buka Ketentuan atau Kebijakan Privasi.",
+            "response": "Dokumen asli tersedia dengan daftar, tabel, dan tautan; tabel lebar dapat digeser pada mobile.",
+            "recovery": "Pilih informasi terkait untuk membuka halaman lain dalam brand yang sama."
+          },
+          "channel": {
+            "title": "Pilih kanal kontak",
+            "condition": "Pilih Halo BCA Prioritas atau X @HaloBCA.",
+            "response": "Kanal mengikuti tautan/keterangan kontak dan disclosure yang tersedia. Percakapan ditangani di luar website.",
+            "recovery": "Pengguna memulai panggilan/pesan sendiri; website tidak memastikan respons."
+          },
+          "branch": {
+            "title": "Bantuan melalui cabang",
+            "condition": "Pilih cari cabang dari Hubungi Kami.",
+            "response": "Temukan Kami untuk brand aktif terbuka.",
+            "recovery": "Cari lokasi lalu ikuti alur petunjuk arah."
+          },
+          "messageForm": {
+            "title": "Ingin kirim pesan dari website",
+            "condition": "Pengguna mencari formulir pesan atau status tiket.",
+            "response": "Halaman kontak tidak menyediakan form, pengiriman pesan, atau pelacakan tiket.",
+            "recovery": "Gunakan kanal kontak yang tersedia. Form baru memerlukan scope dan integrasi terpisah."
+          },
+          "cancelDisclosure": {
+            "title": "Batalkan sebelum membuka kanal",
+            "condition": "Kartu kontak membuka disclosure lalu pengguna memilih batal atau Escape.",
+            "response": "Dialog native ditutup tanpa membuka telepon atau X.",
+            "recovery": "Pilih kanal lain atau lanjutkan membaca informasi."
+          }
+        }
+      },
+      "logout": {
+        "title": "Logout dan perpindahan segmen",
+        "description": "Konfirmasi, batal keluar, hapus sesi, dan kembali ke member.",
+        "entry": "Member membuka menu akun atau memilih segmen lain dari navbar.",
+        "decision": "Pilih logout atau lanjutkan perpindahan yang memerlukan logout.",
+        "scenarios": {
+          "confirm": {
+            "title": "Konfirmasi logout",
+            "condition": "Pilih keluar pada dialog konfirmasi.",
+            "response": "Cookie member dan portfolio dihapus, lalu homepage brand dibuka.",
+            "recovery": "Akses halaman member berikutnya meminta login kembali."
+          },
+          "cancel": {
+            "title": "Batalkan logout",
+            "condition": "Pilih batal atau klik backdrop dialog.",
+            "response": "Dialog ditutup; sesi dan halaman member dipertahankan.",
+            "recovery": "Lanjutkan menggunakan fitur member."
+          },
+          "segment": {
+            "title": "Pindah ke segmen di luar Prio/Soli",
+            "condition": "Navbar desktop member memilih segmen selain Prioritas atau Solitaire.",
+            "response": "Konfirmasi logout menyimpan tujuan; setelah konfirmasi, sesi dihapus dan tujuan dibuka.",
+            "recovery": "Jika batal, pengguna tetap di konteks member."
+          },
+          "back": {
+            "title": "Kembali ke URL member setelah logout",
+            "condition": "Buka ulang atau muat ulang URL member setelah sesi dihapus.",
+            "response": "Request baru diperiksa proxy dan diarahkan ke login. Snapshot/cache browser tidak menjadi bukti sesi aktif.",
+            "recovery": "Login kembali untuk mengakses member."
+          },
+          "failure": {
+            "title": "Logout mengalami gangguan",
+            "condition": "Action logout gagal atau koneksi terputus sebelum selesai.",
+            "response": "Belum ada pesan kegagalan dan retry khusus; penghapusan sesi tidak boleh diasumsikan berhasil.",
+            "recovery": "Kebutuhan: tampilkan error, izinkan retry, dan pindah hanya setelah penghapusan berhasil."
+          }
+        }
+      },
+      "resilience": {
+        "title": "Laporan, data, dan gangguan",
+        "description": "Filter laporan, unduhan demo, fallback, offline, dan request tertunda.",
+        "entry": "Buka laporan atau konten yang memakai data.",
+        "decision": "Pilih periode, unduhan, atau lanjutkan saat layanan bermasalah.",
+        "scenarios": {
+          "period": {
+            "title": "Ganti periode laporan",
+            "condition": "Pilih laporan pajak/portfolio, tahun, bulan, atau interval grafik.",
+            "response": "Kontrol memperbarui tampilan dan snapshot demo yang tersedia; tidak mengambil portfolio nasabah nyata.",
+            "recovery": "Baca hasil sesuai periode dan status visibilitas nominal."
+          },
+          "download": {
+            "title": "Unduh laporan Financial Report",
+            "condition": "Pilih tombol unduh pada laporan portfolio atau pajak.",
+            "response": "Pemberitahuan prototype tampil; file laporan tidak dibuat atau diunduh.",
+            "recovery": "Kebutuhan: endpoint dokumen, akses, periode, dan error unduhan."
+          },
+          "fallback": {
+            "title": "Sumber data gagal → fallback",
+            "condition": "Fetcher yang mendukung fallback gagal atau env layanan tidak tersedia.",
+            "response": "Fetcher memakai dataset bundel agar section tetap terisi. Ini tidak membuktikan integrasi live berhasil.",
+            "recovery": "Untuk peluncuran, sepakati indikator sumber data dan freshness per fitur."
+          },
+          "offline": {
+            "title": "Offline atau server tidak terjangkau",
+            "condition": "Koneksi hilang sebelum halaman/data/action selesai dimuat.",
+            "response": "Tidak ada alur offline global atau jaminan semua halaman tetap bekerja. Fallback server bukan cache offline browser.",
+            "recovery": "Pulihkan koneksi lalu muat ulang; setiap mutasi memerlukan status retry yang jelas."
+          },
+          "pending": {
+            "title": "Request lambat atau tertunda",
+            "condition": "Action login, OTP, atau logout belum selesai.",
+            "response": "Beberapa tombol punya pending/disabled, tetapi timeout dan recovery belum konsisten antarfitur.",
+            "recovery": "Kebutuhan: aturan loading, timeout, retry, dan pencegahan submit ganda per action."
+          },
+          "externalFailure": {
+            "title": "Tautan eksternal tidak terbuka",
+            "condition": "Browser, aplikasi tujuan, atau situs eksternal menolak tautan.",
+            "response": "Prototype tidak menerima status keberhasilan dari layanan luar. Berpindah kanal tidak berarti tindakan sudah selesai.",
+            "recovery": "Kembali ke halaman sumber, coba tautan lagi, atau gunakan kanal kontak yang tersedia."
+          }
+        }
+      },
+      "preview": {
+        "title": "Akses preview proyek",
+        "description": "Gate preview terpisah dari login member.",
+        "entry": "Buka website prototype.",
+        "decision": "Jika gate preview aktif, masukkan password preview.",
+        "scenarios": {
+          "disabled": {
+            "title": "Gate tidak diaktifkan",
+            "condition": "Flag enable dan password preview tidak sama-sama dikonfigurasi.",
+            "response": "Public tidak meminta password preview. Area member tetap memeriksa sesi member.",
+            "recovery": "Lanjutkan browsing atau login member sesuai kebutuhan."
+          },
+          "correct": {
+            "title": "Password preview benar",
+            "condition": "Gate aktif dan password sesuai konfigurasi.",
+            "response": "Cookie preview dibuat dan halaman tujuan dibuka. Ini tidak membuat sesi member.",
+            "recovery": "Login member tetap diperlukan untuk tujuan member yang dilindungi."
+          },
+          "wrong": {
+            "title": "Password preview salah",
+            "condition": "Password tidak cocok dengan konfigurasi preview.",
+            "response": "Login preview gagal dan pengguna tetap pada gate.",
+            "recovery": "Periksa password preview dan coba kembali."
+          },
+          "idle": {
+            "title": "Tidak aktif selama 8 jam",
+            "condition": "Timer preview tidak menerima aktivitas pointer, keyboard, scroll, atau touch selama 8 jam.",
+            "response": "Client meminta preview logout lalu membuka /login. Timer ini terpisah dari masa sesi member dan portfolio.",
+            "recovery": "Masuk preview kembali; kebutuhan sesi member mengikuti cookie yang masih berlaku."
+          }
+        }
+      }
+    },
+    "title": "User Flows | BCA Prioritas & Solitaire",
+    "heading": "Lihat setiap case, pahami setiap tahap.",
+    "eyebrow": "USER FLOWS",
+    "subtitle": "Pilih case yang ingin dibandingkan, lalu klik tahap pada flowchart. Satu preview UI menampilkan kondisi terpilih—tanpa perlu menjalankan alurnya.",
+    "scope": "Panduan perilaku prototype Prioritas & Solitaire, berdasarkan implementasi 12 Oktober 2026. Cakupan meliputi jalur yang tersedia dan pengecualian yang teridentifikasi; perubahan fitur perlu ditinjau lagi.",
+    "safe": "Preview UI hanya untuk dilihat. Kontrol dokumentasi mengganti case, tahap, dan ukuran tampilan; tombol dan input di dalam preview tidak dapat digunakan.",
+    "journeyCount": "{count} alur",
+    "scenarioCount": "{count} skenario",
+    "gapCount": "{count} perlu ditangani",
+    "explore": "Jelajahi alur",
+    "coverage": "Cakupan skenario",
+    "search": "Cari alur atau kondisi",
+    "searchPlaceholder": "Misalnya: OTP salah, sesi habis…",
+    "all": "Semua",
+    "brand": "Brand",
+    "kind": "Jenis skenario",
+    "status": "Status implementasi",
+    "journeysLabel": "Pilih alur pengguna",
+    "scenarioLabel": "Pilih skenario",
+    "results": "{count} skenario cocok",
+    "reset": "Reset filter",
+    "emptyTitle": "Tidak ada skenario yang cocok",
+    "emptyBody": "Coba kata kunci lain atau kurangi filter.",
+    "diagram": "Diagram langkah",
+    "step": "Langkah {number}",
+    "steps": "{count} langkah",
+    "start": "Mulai",
+    "decision": "Tindakan pengguna",
+    "response": "Respons sistem",
+    "recovery": "Langkah berikutnya",
+    "condition": "Kondisi yang memicu",
+    "whatNext": "Apa yang terjadi berikutnya?",
+    "openPage": "Buka halaman terkait",
+    "copyLink": "Salin tautan skenario",
+    "copied": "Tautan tersalin",
+    "copyFailed": "Tidak bisa menyalin. Salin URL halaman dari browser.",
+    "source": "Acuan implementasi",
+    "sourceHelp": "Perilaku dan status skenario mengacu ke sumber berikut. Tautan halaman membuka prototype sebenarnya.",
+    "coverageHelp": "Gunakan daftar ini untuk review dan QA. Status menunjukkan batas implementasi, bukan hasil pengujian otomatis.",
+    "openScenario": "Lihat alur",
+    "scenarioHeader": "Skenario dan hasil",
+    "kinds": {
+      "normal": "Normal",
+      "negative": "Negative",
+      "alternative": "Alternatif",
+      "recovery": "Pemulihan",
+      "edge": "Kasus batas"
+    },
+    "statuses": {
+      "available": "Tersedia",
+      "demo": "Demo",
+      "gap": "Belum ditangani",
+      "external": "Kanal eksternal"
+    },
+    "statusHelp": {
+      "available": "Perilaku tersedia pada implementasi saat ini.",
+      "demo": "Alur memakai data atau verifikasi simulasi; belum mewakili layanan operasional.",
+      "gap": "Perilaku belum lengkap, belum terhubung, atau belum memiliki pemulihan yang jelas.",
+      "external": "Website mengarahkan ke kanal lain; hasil akhirnya tidak dikonfirmasi oleh website."
+    },
+    "areas": {
+      "public": "Public",
+      "member": "Member",
+      "both": "Public & Member",
+      "preview": "Preview"
+    },
+    "brands": {
+      "both": "Kedua brand",
+      "prioritas": "Prioritas",
+      "solitaire": "Solitaire"
+    },
+    "ui": {
+      "allCases": "Semua case pada alur ini",
+      "caseHelp": "Pilih langsung. Hasil setiap case bisa dilihat tanpa menekan Play atau melewati tahap lain. Filter aktif membatasi daftar ini.",
+      "flowchart": "Flowchart case terpilih",
+      "flowchartHelp": "Klik kondisi atau hasil untuk melihat UI.",
+      "stages": "Tahap alur",
+      "before": "Sebelum tindakan",
+      "result": "Hasil di layar",
+      "preview": "Preview UI",
+      "static": "Statis · tombol dan input tidak aktif",
+      "device": "Ukuran preview",
+      "desktop": "Desktop",
+      "mobile": "Mobile",
+      "excerpt": "Cuplikan UI memakai komponen dan aset prototype. Kondisi di luar website atau yang belum ditangani dapat menampilkan UI yang sama; lihat penjelasan tahap di atas.",
+      "previewAlt": "Preview statis case {case}, tahap {stage}.",
+      "notFound": "This page could not be found."
+    },
+    "graph": {
+      "title": "Cabang alur",
+      "help": "Klik kondisi atau hasil untuk melihat UI.",
+      "path": "Jalur awal alur",
+      "branch": "Pilihan / kondisi",
+      "condition": "Case / kondisi",
+      "outcome": "Hasil di layar",
+      "continue": "Lanjutan: {case}",
+      "nodes": {
+        "homepage": "Homepage",
+        "navigation": "Navigasi",
+        "search": "Pencarian",
+        "privilege": "Hub Privilege",
+        "filters": "Filter & daftar",
+        "benefitDetail": "Detail benefit",
+        "login": "Login member",
+        "credentials": "Isi identitas & password",
+        "memberUrl": "URL member",
+        "financialReport": "Financial Report",
+        "otp": "Verifikasi OTP",
+        "memberBenefit": "Benefit member",
+        "medical": "Medical check-up",
+        "location": "Pilih lokasi",
+        "banking": "Banking Solution",
+        "magazine": "e-Magazine",
+        "issue": "Pilih edisi",
+        "branches": "Temukan Kami",
+        "origin": "Pilih titik lokasi",
+        "information": "Informasi & bantuan",
+        "memberArea": "Area member",
+        "logout": "Konfirmasi logout",
+        "reportOrContent": "Laporan / konten",
+        "website": "Buka website",
+        "previewGate": "Gate preview"
+      }
+    },
+    "lobby": {
+      "title": "Daftar flow",
+      "help": "Pilih flow untuk melihat case, tahapan, dan preview UI.",
+      "cases": "{count} case",
+      "back": "Kembali ke daftar flow"
+    },
+    "board": {
+      "back": "Daftar flow",
+      "cases": "Case",
+      "selectedCase": "Case terpilih",
+      "stages": "Tahap case",
+      "next": "Lanjutan",
+      "explanation": "Penjelasan respons & acuan",
+      "static": "UI statis",
+      "wholeScreen": "Layar utuh",
+      "focusUI": "Fokus UI"
+    },
+    "actions": {
+      "click": "Klik",
+      "input": "Isi di sini",
+      "select": "Pilih",
+      "response": "Respons"
+    }
   }
 }

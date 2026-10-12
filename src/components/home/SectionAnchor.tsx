@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useLenis } from "@/components/SmoothScroll";
@@ -25,11 +27,13 @@ export default function SectionAnchor({
   label,
   variant = "default",
   sticky = true,
+  preview = false,
 }: {
   items?: SectionAnchorItem[];
   label?: string;
   variant?: "default" | "prioritas" | "solitaire";
   sticky?: boolean;
+  preview?: boolean;
 } = {}) {
   const t = useTranslations("hero.sectionAnchor");
   const lenis = useLenis();
@@ -79,6 +83,7 @@ export default function SectionAnchor({
   }, []);
 
   useEffect(() => {
+    if (preview) return;
     const sections = items.map((anchor) => ({
       ...anchor,
       element: document.querySelector<HTMLElement>(anchor.target),
@@ -122,9 +127,10 @@ export default function SectionAnchor({
       window.removeEventListener("resize", scheduleUpdate);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, [centerTab, items]);
+  }, [centerTab, items, preview]);
 
   const navigate = (target: string) => {
+    if (preview) { const anchor = items.find(item => item.target === target); if (anchor) { activeKeyRef.current = anchor.key; setActiveKey(anchor.key); centerTab(anchor.key); } return; }
     const element = document.querySelector<HTMLElement>(target);
     if (!element) return;
 
@@ -187,12 +193,12 @@ export default function SectionAnchor({
       </div>
       {tabOverflow.left ? <div className={`pointer-events-none absolute inset-y-0 left-0 z-20 flex items-center bg-gradient-to-r ${navGradient} to-transparent pl-4 pr-6 xl:hidden`}>
         <button type="button" onClick={() => tabListRef.current?.scrollBy({ left: -tabListRef.current.clientWidth * 0.75, behavior: "smooth" })} aria-label={t("scrollPrevious")} className={arrowClassName}>
-          <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-5" />
+          <IconAsset src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-5" />
         </button>
       </div> : null}
       {tabOverflow.right ? <div className={`pointer-events-none absolute inset-y-0 right-0 z-20 flex items-center bg-gradient-to-l ${navGradient} to-transparent pl-6 pr-4 xl:hidden`}>
         <button type="button" onClick={() => tabListRef.current?.scrollBy({ left: tabListRef.current.clientWidth * 0.75, behavior: "smooth" })} aria-label={t("scrollNext")} className={arrowClassName}>
-          <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5" />
+          <IconAsset src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5" />
         </button>
       </div> : null}
     </nav>

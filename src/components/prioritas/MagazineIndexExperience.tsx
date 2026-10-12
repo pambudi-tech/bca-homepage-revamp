@@ -9,15 +9,15 @@ import issues from "@/components/prioritas/magazine-issues.json";
 
 const MAGAZINE_PAGE_SIZE = 12;
 
-export default function MagazineIndexExperience({ memberLayout = false, tone = "prioritas" }: { memberLayout?: boolean; tone?: "prioritas" | "solitaire" }) {
+export default function MagazineIndexExperience({ memberLayout = false, tone = "prioritas", preview }: { memberLayout?: boolean; tone?: "prioritas" | "solitaire"; preview?: { page: number } }) {
   const t = useTranslations("magazineIndex");
   const pathname = usePathname();
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(preview?.page ?? 1);
   const visibleIssues = issues.slice((page - 1) * MAGAZINE_PAGE_SIZE, page * MAGAZINE_PAGE_SIZE);
   const activeTone = tone === "solitaire" || (memberLayout && pathname.startsWith("/solitaire/member")) ? "solitaire" : "prioritas";
   const isSolitaire = activeTone === "solitaire";
 
-  return <main id="main-content" className={`min-h-screen overflow-x-clip pb-12 xl:pb-20 ${isSolitaire ? "bg-neutral-200 text-neutral-800" : "bg-pgold-200 text-pbrown-800"}`}>
+  return <main id="main-content" className={`min-h-screen overflow-x-clip pb-12 xl:pb-20 ${isSolitaire ? "text-neutral-800" : "text-pbrown-800"}`}>
     <div className={`relative z-10 mx-auto w-full max-w-[1280px] px-4 xl:px-0 ${memberLayout ? "mt-0 xl:-mt-6" : "-mt-12 xl:-mt-12"}`}>
       <PrioritasDirectoryPanel
         headingId="magazine-directory-title"
@@ -44,7 +44,7 @@ export default function MagazineIndexExperience({ memberLayout = false, tone = "
             usePrioritasButtonLibrary
             tone={activeTone}
           />
-          <figcaption className="mt-4 text-center text-sm font-medium text-neutral-700">{issue.title}</figcaption>
+          <figcaption className="mt-4 text-center text-size-body-m font-medium text-neutral-700">{issue.title}</figcaption>
         </figure>)}
       </PrioritasDirectoryPanel>
     </div>

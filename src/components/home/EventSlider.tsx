@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
@@ -200,7 +202,7 @@ export default function EventSlider() {
                 {isActive && (
                   <div
                     ref={cursorRef}
-                    className="fade-overlay pointer-events-none absolute left-0 top-0 z-30 flex size-28 items-center justify-center rounded-full border border-white/25 bg-white/[0.01] text-sm font-semibold text-white shadow-lg backdrop-blur-md"
+                    className="fade-overlay pointer-events-none absolute left-0 top-0 z-30 flex size-28 items-center justify-center rounded-full border border-white/25 bg-white/[0.01] text-size-body-m font-semibold text-white shadow-lg backdrop-blur-md"
                     data-shown={hoveringActive ? "true" : "false"}
                     style={{ "--fade-ms": "200ms", isolation: "isolate" } as React.CSSProperties}
                   >
@@ -221,14 +223,14 @@ export default function EventSlider() {
               aria-label={t("prevSlide")}
               className="pointer-events-auto absolute left-6 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/20 transition-colors hover:bg-black/40"
             >
-              <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-6" />
+              <IconAsset src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-6" />
             </button>
             <button
               onClick={goNext}
               aria-label={t("nextSlide")}
               className="pointer-events-auto absolute right-6 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/20 transition-colors hover:bg-black/40"
             >
-              <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-6" />
+              <IconAsset src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-6" />
             </button>
           </div>
         </div>

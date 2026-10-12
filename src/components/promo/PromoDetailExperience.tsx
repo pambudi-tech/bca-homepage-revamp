@@ -35,7 +35,7 @@ function ProductPill({ product }: { product: string }) {
   const icon = PRODUCT_ICONS[product];
 
   return (
-    <li className="flex shrink-0 items-center gap-1.5 text-xs font-medium text-blue-500">
+    <li className="flex shrink-0 items-center gap-1.5 text-size-body-s font-medium text-blue-500">
       {icon ? (
         <span aria-hidden className="flex size-5 shrink-0 items-center justify-center overflow-hidden rounded bg-white">
           <img src={icon} alt="" className={`size-full object-contain ${product === "Sakuku" ? "object-cover" : ""}`} />
@@ -70,7 +70,7 @@ export default function PromoDetailExperience({ promo, relatedPromos, otherPromo
             />
             <Link
               href="/promo"
-              className="absolute left-4 top-[72px] inline-flex items-center gap-2 text-sm font-semibold text-white/90 text-shadow-hero transition-opacity hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white xl:left-8"
+              className="absolute left-4 top-[72px] inline-flex items-center gap-2 text-size-body-m font-semibold text-white/90 text-shadow-hero transition-opacity hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white xl:left-8"
             >
               <svg aria-hidden viewBox="0 0 24 24" fill="none" className="size-5">
                 <path d="m14.5 6-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -85,16 +85,16 @@ export default function PromoDetailExperience({ promo, relatedPromos, otherPromo
                 <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/30 bg-white shadow-card">
                   <img src={promo.logo} alt="" className="size-8 rounded object-cover" />
                 </div>
-                <p className="text-sm font-semibold leading-5 text-white text-shadow-hero">{promo.brand}</p>
+                <p className="text-size-body-m font-semibold leading-5 text-white text-shadow-hero">{promo.brand}</p>
               </div>
               <h1 className="text-title text-white text-shadow-hero xl:text-heading">{promo.title}</h1>
             </div>
           </div>
 
           <div className="bg-white px-4 pb-8 pt-6 sm:px-6 xl:flex xl:flex-col xl:justify-center xl:px-10 xl:py-12">
-            <p className="flex items-center gap-1.5 text-sm font-medium text-neutral-800"><ClockIcon />{t("until", { date: period })}</p>
+            <p className="flex items-center gap-1.5 text-size-body-m font-medium text-neutral-800"><ClockIcon />{t("until", { date: period })}</p>
             <div className="mt-5 border-t border-neutral-300 pt-5 xl:mt-7 xl:pt-7">
-              <h2 className="text-sm font-bold text-neutral-800">{t("eligibleTitle")}</h2>
+              <h2 className="text-size-body-m font-bold text-neutral-800">{t("eligibleTitle")}</h2>
               <ul data-lenis-prevent className="hide-scrollbar mt-3 flex gap-4 overflow-x-auto pb-1 [scrollbar-width:none]">
                 {products.map((product) => <ProductPill key={product} product={product} />)}
               </ul>
@@ -102,16 +102,16 @@ export default function PromoDetailExperience({ promo, relatedPromos, otherPromo
 
             <div className="mt-5 border-y border-neutral-300 xl:mt-7">
               <section>
-                <button type="button" aria-expanded={openPanel === "terms"} onClick={() => toggle("terms")} className="flex w-full items-center justify-between py-4 text-left text-sm font-bold text-neutral-800">
+                <button type="button" aria-expanded={openPanel === "terms"} onClick={() => toggle("terms")} className="flex w-full items-center justify-between py-4 text-left text-size-body-m font-bold text-neutral-800">
                   {t("termsTitle")}<Chevron open={openPanel === "terms"} />
                 </button>
-                {openPanel === "terms" && <p className="border-t border-neutral-300 pb-4 pt-3 text-sm leading-6 text-neutral-700">{promo.details || t("termsFallback")}</p>}
+                {openPanel === "terms" && <p className="border-t border-neutral-300 pb-4 pt-3 text-size-body-m leading-6 text-neutral-700">{promo.details || t("termsFallback")}</p>}
               </section>
               <section className="border-t border-neutral-300">
-                <button type="button" aria-expanded={openPanel === "location"} onClick={() => toggle("location")} className="flex w-full items-center justify-between py-4 text-left text-sm font-bold text-neutral-800">
+                <button type="button" aria-expanded={openPanel === "location"} onClick={() => toggle("location")} className="flex w-full items-center justify-between py-4 text-left text-size-body-m font-bold text-neutral-800">
                   {t("locationTitle")}<Chevron open={openPanel === "location"} />
                 </button>
-                {openPanel === "location" && <p className="border-t border-neutral-300 pb-4 pt-3 text-sm leading-6 text-neutral-700">{t("locationContent")}</p>}
+                {openPanel === "location" && <p className="border-t border-neutral-300 pb-4 pt-3 text-size-body-m leading-6 text-neutral-700">{t("locationContent")}</p>}
               </section>
             </div>
           </div>

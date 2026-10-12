@@ -301,11 +301,11 @@ export default function SearchRecommendation({
           {recent.length > 0 && (
             <section className="flex flex-col gap-3">
               <div className="flex items-center justify-between">
-                <p className="text-base font-bold text-neutral-800">{t("recentSearches")}</p>
+                <p className="text-size-body-l font-bold text-neutral-800">{t("recentSearches")}</p>
                 <button
                   type="button"
                   onClick={onClearRecent}
-                  className={`text-sm font-semibold ${accentText} hover:underline`}
+                  className={`text-size-body-m font-semibold ${accentText} hover:underline`}
                 >
                   {t("clearAll")}
                 </button>
@@ -319,7 +319,7 @@ export default function SearchRecommendation({
                     <button
                       type="button"
                       onClick={() => onSelectQuery(term)}
-                      className="flex items-center gap-2 text-sm font-semibold text-neutral-800"
+                      className="flex items-center gap-2 text-size-body-m font-semibold text-neutral-800"
                     >
                       <ClockIcon className="size-4 text-neutral-600" />
                       {term}
@@ -339,14 +339,14 @@ export default function SearchRecommendation({
           )}
 
           <section className="flex flex-col gap-3">
-            <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{t("popularSearches")}</p>
+            <p className={`font-bold text-neutral-800 ${compact ? "text-size-body-m" : "text-size-body-l"}`}>{t("popularSearches")}</p>
             <div className="flex flex-wrap gap-2">
               {popularSearches.map(({ id, keyword }) => (
                 <button
                   key={id}
                   type="button"
                   onClick={() => onSelectQuery(keyword)}
-                  className={`inline-flex items-center rounded-full border border-neutral-300 px-3.5 py-1.5 text-sm font-semibold text-neutral-800 transition-colors ${accentBorder} ${hoverSurface} ${hoverAccentText}`}
+                  className={`inline-flex items-center rounded-full border border-neutral-300 px-3.5 py-1.5 text-size-body-m font-semibold text-neutral-800 transition-colors ${accentBorder} ${hoverSurface} ${hoverAccentText}`}
                 >
                   {t(`popular.${id}`)}
                 </button>
@@ -383,10 +383,10 @@ export default function SearchRecommendation({
         </div>
       ) : (
         <div className="px-6 py-8 text-center">
-          <p className="text-sm font-semibold text-neutral-800">
+          <p className="text-size-body-m font-semibold text-neutral-800">
             {t("noResultsFor", { keyword })}
           </p>
-          <p className="mt-1 text-sm text-neutral-700">
+          <p className="mt-1 text-size-body-m text-neutral-700">
             {t(segment === "Solitaire" ? "noResultsSolitaireHint" : scoped ? "noResultsScopedHint" : "noResultsHint")}
           </p>
         </div>
@@ -409,7 +409,7 @@ export default function SearchRecommendation({
             href={seeAllUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={`flex flex-1 items-center gap-3 text-sm font-semibold ${accentText} transition-colors ${hoverSurface} ${
+            className={`flex flex-1 items-center gap-3 text-size-body-m font-semibold ${accentText} transition-colors ${hoverSurface} ${
               compact ? "p-3.5" : "p-5"
             }`}
           >
@@ -428,8 +428,8 @@ export default function SearchRecommendation({
           >
             <HeadphoneIcon className="size-6 shrink-0 text-neutral-800" />
             <span className={`flex gap-1 ${compact ? "flex-col items-start" : "items-center"}`}>
-              <span className="text-sm font-semibold text-neutral-800">{t("needHelp")}</span>
-              <span className={`flex items-center gap-0.5 text-sm font-semibold ${accentText}`}>
+              <span className="text-size-body-m font-semibold text-neutral-800">{t("needHelp")}</span>
+              <span className={`flex items-center gap-0.5 text-size-body-m font-semibold ${accentText}`}>
                 {t("visitHelpCenter")}
                 <ArrowDiagonalIcon className="size-5 shrink-0" />
               </span>
@@ -462,12 +462,12 @@ function ProductsSection({ products, compact, label, viewAllLabel, seeAllUrl, pr
   return (
     <section className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
-        <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{label}</p>
+        <p className={`font-bold text-neutral-800 ${compact ? "text-size-body-m" : "text-size-body-l"}`}>{label}</p>
         {seeAllUrl && <a
           href={seeAllUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className={`flex items-center gap-0.5 text-sm font-semibold ${accentText} hover:underline`}
+          className={`flex items-center gap-0.5 text-size-body-m font-semibold ${accentText} hover:underline`}
         >
           {viewAllLabel}
           <ArrowDiagonalIcon className="size-5" />
@@ -513,14 +513,14 @@ function ProductsSection({ products, compact, label, viewAllLabel, seeAllUrl, pr
                       <div className={`flex min-w-0 flex-col ${compact ? "gap-1" : "gap-1.5"}`}>
                         <p
                       className={`font-semibold text-neutral-800 ${solitaire ? "group-hover:text-neutral-800" : prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"} ${
-                            compact ? "text-sm" : "truncate text-base"
+                            compact ? "text-size-body-m" : "truncate text-size-body-l"
                           }`}
                         >
                           {product.title}
                         </p>
                         <p
                           className={`leading-normal text-neutral-700 ${
-                            compact ? "text-xs" : "text-sm"
+                            compact ? "text-size-body-s" : "text-size-body-m"
                           }`}
                         >
                           {product.description}
@@ -549,7 +549,7 @@ function ProgramSection({ program, compact, label, prioritas, solitaire }: Progr
   const hoverStyle = solitaire ? "hover:border-neutral-800 hover:bg-neutral-200" : "hover:border-cyan-500 hover:bg-cyan-100";
   return (
     <section className="flex flex-col gap-3">
-      <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{label}</p>
+      <p className={`font-bold text-neutral-800 ${compact ? "text-size-body-m" : "text-size-body-l"}`}>{label}</p>
       <div
         className={`flex ${
           compact ? "hide-scrollbar -mx-3 gap-2 overflow-x-auto px-3 [scrollbar-width:none]" : "gap-3"
@@ -571,12 +571,12 @@ function ProgramSection({ program, compact, label, prioritas, solitaire }: Progr
             <div className={`flex min-w-0 flex-col gap-1.5 ${compact ? "px-3 pb-3" : "px-4"}`}>
               <p
                 className={`font-semibold text-neutral-800 ${solitaire ? "group-hover:text-neutral-800" : prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"} ${
-                  compact ? "text-sm" : "truncate text-base"
+                  compact ? "text-size-body-m" : "truncate text-size-body-l"
                 }`}
               >
                 {item.title}
               </p>
-              <p className={`leading-normal text-neutral-700 ${compact ? "text-xs" : "text-sm"}`}>
+              <p className={`leading-normal text-neutral-700 ${compact ? "text-size-body-s" : "text-size-body-m"}`}>
                 {item.description}
               </p>
             </div>
@@ -599,7 +599,7 @@ type InfoSectionProps = {
 function InfoSection({ items, compact, label, t, prioritas, solitaire }: InfoSectionProps) {
   return (
     <section className="flex flex-col gap-3">
-      <p className={`font-bold text-neutral-800 ${compact ? "text-sm" : "text-base"}`}>{label}</p>
+      <p className={`font-bold text-neutral-800 ${compact ? "text-size-body-m" : "text-size-body-l"}`}>{label}</p>
       <ul className="flex flex-col">
         {items.slice(0, 3).map((info) => {
           const style = INFO_CATEGORY_STYLE[info.category];
@@ -612,7 +612,7 @@ function InfoSection({ items, compact, label, t, prioritas, solitaire }: InfoSec
                 {/* Mobile has no room for the badge, so the title wraps
                     across the full row instead of truncating. */}
                 <span
-                  className={`min-w-0 flex-1 text-sm font-semibold text-neutral-800 transition-colors duration-200 ${solitaire ? "group-hover:text-neutral-800" : prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"} ${
+                  className={`min-w-0 flex-1 text-size-body-m font-semibold text-neutral-800 transition-colors duration-200 ${solitaire ? "group-hover:text-neutral-800" : prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"} ${
                     compact ? "" : "truncate"
                   }`}
                 >
@@ -620,7 +620,7 @@ function InfoSection({ items, compact, label, t, prioritas, solitaire }: InfoSec
                 </span>
                 {!compact && (
                   <span
-                    className="flex h-6 shrink-0 items-center rounded-lg px-3 text-sm font-semibold"
+                    className="flex h-6 shrink-0 items-center rounded-lg px-3 text-size-body-m font-semibold"
                     style={{ backgroundColor: style.bg, color: style.text }}
                   >
                     {t(`categories.${info.category}`)}

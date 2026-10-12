@@ -2527,6 +2527,8 @@
     }
   },
   "signaturePrivilege": {
+    "publicSignatureTab": "Signature & Complimentary",
+    "signatureTab": "Signature",
     "subNavLabel": "Prioritas navigation",
     "subNav": {
       "privilege": "Privilege",
@@ -3239,7 +3241,6 @@
     "results": "results",
     "noResults": "No matching components.",
     "preview": "Actual components · variants & states",
-    "previewNote": "Measurements follow the rendered component and current viewport. Enable Blueprint to see the boundaries and dimensions of component parts.",
     "usage": "Purpose",
     "implementation": "Implementation source",
     "copyPath": "Copy path",
@@ -3298,7 +3299,7 @@
       "text-field": {
         "title": "Text Field",
         "description": "Labeled input with help, icons and error feedback.",
-        "detail": "Default, Medium and Large sizes; supports icons, help and inline errors. Focus has no brand-specific variant."
+        "detail": "Large size with Default, Prioritas, and Solitaire appearances, helper text, and inline errors."
       },
       "content-card": {
         "title": "Content Card",
@@ -3391,9 +3392,8 @@
         "detail": "Back-to-top follows scroll; selected shortcuts appear in specific page contexts."
       },
       "alert-feedback": {
-        "title": "Login Alert",
-        "description": "The actual error message, icon and layout from member login.",
-        "detail": "The same LoginAlert used by MemberLoginExperience: bg-red-100, text-red-600, close.svg icon, 56px minimum height and 16px padding."
+        "title": "Alert",
+        "description": "Info, Warning, Danger, and Success messages with contextual icons and colors."
       },
       "search-overlay": {
         "title": "Search Overlay",
@@ -3411,7 +3411,6 @@
         "detail": "Directory shows a category title; detail can add a subtitle and logo. Tone follows brand and member context."
       }
     },
-    "spec": "Key details",
     "board": {
       "homepage": "Homepage",
       "public": "Public",
@@ -3422,6 +3421,9 @@
       "dimensions": "Width × height",
       "type": "Typography · size / line-height · weight",
       "allSpecs": "Specs",
+      "subnav": "Subnav",
+      "withoutSubnav": "Without subnav",
+      "withSubnav": "With subnav",
       "viewport": "Viewport",
       "previewWidth": "Screen width",
       "previewScale": "Preview scale",
@@ -3465,7 +3467,68 @@
       "blueprintModes": {
         "size": "Size",
         "padding": "Padding",
-        "inset": "Inset"
+        "margin": "Margin",
+        "gap": "Gap"
+      },
+      "sizingAxes": {
+        "width": "Width",
+        "height": "Height"
+      },
+      "sizingKinds": {
+        "fixed": "Fixed",
+        "dynamic": "Dynamic",
+        "content": "Dynamic · follows content"
+      },
+      "lockedRatio": "Locked ratio",
+      "componentVariants": {
+        "prioritas": "Prioritas",
+        "solitaire": "Solitaire",
+        "button": "Button",
+        "icon": "Icon Button",
+        "text": "Text Button",
+        "primary": "Primary",
+        "secondary": "Secondary",
+        "danger": "Danger",
+        "default": "Default",
+        "inverse": "Inverse",
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large",
+        "underline": "Underline",
+        "curved": "Curved"
+      },
+      "blueprintRoles": {
+        "cover": "Cover Image",
+        "contentPanel": "Information Panel",
+        "publicationType": "Publication Type",
+        "articleTitle": "Article Title",
+        "publicationDate": "Publication Date",
+        "calendarIcon": "Calendar Icon",
+        "downloadIcon": "Download Icon",
+        "downloadAction": "Download Button",
+        "magazineCover": "Magazine Cover",
+        "magazineTitle": "Magazine Title",
+        "button": "Button",
+        "input": "Input Field",
+        "select": "Dropdown",
+        "fieldLabel": "Field Label",
+        "title": "Title",
+        "arrowIcon": "Arrow Icon",
+        "logo": "Logo",
+        "icon": "Icon",
+        "actionLabel": "Action Label",
+        "errorMessage": "Error Message",
+        "eyebrow": "Category Label",
+        "description": "Description",
+        "articleCover": "Article Cover",
+        "cardTitle": "Card Title",
+        "brand": "Brand Name",
+        "privilegeCard": "Privilege Card",
+        "productCard": "Product Card",
+        "card": "Card",
+        "tab": "Tab",
+        "accordionHeader": "Accordion header",
+        "searchField": "Search field"
       },
       "blueprintParts": {
         "component": "Component",
@@ -3479,7 +3542,89 @@
       "single": "Single date",
       "period": "Period · same month",
       "crossMonth": "Period · across months",
-      "eventCase": "Date case"
+      "eventCase": "Date case",
+      "specDetails": {
+        "fontFamily": "Font",
+        "fontSize": "Text size",
+        "lineHeight": "Line height",
+        "fontWeight": "Weight",
+        "letterSpacing": "Letter spacing",
+        "paddingHorizontal": "Left / right padding",
+        "paddingVertical": "Top / bottom padding",
+        "paddingTop": "Top padding",
+        "paddingRight": "Right padding",
+        "paddingBottom": "Bottom padding",
+        "paddingLeft": "Left padding",
+        "rowGap": "Row gap",
+        "columnGap": "Column gap",
+        "radius": "Corner radius",
+        "borderWidth": "Border width",
+        "opacity": "Opacity",
+        "background": "Background",
+        "text": "Text",
+        "border": "Border",
+        "indicator": "Indicator line",
+        "transparent": "Transparent",
+        "colors": "Colors",
+        "layout": "Spacing & shape",
+        "typography": "Typography",
+        "weights": {
+          "100": "Thin",
+          "200": "Extra Light",
+          "300": "Light",
+          "400": "Regular",
+          "500": "Medium",
+          "600": "Semibold",
+          "700": "Bold",
+          "800": "Extra Bold",
+          "900": "Black"
+        },
+        "gap": "Element gap",
+        "backgroundFill": "Background fill",
+        "gradient": "Gradient / image",
+        "wholeComponent": "Whole component",
+        "decorativeBorderWidth": "Decorative border width",
+        "decorativeBorder": "Decorative border",
+        "ringWidth": "Ring width",
+        "ringColor": "Ring",
+        "outlineWidth": "Outline width",
+        "outlineColor": "Outline"
+      },
+      "edgeCase": "Edge case",
+      "edgeSamples": {
+        "dropdown": {
+          "beauty": "Beauty treatments, skincare, and relaxation experiences for every member of the family",
+          "culinary": "International dining experiences with exclusive dishes from destinations around the world",
+          "travel": "Exclusive travel and accommodation for family holidays across international destinations"
+        },
+        "cardTitle": "Enjoy complimentary room upgrades, companion meals, wellness consultations, and exclusive transfer services for a more comfortable stay with your whole family",
+        "brand": "International Healthcare, Wellness & Hospitality Specialist Medical Center",
+        "heroTitle": "Build your family’s future through exclusive banking services, wealth management, and special privileges that support every stage of your journey",
+        "eventTitle": "An exclusive experience of international music performances, art exhibitions, and exceptional dining with family and friends throughout a special weekend celebration",
+        "headerTitle": "Explore exclusive events, offers, and experiences to accompany your family’s journey to extraordinary destinations throughout the year",
+        "privilegeTitle": "Enjoy exclusive access to Executive Airport Lounges with premium comfort and exceptional facilities at airports throughout Indonesia",
+        "bankingTitle": "Exclusive banking services with personal assistance and special facilities to meet all your financial needs at BCA branches",
+        "wealthTitle": "US inflation dynamics, Federal Reserve interest rate policies, and global bond market developments influence investment portfolio management strategies throughout the year",
+        "featureTitle": "Enjoy exclusive access to hundreds of premium airport lounges with exceptional facilities and personal services for comfortable travel with your whole family"
+      },
+      "ads": "Ads",
+      "alertVariants": {
+        "info": "Info",
+        "warning": "Warning",
+        "danger": "Danger",
+        "success": "Success"
+      },
+      "alertMessages": {
+        "info": "Enter your BCA ID to continue to member services.",
+        "warning": "Your session will expire soon. Please sign in again.",
+        "danger": "The email or password you entered is incorrect.",
+        "success": "Your password was updated successfully."
+      },
+      "blueprintEmpty": {
+        "padding": "No padding.",
+        "margin": "No margin.",
+        "gap": "No gap in this element layout."
+      }
     },
     "docs": {
       "examples": "Examples & states",
@@ -3495,6 +3640,1621 @@
       "detail": "Event detail"
     },
     "mobile": "Mobile",
-    "desktop": "Desktop"
+    "desktop": "Desktop",
+    "rulesTitle": "Rules & behavior",
+    "rules": {
+      "dropdown": [
+        "Dropdown option labels are limited to 2 lines; overflow is truncated with an ellipsis."
+      ],
+      "content-card": [
+        "Titles use up to 3 lines and brand names up to 1 line; overflowing text is truncated with an ellipsis. Text width follows the card.",
+        "If no logo is available, the brand name is shown instead, limited to 3 lines."
+      ],
+      "magazine-card": [
+        "The cover ratio is locked to 3:4; height follows width changes to avoid distortion."
+      ],
+      "pagination": [
+        "Ellipsis buttons jump 5 pages, clamped to the first and last pages."
+      ],
+      "featured-event": [
+        "Titles use up to 3 lines; overflowing text is truncated with an ellipsis. Reserved title space keeps actions aligned."
+      ],
+      "hero": [
+        "Desktop Prio/Soli hero titles are limited to 3 lines; overflow is truncated."
+      ],
+      "page-header": [
+        "Detail titles are limited to 3 lines on mobile and desktop. Directory titles are limited to 3 lines on desktop; subtitles have no line clamp."
+      ],
+      "privilege-card": [
+        "Titles use up to 2 lines; overflowing text is truncated with an ellipsis."
+      ],
+      "banking-privilege-card": [
+        "Titles use up to 2 lines; overflowing text is truncated with an ellipsis."
+      ],
+      "wealth-insight-card": [
+        "Titles use up to 3 lines; overflowing text is truncated with an ellipsis."
+      ],
+      "privilege-feature": [
+        "Titles use up to 3 lines; overflowing text is truncated with an ellipsis."
+      ]
+    },
+    "assetBank": "Asset Bank"
+  },
+  "assetBank": {
+    "title": "Asset Bank",
+    "eyebrow": "Design resources",
+    "workspace": "Design workspace",
+    "catalog": "Component catalog",
+    "collections": "Collections",
+    "subtitle": "Browse artwork, icons, and visual layers for Prioritas and Solitaire. Select an asset to inspect its dimensions, try different backgrounds, and download it.",
+    "scope": "Only Prioritas and Solitaire assets, including shared artwork used by these experiences. Directory imagery is limited to Banking Privilege; Complimentary, Lifestyle Privilege, Event, and Promo directory photos are excluded.",
+    "search": "Search assets",
+    "searchPlaceholder": "Search name, section, or file path…",
+    "brand": "Brand",
+    "format": "Format",
+    "allFormats": "All formats",
+    "sort": "Sort assets",
+    "sorting": {
+      "collection": "By collection",
+      "name": "Name A–Z",
+      "size": "Largest file"
+    },
+    "view": "Gallery view",
+    "grid": "Grid view",
+    "list": "List view",
+    "resultCount": "{count} assets",
+    "reset": "Clear filters",
+    "inspect": "Inspect {name}",
+    "emptyTitle": "No assets found",
+    "emptyDescription": "Try another keyword or clear the filters.",
+    "showing": "Showing {shown} of {total} assets",
+    "loadMore": "Show more assets",
+    "preview": "Asset preview",
+    "zoomPreview": "Asset zoom area",
+    "zoomControls": "Zoom controls",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "zoomLevel": "Zoom level",
+    "zoomReset": "Reset zoom",
+    "zoomHint": "Pinch to zoom. Drag or scroll with two fingers to pan the enlarged image.",
+    "previous": "Previous asset",
+    "next": "Next asset",
+    "close": "Close preview",
+    "background": "Preview background",
+    "surfaces": {
+      "checker": "Transparency",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "dimensions": "Dimensions",
+    "fileSize": "File size",
+    "path": "File path",
+    "download": "Download asset",
+    "copyPath": "Copy path",
+    "copied": "Path copied",
+    "copyFailed": "Copy unavailable. Select and copy the path above.",
+    "openOriginal": "Open file",
+    "sources": "Source references",
+    "sourceUnavailable": "No direct source reference found.",
+    "inlineNote": "This SVG was collected from an inline icon in the code. The original component remains the source of truth.",
+    "brands": {
+      "all": "All brands",
+      "prioritas": "Prioritas",
+      "solitaire": "Solitaire",
+      "shared": "Prio & Solitaire"
+    },
+    "groups": {
+      "all": "All assets",
+      "hero": "Hero & banners",
+      "banking": "Banking Privilege",
+      "financial": "Financial report",
+      "logos": "Logos & brand",
+      "icons": "Icons",
+      "decorations": "Backgrounds & decorations",
+      "products": "Cards & banking",
+      "illustrations": "Illustrations & editorial",
+      "flags": "Country flags"
+    },
+    "names": {
+      "heroPrioritas": "Prioritas Hero",
+      "heroSolitaire": "Solitaire Hero",
+      "cardPrioritas": "Prioritas Card Visual",
+      "cardSolitaire": "Solitaire Card Visual",
+      "financialPrioritas": "Prioritas Financial Report",
+      "financialSolitaire": "Solitaire Financial Report",
+      "logoBca": "BCA Logo",
+      "logoPrioritas": "Prioritas Logo",
+      "logoSolitaire": "Solitaire Logo",
+      "health": "Healthcare",
+      "loungePrioritas": "Prioritas Airport Lounge",
+      "loungeSolitaire": "Solitaire Airport Lounge",
+      "eventPrioritas": "Prioritas Event",
+      "eventSolitaire": "Solitaire Event",
+      "personalBanker": "Personal Banker",
+      "visualGold": "Prioritas visual background · gold",
+      "visualGrey": "Solitaire visual background · grey",
+      "otpEmailPrioritas": "Prioritas OTP email · gold",
+      "otpEmailSolitaire": "Solitaire OTP email · grey",
+      "backgroundBankingSolitaire": "Banking Solution backdrop · Solitaire",
+      "backgroundEventSolitaire": "Event & Promo backdrop · Solitaire",
+      "wavePrivilegeSolitaire": "Privilege wave · Solitaire",
+      "decorationBankingPrioritas": "Banking Solution decoration · Prioritas",
+      "decorationEventPrioritas": "Event & Promo decoration · Prioritas",
+      "backgroundPageSolitaire": "Page & member area backdrop · Solitaire",
+      "backgroundPagePrioritas": "Page & member area backdrop · Prioritas",
+      "decorationPrivilegePrioritas": "Privilege decoration · Prioritas",
+      "backgroundMemberLogin": "Member login backdrop",
+      "glowPrioritas": "Card & header glow · Prioritas",
+      "patternSoliprio": "Prioritas & Solitaire pattern",
+      "maskCardPrioritas": "Card visual mask · Prioritas"
+    }
+  },
+  "siteMap": {
+    "title": "Site Map",
+    "workspace": "Project documentation",
+    "workspaceTitle": "BCA Prioritas–Solitaire Revamp Documentation",
+    "eyebrow": "Prioritas & Solitaire · Documentation",
+    "heading": "Site Map",
+    "subtitle": "Page structure and navigation for BCA Prioritas & Solitaire, covering the Public Area and Member Area.",
+    "brand": "Choose a brand",
+    "area": "Filter by area",
+    "search": "Search pages or URLs",
+    "searchPlaceholder": "Search pages or URLs…",
+    "instruction": "Select a name to understand the page. Use the arrows to expand its branches.",
+    "results": "{count} matching entries · parent branches stay visible",
+    "reset": "Reset filters",
+    "expandAll": "Expand all",
+    "collapseAll": "Collapse all",
+    "expandBranch": "Expand {name}",
+    "collapseBranch": "Collapse {name}",
+    "loginRequired": "Login required",
+    "publicAccess": "Public access",
+    "legendDetail": "Detail = a pattern shared by content or partners",
+    "legendTab": "Tab = another view within the same page",
+    "detailPanel": "About this page",
+    "position": "Position in the navigation",
+    "routePattern": "URL pattern",
+    "url": "Page URL",
+    "patternHelp": "The part in brackets varies by content. The button below opens an available example.",
+    "behavior": "Access behavior",
+    "memberHelp": "Requires a {brand} member session. Without one, the page redirects to the login form.",
+    "openExample": "Open a detail example",
+    "openPage": "Open page",
+    "newTab": "Opens in a new tab",
+    "children": "Continue from here",
+    "emptyTitle": "No pages found",
+    "emptyDescription": "Try a different keyword or reset the area filter.",
+    "scopeNote": "This map covers the implemented Prioritas and Solitaire pages. Lines show navigation relationships and content grouping. Detail pages with a shared structure are represented by one entry with an example link.",
+    "nav": {
+      "catalog": "Component Catalog",
+      "assets": "Asset Bank",
+      "map": "Site Map",
+      "tokens": "Design Tokens",
+      "flows": "User Flows"
+    },
+    "brands": {
+      "prioritas": "BCA Prioritas",
+      "solitaire": "BCA Solitaire"
+    },
+    "filters": {
+      "all": "All areas",
+      "public": "Public",
+      "member": "Member"
+    },
+    "kinds": {
+      "home": "Home",
+      "directory": "Directory",
+      "detail": "Detail",
+      "information": "Information",
+      "login": "Login",
+      "tab": "Tab"
+    },
+    "areas": {
+      "public": {
+        "title": "Public Area",
+        "description": "Explore services and privileges before signing in as a member."
+      },
+      "member": {
+        "title": "Member Area",
+        "description": "Login → Member Overview → privileges, services, and personal reports."
+      }
+    },
+    "notes": {
+      "otp": "Portfolio viewing requires an additional demo OTP verification, which grants a 10-minute portfolio viewing session.",
+      "voucherPrioritas": "Signature details follow Prioritas access rules. Benefits exclusive to Solitaire may show an access notice.",
+      "voucherSolitaire": "Solitaire members can access Signature Privilege modules. Voucher actions depend on the benefit, such as lounge access or airport transfer.",
+      "magazine": "Selecting an issue goes through the member login flow to open the magazine. Issues are not separate detail pages in this map.",
+      "login": "Both brands share a login form. The from parameter selects the Prioritas or Solitaire context; signing in opens Member Overview or the requested destination.",
+      "wealth": "Wealth Insight is a Banking Solution tab for browsing educational content and financial insights."
+    },
+    "pages": {
+      "home": {
+        "title": "Homepage",
+        "description": "The main brand entry point: hero, featured privileges, Banking Solution, and member access."
+      },
+      "privilege": {
+        "title": "Privilege",
+        "description": "The Privilege hub with Signature & Complimentary, Lifestyle, Event, and Promo tabs."
+      },
+      "signatureTab": {
+        "title": "Signature & Complimentary",
+        "description": "The main Privilege tab, showing Signature benefits and the Complimentary directory in one view."
+      },
+      "signatureDetail": {
+        "title": "Signature detail",
+        "description": "A Signature benefit detail page, such as airport transfer or lounge access, with service information, terms, and benefit-specific access or voucher flows."
+      },
+      "complimentaryDetail": {
+        "title": "Complimentary detail",
+        "description": "A partner Complimentary offer detail page with included benefits, terms, validity, contact information, and partner location."
+      },
+      "lifestyle": {
+        "title": "Lifestyle Privilege",
+        "description": "Lifestyle offers that can be explored by category and search."
+      },
+      "lifestyleDetail": {
+        "title": "Lifestyle details",
+        "description": "Partner lifestyle offers, including terms, locations, and contact information."
+      },
+      "event": {
+        "title": "Events",
+        "description": "An event directory with categories, search, and event dates."
+      },
+      "eventDetail": {
+        "title": "Event details",
+        "description": "Details of the selected event: dates, activities, terms, locations, and recommendations."
+      },
+      "promo": {
+        "title": "Promotions",
+        "description": "Promotions with categories and filters to find relevant offers."
+      },
+      "promoDetail": {
+        "title": "Promotion details",
+        "description": "Offer information, validity periods, terms, and relevant contacts."
+      },
+      "banking": {
+        "title": "Banking Solution",
+        "description": "The banking hub with Banking Privilege and Wealth Insight tabs, plus access to the exchange rates page."
+      },
+      "bankingTab": {
+        "title": "Banking Privilege",
+        "description": "A tab of banking benefits and services available to customers."
+      },
+      "bankingDetail": {
+        "title": "Banking privilege details",
+        "description": "Details of a specific banking benefit, such as cards, financing, or branch services."
+      },
+      "wealth": {
+        "title": "Wealth Insight",
+        "description": "Financial education and insights into markets and wealth management."
+      },
+      "kurs": {
+        "title": "Exchange rates",
+        "description": "Exchange rate information with currency selection and rate details."
+      },
+      "magazine": {
+        "title": "e-Magazine",
+        "description": "A digital magazine issue catalog with covers and reading access."
+      },
+      "about": {
+        "title": "About us",
+        "description": "Information about services and the customer experience for the selected brand."
+      },
+      "locations": {
+        "title": "Find us",
+        "description": "Find branches and lounges using the location list and map."
+      },
+      "riplay": {
+        "title": "RIPLAY",
+        "description": "Product and service information summaries, with access to related documents."
+      },
+      "login": {
+        "title": "Member login",
+        "description": "The Member Area entry point. The form adapts to the selected brand before creating a demo member session."
+      },
+      "overview": {
+        "title": "Member Overview",
+        "description": "The signed-in homepage, with an account summary and shortcuts to all member modules."
+      },
+      "financial": {
+        "title": "Financial Report",
+        "description": "Personal reports with Portfolio Summary and Tax Report views."
+      },
+      "portfolio": {
+        "title": "Portfolio Summary",
+        "description": "Customer assets and financial products, displayed after demo OTP verification."
+      },
+      "tax": {
+        "title": "Tax Report",
+        "description": "The customer tax report view within Financial Report."
+      },
+      "terms": {
+        "title": "Terms and Conditions",
+        "description": "Berikut ini adalah ketentuan dalam mengakses Situs BCA Solitaire & Prioritas (https://prioritas.bca.co.id)."
+      },
+      "privacy": {
+        "title": "Privacy Policy",
+        "description": "Berikut ini adalah kebijakan PT Bank Central Asia Tbk (‘BCA”) dan tindakan yang dilakukan oleh BCA untuk menjaga privasi dan keamanan data Anda pada saat mengunjungi situs BCA Solitaire & Prioritas."
+      },
+      "contact": {
+        "title": "Contact Us",
+        "description": "Informasi lebih lanjut dan saran mengenai BCA Prioritas, silakan isi pesan di bawah ini atau hubungi kami"
+      }
+    },
+    "origin": {
+      "heading": "Origin on the existing website",
+      "previous": "Previously: {name}",
+      "categorySource": "The links above point to the original category page. Individual existing benefit detail URLs have not yet been mapped.",
+      "memberSource": "This mapping explains the content origin. Member Area access and flows follow the revamp implementation.",
+      "unmapped": "The existing source for this page has not yet been mapped.",
+      "pendingHeading": "Deferred pages",
+      "held": "News and Business Community are on hold and are not included in the current revamp.",
+      "deferred": "These three footer pages are also deferred and have no revamp pages yet:",
+      "status": {
+        "retained": "Retained",
+        "renamed": "Renamed",
+        "split": "Split",
+        "combined": "Combined",
+        "new": "New group",
+        "moved": "Moved",
+        "newPage": "New page"
+      },
+      "sources": {
+        "partner": "Partner Privilege",
+        "banking": "BCA Privilege",
+        "promo": "Promo",
+        "updates": "Wealth Updates",
+        "house": "House View Report",
+        "weekly": "Weekly Market Overview",
+        "riplay": "RIPLAY",
+        "home": "Prioritas Homepage",
+        "kurs": "Exchange Rates",
+        "about": "About Us",
+        "locations": "Find Us",
+        "terms": "Terms",
+        "privacy": "Privacy Policy",
+        "contact": "Contact Us",
+        "login": "Login",
+        "magazine": "Majalah Prioritas",
+        "financial": "Financial Reports"
+      },
+      "notes": {
+        "home": "The existing homepage is the source for both Prioritas and Solitaire revamp homepages. Find Us, About Us, and RIPLAY are already mapped in the footer.",
+        "privilege": "Revamp Privilege groups the audited Partner Privilege content into Signature, Complimentary, and Lifestyle, and separates Event and Promo. BCA Privilege moves to Banking Solution as Banking Privilege.",
+        "partner": "Partner Privilege was audited and split into Signature, Complimentary, and Lifestyle Privilege. Signature and Complimentary share one listing tab, with separate detail pages.",
+        "signature": "Audited Partner Privilege benefits belong to Signature. Its listing is in the Signature & Complimentary tab; the revamp detail address is {path}.",
+        "complimentary": "Audited Partner Privilege offers belong to Complimentary. Its listing is in the Signature & Complimentary tab; the revamp detail address is {path}.",
+        "lifestyle": "Audited Partner Privilege offers belong to Lifestyle Privilege, now in the Lifestyle tab under Privilege.",
+        "event": "The existing Promo page was split into Event and Promo. Event content now appears in the Event tab under Privilege.",
+        "promo": "Existing Promo was split into Event and Promo. Promotional Wealth Updates content also moves to Promo, in the Business category.",
+        "bankingHub": "Banking Solution is a new group for Banking Privilege (formerly BCA Privilege), Wealth Insight (formerly Market Insight), and Exchange Rates. There is no single equivalent existing page; the sources below are its constituent pages.",
+        "banking": "BCA Privilege was renamed Banking Privilege and moved to Banking Solution. Banking benefits and their details are in the Banking Privilege tab.",
+        "wealth": "Market Insight was renamed Wealth Insight and moved to Banking Solution. House View Report and Weekly Market Overview appear within this tab.",
+        "kurs": "Exchange Rates from the existing Kurs-Detail page now sits under Banking Solution > Exchange Rates.",
+        "footer": "This existing page has been mapped to its revamp counterpart with the same name, accessible through the footer.",
+        "login": "The existing Login page is the source for the revamp Member Area sign-in flow. Both brands share one login form; the from parameter sets the Prioritas or Solitaire context.",
+        "magazine": "Majalah Prioritas on the existing website becomes e-Magazine in the revamp, with the same source for Prioritas and Solitaire.",
+        "overview": "Member Overview is a new revamp page: the post-login homepage with an account summary and shortcuts to member modules. There is no equivalent existing page.",
+        "financial": "The existing Laporan Finansial page becomes Financial Report in the revamp Member Area, now under Member Overview.",
+        "financialTab": "This section is part of the revamp Financial Report. Its existing source is the Laporan Finansial page; this mapping does not imply matching tabs on the existing website."
+      },
+      "sharedSite": "The existing Prioritas website served both Prioritas and Solitaire customers; there was no separate Solitaire website."
+    }
+  },
+  "brandInformation": {
+    "relatedTitle": "Related information",
+    "pages": {
+      "terms": {
+        "title": "Terms and Conditions",
+        "description": "Berikut ini adalah ketentuan dalam mengakses Situs BCA Solitaire & Prioritas (https://prioritas.bca.co.id).",
+        "sections": {
+          "introduction": {
+            "title": "Ketentuan",
+            "contentHtml": "<p>Berikut ini adalah ketentuan dalam mengakses Situs BCA Solitaire & Prioritas (https://prioritas.bca.co.id).</p>"
+          },
+          "section1": {
+            "title": "Pendaftaran dan Aktivasi",
+            "contentHtml": "<div> <div> <ul> <li>Situs BCA Solitaire &amp; Prioritas adalah situs yang hanya dapat diakses oleh anggota Situs BCA Solitaire &amp; Prioritas (“<em>Member</em>”). Setiap nasabah BCA Solitaire &amp; Prioritas (“Nasabah”) berhak untuk menjadi <em>Member</em>. Agar Nasabah dapat mengakses Situs BCA Solitaire &amp; Prioritas secara penuh dan mendapatkan manfaat dari Situs BCA Solitaire &amp; Prioritas, maka Nasabah wajib mendaftarkan diri terlebih dahulu sebagai <em>Member</em>.</li> <li>Untuk menjadi <em>Member</em>, Nasabah harus melakukan proses registrasi melalui fitur Sign Up pada Situs BCA Solitaire &amp; Prioritas dan melakukan aktivasi <em>User ID</em>. Nasabah hanya berhak untuk mempunyai satu <em>User ID</em> pada Situs BCA Solitaire &amp; Prioritas.</li> </ul> </div> </div>"
+          },
+          "section2": {
+            "title": "Ubah Data Diri",
+            "contentHtml": "<div> <ul> <li>Setiap <em>Member</em> memiliki hak untuk mengubah data diri yang dimasukkan saat pendaftaran, kecuali User ID, nama Nasabah, dan keterangan status nasabah di BCA (segmen Nasabah).</li> </ul> </div>"
+          },
+          "section3": {
+            "title": "Kata Sandi",
+            "contentHtml": "<div> <div> <ul> <li>Jika Member lupa kata sandi (<em>password</em>) untuk masuk ke dalam Situs BCA Solitaire &amp; Prioritas, untuk melakukan <em>reset</em> kata sandi (<em>password</em>) <em>Member</em> dapat menggunakan fitur “<em>Forgot Password</em>” pada halaman <em>login</em> dan mengikuti semua prosedur yang dicantumkan dalam Situs BCA Solitaire &amp; Prioritas. <em>Member</em> wajib merahasiakan dan bertanggung jawab sepenuhnya atas keamanan kata sandi (password) User ID.</li> </ul> </div> </div>"
+          },
+          "section4": {
+            "title": "Hak Akses",
+            "contentHtml": "<div> <div> <ul> <li> <p>Atas pertimbangan tertentu BCA setiap saat berhak menghapus atau membekukan akses <em>Member</em> ke fitur Situs BCA Solitaire &amp; Prioritas.</p> </li> </ul> </div> </div>"
+          },
+          "section5": {
+            "title": "Majalah BCA Solitaire & Prioritas Online",
+            "contentHtml": "<div> <div> <ul> <li>Majalah BCA Prioritas Online disajikan secara gratis kepada Member. Member dapat melihat koleksi Majalah BCA Prioritas Online sampai 8 (delapan) edisi ke belakang.</li> </ul> </div> </div>"
+          },
+          "section6": {
+            "title": "Antar Muka Google Maps",
+            "contentHtml": "<div> <div> <ul> <li>Pada Situs BCA Solitaire &amp; Prioritas tersedia fitur “<em>Find Us</em>” yang akan menyediakan koneksi ke fitur Google Maps yang disediakan oleh Google. Segala syarat dan ketentuan serta kebijakan <em>privasi</em> terkait Google Maps mengacu pada ketentuan yang ditetapkan oleh Google. Detail syarat dan ketentuan dan kebijakan privasi Google Maps dapat dilihat di <a href=\"https://developers.google.com/maps/terms?hl=en\" target=\"_blank\" rel=\"noopener noreferrer\"><span>https://developers.google.com/maps/terms?hl=en</span></a> dan <a href=\"http://www.google.com/policies/privacy/\" target=\"_blank\" rel=\"noopener noreferrer\"><span>http://www.google.com/policies/privacy/</span></a>.</li> <li>BCA tidak bertanggung jawab jika terjadi kesalahan program pada Google yang mengakibatkan tampilan fitur “Find Us” tidak muncul, tidak dapat dilihat oleh pengunjung fitur atau tidak akurat.</li> </ul> </div> </div>"
+          },
+          "section7": {
+            "title": "Lain-lain",
+            "contentHtml": "<div> <div> <ul> <li> <p>Dengan menggunakan Situs BCA Solitaire &amp; Prioritas, Nasabah setuju untuk tunduk dan terikat pada Ketentuan Situs BCA Solitaire &amp; Prioritas. BCA setiap saat berhak untuk mengubah, melengkapi, atau Ketentuan Situs BCA Solitaire &amp; Prioritas ini yang akan diberitahukan oleh BCA kepada Nasabah dalam bentuk dan melalui sarana apapun.</p> </li> </ul> <p><strong>BUSINESS COMMUNITY</strong></p> <p><strong></strong>Business Community merupakan salah satu menu di situs BCA Solitaire &amp; Prioritas yang merupakan wadah komunitas BCA Solitaire &amp; Prioritas untuk menciptakan interkoneksi antar nasabah dan tercipta peluang-peluang usaha yang bisa dijalankan bersama. Menu ini berisi daftar bisnis para anggota Business Community yang dilengkapi fasilitas untuk mencari, mengubah, dan atau menambahkan detail bisnis beserta detail produk yang dihasilkan.</p> <p><strong>Cara dan Syarat Menjadi Anggota</strong></p> <ul> <li>Terdaftar sebagai nasabah BCA Solitaire / Prioritas</li> <li><span>Memiliki ID dan Password untuk login di situs BCA Solitaire &amp; Prioritas :<a href=\"https://prioritas.bca.co.id/\" target=\"_blank\" rel=\"noopener noreferrer\"><span>https://prioritas.bca.co.id/</span></a></span></li> </ul> <p><strong>MEKANISME REGISTRASI</strong></p> <p><strong></strong><span>Calon anggota <em>Business Community</em> yang belum memiliki akun di situs BCA Solitaire &amp; Prioritas, silakan registrasi di <a href=\"https://prioritas.bca.co.id/\" target=\"_blank\" rel=\"noopener noreferrer\"><span></span></a><span><a href=\"https://prioritas.bca.co.id/\" target=\"_blank\" rel=\"noopener noreferrer\">https://prioritas.bca.co.id/</a></span> dengan cara sebagai berikut:</span></p> <ul> <li><span>Masuk halaman login dan klik tool box “Daftar” di sebelah kanan.</span></li> <li> <p><span>Semua kolom tersebut wajib diisi dengan data yang valid sesuai dengan data Prioritas Anda.</span></p> </li> <li> <p>Jika semua kolom sudah diisi, klik <em>tool box</em> “Kirim”.</p> </li> <li> <p>Data yang masuk ke situs BCA Solitaire &amp; Prioritas akan diperiksa validitasnya terlebih dahulu oleh BCA. BCA akan mengirimkan <em>status Sign Up</em> ke email yang telah anda daftarkan sebelumnya.</p> </li> </ul> <p><strong>FASILITAS-FASILITAS</strong></p> <p>Anggota Business Community akan mendapat fasilitas khusus :</p> <ul> <li>Akses ke daftar bisnis anggota <em>Business Community</em><a><em></em>.</a></li> <li><a></a>Akses ke halaman profil pribadi anda, dengan materi dan konfigurasi diatur sesuai kebutuhan anda. Profil pribadi anda dapat dibaca oleh anggota <em>Business Community</em><a>.</a></li> <li><a></a>Melakukan komunikasi pribadi dan tertutup melalui Pesan Pribadi dengan anggota <em>Business Community</em> lainnya.</li> <li>Menampilkan profil bisnis, produk,dan layanan bisnis apa yang ditawarkan dalam <em>Business Community</em>, sehingga mudah dicari anggota <em>Business Community</em> lainnya.</li> </ul> <p><strong>ATURAN DAN LARANGAN</strong></p> <ol> <li>Agar postingan Profil Bisnis anda dapat disetujui oleh admin, mohon untuk memperhatikan beberapa hal berikut: <ul> <li>Menggunakan foto profil dengan kualitas gambar yang jelas serta relevan dengan profil bisnis;</li> <li>Menampilkan alamat bisnis yang jelas serta nomor <em>handphone</em> yang aktif dan dapat dihubungi;</li> <li>Isi detail profil bisnis.</li> </ul> </li> <li>Dalam mem-posting Profil Bisnis, anda dilarang untuk: <ul> <li>Menggunakan foto, gambar, tulisan dan materi lainnya yang: <ul> <li>Memuat unsur Suku, Agama, Ras dan Antar Golongan (SARA;)</li> <li>Memuat unsur pornografi dan pornoaksi;</li> <li>Menghina, menyindir atau mengolok-olok, bernada negatif, menyudutkan, sarkastis, memprovokasi, mengintimidasi dan dapat menimbulkan keresahan.</li> </ul> </li> <li>Mempromosikan bisnis/produk: <ul> <li>Yang bertentangan dengan hukum;</li> <li>Jual-beli barang-barang pribadi, seperti rumah, mobil, pakaian dll;</li> <li><em>Multi-level marketing;</em></li> <li>Jasa keuangan.</li> </ul> </li> </ul> </li> <li>BCA sebagai moderator berhak untuk: <ul> <li>Menolak atau menunda publikasi profil bisnis apabila terdapat ketidaksesuaian dengan ketentuan butir i dan ii di atas</li> <li>Melakukan <em>screening</em> terhadap semua tulisan, foto, gambar dan materi lainnya yang di-<em>upload</em>.</li> </ul> </li> <li>Anda dengan ini menjamin bahwa tulisan, gambar, foto dan atau materi lainnya yang anda <em>upload</em> tidak melanggar hak kekayaan intelektual pihak lain.Sehubungan dengan tulisan, gambar, foto dan atau materi lainnya yang anda <em>upload</em>, anda dengan ini membebaskan BCA dari segala gugatan dan atau tuntutan dari pihak manapun.</li> </ol> </div> </div>"
+          }
+        }
+      },
+      "privacy": {
+        "title": "Privacy Policy",
+        "description": "Berikut ini adalah kebijakan PT Bank Central Asia Tbk (‘BCA”) dan tindakan yang dilakukan oleh BCA untuk menjaga privasi dan keamanan data Anda pada saat mengunjungi situs BCA Solitaire & Prioritas.",
+        "sections": {
+          "introduction": {
+            "title": "KEBIJAKAN PRIVASI DAN PENGAMANAN (ONLINE PRIVACY AND SECURITY)",
+            "contentHtml": "<p>Berikut ini adalah kebijakan PT Bank Central Asia Tbk (‘BCA”) dan tindakan yang dilakukan oleh BCA untuk menjaga privasi dan keamanan data Anda pada saat mengunjungi situs BCA Solitaire & Prioritas.</p>"
+          },
+          "section1": {
+            "title": "Kebijakan Privasi",
+            "contentHtml": "<div> <div> <div> <h3><strong>Pendahuluan</strong></h3> <p> Dalam rangka meningkatkan layanan PT Bank Central Asia Tbk (“<strong>BCA</strong>”), kami senantiasa berkomitmen untuk melindungi dan menjaga informasi/data tentang orang perseorangan yang teridentifikasi atau dapat diidentifikasi secara tersendiri atau dikombinasi dengan informasi lainnya baik secara langsung maupun tidak langsung melalui sistem elektronik atau nonelektronik (“<strong>Data Pribadi</strong>”). Hal ini sejalan dengan ketentuan sebagaimana diatur dalam Undang-Undang Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi (“<strong>UU PDP</strong>”). </p> <p> Pemberitahuan Privasi ini merupakan pemberitahuan mengenai standar yang diterapkan oleh BCA dalam melakukan pemrosesan atas Data Pribadi Anda yang berinteraksi dengan BCA seperti: </p> <ul> <li>pengunjung <em>website </em>BCA;</li> <li>nasabah dan pihak lain yang terkait dengan nasabah;</li> <li><em>vendor</em> atau mitra BCA; dan</li> <li> setiap pihak yang menggunakan produk dan/atau layanan yang BCA sediakan maupun produk dan/atau layanan pihak lain yang bekerja sama dengan BCA; </li> </ul> dengan tetap memperhatikan prinsip-prinsip pemrosesan Data Pribadi sesuai dengan ketentuan hukum yang berlaku. <h3><strong>Ruang Lingkup Data Pribadi</strong></h3> <p> Data Pribadi yang dikumpulkan oleh BCA meliputi Data Pribadi yang bersifat spesifik dan Data Pribadi yang bersifat umum. </p> <ol> <li> <strong>Data Pribadi yang bersifat spesifik</strong><br> Data Pribadi yang bersifat spesifik, antara lain: </li> <ol> <li>data dan informasi kesehatan;</li> <li> data biometrik yang memungkinkan identifikasi unik terhadap individu, seperti gambar wajah, rekam sidik jari, dan rekam suara; </li> <li>data anak;</li> <li> data keuangan pribadi, seperti simpanan pada bank dan data kartu kredit; dan </li> <li> data lainnya sesuai dengan ketentuan peraturan perundang-undangan. </li> </ol> <li> <strong>Data Pribadi yang bersifat umum</strong><br> Data Pribadi yang bersifat umum, antara lain: </li> <ol> <li>nama lengkap;</li> <li>Nomor Induk Kependudukan (NIK);</li> <li>jenis kelamin;</li> <li>kewarganegaraan;</li> <li>agama;</li> <li>status perkawinan;</li> <li>alamat;</li> <li>tempat dan tanggal lahir;</li> <li>nama gadis ibu kandung;</li> <li>pekerjaan; dan/atau</li> <li> data pribadi yang dikombinasikan untuk mengidentifikasi seseorang, seperti nomor telepon seluler dan <em>IP Address</em>. </li> </ol> </ol> <h3> <strong>Bagaimana BCA Memperoleh dan Mengumpulkan Data Pribadi</strong> </h3> <p> BCA memperoleh dan mengumpulkan Data Pribadi melalui berbagai sarana dan aktivitas antara lain: </p> <ol> <li> pada saat Anda mengajukan permohonan layanan/fasilitas perbankan BCA dan/atau layanan/fasilitas pihak lain yang bekerja sama dengan BCA baik dengan mengisi formulir, melengkapi data permohonan layanan/fasilitas melalui <em>website</em>, aplikasi BCA, dan media lainnya yang disediakan oleh BCA maupun pihak lain yang bekerja sama dengan BCA; </li> <li> pada saat Anda melakukan pendaftaran sebagai mitra/<em>vendor</em> BCA; </li> <li> pada saat Anda melakukan pengkinian data melalui sarana yang disediakan oleh BCA; </li> <li> pada saat Anda melakukan transaksi melalui layanan/fasilitas perbankan BCA; </li> <li> pada saat Anda melakukan komunikasi dan interaksi dengan BCA, antara lain pada saat Anda menghubungi <em>call center </em>BCA, menjawab pertanyaan, menyampaikan keluhan, memberikan informasi atau masukan, atau berpartisipasi dalam promosi, kontes, survei, atau kegiatan yang diselenggarakan oleh BCA; </li> <li> pada saat Anda dan/atau perwakilan resmi Anda melakukan transaksi dengan atau melalui sarana yang disediakan oleh BCA; </li> <li> melalui aplikasi/<em>platform</em> dan media sosial BCA yang Anda gunakan/akses atau melalui forum <em>online </em>BCA yang Anda akses; </li> <li> dari perangkat yang Anda gunakan pada saat mengakses <em>website</em> atau aplikasi yang disediakan oleh BCA atau pihak yang bekerja sama dengan BCA; </li> <li> ketika Anda dan/atau perwakilan Anda mengunjungi cabang, kantor, dan lokasi fisik lainnya yang berkaitan dengan BCA; </li> <li> dari alat pemroses atau pengolah data visual yang terdapat di cabang, kantor, dan lokasi fisik lainnya yang berkaitan dengan BCA (seperti: CCTV); dan/atau </li> <li> dari pihak terafiliasi BCA atau pihak lainnya yang bekerja sama dengan BCA. </li> </ol> <h3> <strong>Dasar BCA Melakukan Pemrosesan Data Pribadi</strong> </h3> <p> BCA melakukan pemrosesan Data Pribadi yang diperoleh maupun dikumpulkan oleh BCA atas dasar pemrosesan sebagai berikut: </p> <div> <table> <thead> <tr> <td> <strong>No</strong> </td> <td> <strong>Dasar Pemrosesan Data Pribadi</strong> </td> <td> <strong>Deskripsi</strong> </td> </tr> </thead> <tbody> <tr> <td> <p>1</p> </td> <td> <p> Pemenuhan kewajiban perjanjian (<em>Contractual Obligation</em>) </p> </td> <td> <p> BCA dapat melakukan pemrosesan atas Data Pribadi Anda untuk memenuhi kewajiban perjanjian antara Anda dengan BCA atau untuk memenuhi permintaan Anda </p> </td> </tr> <tr> <td> <p>2</p> </td> <td> <p>Persetujuan (<em>Consent</em>)</p> </td> <td> <p> BCA dapat melakukan pemrosesan atas Data Pribadi Anda berdasarkan persetujuan yang telah Anda berikan kepada BCA </p> </td> </tr> <tr> <td> <p>3</p> </td> <td> <p> Pemenuhan kewajiban hukum (<em>Legal Obligation</em>) </p> </td> <td> <p> BCA dapat melakukan pemrosesan atas Data Pribadi Anda berdasarkan kewajiban hukum sesuai dengan ketentuan peraturan perundang-undangan yang berlaku </p> </td> </tr> <tr> <td> <p>4</p> </td> <td> <p> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </p> </td> <td> <p> BCA dapat melakukan pemrosesan atas Data Pribadi Anda untuk memenuhi kepentingan yang sah lainnya dengan memperhatikan tujuan, kebutuhan, dan keseimbangan kepentingan antara BCA dengan hak Anda selaku subjek Data Pribadi </p> </td> </tr> <tr> <td> 5</td> <td> <em>Public Interest</em> </td> <td> BCA dapat melakukan pemrosesan atas Data Pribadi Anda untuk memenuhi kepentingan umum, pelayanan publik, atau pelaksanaan kewenangan BCA berdasarkan peraturan perundang-undangan </td> </tr> <tr> <td> 6</td> <td> <em>Vital Interest</em> </td> <td> BCA dapat melakukan pemrosesan atas Data Pribadi Anda untuk melindungi kepentingan vital Anda selaku subjek Data Pribadi. </td> </tr> </tbody> </table> </div> <h3> <strong>Tujuan BCA Melakukan Pemrosesan Data Pribadi</strong> </h3> <p> BCA akan melakukan pemrosesan atas Data Pribadi yang diperoleh maupun dikumpulkan oleh BCA untuk tujuan antara lain: </p> <div> <table> <thead> <tr> <td> <strong>No</strong> </td> <td> <strong>Tujuan Pemrosesan Data Pribadi</strong> </td> <td> <strong>Deskripsi</strong> </td> <td> <strong>Dasar Pemrosesan Data Pribadi</strong> </td> </tr> </thead> <tbody> <tr> <td> <p>1</p> </td> <td> <p>Penyediaan produk dan/atau jasa perbankan</p> </td> <td> <ul> <li> menyediakan produk dan/atau jasa perbankan BCA bagi Anda; </li> <li> memberikan personalisasi produk dan/atau jasa perbankan BCA yang disediakan untuk Anda. </li> </ul> </td> <td rowspan=\"2\"> <ul> <li> Pemenuhan kewajiban perjanjian (<em>Contractual Obligation</em>); dan/atau </li> <li> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </li> </ul> </td> </tr> <tr> <td> <p>2</p> </td> <td> <p>Pemrosesan transaksi perbankan</p> </td> <td> <p> menjalankan transaksi perbankan yang Anda instruksikan kepada BCA, seperti: transfer dana dan <em>Outward Remmitance</em>. </p> </td> </tr> <tr> <td> <p>3</p> </td> <td> <p><em>Complaint Handling</em></p> </td> <td> <ul> <li> menindaklanjuti setiap keluhan atas produk dan/atau jasa perbankan BCA atau pihak lain yang bekerja sama dengan BCA; </li> <li> menyelesaikan setiap permasalahan terkait akses Anda terhadap produk dan/atau jasa perbankan BCA. </li> </ul> </td> <td> <ul> <li> Pemenuhan kewajiban perjanjian (<em>Contractual Obligation</em>); </li> <li> Pemenuhan kewajiban hukum (<em>Legal Obligation</em>); dan/atau </li> <li> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </li> </ul> </td> </tr> <tr> <td> <p>4</p> </td> <td> <p>Keamanan</p> </td> <td> <p> menjaga keamanan cabang, kantor, dan lokasi fisik lainnya yang berkaitan dengan BCA melalui pemasangan alat pemroses atau pengolah data visual (seperti: CCTV). </p> </td> <td> <p> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </p> </td> </tr> <tr> <td> <p>5</p> </td> <td> <p>Kepatuhan terhadap ketentuan hukum yang berlaku</p> </td> <td> <ul> <li> menjalankan prinsip <em>Customer Due Diligence </em>(CDD) sesuai ketentuan hukum yang berlaku; </li> <li> pelaporan kepada regulator termasuk namun tidak terbatas pada laporan terkait dengan program Anti Pencucian Uang, Pencegahan Pendanaan Terorisme, dan Pencegahan Pendanaan Proliferasi Senjata Pemusnah Massal (APU-PPT dan PPPSPM). </li> <li> kepatuhan terhadap ketentuan hukum lainnya yang berlaku. </li> </ul> </td> <td> <p> Pemenuhan kewajiban hukum (<em>Legal Obligation</em>) </p> </td> </tr> <tr> <td> <p>6</p> </td> <td> <p><em>Monitoring </em>dan Audit</p> </td> <td> <ul> <li> melakukan <em>monitoring </em>atas penyediaan dan penggunaan layanan dan/atau produk perbankan BCA; </li> <li> melakukan audit secara berkala, baik oleh auditor internal maupun auditor eksternal. </li> </ul> </td> <td> <ul> <li> Pemenuhan kewajiban hukum (<em>Legal Obligation</em>); dan/atau </li> <li> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </li> </ul> </td> </tr> <tr> <td> <p>7</p> </td> <td> <p>Survei dan Riset</p> </td> <td> <p> melakukan evaluasi, peningkatan, dan/atau pembaruan fitur produk dan/atau jasa perbankan BCA dari waktu ke waktu. </p> </td> <td> <p> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </p> </td> </tr> <tr> <td> <p>8</p> </td> <td> <p><em>Marketing</em> dan <em>Campaign</em></p> </td> <td> <ul> <li> melakukan penawaran iklan/promosi maupun pemasaran atas produk dan/atau jasa perbankan BCA atau pihak lain yang bekerja sama dengan BCA; </li> <li> penyelenggaraan <em>loyalty program, </em>kepada nasabah seperti <em>gift</em>, undian, dan lainnya </li> </ul> </td> <td> <p>Persetujuan (<em>Consent</em>)</p> <p> </p> </td> </tr> <tr> <td> <p>9</p> </td> <td> <p>Kerja Sama</p> </td> <td> <ul> <li> untuk keperluan pelaksanaan kerja sama yang telah Anda buat dengan BCA. </li> </ul> </td> <td> <ul> <li> Pemenuhan kewajiban perjanjian (<em>Contractual Obligation</em>); </li> <li>Persetujuan (<em>Consent</em>); dan/atau</li> <li> Pemenuhan kepentingan yang sah lainnya (<em>Legitimate Interest</em>) </li> </ul> </td> </tr> </tbody> </table> </div> <h3> <strong> Pengungkapan Data Pribadi kepada Pihak lain</strong> </h3> <p> BCA dapat mengungkapkan Data Pribadi Anda kepada afiliasi BCA atau pihak lainnya yang bekerja sama dengan BCA, baik yang berlokasi di Indonesia atau di negara lain, untuk melaksanakan tujuan pemrosesan Data Pribadi sebagaimana dimaksud dalam Pemberitahuan Privasi ini dengan hubungan peran sebagai berikut: </p> <ul> <li> Pengendali Data Pribadi – Pengendali Data Pribadi; </li> <li> Pengendali Data Pribadi dan Prosesor Data Pribadi; dan/atau </li> <li>Pengendali Data Pribadi Bersama.</li> </ul> <div> <table> <thead> <tr> <td> <strong>No</strong> </td> <td> <strong>Pihak lain yang Menerima Data Pribadi Anda</strong> </td> <td> <strong>Deskripsi</strong> </td> </tr> </thead> <tbody> <tr> <td> <p>1</p> </td> <td> <p>Afiliasi BCA</p> </td> <td> <p> BCA dapat mengungkapkan Data Pribadi Anda kepada afiliasi BCA untuk keperluan penawaran produk dan/atau layanan milik afiliasi BCA dan analisis atas permohonan produk dan/atau layanan yang Anda ajukan kepada BCA dan/atau afiliasi BCA. </p> </td> </tr> <tr> <td> <p>2</p> </td> <td> <p><em>Vendor</em></p> </td> <td> <p> BCA dapat mengungkapkan Data Pribadi Anda kepada <em>vendor</em> untuk keperluan penyediaan layanan kepada Anda, seperti: perusahaan ekspedisi. </p> </td> </tr> <tr> <td> <p>3</p> </td> <td> <p>Penasihat atau Auditor</p> </td> <td> <p> BCA dapat mengungkapkan Data Pribadi Anda kepada akuntan, auditor, <em>lawyer</em>, dan/atau penasihat lainnya yang jasanya kami gunakan. </p> </td> </tr> <tr> <td> <p>4</p> </td> <td> <p>Instansi Berwenang</p> </td> <td> <p> BCA dapat mengungkapkan Data Pribadi Anda apabila: </p> <ul> <li> instansi berwenang meminta Data Pribadi Anda kepada kami; </li> <li> kami diwajibkan untuk melakukan pelaporan kepada instansi berwenang. </li> </ul> </td> </tr> <tr> <td> <p>5</p> </td> <td> <p>Pihak lainnya yang bekerja sama dengan BCA</p> </td> <td> <p> BCA dapat mengungkapkan Data Pribadi Anda kepada pihak lain yang bekerja sama dengan BCA untuk tujuan pemrosesan Data Pribadi sebagaimana dimaksud dalam Pemberitahuan Privasi ini </p> </td> </tr> </tbody> </table> </div> <p> Dalam hal BCA mengungkapkan Data Pribadi Anda kepada afiliasi BCA, mitra BCA, auditor, dan pihak lainnya yang bekerja sama dengan BCA, BCA akan senantiasa meminta kepada afiliasi BCA, mitra BCA, auditor, dan pihak lainnya yang bekerja sama dengan BCA untuk menjaga kerahasiaan dan keamanan atas Data Pribadi Anda sesuai dengan ketentuan yang berlaku. </p> <h3><strong>Hak Subjek Data Pribadi</strong></h3> <p> BCA senantiasa berkomitmen untuk memenuhi hak Anda sebagai Subjek Data Pribadi. Anda dapat meminta kepada BCA untuk: </p> <ul> <li> melengkapi, memperbarui, dan/atau memperbaiki kesalahan dan/atau ketidakakuratan Data Pribadi Anda (Pasal 6 UU PDP); </li> <li> mengakhiri pemrosesan, menghapus, dan/atau memusnahkan Data Pribadi Anda (Pasal 8 UU PDP); </li> <li> tidak melakukan pemrosesan Data Pribadi Anda tanpa dasar pemrosesan Data Pribadi (<em>legal basis</em>); </li> <li> menarik kembali persetujuan pemrosesan Data Pribadi Anda (Pasal 9 UU PDP); </li> <li> menunda atau membatasi pemrosesan Data Pribadi secara proporsional sesuai dengan tujuan pemrosesan Data Pribadi (Pasal 11); </li> <li> melakukan tindakan lainnya sesuai dengan ketentuan hukum yang berlaku yang mengatur mengenai pelindungan Data Pribadi; </li> </ul> <p> yang berada di bawah kendali BCA dengan tetap memperhatikan ketentuan hukum yang berlaku. Namun demikian, BCA berhak untuk tidak memenuhi permintaan Anda antara lain apabila: </p> <ul> <li> Data Pribadi tersebut masih diperlukan untuk pencapaian tujuan pemrosesan Data Pribadi; </li> <li> berdampak pada pengungkapan Data Pribadi milik orang lain; </li> <li> bertentangan dengan kepentingan pertahanan dan keamanan nasional; </li> <li> diperkenankan menurut ketentuan hukum yang berlaku atau permintaan Anda bertentangan dengan kepentingan hukum yang berlaku. </li> </ul> <h3><strong>Penyimpanan Data Pribadi</strong></h3> <p> BCA melakukan penyimpanan data sesuai dengan ketentuan retensi penyimpanan data di BCA. Sebagai contoh, BCA akan menyimpan Data Pribadi Anda dalam jangka waktu tertentu sejak Anda berinteraksi dengan BCA. BCA dapat menyimpan Data Pribadi Anda lebih lama dari batas waktu yang ditentukan jika hal tersebut diperlukan untuk kebutuhan hukum, pembuktian di kemudian hari, membantu mendeteksi kejahatan keuangan, menjawab permintaan regulator atau aparat yang berwenang, dan hal lainnya. Data Pribadi Anda disimpan selama tujuan pengumpulannya masih diperlukan untuk tujuan hukum atau kepentingan bisnis lainnya. Jika BCA tidak membutuhkan lagi informasi terkait Data Pribadi Anda atau masa penyimpanan Data Pribadi telah berakhir sesuai dengan ketentuan hukum yang berlaku atau ketentuan yang berlaku di BCA, maka BCA dapat menghapus atau memusnahkan Data Pribadi Anda. </p> <h3><strong> Pengamanan Data Pribadi</strong></h3> <p> BCA menggunakan berbagai cara untuk menjaga Data Pribadi Anda tetap aman dan terlindungi. Di samping itu, BCA senantiasa memberikan edukasi kepada setiap staf BCA yang mengakses Data Pribadi menjaga kerahasiaan dan keamanan Data Pribadi. BCA juga mewajibkan staf BCA dan pihak lain yang bekerja sama dengan BCA untuk patuh dan menaati seluruh ketentuan yang berlaku terkait pelindungan Data Pribadi dan menerapkan langkah-langkah pengamanan dalam melakukan pemrosesan Data Pribadi. </p> <h3> <strong>Perubahan <em>Pemberitahuan Privasi</em> </strong> </h3> <p> BCA dapat mengubah, melengkapi, dan/atau mengganti Pemberitahuan Privasi ini dari waktu ke waktu untuk memastikan bahwa Pemberitahuan Privasi ini sejalan dengan ketentuan hukum yang berlaku, prosedur, dan praktik yang dijalankan oleh BCA dalam melakukan pemrosesan Data Pribadi. BCA akan menyediakan Pemberitahuan Privasi terkini melalui <em>website</em> BCA di <a href=\"http://www.bca.co.id\" target=\"_blank\" rel=\"noopener noreferrer\">www.bca.co.id</a>. </p> <h3> <strong> Bahasa</strong> </h3> <p> Pemberitahuan Privasi ini dibuat dan diterbitkan dalam Bahasa Indonesia dan Bahasa Inggris. Apabila terdapat penjelasan/ketentuan yang berbeda antara versi Bahasa Indonesia dan Bahasa Inggris atau terjadi sengketa atas penafsiran suatu ketentuan, maka versi Bahasa Indonesia yang berlaku. </p> <h3><strong>Hubungi BCA</strong></h3> <p> Untuk informasi lebih lanjut, Anda dapat menghubungi BCA di <em>hotline</em> 24 jam Halo BCA 1500 888 atau <em>emai</em>l BCA di <a href=\"mailto:halobca@bca.co.id\">halobca@bca.co.id</a>. </p> </div>  </div> </div>"
+          },
+          "section2": {
+            "title": "Sistem Pengamanan",
+            "contentHtml": "<div> <div> <ol> <li> BCA menggunakan 2 (dua) lapis sistem pengamanan untuk melindungi akses dan kegiatan Anda di situs BCA Solitaire &amp; Prioritas yaitu : <ul> <li> <em>Secure Socket Layer</em> (&quot;SSL&quot;) adalah teknologi pengamanan yang &#x27;mengacak&#x27; jalur komunikasi antar komputer sehingga komunikasi tersebut tidak dapat diketahui oleh pihak lain. </li> <li> ID pada situs BCA Solitaire &amp; Prioritas (“<span>ID Solitaire/Prioritas</span>”) dan sandi rahasia. </li> </ul> </li> <li> BCA hanya menyediakan fitur keamanan yang hanya dapat diakses dengan menggunakan minimal Microsoft Edge, Mozilla Firefox mulai versi 52, Google Chrome mulai versi 60, Safari IOS Mobile mulai seri 10, dan Mac OS Device YosemiteOS. </li> </ol> </div> </div>"
+          },
+          "section3": {
+            "title": "Proteksi Akses Situs BCA Solitaire & Prioritas",
+            "contentHtml": "<div> <div> <p> BCA mewajibkan Anda untuk memasukkan ID Solitaire/Prioritas dan sandi rahasia sebelum Anda melakukan akses ke situs BCA Solitaire &amp; Prioritas secara penuh. </p> </div> <div> Untuk memastikan keamanan bagi data Anda dalam melakukan akses situs BCA Solitaire &amp; Prioritas, mohon lakukan hal-hal sebagai berikut: <ul> <li> Jagalah kerahasiaan ID Solitaire/Prioritas dan sandi rahasia Anda, jangan diberitahukan kepada orang lain, dan jangan disimpan dalam browser Anda. </li> <li> Jangan memberitahukan sandi rahasia atau sebagian sandi rahasia Anda kepada pihak lain. BCA tidak pernah menanyakan sandi rahasia Anda. </li> <li> Gantilah sandi rahasia Anda secara periodik di situs BCA Solitaire &amp; Prioritas pada menu Profile – Ubah Password, atau jika Anda tidak yakin terhadap kerahasiaan sandi rahasia Anda. Jangan menggunakan sandi rahasia yang mudah diterka seperti: 111111, 222222, 123456, 654321, tanggal lahir, nomor mobil, alamat dan lain-lain. Jangan menuliskan sandi rahasia Anda di tempat dimana orang lain dapat membacanya. </li> <li> Gunakan sandi rahasia situs BCA Solitaire &amp; Prioritas yang berbeda dengan sandi rahasia yang Anda gunakan untuk mengakses situs lain. </li> <li> Jika Anda lupa sandi rahasia Anda, gunakan fitur “Lupa Password” dan ikuti instruksi yang ada untuk mengaktifkan mendapatkan sandi rahasia yang baru. </li> </ul> </div> </div>"
+          },
+          "section4": {
+            "title": "ID Solitaire/Prioritas dan Alamat Email",
+            "contentHtml": "<div> <div> <p> </p> <span>BCA mewajibkan Anda untuk memberikan nomor kartu BCA Solitaire / Prioritas dan alamat e-mail Anda kepada BCA melalui Situs BCA Solitaire &amp; Prioritas saat anda melakukan registrasi. BCA akan menggunakan nomor kartu BCA Solitaire &amp; Prioritas anda untuk melakukan validasi bahwa anda adalah nasabah BCA Solitaire &amp; Prioritas dan berhak menggunakan fitur yang disediakan situs BCA Solitaire / Prioritas. BCA akan menggunakan alamat e-mail anda untuk mengirimkan informasi transaksi nonfinansial, yaitu saat pendaftaran pertama kali, aktivasi akun situs BCA Solitaire / Prioritas, dan validasi proses “<em>Forgot Password</em>”. Selain itu BCA juga menggunakan alamat e-mail Anda untuk kepentingan promosi, undangan <em>gathering</em>, dan informasi lainnya.Untuk memastikan keamanan pengiriman informasi ke alamat e-mail anda, mohon lakukan hal-hal sebagai berikut:</span> <p> </p> <ul> <li> Berikan kepada BCA alamat e-mail pribadi anda. Jangan menggunakan alamat e-mail orang lain, atau email yang tidak valid. </li> <li> Ubahlah segera alamat e-mail anda yang terdaftar di situs BCA Solitaire &amp; Prioritas jika Anda mengganti alamat e-mail anda. </li> <li> Jika anda menghubungi BCA melalui e-mail, jangan mengirimkan informasi apapun yang bersifat rahasia, termasuk sandi rahasia anda. </li> </ul> </div> </div>"
+          },
+          "section5": {
+            "title": "Situs BCA Solitaire & Prioritas",
+            "contentHtml": "<div> <div> <p> </p> <span>Di dalam situs BCA Solitaire &amp; Prioritas, BCA dapat menyediakan <em>URL link</em><span> ke situs lain yang tidak dikendalikan/dikontrol oleh BCA. BCA tidak bertanggung jawab atas isi dan keamanan dari situs tersebut. Jika anda mengakses situs tersebut, silakan anda memeriksa kebijakan privasi dan pengamanan situs tersebut.<br> <span> Jika anda mengakses situs BCA Solitaire &amp; Prioritas melalui <em>URL link</em> dari situs lain, mohon pastikan kebenaran alamat yang anda akses yaitu <a href=\"https://prioritas.bca.co.id/\" target=\"_blank\" rel=\"noopener noreferrer\">https://prioritas.bca.co.id</a><span>. </span></span></span></span> <p> BCA dapat mengubah kebijakan privasi dan informasi pengamanan ini setiap saat agar sesuai/<em>compatible </em>dengan situasi dan teknologi terbaru. Anda setiap saat dapat membaca informasi dan kebijakan privasi situs BCA Solitaire &amp; Prioritas yang terbaru di <a href=\"https://prioritas.bca.co.id/\" target=\"_blank\" rel=\"noopener noreferrer\">https://prioritas.bca.co.id</a> . </p> </div> </div>"
+          },
+          "section6": {
+            "title": "Kiat-Kiat Menggunakan Situs BCA Solitaire & Prioritas dengan Lebih Aman",
+            "contentHtml": "<div> <div> <p> Pada dasarnya sistem maupun jaringan situs BCA Solitaire &amp; Prioritas telah menggunakan sistem pengamanan yang optimal. Kondisi pengamanan situs BCA Solitaire &amp; Prioritas selalu dipantau dan ditingkatkan sejalan dengan perkembangan teknologi dan ancaman yang ada. </p> <p> Ancaman pada sistem dapat dialami oleh semua pengguna internet termasuk situs BCA Solitaire &amp; Prioritas. Oleh karena itu BCA meminta anda sebagai pengguna situs BCA Solitaire &amp; Prioritas untuk memperhatikan beberapa jenis ancaman yang mungkin anda temui ketika mengakses internet. Kiat-kiat pengamanan yang dapat dilakukan sewaktu anda menggunakan situs BCA Solitaire &amp; Prioritas, adalah sebagai berikut : </p> <ol> <li> <strong><em>Phising<br> </em></strong><em>Phising</em> adalah cara-cara penipuan yang dilakukan oleh pihak-pihak tertentu untuk mendapatkan informasi-informasi rahasia seorang nasabah seperti <em>User ID, password</em> dan <em>Personal Identity Number</em> (PIN). </li> <p> Ada beberapa cara, antara lain : </p> <ul> <li> Berpura-pura sebagai seseorang dari pihak bank dan meminta data nasabah dengan alasan-alasan tertentu </li> <li> Mengirim email yang berisi login screen dan meminta nasabah melakukan login dengan memasukkan ID Solitaire/Prioritas dan sandi rahasia. </li> <li> Mengirim email yang berisi login screen dan meminta nasabah melakukan login dengan memasukkan ID Solitaire/Prioritas dan sandi rahasia. </li> <li> Mengirim <em>URL link</em> ke situs yang dibuat semirip mungkin dengan situs resmi milik bank namun ternyata palsu. </li> </ul> <p> <span>Kiat-kiat pengamanan:</span> </p> <p> </p> <ul> <li> Perlu diketahui bahwa BCA tidak pernah mengirim email seperti yang dijelaskan di atas kepada nasabah. Apabila anda menerima email semacam itu yang kelihatannya berasal dari BCA, anda dapat langsung menghapus email tersebut. </li> <li> Apabila anda terlanjur mengisi informasi yang diminta atau merasa bahwa User ID dan sandi rahasia anda sudah diketahui oleh pihak lain, segera ganti sandi rahasia anda atau hubungi Halo BCA jika anda tidak bisa melakukan proses <em>login</em>. </li> </ul> <li> <strong>Virus / <em>Worm<br> </em></strong>Virus Komputer/<em>Worm</em> adalah program-program komputer yang dibuat dengan tujuan-tujuan tertentu. Pada umumnya virus merusak sistem operasi, aplikasi dan data di komputer yang terinfeksi. Virus dapat menyebar melalui banyak media, antara lain : e-mail, disket, CD, USB drive, flash memory, program dari internet maupun jaringan, dan juga dari halaman situs yang &#x27;jahat&#x27;. </li> <p> <span>Beberapa contoh dampak dari infeksi virus:</span> </p> <p> </p> <ul> <li> Komputer menjadi tidak stabil dan sering &#x27;hang&#x27; (macet). </li> <li>Komputer menjadi lambat.</li> <li> Data di <em>harddisk</em> terhapus. </li> <li> Program aplikasi tidak dapat digunakan. </li> </ul> <p> Yang mirip dengan virus adalah <em>Worm</em> yang dibuat untuk dapat menyebar dengan cepat ke banyak komputer. Walaupun umumnya <em>Worm</em> tidak menimbulkan kerusakan seperti virus, namun <em>Worm</em> dapat digunakan untuk membawa berbagai macam muatan/<em>attachment </em>yang berbahaya. </p> <p> <span>Kiat-kiat pengamanan:</span> </p> <p> </p> <ul> <li> Gunakan anti-virus ter-<em>update</em> di komputer anda, dan pastikan bahwa komputer anda di-<em>scan</em> secara berkala. </li> <li> Banyak virus yang datang melalui e-mail yang diterima, sehingga anda harus lebih hati-hati pada waktu menggunakan e-mail. Hapus e-mail yang mencurigakan atau yang datang dari pengirim yang tidak dikenal, dan scan e-mail <em>attachment</em> sebelum dibuka. </li> <li> Gunakan <em>firewall</em> pada sistem operasi di komputer anda atau instal personal <em>firewall</em> dan pastikan bahwa pengaturan <em>firewall</em> yang terpasang dapat mengamankan komputer anda. </li> <li> Sebaiknya anda tidak mengakses atau men-<em>download</em> file/program-program di internet dari situs yang tidak dikenal/tidak dapat diyakini keabsahannya. </li> <li> Scan file yang berasal dari disket, CD maupun <em>USB drive</em> yang Anda terima. </li> <li> Pastikan bahwa sistem operasi maupun aplikasi di komputer anda sudah dilindungi dengan sistem proteksi terkini. </li> </ul> <li> <strong><em>Spyware<br> </em></strong><em>Spyware</em> adalah sejenis komputer program yang diprogram untuk &#x27;mencuri&#x27; informasi-informasi penting/pribadi dari komputer yang terinfeksi dan mengirimnya ke lokasi tertentu di internet untuk kemudian diambil oleh pembuat <em>Spyware</em>. Informasi yang menjadi target utama contohnya: nomor kartu kredit, <em>User ID</em> dan PIN/<em>password</em>, nomor rekening, alamat e-mail, dan lain-lain.<br> <em>Spyware</em> dapat terinstall melalui e-mail attachment, program yang diinstal dari sumber yang tidak jelas, ataupun oleh web site yang &#x27;jahat&#x27;.<br> Virus dapat diprogram untuk menyebarkan <em>Spyware</em>. Namun, berbeda dengan Virus yang sifatnya lebih merusak, <em>Spyware</em> bekerja secara diam-diam agar tidak terlacak sehingga lebih mudah mengumpulkan informasi yang diinginkan sang pembuat/penyebar <em>Spyware</em>. </li> <p> <span>Kiat-kiat pengamanan:</span> </p> <p> </p> <ul> <li> Gunakan anti-virus ter-update di komputer anda, dan pastikan bahwa komputer anda di-scan secara berkala. </li> <li> Banyak virus yang datang melalui e-mail yang diterima, sehingga anda harus lebih hati-hati pada waktu menggunakan e-mail. Hapus e-mail yang mencurigakan atau yang datang dari pengirim yang tidak dikenal, dan scan e-mail <em>attachment</em> sebelum dibuka. </li> <li> Gunakan <em>firewall</em> pada sistem operasi di komputer anda atau instal <em>personal firewall </em>dan pastikan bahwa pengaturan firewall yang terpasang dapat mengamankan komputer anda. </li> <li> Sebaiknya anda tidak mengakses atau bahkan men-<em>download file</em>/program di internet dari situs yang tidak dikenal/tidak dapat diyakini keabsahannya. </li> <li> Scan file yang berasal dari disket, CD maupun <em>USB drive</em> yang Anda terima. </li> <li> Pastikan bahwa sistem operasi maupun aplikasi di komputer anda sudah dilindungi dengan sistem proteksi terkini. </li> </ul> <li> <strong><em>Bot (roBot)<br> </em></strong><em>Bot (roBot)</em> adalah sejenis komputer program yang apabila terinstal di komputer anda, dapat menyebabkan komputer anda dikendalikan oleh orang lain secara <em>remote</em> melalui jaringan sehingga pembuat/penyebar <em>Bot</em> dapat berbuat apapun terhadap komputer anda.<br> Umumnya komputer yang telah dikendalikan oleh penyebar <em>Bot</em> (dikenal sebagai Botnet) akan digunakan untuk mengirim <em>SPAM, Virus, Worm</em> atau untuk menyerang komputer lain yang terkoneksi ke jaringan. </li> <p> <span>Kiat-kiat pengamanan:</span> </p> <p> </p> <ul> <li> Gunakan anti-virus ter-<em>update</em> di komputer anda, dan pastikan bahwa komputer anda di-<em>scan</em> secara berkala. </li> <li> Banyak virus yang datang melalui e-mail yang diterima, sehingga anda harus lebih hati-hati pada waktu menggunakan e-mail. Hapus e-mail yang mencurigakan atau yang datang dari pengirim yang tidak dikenal, dan <em>scan</em> e-mail <em>attachment</em> sebelum dibuka. </li> <li> Gunakan <em>firewall</em> pada sistem operasi di komputer anda atau install personal <em>firewall</em> dan pastikan bahwa pengaturan firewall yang terpasang dapat mengamankan komputer anda. </li> <li> Sebaiknya anda tidak mengakses atau men-<em>download</em> file/program di internet dari situs yang tidak dikenal/tidak dapat diyakini keabsahannya. </li> <li> Scan file yang berasal dari disket, CD maupun <em>USB drive</em> yang anda terima. </li> <li> Pastikan bahwa sistem operasi maupun aplikasi di komputer anda sudah dilindungi dengan sistem proteksi terkini. </li> </ul> </ol> </div> </div>"
+          }
+        }
+      },
+      "contact": {
+        "title": "Contact Us",
+        "description": "Contact us for more information and feedback about BCA Prioritas and Solitaire services.",
+        "sections": {
+          "channels": {
+            "title": "Contact us",
+            "contentHtml": "<ul><li><a href=\"tel:1500222\">Halo BCA Prioritas<br>1500222</a></li><li><a href=\"https://x.com/HaloBCA\" target=\"_blank\" rel=\"noopener noreferrer\">X<br>@HaloBCA</a></li><li><a href=\"/BRAND/temukan-kami\">Cabang BCA</a></li></ul>"
+          },
+          "office": {
+            "title": "Kantor Pusat BCA",
+            "contentHtml": "<div> <strong>Kantor Pusat BCA</strong> <br> Menara BCA, Grand Indonesia<br>Jl. MH Thamrin No. 1, Jakarta 10310<br> Telepon/Fax : (021) 235 88000 </div>"
+          }
+        }
+      }
+    },
+    "contactChannels": {
+      "phone": "Halo BCA Prioritas — 1500222",
+      "twitter": "X — @HaloBCA",
+      "branch": "Cabang BCA",
+      "cancel": "Cancel",
+      "continue": "Continue",
+      "phoneNotice": "<div> <p>Anda akan melakukan komunikasi langsung</p> <p>Dengan mengklik &quot;Lanjutkan&quot;, Anda akan diarahkan untuk menggunakan aplikasi panggilan suara, dan akan dikenakan biaya sesuai dengan ketentuan operator yang Anda gunakan.</p> </div>",
+      "twitterNotice": "<div> <p>Anda akan meninggalkan www.prioritas.bca.co.id</p> <p>Dengan mengklik &quot;Lanjutkan&quot;, Anda akan diarahkan menuju website di luar www.prioritas.bca.co.id yang tidak terafiliasi dengan BCA dan mungkin memiliki tingkat sekuriti yang berbeda. BCA tidak bertanggung jawab dan tidak mendukung, menjamin, mengendalikan konten, mengendalikan ketersediaan dan perspektif atas produk-produk atau layanan-layanan yang ditawarkan atau dinyatakan oleh website tersebut.</p> </div>",
+      "phoneTitle": "Halo BCA Prioritas",
+      "twitterTitle": "X",
+      "branchTitle": "Visit a branch",
+      "phoneDescription": "Contact Halo BCA Prioritas by phone.",
+      "twitterDescription": "Connect with Halo BCA on X.",
+      "branchDescription": "Find a BCA branch for in-person assistance.",
+      "phoneAction": "Call now",
+      "twitterAction": "Open X",
+      "branchAction": "Find a branch"
+    }
+  },
+  "designTokens": {
+    "title": "Design Tokens",
+    "subtitle": "Figma references and website implementation in one catalog of colors, typography, sizes, and effects. Find matching CSS tokens and differences that need a decision.",
+    "categories": "Token categories",
+    "palettes": "Color groups",
+    "total": "{count} tokens & rules",
+    "search": "Search names, values, or utilities…",
+    "copy": "Copy {value}",
+    "copied": "Copied",
+    "copyFailed": "Copy failed. Select the text and copy it manually.",
+    "results": "{count} results",
+    "clear": "Clear search",
+    "empty": "No matching tokens. Try another name or value.",
+    "sample": "Always by Your Side",
+    "glassSample": "Glass panel",
+    "effectSample": "Sample panel",
+    "pill": "Pill / full",
+    "sources": {
+      "project": "Project token",
+      "tailwind": "Tailwind",
+      "recipe": "Component rule",
+      "figma": "Figma"
+    },
+    "colorUsage": {
+      "neutral": "For backgrounds, text, borders and neutral elements; the range from white to dark also supports the Solitaire appearance.",
+      "blue": "BCA identity colors for primary actions, links and areas that need emphasis.",
+      "cyan": "Bright accents that complement Blue in highlights and supporting elements.",
+      "green": "For success states, confirmations and positive feedback.",
+      "yellow": "For warnings and information that needs attention.",
+      "red": "For errors, failed validation and feedback that requires action.",
+      "bermuda": "A supporting blue-gray palette with light and dark variations.",
+      "brown": "A supporting warm brown palette with light and dark variations.",
+      "muddy": "A supporting olive green palette with light and dark variations.",
+      "orange": "A supporting orange palette for accents and color variations.",
+      "purple": "A supporting purple palette for accents and color variations.",
+      "tosca": "A supporting turquoise palette for accents and color variations.",
+      "teal": "A supporting blue-green palette for accents and color variations.",
+      "pgold": "The Prioritas gold palette for backgrounds, accents and identity elements in Prioritas areas.",
+      "pbrown": "The Prioritas brown palette for text, dark backgrounds and pairing with Prioritas Gold.",
+      "assets": "Asset category colors distinguishing savings, deposits, current accounts and securities."
+    },
+    "groups": {
+      "all": "All",
+      "pgold": "Prioritas Gold",
+      "pbrown": "Prioritas Brown",
+      "neutral": "Neutral",
+      "blue": "Blue",
+      "cyan": "Cyan",
+      "red": "Red",
+      "assets": "Asset composition",
+      "green": "Green",
+      "yellow": "Yellow",
+      "bermuda": "Bermuda",
+      "brown": "Brown",
+      "muddy": "Muddy",
+      "orange": "Orange",
+      "purple": "Purple",
+      "tosca": "Tosca",
+      "teal": "Teal"
+    },
+    "sections": {
+      "colors": {
+        "title": "Colors",
+        "description": "Color palettes grouped by family and purpose. Each card includes its color value and website CSS token."
+      },
+      "typography": {
+        "title": "Typography",
+        "description": "Figma typography styles, CSS tokens, aliases, and project additions in one catalog."
+      },
+      "spacing": {
+        "title": "Spacing & size",
+        "description": "A selection from the shared spacing scale for gaps, padding, margins, width, and height. Utility numbers multiply the base unit."
+      },
+      "radius": {
+        "title": "Rounded corners",
+        "description": "The default Tailwind radius scale for cards, panels, inputs, and buttons. Custom values follow individual component needs."
+      },
+      "effects": {
+        "title": "Glass panel",
+        "description": "Prioritas and Solitaire glass panels with translucent backgrounds and blur."
+      },
+      "breakpoints": {
+        "title": "Breakpoints",
+        "description": "See how Homepage, Index, and Detail layouts change with the viewport width."
+      },
+      "motion": {
+        "title": "Motion",
+        "description": "Project and Tailwind easing curves. Each graph shows motion progress from start to finish."
+      }
+    },
+    "type": {
+      "family": "BCA Sans",
+      "weights": "Regular 400 · Semibold 600 · Bold 700",
+      "editSample": "Sample text — editable",
+      "fontSize": "Font size",
+      "lineHeight": "Line height",
+      "tracking": "Letter spacing",
+      "weight": "Font weight",
+      "categories": "Typography categories",
+      "trim": "Vertical trim",
+      "trimBoth": "Top & bottom",
+      "noTrim": "No trim",
+      "inherited": "Inherited from component"
+    },
+    "spacingRule": "For example, gap-6, p-6, m-6, w-6, and h-6 use 6 × the spacing unit. This is a selected scale, not every size Tailwind can generate. Pixel equivalents assume 1rem = 16px.",
+    "glassRule": "Prioritas and Solitaire glass panels use 16px blur and 1.25 saturation with a 30% fill. These are shared class recipes; each component sets its radius, size, and position.",
+    "breakpoint": {
+      "preview": "Responsive page preview",
+      "width": "Simulated viewport width",
+      "mobile": "Mobile",
+      "tablet": "Tablet",
+      "desktop": "Desktop",
+      "mobileRule": "Prioritas–Solitaire homepage hero: 80svh.",
+      "tabletRule": "Prioritas–Solitaire homepage hero: min(640px, 90svh − 48px), with a 560px minimum.",
+      "desktopRule": "Desktop layout starts at xl (1280px). Prioritas–Solitaire homepage hero: 80svh.",
+      "rule": "The preview uses actual Prioritas pages. Its viewport follows the simulated width; the display scales down to fit the panel. Page controls are inactive. Responsive utilities apply from their minimum width; the main desktop layout starts at xl (1280px).",
+      "minimum": "From {value}px",
+      "page": "Example page",
+      "pages": {
+        "homepage": "Homepage",
+        "index": "Index",
+        "detail": "Detail"
+      },
+      "examples": {
+        "homepage": "BCA Prioritas homepage",
+        "index": "BCA Prioritas Privilege index",
+        "detail": "Executive Airport Lounge detail"
+      },
+      "readOnly": "Preview only · no interaction",
+      "loading": "Loading page preview…",
+      "frameTitle": "{page} preview at {width}px wide"
+    },
+    "sourceNote": "Figma colors come from bca-variable-color.json; typography follows the supplied screenshots and confirmed weights. Implementation values are read from project CSS and Tailwind at build time.",
+    "promotionRule": "A value used in two places can become a shared token. Values unique to one component may follow that component’s needs.",
+    "referenceOnly": "Figma reference",
+    "implementation": {
+      "match": "Matches the reference",
+      "different": "Decision needed: different values",
+      "missing": "Not declared in the project theme",
+      "current": "Website",
+      "reference": "Reference",
+      "token": "Website CSS token",
+      "aliasOf": "CSS alias of",
+      "aliases": "Project aliases",
+      "comparedWith": "Compared with",
+      "property": "Property",
+      "value": "Color"
+    },
+    "typeGroups": {
+      "all": "All",
+      "display": "Display",
+      "eyebrow": "Eyebrow",
+      "heading": "Heading",
+      "body": "Body",
+      "label": "Label",
+      "extensions": "Project additions",
+      "semantic": "Project tokens"
+    },
+    "typeUsage": {
+      "display": "For primary headlines, hero titles, and short promotional messages that form the focus of a page.",
+      "eyebrow": "For topic or category markers above a title, providing context before the headline.",
+      "heading": "For section and subsection titles that establish the content hierarchy of a page.",
+      "body": "For paragraphs, descriptions, and explanations. Article is for long-form reading; Semibold and Bold add emphasis.",
+      "label": "For short text in buttons, navigation, form labels, and tags. Vertical trim helps align text within components.",
+      "extensions": "For existing project size variants and special styles that do not yet have a matching Figma reference.",
+      "semantic": "Named typography tokens combining size, line height, tracking, and weight for a specific role."
+    },
+    "colorCategories": {
+      "main": {
+        "title": "Main Color",
+        "description": "Core colors for brand identity, surfaces, text, and actions: Neutral, Prioritas Brown, Prioritas Gold, Blue, and Cyan."
+      },
+      "semantic": {
+        "title": "Semantic Color",
+        "description": "Status and feedback colors: Green for success or availability, Yellow for warnings, and Red for errors or exhaustion."
+      },
+      "accent": {
+        "title": "Accent Color",
+        "description": "Supporting palettes for accents and visual variety: Bermuda, Brown, Muddy, Orange, Purple, Tosca, and Teal."
+      },
+      "assets": {
+        "title": "Asset composition",
+        "description": "Dedicated asset composition chart colors. Values are preserved pending mapping to the main palette."
+      }
+    },
+    "colorCollection": {
+      "title": "Usage tokens",
+      "label": "Usage tokens for {color}: {count} tokens",
+      "description": "Specific tokens referencing this color. Values depend on the contexts and states below.",
+      "empty": "No specific semantic or component token references this color yet."
+    },
+    "typeCollection": {
+      "title": "Usage tokens",
+      "label": "Usage tokens for {style}: {count} tokens",
+      "description": "Derived tokens referencing this typography style, with their values and usage contexts.",
+      "empty": "No specific derived token references this typography style yet."
+    }
+  },
+  "userFlows": {
+    "journeys": {
+      "navigation": {
+        "title": "Explore the website",
+        "description": "Homepage, menus, tabs, languages, and legacy links.",
+        "entry": "Open the Prioritas or Solitaire homepage.",
+        "decision": "Choose a destination or change the page context.",
+        "scenarios": {
+          "menu": {
+            "title": "Menu → destination",
+            "condition": "Select a desktop menu or open the mobile menu.",
+            "response": "The link opens the destination for the active brand and language.",
+            "recovery": "Use breadcrumbs or the menu to continue browsing."
+          },
+          "tabs": {
+            "title": "Open a specific tab",
+            "condition": "Open Privilege with section=lifestyle, event, or promo.",
+            "response": "The query selects the tab. An unknown section falls back to Signature & Complimentary.",
+            "recovery": "Choose another tab; the destination URL follows that tab."
+          },
+          "legacy": {
+            "title": "Legacy listing link",
+            "condition": "A visitor opens a listing URL from before the hub consolidation.",
+            "response": "Legacy listings redirect to their hub tab. Old details follow the existing route mappings.",
+            "recovery": "Continue from the hub; preserved filters depend on each redirect."
+          },
+          "language": {
+            "title": "Change language",
+            "condition": "Choose Indonesia, English, or 中文.",
+            "response": "Navigation switches locale. Terms and Privacy retain the original Indonesian text.",
+            "recovery": "Recheck tabs and filters: the general switcher carries the pathname, not every query or hash."
+          },
+          "closeMenu": {
+            "title": "Close the menu without navigating",
+            "condition": "Open a menu, then close it or press Escape.",
+            "response": "The menu closes and the visitor stays on the current page.",
+            "recovery": "Reopen the menu or continue reading."
+          }
+        }
+      },
+      "search": {
+        "title": "Search for information",
+        "description": "Brand search, recommendations, history, and no results.",
+        "entry": "Open search from the navigation.",
+        "decision": "Enter a keyword or choose a suggestion.",
+        "scenarios": {
+          "results": {
+            "title": "Matching results",
+            "condition": "The keyword matches content in the active brand.",
+            "response": "Prioritas/Solitaire results appear in the overlay. Select a result link to open its destination.",
+            "recovery": "Member destinations then apply session and brand checks."
+          },
+          "empty": {
+            "title": "No results",
+            "condition": "The keyword matches no searchable content.",
+            "response": "The overlay shows its no-results state.",
+            "recovery": "Change the keyword, choose a suggestion, or change the search brand."
+          },
+          "blank": {
+            "title": "Empty keyword",
+            "condition": "Open search without typing or submit only spaces.",
+            "response": "Recommendations/history are available; an empty submission opens no new destination.",
+            "recovery": "Choose a suggestion or enter a keyword."
+          },
+          "history": {
+            "title": "Use or remove history",
+            "condition": "Choose a previous term or clear local history.",
+            "response": "The term is reused or removed from browser history for that search context.",
+            "recovery": "The next opening rereads history and clears the input."
+          },
+          "cancel": {
+            "title": "Cancel search",
+            "condition": "Close search or press Escape.",
+            "response": "The overlay closes and focus returns to the search trigger.",
+            "recovery": "Continue using the previous page."
+          },
+          "storage": {
+            "title": "Browser storage restricted",
+            "condition": "The browser refuses search-history writes.",
+            "response": "Search continues; history that cannot be saved does not persist on the next visit.",
+            "recovery": "Use search without history or enable browser storage."
+          }
+        }
+      },
+      "directory": {
+        "title": "Filter and browse listings",
+        "description": "Signature, Complimentary, Lifestyle, Event, and Promo.",
+        "entry": "Open the Privilege hub in the public or member area.",
+        "decision": "Choose a tab, category, keyword, or listing page.",
+        "scenarios": {
+          "browse": {
+            "title": "Listing → detail",
+            "condition": "Select an available content card.",
+            "response": "The card opens the detail for its content type and area.",
+            "recovery": "Use breadcrumbs or recommendations to continue."
+          },
+          "combined": {
+            "title": "Combine filters",
+            "condition": "Select categories and enter a name or title.",
+            "response": "The listing follows the filters; filter changes reset pagination to the start.",
+            "recovery": "Remove filters if the results are too narrow."
+          },
+          "none": {
+            "title": "Filters return zero items",
+            "condition": "The category/keyword combination has no matches.",
+            "response": "The panel displays its empty-results message.",
+            "recovery": "Clear the keyword or deselect categories."
+          },
+          "pagination": {
+            "title": "Next page and listing boundaries",
+            "condition": "Change pages using pagination controls.",
+            "response": "Cards follow the active page; controls reflect the result count and page boundaries.",
+            "recovery": "Change a filter to return to the first page."
+          },
+          "birthday": {
+            "title": "Birthday Gift",
+            "condition": "Enable Birthday Gift in the Complimentary listing.",
+            "response": "The list shows offers marked birthdayGift.",
+            "recovery": "Turn the option off to see other offers."
+          },
+          "tabChange": {
+            "title": "Switch tabs with active filters",
+            "condition": "Switch from Lifestyle to Event or Promo.",
+            "response": "The tab loads a new listing experience; local filters are not automatically carried across all tabs.",
+            "recovery": "Set the filters again in the destination tab."
+          }
+        }
+      },
+      "detail": {
+        "title": "Benefit details and eligibility",
+        "description": "Read benefits, sign in for member access, and understand brand restrictions.",
+        "entry": "Open a Signature, Complimentary, Lifestyle, Event, or Promo detail.",
+        "decision": "Read the information or choose a detail action.",
+        "scenarios": {
+          "read": {
+            "title": "Read terms and locations",
+            "condition": "A visitor opens benefit information without a member session.",
+            "response": "Available public information, terms, contacts, locations, and recommendations can be read.",
+            "recovery": "Choose a recommendation or return to the listing."
+          },
+          "signIn": {
+            "title": "Benefit → member login",
+            "condition": "Choose the login CTA on a benefit with a member module.",
+            "response": "Login carries the brand and redirectTo for the related member detail.",
+            "recovery": "A matching account returns to the detail; another brand opens its own overview."
+          },
+          "restricted": {
+            "title": "Solitaire-only benefit",
+            "condition": "A Prioritas visitor opens a Solitaire-only Signature benefit.",
+            "response": "The detail explains the restriction; the special module is not granted to Prioritas accounts.",
+            "recovery": "Choose a benefit that matches the account brand."
+          },
+          "solitaire": {
+            "title": "Solitaire accesses Signature",
+            "condition": "A Solitaire account opens a Signature benefit in the Solitaire member area.",
+            "response": "Available member modules appear, including Solitaire-only benefits. Member benefit data is still demo data.",
+            "recovery": "Continue to voucher status or an available partner action."
+          },
+          "missing": {
+            "title": "Unknown detail ID",
+            "condition": "A link uses an ID absent from the content registry.",
+            "response": "The detail route returns notFound; arbitrary IDs do not generate benefits.",
+            "recovery": "Go back in the browser and choose an existing listing card."
+          }
+        }
+      },
+      "login": {
+        "title": "Member login",
+        "description": "BCA ID/email, validation, different account brands, and cancellation.",
+        "entry": "Open member login directly or from a protected page.",
+        "decision": "Choose BCA ID/email, enter credentials, and sign in.",
+        "scenarios": {
+          "valid": {
+            "title": "Valid demo credentials",
+            "condition": "The identifier and password match a demo account.",
+            "response": "An eight-hour member session is created. A safe same-brand destination is used; otherwise Member Overview opens.",
+            "recovery": "Continue to the original destination or choose a feature in the overview."
+          },
+          "email": {
+            "title": "Sign in with email",
+            "condition": "Switch to the email tab and use the demo account email.",
+            "response": "Email format is validated; the same login action checks the account and password.",
+            "recovery": "If valid, continue with the account brand."
+          },
+          "invalidFormat": {
+            "title": "Invalid identifier format",
+            "condition": "The BCA ID has fewer than six characters or the email is invalid.",
+            "response": "After the field is touched, a format message appears. Sign-in is disabled; BCA ID input is limited to 21 characters.",
+            "recovery": "Correct the identifier and enter a password."
+          },
+          "blankPassword": {
+            "title": "Empty password",
+            "condition": "The identifier is valid but the password is empty.",
+            "response": "The sign-in button stays disabled.",
+            "recovery": "Enter a password; the eye icon only changes text visibility."
+          },
+          "wrong": {
+            "title": "Wrong account or password",
+            "condition": "The format is valid but credentials match no demo account.",
+            "response": "Login fails and a credential alert appears for about five seconds. No new session is created.",
+            "recovery": "Check and correct the input, then submit again."
+          },
+          "otherBrand": {
+            "title": "Account differs from the starting brand",
+            "condition": "Sign in from Prioritas with a Solitaire account, or vice versa.",
+            "response": "The account brand determines the session. A different-brand redirectTo is ignored and the account overview opens.",
+            "recovery": "Use member navigation for that account brand."
+          },
+          "unsafe": {
+            "title": "Unsafe return destination",
+            "condition": "redirectTo contains an external URL or a destination outside permitted member areas.",
+            "response": "The destination is rejected; successful login opens the account-brand overview.",
+            "recovery": "Choose a destination from the member menu."
+          },
+          "cancel": {
+            "title": "Return without signing in",
+            "condition": "Choose Back before successful sign-in.",
+            "response": "A safe local referrer allows browser Back; otherwise the brand homepage is used.",
+            "recovery": "Public content remains readable subject to the preview gate."
+          },
+          "help": {
+            "title": "Forgot password or registration",
+            "condition": "Choose Forgot password, registration, or the BCA ID tutorial.",
+            "response": "Only a prototype notice appears; account reset/registration is not performed.",
+            "recovery": "Required: agreed account-recovery routes and service integration."
+          },
+          "requestFailed": {
+            "title": "Login request fails",
+            "condition": "Connection is lost or the login action errors.",
+            "response": "The credential alert handles wrong accounts; request errors lack dedicated feedback and retry.",
+            "recovery": "Required: distinguish service errors from incorrect credentials and allow retry."
+          }
+        }
+      },
+      "access": {
+        "title": "Sessions and protected pages",
+        "description": "Direct links, missing sessions, brand mismatches, and unknown routes.",
+        "entry": "Open a member-area URL.",
+        "decision": "The system checks the session and destination brand.",
+        "scenarios": {
+          "active": {
+            "title": "Matching brand session",
+            "condition": "The member-session cookie matches the destination brand.",
+            "response": "The known member page is displayed.",
+            "recovery": "Navigate member features as usual."
+          },
+          "missing": {
+            "title": "Not signed in or session expired",
+            "condition": "The session cookie is absent or unrecognized on a member-page request.",
+            "response": "The proxy redirects to login with from and redirectTo, including destination queries.",
+            "recovery": "Sign in again with the matching brand account to return."
+          },
+          "mismatch": {
+            "title": "Session for another brand",
+            "condition": "A Prioritas session opens /solitaire/member, or vice versa.",
+            "response": "Access is refused; login for the destination brand is shown.",
+            "recovery": "Use the destination account or return to the current account brand."
+          },
+          "unknown": {
+            "title": "Unknown member route",
+            "condition": "After session validation, the slug matches no member dispatcher route.",
+            "response": "The page returns notFound.",
+            "recovery": "Go back and use links from member navigation."
+          },
+          "openExpiry": {
+            "title": "Session expires on an open page",
+            "condition": "The page is not navigated again when the member cookie expires.",
+            "response": "There is no dedicated member-expiry dialog on the open page; the proxy checks the next request.",
+            "recovery": "Required: consistent data clearing, notification, and reauthentication rules."
+          },
+          "cookieBlocked": {
+            "title": "Session cookie blocked",
+            "condition": "Login succeeds but the browser does not store the session cookie.",
+            "response": "The next member request returns to login; no dedicated blocked-cookie message exists.",
+            "recovery": "Required: detect unsaved sessions and give clear browser-setting guidance."
+          },
+          "otherTab": {
+            "title": "Account changes in another tab",
+            "condition": "Another tab signs in with a different brand in the same browser.",
+            "response": "Both brands share one member cookie; the latest login replaces the session. Open pages do not automatically synchronize all account state.",
+            "recovery": "New requests follow the latest session. Required: cross-tab logout/account-change synchronization."
+          }
+        }
+      },
+      "portfolio": {
+        "title": "Financial Report and OTP",
+        "description": "Masked amounts, OTP verification, resend, and a ten-minute viewing session.",
+        "entry": "A member opens the portfolio report; amounts are masked without an active portfolio session.",
+        "decision": "Choose Show amounts and follow the OTP request.",
+        "scenarios": {
+          "verified": {
+            "title": "Demo OTP accepted",
+            "condition": "Choose a number, request a code, and enter six digits other than 000000.",
+            "response": "Automatic verification reveals amounts and creates a ten-minute portfolio session. No real SMS is sent; the code is not matched to a server-issued code.",
+            "recovery": "Continue reading; the member and portfolio sessions are separate."
+          },
+          "noSelection": {
+            "title": "No phone selected",
+            "condition": "Request OTP without choosing a phone number.",
+            "response": "A required-number message appears; verification has not started.",
+            "recovery": "Choose an available number and request again."
+          },
+          "partial": {
+            "title": "Incomplete OTP",
+            "condition": "Enter fewer than six digits or nonnumeric characters.",
+            "response": "Input removes nonnumeric characters and limits to six digits; verification starts only when complete.",
+            "recovery": "Complete all six digits."
+          },
+          "rejected": {
+            "title": "Demo OTP rejected",
+            "condition": "Enter 000000.",
+            "response": "An invalid-code message appears; amounts remain masked.",
+            "recovery": "Correct the code; Resend becomes available when the countdown ends."
+          },
+          "resend": {
+            "title": "Wait and resend",
+            "condition": "The 119-second countdown reaches zero.",
+            "response": "Resend is enabled, clears the code, and restarts the countdown. No real SMS is delivered.",
+            "recovery": "Enter a demo code again or close the dialog."
+          },
+          "expiredCode": {
+            "title": "Code after countdown ends",
+            "condition": "Enter a code after the countdown reaches zero.",
+            "response": "The countdown only controls Resend; the action does not validate code age, attempt counts, or sending limits.",
+            "recovery": "Required: server verification, expiry, rate limits, and OTP recovery."
+          },
+          "noPhone": {
+            "title": "No registered number",
+            "condition": "The modal component receives an empty phone list.",
+            "response": "The noPhone state provides information and Back. The page currently uses a default demo number, so this case is not connected to a real profile.",
+            "recovery": "Required: registered-number data and an official number-update flow."
+          },
+          "cancel": {
+            "title": "Close the OTP dialog",
+            "condition": "Close, click the backdrop, or press Escape before successful verification.",
+            "response": "The dialog closes; cancellation before success grants no new portfolio session.",
+            "recovery": "Choose Show amounts to try again."
+          },
+          "hideAgain": {
+            "title": "Hide then reveal again",
+            "condition": "Amounts have been revealed and the portfolio session is active.",
+            "response": "The eye icon masks amounts; revealing within the same active session needs no new OTP.",
+            "recovery": "Once the session expires, verification is required again."
+          },
+          "expiry": {
+            "title": "Portfolio session expires",
+            "condition": "Ten minutes pass after accepted verification.",
+            "response": "The timer masks amounts again. On revisiting, an expired cookie does not reveal amounts.",
+            "recovery": "Choose the eye icon and verify again."
+          },
+          "failure": {
+            "title": "Verification request fails",
+            "condition": "The server action fails or the connection is interrupted.",
+            "response": "The OTP handler lacks complete network-error recovery; submitting may remain stuck.",
+            "recovery": "Required: clear pending, show a message, and allow retry while keeping amounts masked."
+          },
+          "reload": {
+            "title": "Revisit within a portfolio session",
+            "condition": "OTP was accepted and the portfolio page reloads before ten minutes pass.",
+            "response": "The cookie expiry is still valid, so portfolio amounts reappear without a new OTP.",
+            "recovery": "Access still follows the previous expiry; reloading does not add ten minutes."
+          },
+          "reportUnknown": {
+            "title": "Unknown report type",
+            "condition": "The report query is neither tax nor portfolio.",
+            "response": "The page defaults to portfolio. Amount visibility still follows the portfolio session.",
+            "recovery": "Choose an available portfolio or tax-report tab."
+          }
+        }
+      },
+      "vouchers": {
+        "title": "Vouchers and airport transfer",
+        "description": "Quota, unlimited, penalty, exhausted, copying codes, and used vouchers.",
+        "entry": "A member opens a benefit with a voucher module.",
+        "decision": "Check lounge status or choose an airport-transfer code.",
+        "scenarios": {
+          "available": {
+            "title": "Quota available",
+            "condition": "The lounge status is available.",
+            "response": "The badge shows 50 vouchers. This is demo data; the module performs no issuance or redemption transaction.",
+            "recovery": "Read usage terms; operational redemption is outside the prototype."
+          },
+          "unlimited": {
+            "title": "Unlimited quota",
+            "condition": "Open the detail with voucherStatus=unlimited.",
+            "response": "An unlimited badge appears as a demo state variant.",
+            "recovery": "This state does not establish real-account eligibility."
+          },
+          "penalty": {
+            "title": "Penalty applies",
+            "condition": "Open the detail with voucherStatus=penalty.",
+            "response": "Available quota is accompanied by a penalty notice. The page does not process penalty payment.",
+            "recovery": "Follow the information and channels shown in the benefit detail."
+          },
+          "exhausted": {
+            "title": "Quota exhausted",
+            "condition": "Open the detail with voucherStatus=exhausted.",
+            "response": "An exhausted badge appears; the page issues no replacement vouchers.",
+            "recovery": "Read the terms or contact the relevant support channel."
+          },
+          "copy": {
+            "title": "Copy a transfer code",
+            "condition": "Choose Copy on an unused transfer voucher.",
+            "response": "The clipboard receives the code and a copied label appears for about two seconds. Copying does not redeem it.",
+            "recovery": "Use the code through the partner channel under its terms."
+          },
+          "used": {
+            "title": "Transfer voucher already used",
+            "condition": "The voucher has usedOn in the demo dataset.",
+            "response": "The code is struck through, the button is disabled, and the usage date is shown.",
+            "recovery": "Choose another available voucher."
+          },
+          "copyDenied": {
+            "title": "Clipboard refuses copying",
+            "condition": "Clipboard permissions or the browser prevent writeText.",
+            "response": "The copied state is not shown; there is no dedicated failure message yet. The code remains visible.",
+            "recovery": "Copy the text manually; the next UI requirement is explicit feedback and fallback."
+          },
+          "expand": {
+            "title": "Show more vouchers",
+            "condition": "The transfer list contains more than two vouchers.",
+            "response": "The first two cards appear; Show more reveals the rest and can be collapsed again.",
+            "recovery": "Each voucher status still determines available actions."
+          }
+        }
+      },
+      "medical": {
+        "title": "Book a medical check-up",
+        "description": "Select a location, copy a voucher, and continue to the partner on WhatsApp.",
+        "entry": "A Solitaire account opens the international medical check-up benefit.",
+        "decision": "Choose a service location or booking action.",
+        "scenarios": {
+          "book": {
+            "title": "Location → partner WhatsApp",
+            "condition": "Choose a location and select Book.",
+            "response": "A new tab opens WhatsApp with text containing the voucher code and location. The message is not sent automatically.",
+            "recovery": "The user reviews and sends the message; the partner confirms the schedule."
+          },
+          "copy": {
+            "title": "Copy the code before booking",
+            "condition": "Choose Copy on the medical check-up code.",
+            "response": "The demo code is copied and temporary feedback appears.",
+            "recovery": "Choose a location and continue to the partner to book."
+          },
+          "partnerUnavailable": {
+            "title": "WhatsApp or partner unavailable",
+            "condition": "The external link fails to open or the partner has not responded.",
+            "response": "The website receives no message-delivery or booking-confirmation status.",
+            "recovery": "Return to the detail and use available partner contact information."
+          },
+          "cancel": {
+            "title": "Cancel in the partner app",
+            "condition": "Close WhatsApp without sending the message.",
+            "response": "No booking is confirmed by the website.",
+            "recovery": "Return and choose a location/action again to continue."
+          }
+        }
+      },
+      "banking": {
+        "title": "Banking Solution and rates",
+        "description": "Banking Privilege, Wealth Insight, rates, and external reports.",
+        "entry": "Open Banking Solution in the public or member area.",
+        "decision": "Choose Banking Privilege, Wealth Insight, or rates.",
+        "scenarios": {
+          "benefit": {
+            "title": "Banking Privilege → detail",
+            "condition": "Select a banking-solution card.",
+            "response": "The benefit detail opens in the appropriate area. It describes services; it is not a product-application form.",
+            "recovery": "Read the terms and use available contact channels."
+          },
+          "wealth": {
+            "title": "Wealth Insight → report source",
+            "condition": "Select a House View Report or Weekly Market Overview card.",
+            "response": "The link opens a report page on the existing website. The prototype does not guarantee a direct PDF download.",
+            "recovery": "Read or download through the source page."
+          },
+          "rates": {
+            "title": "View rates and currencies",
+            "condition": "Open rates and choose an available currency.",
+            "response": "The view uses prototype rates; buy/sell values are calculated from a reference, not an official BCA transaction-rate integration.",
+            "recovery": "Read the update time and use official channels for transactions."
+          },
+          "rateFallback": {
+            "title": "Rate source fails",
+            "condition": "The rate API fails, returns an invalid response, or omits a currency value.",
+            "response": "Fallback data fills the rates so the section remains visible. Fallback does not establish current values.",
+            "recovery": "Integration requirement: distinguish source/freshness and clearly show data status."
+          },
+          "converter": {
+            "title": "Convert and swap currencies",
+            "condition": "Choose source/destination currencies and enter an amount.",
+            "response": "An estimate is calculated in the browser from page rates. Options exclude identical pairs; Swap reverses the direction.",
+            "recovery": "Change the amount or pair for another estimate. No foreign-exchange transaction occurs."
+          },
+          "invalidAmount": {
+            "title": "Invalid converter amount",
+            "condition": "Enter nonnumeric text, an empty input, or a negative value.",
+            "response": "Nonnumeric/empty input produces zero; negative values can be calculated. There is no dedicated amount-validation error yet.",
+            "recovery": "Correct the amount. Required: formatting, numeric limits, and validation messages."
+          },
+          "refresh": {
+            "title": "Refresh the rates page",
+            "condition": "Select the rates refresh icon.",
+            "response": "The whole page reloads; converter inputs return to defaults. Source caching can leave rates unchanged.",
+            "recovery": "Set the amount/pair again and check the update time."
+          }
+        }
+      },
+      "magazine": {
+        "title": "e-Magazine",
+        "description": "Browse issues and understand the post-login continuation limit.",
+        "entry": "Open the e-Magazine listing.",
+        "decision": "Choose a listing page or an issue to read.",
+        "scenarios": {
+          "list": {
+            "title": "Browse issues",
+            "condition": "Use issue-list pagination.",
+            "response": "The list displays 12 issues per page from the local registry.",
+            "recovery": "Select an issue card for the next action."
+          },
+          "read": {
+            "title": "Read now → login",
+            "condition": "Select an issue from the public listing.",
+            "response": "Login accepts a valid magazine parameter, but success opens the overview. The issue reader/PDF is not connected yet.",
+            "recovery": "Required: preserve the issue and continue to its reader after login."
+          },
+          "memberRead": {
+            "title": "Member selects an issue",
+            "condition": "Select a card in the member e-Magazine list.",
+            "response": "Member-list cards also link to login; an active session does not turn them into reader links.",
+            "recovery": "Required: direct reading links for members with access."
+          },
+          "invalidIssue": {
+            "title": "Unknown issue parameter",
+            "condition": "The login URL uses a magazine absent from the registry.",
+            "response": "The parameter is ignored; login remains usable.",
+            "recovery": "Select an issue from the prototype listing."
+          }
+        }
+      },
+      "branches": {
+        "title": "Find a branch",
+        "description": "Default location, GPS, denied permission, place search, and directions.",
+        "entry": "Open Find Us; three locations near the default origin are already available.",
+        "decision": "Use My location, search for a place, or choose a location card.",
+        "scenarios": {
+          "default": {
+            "title": "Use the default origin",
+            "condition": "The visitor does not share their position.",
+            "response": "The initial list remains readable; the default origin is not the visitor position.",
+            "recovery": "Search another area or choose directions on a card."
+          },
+          "gps": {
+            "title": "Location permission granted",
+            "condition": "Choose My location and allow browser geolocation.",
+            "response": "The new position updates nearby results and the area label when responses arrive.",
+            "recovery": "Select a location and open directions."
+          },
+          "denied": {
+            "title": "Location permission denied",
+            "condition": "The browser denies geolocation permission.",
+            "response": "Permission guidance appears; the listing stays usable.",
+            "recovery": "Search manually or change browser permission and retry."
+          },
+          "unavailable": {
+            "title": "GPS unavailable or timed out",
+            "condition": "Geolocation is unsupported, the position is unavailable, or the request times out.",
+            "response": "The unavailable state gives retry guidance; existing results remain available.",
+            "recovery": "Retry or search for a place manually."
+          },
+          "place": {
+            "title": "Search for a place manually",
+            "condition": "Type at least two characters and choose a place suggestion.",
+            "response": "The search origin changes and nearby results update. Shorter input shows no suggestions.",
+            "recovery": "Select a card, marker, or another place."
+          },
+          "noPlace": {
+            "title": "No place suggestions",
+            "condition": "The keyword matches no place in the list.",
+            "response": "There are no suggestions to select; previous location results remain available.",
+            "recovery": "Change spelling or search a nearby city/area."
+          },
+          "nearbyFailure": {
+            "title": "Nearby update fails",
+            "condition": "The nearby-results request fails after the origin changes.",
+            "response": "Previous cards are retained. Complete stale/error feedback is missing, and locating may remain unresolved.",
+            "recovery": "Change the origin or reload; explicit error and retry feedback is required next."
+          },
+          "directions": {
+            "title": "Open directions",
+            "condition": "Choose directions for a location.",
+            "response": "A link opens an external map service; the website does not track travel or arrival.",
+            "recovery": "Set the route in the map app or return to the list."
+          },
+          "mapFailed": {
+            "title": "Map fails to load",
+            "condition": "WebGL is unavailable or the map style does not finish within ten seconds.",
+            "response": "The map enters its failure state; location cards remain available as the primary finding path.",
+            "recovery": "Use location cards and directions, or reload when connectivity improves."
+          },
+          "fastTyping": {
+            "title": "Type quickly or change locations",
+            "condition": "A new query is entered before the previous search completes.",
+            "response": "Debounce and AbortController cancel the previous request; input shorter than two characters hides suggestions.",
+            "recovery": "Wait for the latest query suggestions, then choose a place."
+          }
+        }
+      },
+      "contact": {
+        "title": "Information and support",
+        "description": "About, RIPLAY, Terms, Privacy, contacts, and external channels.",
+        "entry": "Open an information page or Contact Us.",
+        "decision": "Read a document or choose an available support channel.",
+        "scenarios": {
+          "documents": {
+            "title": "Read full documents",
+            "condition": "Open Terms or Privacy Policy.",
+            "response": "Original documents include lists, tables, and links; wide tables can be scrolled on mobile.",
+            "recovery": "Choose related information to open another page in the same brand."
+          },
+          "channel": {
+            "title": "Choose a contact channel",
+            "condition": "Choose Halo BCA Prioritas or X @HaloBCA.",
+            "response": "The channel follows its contact link/information and available disclosures. Conversations are handled outside the website.",
+            "recovery": "The user starts the call/message; the website cannot confirm a response."
+          },
+          "branch": {
+            "title": "Support through a branch",
+            "condition": "Choose Find a branch from Contact Us.",
+            "response": "Find Us opens for the active brand.",
+            "recovery": "Find a location and follow the directions flow."
+          },
+          "messageForm": {
+            "title": "Send a message from the website",
+            "condition": "The visitor looks for a message form or ticket status.",
+            "response": "The contact page provides no form, message delivery, or ticket tracking.",
+            "recovery": "Use the available contact channels. A new form needs separate scope and integration."
+          },
+          "cancelDisclosure": {
+            "title": "Cancel before opening a channel",
+            "condition": "A contact card opens a disclosure, then the user chooses Cancel or Escape.",
+            "response": "The native dialog closes without opening the phone app or X.",
+            "recovery": "Choose another channel or continue reading."
+          }
+        }
+      },
+      "logout": {
+        "title": "Logout and segment changes",
+        "description": "Confirm, cancel logout, clear sessions, and return to member pages.",
+        "entry": "A member opens the account menu or chooses another navbar segment.",
+        "decision": "Choose Logout or proceed with a change that requires logout.",
+        "scenarios": {
+          "confirm": {
+            "title": "Confirm logout",
+            "condition": "Choose Log out in the confirmation dialog.",
+            "response": "Member and portfolio cookies are deleted, then the brand homepage opens.",
+            "recovery": "The next member-page access requires signing in again."
+          },
+          "cancel": {
+            "title": "Cancel logout",
+            "condition": "Choose Cancel or click the dialog backdrop.",
+            "response": "The dialog closes; the session and member page remain.",
+            "recovery": "Continue using member features."
+          },
+          "segment": {
+            "title": "Switch beyond Prioritas/Solitaire",
+            "condition": "A signed-in desktop navbar selects a segment other than Prioritas or Solitaire.",
+            "response": "Logout confirmation remembers the destination; confirming clears the session and opens it.",
+            "recovery": "Cancel to stay in the member context."
+          },
+          "back": {
+            "title": "Return to a member URL after logout",
+            "condition": "Reopen or reload a member URL after session deletion.",
+            "response": "The proxy checks the new request and redirects to login. Browser snapshots/cache do not establish an active session.",
+            "recovery": "Sign in again to access the member area."
+          },
+          "failure": {
+            "title": "Logout request fails",
+            "condition": "The logout action fails or the connection drops before completion.",
+            "response": "There is no dedicated failure message or retry; session deletion cannot be assumed successful.",
+            "recovery": "Required: show errors, allow retry, and navigate only after successful deletion."
+          }
+        }
+      },
+      "resilience": {
+        "title": "Reports, data, and interruptions",
+        "description": "Report filters, demo downloads, fallback, offline, and pending requests.",
+        "entry": "Open a report or data-backed content.",
+        "decision": "Choose a period, download, or proceed when a service has problems.",
+        "scenarios": {
+          "period": {
+            "title": "Change report period",
+            "condition": "Choose tax/portfolio reports, year, month, or chart interval.",
+            "response": "Controls update the view and available demo snapshots; they do not fetch real customer portfolios.",
+            "recovery": "Read the result for the period and amount-visibility state."
+          },
+          "download": {
+            "title": "Download a Financial Report",
+            "condition": "Choose Download on a portfolio or tax report.",
+            "response": "A prototype notice appears; no report file is generated or downloaded.",
+            "recovery": "Required: document endpoints, access rules, periods, and download errors."
+          },
+          "fallback": {
+            "title": "Data-source failure → fallback",
+            "condition": "A fallback-enabled fetcher fails or service environment settings are missing.",
+            "response": "The fetcher uses bundled data to keep the section populated. This does not prove successful live integration.",
+            "recovery": "For launch, agree source and freshness indicators for each feature."
+          },
+          "offline": {
+            "title": "Offline or server unreachable",
+            "condition": "Connection is lost before a page, data, or action finishes loading.",
+            "response": "There is no global offline flow or guarantee all pages keep working. Server fallback is not browser offline caching.",
+            "recovery": "Restore connectivity and reload; each mutation needs explicit retry status."
+          },
+          "pending": {
+            "title": "Slow or pending request",
+            "condition": "A login, OTP, or logout action has not completed.",
+            "response": "Some buttons have pending/disabled states, but timeout and recovery are not consistent across features.",
+            "recovery": "Required: loading, timeout, retry, and duplicate-submit rules per action."
+          },
+          "externalFailure": {
+            "title": "External link does not open",
+            "condition": "The browser, destination app, or external site refuses the link.",
+            "response": "The prototype receives no success status from external services. A handoff does not mean the action is complete.",
+            "recovery": "Return to the source page, retry the link, or use an available contact channel."
+          }
+        }
+      },
+      "preview": {
+        "title": "Project preview access",
+        "description": "The preview gate is separate from member login.",
+        "entry": "Open the prototype website.",
+        "decision": "If the preview gate is enabled, enter its password.",
+        "scenarios": {
+          "disabled": {
+            "title": "Gate disabled",
+            "condition": "The enable flag and preview password are not both configured.",
+            "response": "Public pages require no preview password. Member pages still check member sessions.",
+            "recovery": "Continue browsing or sign in as a member when needed."
+          },
+          "correct": {
+            "title": "Correct preview password",
+            "condition": "The gate is enabled and the password matches configuration.",
+            "response": "A preview cookie is created and the destination opens. This does not create a member session.",
+            "recovery": "Member login is still required for protected member destinations."
+          },
+          "wrong": {
+            "title": "Wrong preview password",
+            "condition": "The password does not match preview configuration.",
+            "response": "Preview login fails and the visitor remains at the gate.",
+            "recovery": "Check the preview password and try again."
+          },
+          "idle": {
+            "title": "Inactive for eight hours",
+            "condition": "The preview timer receives no pointer, keyboard, scroll, or touch activity for eight hours.",
+            "response": "The client requests preview logout and opens /login. This timer is separate from member and portfolio session lifetimes.",
+            "recovery": "Sign in to preview again; member access depends on remaining valid cookies."
+          }
+        }
+      }
+    },
+    "title": "User Flows | BCA Prioritas & Solitaire",
+    "heading": "See every case. Understand every stage.",
+    "eyebrow": "USER FLOWS",
+    "subtitle": "Choose a case to compare, then click a stage in its flowchart. One UI preview shows that state without running through the flow.",
+    "scope": "A guide to Prioritas & Solitaire prototype behavior, based on the implementation on 12 October 2026. Coverage includes available paths and identified exceptions; review it when features change.",
+    "safe": "The UI preview is view-only. Documentation controls switch cases, stages, and screen sizes; buttons and inputs inside the preview cannot be used.",
+    "journeyCount": "{count} journeys",
+    "scenarioCount": "{count} scenarios",
+    "gapCount": "{count} need handling",
+    "explore": "Explore flows",
+    "coverage": "Scenario coverage",
+    "search": "Search journeys or conditions",
+    "searchPlaceholder": "For example: invalid OTP, expired session…",
+    "all": "All",
+    "brand": "Brand",
+    "kind": "Scenario type",
+    "status": "Implementation status",
+    "journeysLabel": "Choose a user journey",
+    "scenarioLabel": "Choose a scenario",
+    "results": "{count} matching scenarios",
+    "reset": "Reset filters",
+    "emptyTitle": "No matching scenarios",
+    "emptyBody": "Try another keyword or remove filters.",
+    "diagram": "Step diagram",
+    "step": "Step {number}",
+    "steps": "{count} steps",
+    "start": "Start",
+    "decision": "User action",
+    "response": "System response",
+    "recovery": "Next step",
+    "condition": "Trigger condition",
+    "whatNext": "What happens next?",
+    "openPage": "Open related page",
+    "copyLink": "Copy scenario link",
+    "copied": "Link copied",
+    "copyFailed": "Could not copy. Copy the page URL from your browser.",
+    "source": "Implementation references",
+    "sourceHelp": "Scenario behavior and status refer to these sources. The page link opens the actual prototype.",
+    "coverageHelp": "Use this list for review and QA. Status shows implementation boundaries, not automated test results.",
+    "openScenario": "View flow",
+    "scenarioHeader": "Scenario and outcome",
+    "kinds": {
+      "normal": "Normal",
+      "negative": "Negative",
+      "alternative": "Alternative",
+      "recovery": "Recovery",
+      "edge": "Edge case"
+    },
+    "statuses": {
+      "available": "Available",
+      "demo": "Demo",
+      "gap": "Not yet handled",
+      "external": "External channel"
+    },
+    "statusHelp": {
+      "available": "The behavior exists in the current implementation.",
+      "demo": "The flow uses simulated data or verification; it does not represent an operational service.",
+      "gap": "The behavior is incomplete, disconnected, or lacks clear recovery.",
+      "external": "The website hands off to another channel; it does not confirm the final outcome."
+    },
+    "areas": {
+      "public": "Public",
+      "member": "Member",
+      "both": "Public & Member",
+      "preview": "Preview"
+    },
+    "brands": {
+      "both": "Both brands",
+      "prioritas": "Prioritas",
+      "solitaire": "Solitaire"
+    },
+    "ui": {
+      "allCases": "All cases in this flow",
+      "caseHelp": "Choose directly. View any outcome without pressing Play or completing other stages. Active filters narrow this list.",
+      "flowchart": "Selected case flowchart",
+      "flowchartHelp": "Select a condition or outcome to view its UI.",
+      "stages": "Flow stages",
+      "before": "Before the action",
+      "result": "On-screen result",
+      "preview": "UI preview",
+      "static": "Static · buttons and inputs are inactive",
+      "device": "Preview size",
+      "desktop": "Desktop",
+      "mobile": "Mobile",
+      "excerpt": "UI excerpts use prototype components and assets. External or unhandled conditions may retain the same UI; read the stage explanation above.",
+      "previewAlt": "Static preview for case {case}, stage {stage}.",
+      "notFound": "This page could not be found."
+    },
+    "graph": {
+      "title": "Flow branches",
+      "help": "Select a condition or outcome to view its UI.",
+      "path": "Starting path",
+      "branch": "Choice / condition",
+      "condition": "Case / condition",
+      "outcome": "On-screen outcome",
+      "continue": "Continuation: {case}",
+      "nodes": {
+        "homepage": "Homepage",
+        "navigation": "Navigation",
+        "search": "Search",
+        "privilege": "Privilege hub",
+        "filters": "Filters & listing",
+        "benefitDetail": "Benefit detail",
+        "login": "Member login",
+        "credentials": "Enter identity & password",
+        "memberUrl": "Member URL",
+        "financialReport": "Financial Report",
+        "otp": "OTP verification",
+        "memberBenefit": "Member benefit",
+        "medical": "Medical check-up",
+        "location": "Choose location",
+        "banking": "Banking Solution",
+        "magazine": "e-Magazine",
+        "issue": "Choose issue",
+        "branches": "Find us",
+        "origin": "Choose location origin",
+        "information": "Information & support",
+        "memberArea": "Member area",
+        "logout": "Confirm logout",
+        "reportOrContent": "Report / content",
+        "website": "Open website",
+        "previewGate": "Preview gate"
+      }
+    },
+    "lobby": {
+      "title": "Flow directory",
+      "help": "Choose a flow to view its cases, stages, and UI preview.",
+      "cases": "{count} cases",
+      "back": "Back to flow directory"
+    },
+    "board": {
+      "back": "Flow directory",
+      "cases": "Cases",
+      "selectedCase": "Selected case",
+      "stages": "Case stages",
+      "next": "Next step",
+      "explanation": "Response explanation & references",
+      "static": "Static UI",
+      "wholeScreen": "Full screen",
+      "focusUI": "Focus UI"
+    },
+    "actions": {
+      "click": "Click",
+      "input": "Enter here",
+      "select": "Select",
+      "response": "Response"
+    }
   }
 }

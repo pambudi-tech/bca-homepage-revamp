@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { IconAsset } from "@/components/icons/IconAsset";
+
+import { useContext, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { useAutoplayProgress } from "@/lib/useAutoplayProgress";
 import { useLenis } from "@/components/SmoothScroll";
+import { PreviewViewportContext } from "@/lib/PreviewViewport";
 import { useIsLive } from "@/lib/useIsLive";
 import { useLayoutVariant } from "@/lib/useLayoutVariant";
 import { SLIDES, SLIDE_DURATION_MS, type Slide, type SlideCta } from "./hero-slides";
@@ -29,16 +32,16 @@ function HeroCta({ label, icon, variant, tone = "default" }: SlideCta) {
     ? prioritasButtonClassName({ surface: "inverse", size: "large" })
     : solitaire
       ? solitaireButtonClassName({ surface: "inverse", size: "large" })
-      : `relative flex items-center justify-center gap-1 font-semibold transition-[color,transform] duration-300 active:scale-95 h-10 px-0 text-sm text-white underline-offset-4 hover:underline xl:h-12 xl:rounded-full xl:px-6 xl:text-base xl:no-underline ${variant === "primary" ? "xl:bg-primary xl:hover:bg-primary-hover" : "xl:bg-black/50 xl:hover:bg-black/70"}`;
+      : `relative flex items-center justify-center gap-1 font-semibold transition-[color,transform] duration-300 active:scale-95 h-10 px-0 text-size-body-m text-white underline-offset-4 hover:underline xl:h-12 xl:rounded-full xl:px-6 xl:text-size-body-l xl:no-underline ${variant === "primary" ? "xl:bg-blue-500 xl:hover:bg-blue-400" : "xl:bg-black/50 xl:hover:bg-black/70"}`;
   return (
     <div className="group/cta relative inline-flex items-start gap-3">
       <button
         className={ctaClassName}
       >
-        <span className={prioritas || solitaire ? "prio-button__label" : `px-0.5 text-base font-semibold ${brandedHero ? "text-pbrown-600" : "text-white"}`}>
+        <span className={prioritas || solitaire ? "prio-button__label" : `px-0.5 text-size-body-l font-semibold ${brandedHero ? "text-pbrown-600" : "text-white"}`}>
           {label}
         </span>
-        <img src={icon} alt="" className={`size-5 ${prioritas ? "brightness-0 opacity-80" : solitaire ? "brightness-0" : "brightness-0 invert"}`} />
+        <IconAsset src={icon} alt="" className={`size-5 ${prioritas ? "brightness-0 opacity-80" : solitaire ? "brightness-0" : "brightness-0 invert"}`} />
       </button>
     </div>
   );
@@ -69,6 +72,7 @@ export default function HeroSection({
   const live = useIsLive(rootRef);
   const touchStartX = useRef<number | null>(null);
   const lenis = useLenis();
+  const previewWidth = useContext(PreviewViewportContext);
   const solitaireHero = slides[activeSlide].cta.tone === "solitaire";
   const brandedHero = slides[activeSlide].cta.tone === "prioritas" || solitaireHero;
 
@@ -95,27 +99,31 @@ export default function HeroSection({
   // height). Coalescing into rAF also means a burst of events can't produce
   // more than one style write per frame.
   useEffect(() => {
-    if (!lenis || !live) return;
+    if (!live || (!lenis && previewWidth === null)) return;
 
     let raf = 0;
     const write = () => {
       raf = 0;
       if (!parallaxRef.current) return;
-      parallaxRef.current.style.transform = `translate3d(0, ${
-        window.scrollY * PARALLAX_SPEED
-      }px, 0) scale(1.1)`;
+      const root = rootRef.current;
+      const offset = previewWidth !== null && root
+        ? -Math.min(Math.max(0, window.scrollY) * PARALLAX_SPEED, root.offsetHeight * 0.1)
+        : window.scrollY * PARALLAX_SPEED;
+      parallaxRef.current.style.transform = `translate3d(0, ${offset}px, 0) scale(1.1)`;
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(write);
     };
 
-    lenis.on("scroll", onScroll);
+    if (previewWidth !== null) window.addEventListener("scroll", onScroll, { passive: true });
+    else lenis?.on("scroll", onScroll);
     write();
     return () => {
-      lenis.off("scroll", onScroll);
+      if (previewWidth !== null) window.removeEventListener("scroll", onScroll);
+      else lenis?.off("scroll", onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [lenis, live]);
+  }, [lenis, live, previewWidth]);
 
   const goPrev = () => {
     setPaused(false);
@@ -237,7 +245,7 @@ export default function HeroSection({
                 className="h-10 w-auto animate-hero-title object-contain xl:h-14"
               />
             ) : null}
-            <h1 className={`animate-hero-title ${solitaireHero ? "max-w-[260px]" : "max-w-[240px]"} font-semibold text-white text-shadow-hero ${brandedHero ? (slides[activeSlide].cta.tone === "prioritas" ? "text-hero-title-mobile" : "text-display") : "text-2xl leading-7 tracking-[-0.4px]"} ${brandedHero ? "xl:line-clamp-3" : "xl:line-clamp-2"} xl:max-w-none xl:text-[clamp(36px,5svh,40px)] xl:leading-[clamp(44px,6svh,48px)] xl:tracking-[-0.8px] xl:text-shadow-none`}>
+            <h1 className={`animate-hero-title ${solitaireHero ? "max-w-[260px]" : "max-w-[240px]"} font-semibold text-white text-shadow-hero ${brandedHero ? (slides[activeSlide].cta.tone === "prioritas" ? "text-hero-title-mobile" : "text-display") : "text-size-display-m leading-7 tracking-[-0.4px]"} ${brandedHero ? "xl:line-clamp-3" : "xl:line-clamp-2"} xl:max-w-none xl:text-[clamp(36px,5svh,40px)] xl:leading-[clamp(44px,6svh,48px)] xl:tracking-[-0.8px] xl:text-shadow-none`}>
               {slides[activeSlide].title}
             </h1>
             <div className="animate-hero-cta">
@@ -264,14 +272,14 @@ export default function HeroSection({
             </div>
             <div className="hidden items-center gap-2 xl:flex">
               <button onClick={goPrev} aria-label={t("prevSlide")} className={carouselControlClass}>
-                <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-5" />
+                <IconAsset src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-5" />
               </button>
             <button
               onClick={goNext}
               aria-label={t("nextSlide")}
               className={carouselControlClass}
             >
-              <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5" />
+              <IconAsset src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5" />
             </button>
             </div>
           </div>

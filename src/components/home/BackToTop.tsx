@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useLenis } from "@/components/SmoothScroll";
@@ -60,8 +62,8 @@ export function BackToTopAction({ label, shown, onClick, atBottom = false, mobil
           }}
         />
         <span className="relative flex h-full items-center justify-center gap-2 whitespace-nowrap md:pb-0.5">
-          <span className="text-sm font-semibold leading-5 text-white">{label}</span>
-          <img loading="lazy" decoding="async" src="/assets/navbar/arrow-right.svg" alt="" className={`size-5 transition-transform duration-300 ease-out ${direction === "down" ? "rotate-90 group-hover:translate-y-0.5" : "-rotate-90 group-hover:-translate-y-0.5"}`} />
+          <span className="text-size-body-m font-semibold leading-5 text-white">{label}</span>
+          <IconAsset loading="lazy" decoding="async" src="/assets/navbar/arrow-right.svg" alt="" className={`size-5 transition-transform duration-300 ease-out ${direction === "down" ? "rotate-90 group-hover:translate-y-0.5" : "-rotate-90 group-hover:-translate-y-0.5"}`} />
         </span>
       </button>
     </>

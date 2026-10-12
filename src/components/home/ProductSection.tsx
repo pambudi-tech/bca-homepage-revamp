@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
@@ -201,6 +203,8 @@ function ProductCard({
 
   return (
     <button
+      data-blueprint-part={layout === "solitaire" ? "privilegeCard" : "productCard"}
+      data-blueprint-label={product.title}
       ref={cardRef}
       onClick={handleCardClick}
       onMouseMove={handleCardMouseMove}
@@ -307,7 +311,7 @@ function CardContent({
         {layout === "solitaire" ? (
           <>
             <div className="w-full" style={swap.copy}>
-              <p className="w-full text-heading text-white text-shadow-hero">
+              <p data-blueprint-part="cardTitle" className="w-full text-heading text-white text-shadow-hero">
                 {copy.title}
               </p>
             </div>
@@ -321,17 +325,17 @@ function CardContent({
           </>
         ) : (
           <div className="w-full" style={swap.copy}>
-            <p className="w-full text-title text-white text-shadow-hero">
+            <p data-blueprint-part="cardTitle" className="w-full text-title text-white text-shadow-hero">
               {copy.title}
             </p>
             <div className="grid w-full" style={{ gridTemplateRows: "1fr" }}>
               <div className="overflow-hidden">
-                <p className="w-full pt-2 text-base leading-6 text-white/80">
+                <p className="w-full pt-2 text-size-body-l leading-6 text-white/80">
                   {copy.subtitle}
                 </p>
-                <div className="flex items-center gap-0.5 pt-8 text-base font-semibold text-blue-100 md:hidden">
+                <div className="flex items-center gap-0.5 pt-8 text-size-body-l font-semibold text-blue-100 md:hidden">
                   {copy.action ?? t("learnMore")}
-                  <img loading="lazy" decoding="async"
+                  <IconAsset loading="lazy" decoding="async"
                     src="/assets/cycle1/pelajari-icon.svg"
                     alt=""
                     className="size-5 transition-transform group-hover:translate-x-1"
@@ -360,7 +364,7 @@ function CardContent({
           pointerEvents: active ? "none" : "auto",
         }}
       >
-        <p className="text-base leading-6 font-semibold text-white text-shadow-hero">
+        <p className="text-size-body-l leading-6 font-semibold text-white text-shadow-hero">
           {copy.title}
         </p>
       </div>
@@ -388,7 +392,7 @@ function CardContent({
 
       <div
         ref={cursorRef}
-        className="fade-overlay pointer-events-none absolute left-0 top-0 z-30 flex size-28 items-center justify-center rounded-full border border-white/25 bg-white/[0.01] text-sm font-semibold text-white shadow-lg backdrop-blur-md"
+        className="fade-overlay pointer-events-none absolute left-0 top-0 z-30 flex size-28 items-center justify-center rounded-full border border-white/25 bg-white/[0.01] text-size-body-m font-semibold text-white shadow-lg backdrop-blur-md"
         data-shown={active && isHovered ? "true" : "false"}
         style={{
           "--fade-ms": "200ms",
@@ -442,6 +446,8 @@ function MobileProductCard({
 
   return (
     <button
+      data-blueprint-part={layout === "solitaire" ? "privilegeCard" : "productCard"}
+      data-blueprint-label={product.title}
       onClick={handleSelect}
       className="relative shrink-0 snap-center overflow-clip rounded-3xl bg-white text-left transition-[height] duration-500 ease-in-out"
       style={{ width: 280, height: active ? 360 : 328 }}
@@ -536,7 +542,7 @@ function MobileCardContent({
         }}
       >
         <div className="w-full" style={swap.copy}>
-          <p className="w-full text-subtitle text-white text-shadow-hero">
+          <p data-blueprint-part="cardTitle" className="w-full text-subtitle text-white text-shadow-hero">
             {copy.title}
           </p>
           <div
@@ -544,10 +550,10 @@ function MobileCardContent({
             style={{ gridTemplateRows: active ? "1fr" : "0fr", opacity: active ? 1 : 0 }}
           >
             <div className="overflow-hidden">
-              <p className="w-full pt-1 text-sm leading-5 text-white/80">{copy.subtitle}</p>
-              <div className="flex items-center gap-0.5 pt-6 text-sm font-semibold text-blue-100">
+              <p className="w-full pt-1 text-size-body-m leading-5 text-white/80">{copy.subtitle}</p>
+              <div className="flex items-center gap-0.5 pt-6 text-size-body-m font-semibold text-blue-100">
                 {t("learnMore")}
-                <img loading="lazy" decoding="async" src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5" />
+                <IconAsset loading="lazy" decoding="async" src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5" />
               </div>
             </div>
           </div>
@@ -919,7 +925,7 @@ function CurvedProductCard({
         }}
       >
         <div className="w-full" style={swap.copy}>
-          <p className="w-full text-title text-white text-shadow-hero">
+          <p data-blueprint-part="cardTitle" className="w-full text-title text-white text-shadow-hero">
             {copy.title}
           </p>
           <div
@@ -927,7 +933,7 @@ function CurvedProductCard({
             style={{ gridTemplateRows: active ? "1fr" : "0fr", opacity: active ? 1 : 0 }}
           >
             <div className="overflow-hidden">
-              <p className="w-full pt-2 text-base leading-6 text-white/80">{copy.subtitle}</p>
+              <p className="w-full pt-2 text-size-body-l leading-6 text-white/80">{copy.subtitle}</p>
             </div>
           </div>
         </div>
@@ -956,7 +962,7 @@ function CurvedProductCard({
 
       <div
         ref={cursorRef}
-        className="fade-overlay pointer-events-none absolute left-0 top-0 z-30 flex size-28 items-center justify-center rounded-full border border-white/25 bg-white/[0.01] text-sm font-semibold text-white shadow-lg backdrop-blur-md"
+        className="fade-overlay pointer-events-none absolute left-0 top-0 z-30 flex size-28 items-center justify-center rounded-full border border-white/25 bg-white/[0.01] text-size-body-m font-semibold text-white shadow-lg backdrop-blur-md"
         data-shown={active && isHovered ? "true" : "false"}
         style={{
           "--fade-ms": "200ms",
@@ -1582,7 +1588,7 @@ export default function ProductSection({
             transition: `opacity 700ms ease-out ${entered ? "610ms" : "0ms"}`,
           }}
         >
-          <p className="w-[320px] text-center text-base font-semibold text-blue-700 xl:w-auto xl:text-[18px]">
+          <p className="w-[320px] text-center text-size-body-l font-semibold text-blue-700 xl:w-auto xl:text-[18px]">
             {t("mobileCtaHint")}
           </p>
           <a
@@ -1591,7 +1597,7 @@ export default function ProductSection({
             rel="noopener noreferrer"
             className="btn-base btn-primary"
           >
-            <span className="text-base font-semibold text-neutral-100">{t("ctaLabel")}</span>
+            <span className="text-size-body-l font-semibold text-neutral-100">{t("ctaLabel")}</span>
             <span
               aria-hidden
               className="size-5 shrink-0 bg-neutral-100"
@@ -1619,11 +1625,11 @@ export default function ProductSection({
             transition: `opacity 700ms ease-out ${entered ? "610ms" : "0ms"}`,
           }}
         >
-          <p className="text-center text-base font-semibold text-blue-700 xl:text-xl">
+          <p className="text-center text-size-body-l font-semibold text-blue-700 xl:text-size-display-s">
             {t("ctaHint", { category: category.label })}
           </p>
           <Link href="/kartu-kredit" className="btn-base btn-primary">
-            <span className="text-base font-semibold text-neutral-100">{t("ctaLabel")}</span>
+            <span className="text-size-body-l font-semibold text-neutral-100">{t("ctaLabel")}</span>
             {/* Drawn as a mask so the shape stays one shared asset and the
                 color comes from the same token as the label. */}
             <span
@@ -1669,12 +1675,14 @@ export function ProductAccordion({
   layout = "default",
   controls = false,
   previewViewport,
+  autoplay = true,
 }: {
   items: ProductAccordionItem[];
   defaultKey?: string;
   layout?: "default" | "solitaire";
   controls?: boolean;
   previewViewport?: "mobile" | "desktop";
+  autoplay?: boolean;
 }) {
   const initialIndex = Math.max(0, items.findIndex((item) => item.key === defaultKey));
   const [activeIndex, setActiveIndex] = useState(initialIndex);
@@ -1722,7 +1730,7 @@ export function ProductAccordion({
     circumference: RING_CIRCUMFERENCE,
     progressRef: progressRefs,
     pausedRef,
-    live,
+    live: live && autoplay,
     loop: layout !== "solitaire" || desktop,
     onAdvance: () => setActiveIndex((index) => (
       layout === "solitaire" && !desktop
@@ -1765,7 +1773,7 @@ export function ProductAccordion({
             aria-label="Sebelumnya"
             className={`flex ${layout === "solitaire" ? "size-16 bg-black/50 hover:bg-black/60" : "size-[72px] bg-black/30 hover:bg-black/45"} items-center justify-center rounded-full transition-colors`}
           >
-            <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-8" />
+            <IconAsset src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-8" />
           </button>
           <button
             type="button"
@@ -1773,7 +1781,7 @@ export function ProductAccordion({
             aria-label="Berikutnya"
             className={`flex ${layout === "solitaire" ? "size-16 bg-black/50 hover:bg-black/60" : "size-[72px] bg-black/30 hover:bg-black/45"} items-center justify-center rounded-full transition-colors`}
           >
-            <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-8" />
+            <IconAsset src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-8" />
           </button>
         </div>
       ) : null}

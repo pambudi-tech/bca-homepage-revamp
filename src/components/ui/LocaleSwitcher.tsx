@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { PreviewFrozenContext, PreviewNavigationContext } from "@/lib/PreviewViewport";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing, type AppLocale } from "@/i18n/routing";
 
 const LOCALE_META: Record<AppLocale, { flag: string }> = {
-  id: { flag: "/assets/cycle1/flag-id.svg" },
+  id: { flag: "/assets/prioritas/kurs/flags/Flag=indonesia.svg" },
   en: { flag: "/assets/navbar/flag-en.png" },
   zh: { flag: "/assets/navbar/flag-zh.png" },
 };
@@ -26,7 +27,9 @@ export default function LocaleSwitcher({
   const router = useRouter();
   const pathname = usePathname();
   const t = useTranslations("languages");
-  const [open, setOpen] = useState(false);
+  const preview = useContext(PreviewNavigationContext);
+  const frozen = useContext(PreviewFrozenContext);
+  const [open, setOpen] = useState(preview?.languageOpen ?? false);
   const [hovered, setHovered] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const otherLocales = routing.locales.filter((item) => item !== locale);
@@ -36,6 +39,7 @@ export default function LocaleSwitcher({
   }, [onOpenChange, open]);
 
   useEffect(() => {
+    if (frozen) return;
     const close = (event: PointerEvent) => {
       if (rootRef.current && !rootRef.current.contains(event.target as Node)) setOpen(false);
     };
@@ -48,7 +52,7 @@ export default function LocaleSwitcher({
       document.removeEventListener("pointerdown", close);
       document.removeEventListener("keydown", closeOnEscape);
     };
-  }, []);
+  }, [frozen]);
 
   const isHighlighted = appearance === "surface" || hovered || open;
 
@@ -74,7 +78,7 @@ export default function LocaleSwitcher({
         }`}
       >
         <img src={LOCALE_META[locale].flag} alt="" className="size-6 rounded-full object-cover" />
-        <span className={`w-8 text-center text-base font-bold ${isHighlighted ? "text-neutral-900" : "text-white"}`}>
+        <span className={`w-8 text-center text-size-body-l font-bold ${isHighlighted ? "text-neutral-900" : "text-white"}`}>
           {locale.toUpperCase()}
         </span>
       </button>

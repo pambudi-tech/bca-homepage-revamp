@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@/i18n/navigation";
@@ -98,9 +100,9 @@ export default function PrioritasFeaturedBanner({ titles, cta, backdrops, slideH
             <span className="flex h-8 items-center rounded-md bg-white px-2 xl:h-10">
               <img src={activeSlide.brandLogo} alt="" className="h-[20.5px] w-auto object-contain xl:h-6" />
             </span>
-            <h3 className="min-h-20 max-w-full overflow-hidden text-subtitle text-white line-clamp-4 xl:min-h-[96px] xl:text-heading">{titles[activeIndex]}</h3>
+            <h3 data-blueprint-part="cardTitle" className="min-h-20 max-w-full overflow-hidden text-subtitle text-white line-clamp-3 xl:min-h-[96px] xl:text-heading">{titles[activeIndex]}</h3>
           </div>
-        ) : <h3 className="min-h-20 max-w-full overflow-hidden text-subtitle text-white line-clamp-4 xl:min-h-[96px] xl:text-heading">{titles[activeIndex]}</h3>}
+        ) : <h3 data-blueprint-part="cardTitle" className="min-h-20 max-w-full overflow-hidden text-subtitle text-white line-clamp-3 xl:min-h-[96px] xl:text-heading">{titles[activeIndex]}</h3>}
         {buttonTheme === "solitaire" ? (
           <button type="button" className={solitaireButtonClassName({ kind: "text", surface: "inverse", size: "large" })}>
             <span className="prio-button__label">{activeCta}</span>
@@ -132,10 +134,10 @@ export default function PrioritasFeaturedBanner({ titles, cta, backdrops, slideH
         </div>
         <div className="flex items-center gap-2">
           <button type="button" onClick={() => goBy(-1)} aria-label={t("prevSlide")} className={`flex size-10 items-center justify-center rounded-full border border-white/25 ${buttonTheme === "solitaire" ? "bg-neutral-800/30 hover:bg-neutral-800/50 xl:bg-pbrown-900/30 xl:hover:bg-pbrown-900/50" : "bg-pbrown-900/30 hover:bg-pbrown-900/50"} text-white backdrop-blur-md transition-colors`}>
-            <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-5" />
+            <IconAsset src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-5" />
           </button>
           <button type="button" onClick={() => goBy(1)} aria-label={t("nextSlide")} className={`flex size-10 items-center justify-center rounded-full border border-white/25 ${buttonTheme === "solitaire" ? "bg-neutral-800/30 hover:bg-neutral-800/50 xl:bg-pbrown-900/30 xl:hover:bg-pbrown-900/50" : "bg-pbrown-900/30 hover:bg-pbrown-900/50"} text-white backdrop-blur-md transition-colors`}>
-            <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5" />
+            <IconAsset src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5" />
           </button>
         </div>
       </div>

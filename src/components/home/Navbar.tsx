@@ -1,7 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { IconAsset } from "@/components/icons/IconAsset";
+
+import { useContext, useEffect, useRef, useState, type CSSProperties } from "react";
 import { useTranslations } from "next-intl";
+import { PreviewFrozenContext, PreviewNavigationContext } from "@/lib/PreviewViewport";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import type { ProductCategory } from "./product-data";
 import type { MegaMenuContent } from "@/lib/megamenu";
@@ -30,7 +33,7 @@ function SearchButton({ label, placeholders, onClick, expanded }: { label: strin
       className="relative flex h-10 w-60 cursor-pointer items-center rounded-full border border-white/15 bg-[rgba(5,13,25,0.2)] px-3 text-left backdrop-blur-[40px] transition-colors duration-200 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
     >
       <img src="/assets/cycle1/outline-search.svg" alt="" className="size-6 shrink-0" />
-      <SearchPlaceholderCarousel placeholders={placeholders} visible live={!expanded} lineHeight={40} className="inset-y-0 left-11 right-3 text-sm" />
+      <SearchPlaceholderCarousel placeholders={placeholders} visible live={!expanded} lineHeight={40} className="inset-y-0 left-11 right-3 text-size-body-m" />
     </button>
   );
 }
@@ -54,6 +57,7 @@ function LoginIcon({ className = "size-6 shrink-0" }: { className?: string }) {
 }
 
 export default function Navbar({ productCategories, megamenuContent, promoSearchItems, variant = "default", disableHideShow = false, staticOnMobile = false, keepTransparentOnScroll = false, memberPreviewName }: { productCategories?: ProductCategory[]; megamenuContent?: MegaMenuContent; /** Passed only by the Promo page, so its navbar search never falls back to the site-wide index. */ promoSearchItems?: Promo[]; variant?: "default" | "about" | "promo" | "prioritas" | "solitaire"; disableHideShow?: boolean; staticOnMobile?: boolean; keepTransparentOnScroll?: boolean; memberPreviewName?: string }) {
+  const frozen = useContext(PreviewFrozenContext);
   const tNav = useTranslations("nav");
   const tAccount = useTranslations("accountMenu");
   const tHero = useTranslations("hero");
@@ -73,7 +77,8 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
   const [navHidden, setNavHidden] = useState(false);
   const [nearPromoSection, setNearPromoSection] = useState(false);
   const [anchorLocked, setAnchorLocked] = useState(false);
-  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const navigationPreview = useContext(PreviewNavigationContext);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(navigationPreview?.accountMenuOpen ?? false);
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
   const [memberAuthenticated, setMemberAuthenticated] = useState(false);
   const [sessionBrand, setSessionBrand] = useState<MemberBrand | null>(null);
@@ -88,6 +93,7 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
   const hasActiveMemberSession = memberAuthenticated || Boolean(memberPreviewName);
 
   useEffect(() => {
+    if (frozen) return;
     const controller = new AbortController();
     fetch("/api/preview-logout", { signal: controller.signal, credentials: "same-origin" })
       .then((response) => response.ok ? response.json() : Promise.reject(new Error(String(response.status))))
@@ -99,15 +105,17 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
         if (!controller.signal.aborted) setMemberAuthenticated(false);
       });
     return () => controller.abort();
-  }, []);
+  }, [frozen]);
 
   useEffect(() => {
+    if (frozen) return;
     const openSearch = () => setSearchOpen(true);
     window.addEventListener(OPEN_SEARCH_EVENT, openSearch);
     return () => window.removeEventListener(OPEN_SEARCH_EVENT, openSearch);
-  }, []);
+  }, [frozen]);
 
   useEffect(() => {
+    if (frozen) return;
     let raf = 0;
     const update = () => {
       raf = 0;
@@ -132,9 +140,10 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
       window.removeEventListener("scroll", onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [disableHideShow, variant]);
+  }, [disableHideShow, variant, frozen]);
 
   useEffect(() => {
+    if (frozen) return;
     const lockForAnchor = (event: Event) => {
       setAnchorLocked((event as CustomEvent<boolean>).detail);
     };
@@ -155,13 +164,14 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
       window.removeEventListener("touchstart", releaseAnchorLock);
       window.removeEventListener("keydown", releaseOnKey);
     };
-  }, []);
+  }, [frozen]);
 
   const shouldHide = !disableHideShow && (((navHidden && !(variant === "promo" && nearPromoSection)) || anchorLocked) && !langOpen && !searchOpen);
 
   useEffect(() => {
+    if (frozen) return;
     window.dispatchEvent(new CustomEvent<boolean>(NAVBAR_VISIBILITY_EVENT, { detail: shouldHide }));
-  }, [shouldHide]);
+  }, [shouldHide, frozen]);
 
   const activeSegment = variant === "prioritas" ? "Prioritas" : variant === "solitaire" ? "Solitaire" : variant === "default" ? segments[0] : null;
   const prioritas = variant === "prioritas";
@@ -170,9 +180,10 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
   const memberLoginHref = prioritas || solitaire ? `/member/login?from=${variant}` : null;
   const staticPrioritas = (prioritas || solitaire) && disableHideShow;
   const navScrolled = scrolled && !keepTransparentOnScroll;
-  const inMemberArea = isMemberAreaPath(pathname);
+  const inMemberArea = navigationPreview?.memberArea ?? isMemberAreaPath(pathname);
 
   useEffect(() => {
+    if (frozen) return;
     if (!accountMenuOpen) return;
     const closeOnOutsideClick = (event: MouseEvent) => {
       if (!accountMenuRef.current?.contains(event.target as Node)) setAccountMenuOpen(false);
@@ -186,7 +197,7 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
       document.removeEventListener("mousedown", closeOnOutsideClick);
       document.removeEventListener("keydown", closeOnEscape);
     };
-  }, [accountMenuOpen]);
+  }, [accountMenuOpen, frozen]);
 
   const handleMemberLogout = async () => {
     const destination = pendingPostLogoutHref;
@@ -227,15 +238,15 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
             <div className="flex h-10 items-center rounded-full border border-white/15 bg-black/20 p-1 backdrop-blur-[40px]">
               {segments.map((segment) => {
                 const active = segment === activeSegment;
-                const className = `flex h-8 min-w-24 items-center justify-center rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${active ? (prioritas ? "bg-pgold-500 text-white" : solitaire ? "bg-neutral-500 text-neutral-800" : "bg-neutral-100 text-blue-500") : "text-white/80 hover:bg-white/10 hover:text-white"}`;
+                const className = `flex h-8 min-w-24 items-center justify-center rounded-full px-4 text-size-body-m font-semibold transition-colors duration-200 ${active ? (prioritas ? "bg-pgold-500 text-white" : solitaire ? "bg-neutral-500 text-neutral-800" : "bg-neutral-100 text-blue-500") : "text-white/80 hover:bg-white/10 hover:text-white"}`;
                 const internalHref = SEGMENT_INTERNAL_LINKS[segment];
                 if (internalHref) {
                   return <Link key={segment} href={internalHref} onClick={(event) => requestSegmentNavigation(event, segment, internalHref)} className={className} style={active ? ({ viewTransitionName: "nav-segment-pill" } as CSSProperties) : undefined}>{tNav(`segments.${segment}`)}</Link>;
                 }
                 return <a key={segment} href={SEGMENT_EXTERNAL_LINKS[segment]} target="_blank" rel="noopener noreferrer" onClick={(event) => requestSegmentNavigation(event, segment, SEGMENT_EXTERNAL_LINKS[segment])} className={className}>{tNav(`segments.${segment}`)}</a>;
               })}
-              <Link href="/tentang-bca" onClick={(event) => requestSegmentNavigation(event, "Tentang BCA", "/tentang-bca")} className={`flex h-8 items-center rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${variant === "about" ? "bg-neutral-100 text-blue-500" : "text-white/80 hover:bg-white/10 hover:text-white"}`}>{tNav("tentangBca")}</Link>
-              <a href="https://karir.bca.co.id/" target="_blank" rel="noopener noreferrer" onClick={(event) => requestSegmentNavigation(event, "Karir", "https://karir.bca.co.id/")} className="flex h-8 items-center rounded-full px-4 text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white">{tNav("karir")}</a>
+              <Link href="/tentang-bca" onClick={(event) => requestSegmentNavigation(event, "Tentang BCA", "/tentang-bca")} className={`flex h-8 items-center rounded-full px-4 text-size-body-m font-semibold transition-colors duration-200 ${variant === "about" ? "bg-neutral-100 text-blue-500" : "text-white/80 hover:bg-white/10 hover:text-white"}`}>{tNav("tentangBca")}</Link>
+              <a href="https://karir.bca.co.id/" target="_blank" rel="noopener noreferrer" onClick={(event) => requestSegmentNavigation(event, "Karir", "https://karir.bca.co.id/")} className="flex h-8 items-center rounded-full px-4 text-size-body-m font-semibold text-white/80 hover:bg-white/10 hover:text-white">{tNav("karir")}</a>
             </div>
           </div>
 
@@ -244,31 +255,31 @@ export default function Navbar({ productCategories, megamenuContent, promoSearch
             <LocaleSwitcher label={tLogin("languageSwitcher")} onOpenChange={setLangOpen} />
             {effectiveMemberPreviewName ? (
               <div ref={accountMenuRef} className="relative">
-                <button type="button" aria-haspopup="menu" aria-expanded={accountMenuOpen} onClick={() => setAccountMenuOpen((open) => !open)} className="flex h-10 items-center gap-3 rounded-xl px-2 text-sm font-bold leading-5 text-white">
+                <button type="button" aria-haspopup="menu" aria-expanded={accountMenuOpen} onClick={() => setAccountMenuOpen((open) => !open)} className="flex h-10 items-center gap-3 rounded-xl px-2 text-size-body-m font-bold leading-5 text-white">
                   <span aria-hidden className={`flex size-10 shrink-0 items-center justify-center rounded-full ${accountSolitaire ? "bg-gradient-to-r from-neutral-800 to-neutral-700" : ""}`} style={accountSolitaire ? undefined : { backgroundImage: "linear-gradient(262.59deg, #c2a266 0.18%, #98732c 100.18%)" }}>
                     {accountSolitaire
                       ? <span className="size-5 bg-neutral-100 [mask-image:url('/assets/prioritas/member-overview/account-user.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/prioritas/member-overview/account-user.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]" />
-                      : <img src="/assets/prioritas/member-overview/account-user.svg" alt="" className="shrink-0" />}
+                      : <IconAsset src="/assets/prioritas/member-overview/account-user.svg" alt="" className="shrink-0" />}
                   </span>
                   <span className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap">{effectiveMemberPreviewName}</span>
                 </button>
                 {accountMenuOpen ? (
                   <div role="menu" className="absolute right-0 top-full z-50 mt-1 flex min-w-[176px] flex-col overflow-hidden rounded-xl border border-neutral-300 bg-neutral-100 p-2 shadow-card">
-                    <Link role="menuitem" href={inMemberArea ? `/${memberBrand}` : `/${memberBrand}/member/overview`} onClick={() => setAccountMenuOpen(false)} className={`flex h-10 items-center gap-2 whitespace-nowrap rounded-lg px-3 text-sm font-semibold ${accountSolitaire ? "text-neutral-800 hover:bg-neutral-200 hover:text-neutral-900" : "text-neutral-800 hover:bg-pgold-100 hover:text-pbrown-600"}`}>
-                      <img src="/assets/prioritas/member-overview/homepage.svg" alt="" aria-hidden className="size-5 shrink-0" />
+                    <Link role="menuitem" href={inMemberArea ? `/${memberBrand}` : `/${memberBrand}/member/overview`} onClick={() => setAccountMenuOpen(false)} className={`flex h-10 items-center gap-2 whitespace-nowrap rounded-lg px-3 text-size-body-m font-semibold ${accountSolitaire ? "text-neutral-800 hover:bg-neutral-200 hover:text-neutral-900" : "text-neutral-800 hover:bg-pgold-100 hover:text-pbrown-600"}`}>
+                      <IconAsset src="/assets/prioritas/member-overview/homepage.svg" alt="" aria-hidden className="size-5 shrink-0" />
                       {inMemberArea ? tAccount("home") : tAccount("overview")}
                     </Link>
-                    <button role="menuitem" type="button" onClick={() => { setPendingPostLogoutHref(null); setAccountMenuOpen(false); setLogoutConfirmOpen(true); }} className="flex h-10 items-center gap-2 rounded-lg px-3 text-left text-sm font-semibold text-red-600 hover:bg-red-50">
-                      <img src="/assets/prioritas/member-overview/logout.svg" alt="" aria-hidden className="size-5 shrink-0" />
+                    <button data-flow-action="logout" role="menuitem" type="button" onClick={() => { setPendingPostLogoutHref(null); setAccountMenuOpen(false); setLogoutConfirmOpen(true); }} className="flex h-10 items-center gap-2 rounded-lg px-3 text-left text-size-body-m font-semibold text-red-600 hover:bg-red-50">
+                      <IconAsset src="/assets/prioritas/member-overview/logout.svg" alt="" aria-hidden className="size-5 shrink-0" />
                       {tAccount("logout")}
                     </button>
                   </div>
                 ) : null}
               </div>
             ) : memberLoginHref ? (
-              <Link href={memberLoginHref} className={`group flex h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 text-sm font-semibold text-white backdrop-blur-[40px] transition-colors duration-300 hover:bg-white ${prioritas ? "hover:border-pbrown-500 hover:text-pbrown-500" : "hover:border-blue-500 hover:text-blue-500"}`}><LoginIcon className={`size-6 text-white/80 transition-colors ${prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"}`} />{tNav("login")}</Link>
+              <Link href={memberLoginHref} className={`group flex h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 text-size-body-m font-semibold text-white backdrop-blur-[40px] transition-colors duration-300 hover:bg-white ${prioritas ? "hover:border-pbrown-500 hover:text-pbrown-500" : "hover:border-blue-500 hover:text-blue-500"}`}><LoginIcon className={`size-6 text-white/80 transition-colors ${prioritas ? "group-hover:text-pbrown-500" : "group-hover:text-blue-500"}`} />{tNav("login")}</Link>
             ) : (
-              <a href="https://mybca.bca.co.id/auth/login" target="_blank" rel="noopener noreferrer" className="group flex h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 text-sm font-semibold text-white backdrop-blur-[40px] transition-colors duration-300 hover:border-blue-500 hover:bg-white hover:text-blue-500"><LoginIcon className="size-6 text-white/80 transition-colors group-hover:text-blue-500" />{tNav("login")}</a>
+              <a href="https://mybca.bca.co.id/auth/login" target="_blank" rel="noopener noreferrer" className="group flex h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 text-size-body-m font-semibold text-white backdrop-blur-[40px] transition-colors duration-300 hover:border-blue-500 hover:bg-white hover:text-blue-500"><LoginIcon className="size-6 text-white/80 transition-colors group-hover:text-blue-500" />{tNav("login")}</a>
             )}
           </div>
         </div>

@@ -48,7 +48,7 @@ function AccordionRow({
         className={`flex w-full cursor-pointer items-center gap-8 text-left ${simple ? "px-4 py-5 sm:py-6" : "p-4"}`}
       >
         <span
-          className={`flex-1 transition-[color,opacity] ${simple ? "text-base leading-6 text-neutral-700" : "text-base leading-6"} ${
+          className={`flex-1 transition-[color,opacity] ${simple ? "text-size-body-l leading-6 text-neutral-700" : "text-size-body-l leading-6"} ${
             glass
               ? open
                 ? "font-bold text-white opacity-100"
@@ -79,7 +79,7 @@ function AccordionRow({
         }`}
       >
         <div className="overflow-hidden">
-          <p className={`px-4 pb-5 text-base leading-[1.5] ${glass ? "text-neutral-100" : "text-neutral-800"}`}>
+          <p className={`px-4 pb-5 text-size-body-l leading-[1.5] ${glass ? "text-neutral-100" : "text-neutral-800"}`}>
             {answer}
           </p>
         </div>
@@ -202,7 +202,7 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
               className="flex h-14 shrink-0 flex-1 flex-col items-start"
             >
               <span
-                className={`flex w-full flex-1 items-center justify-center whitespace-nowrap px-3 text-base ${
+                className={`flex w-full flex-1 items-center justify-center whitespace-nowrap px-3 text-size-body-l ${
                   glass
                     ? isActive
                       ? "font-bold text-white"
@@ -255,7 +255,7 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
           content below the fold, so it reads as sitting on top of that
           hidden content instead of just a static footer. */}
       {footer ? <div className={`${standardHeading ? "-mx-4 w-[calc(100%+2rem)] px-4 xl:-mx-8 xl:w-[calc(100%+4rem)]" : ""} relative z-10 flex flex-col items-center gap-6 border-t border-neutral-300 bg-white pb-0 pt-4 transition-shadow duration-200 ${showBottomShadow ? "shadow-scroll-top" : ""}`}>
-        <p className={`${standardHeading ? "text-base" : "text-lg"} text-center font-semibold text-neutral-800`}>{footer.prompt}</p>
+        <p className={`${standardHeading ? "text-size-body-l" : "text-size-body-xl"} text-center font-semibold text-neutral-800`}>{footer.prompt}</p>
         <div className="grid w-full grid-cols-2 gap-3">
           {footer.actions.map((action) => (
             <a
@@ -265,11 +265,11 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
               target="_blank"
               rel="noopener noreferrer"
               className={action.appearance === "primary"
-                ? "btn-base btn-primary w-full justify-center px-3 text-sm sm:text-base"
-                : "btn-base btn-secondary w-full justify-center gap-2 border-blue-500 bg-white px-2 text-sm sm:text-base"
+                ? "btn-base btn-primary w-full justify-center px-3 text-size-body-m sm:text-size-body-l"
+                : "btn-base btn-secondary w-full justify-center gap-2 border-blue-500 bg-white px-2 text-size-body-m sm:text-size-body-l"
               }
             >
-              {action.haloBrand ? <><span aria-hidden className="text-sm font-semibold italic text-blue-500 sm:text-base">halo</span><img src="/assets/navbar/bca-logo-blue.svg" alt="" className="h-5 w-auto sm:h-6" /></> : null}
+              {action.haloBrand ? <><span aria-hidden className="text-size-body-m font-semibold italic text-blue-500 sm:text-size-body-l">halo</span><img src="/assets/navbar/bca-logo-blue.svg" alt="" className="h-5 w-auto sm:h-6" /></> : null}
               <span className={`${action.appearance === "primary" ? "font-semibold" : "font-semibold text-blue-500"} ${action.haloBrand ? "hidden sm:inline" : ""}`}>{action.label}</span>
             </a>
           ))}
@@ -280,7 +280,7 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
         } ${showBottomShadow ? "shadow-scroll-top" : ""}`}
       >
         <p
-          className={`text-center text-base font-semibold xl:w-[200px] xl:text-left ${
+          className={`text-center text-size-body-l font-semibold xl:w-[200px] xl:text-left ${
             glass ? "text-neutral-100" : "text-neutral-800"
           }`}
         >
@@ -296,7 +296,7 @@ export default function FaqSection({ variant: initialVariant = "glass", categori
               : "btn-secondary"
           }`}
         >
-          <span className={`text-base font-semibold ${glass ? "text-white" : "text-blue-500"}`}>{t("cta")}</span>
+          <span className={`text-size-body-l font-semibold ${glass ? "text-white" : "text-blue-500"}`}>{t("cta")}</span>
           <img loading="lazy" decoding="async"
             src={glass ? "/assets/navbar/icon-arrow-white.svg" : "/assets/navbar/icon-arrow-blue.svg"}
             alt=""

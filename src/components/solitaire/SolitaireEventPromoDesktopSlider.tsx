@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useEffect, useRef, useState } from "react";
 import { useIsLive } from "@/lib/useIsLive";
 
@@ -71,9 +73,9 @@ export default function SolitaireEventPromoDesktopSlider({ slides }: { slides: [
 
       <div className="glass-panel glass-panel-solitaire absolute -bottom-[72px] left-6 z-10 flex h-[200px] w-[400px] max-w-[calc(100%-2rem)] flex-col items-start overflow-clip rounded-2xl p-6 text-white" style={{ backgroundColor: "color-mix(in srgb, var(--color-neutral-800) 50%, transparent)" }}>
         <p className="max-w-[336px] text-heading">{activeSlide.title}</p>
-        <button type="button" className="mt-auto flex items-center gap-0.5 text-base font-semibold text-neutral-100">
+        <button type="button" className="mt-auto flex items-center gap-0.5 text-size-body-l font-semibold text-neutral-100">
           <span>{activeSlide.action}</span>
-          <img src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5 brightness-0 invert" />
+          <IconAsset src="/assets/cycle1/pelajari-icon.svg" alt="" className="size-5 brightness-0 invert" />
         </button>
       </div>
 
@@ -84,7 +86,7 @@ export default function SolitaireEventPromoDesktopSlider({ slides }: { slides: [
           onClick={() => selectSlide(activeIndex - 1)}
           className="flex size-16 items-center justify-center rounded-full bg-neutral-800/50 transition-colors hover:bg-neutral-800/70"
         >
-          <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-8 brightness-0 invert" />
+          <IconAsset src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-8 brightness-0 invert" />
         </button>
         <button
           type="button"
@@ -92,7 +94,7 @@ export default function SolitaireEventPromoDesktopSlider({ slides }: { slides: [
           onClick={() => selectSlide(activeIndex + 1)}
           className="flex size-16 items-center justify-center rounded-full bg-neutral-800/50 transition-colors hover:bg-neutral-800/70"
         >
-          <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-8 brightness-0 invert" />
+          <IconAsset src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-8 brightness-0 invert" />
         </button>
       </div>
 

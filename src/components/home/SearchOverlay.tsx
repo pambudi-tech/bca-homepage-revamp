@@ -1,10 +1,19 @@
 "use client";
 
-import { useCallback, useEffect, useId, useMemo, useRef, useState, type CSSProperties } from "react";
-import { createPortal } from "react-dom";
+import { IconAsset } from "@/components/icons/IconAsset";
+
+import { useContext, useCallback, useEffect, useId, useMemo, useRef, useState, type CSSProperties } from "react";
+import { createPortal as portalIntoDOM } from "react-dom";
 import { useLocale, useTranslations } from "next-intl";
 import { useScrollLock } from "@/components/SmoothScroll";
 import { useIsDesktop } from "@/lib/useIsDesktop";
+import { PreviewViewportContext } from "@/lib/PreviewViewport";
+
+function usePreviewPortal() {
+  const width = useContext(PreviewViewportContext);
+  return { embedded: width !== null, renderPortal: (content: React.ReactNode, target: Element) => width !== null ? content : portalIntoDOM(content, target) };
+}
+
 import SearchPlaceholderCarousel from "./SearchPlaceholderCarousel";
 import SearchRecommendation, { panelMaxHeight } from "./SearchRecommendation";
 import PromoCard from "@/components/promo/PromoCard";
@@ -90,6 +99,7 @@ function SegmentPicker({
 }) {
   const tSearch = useTranslations("search");
   const menuId = useId();
+  const { embedded, renderPortal } = usePreviewPortal();
   const [open, setOpen] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -140,13 +150,13 @@ function SegmentPicker({
           if (!open) positionMenu();
           setOpen((current) => !current);
         }}
-        className={`flex h-[34px] w-[120px] items-center justify-between rounded-full border px-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 ${solitaire ? "focus-visible:ring-neutral-100" : prioritas ? "focus-visible:ring-pgold-500" : "focus-visible:ring-cyan-500"} xl:h-10 ${open ? activeBorder : dark ? "border-white/20" : "border-neutral-300"} ${dark ? `bg-white/10 text-white ${hoverBorder} hover:bg-white/20` : `bg-white text-neutral-800 ${hoverBorder}`}`}
+        className={`flex h-[34px] w-[120px] items-center justify-between rounded-full border px-3 text-size-body-m font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 ${solitaire ? "focus-visible:ring-neutral-100" : prioritas ? "focus-visible:ring-pgold-500" : "focus-visible:ring-cyan-500"} xl:h-10 ${open ? activeBorder : dark ? "border-white/20" : "border-neutral-300"} ${dark ? `bg-white/10 text-white ${hoverBorder} hover:bg-white/20` : `bg-white text-neutral-800 ${hoverBorder}`}`}
       >
         <span className="truncate">{tSearch(`segments.${value}`)}</span>
-        <img src="/assets/promo-page/controls/chevron-down.svg" alt="" aria-hidden className={`h-[8.5px] w-[14.5px] shrink-0 transition-transform ${dark && (prioritas || solitaire) ? "brightness-0 invert" : ""} ${open ? "rotate-180" : ""}`} />
+        <IconAsset src="/assets/promo-page/controls/chevron-down.svg" alt="" aria-hidden className={`h-[8.5px] w-[14.5px] shrink-0 transition-transform ${dark && (prioritas || solitaire) ? "brightness-0 invert" : ""} ${open ? "rotate-180" : ""}`} />
       </button>
-      {open && createPortal(
-        <div ref={menuRef} id={menuId} role="listbox" aria-label={tSearch("segmentLabel")} style={{ position: "fixed", top: menuPosition.top, left: menuPosition.left }} className={`z-[100] min-w-[142px] overflow-hidden rounded-xl border p-1 ${solitaire ? "border-neutral-300 bg-neutral-100 shadow-card" : "border-neutral-200 bg-white shadow-menu"}`}>
+      {open && renderPortal(
+        <div ref={menuRef} id={menuId} role="listbox" aria-label={tSearch("segmentLabel")} style={embedded ? { position: "absolute", top: "calc(100% + 8px)", left: 0 } : { position: "fixed", top: menuPosition.top, left: menuPosition.left }} className={`z-[100] min-w-[142px] overflow-hidden rounded-xl border p-1 ${solitaire ? "border-neutral-300 bg-neutral-100 shadow-card" : "border-neutral-200 bg-white shadow-menu"}`}>
           {SEARCH_SEGMENTS.map((segment) => (
             <button
               key={segment}
@@ -157,7 +167,7 @@ function SegmentPicker({
                 onChange(segment);
                 setOpen(false);
               }}
-              className={`flex h-10 w-full items-center rounded-lg px-3 text-left text-sm leading-5 transition-colors ${solitaire
+              className={`flex h-10 w-full items-center rounded-lg px-3 text-left text-size-body-m leading-5 transition-colors ${solitaire
                 ? `${segment === value ? "bg-neutral-200 font-semibold text-neutral-800" : "font-semibold text-neutral-800"} hover:bg-neutral-200`
                 : prioritas
                 ? `${segment === value ? "font-semibold text-pbrown-700" : "text-neutral-700"} hover:bg-pgold-100 hover:font-semibold hover:text-pbrown-600`
@@ -258,7 +268,7 @@ function PromoSearchResults({
     <section ref={resultsRef} aria-label={tPromo("search.results")} className="min-h-0 overflow-y-auto px-4 pb-8 pt-4 xl:px-0">
       {normalizedKeyword ? (
         <>
-          <p className="mb-3 text-sm font-bold text-neutral-800 xl:text-white">{tPromo("search.results")}</p>
+          <p className="mb-3 text-size-body-m font-bold text-neutral-800 xl:text-white">{tPromo("search.results")}</p>
           {matchingPromos.length ? (
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {matchingPromos.map((promo) => <PromoCard key={promo.id} promo={promo} now={now} reveal={false} compact />)}
@@ -266,7 +276,7 @@ function PromoSearchResults({
           ) : (
             <div className="rounded-3xl bg-white px-5 py-8 text-center shadow-card">
               <p className="font-semibold text-neutral-800">{tPromo("search.noResults")}</p>
-              <p className="mt-1 text-sm text-neutral-600">{tPromo("search.noResultsHint")}</p>
+              <p className="mt-1 text-size-body-m text-neutral-600">{tPromo("search.noResultsHint")}</p>
             </div>
           )}
         </>
@@ -275,20 +285,20 @@ function PromoSearchResults({
           {recent.length > 0 && (
             <section className="mb-5">
               <div className="mb-2 flex items-center justify-between">
-                <p className="text-sm font-bold text-neutral-800 xl:text-white">{tSearch("recentSearches")}</p>
-                <button type="button" onClick={onClearRecent} className={`text-sm font-semibold ${prioritas ? "text-pbrown-500" : "text-blue-500"} hover:underline`}>{tSearch("clearAll")}</button>
+                <p className="text-size-body-m font-bold text-neutral-800 xl:text-white">{tSearch("recentSearches")}</p>
+                <button type="button" onClick={onClearRecent} className={`text-size-body-m font-semibold ${prioritas ? "text-pbrown-500" : "text-blue-500"} hover:underline`}>{tSearch("clearAll")}</button>
               </div>
               <div className="flex flex-wrap gap-2">
                 {recent.map((term) => (
                   <span key={term} className="inline-flex items-center gap-1 rounded-full border border-neutral-300 bg-white py-1.5 pl-3 pr-1.5 xl:bg-white/95">
-                    <button type="button" onClick={() => onSelectRecent(term)} className="text-sm font-semibold text-neutral-800">{term}</button>
+                    <button type="button" onClick={() => onSelectRecent(term)} className="text-size-body-m font-semibold text-neutral-800">{term}</button>
                     <button type="button" onClick={() => onRemoveRecent(term)} aria-label={tSearch("removeTerm", { term })} className="flex size-5 items-center justify-center rounded-full text-neutral-600 hover:bg-neutral-200 hover:text-neutral-800">×</button>
                   </span>
                 ))}
               </div>
             </section>
           )}
-          <p className="mb-3 text-sm font-bold text-neutral-800 xl:text-white">{tPromo("search.popularPromos")}</p>
+          <p className="mb-3 text-size-body-m font-bold text-neutral-800 xl:text-white">{tPromo("search.popularPromos")}</p>
           <div data-lenis-prevent className="hide-scrollbar -mx-4 -my-4 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-4 px-4 py-4 [scrollbar-width:none] xl:mx-0 xl:px-0 xl:scroll-px-0">
             {promos.slice(0, 5).map((promo) => (
               <div key={promo.id} className="w-[200px] shrink-0 snap-start">
@@ -307,13 +317,16 @@ export default function SearchOverlay({
   onClose,
   promoSearchItems,
   initialSegment = "Semua",
+  preview,
 }: {
   open: boolean;
   onClose: () => void;
   /** Its presence makes this a Promo-data-only search. */
   promoSearchItems?: Promo[];
   initialSegment?: SearchSegment;
+  preview?: { keyword: string; recent: string[] };
 }) {
+  const { embedded, renderPortal } = usePreviewPortal();
   const t = useTranslations("hero");
   const tNav = useTranslations("nav");
   const tSearch = useTranslations("search");
@@ -333,14 +346,14 @@ export default function SearchOverlay({
   // `compact` is a prop that restructures the panel, not a set of classes.
   const isDesktop = useIsDesktop();
 
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState(preview?.keyword ?? "");
   const [segment, setSegment] = useState<SearchSegment>(initialSegment);
   const prioritas = segment === "Prioritas";
   const solitaire = segment === "Solitaire";
   const isPriosoliSearch = segment === "Prioritas" || segment === "Solitaire";
   const recentKey = segmentRecentKey(segment);
-  const [recent, setRecent] = useState<string[]>([]);
-  const [mounted, setMounted] = useState(false);
+  const [recent, setRecent] = useState<string[]>(preview?.recent ?? []);
+  const [mounted, setMounted] = useState(embedded);
   const portalRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -366,33 +379,34 @@ export default function SearchOverlay({
     setMounted(true);
   }, []);
 
-  useScrollLock(open);
+  useScrollLock(open && !embedded);
 
   // Each opening starts clean: empty field (so the panel shows recent +
   // popular), a fresh read of the stored recents, and the caret in the input.
   useEffect(() => {
-    if (!open) return;
+    if (preview || !open) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- reads localStorage, unavailable during server render
     setSearchValue("");
     setSegment(initialSegment);
     setRecent(isPromoSearch ? getPromoRecentSearches() : getRecentSearches(segmentRecentKey(initialSegment)));
     inputRef.current?.focus();
-  }, [initialSegment, isPromoSearch, open]);
+  }, [initialSegment, isPromoSearch, open, preview]);
 
   useEffect(() => {
-    if (!open) return;
+    if (preview || !open) return;
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [open, onClose]);
+  }, [open, onClose, preview]);
 
   // Hand focus back to the navbar's search button on close — same treatment as
   // MobileMenu, and for the same reason: otherwise focus falls to <body> and a
   // keyboard user restarts from the top of the page.
   const restoreFocusRef = useRef<HTMLElement | null>(null);
   useEffect(() => {
+    if (preview) return;
     if (open) {
       restoreFocusRef.current = document.activeElement as HTMLElement | null;
       return;
@@ -403,13 +417,13 @@ export default function SearchOverlay({
       restoreFocusRef.current.focus();
       restoreFocusRef.current = null;
     }
-  }, [open]);
+  }, [open, preview]);
 
   // Focus trap: the overlay is portaled to <body>, so every other body child is
   // the page behind it. `inert` takes them out of the tab order and the
   // accessibility tree while the overlay is up, without touching their styles.
   useEffect(() => {
-    if (!open) return;
+    if (!open || embedded) return;
     const root = portalRef.current;
     if (!root) return;
     const siblings = [...document.body.children].filter(
@@ -417,7 +431,7 @@ export default function SearchOverlay({
     );
     siblings.forEach((el) => el.setAttribute("inert", ""));
     return () => siblings.forEach((el) => el.removeAttribute("inert"));
-  }, [open]);
+  }, [open, embedded]);
 
   const selectQuery = (term: string) => setSearchValue(term);
   const changeSegment = (next: SearchSegment) => {
@@ -452,7 +466,7 @@ export default function SearchOverlay({
   // compete at the root stacking level. The scrim has to clear the highest of
   // them or they punch straight through it. See `.hero-search-open` in
   // globals.css for the hero search's equivalent.
-  return createPortal(
+  return renderPortal(
     <div
       ref={portalRef}
       data-shown={open}
@@ -488,7 +502,7 @@ export default function SearchOverlay({
             <button type="button" onClick={onClose} aria-label={tSearch("close")} className="flex size-6 shrink-0 items-center justify-center">
               <svg aria-hidden viewBox="0 0 24 24" fill="none" className={`size-6 ${solitaire ? "text-neutral-800" : "text-pbrown-500"}`}><path d="m14.5 5-7 7 7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </button>
-            <div className={`relative h-10 min-w-0 flex-1 overflow-visible rounded-full border ${solitaire ? "border-neutral-800" : prioritas ? "border-pgold-500" : "border-cyan-500"} bg-neutral-200 backdrop-blur-[28px]`}>
+            <div data-blueprint-part="searchField" className={`relative h-10 min-w-0 flex-1 overflow-visible rounded-full border ${solitaire ? "border-neutral-800" : prioritas ? "border-pgold-500" : "border-cyan-500"} bg-neutral-200 backdrop-blur-[28px]`}>
               <div className="absolute left-0.5 top-0.5 z-20">
                 <SegmentPicker value={segment} onChange={changeSegment} prioritas={segment === "Prioritas"} solitaire={segment === "Solitaire"} />
               </div>
@@ -501,9 +515,9 @@ export default function SearchOverlay({
                 onKeyDown={(e) => {
                   if (e.key === "Enter") submitSearch(searchValue);
                 }}
-                className="relative z-10 h-full w-full bg-transparent pl-[132px] pr-3 text-base text-neutral-800 focus:outline-none"
+                className="relative z-10 h-full w-full bg-transparent pl-[132px] pr-3 text-size-body-l text-neutral-800 focus:outline-none"
               />
-              <SearchPlaceholderCarousel placeholders={placeholders} visible={!searchValue} live={open} lineHeight={40} className="inset-y-0 left-[132px] right-3 text-sm" />
+              <SearchPlaceholderCarousel placeholders={placeholders} visible={!searchValue} live={open} lineHeight={40} className="inset-y-0 left-[132px] right-3 text-size-body-m" />
             </div>
           </header>
           <div className="min-h-0 flex-1">
@@ -526,9 +540,10 @@ export default function SearchOverlay({
         </div>
       ) : (
         <div ref={contentRef} className="flex w-full max-w-[960px] flex-col px-10 pt-[104px]">
-          <p className="mb-4 text-center text-lg font-semibold text-white text-shadow-hero">{isPromoSearch ? tPromo("search.prompt") : t("searchPrompt")}</p>
+          <p className="mb-4 text-center text-size-body-xl font-semibold text-white text-shadow-hero">{isPromoSearch ? tPromo("search.prompt") : t("searchPrompt")}</p>
           <div
-            className="soft-light-border relative h-14 w-full rounded-[50px]"
+            data-blueprint-part="searchField"
+            className="soft-light-border relative z-20 h-14 w-full rounded-[50px]"
             style={{
               background: "rgba(0,0,0,0.5)",
               backdropFilter: "blur(12px) saturate(1.25)",
@@ -549,9 +564,9 @@ export default function SearchOverlay({
               onKeyDown={(e) => {
                 if (e.key === "Enter") submitSearch(searchValue);
               }}
-              className="relative z-10 h-full w-full bg-transparent pl-36 pr-[72px] text-base font-semibold text-white focus:outline-none"
+              className="relative z-10 h-full w-full bg-transparent pl-36 pr-[72px] text-size-body-l font-semibold text-white focus:outline-none"
             />
-            <SearchPlaceholderCarousel placeholders={placeholders} visible={!searchValue} live={open} className="inset-y-0 left-36 right-[72px] text-base" />
+            <SearchPlaceholderCarousel placeholders={placeholders} visible={!searchValue} live={open} className="inset-y-0 left-36 right-[72px] text-size-body-l" />
             <button type="button" aria-label={tNav("search")} onClick={() => submitSearch(searchValue)} className="absolute right-2 top-1/2 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white transition-transform hover:scale-105">
               <span aria-hidden className={`size-6 ${solitaire ? "bg-neutral-800" : "bg-pbrown-500"} [mask-image:url('/assets/cycle1/outline-search-1.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/cycle1/outline-search-1.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]`} />
             </button>

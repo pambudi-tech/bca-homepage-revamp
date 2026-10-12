@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
@@ -42,10 +44,10 @@ const sharedLocations: LoungeLocation[] = [
 function LocationRows({ locations }: { locations: LoungeLocation[] }) {
   return locations.map((location, index) => (
     <tr key={`${location.city}-${location.airport}-${location.lounge}`} className="bg-neutral-100 text-neutral-800">
-      <td className="break-words border-b border-neutral-300 px-1 py-2 text-center align-top text-sm leading-5 sm:px-3 sm:py-3">{index + 1}</td>
-      <td className="break-words border-b border-neutral-300 px-1 py-2 align-top text-sm leading-5 sm:px-4 sm:py-3">{location.city}</td>
-      <td className="break-words border-b border-neutral-300 px-1 py-2 align-top text-sm leading-5 sm:px-4 sm:py-3">{location.airport}</td>
-      <td className="break-words border-b border-neutral-300 px-1 py-2 align-top text-sm leading-5 sm:px-4 sm:py-3">{location.lounge}</td>
+      <td className="break-words border-b border-neutral-300 px-1 py-2 text-center align-top text-size-body-m leading-5 sm:px-3 sm:py-3">{index + 1}</td>
+      <td className="break-words border-b border-neutral-300 px-1 py-2 align-top text-size-body-m leading-5 sm:px-4 sm:py-3">{location.city}</td>
+      <td className="break-words border-b border-neutral-300 px-1 py-2 align-top text-size-body-m leading-5 sm:px-4 sm:py-3">{location.airport}</td>
+      <td className="break-words border-b border-neutral-300 px-1 py-2 align-top text-size-body-m leading-5 sm:px-4 sm:py-3">{location.lounge}</td>
     </tr>
   ));
 }
@@ -59,7 +61,7 @@ export default function ExecutiveAirportLoungeTable() {
 
   return (
     <div className="w-full max-w-full overflow-x-hidden rounded-xl border border-neutral-300">
-      <table className="w-full min-w-0 table-fixed border-separate border-spacing-0 text-sm leading-5">
+      <table className="w-full min-w-0 table-fixed border-separate border-spacing-0 text-size-body-m leading-5">
         <colgroup>
           <col className="w-[9%] sm:w-[8%]" />
           <col className="w-[19%] sm:w-[26%]" />
@@ -71,7 +73,7 @@ export default function ExecutiveAirportLoungeTable() {
             <th scope="col" className="h-12 border-b border-neutral-300 px-1 text-center font-semibold sm:px-3">{t("number")}</th>
             <th scope="col" aria-sort={sortDirection ?? "none"} className="h-12 border-b border-neutral-300 text-left font-semibold">
               <button type="button" onClick={() => setSortDirection(sortDirection === "ascending" ? "descending" : "ascending")} className="flex h-12 w-full items-center gap-1 px-1 text-left sm:gap-1 sm:px-4">
-                {t("name")}<img src="/assets/prioritas/detail/lounge-table-sort.svg" alt="" width="20" height="20" className="size-4 shrink-0 sm:size-5" />
+                {t("name")}<IconAsset src="/assets/prioritas/detail/lounge-table-sort.svg" alt="" width="20" height="20" className="size-4 shrink-0 sm:size-5" />
               </button>
             </th>
             <th scope="col" className="h-12 border-b border-neutral-300 px-1 text-left font-semibold sm:px-4">{t("airport")}</th>

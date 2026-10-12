@@ -83,8 +83,8 @@ export default function CreditCardTutorialSection() {
           <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-neutral-900/75" />
 
           <div className="mx-auto max-w-[640px] px-5 pb-8 pt-10 sm:px-8 sm:pb-12 sm:pt-12 xl:px-12">
-            <h3 className="text-2xl font-semibold leading-8 text-white sm:text-3xl sm:leading-10">{t("heading")}</h3>
-            <p className="mt-3 text-sm leading-5 text-neutral-100 sm:text-base sm:leading-6">{t("description")}</p>
+            <h3 className="text-size-display-m font-semibold leading-8 text-white sm:text-display-l">{t("heading")}</h3>
+            <p className="mt-3 text-size-body-m leading-5 text-neutral-100 sm:text-size-body-l sm:leading-6">{t("description")}</p>
 
             {!expanded ? (
               <img
@@ -139,9 +139,9 @@ export default function CreditCardTutorialSection() {
 
             {expanded ? (
               <div key={activeStep} className="content-fade-in mt-5 text-center sm:mt-6">
-                <p aria-live="polite" className="text-sm font-medium text-white/80">{t("stepLabel", { current: activeStep + 1 })}</p>
-                <h4 className="mt-2 text-xl font-semibold leading-7 text-white">{steps[activeStep].title}</h4>
-                <p aria-live="polite" className="mx-auto mt-2 max-w-[540px] text-sm leading-5 text-neutral-100 sm:text-base sm:leading-6">{steps[activeStep].description}</p>
+                <p aria-live="polite" className="text-size-body-m font-medium text-white/80">{t("stepLabel", { current: activeStep + 1 })}</p>
+                <h4 className="mt-2 text-size-display-s font-semibold leading-7 text-white">{steps[activeStep].title}</h4>
+                <p aria-live="polite" className="mx-auto mt-2 max-w-[540px] text-size-body-m leading-5 text-neutral-100 sm:text-size-body-l sm:leading-6">{steps[activeStep].description}</p>
                 <a
                   href="https://www.bca.co.id/mybca#/tutorials/cara-mengajukan-kartu-kredit"
                   target="_blank"
@@ -160,7 +160,7 @@ export default function CreditCardTutorialSection() {
                 aria-expanded={false}
                 aria-controls="credit-card-tutorial-carousel"
                 onClick={toggleTutorial}
-                className="mx-auto mt-3 flex min-h-11 items-center justify-center gap-2 px-4 text-base font-semibold text-white transition-colors hover:text-cyan-300"
+                className="mx-auto mt-3 flex min-h-11 items-center justify-center gap-2 px-4 text-size-body-l font-semibold text-white transition-colors hover:text-cyan-300"
               >
                 {t("showTutorial")}
                 <Chevron />
@@ -168,10 +168,10 @@ export default function CreditCardTutorialSection() {
             ) : null}
 
             <div className="mt-5 grid w-full grid-cols-2 gap-3 border-t border-white/30 pt-6 sm:mx-auto sm:max-w-[440px]">
-              <ApplyInMyBcaLink className="btn-base btn-primary justify-center whitespace-nowrap px-3 text-sm sm:text-base">
+              <ApplyInMyBcaLink className="btn-base btn-primary justify-center whitespace-nowrap px-3 text-size-body-m sm:text-size-body-l">
                 {t("applyMyBca")}
               </ApplyInMyBcaLink>
-              <a href="https://webform.bca.co.id/applycc" className="btn-base btn-secondary !border-white justify-center whitespace-nowrap bg-transparent px-3 text-sm text-white hover:bg-white/10 sm:text-base">
+              <a href="https://webform.bca.co.id/applycc" className="btn-base btn-secondary !border-white justify-center whitespace-nowrap bg-transparent px-3 text-size-body-m text-white hover:bg-white/10 sm:text-size-body-l">
                 {t("applyWeb")}
               </a>
             </div>

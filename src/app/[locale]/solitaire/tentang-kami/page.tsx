@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getInformationPageLinks } from "@/components/prioritas/information-page-links";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import BackToTop from "@/components/home/BackToTop";
 import Footer from "@/components/home/Footer";
@@ -15,11 +16,10 @@ export async function generateMetadata({ params }: { params: Promise<PageParams>
 export default async function SolitaireAboutPage({ params }: { params: Promise<PageParams> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const relatedLinks = await getInformationPageLinks("solitaire", "tentang-kami");
   const t = await getTranslations("prioritasAbout");
   const detailT = await getTranslations("lifestylePrivilegeDetail");
   const solitaireT = await getTranslations("solitaireHero");
-  const riplayT = await getTranslations("prioritasRiplay");
-  const branchT = await getTranslations("prioritasFindBranch");
 
   return <>
     <main id="main-content" className="flex min-h-screen flex-1 flex-col overflow-x-clip bg-neutral-200">
@@ -31,10 +31,7 @@ export default async function SolitaireAboutPage({ params }: { params: Promise<P
         showHero={false}
         showRecommendations={false}
         alignMobileContentToIndexTitle
-        relatedPages={{ title: t("relatedTitle"), links: [
-          { href: "/solitaire/temukan-kami", label: branchT("title") },
-          { href: "/solitaire/riplay", label: riplayT("title") },
-        ] }}
+        relatedPages={{ title: t("relatedTitle"), links: relatedLinks }}
         copy={{
           subNav: {
             label: detailT("subNavLabel"),

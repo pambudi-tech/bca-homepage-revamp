@@ -1,5 +1,6 @@
 "use client";
 
+import BrandPageSurface from "@/components/prioritas/BrandPageSurface";
 import { useLayoutEffect, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { usePathname } from "@/i18n/navigation";
@@ -18,9 +19,7 @@ export default function SolitaireDirectoryLayout({ children }: { children: React
   const banking = useTranslations("bankingSolutionIndex");
   const solitaire = useTranslations("solitaireHero");
   const magazine = useTranslations("magazineIndex");
-  const bankingTab = pathname === "/solitaire/banking-solution"
-    ? "privilege"
-    : pathname.endsWith("/wealth-insight")
+  const bankingTab = pathname.endsWith("/wealth-insight")
       ? "wealth"
       : pathname.endsWith("/kurs")
         ? "kurs"
@@ -38,7 +37,7 @@ export default function SolitaireDirectoryLayout({ children }: { children: React
   }, [hasDirectoryHeader, lenis, pathname]);
 
   if (!hasDirectoryHeader) {
-    return <>{children}<Footer variant="prioritas" tone="solitaire" hideMagazineLink /></>;
+    return <>{children}{pathname !== "/solitaire/banking-solution" && <Footer variant="prioritas" tone="solitaire" hideMagazineLink />}</>;
   }
 
   const breadcrumb = isMagazineIndex ? magazine("breadcrumb") : isEventIndex ? signature("tabs.event") : isPrivilegeDirectory ? signature(`tabs.${privilegeTab}`) : banking("breadcrumb");
@@ -62,10 +61,12 @@ export default function SolitaireDirectoryLayout({ children }: { children: React
         tone="solitaire"
       />
     </div>
+    <BrandPageSurface tone="solitaire">
     {bankingTab ? <BankingSolutionIndexTabs activeTab={bankingTab} basePath="/solitaire" tone="solitaire" /> : null}
     {isEventIndex ? <PrioritasIndexTabs activeTab="event" basePath="/solitaire" tone="solitaire" /> : null}
     {isPrivilegeDirectory ? <PrioritasIndexTabs activeTab={privilegeTab!} basePath="/solitaire" tone="solitaire" /> : null}
     {children}
+    </BrandPageSurface>
     <Footer variant="prioritas" tone="solitaire" hideMagazineLink />
   </>;
 }

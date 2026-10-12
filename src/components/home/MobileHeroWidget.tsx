@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import {
   useEffect,
   useLayoutEffect,
@@ -143,18 +145,18 @@ function KursCard({ entry, beliLabel, jualLabel }: { entry: KursEntry; beliLabel
           then wrap (flag on top, code below) once the card gets narrow. */}
       <div className="flex min-w-0 max-w-[84px] flex-1 flex-wrap content-center items-center gap-x-3 gap-y-1">
         <img src={entry.flag} alt={entry.code} className="size-5 shrink-0" />
-        <p className="w-12 text-sm font-semibold leading-6 text-white">{entry.code}</p>
+        <p className="w-12 text-size-body-m font-semibold leading-6 text-white">{entry.code}</p>
       </div>
       {/* value block: fill but holds a 120px min, so the beli/jual pairs stack
           rather than shrinking — the title is what collapses first. */}
       <div className="flex min-w-[120px] flex-1 flex-wrap items-center justify-end gap-2 font-semibold text-blue-300 opacity-90">
         <div className="flex items-center gap-2">
           <span className="w-8 text-center text-[10px] uppercase leading-[12px] tracking-[1.5px]">{beliLabel}</span>
-          <span className="w-[72px] text-right text-sm leading-5">{entry.beli}</span>
+          <span className="w-[72px] text-right text-size-body-m leading-5">{entry.beli}</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="w-8 text-center text-[10px] uppercase leading-[12px] tracking-[1.5px]">{jualLabel}</span>
-          <span className="w-[72px] text-right text-sm leading-5">{entry.jual}</span>
+          <span className="w-[72px] text-right text-size-body-m leading-5">{entry.jual}</span>
         </div>
       </div>
     </a>
@@ -425,12 +427,12 @@ export default function MobileHeroWidget({
               } as CSSProperties
             }
           >
-            {/* The input is text-base (16px) on purpose: iOS Safari zooms the
+            {/* The input is text-size-body-l (16px) on purpose: iOS Safari zooms the
                 page in when a focused input's font-size is below 16px. The
                 placeholder is a sibling overlay, not a real `placeholder`
                 attribute, so it keeps the design's 14px — Safari only measures
                 the input itself. Don't "align" the two by dropping the input to
-                text-sm; that brings the zoom back. */}
+                text-size-body-m; that brings the zoom back. */}
             <input
               type="text"
               aria-label={tNav("search")}
@@ -447,13 +449,13 @@ export default function MobileHeroWidget({
                   e.currentTarget.blur();
                 }
               }}
-              className="relative z-10 h-full w-full bg-transparent pl-6 pr-14 text-base font-semibold text-white focus:outline-none"
+              className="relative z-10 h-full w-full bg-transparent pl-6 pr-14 text-size-body-l font-semibold text-white focus:outline-none"
             />
             <SearchPlaceholderCarousel
               placeholders={placeholders}
               visible={!searchValue && !searchFocused}
               live={live}
-              className="inset-y-0 left-6 right-14 text-sm"
+              className="inset-y-0 left-6 right-14 text-size-body-m"
             />
             <button
               aria-label={tNav("search")}
@@ -541,8 +543,8 @@ export default function MobileHeroWidget({
                   className={`absolute inset-y-0 left-0 flex w-full flex-col items-start justify-center gap-2 p-[14px] text-left transition-opacity duration-200 ${loginOpen ? "pointer-events-none opacity-0" : "opacity-100 delay-100"
                     }`}
                 >
-                  <img src={action.icon} alt="" className="size-6" />
-                  <p className="whitespace-nowrap text-base leading-[19px] font-bold text-neutral-800">
+                  <IconAsset src={action.icon} alt="" className="size-6" />
+                  <p className="whitespace-nowrap text-size-body-l leading-[19px] font-bold text-neutral-800">
                     {action.title}
                   </p>
                 </button>
@@ -566,8 +568,8 @@ export default function MobileHeroWidget({
                     aria-label={t("closeLogin")}
                     className="flex shrink-0 items-center gap-4"
                   >
-                    <img src={action.icon} alt="" className="size-6 shrink-0" />
-                    <p className="min-w-0 flex-1 text-left text-base leading-[19px] font-bold text-neutral-800">
+                    <IconAsset src={action.icon} alt="" className="size-6 shrink-0" />
+                    <p className="min-w-0 flex-1 text-left text-size-body-l leading-[19px] font-bold text-neutral-800">
                       {action.title}
                     </p>
                     <img
@@ -600,8 +602,8 @@ export default function MobileHeroWidget({
                         rel="noopener noreferrer"
                         className="flex min-w-0 flex-1 flex-col items-start justify-start gap-2 rounded-xl border border-neutral-300 bg-white p-[14px] transition-[background-color,transform] duration-200 active:scale-95 active:bg-neutral-200"
                       >
-                        <img src={dest.icon} alt="" className={`${dest.iconClass} shrink-0 object-contain`} />
-                        <p className="w-full text-left text-sm font-semibold text-neutral-800">
+                        <IconAsset src={dest.icon} alt="" className={`${dest.iconClass} shrink-0 object-contain`} />
+                        <p className="w-full text-left text-size-body-m font-semibold text-neutral-800">
                           {dest.label}
                         </p>
                       </a>
@@ -619,8 +621,8 @@ export default function MobileHeroWidget({
                   if (action.scrollTo) goToPromo();
                 }}
               >
-                <img src={action.icon} alt="" className="size-6" />
-                <p className="whitespace-nowrap text-base leading-[19px] font-bold text-neutral-800">
+                <IconAsset src={action.icon} alt="" className="size-6" />
+                <p className="whitespace-nowrap text-size-body-l leading-[19px] font-bold text-neutral-800">
                   {action.title}
                 </p>
               </QuickActionCard>

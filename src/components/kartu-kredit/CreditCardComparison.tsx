@@ -194,7 +194,7 @@ function ComparisonCardControls({
                   if (nextIndex !== null) setMenuTop(event.currentTarget.getBoundingClientRect().bottom + 4);
                   setOpenIndex(nextIndex);
                 }}
-                className="flex h-14 w-full items-center justify-between gap-2 rounded-xl border border-neutral-300 bg-neutral-200 px-2 text-left text-sm font-semibold leading-5 text-neutral-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 xl:px-3"
+                className="flex h-14 w-full items-center justify-between gap-2 rounded-xl border border-neutral-300 bg-neutral-200 px-2 text-left text-size-body-m font-semibold leading-5 text-neutral-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 xl:px-3"
               >
                 <span className="line-clamp-2 min-w-0">{card.title}</span>
                 <img src="/assets/kartu-kredit/chevron-down.svg" alt="" className={`size-6 shrink-0 transition-transform ${openIndex === index ? "rotate-180" : ""}`} />
@@ -206,7 +206,7 @@ function ComparisonCardControls({
                     if (!clusterCards.length) return null;
                     return (
                       <div key={cluster}>
-                        <p className="px-3 pb-1 pt-2 text-xs font-bold text-neutral-500">{t(`cardClusters.${cluster}`)}</p>
+                        <p className="px-3 pb-1 pt-2 text-size-body-s font-bold text-neutral-500">{t(`cardClusters.${cluster}`)}</p>
                         {clusterCards.map((option) => {
                           const isDisabled = cards.some((selected, selectedIndex) => selectedIndex !== index && selected.id === option.id);
                           return (
@@ -220,7 +220,7 @@ function ComparisonCardControls({
                                 onCardChange(index, option.id);
                                 setOpenIndex(null);
                               }}
-                              className="block w-full rounded-lg px-3 py-2 text-left text-sm leading-5 text-neutral-700 transition-colors hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-40"
+                              className="block w-full rounded-lg px-3 py-2 text-left text-size-body-m leading-5 text-neutral-700 transition-colors hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-40"
                             >
                               <span className="line-clamp-2">{option.title}</span>
                             </button>
@@ -232,7 +232,7 @@ function ComparisonCardControls({
                 </div>
               ) : null}
             </div>
-            <ApplyInMyBcaLink className="btn-base btn-primary h-10 w-full text-sm font-semibold">
+            <ApplyInMyBcaLink className="btn-base btn-primary h-10 w-full text-size-body-m font-semibold">
               {applyLabel}
             </ApplyInMyBcaLink>
           </article>
@@ -255,14 +255,14 @@ function ComparisonTableSection({
 }) {
   return (
     <section id={`comparison-${tab}`} className="scroll-mt-[190px] overflow-hidden bg-white" aria-labelledby={`comparison-${tab}-title`}>
-      <h2 id={`comparison-${tab}-title`} className="bg-blue-100 px-4 py-3 text-xs font-bold uppercase tracking-[0.12em] text-blue-500 xl:px-6 xl:py-4 xl:text-sm">{title}</h2>
+      <h2 id={`comparison-${tab}-title`} className="bg-blue-100 px-4 py-3 text-size-body-s font-bold uppercase tracking-[0.12em] text-blue-500 xl:px-6 xl:py-4 xl:text-size-body-m">{title}</h2>
       <div className="overflow-x-auto px-0 py-0">
-        <table className="w-full min-w-0 table-fixed border-collapse text-left text-sm">
+        <table className="w-full min-w-0 table-fixed border-collapse text-left text-size-body-m">
           {groups.map((group, groupIndex) => (
             <tbody key={group.title || "main"}>
               {group.title ? (
                 <tr>
-                  <th colSpan={cards.length} className="bg-blue-100 px-4 py-3 text-left text-xs font-semibold text-blue-700">{group.title}</th>
+                  <th colSpan={cards.length} className="bg-blue-100 px-4 py-3 text-left text-size-body-s font-semibold text-blue-700">{group.title}</th>
                 </tr>
               ) : null}
               {group.points.map((point, pointIndex) => (

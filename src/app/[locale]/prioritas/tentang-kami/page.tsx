@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getInformationPageLinks } from "@/components/prioritas/information-page-links";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import BackToTop from "@/components/home/BackToTop";
 import PrioritasDetailExperience from "@/components/prioritas/PrioritasDetailExperience";
@@ -14,10 +15,9 @@ export async function generateMetadata({ params }: { params: Promise<PageParams>
 export default async function PrioritasAboutPage({ params }: { params: Promise<PageParams> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const relatedLinks = await getInformationPageLinks("prioritas", "tentang-kami");
   const t = await getTranslations("prioritasAbout");
   const detailT = await getTranslations("lifestylePrivilegeDetail");
-  const riplayT = await getTranslations("prioritasRiplay");
-  const branchT = await getTranslations("prioritasFindBranch");
   return (
     <main id="main-content" className="flex min-h-screen flex-1 flex-col overflow-x-clip bg-pgold-200">
       <PrioritasDetailExperience
@@ -27,10 +27,7 @@ export default async function PrioritasAboutPage({ params }: { params: Promise<P
         showHero={false}
         showRecommendations={false}
         alignMobileContentToIndexTitle
-        relatedPages={{ title: t("relatedTitle"), links: [
-          { href: "/prioritas/temukan-kami", label: branchT("title") },
-          { href: "/prioritas/riplay", label: riplayT("title") },
-        ] }}
+        relatedPages={{ title: t("relatedTitle"), links: relatedLinks }}
         copy={{
           subNav: {
             label: detailT("subNavLabel"),

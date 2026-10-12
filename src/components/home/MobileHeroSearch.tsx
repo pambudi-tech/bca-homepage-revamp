@@ -22,7 +22,7 @@ export default function MobileHeroSearch() {
         visible
         live
         lineHeight={40}
-        className="inset-y-0 left-11 right-3 text-sm"
+        className="inset-y-0 left-11 right-3 text-size-body-m"
       />
     </button>
   );

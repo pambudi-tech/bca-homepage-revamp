@@ -165,7 +165,7 @@ export default function SoliprioCard({
             photo alone. */}
         <span aria-hidden className="soliprio-beam pointer-events-none" />
 
-        <span className="flex items-center gap-1 whitespace-nowrap text-sm font-semibold leading-5 text-white">
+        <span className="flex items-center gap-1 whitespace-nowrap text-size-body-m font-semibold leading-5 text-white">
           {label}
           <ArrowRight />
         </span>

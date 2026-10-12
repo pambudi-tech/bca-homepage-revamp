@@ -1,3 +1,4 @@
+import { IconAsset } from "@/components/icons/IconAsset";
 import PrioritasFeaturedBanner from "@/components/prioritas/PrioritasFeaturedBanner";
 import SolitaireEventPromoDesktopSlider from "@/components/solitaire/SolitaireEventPromoDesktopSlider";
 import type { FeaturedBannerSlide } from "@/components/prioritas/featured-banner-data";
@@ -38,7 +39,7 @@ export default async function SolitaireEventPromoSection({
   return (
     <section id="event-promo" className="relative isolate min-h-[720px] overflow-hidden py-12 text-neutral-900 xl:min-h-[800px] xl:py-20" style={{ backgroundImage: "linear-gradient(to bottom, var(--color-neutral-400) 30%, var(--color-neutral-600) 60%, var(--color-neutral-400) 90%)" }}>
       <img
-        src="/assets/solitaire/event-promo/background.jpeg?v=1"
+        src="/assets/solitaire/event-promo/background.webp?v=1"
         alt=""
         aria-hidden
         className="pointer-events-none absolute inset-x-0 bottom-0 block h-auto w-full object-contain object-bottom xl:inset-0 xl:size-full xl:object-cover [mask-image:linear-gradient(to_top,black_0%,black_58%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_top,black_0%,black_58%,transparent_100%)]"
@@ -50,11 +51,11 @@ export default async function SolitaireEventPromoSection({
             {eyebrow}
           </p>
           <div className="flex flex-col gap-6 xl:flex-1 xl:flex-row xl:items-start xl:justify-between xl:gap-10">
-            <h2 className="text-heading max-w-[560px] text-neutral-900 xl:text-display">{heading}</h2>
+            <h2 className="text-display-m max-w-[560px] text-neutral-900 xl:text-display">{heading}</h2>
             <div className="hidden shrink-0 xl:block">
               <Link href="/solitaire/event" className={solitaireButtonClassName({ variant: "secondary", size: "large" })}>
                 <span className="prio-button__label">{viewMore}</span>
-                <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5 brightness-0" />
+                <IconAsset src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5 brightness-0" />
               </Link>
             </div>
           </div>
@@ -78,7 +79,7 @@ export default async function SolitaireEventPromoSection({
         <div className="xl:hidden">
           <Link href="/solitaire/event" className={solitaireButtonClassName({ variant: "secondary", size: "large", className: "mt-8 w-full" })}>
             <span className="prio-button__label">{viewMore}</span>
-            <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5 brightness-0" />
+            <IconAsset src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5 brightness-0" />
           </Link>
         </div>
       </div>

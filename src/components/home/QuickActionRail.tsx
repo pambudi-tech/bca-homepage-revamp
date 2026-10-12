@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -125,8 +127,8 @@ export default function QuickActionRail({
       {mobileActions.map((action) => {
         const content = (
           <>
-            <img src={action.icon} alt="" className="size-6 brightness-0 invert" />
-            <span className="text-xs font-semibold leading-[18px] text-neutral-100">{action.label}</span>
+            <IconAsset src={action.icon} alt="" className="size-6 brightness-0 invert" />
+            <span className="text-size-body-s font-semibold leading-[18px] text-neutral-100">{action.label}</span>
           </>
         );
 
@@ -217,7 +219,7 @@ export default function QuickActionRail({
                   />
                 </svg>
               )}
-              <img
+              <IconAsset
                 src={action.icon}
                 alt=""
                 className={`z-10 size-8 brightness-0 invert ${shape === "top" ? "absolute bottom-4" : shape === "bottom" ? "absolute top-4" : "relative"}`}
@@ -266,7 +268,7 @@ export default function QuickActionRail({
 
 function RailTooltip({ label, positionClass }: { label: string; positionClass: string }) {
   return (
-    <span className={`pointer-events-none absolute ${positionClass} right-[calc(100%+12px)] z-30 w-max max-w-48 -translate-y-1/2 rounded-xl border border-neutral-200 bg-white px-3 py-2 text-left text-sm font-semibold leading-5 text-neutral-800 shadow-panel`}>
+    <span className={`pointer-events-none absolute ${positionClass} right-[calc(100%+12px)] z-30 w-max max-w-48 -translate-y-1/2 rounded-xl border border-neutral-200 bg-white px-3 py-2 text-left text-size-body-m font-semibold leading-5 text-neutral-800 shadow-panel`}>
       {label}
       <span
         aria-hidden

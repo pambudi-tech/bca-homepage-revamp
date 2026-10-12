@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -64,10 +66,10 @@ export default function InfoTip({ label, message, tone = "neutral" }: { label: s
         }}
         className="inline-flex size-6 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
       >
-        {tone === "prioritas" || tone === "solitaire" ? <span aria-hidden className={`size-6 ${tone === "solitaire" ? "bg-blue-500" : "bg-pbrown-500"}`} style={{ maskImage: "url(/assets/member-login/info.svg)", WebkitMaskImage: "url(/assets/member-login/info.svg)", maskRepeat: "no-repeat", WebkitMaskRepeat: "no-repeat", maskPosition: "center", WebkitMaskPosition: "center", maskSize: "contain", WebkitMaskSize: "contain" }} /> : <img aria-hidden src="/assets/member-login/info.svg" alt="" className="size-6" />}
+        {tone === "prioritas" || tone === "solitaire" ? <span aria-hidden className={`size-6 ${tone === "solitaire" ? "bg-blue-500" : "bg-pbrown-500"}`} style={{ maskImage: "url(/assets/member-login/info.svg)", WebkitMaskImage: "url(/assets/member-login/info.svg)", maskRepeat: "no-repeat", WebkitMaskRepeat: "no-repeat", maskPosition: "center", WebkitMaskPosition: "center", maskSize: "contain", WebkitMaskSize: "contain" }} /> : <IconAsset aria-hidden src="/assets/member-login/info.svg" alt="" className="size-6" />}
       </button>
       {open ? createPortal(
-        <span ref={tooltipRef} id={id} role="tooltip" style={{ position: "fixed", top: position.top, left: position.left, visibility: position.ready ? "visible" : "hidden" }} className={`z-[120] w-56 max-w-[calc(100vw-16px)] rounded-xl border px-3 py-2 text-left text-sm leading-5 shadow-panel ${tone === "solitaire" ? "border-neutral-700 bg-neutral-800 text-neutral-200" : "border-neutral-200 bg-white text-neutral-800"}`}>
+        <span ref={tooltipRef} id={id} role="tooltip" style={{ position: "fixed", top: position.top, left: position.left, visibility: position.ready ? "visible" : "hidden" }} className={`z-[120] w-56 max-w-[calc(100vw-16px)] rounded-xl border px-3 py-2 text-left text-size-body-m leading-5 shadow-panel ${tone === "solitaire" ? "border-neutral-700 bg-neutral-800 text-neutral-200" : "border-neutral-200 bg-white text-neutral-800"}`}>
           {message}
           <span aria-hidden style={{ left: position.arrowX, ...(position.above ? { bottom: -6 } : { top: -6 }) }} className={`absolute size-3 rotate-45 ${tone === "solitaire" ? "border-neutral-700 bg-neutral-800" : "border-neutral-200 bg-white"} ${position.above ? "rounded-br-[4px] border-r border-b" : "rounded-tl-[4px] border-l border-t"}`} />
         </span>,

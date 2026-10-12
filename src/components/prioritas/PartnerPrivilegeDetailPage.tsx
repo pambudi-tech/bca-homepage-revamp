@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import BackToTop from "@/components/home/BackToTop";
+import PartnerPrivilegeDetailView, { type PartnerDetailViewData } from "./PartnerPrivilegeDetailView";
 import PrioritasDetailExperience from "@/components/prioritas/PrioritasDetailExperience";
 import { getPrivilegeOffer, getPrivilegePromos, splitPartnerTerms, type PrivilegeSection } from "@/lib/partner-privileges";
 import type { MemberSignatureVoucherStatus } from "@/lib/member-signature-voucher";
@@ -12,13 +12,14 @@ function available(value: string): string {
   return trimmed === "-" ? "" : trimmed;
 }
 
-export default async function PartnerPrivilegeDetailPage({
+export async function buildPartnerPrivilegeDetail({
   locale,
   partnerId,
   section,
   memberArea = false,
   memberVoucherStatus,
   publicBasePath = "/prioritas",
+  preview,
 }: {
   locale: string;
   partnerId: string;
@@ -26,14 +27,15 @@ export default async function PartnerPrivilegeDetailPage({
   memberArea?: boolean;
   memberVoucherStatus?: MemberSignatureVoucherStatus;
   publicBasePath?: string;
+  preview?: { brand: "prioritas" | "solitaire"; member?: boolean };
 }) {
   setRequestLocale(locale);
   const offer = getPrivilegeOffer(section, partnerId);
   if (!offer) notFound();
 
   const detailT = await getTranslations("lifestylePrivilegeDetail");
-  const session = memberArea ? (await cookies()).get(MEMBER_SESSION_COOKIE)?.value : undefined;
-  const memberBrand = getMemberBrandFromSession(session);
+  const session = !preview && memberArea ? (await cookies()).get(MEMBER_SESSION_COOKIE)?.value : undefined;
+  const memberBrand = preview ? preview.member ? preview.brand : null : getMemberBrandFromSession(session);
   const hasMemberSession = memberArea ? memberBrand !== null : memberBrand === (publicBasePath === "/solitaire" ? "solitaire" : "prioritas");
   const memberPreviewName = hasMemberSession && memberBrand
     ? await (await getTranslations("memberOverview"))(memberBrand === "solitaire" ? "solitairePreviewFullName" : "previewFullName")
@@ -59,10 +61,9 @@ export default async function PartnerPrivilegeDetailPage({
     .replace(/^s\/d\s*/i, "")
     .replace(/\s+s\/d\s+/i, " – ");
 
-  return (
-    <main id="main-content" className={`flex min-h-screen flex-1 flex-col overflow-x-clip ${publicBasePath === "/solitaire" && !memberArea || memberArea && memberBrand === "solitaire" ? "bg-neutral-200" : "bg-pgold-200"}`}>
-      <PrioritasDetailExperience
+  const detail = <PrioritasDetailExperience
         publicBasePath={publicBasePath}
+        preview={preview ? { brand: preview.brand } : undefined}
         memberArea={memberArea}
         memberPreviewName={memberPreviewName}
         memberSessionActive={hasMemberSession}
@@ -118,8 +119,10 @@ export default async function PartnerPrivilegeDetailPage({
             },
           } : {}),
         }}
-      />
-      <BackToTop bottomInset="24px" revealAtBottom />
-    </main>
-  );
+      />;
+  return { surface: `flex min-h-screen flex-1 flex-col overflow-x-clip ${publicBasePath === "/solitaire" && !memberArea || memberArea && memberBrand === "solitaire" ? "bg-neutral-200" : "bg-pgold-200"}`, detail: detail.props } as PartnerDetailViewData;
+}
+
+export default async function PartnerPrivilegeDetailPage(args: Parameters<typeof buildPartnerPrivilegeDetail>[0]) {
+  return <PartnerPrivilegeDetailView {...await buildPartnerPrivilegeDetail(args)} />;
 }

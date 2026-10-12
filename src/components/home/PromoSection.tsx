@@ -19,7 +19,7 @@ function MorePromoCard({ reveal = true, variant = "default" }: { reveal?: boolea
       className={`group relative block h-[360px] w-[302px] shrink-0 overflow-clip rounded-3xl border transition-transform duration-300 ease-out hover:-translate-y-1.5 ${variant === "prioritas" ? "border-pgold-300" : "border-white"}`}
       style={{ backgroundImage: variant === "prioritas" ? "linear-gradient(180deg, var(--color-pbrown-800) 0%, var(--color-pgold-600) 100%)" : "linear-gradient(180deg, #005caa 0%, #00b5f0 100%)" }}
     >
-      <p className={`absolute left-6 top-6 w-[157px] text-2xl leading-[1.3] tracking-[-0.48px] ${variant === "prioritas" ? "text-pgold-100" : "text-white"}`}>
+      <p className={`absolute left-6 top-6 w-[157px] text-size-display-m leading-[1.3] tracking-[-0.48px] ${variant === "prioritas" ? "text-pgold-100" : "text-white"}`}>
         {t("viewMore")}
       </p>
       <svg viewBox="0 0 24 24" fill="none" className="absolute right-[19px] top-6 size-8 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">

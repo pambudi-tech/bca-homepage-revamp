@@ -1,6 +1,12 @@
 "use client";
 
+import { privilegeDetailBase } from "@/lib/privilege-paths";
+
+import BrandPageSurface from "./BrandPageSurface";
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useEffect, useLayoutEffect, useState } from "react";
+import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import ContentCard from "@/components/prioritas/ContentCard";
@@ -29,12 +35,13 @@ import GeneralPrivateBankingEntryPoints from "@/components/general/GeneralPrivat
 
 const ASSET_ROOT = "/assets/prioritas/detail/molton-brown";
 type DetailPanel = string;
-type CustomDetailSection = { id: string; title: string; content: string };
+type CustomDetailSection = { id: string; title: string; content: string; contentNode?: ReactNode };
 
 type DetailCopy = {
   subNav: { label: string; privilege: string; banking: string; magazine: string };
   breadcrumb: { home: string; category: string; current: string };
   title: string;
+  subtitle?: string;
   brand?: string;
   detail: { title: string; content: string; description?: string };
   terms: { title: string; items: string[] };
@@ -70,14 +77,15 @@ export function DetailRow({
   return (
     <section className={`group relative rounded-xl transition-colors ${solitaire ? "hover:bg-neutral-200" : "hover:bg-pgold-100"} before:absolute before:inset-x-4 before:-top-2 before:border-t before:border-neutral-300 before:content-[''] first:before:hidden`}>
       <button
+        data-blueprint-part="accordionHeader"
         type="button"
         aria-expanded={open}
         onClick={onToggle}
-        className={`flex w-full items-center justify-between gap-6 rounded-xl bg-transparent text-left font-semibold text-neutral-900 transition-colors ${solitaire ? "group-hover:text-neutral-900" : "group-hover:text-pbrown-500"} ${previewViewport === "desktop" ? "p-4 text-title" : previewViewport === "mobile" ? "p-2 text-lg" : "p-2 text-lg xl:p-4 xl:text-title"}`}
+        className={`flex w-full items-center justify-between gap-6 rounded-xl bg-transparent text-left font-semibold text-neutral-900 transition-colors ${solitaire ? "group-hover:text-neutral-900" : "group-hover:text-pbrown-500"} ${previewViewport === "desktop" ? "p-4 text-title" : previewViewport === "mobile" ? "p-2 text-size-body-xl" : "p-2 text-size-body-xl xl:p-4 xl:text-title"}`}
       >
         <span>{title}</span>
         <span className={`flex size-10 shrink-0 items-center justify-center rounded-full ${solitaire ? "bg-neutral-300" : "bg-pgold-200"}`}>
-          {solitaire ? <span aria-hidden className={`size-6 bg-neutral-800 transition-transform duration-200 [mask-image:url('/assets/prioritas/detail/molton-brown/chevron-up.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/prioritas/detail/molton-brown/chevron-up.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain] ${open ? "-rotate-90" : "rotate-90"}`} /> : <img
+          {solitaire ? <span aria-hidden className={`size-6 bg-neutral-800 transition-transform duration-200 [mask-image:url('/assets/prioritas/detail/molton-brown/chevron-up.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/prioritas/detail/molton-brown/chevron-up.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain] ${open ? "-rotate-90" : "rotate-90"}`} /> : <IconAsset
             src={`${ASSET_ROOT}/chevron-up.svg`}
             alt=""
             className={`size-6 transition-transform duration-200 ${open ? "-rotate-90" : "rotate-90"}`}
@@ -86,7 +94,7 @@ export function DetailRow({
       </button>
       <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
         <div className="overflow-hidden">
-          <div className={`text-neutral-700 ${previewViewport === "desktop" ? "px-4 pb-4 text-base leading-6" : previewViewport === "mobile" ? "px-2 pb-2 text-sm leading-5" : "px-2 pb-2 text-sm leading-5 xl:px-4 xl:pb-4 xl:text-base xl:leading-6"}`}>{children}</div>
+          <div className={`text-neutral-700 ${previewViewport === "desktop" ? "px-4 pb-4 text-size-body-l leading-6" : previewViewport === "mobile" ? "px-2 pb-2 text-size-body-m leading-5" : "px-2 pb-2 text-size-body-m leading-5 xl:px-4 xl:pb-4 xl:text-size-body-l xl:leading-6"}`}>{children}</div>
         </div>
       </div>
     </section>
@@ -303,7 +311,7 @@ function DocumentLines({ lines, solitaire = false }: { lines: string[]; solitair
 function FormattedDocumentContent({ content, solitaire = false }: { content: string; solitaire?: boolean }) {
   const sections = content.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean);
 
-  return <div className="space-y-5 text-sm leading-6 text-neutral-700 xl:text-base">
+  return <div className="space-y-5 text-size-body-m leading-6 text-neutral-700 xl:text-size-body-l">
     {sections.map((section, index) => {
       const lines = section.split("\n").map((line) => line.trim()).filter(Boolean);
       const heading = lines[0];
@@ -326,7 +334,7 @@ function FormattedDocumentContent({ content, solitaire = false }: { content: str
 
       if (DOCUMENT_SECTION_HEADINGS.has(heading) || (lines.length > 1 && heading.length <= 72 && lines.slice(1).every((line) => line.startsWith("•")))) {
         return <section key={section} className="space-y-2">
-          <h3 className={`text-base font-semibold leading-6 xl:text-lg ${solitaire ? "text-neutral-800" : "text-pbrown-600"}`}>{heading}</h3>
+          <h3 className={`text-size-body-l font-semibold leading-6 xl:text-size-body-xl ${solitaire ? "text-neutral-800" : "text-pbrown-600"}`}>{heading}</h3>
           <DocumentLines lines={lines.slice(1)} solitaire={solitaire} />
         </section>;
       }
@@ -336,7 +344,7 @@ function FormattedDocumentContent({ content, solitaire = false }: { content: str
   </div>;
 }
 
-export default function PrioritasDetailExperience({ copy, promos, now, kind = "lifestyle", heroImage, birthdayGift = false, brandLogo, eventDate, heroPromo, categoryFilter = "beauty", showHero = true, showRecommendations = true, customSections, relatedPages, generalEntryPoints, bankingRecommendations = [], bankingRecommendationAction = "", memberArea = false, memberPreviewName, memberSessionActive = false, memberVoucherStatus, memberAirportTransfer = false, memberMedicalCheckUp = false, publicBasePath = "/prioritas", generalPage = false, alignMobileContentToIndexTitle = false }: {
+export default function PrioritasDetailExperience({ copy, promos, now, kind = "lifestyle", heroImage, birthdayGift = false, brandLogo, eventDate, heroPromo, categoryFilter = "beauty", showHero = true, showRecommendations = true, customSections, relatedPages, generalEntryPoints, bankingRecommendations = [], bankingRecommendationAction = "", memberArea = false, memberPreviewName, memberSessionActive = false, memberVoucherStatus, memberAirportTransfer = false, memberMedicalCheckUp = false, publicBasePath = "/prioritas", generalPage = false, alignMobileContentToIndexTitle = false, preview }: {
   copy: DetailCopy;
   promos: Promo[];
   now: string;
@@ -363,12 +371,13 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
   publicBasePath?: string;
   generalPage?: boolean;
   alignMobileContentToIndexTitle?: boolean;
+  preview?: { brand: "prioritas" | "solitaire"; transfer?: { copied?: boolean; expanded?: boolean }; medical?: { copied?: boolean; locationIndex?: number } };
 }) {
   const promoT = useTranslations("promo");
   const privilegeT = useTranslations("signaturePrivilege");
   const memberT = useTranslations("memberOverview");
   const pathname = usePathname();
-  const memberBrand = pathname.startsWith("/solitaire/member") ? "solitaire" : "prioritas";
+  const memberBrand = preview?.brand ?? (pathname.startsWith("/solitaire/member") ? "solitaire" : "prioritas");
   const memberBase = `/${memberBrand}/member`;
   const lenis = useLenis();
   const [showHeroTitle, setShowHeroTitle] = useState(false);
@@ -377,12 +386,11 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
   const toggle = (panel: DetailPanel) => setOpenPanels((current) => current.includes(panel) ? current.filter((item) => item !== panel) : [...current, panel]);
   const brand = copy.brand?.trim();
   const isSolitaire = ((publicBasePath === "/solitaire" || generalPage) && !memberArea) || (memberArea && memberBrand === "solitaire");
-  const signatureHeroOverlapFix = isSolitaire && kind === "signature" && showHero;
   const detailBase = memberArea ? memberBase : publicBasePath;
-  const directoryPath = kind === "event" ? `${detailBase}/event` : kind === "promo" ? `${detailBase}/promo` : kind === "complimentary" || kind === "signature" ? `${detailBase}/privilege` : kind === "about" ? publicBasePath : kind === "banking" ? `${detailBase}/banking-solution` : `${detailBase}/lifestyle-privilege`;
+  const directoryPath = kind === "event" ? `${detailBase}/event` : kind === "promo" ? `${detailBase}/promo` : kind === "complimentary" || kind === "signature" ? privilegeDetailBase(detailBase, kind) : kind === "about" ? publicBasePath : kind === "banking" ? `${detailBase}/banking-solution` : `${detailBase}/lifestyle-privilege`;
   const listingPath = memberArea
     ? kind === "banking" ? `${memberBase}/banking-solution` : `${memberBase}/privilege${kind === "lifestyle" || kind === "event" || kind === "promo" ? `?section=${kind}` : ""}`
-    : directoryPath;
+    : kind === "signature" || kind === "complimentary" ? `${publicBasePath}/privilege?section=signature` : directoryPath;
   const memberOverviewPath = memberVoucherStatus
     ? withMemberSignatureVoucherStatus(`${memberBase}/overview`, memberVoucherStatus)
     : `${memberBase}/overview`;
@@ -392,11 +400,13 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
     : null;
 
   useLayoutEffect(() => {
+    if (preview) return;
     window.scrollTo(0, 0);
     lenis?.scrollTo(0, { immediate: true });
-  }, [lenis, pathname]);
+  }, [lenis, pathname, preview]);
 
   useEffect(() => {
+    if (preview) return;
     const title = document.querySelector<HTMLElement>("[data-prioritas-detail-title]");
     if (!title) return;
 
@@ -405,15 +415,16 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
     });
     observer.observe(title);
     return () => observer.disconnect();
-  }, [pathname]);
+  }, [pathname, preview]);
 
   useEffect(() => {
+    if (preview) return;
     const handleNavbarVisibility = (event: Event) => {
       setNavbarHidden((event as CustomEvent<boolean>).detail);
     };
     window.addEventListener(NAVBAR_VISIBILITY_EVENT, handleNavbarVisibility);
     return () => window.removeEventListener(NAVBAR_VISIBILITY_EVENT, handleNavbarVisibility);
-  }, [pathname]);
+  }, [pathname, preview]);
 
   return (
     <article id={generalPage ? "main-content" : undefined} className={`relative isolate overflow-x-clip ${generalPage ? "general-private-banking-background min-h-dvh" : ""} ${isSolitaire ? "bg-neutral-200" : "bg-pgold-200"} text-neutral-900`}>
@@ -424,7 +435,7 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
             <Navbar variant={memberBrand} disableHideShow memberPreviewName={memberT(memberBrand === "solitaire" ? "solitairePreviewFullName" : "previewFullName")} />
             <div className="h-[calc(7rem+env(safe-area-inset-top))] xl:h-[120px]" />
           </div>
-          <PrioritasIndexTabs activeTab="privilege" surface="overview" />
+          <PrioritasIndexTabs activeTab="privilege" surface="overview" tone={preview?.brand} memberBasePath={preview ? memberBase : undefined} />
         </> : generalPage ? <GeneralPrivateBankingHeader /> : <>
         <Navbar variant={publicBasePath === "/solitaire" ? "solitaire" : "prioritas"} memberPreviewName={memberPreviewName} />
         <PrioritasDetailSubnav
@@ -454,7 +465,9 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
             { label: copy.breadcrumb.current, href: memberArea ? listingPath : `${directoryPath}?category=${encodeURIComponent(categoryFilter)}#complimentary-title` },
           ]}
           title={copy.title}
-          subtitle={brand || undefined}
+          subtitle={copy.subtitle ?? (brand || undefined)}
+          subtitleFontWeight={copy.subtitle ? "normal" : "semibold"}
+          flowTitle={Boolean(copy.subtitle)}
           logo={brand && brandLogo ? { src: brandLogo, alt: brand } : undefined}
           layout="detail"
           memberArea={memberArea}
@@ -465,8 +478,9 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
         />
       </div>
 
-      <section className={`pointer-events-none relative ${generalPage ? kind === "about" ? "-mt-12 xl:-mt-12" : "mt-0" : kind === "about" && !memberArea ? "-mt-12 xl:-mt-12" : brand || signatureHeroOverlapFix ? "-mt-5 xl:-mt-12" : "-mt-14 xl:-mt-12"} overflow-x-clip pb-20 xl:pb-28`}>
-        {!isSolitaire ? <div aria-hidden className={`bg-decoration-wrapper pointer-events-none absolute inset-x-0 -z-10 overflow-hidden ${brand ? "top-5" : "top-14"} xl:top-12`}>
+      <BrandPageSurface tone={isSolitaire ? "solitaire" : "prioritas"} disabled={generalPage}>
+      <section className={`pointer-events-none relative ${generalPage ? kind === "about" ? "-mt-12 xl:-mt-12" : "mt-0" : kind === "about" && !memberArea ? "-mt-12 xl:-mt-12" : brand ? "-mt-5 xl:-mt-12" : "-mt-14 xl:-mt-12"} overflow-x-clip pb-20 xl:pb-28`}>
+        {generalPage && !isSolitaire ? <div aria-hidden className={`bg-decoration-wrapper pointer-events-none absolute inset-x-0 -z-10 overflow-hidden ${brand ? "top-5" : "top-14"} xl:top-12`}>
           <img src={`${ASSET_ROOT}/raw-01.png`} alt="" className="block h-auto w-full opacity-25" />
           <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent via-pgold-200/70 to-pgold-200" />
         </div> : null}
@@ -481,20 +495,20 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
                   aria-hidden={!showHeroTitle}
                   className={`glass-panel ${isSolitaire ? "glass-panel-solitaire" : "glass-panel-prioritas"} pointer-events-none absolute inset-x-2 bottom-2 z-10 max-w-[400px] rounded-xl p-4 pb-5 text-white shadow-card transition-[opacity,transform] duration-300 motion-reduce:transition-none xl:inset-x-4 xl:bottom-4 ${showHeroTitle ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"}`}
                 >
-                  <p className="text-base font-semibold leading-6 xl:text-lg xl:leading-7">{copy.title}</p>
-                  {brand ? <p className="mt-2 text-sm font-semibold leading-5 text-white/80 xl:text-base">{brand}</p> : null}
+                  <p className="text-size-body-l font-semibold leading-6 xl:text-size-body-xl xl:leading-7">{copy.title}</p>
+                  {brand ? <p className="mt-2 text-size-body-m font-semibold leading-5 text-white/80 xl:text-size-body-l">{brand}</p> : null}
                 </div>
               </div>
               {kind === "complimentary" && birthdayGift ? <PromoRibbon badgeKey="popular" label={privilegeT("complimentary.birthday")} placement="hero" /> : null}
             </div> : null}
             <div className={showHero ? "" : "w-full"}>
-              {!copy.dynamicModule?.infoOnly ? (memberAirportTransfer ? <MemberAirportTransferModule variant={memberAirportTransfer} solitaire={isSolitaire} /> : memberMedicalCheckUp ? <MemberMedicalCheckUpModule solitaire={isSolitaire} /> : memberVoucherStatus ? <MemberSignatureVoucherModule status={memberVoucherStatus} solitaire={isSolitaire} /> : null) : null}
-              {copy.dynamicModule?.infoOnly ? <aside aria-label={copy.dynamicModule.infoTitle} className="pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] rounded-2xl bg-gradient-to-b from-white to-pgold-300 p-5 pb-10 text-sm leading-5 text-neutral-700 shadow-panel-gold sm:mx-0 sm:mb-6 sm:w-auto sm:pb-5 xl:px-6">
-                <h2 className="text-base font-semibold leading-6 text-pbrown-700">{copy.dynamicModule.infoTitle}</h2>
-                <p className="mt-2 text-sm leading-5 text-pbrown-600 xl:text-base xl:leading-6">{copy.dynamicModule.message}</p>
+              <div data-flow-preview-focus={preview && (memberAirportTransfer || memberMedicalCheckUp || memberVoucherStatus) ? "" : undefined}>{!copy.dynamicModule?.infoOnly ? (memberAirportTransfer ? <MemberAirportTransferModule variant={memberAirportTransfer} solitaire={isSolitaire} preview={preview?.transfer} /> : memberMedicalCheckUp ? <MemberMedicalCheckUpModule solitaire={isSolitaire} preview={preview?.medical} /> : memberVoucherStatus ? <MemberSignatureVoucherModule status={memberVoucherStatus} solitaire={isSolitaire} /> : null) : null}</div>
+              {copy.dynamicModule?.infoOnly ? <aside aria-label={copy.dynamicModule.infoTitle} className="pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] rounded-2xl bg-gradient-to-b from-white to-pgold-300 p-5 pb-10 text-size-body-m leading-5 text-neutral-700 shadow-panel-gold sm:mx-0 sm:mb-6 sm:w-auto sm:pb-5 xl:px-6">
+                <h2 className="text-size-body-l font-semibold leading-6 text-pbrown-700">{copy.dynamicModule.infoTitle}</h2>
+                <p className="mt-2 text-size-body-m leading-5 text-pbrown-600 xl:text-size-body-l xl:leading-6">{copy.dynamicModule.message}</p>
               </aside> : null}
-              {copy.dynamicModule && !copy.dynamicModule.infoOnly && !memberArea && !memberSessionActive && !memberAirportTransfer && !memberMedicalCheckUp && !memberVoucherStatus ? <div className={`pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] flex flex-col gap-4 rounded-2xl p-5 pb-10 text-sm leading-5 sm:mx-0 sm:mb-6 sm:w-auto sm:flex-row sm:items-center sm:justify-between sm:pb-5 xl:px-6 ${isSolitaire ? "border border-neutral-300 bg-gradient-to-b from-white to-neutral-200 shadow-card" : "bg-gradient-to-b from-white to-pgold-300 shadow-panel-gold"}`}>
-                <p className={`text-sm leading-5 xl:text-base xl:leading-6 ${isSolitaire ? "text-neutral-700" : "text-pbrown-600"}`}>{copy.dynamicModule.message}</p>
+              {copy.dynamicModule && !copy.dynamicModule.infoOnly && !memberArea && !memberSessionActive && !memberAirportTransfer && !memberMedicalCheckUp && !memberVoucherStatus ? <div className={`pointer-events-auto relative z-0 -mx-4 mb-0 w-[calc(100%+2rem)] flex flex-col gap-4 rounded-2xl p-5 pb-10 text-size-body-m leading-5 sm:mx-0 sm:mb-6 sm:w-auto sm:flex-row sm:items-center sm:justify-between sm:pb-5 xl:px-6 ${isSolitaire ? "border border-neutral-300 bg-gradient-to-b from-white to-neutral-200 shadow-card" : "bg-gradient-to-b from-white to-pgold-300 shadow-panel-gold"}`}>
+                <p className={`text-size-body-m leading-5 xl:text-size-body-l xl:leading-6 ${isSolitaire ? "text-neutral-700" : "text-pbrown-600"}`}>{copy.dynamicModule.message}</p>
                 <Link href={copy.dynamicModule.memberHref} className={(isSolitaire ? solitaireButtonClassName : prioritasButtonClassName)({ size: "medium", className: "w-full self-stretch xl:w-auto xl:self-auto prio-button--xl-large" })}>{copy.dynamicModule.actionLabel}</Link>
               </div> : null}
               <div
@@ -503,7 +517,7 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
                 <div className="flex flex-col gap-4">
                   {customSections?.length ? customSections.map((section) => (
                     <DetailRow key={section.id} title={section.title} open={openPanels.includes(section.id)} onToggle={() => toggle(section.id)} solitaire={isSolitaire}>
-                      <FormattedDocumentContent content={section.content} solitaire={isSolitaire} />
+                      {section.contentNode ?? <FormattedDocumentContent content={section.content} solitaire={isSolitaire} />}
                     </DetailRow>
                   )) : <>
                     <DetailRow title={copy.detail.title} open={openPanels.includes("detail")} onToggle={() => toggle("detail")} solitaire={isSolitaire}>
@@ -534,12 +548,12 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
 
           {showRecommendations ? <section className={`pointer-events-auto -mx-4 ${isSolitaire ? "bg-neutral-200" : "bg-pgold-200"} px-4 pt-10 xl:mx-0 xl:mt-20 xl:bg-transparent xl:px-0 xl:pt-0`}>
             <div className="flex items-center justify-between gap-4">
-              <h2 className={`text-subtitle font-semibold xl:text-heading ${isSolitaire ? "text-neutral-800" : "text-pbrown-600"}`}>
+              <h2 className={`text-subtitle xl:text-heading ${isSolitaire ? "text-neutral-800" : "text-pbrown-600"}`}>
                 {copy.recommendations.title}
               </h2>
               <Link href={listingPath} className={isSolitaire
                 ? solitaireButtonClassName({ kind: "text", size: "large", className: "hidden items-center gap-1.5 xl:inline-flex" })
-                : "hidden items-center gap-1.5 text-base font-semibold leading-6 text-pbrown-600 transition-colors hover:text-pgold-700 xl:inline-flex"}>
+                : "hidden items-center gap-1.5 text-size-body-l font-semibold leading-6 text-pbrown-600 transition-colors hover:text-pgold-700 xl:inline-flex"}>
                 <span>{copy.recommendations.viewMore}</span>
                 <span
                   aria-hidden
@@ -576,6 +590,7 @@ export default function PrioritasDetailExperience({ copy, promos, now, kind = "l
           </section> : null}
         </div>
       </section>
+      </BrandPageSurface>
     </article>
   );
 }

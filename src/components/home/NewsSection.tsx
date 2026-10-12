@@ -9,10 +9,10 @@ function AdditionalInfo({ date, category, muted = false }: { date: string; categ
   const textClass = muted ? "text-neutral-600" : "text-white";
   return (
     <div className={`flex items-center ${muted ? "gap-3 xl:gap-2" : "gap-2 opacity-80"}`}>
-      <p className={`whitespace-nowrap text-xs font-semibold uppercase tracking-[1.8px] ${textClass}`}>{date}</p>
+      <p className={`whitespace-nowrap text-size-body-s font-semibold uppercase tracking-[1.8px] ${textClass}`}>{date}</p>
       <span className={`size-1 shrink-0 rounded-full ${muted ? "bg-neutral-600" : "bg-white"}`} />
       <p
-        className={`overflow-hidden text-ellipsis whitespace-nowrap text-xs font-semibold uppercase tracking-[1.8px] ${muted ? "text-neutral-600" : "text-white"
+        className={`overflow-hidden text-ellipsis whitespace-nowrap text-size-body-s font-semibold uppercase tracking-[1.8px] ${muted ? "text-neutral-600" : "text-white"
           }`}
       >
         {category}
@@ -39,7 +39,7 @@ function CategoryChip({
       ref={chipRef}
       onClick={onSelect}
       aria-pressed={active}
-      className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-sm transition-colors xl:h-14 xl:px-4 xl:text-base ${active
+      className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-size-body-m transition-colors xl:h-14 xl:px-4 xl:text-size-body-l ${active
         ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500"
         : "border-neutral-300 bg-white font-semibold text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100 hover:text-blue-500"
         }`}
@@ -103,7 +103,7 @@ function ArticleItem({ article }: { article: NewsArticle }) {
       <div className="flex h-full min-w-0 flex-1 flex-col justify-between p-4 xl:px-5 xl:pb-5 xl:pt-4">
         <p
           title={article.title}
-          className="line-clamp-2 w-full text-sm font-semibold leading-5 text-neutral-800 transition-colors duration-200 group-hover:text-blue-500 xl:text-base xl:leading-6 xl:group-hover:font-bold"
+          className="line-clamp-2 w-full text-size-body-m font-semibold leading-5 text-neutral-800 transition-colors duration-200 group-hover:text-blue-500 xl:text-size-body-l xl:leading-6 xl:group-hover:font-bold"
         >
           {article.title}
         </p>
@@ -274,7 +274,7 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
               href={`https://www.bca.co.id/id/informasi/${active.key}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-0.5 text-base font-semibold text-blue-500 transition-transform hover:translate-x-0.5"
+              className="flex items-center gap-0.5 text-size-body-l font-semibold text-blue-500 transition-transform hover:translate-x-0.5"
             >
               {t("seeMore")}
               <img loading="lazy" decoding="async" src="/assets/navbar/icon-arrow-blue.svg" alt="" className="size-5" />
@@ -337,7 +337,7 @@ export default function NewsSection({ categories }: { categories: NewsCategory[]
             rel="noopener noreferrer"
             className="btn-base btn-secondary mx-auto mt-9 w-fit xl:hidden"
           >
-            <span className="text-base font-semibold text-blue-500">{t("seeMore")}</span>
+            <span className="text-size-body-l font-semibold text-blue-500">{t("seeMore")}</span>
             <span
               aria-hidden
               className="size-5 shrink-0 bg-blue-500"

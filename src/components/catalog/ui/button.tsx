@@ -1,4 +1,4 @@
-// Adapted from shadcn/ui new-york registry (MIT). Documentation-only tokens.
+// Adapted from shadcn/ui new-york registry (MIT). Shared BCA color tokens.
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -6,24 +6,24 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/components/catalog/ui/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-docs-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-size-body-m font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-600 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-docs-primary text-docs-primary-docs-foreground shadow hover:bg-docs-primary/90",
+          "bg-neutral-900 text-neutral-100 shadow hover:bg-neutral-900/90",
         destructive:
-          "bg-docs-destructive text-docs-destructive-docs-foreground shadow-sm hover:bg-docs-destructive/90",
+          "bg-red-500 text-neutral-100 shadow-sm hover:bg-red-500/90",
         outline:
-          "border border-docs-input bg-docs-background shadow-sm hover:bg-docs-accent hover:text-docs-accent-docs-foreground",
+          "border border-neutral-400 bg-neutral-100 shadow-sm hover:bg-neutral-200 hover:text-neutral-900",
         secondary:
-          "bg-docs-secondary text-docs-secondary-docs-foreground shadow-sm hover:bg-docs-secondary/80",
-        ghost: "hover:bg-docs-accent hover:text-docs-accent-docs-foreground",
-        link: "text-docs-primary underline-offset-4 hover:underline",
+          "bg-neutral-200 text-neutral-900 shadow-sm hover:bg-neutral-200/80",
+        ghost: "hover:bg-neutral-200 hover:text-neutral-900",
+        link: "text-neutral-900 underline-offset-4 hover:underline",
       },
       size: {
         default: "h-9 px-4 py-2",
-        sm: "h-8 rounded-md px-3 text-xs",
+        sm: "h-8 rounded-md px-3 text-size-body-m",
         lg: "h-10 rounded-md px-8",
         icon: "h-9 w-9",
       },

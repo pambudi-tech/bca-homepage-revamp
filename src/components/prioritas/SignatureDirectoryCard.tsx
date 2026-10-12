@@ -15,7 +15,7 @@ export default function SignatureDirectoryCard({ href, image, title, tone = "pri
                 <img src={image} alt="" className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 <div className={`absolute inset-0 bg-gradient-to-t ${isSolitaire ? "from-black/70 via-black/15" : "from-pbrown-900/90 via-pbrown-900/20"} to-transparent`} />
                 {badgeLabel ? <span
-                  className={`glass-panel ${isSolitaire ? "glass-panel-solitaire" : "glass-panel-prioritas"} absolute right-2 top-4 z-20 inline-flex max-w-[calc(100%-1rem)] items-center rounded-xl px-3 py-2 text-right text-xs font-semibold leading-4 text-white shadow-card sm:top-2 sm:text-sm`}
+                  className={`glass-panel ${isSolitaire ? "glass-panel-solitaire" : "glass-panel-prioritas"} absolute right-2 top-4 z-20 inline-flex max-w-[calc(100%-1rem)] items-center rounded-xl px-3 py-2 text-right text-size-body-s font-semibold leading-4 text-white shadow-card sm:top-2 sm:text-size-body-m`}
                   style={{ backgroundColor: "color-mix(in srgb, var(--color-pbrown-600) 30%, transparent)", isolation: "isolate" }}
                 >{badgeLabel}</span> : null}
                 <div className={`absolute left-4 top-4 z-30 ${previewViewport ? desktop ? "hidden" : "" : "xl:hidden"}`}>
@@ -29,7 +29,7 @@ export default function SignatureDirectoryCard({ href, image, title, tone = "pri
                   className={`glass-panel ${isSolitaire ? "glass-panel-solitaire" : "glass-panel-prioritas"} absolute inset-x-2 bottom-2 z-10 flex ${previewViewport ? desktop ? "h-auto" : "h-[120px]" : "h-[120px] sm:h-auto"} flex-col justify-between rounded-xl p-4`}
                   style={{ isolation: "isolate" }}
                 >
-                  <h2 className="min-h-14 text-subtitle text-white">{title}</h2>
+                  <h2 data-blueprint-part="cardTitle" className="line-clamp-2 min-h-14 text-subtitle text-white">{title}</h2>
                   <span className={buttonClassName({ kind: "text", surface: "inverse", size: "large", className: "mt-2 self-start" })}>
                     <span className="prio-button__label">{t("more")}</span>
                     <PrioritasButtonIcon src={isSolitaire ? "/assets/cycle1/pelajari-icon.svg" : "/assets/prioritas/privilege/arrow-small.svg"} />

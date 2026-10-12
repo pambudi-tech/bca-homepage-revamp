@@ -1,0 +1,4 @@
+.verticalTrim {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}

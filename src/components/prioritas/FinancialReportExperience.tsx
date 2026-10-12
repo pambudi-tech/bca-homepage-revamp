@@ -1,5 +1,6 @@
 "use client";
 
+import { BrandPageBackground } from "./BrandPageSurface";
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "@/i18n/navigation";
@@ -141,7 +142,7 @@ function ReportDropdown({ id, label, value, onChange, options, className = "", s
 
 function DownloadButton({ onClick, label, solitaire = false }: { onClick: () => void; label: string; solitaire?: boolean }) {
   const buttonClassName = solitaire ? solitaireButtonClassName : prioritasButtonClassName;
-  return <button type="button" onClick={onClick} className={buttonClassName({ variant: "secondary", size: "large", className: "w-full shrink-0 xl:w-auto" })}>
+  return <button data-flow-action="download-report" type="button" onClick={onClick} className={buttonClassName({ variant: "secondary", size: "large", className: "w-full shrink-0 xl:w-auto" })}>
     <PrioritasButtonIcon src="/assets/prioritas/banking/download.svg" />
     <span className="prio-button__label">{label}</span>
   </button>;
@@ -155,16 +156,16 @@ function SummaryCards({ t, visible, onToggleVisibility, snapshot, locale, solita
   ] as const;
   return <div className="grid divide-y divide-neutral-300 md:grid-cols-3 md:divide-x md:divide-y-0">
     {cards.map(({ key, amount }) => <div key={key} className="flex h-36 min-h-0 flex-col px-4 py-3 md:h-auto md:min-h-[200px] md:p-5">
-      <div className="flex items-center gap-2 text-base font-semibold text-neutral-800 md:text-lg">
+      <div className="flex items-center gap-2 text-size-body-l font-semibold text-neutral-800 md:text-size-body-xl">
         {t(`summary.${key}`)} <InfoTip label={t(`summary.${key}Info`)} message={t(`summary.${key}Tooltip`)} tone={solitaire ? "solitaire" : "prioritas"} />
       </div>
       <div className="mt-3 flex items-center justify-between gap-3 md:h-12">
         <p className="text-[28px] font-semibold leading-9 text-neutral-900 md:text-[32px] md:leading-10">{visible ? formatPortfolioAmount(amount, locale) : t("maskedAmount")}</p>
-        {key === "netWorth" ? <button type="button" onClick={onToggleVisibility} aria-label={t(visible ? "visibility.hide" : "visibility.show")} aria-pressed={visible} className={(solitaire ? solitaireButtonClassName : prioritasButtonClassName)({ kind: "icon", variant: "secondary", surface: "default", size: "large", className: "shrink-0" })}>
+        {key === "netWorth" ? <button data-flow-action="visibility" type="button" onClick={onToggleVisibility} aria-label={t(visible ? "visibility.hide" : "visibility.show")} aria-pressed={visible} className={(solitaire ? solitaireButtonClassName : prioritasButtonClassName)({ kind: "icon", variant: "secondary", surface: "default", size: "large", className: "shrink-0" })}>
           <PrioritasButtonIcon src={`/assets/member-login/eye${visible ? "" : "-off"}.svg`} />
         </button> : null}
       </div>
-      <p className={`mt-auto pt-3 text-sm font-semibold md:text-base ${summaryChangeColor(key, snapshot.changes[key], solitaire)}`}>{t(`summary.${key}Change`, { change: formatPortfolioChange(snapshot.changes[key], locale) })}</p>
+      <p className={`mt-auto pt-3 text-size-body-m font-semibold md:text-size-body-l ${summaryChangeColor(key, snapshot.changes[key], solitaire)}`}>{t(`summary.${key}Change`, { change: formatPortfolioChange(snapshot.changes[key], locale) })}</p>
     </div>)}
   </div>;
 }
@@ -191,7 +192,7 @@ function WealthChart({ t, interval, setInterval, visible, selectedMonth, locale,
       <ReportDropdown id="financial-chart-interval" label={t("chart.intervalLabel")} value={interval} onChange={setInterval} options={[{ value: "yearly", label: t("chart.yearly") }, { value: "monthly", label: t("chart.monthly") }]} className="w-full md:w-40" size="medium" xlSize="large" solitaire={solitaire} />
     </div>
     <div className="mt-6 grid grid-cols-[64px_minmax(0,1fr)] gap-1 md:grid-cols-[84px_minmax(0,1fr)] md:gap-3">
-      <div className="flex h-80 flex-col justify-between pb-0 text-right text-sm font-semibold text-neutral-700 md:h-[410px]">{Array.from({ length: 6 }, (_, i) => <span key={i} className="whitespace-nowrap">{i === 5 ? "0" : visible ? formatPortfolioAxisAmount(axisMax * (5 - i) / 5, locale) : t("maskedAmount")}</span>)}</div>
+      <div className="flex h-80 flex-col justify-between pb-0 text-right text-size-body-m font-semibold text-neutral-700 md:h-[410px]">{Array.from({ length: 6 }, (_, i) => <span key={i} className="whitespace-nowrap">{i === 5 ? "0" : visible ? formatPortfolioAxisAmount(axisMax * (5 - i) / 5, locale) : t("maskedAmount")}</span>)}</div>
       <div className="min-w-0">
         <div className="relative h-80 border-l border-b border-neutral-300 md:h-[410px]">
           <div aria-hidden className="absolute inset-0 flex flex-col justify-between">{Array.from({ length: 6 }, (_, i) => <div key={i} className="w-full border-t border-neutral-300" />)}</div>
@@ -204,10 +205,10 @@ function WealthChart({ t, interval, setInterval, visible, selectedMonth, locale,
             {points.map(({ x, y }, index) => <span key={index} className={`absolute size-2 -translate-x-1/2 -translate-y-1/2 rounded-full ${solitaire ? "bg-neutral-700" : "bg-pgold-500"}`} style={{ left: `${x / 720 * 100}%`, top: `${y / 410 * 100}%` }} />)}
           </div>
         </div>
-        <div className="mt-3 flex justify-between text-xs text-neutral-700 md:text-sm">{chartLabels.map((label, index) => <span key={`${label}-${index}`}>{label}</span>)}</div>
+        <div className="mt-3 flex justify-between text-size-body-s text-neutral-700 md:text-size-body-m">{chartLabels.map((label, index) => <span key={`${label}-${index}`}>{label}</span>)}</div>
       </div>
     </div>
-    <p className="mt-5 flex items-center justify-center gap-2 text-sm text-neutral-700"><span className={`size-3 rounded-sm ${solitaire ? "bg-neutral-700" : "bg-pgold-500"}`} />{t("summary.netWorth")}</p>
+    <p className="mt-5 flex items-center justify-center gap-2 text-size-body-m text-neutral-700"><span className={`size-3 rounded-sm ${solitaire ? "bg-neutral-700" : "bg-pgold-500"}`} />{t("summary.netWorth")}</p>
   </section>;
 }
 
@@ -247,10 +248,10 @@ function Composition({ t, visible, snapshot, locale, solitaire = false }: { t: R
         />)}
       </svg>
       <div className="absolute inset-8 flex items-center justify-center rounded-full bg-white text-center md:inset-[44px]">
-        <h2 id="asset-composition-title" className="max-w-28 text-base font-semibold leading-5 text-neutral-800">{t("composition.title")}</h2>
+        <h2 id="asset-composition-title" className="max-w-28 text-size-body-l font-semibold leading-5 text-neutral-800">{t("composition.title")}</h2>
       </div>
     </div>
-    <ul className="mt-12 w-full divide-y divide-neutral-300 text-sm font-semibold text-neutral-700 md:text-base md:font-normal">
+    <ul className="mt-12 w-full divide-y divide-neutral-300 text-size-body-m font-semibold text-neutral-700 md:text-size-body-l md:font-normal">
       {composition.map((item) => <li key={item.key} className="w-full">
         <button type="button" aria-pressed={activeKey === item.key} onMouseEnter={() => setActiveKey(item.key)} onMouseLeave={() => setActiveKey(null)} onFocus={() => setActiveKey(item.key)} onBlur={() => setActiveKey(null)} onClick={() => setActiveKey(item.key)} className={`grid min-h-12 w-full grid-cols-[minmax(0,1fr)_auto_auto_auto] items-center gap-2 text-left transition-opacity ${activeKey === item.key ? "font-semibold" : "md:font-normal"} ${activeKey && activeKey !== item.key ? "opacity-30" : "opacity-100"}`}>
           <span className="flex min-w-0 items-center gap-3"><span className={`size-4 shrink-0 rounded-sm ${solitaire ? item.solitaireColor : item.color}`} />{t(`composition.${item.key}`)}</span><span>{item.percent}%</span><span className="size-1 rounded-full bg-neutral-500" aria-hidden="true" /><span>{visible ? formatPortfolioAmount(snapshot.composition[item.key], locale) : t("maskedAmount")}</span>
@@ -264,25 +265,26 @@ function CategoryCards({ t, category, visible, snapshot, locale, solitaire = fal
   const keys = category === "assets" ? ["savings", "investments", "protection"] as const : ["consumerCredit", "workingCapital", "creditCard"] as const;
   const favorableWhen = category === "assets" ? "increase" : "decrease";
   return <section aria-labelledby={`${category}-heading`}>
-    <h2 id={`${category}-heading`} className="mb-6 text-2xl font-semibold text-neutral-800">{t(`categories.${category}`)}</h2>
+    <h2 id={`${category}-heading`} className="mb-6 text-size-display-m font-semibold text-neutral-800">{t(`categories.${category}`)}</h2>
     <div className={`grid overflow-hidden rounded-xl border ${solitaire ? "border-neutral-300 shadow-card" : "border-pbrown-100 shadow-prioritas"} bg-white md:grid-cols-3 md:divide-x ${solitaire ? "md:divide-neutral-300" : "md:divide-pbrown-100"}`}>
-      {keys.map((key) => <article key={key} className="flex h-36 flex-col border-b border-pbrown-100 p-4 last:border-b-0 md:h-auto md:min-h-[200px] md:border-b-0 md:p-5"><h3 className="text-base font-semibold text-neutral-800 md:text-lg">{t(`categories.${key}`)}</h3><p className="mt-3 text-[28px] font-semibold leading-9 text-neutral-900 md:text-[32px] md:leading-10">{visible ? formatPortfolioAmount(snapshot.categories[key], locale) : t("maskedAmount")}</p><p className={`mt-auto pt-3 text-sm font-semibold md:text-base ${insightChangeColor(snapshot.categoryChanges[key], favorableWhen, solitaire)}`}>{t("categories.change", { change: formatPortfolioChange(snapshot.categoryChanges[key], locale) })}</p></article>)}
+      {keys.map((key) => <article key={key} className="flex h-36 flex-col border-b border-pbrown-100 p-4 last:border-b-0 md:h-auto md:min-h-[200px] md:border-b-0 md:p-5"><h3 className="text-size-body-l font-semibold text-neutral-800 md:text-size-body-xl">{t(`categories.${key}`)}</h3><p className="mt-3 text-[28px] font-semibold leading-9 text-neutral-900 md:text-[32px] md:leading-10">{visible ? formatPortfolioAmount(snapshot.categories[key], locale) : t("maskedAmount")}</p><p className={`mt-auto pt-3 text-size-body-m font-semibold md:text-size-body-l ${insightChangeColor(snapshot.categoryChanges[key], favorableWhen, solitaire)}`}>{t("categories.change", { change: formatPortfolioChange(snapshot.categoryChanges[key], locale) })}</p></article>)}
     </div>
   </section>;
 }
 
-export default function FinancialReportExperience({ report, portfolioSessionExpiresAt: initialPortfolioSessionExpiresAt }: { report: Report; portfolioSessionExpiresAt: number | null }) {
+export default function FinancialReportExperience({ report, portfolioSessionExpiresAt: initialPortfolioSessionExpiresAt, preview }: { report: Report; portfolioSessionExpiresAt: number | null; preview?: { brand: "prioritas" | "solitaire"; visible?: boolean; period?: Period; notice?: boolean; month?: string } }) {
   const t = useTranslations("memberFinancialReport");
   const locale = useLocale();
-  const isSolitaire = usePathname().startsWith("/solitaire/member");
-  const [period, setPeriod] = useState<Period>("month");
+  const pathname = usePathname();
+  const isSolitaire = preview ? preview.brand === "solitaire" : pathname.startsWith("/solitaire/member");
+  const [period, setPeriod] = useState<Period>(preview?.period ?? "month");
   const [year, setYear] = useState("2026");
   const [month, setMonth] = useState("6");
-  const [portfolioMonth, setPortfolioMonth] = useState(String(currentReportMonth));
+  const [portfolioMonth, setPortfolioMonth] = useState(preview?.month ?? String(currentReportMonth));
   const [interval, setInterval] = useState("yearly");
-  const [notice, setNotice] = useState("");
+  const [notice, setNotice] = useState(preview?.notice ? t("previewNotice") : "");
   const [portfolioSessionExpiresAt, setPortfolioSessionExpiresAt] = useState(initialPortfolioSessionExpiresAt);
-  const [amountsVisible, setAmountsVisible] = useState(report === "portfolio" && initialPortfolioSessionExpiresAt !== null);
+  const [amountsVisible, setAmountsVisible] = useState(preview?.visible ?? (report === "portfolio" && initialPortfolioSessionExpiresAt !== null));
   const [otpOpen, setOtpOpen] = useState(false);
   const showNotice = () => setNotice(t("previewNotice"));
   const yearOptions = years.map((item) => ({ value: item, label: item }));
@@ -291,13 +293,13 @@ export default function FinancialReportExperience({ report, portfolioSessionExpi
   const portfolioSnapshot = getPortfolioSnapshot(portfolioMonth, isSolitaire);
 
   useEffect(() => {
-    if (!portfolioSessionExpiresAt) return;
+    if (preview || !portfolioSessionExpiresAt) return;
     const timer = window.setTimeout(() => {
       setPortfolioSessionExpiresAt(null);
       setAmountsVisible(false);
     }, Math.max(0, portfolioSessionExpiresAt - Date.now()));
     return () => window.clearTimeout(timer);
-  }, [portfolioSessionExpiresAt]);
+  }, [portfolioSessionExpiresAt, preview]);
 
   async function verifyPortfolioOtp(code: string) {
     const expiresAt = await activatePortfolioViewSession(code);
@@ -309,10 +311,10 @@ export default function FinancialReportExperience({ report, portfolioSessionExpi
   }
 
   return <div className={`relative isolate ${isSolitaire ? "bg-neutral-200" : ""} ${report === "tax" ? "min-h-[calc(100vh-320px)]" : ""}`}>
-    <img aria-hidden src="/assets/prioritas/member-overview/decoration.png" alt="" className={`pointer-events-none absolute inset-x-0 top-0 -z-10 h-[748px] w-full object-cover object-top ${isSolitaire ? "grayscale" : ""}`} />
+    <BrandPageBackground tone={isSolitaire ? "solitaire" : "prioritas"} />
     <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-10 px-4 pt-8 pb-10 xl:px-0">
       {report === "tax" ? <section aria-label={t("tax.title")} className={`flex w-full flex-col gap-5 rounded-xl border ${isSolitaire ? "border-neutral-300 shadow-card" : "border-pbrown-100 shadow-prioritas"} bg-white p-4 md:p-6 xl:flex-row xl:items-center xl:justify-between`}>
-        <h2 className="w-full text-xl font-semibold leading-7 text-blue-800 xl:max-w-52">{t("tax.title")}</h2>
+        <h2 className="w-full text-size-display-s font-semibold leading-7 text-blue-800 xl:max-w-52">{t("tax.title")}</h2>
         <div className="flex w-full flex-wrap items-center gap-3 xl:w-auto xl:flex-nowrap">
           <div role="group" aria-label={t("tax.periodLabel")} className="flex w-full gap-3 xl:w-[240px] xl:flex-none">{(["year", "month"] as const).map((value) => <button key={value} type="button" aria-pressed={period === value} onClick={() => setPeriod(value)} className={`priosoli-chip ${isSolitaire ? "priosoli-chip--solitaire" : ""} priosoli-chip--medium priosoli-chip--xl-large flex-1 justify-center`}>{t(`tax.${value}`)}</button>)}</div>
           <ReportDropdown id="financial-tax-year" label={t("tax.yearLabel")} value={year} onChange={setYear} options={yearOptions} className="w-full xl:w-[150px] xl:flex-none" size="medium" xlSize="large" solitaire={isSolitaire} />
@@ -337,13 +339,13 @@ export default function FinancialReportExperience({ report, portfolioSessionExpi
               else setOtpOpen(true);
             }} solitaire={isSolitaire} />
           </section>
-          <p className="mt-4 text-sm text-neutral-700">{t("updated")}</p>
+          <p className="mt-4 text-size-body-m text-neutral-700">{t("updated")}</p>
         </div>
         <div className="grid gap-6 xl:grid-cols-[minmax(0,846px)_minmax(0,410px)]"><WealthChart t={t} interval={interval} setInterval={setInterval} visible={amountsVisible} selectedMonth={portfolioMonth} locale={locale} solitaire={isSolitaire} /><Composition t={t} visible={amountsVisible} snapshot={portfolioSnapshot} locale={locale} solitaire={isSolitaire} /></div>
         <CategoryCards t={t} category="assets" visible={amountsVisible} snapshot={portfolioSnapshot} locale={locale} solitaire={isSolitaire} />
         <CategoryCards t={t} category="liabilities" visible={amountsVisible} snapshot={portfolioSnapshot} locale={locale} solitaire={isSolitaire} />
       </>}
-      {notice ? <p role="status" className="rounded-xl border border-pgold-400 bg-pgold-100 p-4 text-base text-pbrown-800">{notice}</p> : null}
+      {notice ? <p role="status" className="rounded-xl border border-pgold-400 bg-pgold-100 p-4 text-size-body-l text-pbrown-800">{notice}</p> : null}
     </div>
     {otpOpen ? <FinancialReportOtpModal onClose={() => setOtpOpen(false)} onVerified={verifyPortfolioOtp} solitaire={isSolitaire} /> : null}
   </div>;

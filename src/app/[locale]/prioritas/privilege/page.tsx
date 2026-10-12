@@ -1,12 +1,8 @@
 import { setRequestLocale } from "next-intl/server";
-import SignaturePrivilegeExperience from "@/components/prioritas/SignaturePrivilegeExperience";
-import { getPrivilegePromos } from "@/lib/partner-privileges";
+import PublicPrivilegePage from "@/components/prioritas/PublicPrivilegePage";
 
-export default async function SignaturePrivilegePage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
+export default async function PublicPrivilegeRoute({ params, searchParams }: { params: Promise<{ locale: string }>; searchParams: Promise<{ section?: string | string[] }> }) {
+  const [{ locale }, query] = await Promise.all([params, searchParams]);
   setRequestLocale(locale);
-  const now = new Date();
-  const promos = getPrivilegePromos("complimentary");
-  const signaturePromos = getPrivilegePromos("signature");
-  return <SignaturePrivilegeExperience promos={promos} signaturePromos={signaturePromos} now={now} />;
+  return <PublicPrivilegePage brand="prioritas" section={query.section} />;
 }

@@ -54,7 +54,7 @@ export default async function MyBcaSection() {
               </a>
               <div className="h-[148px] w-px bg-neutral-300" />
               <div className="flex w-full flex-col items-center gap-3 p-1">
-                <p className="text-center text-sm font-semibold leading-4">{t("downloadPrompt")}</p>
+                <p className="text-center text-size-body-m font-semibold leading-4">{t("downloadPrompt")}</p>
                 <div className="flex flex-col items-center gap-2">
                   <a href={appStoreUrl} aria-label={t("appStore")} className="block h-11 w-fit overflow-hidden rounded">
                     <img
@@ -78,7 +78,7 @@ export default async function MyBcaSection() {
               </div>
             </div>
             <a href={myBcaPageUrl} className="btn-base w-fit border border-white bg-transparent text-white hover:bg-white/10">
-              <span className="text-base font-semibold">{t("detail")}</span>
+              <span className="text-size-body-l font-semibold">{t("detail")}</span>
             </a>
           </div>
         </div>
@@ -138,15 +138,15 @@ export default async function MyBcaSection() {
             >
               {/* Capped at the Figma text width so the heading keeps its 3-line wrap. */}
               <div className="flex w-full max-w-80 flex-col items-center">
-                <p className="text-xl font-semibold leading-7 text-white text-shadow-hero">
+                <p className="text-size-display-s font-semibold leading-7 text-white text-shadow-hero">
                   {t("heading")}
                 </p>
               </div>
               <div className="flex flex-row items-center gap-2">
                 <DownloadMyBcaLink className="btn-base btn-primary w-fit">
-                  <span className="whitespace-nowrap text-sm font-semibold">{t("downloadMobile")}</span>
+                  <span className="whitespace-nowrap text-size-body-m font-semibold">{t("downloadMobile")}</span>
                 </DownloadMyBcaLink>
-                <a href={myBcaPageUrl} className="rounded-full border border-white px-4 py-2 text-sm font-semibold text-neutral-100 transition-colors hover:bg-white/10">
+                <a href={myBcaPageUrl} className="rounded-full border border-white px-4 py-2 text-size-body-m font-semibold text-neutral-100 transition-colors hover:bg-white/10">
                   {t("detail")}
                 </a>
               </div>

@@ -21,7 +21,7 @@ export default function RelatedInformationSection({ title, links, tone = "genera
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         {links.map((link) => (
           <Link key={link.href} href={link.href} className={`group flex items-center justify-between rounded-2xl border bg-white px-5 py-4 transition-colors ${linkClass}`}>
-            <span className="text-base font-semibold xl:text-title">{link.label}</span>
+            <span className="text-size-body-l font-semibold xl:text-title">{link.label}</span>
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="size-5 shrink-0 transition-transform group-hover:translate-x-1">
               <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>

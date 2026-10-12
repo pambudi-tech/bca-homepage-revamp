@@ -171,7 +171,7 @@ function CompareCheckbox({
   onChange: (checked: boolean) => void;
 }) {
   return (
-    <label className={`group/compare flex min-w-0 items-center gap-2 text-sm leading-5 ${disabled ? "cursor-not-allowed opacity-45" : "cursor-pointer"}`}>
+    <label className={`group/compare flex min-w-0 items-center gap-2 text-size-body-m leading-5 ${disabled ? "cursor-not-allowed opacity-45" : "cursor-pointer"}`}>
       <input
         type="checkbox"
         checked={checked}
@@ -298,7 +298,7 @@ function CreditCardTile({
           </div>
 
             <div className="min-w-0 flex-1">
-              <h3 className={`text-base font-bold leading-6 transition-colors group-hover/card:text-blue-500 xl:w-[240px] ${checked ? "text-blue-500" : "text-neutral-800"}`}>
+              <h3 className={`text-size-body-l font-bold leading-6 transition-colors group-hover/card:text-blue-500 xl:w-[240px] ${checked ? "text-blue-500" : "text-neutral-800"}`}>
                 {card.title}
               </h3>
             </div>
@@ -309,7 +309,7 @@ function CreditCardTile({
           <div className="flex flex-col gap-4">
             <ul className="flex flex-col gap-3">
               {card.benefits.map((benefit) => (
-                <li key={benefit.label} className="flex items-center gap-2 text-sm leading-5 text-neutral-700">
+                <li key={benefit.label} className="flex items-center gap-2 text-size-body-m leading-5 text-neutral-700">
                   <BenefitIcon type={benefit.icon} />
                   <span>{benefit.label}</span>
                 </li>
@@ -326,13 +326,13 @@ function CreditCardTile({
               disabled={compareDisabled}
               onChange={onCompareChange}
             />
-            <Link href={`/kartu-kredit/${card.id}`} className="flex shrink-0 items-center gap-0.5 text-sm font-semibold leading-5 text-blue-500">
+            <Link href={`/kartu-kredit/${card.id}`} className="flex shrink-0 items-center gap-0.5 text-size-body-m font-semibold leading-5 text-blue-500">
               {detailLabel}
               <ArrowRight />
             </Link>
           </div>
           <ApplyInMyBcaLink
-            className="btn-base btn-primary h-10 w-full text-sm"
+            className="btn-base btn-primary h-10 w-full text-size-body-m"
           >
             {applyLabel}
           </ApplyInMyBcaLink>
@@ -370,7 +370,7 @@ function SelectedComparisonSlot({
   return (
     <div className="group/comparison-card flex min-w-0 flex-1 items-center justify-center rounded-xl border border-neutral-300 bg-neutral-100 px-2 py-2 xl:justify-start xl:gap-3 xl:px-3">
       <ComparisonThumb card={card} />
-      <p className="hidden min-w-0 flex-1 text-sm font-semibold leading-5 text-neutral-800 xl:line-clamp-2">
+      <p className="hidden min-w-0 flex-1 text-size-body-m font-semibold leading-5 text-neutral-800 xl:line-clamp-2">
         {card.title}
       </p>
       <button
@@ -391,7 +391,7 @@ function EmptyComparisonSlot({ label }: { label: string }) {
       <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-neutral-100 xl:size-12">
         <PlusIcon />
       </span>
-      <span className="hidden text-sm font-semibold leading-5 xl:inline">{label}</span>
+      <span className="hidden text-size-body-m font-semibold leading-5 xl:inline">{label}</span>
     </div>
   );
 }
@@ -471,14 +471,14 @@ function ComparisonPanel({
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <div className="flex items-center gap-3">
-                  <h3 className="text-base font-bold leading-6 text-neutral-800 xl:text-lg">
+                  <h3 className="text-size-body-l font-bold leading-6 text-neutral-800 xl:text-size-body-xl">
                     {t("title")}
                   </h3>
-                  <p className="hidden text-sm font-semibold leading-5 text-blue-500 sm:block xl:hidden">
+                  <p className="hidden text-size-body-m font-semibold leading-5 text-blue-500 sm:block xl:hidden">
                     {t("countMobile", { count, max: maxCompareCards })}
                   </p>
                 </div>
-                <p className="mt-1 text-sm leading-5 text-neutral-700 xl:mt-0.5">
+                <p className="mt-1 text-size-body-m leading-5 text-neutral-700 xl:mt-0.5">
                   <span className="hidden xl:inline">{statusLabel}</span>
                   <span className="xl:hidden">{count === maxCompareCards ? t("maxSelected", { max: maxCompareCards }) : t("countMobile", { count, max: maxCompareCards })}</span>
                 </p>
@@ -488,7 +488,7 @@ function ComparisonPanel({
                 onClick={() => onModeChange("minimized")}
                 aria-expanded
                 aria-label={t("minimizeAria")}
-                className="flex h-9 shrink-0 items-center gap-1 rounded-full px-2 text-sm font-semibold leading-5 text-blue-500 transition-colors hover:bg-blue-100 xl:px-3"
+                className="flex h-9 shrink-0 items-center gap-1 rounded-full px-2 text-size-body-m font-semibold leading-5 text-blue-500 transition-colors hover:bg-blue-100 xl:px-3"
               >
                 <span className="hidden xl:inline">{t("minimize")}</span>
                 <ChevronIcon direction="down" />
@@ -513,7 +513,7 @@ function ComparisonPanel({
               <button
                 type="button"
                 onClick={onClear}
-                className="hidden text-sm font-semibold leading-5 text-blue-500 transition-colors hover:text-[var(--color-primary-hover)] xl:inline-flex"
+                className="hidden text-size-body-m font-semibold leading-5 text-blue-500 transition-colors hover:text-[var(--color-blue-400)] xl:inline-flex"
               >
                 {t("clearAll")}
               </button>
@@ -521,7 +521,7 @@ function ComparisonPanel({
                 type="button"
                 disabled={!canCompare}
                 onClick={onCompare}
-                className="btn-base btn-primary h-11 w-full text-sm font-semibold disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:text-neutral-700 xl:h-10 xl:w-auto"
+                className="btn-base btn-primary h-11 w-full text-size-body-m font-semibold disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:text-neutral-700 xl:h-10 xl:w-auto"
               >
                 {expandedCtaLabel}
                 {canCompare ? <ArrowRight className="text-neutral-100" /> : null}
@@ -535,7 +535,7 @@ function ComparisonPanel({
                 <ComparisonThumb key={card.id} card={card} stacked index={index} />
               ))}
             </div>
-            <p className="min-w-0 flex-1 truncate text-sm font-semibold leading-5 text-neutral-800 xl:text-base">
+            <p className="min-w-0 flex-1 truncate text-size-body-m font-semibold leading-5 text-neutral-800 xl:text-size-body-l">
               <span className="hidden sm:inline">{t("selected", { count })}</span>
               <span className="sm:hidden">{t("selectedShort", { count })}</span>
             </p>
@@ -547,7 +547,7 @@ function ComparisonPanel({
                 onCompare();
               }}
               disabled={!canCompare}
-              className="btn-base btn-primary h-10 shrink-0 px-4 text-sm font-semibold disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:text-neutral-700 xl:px-5"
+              className="btn-base btn-primary h-10 shrink-0 px-4 text-size-body-m font-semibold disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:text-neutral-700 xl:px-5"
             >
               {minimizedCtaLabel}
             </button>
@@ -769,7 +769,7 @@ export default function KartuKreditCardList() {
                     setActiveFilter(filter.key);
                     setShowAllCards(false);
                   }}
-                  className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-sm transition-colors xl:h-14 xl:px-4 xl:text-base ${
+                  className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-size-body-m transition-colors xl:h-14 xl:px-4 xl:text-size-body-l ${
                     active
                       ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500"
                       : "border-neutral-300 bg-white font-semibold text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100 hover:text-blue-500"
@@ -804,7 +804,7 @@ export default function KartuKreditCardList() {
             type="button"
             onClick={() => setShowAllCards((current) => !current)}
             aria-expanded={showAllCards}
-            className="mx-auto flex min-h-11 items-center justify-center gap-1 px-3 text-sm font-semibold text-blue-500 transition-colors hover:text-[var(--color-primary-hover)] active:translate-y-px"
+            className="mx-auto flex min-h-11 items-center justify-center gap-1 px-3 text-size-body-m font-semibold text-blue-500 transition-colors hover:text-[var(--color-blue-400)] active:translate-y-px"
           >
             <span>{showAllCards ? t("showLess") : t("showMore", { count: visibleCards.length - 3 })}</span>
             <ChevronIcon direction={showAllCards ? "up" : "down"} />

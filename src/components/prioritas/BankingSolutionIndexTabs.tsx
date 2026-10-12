@@ -45,8 +45,8 @@ export default function BankingSolutionIndexTabs({ activeTab, basePath = "/prior
     <div ref={viewportRef} className="hide-scrollbar relative overflow-x-auto px-4 [scrollbar-width:none] xl:overflow-visible xl:px-0">
       <div role="tablist" aria-label={t("tabLabel")} className={`tab-curved-list prioritas-index-tab-list relative flex w-max overflow-visible rounded-t-xl ${tone === "solitaire" ? "bg-neutral-800" : "bg-pbrown-700"}`}>
         {([
-          { key: "privilege", href: `${basePath}/banking-solution` },
-          { key: "wealth", href: `${basePath}/banking-solution/wealth-insight` },
+          { key: "privilege", href: `${basePath}/banking-solution?section=privilege` },
+          { key: "wealth", href: `${basePath}/banking-solution?section=wealth` },
           { key: "kurs", href: `${basePath}/banking-solution/kurs` },
         ] as const).map(({ key, href }) => <TabLink
           ref={(node) => { tabRefs.current[key] = node; }}

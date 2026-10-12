@@ -1,3 +1,4 @@
+import { privilegeDetailBase } from "@/lib/privilege-paths";
 import type { Promo } from "@/components/home/promo-data";
 import type { EventPromo } from "@/components/prioritas/event-data";
 import CardVisual from "@/components/promo/CardVisual";
@@ -33,6 +34,8 @@ export default function ContentCard({ now, fill = true, reveal = false, detailHr
 
   return (
     <CardVisual
+      titleMaxLines={3}
+      brandMaxLines={1}
       previewViewport={previewViewport}
       promo={item}
       now={now}
@@ -42,7 +45,7 @@ export default function ContentCard({ now, fill = true, reveal = false, detailHr
       fill={fill}
       compact={compact}
       detail={!showPromoTimestamp}
-      detailHref={detailHref ?? `/${solitaire ? "solitaire" : "prioritas"}/${detailSegment[variant]}/${item.id}`}
+      detailHref={detailHref ?? `${variant === "complimentary" ? privilegeDetailBase(solitaire ? "/solitaire" : "/prioritas", "complimentary") : `/${solitaire ? "solitaire" : "prioritas"}/${detailSegment[variant]}`}/${item.id}`}
       promoPage={variant === "promo" && !showPromoTimestamp}
       partnerPrivilege={variant === "complimentary" || variant === "lifestyle"}
       birthdayGift={variant === "complimentary" && content.item.birthdayGift}

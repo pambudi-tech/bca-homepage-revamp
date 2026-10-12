@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getInformationPageLinks } from "@/components/prioritas/information-page-links";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Navbar from "@/components/home/Navbar";
 import Footer from "@/components/home/Footer";
@@ -19,10 +20,10 @@ export async function generateMetadata({ params }: { params: Promise<PageParams>
 export default async function PrioritasFindBranchPage({ params }: { params: Promise<PageParams> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const relatedLinks = await getInformationPageLinks("prioritas", "temukan-kami");
   const t = await getTranslations("prioritasFindBranch");
   const navigation = await getTranslations("signaturePrivilege");
   const about = await getTranslations("prioritasAbout");
-  const riplay = await getTranslations("prioritasRiplay");
   return (
     <main id="main-content" className="min-h-screen overflow-x-clip bg-pgold-100">
       <div className="relative">
@@ -38,10 +39,7 @@ export default async function PrioritasFindBranchPage({ params }: { params: Prom
       </div>
       <LocationSection />
       <div className="mx-auto w-full max-w-[1280px] px-4 xl:px-0">
-        <RelatedInformationSection title={about("relatedTitle")} tone="prioritas" links={[
-          { href: "/prioritas/tentang-kami", label: about("title") },
-          { href: "/prioritas/riplay", label: riplay("title") },
-        ]} />
+        <RelatedInformationSection title={about("relatedTitle")} tone="prioritas" links={relatedLinks} />
       </div>
       <Footer variant="prioritas" />
       <BackToTop bottomInset="24px" revealAtBottom />

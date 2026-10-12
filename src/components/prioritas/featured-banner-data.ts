@@ -14,7 +14,7 @@ export const FEATURED_BANNER_SLIDES = [
 
 export const MERCEDES_AD_SLIDE: FeaturedBannerSlide = {
   id: "mercedes-glc-ad",
-  image: "/assets/prioritas/ads/mercedes-background.png",
+  image: "/assets/prioritas/ads/mercedes-background.webp",
   alt: "Mercedes-Benz GLC 300",
   brandLogo: "/assets/prioritas/ads/mercedes-logo.png",
   isAd: true,

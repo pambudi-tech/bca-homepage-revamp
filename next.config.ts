@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import assetRedirects from "./src/components/asset-bank/asset-redirects.json";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
@@ -37,6 +38,26 @@ const nextConfig: NextConfig = {
     // the `viewTransitionName`s in Navbar.tsx / globals.css.
     viewTransition: true,
   },
+  async redirects() {
+    // Old listing URLs open the corresponding hub tab; asset aliases stay valid.
+    return [
+      ...["", "/:locale(id|en|zh)"].flatMap(prefix => [
+        { path: "lifestyle-privilege", section: "lifestyle" },
+        { path: "event", section: "event" },
+        { path: "promo", section: "promo" },
+      ].map(({ path, section }) => ({
+        source: `${prefix}/:brand(prioritas|solitaire)/${path}`,
+        destination: `${prefix ? "/:locale" : ""}/:brand/privilege?section=${section}`,
+        permanent: false,
+      }))),
+      ...["", "/:locale(id|en|zh)"].map(prefix => ({
+        source: `${prefix}/:brand(prioritas|solitaire)/banking-solution/wealth-insight`,
+        destination: `${prefix ? "/:locale" : ""}/:brand/banking-solution?section=wealth`,
+        permanent: false,
+      })),
+      ...Object.entries(assetRedirects).map(([source, destination]) => ({ source, destination: encodeURI(destination), permanent: true })),
+    ];
+  },
   async headers() {
     return [
       {
@@ -57,6 +78,20 @@ const nextConfig: NextConfig = {
         },
         {
           source: `${source}/stage`,
+          headers: [
+            { key: "X-Frame-Options", value: "SAMEORIGIN" },
+            { key: "Content-Security-Policy", value: CSP.replace("frame-ancestors 'none'", "frame-ancestors 'self'") },
+          ],
+        },
+      ]),
+      // Only the documentation example documents can be framed by this origin.
+      ...["/design-tokens", "/:locale(id|en|zh)/design-tokens"].flatMap((source) => [
+        {
+          source,
+          headers: [{ key: "Content-Security-Policy", value: CSP.replace("frame-src https://www.google.com", "frame-src 'self' https://www.google.com") }],
+        },
+        {
+          source: `${source}/preview/:example(homepage|index|detail)`,
           headers: [
             { key: "X-Frame-Options", value: "SAMEORIGIN" },
             { key: "Content-Security-Policy", value: CSP.replace("frame-ancestors 'none'", "frame-ancestors 'self'") },

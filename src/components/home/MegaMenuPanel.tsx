@@ -62,18 +62,18 @@ export default function MegaMenuPanel({
         {/* Product list — restored to the centre column. */}
         <div className="flex h-full w-[420px] shrink-0 flex-col justify-between">
           <div>
-            <p className="px-4 py-2 text-xs font-semibold uppercase tracking-[1.8px] text-neutral-600">
+            <p className="px-4 py-2 text-size-body-s font-semibold uppercase tracking-[1.8px] text-neutral-600">
               {category.label}
             </p>
             <div className="flex flex-col">
               {category.products.map((product, i) => {
                 const content = (
                   <>
-                    <span className="text-base font-semibold leading-6 text-neutral-800 transition-colors duration-200 group-hover:text-blue-500">
+                    <span className="text-size-body-l font-semibold leading-6 text-neutral-800 transition-colors duration-200 group-hover:text-blue-500">
                       {product.title}
                     </span>
                     {product.description && (
-                      <span className="text-sm leading-5 text-neutral-600">{product.description}</span>
+                      <span className="text-size-body-m leading-5 text-neutral-600">{product.description}</span>
                     )}
                   </>
                 );
@@ -94,7 +94,7 @@ export default function MegaMenuPanel({
             <Link
               href="/kartu-kredit"
               style={{ "--mm-i": category.products.length + 1 } as CSSProperties}
-              className="mm-item flex w-fit items-center gap-0.5 px-4 text-base font-semibold text-blue-500 transition-transform duration-200 hover:translate-x-0.5"
+              className="mm-item flex w-fit items-center gap-0.5 px-4 text-size-body-l font-semibold text-blue-500 transition-transform duration-200 hover:translate-x-0.5"
             >
               {category.ctaLabel}
               <ArrowRight />
@@ -102,7 +102,7 @@ export default function MegaMenuPanel({
           ) : (
             <button
               style={{ "--mm-i": category.products.length + 1 } as CSSProperties}
-              className="mm-item flex w-fit items-center gap-0.5 px-4 text-base font-semibold text-blue-500 transition-transform duration-200 hover:translate-x-0.5"
+              className="mm-item flex w-fit items-center gap-0.5 px-4 text-size-body-l font-semibold text-blue-500 transition-transform duration-200 hover:translate-x-0.5"
             >
               {category.ctaLabel}
               <ArrowRight />
@@ -122,7 +122,7 @@ export default function MegaMenuPanel({
                 className="mm-item flex h-[180px] flex-1 flex-col justify-between rounded-xl border border-neutral-200 p-5 text-left transition-colors duration-200 hover:bg-cyan-100"
               >
                 <img src={LINK_ICONS[tool.type ?? "article"]} alt="" className="size-10" />
-                <span className="text-base font-semibold leading-6 text-neutral-800">{tool.label}</span>
+                <span className="text-size-body-l font-semibold leading-6 text-neutral-800">{tool.label}</span>
               </button>
             ))}
           </div>
@@ -136,7 +136,7 @@ export default function MegaMenuPanel({
                 <span className="flex size-8 shrink-0 items-center justify-center">
                   <img src={LINK_ICONS[link.type ?? "article"]} alt="" className="size-6" />
                 </span>
-                <span className="flex-1 text-sm font-semibold leading-5 text-neutral-800">{link.label}</span>
+                <span className="flex-1 text-size-body-m font-semibold leading-5 text-neutral-800">{link.label}</span>
               </button>
             ))}
           </div>

@@ -2,12 +2,20 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import Lenis from "lenis";
+import { usePathname } from "@/i18n/navigation";
 
 const LenisContext = createContext<Lenis | null>(null);
 
 export const useLenis = () => useContext(LenisContext);
 
 let lockCount = 0;
+let nativeLockCount = 0;
+let nativeBodyOverflow = "";
+
+const documentationRoutes = [
+  "/component-catalog", "/asset-bank", "/design-tokens", "/site-map", "/user-flows",
+  "/prioritas/button-audit", "/prioritas/content-card-audit",
+];
 
 /**
  * Ref-counted page-scroll lock. Lenis has no notion of nested locks, so a bare
@@ -18,7 +26,18 @@ let lockCount = 0;
 export function useScrollLock(locked: boolean) {
   const lenis = useLenis();
   useEffect(() => {
-    if (!lenis || !locked) return;
+    if (!locked) return;
+    if (!lenis) {
+      if (nativeLockCount === 0) {
+        nativeBodyOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+      }
+      nativeLockCount += 1;
+      return () => {
+        nativeLockCount -= 1;
+        if (nativeLockCount === 0) document.body.style.overflow = nativeBodyOverflow;
+      };
+    }
     lockCount += 1;
     lenis.stop();
     return () => {
@@ -29,6 +48,16 @@ export function useScrollLock(locked: boolean) {
 }
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
+  // next-intl's pathname excludes the locale prefix. Documentation and its
+  // nested preview routes use native scrolling in every supported locale.
+  const pathname = usePathname();
+  const documentation = documentationRoutes.some(route => pathname === route || pathname.startsWith(`${route}/`));
+  return documentation
+    ? <LenisContext.Provider value={null}>{children}</LenisContext.Provider>
+    : <LenisScroll>{children}</LenisScroll>;
+}
+
+function LenisScroll({ children }: { children: React.ReactNode }) {
   const [lenisInstance, setLenisInstance] = useState<Lenis | null>(null);
 
   useEffect(() => {

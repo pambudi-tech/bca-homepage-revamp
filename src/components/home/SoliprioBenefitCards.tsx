@@ -52,8 +52,8 @@ export default function SoliprioBenefitCards({
             className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           />
           <div className="absolute inset-x-2 bottom-2 flex min-h-[144px] flex-col justify-between rounded-2xl bg-neutral-900/45 p-4 text-neutral-100 backdrop-blur-[16px]">
-            <p className="text-base leading-6 font-semibold">{benefit.title}</p>
-            <span className="flex items-center gap-2 text-sm font-semibold">
+            <p className="text-size-body-l leading-6 font-semibold">{benefit.title}</p>
+            <span className="flex items-center gap-2 text-size-body-m font-semibold">
               {benefit.cta}
               <ArrowRight />
             </span>

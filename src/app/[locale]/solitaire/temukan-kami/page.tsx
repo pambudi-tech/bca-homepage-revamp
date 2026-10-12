@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getInformationPageLinks } from "@/components/prioritas/information-page-links";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Navbar from "@/components/home/Navbar";
 import Footer from "@/components/home/Footer";
@@ -19,11 +20,11 @@ export async function generateMetadata({ params }: { params: Promise<PageParams>
 export default async function SolitaireFindBranchPage({ params }: { params: Promise<PageParams> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const relatedLinks = await getInformationPageLinks("solitaire", "temukan-kami");
   const t = await getTranslations("prioritasFindBranch");
   const navigation = await getTranslations("signaturePrivilege");
   const solitaire = await getTranslations("solitaireHero");
   const about = await getTranslations("prioritasAbout");
-  const riplay = await getTranslations("prioritasRiplay");
 
   return <>
     <main id="main-content" className="overflow-x-clip bg-neutral-200 xl:min-h-screen">
@@ -50,10 +51,7 @@ export default async function SolitaireFindBranchPage({ params }: { params: Prom
       </div>
       <LocationSection tone="solitaire" />
       <div className="mx-auto w-full max-w-[1280px] px-4 xl:px-0">
-        <RelatedInformationSection title={about("relatedTitle")} tone="solitaire" links={[
-          { href: "/solitaire/tentang-kami", label: about("title") },
-          { href: "/solitaire/riplay", label: riplay("title") },
-        ]} />
+        <RelatedInformationSection title={about("relatedTitle")} tone="solitaire" links={relatedLinks} />
       </div>
       <BackToTop bottomInset="24px" revealAtBottom />
     </main>

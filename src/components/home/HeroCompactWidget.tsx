@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { KursEntry } from "@/lib/kurs";
@@ -93,10 +95,10 @@ export default function HeroCompactWidget({ kurs }: { kurs: KursEntry[] }) {
           rel="noopener noreferrer"
           className="flex size-36 shrink-0 flex-col justify-between rounded-2xl bg-black/60 p-4 text-white backdrop-blur-md transition-colors hover:bg-black/70 xl:h-40 xl:w-[164px] xl:p-5"
         >
-          <img src={destination.icon} alt="" className="size-10 object-contain object-left brightness-0 invert" />
+          <IconAsset src={destination.icon} alt="" className="size-10 object-contain object-left brightness-0 invert" />
           <span className="flex flex-col gap-1">
-            <strong className="text-sm leading-5 xl:text-base xl:leading-6">{destination.label}</strong>
-            <span className="text-xs leading-[18px] text-neutral-300">
+            <strong className="text-size-body-m leading-5 xl:text-size-body-l xl:leading-6">{destination.label}</strong>
+            <span className="text-size-body-s leading-[18px] text-neutral-300">
               {t("loginCard", { service: destination.label })}
             </span>
           </span>
@@ -106,8 +108,8 @@ export default function HeroCompactWidget({ kurs }: { kurs: KursEntry[] }) {
       {entry ? (
         <div className="flex h-36 min-w-[360px] shrink-0 flex-col justify-between rounded-2xl bg-black/60 p-4 text-white backdrop-blur-md xl:h-40 xl:min-w-0 xl:w-[420px] xl:p-5">
           <div className="flex items-center justify-between">
-            <strong className="text-sm leading-5 xl:text-base xl:leading-6">{t("kursERate")}</strong>
-            <a href="https://www.bca.co.id/id/informasi/kurs" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm font-semibold hover:underline">
+            <strong className="text-size-body-m leading-5 xl:text-size-body-l xl:leading-6">{t("kursERate")}</strong>
+            <a href="https://www.bca.co.id/id/informasi/kurs" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-size-body-m font-semibold hover:underline">
               {t("viewAll")}
               <img src="/assets/quick-action/arrow-right.svg" alt="" className="size-5 brightness-0 invert" />
             </a>
@@ -117,25 +119,25 @@ export default function HeroCompactWidget({ kurs }: { kurs: KursEntry[] }) {
             <div className="flex items-center gap-5">
               <img src={entry.flag} alt={entry.code} className="size-8 xl:size-10" />
               <div>
-                <span className="block text-xs font-semibold leading-[18px] text-white/60 xl:text-sm xl:leading-5">{t("beli")}</span>
-                <strong className="text-sm leading-5 xl:text-base xl:leading-6"><AnimatedRate value={entry.beli} /></strong>
+                <span className="block text-size-body-s font-semibold leading-[18px] text-white/60 xl:text-size-body-m xl:leading-5">{t("beli")}</span>
+                <strong className="text-size-body-m leading-5 xl:text-size-body-l xl:leading-6"><AnimatedRate value={entry.beli} /></strong>
               </div>
               <div>
-                <span className="block text-xs font-semibold leading-[18px] text-white/60 xl:text-sm xl:leading-5">{t("jual")}</span>
-                <strong className="text-sm leading-5 xl:text-base xl:leading-6"><AnimatedRate value={entry.jual} /></strong>
+                <span className="block text-size-body-s font-semibold leading-[18px] text-white/60 xl:text-size-body-m xl:leading-5">{t("jual")}</span>
+                <strong className="text-size-body-m leading-5 xl:text-size-body-l xl:leading-6"><AnimatedRate value={entry.jual} /></strong>
               </div>
             </div>
             <div className="flex gap-2">
               <button onClick={() => moveRate(-1)} aria-label={t("kursPrev")} className="flex size-8 items-center justify-center rounded-full bg-white/30 transition-colors hover:bg-white/40">
-                <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-5" />
+                <IconAsset src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-5" />
               </button>
               <button onClick={() => moveRate(1)} aria-label={t("kursNext")} className="flex size-8 items-center justify-center rounded-full bg-white/30 transition-colors hover:bg-white/40">
-                <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5" />
+                <IconAsset src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5" />
               </button>
             </div>
           </div>
 
-          <span className="text-xs leading-[18px] text-neutral-300">{t("kursDisclaimer")}</span>
+          <span className="text-size-body-s leading-[18px] text-neutral-300">{t("kursDisclaimer")}</span>
         </div>
       ) : null}
     </div>

@@ -1,3 +1,4 @@
+import MemberPageSurface from "@/components/prioritas/MemberPageSurface";
 import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import PrioritasMemberHeader from "@/components/prioritas/PrioritasMemberHeader";
@@ -25,6 +26,8 @@ export default async function PrioritasMemberPrivilegePage({ params, searchParam
     <PrioritasMemberHeader activeTab="privilege" title={privilegeT("subNav.privilege")} compactTitleTabGap>
       <PrivilegeSectionTabs activeSection={activeSection} />
     </PrioritasMemberHeader>
+    <MemberPageSurface>
     <SignaturePrivilegeExperience promos={promos} signaturePromos={signaturePromos} now={now} memberArea directoryOnly={activeSection !== "signature"} activeTab={activeSection} bannerBackdrops={bannerBackdrops} />
+    </MemberPageSurface>
   </>;
 }

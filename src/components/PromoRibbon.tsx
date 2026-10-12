@@ -52,7 +52,7 @@ export default function PromoRibbon({
           borderColor: style.border,
         }}
       >
-        <p className="whitespace-nowrap text-sm font-semibold leading-5" style={{ color: style.text }}>
+        <p className="whitespace-nowrap text-size-body-m font-semibold leading-5" style={{ color: style.text }}>
           {label}
         </p>
       </div>

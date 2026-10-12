@@ -28,7 +28,7 @@ export const FOOTER_LINK_HREFS: Record<(typeof FOOTER_LINK_COLUMN_KEYS)[number],
 export const PRIORITAS_FOOTER_LINK_HREFS: Record<(typeof PRIORITAS_FOOTER_LINK_COLUMN_KEYS)[number], (string | null)[]> = {
   Perusahaan: [
     "/prioritas/tentang-kami",
-    "https://prioritas.bca.co.id/en/Hubungi-Kami",
+    "/prioritas/hubungi-kami",
     "/prioritas/temukan-kami",
     "/prioritas/riplay",
   ],

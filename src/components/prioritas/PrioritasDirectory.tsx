@@ -1,7 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
+import { IconAsset } from "@/components/icons/IconAsset";
+
+import { useCallback, useContext, useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import { useTranslations } from "next-intl";
+
+import { PreviewFrozenContext } from "@/lib/PreviewViewport";
 
 export const DIRECTORY_PAGE_SIZE = 9;
 const DIRECTORY_PANEL_CLASS = "relative -left-4 w-[calc(100%+2rem)] rounded-t-[20px] rounded-b-none bg-white shadow-card transition-[left,width,border-radius,box-shadow] duration-500 ease-in-out motion-reduce:transition-none xl:left-0 xl:w-full xl:rounded-xl";
@@ -54,9 +58,11 @@ function getPaginationItems(current: number, total: number, maxItems: number): P
 }
 
 function usePrioritasDirectoryExpansion(panelRef: RefObject<HTMLElement | null>) {
+  const frozen = useContext(PreviewFrozenContext);
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
+    if (frozen) return;
     const panel = panelRef.current;
     const tabs = document.querySelector<HTMLElement>("[data-prioritas-index-tabs]");
     if (!panel || !tabs) return;
@@ -78,7 +84,7 @@ function usePrioritasDirectoryExpansion(panelRef: RefObject<HTMLElement | null>)
       window.removeEventListener("scroll", scheduleUpdate);
       window.removeEventListener("resize", scheduleUpdate);
     };
-  }, [panelRef]);
+  }, [panelRef, frozen]);
 
   return expanded;
 }
@@ -120,12 +126,12 @@ export function PrioritasDirectoryCategories({ children, className = "" }: { chi
     <div ref={railRef} className="hide-scrollbar flex gap-2 overflow-x-auto [scrollbar-width:none] xl:gap-3">{children}</div>
     {overflow.left ? <div className="pointer-events-none absolute inset-y-0 left-0 z-10 flex items-center bg-gradient-to-r from-white via-white/90 to-transparent pr-6">
       <button type="button" onClick={() => scrollCategories(-1)} aria-label={t("categoriesScrollPrevious")} className={arrowClassName}>
-        <img src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-5" />
+        <IconAsset src="/assets/cycle1/chevron-left-1.svg" alt="" className="size-5" />
       </button>
     </div> : null}
     {overflow.right ? <div className="pointer-events-none absolute inset-y-0 right-0 z-10 flex items-center bg-gradient-to-l from-white via-white/90 to-transparent pl-6">
       <button type="button" onClick={() => scrollCategories(1)} aria-label={t("categoriesScrollNext")} className={arrowClassName}>
-        <img src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5" />
+        <IconAsset src="/assets/cycle1/chevron-right-1.svg" alt="" className="size-5" />
       </button>
     </div> : null}
   </div>;
@@ -134,7 +140,7 @@ export function PrioritasDirectoryCategories({ children, className = "" }: { chi
 export function PrioritasDirectoryFilters({ children, count }: { children: ReactNode; count: ReactNode }) {
   return <div className={DIRECTORY_FILTER_CLASS}>
     {children}
-    <p className="text-sm text-neutral-700">{count}</p>
+    <p className="text-size-body-m text-neutral-700">{count}</p>
   </div>;
 }
 
@@ -179,11 +185,11 @@ export function PrioritasDirectoryPagination({ page, total, pageSize, onPageChan
   }, [desktopPageItems]);
 
   return <nav aria-label={label ?? t("paginationLabel")} className={placement === "top" ? "mx-auto flex w-fit items-center justify-center gap-3 xl:mx-0 xl:w-full xl:justify-between" : "mt-6 -mx-4 flex flex-col items-start xl:mx-0 xl:h-24 xl:flex-row xl:items-center xl:justify-between xl:gap-0"}>
-    <p className="hidden text-sm font-semibold text-neutral-600 xl:block">{t("paginationSummary", { from, to, total })}</p>
+    <p className="hidden text-size-body-m font-semibold text-neutral-600 xl:block">{t("paginationSummary", { from, to, total })}</p>
     <div ref={paginationRef} className={`flex min-w-0 items-center justify-center gap-2 ${placement === "top" ? "w-fit xl:ml-auto" : "w-full xl:w-auto xl:self-auto xl:justify-start"}`}>
       <button type="button" disabled={page === 1} onClick={() => onPageChange(page - 1)} className={`flex size-12 shrink-0 items-center justify-center rounded-full transition-colors disabled:opacity-40 ${solitaire ? "border border-neutral-300 bg-neutral-100 text-neutral-800 hover:border-neutral-800" : "bg-white text-pbrown-200 hover:bg-pgold-100"}`} aria-label={t("paginationPrevious")}><span aria-hidden className={`size-5 rotate-180 ${solitaire ? "bg-neutral-800" : "bg-pgold-500"} [mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]`} /></button>
-      {getPaginationItems(page, pageCount, maxPageItems).map((item) => typeof item === "number" ? <button key={item} type="button" onClick={() => onPageChange(item)} aria-current={item === page ? "page" : undefined} className={`flex size-10 shrink-0 items-center justify-center rounded-lg border text-sm font-semibold transition-colors ${solitaire ? item === page ? "border-neutral-800 bg-[linear-gradient(to_bottom,var(--color-neutral-100),var(--color-neutral-300))] text-neutral-800" : "border-neutral-300 bg-neutral-100 text-neutral-800 hover:border-neutral-800" : item === page ? "border-pgold-500 bg-pgold-200 text-pbrown-600" : "border-neutral-300 bg-white text-neutral-800 hover:border-pgold-500"}`}>{item}</button> : <button key={item} type="button" onClick={() => onPageChange(Math.max(1, Math.min(pageCount, page + (item === "start-ellipsis" ? -5 : 5))))} aria-label={t(item === "start-ellipsis" ? "paginationJumpBackward" : "paginationJumpForward", { count: 5 })} className={`flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full border text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${solitaire ? "border-neutral-300 bg-neutral-100 text-neutral-800 hover:border-neutral-800 focus-visible:outline-neutral-800" : "border-transparent bg-neutral-100 text-neutral-600 hover:bg-neutral-200 focus-visible:outline-pgold-500"}`}>•••</button>)}
-      <button type="button" disabled={page === pageCount} onClick={() => onPageChange(page + 1)} className={`flex size-12 shrink-0 items-center justify-center rounded-full transition-colors disabled:opacity-40 ${solitaire ? "border border-neutral-300 bg-neutral-100 text-neutral-800 hover:border-neutral-800" : "bg-white text-pbrown-200 hover:bg-pgold-100"}`} aria-label={t("paginationNext")}><span aria-hidden className={`size-5 ${solitaire ? "bg-neutral-800" : "bg-pgold-500"} [mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]`} /></button>
+      {getPaginationItems(page, pageCount, maxPageItems).map((item) => typeof item === "number" ? <button key={item} type="button" onClick={() => onPageChange(item)} aria-current={item === page ? "page" : undefined} className={`flex size-10 shrink-0 items-center justify-center rounded-lg border text-size-body-m font-semibold transition-colors ${solitaire ? item === page ? "border-neutral-800 bg-[linear-gradient(to_bottom,var(--color-neutral-100),var(--color-neutral-300))] text-neutral-800" : "border-neutral-300 bg-neutral-100 text-neutral-800 hover:border-neutral-800" : item === page ? "border-pgold-500 bg-pgold-200 text-pbrown-600" : "border-neutral-300 bg-white text-neutral-800 hover:border-pgold-500"}`}>{item}</button> : <button key={item} type="button" onClick={() => onPageChange(Math.max(1, Math.min(pageCount, page + (item === "start-ellipsis" ? -5 : 5))))} aria-label={t(item === "start-ellipsis" ? "paginationJumpBackward" : "paginationJumpForward", { count: 5 })} className={`flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full border text-size-body-m font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${solitaire ? "border-neutral-300 bg-neutral-100 text-neutral-800 hover:border-neutral-800 focus-visible:outline-neutral-800" : "border-transparent bg-neutral-100 text-neutral-600 hover:bg-neutral-200 focus-visible:outline-pgold-500"}`}>•••</button>)}
+      <button data-flow-action="next-page" type="button" disabled={page === pageCount} onClick={() => onPageChange(page + 1)} className={`flex size-12 shrink-0 items-center justify-center rounded-full transition-colors disabled:opacity-40 ${solitaire ? "border border-neutral-300 bg-neutral-100 text-neutral-800 hover:border-neutral-800" : "bg-white text-pbrown-200 hover:bg-pgold-100"}`} aria-label={t("paginationNext")}><span aria-hidden className={`size-5 ${solitaire ? "bg-neutral-800" : "bg-pgold-500"} [mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] [-webkit-mask-image:url('/assets/prioritas/detail/molton-brown/chevron-right.svg')] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain]`} /></button>
     </div>
   </nav>;
 }

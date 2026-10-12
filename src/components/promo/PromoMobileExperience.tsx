@@ -128,8 +128,8 @@ function FilterCheckbox({ checked, label, onClick, compact = false }: { checked:
       aria-checked={checked}
       onClick={onClick}
       className={compact
-        ? `flex h-12 max-w-full shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-sm transition-colors ${checked ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500" : "border-neutral-300 bg-white font-semibold text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100 hover:text-blue-500"}`
-        : "flex w-full items-center gap-4 py-2 text-left text-base text-neutral-800"}
+        ? `flex h-12 max-w-full shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-size-body-m transition-colors ${checked ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500" : "border-neutral-300 bg-white font-semibold text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100 hover:text-blue-500"}`
+        : "flex w-full items-center gap-4 py-2 text-left text-size-body-l text-neutral-800"}
     >
       {!compact && <span className={`flex size-6 shrink-0 items-center justify-center rounded border-2 ${checked ? "border-blue-500 bg-blue-500 text-white" : "border-blue-500 bg-white"}`}>
         {checked && <svg aria-hidden viewBox="0 0 16 16" className="size-4" fill="none"><path d="m3 8 3 3 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>}
@@ -318,7 +318,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
                 className="flex size-[72px] shrink-0 flex-col items-center gap-2 text-center"
               >
                 <img src={`/assets/promo-page/categories/${key}.png`} alt="" className="size-10 shrink-0 object-contain" />
-                <span className="w-full truncate text-sm font-semibold leading-4 text-neutral-800">{t(`categoryRail.${label}`)}</span>
+                <span className="w-full truncate text-size-body-m font-semibold leading-4 text-neutral-800">{t(`categoryRail.${label}`)}</span>
               </button>
             ))}
           </div>
@@ -340,7 +340,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
 
       <section className="bg-blue-100 py-6">
         <div className="px-4">
-          <p className="text-sm font-normal tracking-normal text-neutral-800">{t("locationPromo.eyebrow")}</p>
+          <p className="text-size-body-m font-normal tracking-normal text-neutral-800">{t("locationPromo.eyebrow")}</p>
           <div className="relative mt-1 w-fit">
             <label htmlFor="popular-promo-location" className="sr-only">{t("locationPromo.selectLabel")}</label>
             <select
@@ -373,7 +373,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
                   setSelectedCategories((current) => current.includes(quickCategory) ? [] : [quickCategory]);
                   setPage(1);
                 }}
-                className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-sm transition-colors ${quickCategoryActive ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500" : "border-neutral-300 bg-white font-semibold text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100 hover:text-blue-500"}`}
+                className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-size-body-m transition-colors ${quickCategoryActive ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500" : "border-neutral-300 bg-white font-semibold text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100 hover:text-blue-500"}`}
               >
                 {t(`categoryRail.${quickCategoryRailLabel}`)}
               </button>
@@ -383,7 +383,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
                   setSelectedProducts((current) => current.includes("mybca") ? [] : ["mybca"]);
                   setPage(1);
                 }}
-                className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-sm font-semibold transition-colors ${selectedProducts.includes("mybca") ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500" : "border-neutral-300 bg-white text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100 hover:text-blue-500"}`}
+                className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-size-body-m font-semibold transition-colors ${selectedProducts.includes("mybca") ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500" : "border-neutral-300 bg-white text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100 hover:text-blue-500"}`}
               >
                 {quickProductLabel}
               </button>
@@ -393,7 +393,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
                   setSelectedCities((current) => current.includes("jabodetabek") ? [] : ["jabodetabek"]);
                   setPage(1);
                 }}
-                className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-sm font-semibold transition-colors ${selectedCities.includes("jabodetabek") ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500" : "border-neutral-300 bg-white text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100 hover:text-blue-500"}`}
+                className={`flex h-12 shrink-0 items-center whitespace-nowrap rounded-xl border px-[18px] text-size-body-m font-semibold transition-colors ${selectedCities.includes("jabodetabek") ? "border-cyan-500 bg-cyan-100 font-bold text-blue-500" : "border-neutral-300 bg-white text-neutral-700 hover:border-cyan-500 hover:bg-cyan-100 hover:text-blue-500"}`}
               >
                 {quickCityLabel}
               </button>
@@ -423,7 +423,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
             </button>
           </div>
 
-          <p className="mt-5 text-sm text-neutral-600">{t("allPromos.showCount", { from: visibleFrom, to: visibleTo, total: filteredPromos.length })}</p>
+          <p className="mt-5 text-size-body-m text-neutral-600">{t("allPromos.showCount", { from: visibleFrom, to: visibleTo, total: filteredPromos.length })}</p>
           {visiblePromos.length ? (
             <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5">
               {visiblePromos.map((promo) => <PromoCard key={promo.id} promo={promo} now={now} reveal={false} compact promoPage />)}
@@ -439,7 +439,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
                   setSelectedProducts([]);
                   setPage(1);
                 }}
-                className="mt-4 text-sm font-semibold text-blue-500 underline underline-offset-4"
+                className="mt-4 text-size-body-m font-semibold text-blue-500 underline underline-offset-4"
               >
                 {t("allPromos.clearFilters")}
               </button>
@@ -464,7 +464,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
                   onClick={() => goToPage(pageNumber)}
                   aria-label={t("allPromos.page", { page: pageNumber })}
                   aria-current={page === pageNumber ? "page" : undefined}
-                  className={`flex size-10 items-center justify-center rounded-full text-sm font-semibold transition-colors ${page === pageNumber ? "bg-blue-500 text-white" : "border border-neutral-300 bg-white text-neutral-700 hover:bg-blue-100"}`}
+                  className={`flex size-10 items-center justify-center rounded-full text-size-body-m font-semibold transition-colors ${page === pageNumber ? "bg-blue-500 text-white" : "border border-neutral-300 bg-white text-neutral-700 hover:bg-blue-100"}`}
                 >
                   {pageNumber}
                 </button>
@@ -504,7 +504,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
 
         {drawerMode === "filter" ? (
           <div data-lenis-prevent className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 pb-5">
-            <p className="mb-3 text-sm font-semibold text-neutral-700">{t("allPromos.category")}</p>
+            <p className="mb-3 text-size-body-m font-semibold text-neutral-700">{t("allPromos.category")}</p>
             <div className="flex flex-wrap gap-2">
               {visibleCategoryOptions.map((category) => {
                 const checked = draftCategories.includes(category);
@@ -520,7 +520,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
               })}
             </div>
             {categories.length > collapsedCategoryOptions.length && (
-              <button type="button" onClick={() => setShowAllCategories((shown) => !shown)} className="mt-2 text-sm font-semibold text-blue-500">
+              <button type="button" onClick={() => setShowAllCategories((shown) => !shown)} className="mt-2 text-size-body-m font-semibold text-blue-500">
                 {t(showAllCategories ? "allPromos.showLess" : "allPromos.showMore")}
               </button>
             )}
@@ -547,7 +547,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
                     value={cityQuery}
                     onChange={(event) => setCityQuery(event.target.value)}
                     placeholder={t("allPromos.searchLocation")}
-                    className="min-w-0 flex-1 bg-transparent text-sm text-neutral-800 outline-none"
+                    className="min-w-0 flex-1 bg-transparent text-size-body-m text-neutral-800 outline-none"
                   />
                 </label>
               )}
@@ -557,7 +557,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
                 ))}
               </div>
               {!normalizedCityQuery && filteredCityOptions.length > 5 && (
-                  <button type="button" onClick={() => setShowAllCities((shown) => !shown)} className="mt-2 text-sm font-semibold text-blue-500">
+                  <button type="button" onClick={() => setShowAllCities((shown) => !shown)} className="mt-2 text-size-body-m font-semibold text-blue-500">
                   {t(showAllCities ? "allPromos.showLess" : "allPromos.showMore")}
                 </button>
               )}
@@ -585,7 +585,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
                     value={productQuery}
                     onChange={(event) => setProductQuery(event.target.value)}
                     placeholder={t("allPromos.searchProduct")}
-                    className="min-w-0 flex-1 bg-transparent text-sm text-neutral-800 outline-none"
+                    className="min-w-0 flex-1 bg-transparent text-size-body-m text-neutral-800 outline-none"
                   />
                 </label>
               )}
@@ -595,7 +595,7 @@ export default function PromoMobileExperience({ promos, now }: { promos: Promo[]
                 ))}
               </div>
               {!normalizedProductQuery && filteredProductOptions.length > 6 && (
-                <button type="button" onClick={() => setShowAllProducts((shown) => !shown)} className="mt-2 text-sm font-semibold text-blue-500">
+                <button type="button" onClick={() => setShowAllProducts((shown) => !shown)} className="mt-2 text-size-body-m font-semibold text-blue-500">
                   {t(showAllProducts ? "allPromos.showLess" : "allPromos.showMore")}
                 </button>
               )}

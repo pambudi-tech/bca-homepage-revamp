@@ -1,5 +1,9 @@
 "use client";
 
+import { privilegeDetailBase } from "@/lib/privilege-paths";
+
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import SignatureDirectoryCard from "./SignatureDirectoryCard";
 import { signatureCards } from "./signature-card-data";
 import CategoryChip from "@/components/prioritas/CategoryChip";
@@ -61,6 +65,7 @@ type SignaturePrivilegeExperienceProps = {
   memberArea?: boolean;
   bannerBackdrops?: Record<string, string>;
   publicBasePath?: string;
+  preview?: { query?: string; page?: number; birthday?: boolean };
 };
 
 function isPrivilegePromo(promo: Promo): promo is PrivilegePromo {
@@ -76,15 +81,15 @@ function randomOrderKey(id: string) {
   return hash >>> 0;
 }
 
-export default function SignaturePrivilegeExperience({ promos, signaturePromos = [], now, directoryOnly = false, activeTab, initialCategories = [], memberArea = false, bannerBackdrops = {}, publicBasePath = "/prioritas" }: SignaturePrivilegeExperienceProps) {
+export default function SignaturePrivilegeExperience({ promos, signaturePromos = [], now, directoryOnly = false, activeTab, initialCategories = [], memberArea = false, bannerBackdrops = {}, publicBasePath = "/prioritas", preview }: SignaturePrivilegeExperienceProps) {
   const t = useTranslations("signaturePrivilege");
   const memberBase = usePathname().startsWith("/solitaire/member") ? "/solitaire/member" : "/prioritas/member";
   const heroT = useTranslations("prioritasHero");
   const lenis = useLenis();
   const [selectedCategories, setSelectedCategories] = useState<string[]>(() => initialCategories.filter((category) => chipCategories.some((chip) => chip === category)));
-  const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
-  const [birthdayChecked, setBirthdayChecked] = useState(false);
+  const [query, setQuery] = useState(preview?.query ?? "");
+  const [page, setPage] = useState(preview?.page ?? 1);
+  const [birthdayChecked, setBirthdayChecked] = useState(preview?.birthday ?? false);
   const [activeSignatureCard, setActiveSignatureCard] = useState(0);
   const [signatureExpanded, setSignatureExpanded] = useState(false);
   const [renderSignatureExtras, setRenderSignatureExtras] = useState(false);
@@ -139,14 +144,14 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
   const visiblePromos = filteredPromos.slice((page - 1) * DIRECTORY_PAGE_SIZE, page * DIRECTORY_PAGE_SIZE);
 
   useEffect(() => {
-    if (initialCategories.length > 0) return;
+    if (preview || initialCategories.length > 0) return;
     const params = new URLSearchParams(window.location.search);
     const categories = params.getAll("category").flatMap((value) => value.split(","));
     const frame = window.requestAnimationFrame(() => {
       setSelectedCategories(categories.filter((value) => chipCategories.includes(value as (typeof chipCategories)[number])));
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [initialCategories.length]);
+  }, [initialCategories.length, preview]);
 
   useEffect(() => {
     const mobileQuery = window.matchMedia("(max-width: 639px)");
@@ -163,7 +168,7 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
   }, []);
 
   useEffect(() => {
-    if (currentTab !== "signature" || initialCategories.length === 0 || !window.location.hash.includes("complimentary-title")) return;
+    if (preview || currentTab !== "signature" || initialCategories.length === 0 || !window.location.hash.includes("complimentary-title")) return;
     const target = document.getElementById("complimentary-title");
     if (!target) return;
     if (window.location.hash !== "#complimentary-title") {
@@ -171,7 +176,7 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
     }
     const frame = window.requestAnimationFrame(() => target.scrollIntoView({ block: "start", behavior: "smooth" }));
     return () => window.cancelAnimationFrame(frame);
-  }, [currentTab, initialCategories]);
+  }, [currentTab, initialCategories, preview]);
 
   useEffect(() => {
     if (directoryOnly || currentTab !== "signature") return;
@@ -301,12 +306,12 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
   }
 
   return (
-    <main ref={signatureSectionRef} id="main-content" className={`min-h-screen overflow-x-clip ${isSolitaire ? "bg-neutral-200 text-neutral-800" : "bg-pgold-200 text-pbrown-800"}`}>
-      <section className={`relative isolate overflow-x-clip ${isSolitaire ? "bg-neutral-200" : "bg-pgold-200"} py-8 xl:py-8`}>
+    <main ref={signatureSectionRef} id="main-content" className={`min-h-screen overflow-x-clip ${isSolitaire ? "text-neutral-800" : "text-pbrown-800"}`}>
+      <section className="relative isolate overflow-x-clip py-8 xl:py-8">
         <div aria-hidden className="absolute inset-0 opacity-40 [background:radial-gradient(ellipse_at_0%_50%,white_0%,transparent_38%),radial-gradient(ellipse_at_100%_18%,white_0%,transparent_36%)]" />
         <div className="relative mx-auto max-w-[1280px] px-4 xl:px-0">
           {directoryOnly ? null : <>
-            <p className={`text-base font-semibold leading-6 ${isSolitaire ? "text-neutral-800" : ""}`}>{t("description")}</p>
+            <p className={`text-size-body-l font-semibold leading-6 ${isSolitaire ? "text-neutral-800" : ""}`}>{t("description")}</p>
             <div id="signature-privilege-grid" ref={signatureRailRef} onScroll={handleSignatureRailScroll} onMouseEnter={() => (pausedSignatureRef.current = true)} onMouseLeave={() => (pausedSignatureRef.current = false)} onTouchStart={() => (pausedSignatureRef.current = true)} onTouchEnd={() => (pausedSignatureRef.current = false)} className="hide-scrollbar relative -mx-4 mt-8 flex h-[360px] snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:mt-6 sm:grid sm:h-auto sm:snap-none sm:overflow-visible sm:px-0 sm:grid-cols-2 xl:grid-cols-3 xl:gap-6 sm:transition-[height] sm:duration-500 sm:ease-in-out motion-reduce:transition-none">
               {visibleSignatureCards.map(({ id, image }, index) => {
                 const promo = signaturePromos.find((item) => item.id === id);
@@ -319,7 +324,7 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
                       ? t("voucherAvailability", { count: voucherCount })
                       : null
                   : null;
-                return <SignatureDirectoryCard key={`${id}-${image}-${index}`} href={`${memberArea ? memberBase : publicBasePath}/privilege/${id}`} cardRef={(node) => { signatureCardRefs.current[index] = node; }} hidden={index >= 6 && !signatureExpanded && !mobileSignatureRail} active={activeSignatureCard === index} progress={signatureProgress / 100} image={cardImage} title={promo?.title} badgeLabel={badgeLabel} tone={isSolitaire ? "solitaire" : "prioritas"} />;
+                return <SignatureDirectoryCard key={`${id}-${image}-${index}`} href={`${privilegeDetailBase(memberArea ? memberBase : publicBasePath, "signature")}/${id}`} cardRef={(node) => { signatureCardRefs.current[index] = node; }} hidden={index >= 6 && !signatureExpanded && !mobileSignatureRail} active={activeSignatureCard === index} progress={signatureProgress / 100} image={cardImage} title={promo?.title} badgeLabel={badgeLabel} tone={isSolitaire ? "solitaire" : "prioritas"} />;
               })}
             </div>
             {signatureCards.length > 6 ? <div className="hidden justify-center sm:flex"><button
@@ -334,7 +339,7 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
             </button></div> : null}
           </>}
 
-          {directoryOnly && currentTab === "lifestyle" ? <p className="mb-8 text-base font-semibold leading-6">{t("lifestyleDescription")}</p> : null}
+          {directoryOnly && currentTab === "lifestyle" ? <p className="mb-8 text-size-body-l font-semibold leading-6">{t("lifestyleDescription")}</p> : null}
           {directoryOnly && currentTab === "event" ? <PrioritasFeaturedBanner
             slides={isSolitaire ? FEATURED_BANNER_SLIDES : PRIORITAS_EVENT_FEATURED_BANNER_SLIDES}
             initialIndex={0}
@@ -367,14 +372,12 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
             header={<>
             {directoryOnly ? <h2 id={`${currentTab}-directory-title`} className="sr-only">{t(`tabs.${currentTab}`)}</h2> : null}
             {directoryOnly ? null : <header className="flex flex-row items-start justify-between gap-3">
-              <div><h2 id="complimentary-title" className="scroll-mt-36 text-xl font-semibold">{t("complimentary.title")}</h2><p className="mt-2 text-sm text-neutral-600">{t("complimentary.subtitle")}</p></div>
-              <label className="group/compare mt-0.5 flex shrink-0 cursor-pointer items-center gap-2 text-sm leading-5">
+              <div><h2 id="complimentary-title" className="scroll-mt-36 text-size-display-s font-semibold">{t("complimentary.title")}</h2><p className="mt-2 text-size-body-m text-neutral-600">{t("complimentary.subtitle")}</p></div>
+              <label className="group/compare mt-0.5 flex shrink-0 cursor-pointer items-center gap-2 text-size-body-m leading-5">
                 <input type="checkbox" checked={birthdayChecked} onChange={(event) => { setBirthdayChecked(event.target.checked); setPage(1); }} className="peer sr-only" />
                 <span className="flex size-6 shrink-0 items-center justify-center p-0.5">
                   <span className={`flex size-5 items-center justify-center rounded-md border text-white transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-pgold-500/40 ${birthdayChecked ? (isSolitaire ? "border-neutral-800 bg-neutral-800" : "border-pgold-500 bg-pgold-500") : `border-neutral-600 bg-white ${isSolitaire ? "group-hover/compare:border-neutral-800" : "group-hover/compare:border-pgold-500"}`}`}>
-                    <svg viewBox="0 0 20 20" fill="none" className={`size-3.5 transition-opacity ${birthdayChecked ? "opacity-100" : "opacity-0"}`} aria-hidden>
-                      <path d="m5 10 3 3 7-7" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    <IconAsset src="/assets/asset-bank/icons/SignaturePrivilegeExperience-eba9d53d67e965e4.svg" className={`size-3.5 transition-opacity ${birthdayChecked ? "opacity-100" : "opacity-0"}`} aria-hidden />
                   </span>
                 </span>
                 <span className={birthdayChecked ? "font-semibold text-neutral-800" : "font-normal text-neutral-700"}>{t("complimentary.birthday")}</span>
@@ -405,7 +408,7 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
             </>}
           >
               {visiblePromos.map((promo) => isPrivilegePromo(promo)
-                ? <ContentCard key={promo.id} item={promo} now={now} solitaire={isSolitaire} variant={currentTab === "signature" ? "complimentary" : "lifestyle"} detailHref={`${memberArea ? memberBase : publicBasePath}/${currentTab === "signature" ? "privilege" : currentTab === "promo" ? "promo" : "lifestyle-privilege"}/${promo.id}`} />
+                ? <ContentCard key={promo.id} item={promo} now={now} solitaire={isSolitaire} variant={currentTab === "signature" ? "complimentary" : "lifestyle"} detailHref={`${memberArea ? memberBase : publicBasePath}/${currentTab === "signature" ? publicBasePath === "/prioritas" && !memberArea ? "complimentary" : "privilege" : currentTab === "promo" ? "promo" : "lifestyle-privilege"}/${promo.id}`} />
                 : currentTab === "event" && "dateTile" in promo
                   ? <ContentCard key={promo.id} item={promo as EventPromo} now={now} solitaire={isSolitaire} variant="event" detailHref={memberArea ? `${memberBase}/event/${promo.id}` : undefined} />
                   : <ContentCard key={promo.id} item={promo} now={now} solitaire={isSolitaire} variant="promo" detailHref={memberArea ? `${memberBase}/promo/${promo.id}` : undefined} />)}

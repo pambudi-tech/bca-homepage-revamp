@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation";
+import { financialReportBackgrounds } from "./financial-report-assets";
 import { PrioritasButtonIcon, prioritasButtonClassName, solitaireButtonClassName } from "@/components/prioritas/PrioritasButton";
 
 type Copy = {
@@ -14,7 +15,7 @@ export default function FinancialReportSection({ copy, tone = "prioritas" }: { c
   const gradientClassName = isSolitaire ? "from-neutral-900" : "from-pbrown-700";
   const textClassName = isSolitaire ? "text-neutral-100" : "text-pgold-100";
   const buttonClassName = isSolitaire ? solitaireButtonClassName : prioritasButtonClassName;
-  const backgroundImage = isSolitaire ? "/assets/solitaire/financial-report/background.webp" : "/assets/prioritas/financial/background.png";
+  const backgroundImage = financialReportBackgrounds[tone];
 
   return (
     <section id="financial-report" className={`relative h-[600px] min-h-0 overflow-hidden ${fillClassName} ${textClassName} xl:h-auto xl:min-h-[640px]`}>
@@ -37,11 +38,10 @@ export default function FinancialReportSection({ copy, tone = "prioritas" }: { c
               <div className="relative h-[1999px] w-[1004px] xl:h-[2284.7px] xl:w-[1147px]">
                 <div className="pointer-events-none absolute inset-0" aria-hidden>
                   <img
-                    src="/assets/prioritas/financial/decoration-art.png"
+                    src={isSolitaire ? "/assets/prioritas/financial/decoration-art.webp" : "/assets/prioritas/financial/decoration-art-pgold-300.webp"}
                     alt=""
-                    className={`absolute size-full object-bottom mix-blend-screen ${isSolitaire ? "grayscale" : ""}`}
+                    className="absolute size-full object-bottom mix-blend-screen"
                   />
-                  {!isSolitaire ? <div className="absolute inset-0 bg-pgold-300 mix-blend-color" /> : null}
                 </div>
               </div>
             </div>
@@ -52,7 +52,7 @@ export default function FinancialReportSection({ copy, tone = "prioritas" }: { c
       <div className="relative z-10 mx-auto flex min-h-[600px] w-full max-w-[1280px] flex-col px-4 py-12 xl:min-h-[640px] xl:px-0 xl:py-20">
         <header className="flex flex-col gap-6 xl:flex-row xl:items-start xl:gap-10">
           <p className={`text-eyebrow-lg uppercase leading-[120%] ${isSolitaire ? "text-neutral-100" : "text-pgold-300"} md:text-eyebrow xl:w-[180px] xl:shrink-0 xl:py-2 xl:text-eyebrow-xl`}>{copy.eyebrow}</p>
-          <h2 className={`text-heading max-w-[560px] ${textClassName} xl:text-display`}>{copy.heading}</h2>
+          <h2 className={`text-display-m max-w-[560px] ${textClassName} xl:text-display`}>{copy.heading}</h2>
         </header>
 
         <div className="mx-auto mt-auto flex w-full max-w-[752px] flex-col items-start gap-6 xl:ml-[220px] xl:mr-0 xl:mt-40 xl:gap-12">
@@ -63,7 +63,7 @@ export default function FinancialReportSection({ copy, tone = "prioritas" }: { c
                 className={`glass-panel ${isSolitaire ? "glass-panel-solitaire" : "glass-panel-prioritas"} relative flex min-h-0 items-start overflow-hidden rounded-2xl px-4 pb-5 pt-4 ${index === 0 ? "col-start-1 row-start-1" : index === 1 ? "col-start-1 row-start-2" : "col-start-2 row-start-2"} md:col-auto md:row-auto md:min-h-36 md:px-6 md:py-5`}
                 style={{ backgroundColor: `color-mix(in srgb, ${isSolitaire ? "var(--color-neutral-900)" : "var(--color-pbrown-900)"} 30%, transparent)`, isolation: "isolate" }}
               >
-                <p className="text-sm font-semibold leading-5 text-neutral-100 xl:text-xl xl:leading-7 xl:tracking-[-0.4px]">{feature}</p>
+                <p className="text-size-body-m font-semibold leading-5 text-neutral-100 xl:text-size-display-s xl:leading-7 xl:tracking-[-0.4px]">{feature}</p>
               </div>
             ))}
           </div>

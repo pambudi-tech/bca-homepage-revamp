@@ -88,7 +88,7 @@ export default function CookieBanner() {
       <div className="rounded-t-3xl border border-b-0 border-neutral-300 bg-neutral-100/95 px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] pt-5 shadow-[0_-8px_40px_rgba(0,33,61,0.18)] backdrop-blur-md sm:rounded-2xl sm:border-b sm:p-6 sm:shadow-[0_12px_40px_rgba(0,33,61,0.18)]">
         {settingsOpen ? (
           <div>
-            <h2 className="text-base font-bold leading-6 text-neutral-800">
+            <h2 className="text-size-body-l font-bold leading-6 text-neutral-800">
               {t("settingsHeading")}
             </h2>
             {/* Caps the list on short screens so the buttons stay reachable. */}
@@ -99,10 +99,10 @@ export default function CookieBanner() {
                 return (
                   <div key={cat.key} className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="text-sm font-semibold leading-5 text-neutral-800">
+                      <p className="text-size-body-m font-semibold leading-5 text-neutral-800">
                         {cat.label}
                       </p>
-                      <p className="mt-0.5 text-xs leading-4 text-neutral-700">{cat.desc}</p>
+                      <p className="mt-0.5 text-size-body-s leading-4 text-neutral-700">{cat.desc}</p>
                     </div>
                     <button
                       type="button"
@@ -130,22 +130,22 @@ export default function CookieBanner() {
           <div className="flex items-start gap-3">
             <span
               aria-hidden
-              className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-blue-200 text-lg"
+              className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-blue-200 text-size-body-xl"
             >
               🍪
             </span>
             <div>
-              <h2 className="text-base font-bold leading-6 text-neutral-800">
+              <h2 className="text-size-body-l font-bold leading-6 text-neutral-800">
                 {t("heading")}
               </h2>
-              <p className="mt-1.5 text-sm leading-5 text-neutral-700">
+              <p className="mt-1.5 text-size-body-m leading-5 text-neutral-700">
                 {t("description")}
               </p>
               <a
                 href="https://www.bca.co.id/id/Syarat-dan-Ketentuan/SK-cookies"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 inline-block text-sm font-semibold text-blue-500 underline underline-offset-2 transition-colors hover:text-blue-400"
+                className="mt-2 inline-block text-size-body-m font-semibold text-blue-500 underline underline-offset-2 transition-colors hover:text-blue-400"
               >
                 {t("learnMore")}
               </a>
@@ -153,7 +153,7 @@ export default function CookieBanner() {
           </div>
         )}
 
-        {/* Always side by side, primary on the right. h-12 / text-base pill —
+        {/* Always side by side, primary on the right. h-12 / text-size-body-l pill —
             same size as the other mobile CTAs (MyBcaSection, hero search) so
             the sheet doesn't read as lighter. Padding stays px-4 until sm so
             "Atur Preferensi" still fits on a 375px screen without wrapping. */}
@@ -161,14 +161,14 @@ export default function CookieBanner() {
           <button
             type="button"
             onClick={() => (settingsOpen ? save(ALL_OFF) : setSettingsOpen(true))}
-            className="flex h-12 flex-1 items-center justify-center whitespace-nowrap rounded-full border border-neutral-400 bg-neutral-100 px-4 text-base font-semibold text-neutral-700 transition-[border-color,color,transform] duration-200 active:scale-95 sm:px-6 sm:text-sm sm:active:scale-100 sm:hover:border-neutral-600 sm:hover:text-neutral-800"
+            className="flex h-12 flex-1 items-center justify-center whitespace-nowrap rounded-full border border-neutral-400 bg-neutral-100 px-4 text-size-body-l font-semibold text-neutral-700 transition-[border-color,color,transform] duration-200 active:scale-95 sm:px-6 sm:text-size-body-m sm:active:scale-100 sm:hover:border-neutral-600 sm:hover:text-neutral-800"
           >
             {settingsOpen ? t("rejectAll") : t("settings")}
           </button>
           <button
             type="button"
             onClick={onPrimary}
-            className="flex h-12 flex-1 items-center justify-center whitespace-nowrap rounded-full bg-blue-500 px-4 text-base font-semibold text-neutral-100 transition-[background-color,transform] duration-200 active:scale-95 sm:px-6 sm:text-sm sm:active:scale-100 sm:hover:bg-blue-400"
+            className="flex h-12 flex-1 items-center justify-center whitespace-nowrap rounded-full bg-blue-500 px-4 text-size-body-l font-semibold text-neutral-100 transition-[background-color,transform] duration-200 active:scale-95 sm:px-6 sm:text-size-body-m sm:active:scale-100 sm:hover:bg-blue-400"
           >
             {primaryLabel}
           </button>

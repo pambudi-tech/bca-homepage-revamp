@@ -6,7 +6,7 @@ import PrioritasDetailExperience from "@/components/prioritas/PrioritasDetailExp
 import { bankingPrivilegeItems, getBankingPrivilegeItem } from "@/components/prioritas/banking-privilege-data";
 import { getMemberBrandFromSession, MEMBER_SESSION_COOKIE, memberBasePath } from "@/lib/member-auth";
 
-export default async function BankingPrivilegeDetailPage({ locale, benefitId, memberArea = false, publicBasePath = "/prioritas" }: { locale: string; benefitId: string; memberArea?: boolean; publicBasePath?: string }) {
+export default async function BankingPrivilegeDetailPage({ locale, benefitId, memberArea = false, publicBasePath = "/prioritas", preview }: { locale: string; benefitId: string; memberArea?: boolean; publicBasePath?: string; preview?: { brand: "prioritas" | "solitaire" } }) {
   setRequestLocale(locale);
   const item = getBankingPrivilegeItem(benefitId);
   if (!item) notFound();
@@ -18,7 +18,7 @@ export default async function BankingPrivilegeDetailPage({ locale, benefitId, me
     getTranslations("signaturePrivilege"),
     getTranslations("solitaireHero"),
   ]);
-  const session = (await cookies()).get(MEMBER_SESSION_COOKIE)?.value;
+  const session = preview ? undefined : (await cookies()).get(MEMBER_SESSION_COOKIE)?.value;
   const memberBrand = getMemberBrandFromSession(session);
   const memberBase = memberBasePath(memberBrand ?? "prioritas");
   const homeLabel = publicBasePath === "/solitaire" || memberArea && memberBrand === "solitaire" ? solitaireT("breadcrumbLabel") : "Prioritas";
@@ -38,6 +38,7 @@ export default async function BankingPrivilegeDetailPage({ locale, benefitId, me
 
   return <main id="main-content" className={`flex min-h-screen flex-1 flex-col overflow-x-clip ${publicBasePath === "/solitaire" && !memberArea || memberArea && memberBrand === "solitaire" ? "bg-neutral-200" : "bg-pgold-200"}`}>
     <PrioritasDetailExperience
+      preview={preview}
       memberArea={memberArea}
       publicBasePath={publicBasePath}
       memberPreviewName={memberBrand && (memberArea || memberBrand === (publicBasePath === "/solitaire" ? "solitaire" : "prioritas")) ? memberT(memberBrand === "solitaire" ? "solitairePreviewFullName" : "previewFullName") : undefined}

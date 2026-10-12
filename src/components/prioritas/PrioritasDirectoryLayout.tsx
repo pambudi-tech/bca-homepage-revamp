@@ -1,5 +1,6 @@
 "use client";
 
+import BrandPageSurface from "./BrandPageSurface";
 import { useLayoutEffect, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import Navbar from "@/components/home/Navbar";
@@ -12,7 +13,6 @@ import BankingSolutionIndexTabs from "@/components/prioritas/BankingSolutionInde
 import { usePathname } from "@/i18n/navigation";
 
 const directoryRoutes: Array<{ path: string; tab: PrioritasIndexTab }> = [
-  { path: "/prioritas/privilege", tab: "signature" },
   { path: "/prioritas/lifestyle-privilege", tab: "lifestyle" },
   { path: "/prioritas/event", tab: "event" },
   { path: "/prioritas/promo", tab: "promo" },
@@ -25,9 +25,9 @@ export default function PrioritasDirectoryLayout({ children, memberPreviewName }
   const banking = useTranslations("bankingSolutionIndex");
   const magazine = useTranslations("magazineIndex");
   const route = directoryRoutes.find((item) => item.path === pathname);
-  const bankingTab = pathname === "/prioritas/banking-solution" ? "privilege" : pathname === "/prioritas/banking-solution/wealth-insight" ? "wealth" : pathname === "/prioritas/banking-solution/kurs" ? "kurs" : null;
+  const bankingTab = pathname === "/prioritas/banking-solution/wealth-insight" ? "wealth" : pathname === "/prioritas/banking-solution/kurs" ? "kurs" : null;
   const magazineIndex = pathname === "/prioritas/e-magazine";
-  const suppressFooter = pathname === "/prioritas" || pathname === "/prioritas/temukan-kami" || pathname.startsWith("/prioritas/member");
+  const suppressFooter = pathname === "/prioritas" || pathname === "/prioritas/privilege" || pathname === "/prioritas/banking-solution" || pathname === "/prioritas/temukan-kami" || pathname.startsWith("/prioritas/member");
   // Footer measures document height on mount, so refresh it after route changes.
   const footer = suppressFooter ? null : <Footer key={pathname} variant="prioritas" />;
 
@@ -58,8 +58,10 @@ export default function PrioritasDirectoryLayout({ children, memberPreviewName }
         />
         <PrioritasPageHeader breadcrumbs={[{ label: "Prioritas", href: "/prioritas" }, { label: breadcrumb }]} title={title} />
       </div>
+      <BrandPageSurface tone="prioritas">
       {bankingTab ? <BankingSolutionIndexTabs activeTab={bankingTab} /> : route ? <PrioritasIndexTabs activeTab={route.tab} /> : null}
       {children}
+      </BrandPageSurface>
       {footer}
     </>
   );

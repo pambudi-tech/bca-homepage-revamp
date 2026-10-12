@@ -34,7 +34,7 @@ export default function ScrollCue() {
       <div className="flex h-[27px] w-[18px] shrink-0 items-start justify-center rounded-full border-2 border-white/60 pt-1.5 xl:h-9 xl:w-6">
         <span className="animate-scroll-cue-dot size-1.5 rounded-full bg-neutral-100 [--scroll-cue-dot-travel:8px] xl:size-2 xl:[--scroll-cue-dot-travel:12px]" />
       </div>
-      <span className="text-left text-sm font-normal text-white/70 xl:text-base">{t("label")}</span>
+      <span className="text-left text-size-body-m font-normal text-white/70 xl:text-size-body-l">{t("label")}</span>
     </div>
   );
 }

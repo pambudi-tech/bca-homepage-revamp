@@ -4,6 +4,7 @@ import SoliprioMobile from "./SoliprioMobile";
 import SoliprioPhoto from "./SoliprioPhoto";
 import SoliprioSegmentSelector from "./SoliprioSegmentSelector";
 import { Glow, Logos } from "./soliprio-parts";
+import { privilegeArtwork } from "@/components/prioritas/privilege-assets";
 
 /* Geometry mirrors Figma "Soliprio Section" (node 1669-6585). The desktop art
    direction is anchored to the viewport centre, not to the section's padding:
@@ -23,19 +24,19 @@ export default async function SoliprioSection() {
   const prioritasBenefits = [
     {
       key: "lounge",
-      image: "/assets/soliprio/prioritas-lounge.webp",
+      image: privilegeArtwork.prioritasLounge,
       title: t("benefits.lounge.title"),
       cta: t("benefits.lounge.cta"),
     },
     {
       key: "healthcare",
-      image: "/assets/soliprio/prioritas-healthcare.webp",
+      image: privilegeArtwork.health,
       title: t("benefits.healthcare.title"),
       cta: t("benefits.healthcare.cta"),
     },
     {
       key: "event",
-      image: "/assets/soliprio/prioritas-event.webp",
+      image: privilegeArtwork.prioritasEvent,
       title: t("benefits.event.title"),
       cta: t("benefits.event.cta"),
     },
@@ -43,13 +44,13 @@ export default async function SoliprioSection() {
   const solitaireBenefits = [
     {
       key: "personal-banker",
-      image: "/assets/soliprio/personal-banker.png",
+      image: "/assets/soliprio/personal-banker.webp",
       title: t("solitaireBenefits.personalBanker.title"),
       cta: t("solitaireBenefits.personalBanker.cta"),
     },
     {
       key: "exclusive-community",
-      image: "/assets/soliprio/exclusive-community.png",
+      image: privilegeArtwork.solitaireEvent,
       title: t("solitaireBenefits.exclusiveCommunity.title"),
       cta: t("solitaireBenefits.exclusiveCommunity.cta"),
     },
@@ -104,7 +105,7 @@ export default async function SoliprioSection() {
               <p className="text-display font-normal text-white">
                 {t("title")}
               </p>
-              <p className="w-[320px] text-base leading-6 text-white/70">
+              <p className="w-[320px] text-size-body-l leading-6 text-white/70">
                 {t("description")}
               </p>
             </div>

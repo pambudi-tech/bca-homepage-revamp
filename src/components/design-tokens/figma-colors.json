@@ -1,0 +1,750 @@
+[
+  {
+    "Clove Design System - Wholesale/B2B": {
+      "modes": {
+        "Value": {
+          "Color": {
+            "Neutral": {
+              "neutral-100": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "was light-10, Background utama — card, container, surface komponen.",
+                "$type": "color",
+                "$value": "#ffffff"
+              },
+              "neutral-200": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Background sunken — area yang lebih dalam dari surface utama.",
+                "$type": "color",
+                "$value": "#f6f7f9"
+              },
+              "neutral-300": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "was light-30 (but readjust because a bit blue tint), Elemen pemisah visual dan background elemen disabled di atas surface terang.",
+                "$type": "color",
+                "$value": "#e9ecef"
+              },
+              "neutral-400": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$type": "color",
+                "$value": "#dfe3e7"
+              },
+              "neutral-500": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "was light-40, but readjust because under-saturated, Teks dan ikon disabled di atas surface terang (neutral-100/ neutral-200).",
+                "$type": "color",
+                "$value": "#cfcfcf"
+              },
+              "neutral-600": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "was dark-10, Placeholder, helper text, & teks disabled di atas background neutral-300.",
+                "$type": "color",
+                "$value": "#868e96"
+              },
+              "neutral-700": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "was dark-20, Teks sekunder dan body — label, deskripsi, helper text.",
+                "$type": "color",
+                "$value": "#495057"
+              },
+              "neutral-800": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Teks subheading — judul field, judul card, judul section.",
+                "$type": "color",
+                "$value": "#26292c"
+              },
+              "neutral-900": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Teks heading utama halaman.",
+                "$type": "color",
+                "$value": "#121417"
+              }
+            },
+            "Primary": {
+              "blue-100": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Background dengan nuansa Blue yang sangat subtle.",
+                "$type": "color",
+                "$value": "#f4f8fc"
+              },
+              "blue-200": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Background komponen semantik — badge, alert, highlight.",
+                "$type": "color",
+                "$value": "#dbefff"
+              },
+              "blue-300": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Background dengan nuansa Blue yang lebih pekat",
+                "$type": "color",
+                "$value": "#d1eaff"
+              },
+              "blue-400": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Warna hover pada elemen interaktif solid.",
+                "$type": "color",
+                "$value": "#1179d1"
+              },
+              "blue-500": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "was primary-10, Warna utama elemen interaktif — primary button, link, ikon aktif.",
+                "$type": "color",
+                "$value": "#005caa"
+              },
+              "blue-600": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "was primary-20, Warna pressed pada elemen interaktif solid.",
+                "$type": "color",
+                "$value": "#144e83"
+              },
+              "blue-700": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "primary-30, Background dan teks dalam konteks brand Blue.",
+                "$type": "color",
+                "$value": "#00335e"
+              },
+              "blue-800": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Background dan teks dalam konteks brand Blue yang lebih kuat.",
+                "$type": "color",
+                "$value": "#00213d"
+              },
+              "blue-900": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$type": "color",
+                "$value": "#001222"
+              }
+            },
+            "Secondary": {
+              "cyan-100": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Background container untuk elemen yang sedang aktif atau dipilih.",
+                "$type": "color",
+                "$value": "#e6f3ff"
+              },
+              "cyan-300": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Background komponen semantik seperti badge.",
+                "$type": "color",
+                "$value": "#d1f4ff"
+              },
+              "cyan-400": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Warna hover dan focus pada elemen aktif.",
+                "$type": "color",
+                "$value": "#47d1ff"
+              },
+              "cyan-500": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "was secondary 20, Warna utama active state — teks, ikon, dan border elemen yang sedang aktif atau dipilih.",
+                "$type": "color",
+                "$value": "#00b5f0"
+              },
+              "cyan-700": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "was secondary 30, Teks di atas background cyan-300.",
+                "$type": "color",
+                "$value": "#0094d5"
+              }
+            },
+            "Success": {
+              "green-100": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Warna background Green subtle, untuk komponen semantik dan state interaktif ringan.",
+                "$type": "color",
+                "$value": "#e5ffe7"
+              },
+              "green-300": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "was success-10, Warna background Green pekat,  untuk komponen semantik dan state interaktif yang lebih kuat.",
+                "$type": "color",
+                "$value": "#c2ffc5"
+              },
+              "green-400": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "was success-10",
+                "$type": "color",
+                "$value": "#08bb5f"
+              },
+              "green-500": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "was success-20, Warna utama success — teks, ikon, border.",
+                "$type": "color",
+                "$value": "#009649"
+              },
+              "green-700": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Teks pada konteks success — digunakan saat green-500 tidak memenuhi kontras yang cukup.",
+                "$type": "color",
+                "$value": "#005e2e"
+              }
+            },
+            "Warning": {
+              "yellow-100": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Warna background Yellow subtle, untuk komponen semantik dan state interaktif ringan.",
+                "$type": "color",
+                "$value": "#fff6c7"
+              },
+              "yellow-300": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "was warning-10, Warna background Yellow pekat, untuk komponen semantik dan state interaktif yang lebih kuat.",
+                "$type": "color",
+                "$value": "#ffe592"
+              },
+              "yellow-400": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$type": "color",
+                "$value": "#f9d561"
+              },
+              "yellow-500": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Warna utama warning — teks, ikon, border.",
+                "$type": "color",
+                "$value": "#ffc81a"
+              },
+              "yellow-700": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "was warning-20, Teks pada konteks warning — digunakan saat yellow-500 tidak memenuhi kontras yang cukup.",
+                "$type": "color",
+                "$value": "#885403"
+              }
+            },
+            "Error": {
+              "red-100": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Warna background Red subtle, untuk komponen semantik & state interaktif ringan.",
+                "$type": "color",
+                "$value": "#fff1f0"
+              },
+              "red-300": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "was danger-10, Warna background Red pekat, untuk komponen semantik & state interaktif yang lebih kuat.",
+                "$type": "color",
+                "$value": "#ffd9d3"
+              },
+              "red-400": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Warna hover pada elemen danger solid",
+                "$type": "color",
+                "$value": "#ec323b"
+              },
+              "red-500": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "was danger-20, Warna utama danger/error — teks, ikon. important",
+                "$type": "color",
+                "$value": "#cd1923"
+              },
+              "red-600": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$type": "color",
+                "$value": "#9f141b"
+              },
+              "red-700": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$description": "Warna teks & warna pressed pada elemen danger solid.",
+                "$type": "color",
+                "$value": "#850e14"
+              }
+            },
+            "Accent": {
+              "Bermuda": {
+                "bermuda-100": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$description": "was bermuda-10",
+                  "$type": "color",
+                  "$value": "#f5f9fa"
+                },
+                "bermuda-300": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#cadae2"
+                },
+                "bermuda-500": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$description": "was bermuda-20",
+                  "$type": "color",
+                  "$value": "#5d879f"
+                },
+                "bermuda-700": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#395f74"
+                }
+              },
+              "Brown": {
+                "brown-100": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#faf2e5"
+                },
+                "brown-300": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#edd7b6"
+                },
+                "brown-500": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$description": "was brown",
+                  "$type": "color",
+                  "$value": "#8c734d"
+                },
+                "brown-700": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#6f532a"
+                }
+              },
+              "Muddy": {
+                "muddy-100": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#eff2d9"
+                },
+                "muddy-300": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#dae0ae"
+                },
+                "muddy-500": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$description": "was muddy",
+                  "$type": "color",
+                  "$value": "#7c8445"
+                },
+                "muddy-700": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#484f1c"
+                }
+              },
+              "Orange": {
+                "orange-100": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#fff6eb"
+                },
+                "orange-300": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#ffead1"
+                },
+                "orange-500": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$description": "was orange",
+                  "$type": "color",
+                  "$value": "#f37c30"
+                },
+                "orange-700": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#c44d00"
+                }
+              },
+              "Purple": {
+                "purple-100": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#fcf7fd"
+                },
+                "purple-300": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#f4e5f6"
+                },
+                "purple-500": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$description": "was purple",
+                  "$type": "color",
+                  "$value": "#995da2"
+                },
+                "purple-700": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#70257c"
+                }
+              },
+              "Tosca": {
+                "tosca-100": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#f1ffff"
+                },
+                "tosca-300": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$description": "was tosca-10, but revised because lack of tint",
+                  "$type": "color",
+                  "$value": "#ccfffe"
+                },
+                "tosca-500": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$description": "was tosca-20",
+                  "$type": "color",
+                  "$value": "#28bab7"
+                },
+                "tosca-700": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#188b88"
+                }
+              },
+              "Teal": {
+                "teal-100": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#eaf9f4"
+                },
+                "teal-300": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#88f2e0"
+                },
+                "teal-500": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#00d1a9"
+                },
+                "teal-700": {
+                  "$scopes": [
+                    "ALL_SCOPES"
+                  ],
+                  "$type": "color",
+                  "$value": "#00a585"
+                }
+              }
+            }
+          },
+          "Size": {
+            "size-0": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 0
+            },
+            "size-2": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 2
+            },
+            "size-4": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 4
+            },
+            "size-6": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 6
+            },
+            "size-8": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 8
+            },
+            "size-12": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 12
+            },
+            "size-14": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 14
+            },
+            "size-16": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 16
+            },
+            "size-18": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 18
+            },
+            "size-20": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 20
+            },
+            "size-24": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 24
+            },
+            "size-28": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 28
+            },
+            "size-32": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 32
+            },
+            "size-40": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 40
+            },
+            "size-48": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 48
+            },
+            "size-56": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 56
+            },
+            "size-64": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 64
+            },
+            "size-72": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 72
+            },
+            "size-80": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 80
+            },
+            "size-full": {
+              "$scopes": [
+                "ALL_SCOPES"
+              ],
+              "$type": "float",
+              "$value": 999
+            },
+            "Radius": {
+              "radius-zero": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$type": "float",
+                "$libraryName": "",
+                "$collectionName": "Clove Design System - Wholesale/B2B",
+                "$value": "{Size.size-0}"
+              },
+              "radius-tight": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$type": "float",
+                "$libraryName": "",
+                "$collectionName": "Clove Design System - Wholesale/B2B",
+                "$value": "{Size.size-4}"
+              },
+              "radius-default": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$type": "float",
+                "$libraryName": "",
+                "$collectionName": "Clove Design System - Wholesale/B2B",
+                "$value": "{Size.size-12}"
+              },
+              "radius-bold": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$type": "float",
+                "$libraryName": "",
+                "$collectionName": "Clove Design System - Wholesale/B2B",
+                "$value": "{Size.size-16}"
+              },
+              "radius-heavy": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$type": "float",
+                "$libraryName": "",
+                "$collectionName": "Clove Design System - Wholesale/B2B",
+                "$value": "{Size.size-24}"
+              },
+              "radius-rounded": {
+                "$scopes": [
+                  "ALL_SCOPES"
+                ],
+                "$type": "float",
+                "$libraryName": "",
+                "$collectionName": "Clove Design System - Wholesale/B2B",
+                "$value": "{Size.size-full}"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

@@ -4,68 +4,68 @@ Every token in this document is defined in the `@theme` block of
 [`src/app/globals.css`](../src/app/globals.css). If this doc and that file
 ever disagree, the CSS is right — file an update here.
 
-## The two tiers
-
-- **Core primitives** — what a value *is*. The color ramps (`neutral-*`,
-  `blue-*`, `cyan-*`, `red-100`, `red-400`, `red-500`, `red-600`, `red-700`) mirror Figma's "Foundation / Colors" page
-  (node 1578-27737) 1:1. Don't add, remove, or re-value a rung here without
-  updating Figma first.
-- **Semantic tokens** — what a value is *for* (`--color-primary`,
-  `--color-primary-hover`, …). Call sites should reach for these, not the
-  primitives directly, except when defining a new semantic token.
-
-Type, elevation and motion tokens don't have a separate primitive tier — they
-were introduced as semantic tokens directly, because (unlike color) there was
-no pre-existing Figma-synced ramp to preserve underneath them.
-
 ## Color
 
-The Prioritas palette uses the Figma project names `pgold-*` and `pbrown-*`.
-These are available as Tailwind color utilities for the Prioritas experience.
+Color consumers use the canonical palette directly. The catalogue is organized into:
+
+- **Main Color:** Neutral, Blue, Cyan, Prioritas Gold (`pgold-*`), Prioritas Brown (`pbrown-*`).
+- **Semantic Color:** Green, Yellow, Red for success/availability, warnings, and errors/exhaustion.
+- **Accent Color:** Bermuda, Brown, Muddy, Orange, Purple, Tosca, Teal.
+- **Asset composition:** existing `asset-*` colors, unchanged.
+
+All 67 colors in the owner-supplied Figma JSON retain their approved values.
+The owner approved merging voucher, documentation, action and legacy alias colors into these palettes on 2026-10-11.
+Use `bg-blue-500`, `text-neutral-800`, etc., or `var(--color-blue-500)` in CSS.
+The pill CTA still uses `btn-base btn-primary` / `btn-base btn-secondary`.
+Primary buttons use Blue 500 at rest, Blue 400 on hover, and Blue 600 when pressed, with Neutral 100 text.
+Solitaire card fill and image fades use `--color-neutral-900` (#121417); the former pure black (#000000) was merged into Neutral 900 at the owner’s request.
 
 | Token family | Values |
 |---|---|
 | `pgold-100` … `pgold-900` | `#FBF8F1`, `#F5EEDF`, `#E9D9B8`, `#D5BD91`, `#B29050`, `#98783F`, `#785D2F`, `#59451F`, `#3B2D16` |
 | `pbrown-100` … `pbrown-900` | `#F2E8E0`, `#DDC8B8`, `#AE9079`, `#885E3F`, `#67442A`, `#46290B`, `#351E08`, `#281706`, `#1C1004` |
-| `asset-savings`, `asset-deposit`, `asset-current`, `asset-securities` | `#665019`, `#F6C960`, `#E9AF35`, `#9D7A28` — segmented asset composition chart and legend |
+| `asset-savings`, `asset-deposit`, `asset-current`, `asset-securities` | `#665019`, `#F6C960`, `#E9AF35`, `#9D7A28` |
 
-| Token | Value | For |
-|---|---|---|
-| `--color-primary` | `var(--color-blue-500)` (`#005caa`) | Primary fill — buttons, active states |
-| `--color-primary-hover` | `#0068c0` | Hover state on a primary fill |
-| `--color-primary-active` | `#00457f` | Active/pressed state on a primary fill |
-| `--color-on-primary` | `var(--color-neutral-100)` (`#ffffff`) | Foreground text/icon on a primary fill |
-| `--color-solitaire-card-fill` | `#000000` | Solitaire card section fill and image fade |
-
-`--color-primary-hover` and `--color-primary-active` are **not** rungs on the
-`blue-*` ramp — `#0068c0` sits between `blue-400` and `blue-500`; `#00457f`
-sits just below `blue-600` without matching it. They're named states instead
-of ramp steps so the Figma correspondence on the primitive ramp stays exact.
-
-The core ramps (`neutral-100..900`, `blue-100..800`, `cyan-100/300/400/500/700`,
-`red-100/400/500/600/700`) are usable directly as `bg-blue-700`, `text-neutral-800`, etc. —
-reach for a semantic token first; fall back to a primitive when there's no
-semantic meaning to name (e.g. a specific brand-blue background on a card).
+See [the color migration report](color-token-migration.md) for exact matches, changed values, including the Solitaire card fill.
 
 ## Type
 
-Each token bundles size, line height, letter spacing and weight — because in
-this design those four are never chosen independently.
+The full Figma scale is now available through `text-display-{4xl,3xl,2xl,xl,l,m,s}`,
+`text-heading-{xl,l,m,s,xs}`, `text-eyebrow-{l,m,s}`,
+`text-body-{xl,l,m,s}-{bold,semibold,regular}`,
+`text-body-article-regular`, and `text-label-{xl,l,m,s}-{bold,semibold,regular}`.
+Display and Eyebrow are semibold 600; Heading is bold 700.
+Label utilities include vertical trim (`trim-both`, `cap alphabetic`);
+Body retains its line box. Label/Semibold/S is 12/14 per the supplied screenshot.
+
+The eight names below remain available as aliases. Their values follow the
+approved reference: `text-subtitle` has normal tracking, `text-heading` is
+Heading/M at weight 700, and `text-hero-title-mobile` is Display/L at 28/32.
+These three changes were explicitly approved by the owner on 2026-10-11.
+`text-eyebrow-xl` remains available at 16/16. The credit-card hero introduction
+uses `text-body-l-semibold` (16/24) and `xl:text-body-xl-semibold` (18/26),
+with normal tracking and weight 600.
+See [the gallery documentation](design-token-gallery.md) for the Figma source,
+reference comparisons and the rules for preserving project additions.
+
+Each approved Figma recipe bundles size, line height, letter spacing and weight.
+Size-only consumers can use the helpers below while preserving component inheritance.
 
 | Token | Size | Line height | Tracking | Weight |
 |---|---|---|---|---|
 | `--text-eyebrow` | 12px | 12px | +1.8px (0.15em) | 600 |
 | `--text-eyebrow-lg` | 14px | 14px | +2.1px (0.15em) | 600 |
 | `--text-eyebrow-xl` | 16px | 16px | +2.4px (0.15em) | 600 |
-| `--text-subtitle` | 18px | 26px | −0.36px (−0.02em) | 600 |
+| `--text-subtitle` | 18px | 26px | normal | 600 |
 | `--text-title` | 20px | 28px | −0.4px (−0.02em) | 600 |
-| `--text-heading` | 24px | 32px | −0.48px (−0.02em) | 600 |
-| `--text-hero-title-mobile` | 28px | 36px | −0.56px (−0.02em) | 600 |
+| `--text-heading` | 24px | 32px | −0.48px (−0.02em) | 700 |
+| `--text-hero-title-mobile` | 28px | 32px | −0.56px (−0.02em) | 600 |
 | `--text-display` | 32px | 40px | −0.64px (−0.02em) | 600 |
 
 **The derivation rule** — this is the part worth remembering, because it's
 what a new size should follow rather than reinvent: tracking is **+0.15em**
-for uppercase eyebrows and **−0.02em** for everything else 18px and up. A new
+for uppercase eyebrows, **−0.02em** for Display/Heading, and **normal** for
+Body/Label. A new
 28px heading is `--text-…: 1.75rem` at `-0.02em`, not a hand-measured pixel
 value.
 
@@ -76,10 +76,40 @@ through a `--tw-*` variable, so `text-heading font-bold` or
 order — confirmed by compiling against the installed Tailwind (4.3.2), not
 assumed from docs.
 
-Tailwind's stock `text-xs`…`text-2xl` scale is untouched and still used in
-~190 places for genuine one-offs. These six tokens exist for **repeated**
-recipes only — don't mass-convert a one-off site just because its size
-happens to match a token.
+The owner requested retiring the stock typography scale on 2026-10-11.
+All stock text-size usages now read project tokens. The stock `--text-xs` through
+`--text-9xl` sizes are set to `initial`, preventing new scale utilities from
+being generated.
+
+`text-size-body-m`, `text-size-body-l`, `text-size-display-s`, and
+`text-size-display-m` share the size/leading from the corresponding approved
+recipe without changing inherited component weight/tracking. Full Figma
+recipes remain preferred for new UI. This distinction preserves existing
+visuals during the migration; using a Body regular recipe as a size utility
+would reset a semibold parent to 400.
+
+The owner approved merging three former size variants on 2026-10-11:
+`text-body-s-compact` aliases Body/Regular/S at 12/18;
+`text-body-xl-relaxed` aliases Body/Regular/XL at 18/26;
+`text-display-3xl-tight` aliases Display/4XL at 48/56. Their complete metrics
+follow the canonical recipe, and their gallery cards are merged into it.
+Size-only consumers now use `text-size-body-s`, `text-size-body-xl`, and
+`text-size-display-4xl`, retaining component weight/tracking and explicit leading
+while sharing the approved default size/leading. The credit-card hero introduction
+also follows Body/Semibold/XL: its former desktop leading of 28px is now 26px.
+
+The owner aligned the remaining Display sizes on 2026-10-11:
+`text-display-compact` aliases Display/L (28/32), and `text-display-intermediate`
+aliases the new Display/2XL (36/40). Both include tracking −0.02em and weight 600.
+Former Display/2XL (40/48) is now Display/3XL; former Display/3XL (48/56)
+is now Display/4XL. Existing 48px consumers use the renamed 4XL helper.
+There are no remaining typography additions in the gallery.
+See [the migration report](typography-migration.md) for differences, component
+leading/weight overrides, and affected locations.
+
+Custom size classes are registered with `tailwind-merge` in
+`src/components/catalog/ui/utils.ts`; otherwise `text-*` names can be mistaken
+for colors and be dropped while merging component classes.
 
 ## Elevation & effects
 
@@ -118,7 +148,7 @@ if none of those fits.
 
 ```css
 @utility btn-base { /* height, radius, padding, gap, transition — geometry only */ }
-@utility btn-primary { /* solid fill using --color-primary* */ }
+@utility btn-primary { /* Blue 500 fill, Blue 400 hover, Blue 600 pressed */ }
 @utility btn-secondary { /* outline fill using --color-blue-500 / --color-blue-100 */ }
 ```
 
@@ -163,9 +193,6 @@ Two rules keep the system from drifting back into copy-paste:
   follows the tracking formula above; a new easing should be `ease-entrance`,
   `ease-emphasis`, or a stock Tailwind curve before it's anything else.
 
-## Known open question
+## Button state alignment
 
-`CookieBanner.tsx`'s primary button hovers to `blue-400` (`#1179d1`), where
-every other primary button in the codebase hovers to `--color-primary-hover`
-(`#0068c0`). One of the two is wrong. This needs a design decision — it has
-not been resolved by any of the token-conversion work, deliberately.
+The former CookieBanner / pill CTA hover difference was resolved on 2026-10-11: both use Blue 400 (#1179d1), following the supplied palette. Pressed pill CTAs use Blue 600 (#144e83).

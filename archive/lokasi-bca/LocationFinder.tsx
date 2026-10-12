@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import { useLocale, useTranslations } from "next-intl";
@@ -17,6 +17,8 @@ import {
   type Place,
 } from "./location-data";
 import type { MapLabels } from "./LocationMap";
+import LocationMapUnavailable from "./LocationMapUnavailable";
+import { PreviewFrozenContext, PreviewViewportContext } from "@/lib/PreviewViewport";
 
 /* MapLibre plus its stylesheet is by far the heaviest thing on this page. Two
    gates keep it off the critical path: `ssr: false` (a WebGL canvas has nothing
@@ -659,6 +661,36 @@ type ControlsProps = {
   usePortal?: boolean;
 };
 
+/** The owning controls/cards, without a map, permission probes or data requests.
+ * Used only inside the inert User Flows preview. */
+export function LocationFlowPreview({ initial, tone, state }: { initial: NearbyResponse; tone: LocationTone; state: string }) {
+  const locale = useLocale();
+  const t = useTranslations("lokasi");
+  const width = useContext(PreviewViewportContext) ?? 1440;
+  const desktop = width >= 1280;
+  const inputRef = useRef<HTMLInputElement>(null);
+  const noop = () => {};
+  const query = ["place", "placeSelected", "fastTyping"].includes(state) ? "Jakarta" : state === "noPlace" ? "zzzzzz" : "";
+  const controls = <Controls tone={tone} idBase="flow-location" inputRef={inputRef} divider={desktop} originIsUser={state === "gps"} locating={state === "nearbyFailure"} locatedArea={state === "gps" ? { label: t("defaultPlace"), sub: "" } : null} stopUsingMyLocation={noop}
+    geo={state === "denied" ? "denied" : state === "unavailable" ? "unavailable" : "idle"} permission={state === "denied" ? "denied" : null}
+    primerMounted={state === "primer"} primerOpen={state === "primer"} requestLocation={noop} closePrimer={noop} primerAllow={noop}
+    query={query} setQuery={noop} setPlaces={noop} searchPending={state === "fastTyping"} setSearchPending={noop} open={query.length > 0 && state !== "placeSelected"} setOpen={noop}
+    suggestions={state === "place" ? [{ id: "sample", label: "Jakarta", sub: t("defaultPlace"), lat: initial.origin.lat, lng: initial.origin.lng, count: initial.results.length }] : []}
+    activeIndex={-1} setActiveIndex={noop} onKeyDown={noop} choosePlace={noop} />;
+  const results = { tone, originLabel: t("defaultPlace"), data: initial, pending: state === "nearbyFailure", locale, selectedId: state === "directions" ? initial.results[0]?.id ?? null : null, setSelectedId: noop };
+  // Preserve the owning desktop panel and mobile floating controls/card rail.
+  // Ordinary maps are omitted; the actual failure surface is safe to freeze.
+  return <div data-flow-location className={`relative mx-auto ${desktop ? "max-w-[1280px]" : "h-[680px]"}`}>
+    {state === "mapFailed" ? <div className="absolute inset-0"><LocationMapUnavailable tone={tone} label={t("map.unavailable")} /></div> : null}
+    {desktop ? <div data-flow-location-controls className="relative z-10 flex h-[min(780px,calc(100vh-160px))] w-[452px] min-h-0 flex-col overflow-hidden rounded-2xl border border-neutral-300 bg-white shadow-panel">
+      {controls}<ResultsList {...results} mapScrollTargetId={null} />
+    </div> : <>
+      <div data-flow-location-controls className="absolute inset-x-4 top-4 z-10 overflow-visible rounded-2xl border border-neutral-300 bg-white shadow-card">{controls}</div>
+      <div className="absolute inset-x-0 bottom-0 z-10"><ResultsSlider {...results} /></div>
+    </>}
+  </div>;
+}
+
 /** The button/search/filter block — one component so the mobile and desktop
  *  layouts can each mount their own instance (distinct ids, distinct input
  *  refs) without duplicating this much markup inline. Both instances share
@@ -1036,6 +1068,7 @@ function ResultsSlider({
   setSelectedId,
 }: ResultsSliderProps) {
   const t = useTranslations("lokasi");
+  const frozen = useContext(PreviewFrozenContext);
   const listRef = useRef<HTMLUListElement>(null);
 
   /* Brings the selected card into view — flush against whichever edge it was
@@ -1047,7 +1080,7 @@ function ResultsSlider({
    * visible doesn't move at all — only a cut-off one gets scrolled, exactly
    * up to the point where it clears the edge it was cut off on. */
   useEffect(() => {
-    if (!selectedId) return;
+    if (frozen || !selectedId) return;
     const card = listRef.current?.querySelector<HTMLElement>(`[data-location-id="${selectedId}"]`);
     if (!card) return;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1056,7 +1089,7 @@ function ResultsSlider({
       inline: "nearest",
       block: "nearest",
     });
-  }, [selectedId]);
+  }, [selectedId, frozen]);
 
   return (
     <div className="flex flex-col items-center gap-3">

@@ -1,3 +1,4 @@
+import MemberPageSurface from "@/components/prioritas/MemberPageSurface";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import MemberSectionTabs from "@/components/prioritas/MemberSectionTabs";
 import PrioritasMemberHeader from "@/components/prioritas/PrioritasMemberHeader";
@@ -28,9 +29,11 @@ export default async function PrioritasMemberKursPage({ params }: { params: Prom
         ]}
       />
     </PrioritasMemberHeader>
+    <MemberPageSurface>
     <KursDetailExperience tone={memberBase.startsWith("/solitaire") ? "solitaire" : "prioritas"} rates={data.rates} updatedAt={updatedAt} copy={{
       ratesHeading: t("ratesHeading"), updatedAt: t("updatedAt"), refresh: t("refresh"), currency: t("currency"), buy: t("buy"), sell: t("sell"),
       converter: t("converter"), conversionEstimate: t("conversionEstimate"), amount: t("amount"), from: t("from"), to: t("to"), swapCurrencies: t("swapCurrencies"), viewConverter: t("viewConverter"), note: t("note"), tellerNote: t("tellerNote"),
     }} />
+    </MemberPageSurface>
   </>;
 }

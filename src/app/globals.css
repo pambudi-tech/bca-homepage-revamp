@@ -1,20 +1,24 @@
 @import "tailwindcss";
 
+/* Keep documented Figma palettes available to dynamic specimens. */
+@source inline("bg-neutral-100 bg-neutral-200 bg-neutral-300 bg-neutral-400 bg-neutral-500 bg-neutral-600 bg-neutral-700 bg-neutral-800 bg-neutral-900 bg-blue-100 bg-blue-200 bg-blue-300 bg-blue-400 bg-blue-500 bg-blue-600 bg-blue-700 bg-blue-800 bg-blue-900 bg-cyan-100 bg-cyan-300 bg-cyan-400 bg-cyan-500 bg-cyan-700 bg-green-100 bg-green-300 bg-green-400 bg-green-500 bg-green-700 bg-yellow-100 bg-yellow-300 bg-yellow-400 bg-yellow-500 bg-yellow-700 bg-red-100 bg-red-300 bg-red-400 bg-red-500 bg-red-600 bg-red-700 bg-bermuda-100 bg-bermuda-300 bg-bermuda-500 bg-bermuda-700 bg-brown-100 bg-brown-300 bg-brown-500 bg-brown-700 bg-muddy-100 bg-muddy-300 bg-muddy-500 bg-muddy-700 bg-orange-100 bg-orange-300 bg-orange-500 bg-orange-700 bg-purple-100 bg-purple-300 bg-purple-500 bg-purple-700 bg-tosca-100 bg-tosca-300 bg-tosca-500 bg-tosca-700 bg-teal-100 bg-teal-300 bg-teal-500 bg-teal-700");
+
+/* Keep all documented typography recipes available to dynamic specimens. */
+@source inline("text-display-4xl text-display-4xl--line-height text-display-4xl--letter-spacing text-display-4xl--font-weight text-display-3xl text-display-3xl--line-height text-display-3xl--letter-spacing text-display-3xl--font-weight text-display-2xl text-display-2xl--line-height text-display-2xl--letter-spacing text-display-2xl--font-weight text-display-xl text-display-xl--line-height text-display-xl--letter-spacing text-display-xl--font-weight text-display-l text-display-l--line-height text-display-l--letter-spacing text-display-l--font-weight text-display-m text-display-m--line-height text-display-m--letter-spacing text-display-m--font-weight text-display-s text-display-s--line-height text-display-s--letter-spacing text-display-s--font-weight text-eyebrow-l text-eyebrow-l--line-height text-eyebrow-l--letter-spacing text-eyebrow-l--font-weight text-eyebrow-m text-eyebrow-m--line-height text-eyebrow-m--letter-spacing text-eyebrow-m--font-weight text-eyebrow-s text-eyebrow-s--line-height text-eyebrow-s--letter-spacing text-eyebrow-s--font-weight text-heading-xl text-heading-xl--line-height text-heading-xl--letter-spacing text-heading-xl--font-weight text-heading-l text-heading-l--line-height text-heading-l--letter-spacing text-heading-l--font-weight text-heading-m text-heading-m--line-height text-heading-m--letter-spacing text-heading-m--font-weight text-heading-s text-heading-s--line-height text-heading-s--letter-spacing text-heading-s--font-weight text-heading-xs text-heading-xs--line-height text-heading-xs--letter-spacing text-heading-xs--font-weight text-body-xl-bold text-body-xl-bold--line-height text-body-xl-bold--letter-spacing text-body-xl-bold--font-weight text-body-l-bold text-body-l-bold--line-height text-body-l-bold--letter-spacing text-body-l-bold--font-weight text-body-m-bold text-body-m-bold--line-height text-body-m-bold--letter-spacing text-body-m-bold--font-weight text-body-s-bold text-body-s-bold--line-height text-body-s-bold--letter-spacing text-body-s-bold--font-weight text-body-xl-semibold text-body-xl-semibold--line-height text-body-xl-semibold--letter-spacing text-body-xl-semibold--font-weight text-body-l-semibold text-body-l-semibold--line-height text-body-l-semibold--letter-spacing text-body-l-semibold--font-weight text-body-m-semibold text-body-m-semibold--line-height text-body-m-semibold--letter-spacing text-body-m-semibold--font-weight text-body-s-semibold text-body-s-semibold--line-height text-body-s-semibold--letter-spacing text-body-s-semibold--font-weight text-body-xl-regular text-body-xl-regular--line-height text-body-xl-regular--letter-spacing text-body-xl-regular--font-weight text-body-l-regular text-body-l-regular--line-height text-body-l-regular--letter-spacing text-body-l-regular--font-weight text-body-m-regular text-body-m-regular--line-height text-body-m-regular--letter-spacing text-body-m-regular--font-weight text-body-s-regular text-body-s-regular--line-height text-body-s-regular--letter-spacing text-body-s-regular--font-weight text-body-article-regular text-body-article-regular--line-height text-body-article-regular--letter-spacing text-body-article-regular--font-weight text-label-xl-bold text-label-xl-bold--line-height text-label-xl-bold--letter-spacing text-label-xl-bold--font-weight text-label-l-bold text-label-l-bold--line-height text-label-l-bold--letter-spacing text-label-l-bold--font-weight text-label-m-bold text-label-m-bold--line-height text-label-m-bold--letter-spacing text-label-m-bold--font-weight text-label-s-bold text-label-s-bold--line-height text-label-s-bold--letter-spacing text-label-s-bold--font-weight text-label-xl-semibold text-label-xl-semibold--line-height text-label-xl-semibold--letter-spacing text-label-xl-semibold--font-weight text-label-l-semibold text-label-l-semibold--line-height text-label-l-semibold--letter-spacing text-label-l-semibold--font-weight text-label-m-semibold text-label-m-semibold--line-height text-label-m-semibold--letter-spacing text-label-m-semibold--font-weight text-label-s-semibold text-label-s-semibold--line-height text-label-s-semibold--letter-spacing text-label-s-semibold--font-weight text-label-xl-regular text-label-xl-regular--line-height text-label-xl-regular--letter-spacing text-label-xl-regular--font-weight text-label-l-regular text-label-l-regular--line-height text-label-l-regular--letter-spacing text-label-l-regular--font-weight text-label-m-regular text-label-m-regular--line-height text-label-m-regular--letter-spacing text-label-m-regular--font-weight text-label-s-regular text-label-s-regular--line-height text-label-s-regular--letter-spacing text-label-s-regular--font-weight");
+
 /* Prioritas palette utilities are used by route-level components that can be
    loaded after the initial homepage scan. Keep these explicit so the compiler
    emits the shared utilities in both the dev and production bundles. */
-@source inline("bg-neutral-200 bg-neutral-500 bg-neutral-700 bg-neutral-800 bg-neutral-900 bg-neutral-900/25 bg-neutral-900/95 from-neutral-900 text-neutral-100 text-neutral-100/85 text-neutral-500 text-neutral-800 bg-pbrown-600 bg-pbrown-700/25 bg-pbrown-800 bg-pbrown-900/30 from-pbrown-700 from-solitaire-card-fill bg-solitaire-card-fill text-pgold-100 text-pgold-300 border-pgold-100/25 border-pgold-300/25 backdrop-saturate-125 backdrop-saturate-[1.2] bg-voucher-available text-voucher-available-ink bg-voucher-exhausted text-voucher-exhausted-ink bg-voucher-warning text-voucher-warning-ink bg-asset-savings bg-asset-deposit bg-asset-current bg-asset-securities");
+@source inline("bg-neutral-200 bg-neutral-500 bg-neutral-700 bg-neutral-800 bg-neutral-900 bg-neutral-900/25 bg-neutral-900/95 from-neutral-900 text-neutral-100 text-neutral-100/85 text-neutral-500 text-neutral-800 bg-pbrown-600 bg-pbrown-700/25 bg-pbrown-800 bg-pbrown-900/30 from-pbrown-700 text-pgold-100 text-pgold-300 border-pgold-100/25 border-pgold-300/25 backdrop-saturate-125 backdrop-saturate-[1.2] bg-green-300 text-green-700 bg-red-300 text-red-700 bg-yellow-100 text-yellow-700 bg-asset-savings bg-asset-deposit bg-asset-current bg-asset-securities");
 
 :root {
-  --background: #ffffff;
-  --foreground: #26292c;
+  --background: var(--color-neutral-100);
+  --foreground: var(--color-neutral-800);
 }
 
-/* Core foundation colors — mirrors the Figma "Foundation / Colors" page
-   (BCA.co.id Design Exploration, node 1578-27737). Only the core ramps are
-   defined here: neutral, primary (blue), secondary (cyan). Semantic/state
-   colors still live inline at call sites and are not tokenized yet.
-   Keep these in sync with Figma; do not introduce off-ramp hexes. */
+/* Foundation colors follow the owner-supplied Figma JSON (2026-10-11).
+   Prioritas palettes and asset composition colors remain alongside them.
+   Keep supplied ramp values in sync with the approved Figma reference. */
 @theme {
   /* Clear Tailwind's stock ramps first. These share our token names, so
      without this an undefined shade (blue-900, cyan-200, neutral-50, …)
@@ -27,7 +31,7 @@
   --color-neutral-100: #ffffff;
   --color-neutral-200: #f6f7f9;
   --color-neutral-300: #e9ecef;
-  --color-neutral-400: #dfe0e2;
+  --color-neutral-400: #dfe3e7;
   --color-neutral-500: #cfcfcf;
   --color-neutral-600: #868e96;
   --color-neutral-700: #495057;
@@ -54,23 +58,7 @@
   --color-asset-deposit: #f6c960;
   --color-asset-current: #e9af35;
   --color-asset-securities: #9d7a28;
-  --color-voucher-available: #d5ffd0;
-  --color-voucher-available-ink: #22552f;
-  --color-voucher-exhausted: #f8dedb;
-  --color-voucher-exhausted-ink: #7c2929;
-  --color-voucher-warning: #fff6ca;
-  --color-voucher-warning-ink: #674b20;
-  /* Legacy aliases retained while Prioritas components migrate to the
-     project palette names from Figma. */
-  --color-prioritas-gold: var(--color-pgold-500);
-  --color-prioritas-brown-600: var(--color-pbrown-600);
-  --color-prioritas-brown-800: var(--color-pbrown-800);
-  --color-prioritas-gold-100: var(--color-pgold-100);
-  --color-prioritas-gold-300: var(--color-pgold-300);
-  --color-prioritas-gold-400: var(--color-pgold-400);
-  --color-prioritas-gold-500: var(--color-pgold-500);
   --color-neutral-900: #121417;
-  --color-solitaire-card-fill: #000000;
 
   --color-blue-100: #f4f8fc;
   --color-blue-200: #dbefff;
@@ -94,83 +82,338 @@
   --color-cyan-500: #00b5f0;
   --color-cyan-700: #0094d5;
 
-  /* ---- Semantic tier ----
-     The ramps above say what a color *is*; these say what it is *for*. Call
-     sites should reach for these, so a change to BCA's primary blue is one
-     edit here rather than a grep across every button.
+  /* Remaining Figma palette colors approved as the website reference. */
+  --color-blue-900: #001222;
+  --color-green-100: #e5ffe7;
+  --color-green-300: #c2ffc5;
+  --color-green-400: #08bb5f;
+  --color-green-500: #009649;
+  --color-green-700: #005e2e;
+  --color-yellow-100: #fff6c7;
+  --color-yellow-300: #ffe592;
+  --color-yellow-400: #f9d561;
+  --color-yellow-500: #ffc81a;
+  --color-yellow-700: #885403;
+  --color-red-300: #ffd9d3;
+  --color-bermuda-100: #f5f9fa;
+  --color-bermuda-300: #cadae2;
+  --color-bermuda-500: #5d879f;
+  --color-bermuda-700: #395f74;
+  --color-brown-100: #faf2e5;
+  --color-brown-300: #edd7b6;
+  --color-brown-500: #8c734d;
+  --color-brown-700: #6f532a;
+  --color-muddy-100: #eff2d9;
+  --color-muddy-300: #dae0ae;
+  --color-muddy-500: #7c8445;
+  --color-muddy-700: #484f1c;
+  --color-orange-100: #fff6eb;
+  --color-orange-300: #ffead1;
+  --color-orange-500: #f37c30;
+  --color-orange-700: #c44d00;
+  --color-purple-100: #fcf7fd;
+  --color-purple-300: #f4e5f6;
+  --color-purple-500: #995da2;
+  --color-purple-700: #70257c;
+  --color-tosca-100: #f1ffff;
+  --color-tosca-300: #ccfffe;
+  --color-tosca-500: #28bab7;
+  --color-tosca-700: #188b88;
+  --color-teal-100: #eaf9f4;
+  --color-teal-300: #88f2e0;
+  --color-teal-500: #00d1a9;
+  --color-teal-700: #00a585;
 
-     --color-primary-hover and --color-primary-active are the two shades the
-     Figma button states use. They deliberately are NOT rungs on the blue ramp:
-     #0068c0 falls between blue-400 and blue-500, and #00457f sits just below
-     blue-600 without matching it. Wedging them in as blue-450/550 would break
-     the 1:1 correspondence with the Figma "Foundation / Colors" page, so they
-     live here as named states instead. */
-  --color-primary: var(--color-blue-500);
-  --color-primary-hover: #0068c0;
-  --color-primary-active: #00457f;
-  --color-on-primary: var(--color-neutral-100);
+  /* Interactive states use Blue 500 (default), 400 (hover), 600 (pressed). */
 
-  /* ---- Type scale ----
-     Each token carries size, line height, letter spacing and weight together,
-     because in this design they are never chosen independently — a 24px
-     heading is always 32px leading at -0.02em, and writing that as four
-     classes at every call site is how the six near-identical copies of the
-     section heading happened.
+  /* Figma typography (owner-confirmed 2026-10-11): Display/Eyebrow 600,
+     Heading 700, Body/Label 400/600/700. Tracking keeps our existing rule.
+     Label trim is applied by its utilities, independently of line-height.
+     Existing component names below alias the approved Figma recipes.
+     The owner approved subtitle tracking, heading weight and mobile hero
+     leading alignment on 2026-10-11. */
+  --text-display-4xl: 3rem;
+  --text-display-4xl--line-height: calc(56 / 48);
+  --text-display-4xl--letter-spacing: -0.02em;
+  --text-display-4xl--font-weight: 600;
 
-     Tracking is derived, not hand-picked. Every negative value in the old
-     markup works out to exactly -0.02em (-0.4px at 20px, -0.48px at 24px,
-     -0.64px at 32px) and every eyebrow to +0.15em (1.8px at 12px, 2.1px at
-     14px). Expressed in em here so a size change carries its tracking with it
-     instead of silently going stale.
+  --text-display-3xl: 2.5rem;
+  --text-display-3xl--line-height: calc(48 / 40);
+  --text-display-3xl--letter-spacing: -0.02em;
+  --text-display-3xl--font-weight: 600;
 
-     Line heights follow Tailwind's own theme.css convention of writing the
-     px pair as a division, so the source values stay readable.
+  --text-display-2xl: 2.25rem;
+  --text-display-2xl--line-height: calc(40 / 36);
+  --text-display-2xl--letter-spacing: -0.02em;
+  --text-display-2xl--font-weight: 600;
 
-     These do NOT replace Tailwind's stock text-xs..text-2xl scale, which is
-     still used in ~190 places. They sit alongside it and say what a piece of
-     type IS rather than how it is assembled. Any of the four properties can
-     still be overridden per call site with the matching utility (font-bold,
-     leading-9, tracking-*) — Tailwind resolves those through --tw-* variables,
-     so the override wins regardless of class order. */
-  --text-eyebrow: 0.75rem;                                /* 12px */
-  --text-eyebrow--line-height: 1;                         /* 12px */
-  --text-eyebrow--letter-spacing: 0.15em;                 /* 1.8px */
-  --text-eyebrow--font-weight: 600;
+  --text-display-xl: 2rem;
+  --text-display-xl--line-height: calc(40 / 32);
+  --text-display-xl--letter-spacing: -0.02em;
+  --text-display-xl--font-weight: 600;
 
-  --text-eyebrow-lg: 0.875rem;                            /* 14px */
-  --text-eyebrow-lg--line-height: 1;                      /* 14px */
-  --text-eyebrow-lg--letter-spacing: 0.15em;              /* 2.1px */
-  --text-eyebrow-lg--font-weight: 600;
+  --text-display-l: 1.75rem;
+  --text-display-l--line-height: calc(32 / 28);
+  --text-display-l--letter-spacing: -0.02em;
+  --text-display-l--font-weight: 600;
 
-  --text-eyebrow-xl: 1rem;                                /* 16px */
-  --text-eyebrow-xl--line-height: 1;                      /* 16px */
-  --text-eyebrow-xl--letter-spacing: 0.15em;              /* 2.4px */
-  --text-eyebrow-xl--font-weight: 600;
+  --text-display-m: 1.5rem;
+  --text-display-m--line-height: calc(32 / 24);
+  --text-display-m--letter-spacing: -0.02em;
+  --text-display-m--font-weight: 600;
 
-  --text-subtitle: 1.125rem;                              /* 18px */
-  --text-subtitle--line-height: calc(26 / 18);            /* 26px */
-  --text-subtitle--letter-spacing: -0.02em;               /* -0.36px */
-  --text-subtitle--font-weight: 600;
+  --text-display-s: 1.25rem;
+  --text-display-s--line-height: calc(28 / 20);
+  --text-display-s--letter-spacing: -0.02em;
+  --text-display-s--font-weight: 600;
 
-  --text-title: 1.25rem;                                  /* 20px */
-  --text-title--line-height: calc(28 / 20);               /* 28px */
-  --text-title--letter-spacing: -0.02em;                  /* -0.4px */
-  --text-title--font-weight: 600;
+  --text-eyebrow-l: 1rem;
+  --text-eyebrow-l--line-height: calc(16 / 16);
+  --text-eyebrow-l--letter-spacing: 0.15em;
+  --text-eyebrow-l--font-weight: 600;
 
-  --text-heading: 1.5rem;                                 /* 24px */
-  --text-heading--line-height: calc(32 / 24);             /* 32px */
-  --text-heading--letter-spacing: -0.02em;                /* -0.48px */
-  --text-heading--font-weight: 600;
+  --text-eyebrow-m: 0.875rem;
+  --text-eyebrow-m--line-height: calc(14 / 14);
+  --text-eyebrow-m--letter-spacing: 0.15em;
+  --text-eyebrow-m--font-weight: 600;
 
-  --text-hero-title-mobile: 1.75rem;                      /* 28px */
-  --text-hero-title-mobile--line-height: calc(36 / 28);   /* 36px */
-  --text-hero-title-mobile--letter-spacing: -0.02em;      /* -0.56px */
-  --text-hero-title-mobile--font-weight: 600;
+  --text-eyebrow-s: 0.75rem;
+  --text-eyebrow-s--line-height: calc(12 / 12);
+  --text-eyebrow-s--letter-spacing: 0.15em;
+  --text-eyebrow-s--font-weight: 600;
 
-  --text-display: 2rem;                                   /* 32px */
-  --text-display--line-height: calc(40 / 32);             /* 40px */
-  --text-display--letter-spacing: -0.02em;                /* -0.64px */
-  --text-display--font-weight: 600;
+  --text-heading-xl: 2rem;
+  --text-heading-xl--line-height: calc(40 / 32);
+  --text-heading-xl--letter-spacing: -0.02em;
+  --text-heading-xl--font-weight: 700;
+
+  --text-heading-l: 1.75rem;
+  --text-heading-l--line-height: calc(32 / 28);
+  --text-heading-l--letter-spacing: -0.02em;
+  --text-heading-l--font-weight: 700;
+
+  --text-heading-m: 1.5rem;
+  --text-heading-m--line-height: calc(32 / 24);
+  --text-heading-m--letter-spacing: -0.02em;
+  --text-heading-m--font-weight: 700;
+
+  --text-heading-s: 1.25rem;
+  --text-heading-s--line-height: calc(28 / 20);
+  --text-heading-s--letter-spacing: -0.02em;
+  --text-heading-s--font-weight: 700;
+
+  --text-heading-xs: 1.125rem;
+  --text-heading-xs--line-height: calc(24 / 18);
+  --text-heading-xs--letter-spacing: -0.02em;
+  --text-heading-xs--font-weight: 700;
+
+  --text-body-xl-bold: 1.125rem;
+  --text-body-xl-bold--line-height: calc(26 / 18);
+  --text-body-xl-bold--letter-spacing: normal;
+  --text-body-xl-bold--font-weight: 700;
+
+  --text-body-l-bold: 1rem;
+  --text-body-l-bold--line-height: calc(24 / 16);
+  --text-body-l-bold--letter-spacing: normal;
+  --text-body-l-bold--font-weight: 700;
+
+  --text-body-m-bold: 0.875rem;
+  --text-body-m-bold--line-height: calc(20 / 14);
+  --text-body-m-bold--letter-spacing: normal;
+  --text-body-m-bold--font-weight: 700;
+
+  --text-body-s-bold: 0.75rem;
+  --text-body-s-bold--line-height: calc(18 / 12);
+  --text-body-s-bold--letter-spacing: normal;
+  --text-body-s-bold--font-weight: 700;
+
+  --text-body-xl-semibold: 1.125rem;
+  --text-body-xl-semibold--line-height: calc(26 / 18);
+  --text-body-xl-semibold--letter-spacing: normal;
+  --text-body-xl-semibold--font-weight: 600;
+
+  --text-body-l-semibold: 1rem;
+  --text-body-l-semibold--line-height: calc(24 / 16);
+  --text-body-l-semibold--letter-spacing: normal;
+  --text-body-l-semibold--font-weight: 600;
+
+  --text-body-m-semibold: 0.875rem;
+  --text-body-m-semibold--line-height: calc(20 / 14);
+  --text-body-m-semibold--letter-spacing: normal;
+  --text-body-m-semibold--font-weight: 600;
+
+  --text-body-s-semibold: 0.75rem;
+  --text-body-s-semibold--line-height: calc(18 / 12);
+  --text-body-s-semibold--letter-spacing: normal;
+  --text-body-s-semibold--font-weight: 600;
+
+  --text-body-xl-regular: 1.125rem;
+  --text-body-xl-regular--line-height: calc(26 / 18);
+  --text-body-xl-regular--letter-spacing: normal;
+  --text-body-xl-regular--font-weight: 400;
+
+  --text-body-l-regular: 1rem;
+  --text-body-l-regular--line-height: calc(24 / 16);
+  --text-body-l-regular--letter-spacing: normal;
+  --text-body-l-regular--font-weight: 400;
+
+  --text-body-m-regular: 0.875rem;
+  --text-body-m-regular--line-height: calc(20 / 14);
+  --text-body-m-regular--letter-spacing: normal;
+  --text-body-m-regular--font-weight: 400;
+
+  --text-body-s-regular: 0.75rem;
+  --text-body-s-regular--line-height: calc(18 / 12);
+  --text-body-s-regular--letter-spacing: normal;
+  --text-body-s-regular--font-weight: 400;
+
+  --text-body-article-regular: 1rem;
+  --text-body-article-regular--line-height: calc(28 / 16);
+  --text-body-article-regular--letter-spacing: normal;
+  --text-body-article-regular--font-weight: 400;
+
+  --text-label-xl-bold: 1.125rem;
+  --text-label-xl-bold--line-height: calc(18 / 18);
+  --text-label-xl-bold--letter-spacing: normal;
+  --text-label-xl-bold--font-weight: 700;
+
+  --text-label-l-bold: 1rem;
+  --text-label-l-bold--line-height: calc(16 / 16);
+  --text-label-l-bold--letter-spacing: normal;
+  --text-label-l-bold--font-weight: 700;
+
+  --text-label-m-bold: 0.875rem;
+  --text-label-m-bold--line-height: calc(14 / 14);
+  --text-label-m-bold--letter-spacing: normal;
+  --text-label-m-bold--font-weight: 700;
+
+  --text-label-s-bold: 0.75rem;
+  --text-label-s-bold--line-height: calc(12 / 12);
+  --text-label-s-bold--letter-spacing: normal;
+  --text-label-s-bold--font-weight: 700;
+
+  --text-label-xl-semibold: 1.125rem;
+  --text-label-xl-semibold--line-height: calc(18 / 18);
+  --text-label-xl-semibold--letter-spacing: normal;
+  --text-label-xl-semibold--font-weight: 600;
+
+  --text-label-l-semibold: 1rem;
+  --text-label-l-semibold--line-height: calc(16 / 16);
+  --text-label-l-semibold--letter-spacing: normal;
+  --text-label-l-semibold--font-weight: 600;
+
+  --text-label-m-semibold: 0.875rem;
+  --text-label-m-semibold--line-height: calc(14 / 14);
+  --text-label-m-semibold--letter-spacing: normal;
+  --text-label-m-semibold--font-weight: 600;
+
+  --text-label-s-semibold: 0.75rem;
+  --text-label-s-semibold--line-height: calc(14 / 12);
+  --text-label-s-semibold--letter-spacing: normal;
+  --text-label-s-semibold--font-weight: 600;
+
+  --text-label-xl-regular: 1.125rem;
+  --text-label-xl-regular--line-height: calc(18 / 18);
+  --text-label-xl-regular--letter-spacing: normal;
+  --text-label-xl-regular--font-weight: 400;
+
+  --text-label-l-regular: 1rem;
+  --text-label-l-regular--line-height: calc(16 / 16);
+  --text-label-l-regular--letter-spacing: normal;
+  --text-label-l-regular--font-weight: 400;
+
+  --text-label-m-regular: 0.875rem;
+  --text-label-m-regular--line-height: calc(14 / 14);
+  --text-label-m-regular--letter-spacing: normal;
+  --text-label-m-regular--font-weight: 400;
+
+  --text-label-s-regular: 0.75rem;
+  --text-label-s-regular--line-height: calc(12 / 12);
+  --text-label-s-regular--letter-spacing: normal;
+  --text-label-s-regular--font-weight: 400;
+
+  /* Owner-approved reference merges (2026-10-11). The former compact,
+     relaxed and tight names now alias the complete Figma recipe. */
+  --text-body-s-compact: var(--text-body-s-regular);
+  --text-body-s-compact--line-height: var(--text-body-s-regular--line-height);
+  --text-body-s-compact--letter-spacing: var(--text-body-s-regular--letter-spacing);
+  --text-body-s-compact--font-weight: var(--text-body-s-regular--font-weight);
+  --text-body-xl-relaxed: var(--text-body-xl-regular);
+  --text-body-xl-relaxed--line-height: var(--text-body-xl-regular--line-height);
+  --text-body-xl-relaxed--letter-spacing: var(--text-body-xl-regular--letter-spacing);
+  --text-body-xl-relaxed--font-weight: var(--text-body-xl-regular--font-weight);
+  /* Owner-approved Display scale merge (2026-10-11). Legacy names stay
+     available; canonical utilities are used by their former consumers. */
+  --text-display-compact: var(--text-display-l);
+  --text-display-compact--line-height: var(--text-display-l--line-height);
+  --text-display-compact--letter-spacing: var(--text-display-l--letter-spacing);
+  --text-display-compact--font-weight: var(--text-display-l--font-weight);
+  --text-display-intermediate: var(--text-display-2xl);
+  --text-display-intermediate--line-height: var(--text-display-2xl--line-height);
+  --text-display-intermediate--letter-spacing: var(--text-display-2xl--letter-spacing);
+  --text-display-intermediate--font-weight: var(--text-display-2xl--font-weight);
+  --text-display-3xl-tight: var(--text-display-4xl);
+  --text-display-3xl-tight--line-height: var(--text-display-4xl--line-height);
+  --text-display-3xl-tight--letter-spacing: var(--text-display-4xl--letter-spacing);
+  --text-display-3xl-tight--font-weight: var(--text-display-4xl--font-weight);
+
+  /* Stock typography is retired. This prevents new size-scale usage from
+     silently creating a second source of truth. */
+  --text-xs: initial;
+  --text-sm: initial;
+  --text-base: initial;
+  --text-lg: initial;
+  --text-xl: initial;
+  --text-2xl: initial;
+  --text-3xl: initial;
+  --text-4xl: initial;
+  --text-5xl: initial;
+  --text-6xl: initial;
+  --text-7xl: initial;
+  --text-8xl: initial;
+  --text-9xl: initial;
+
+  /* Legacy names alias the approved Figma recipes. Component property
+     overrides still win through Tailwind's --tw-* variables. */
+  --text-eyebrow: var(--text-eyebrow-s);                                /* 12px */
+  --text-eyebrow--line-height: var(--text-eyebrow-s--line-height);                         /* 12px */
+  --text-eyebrow--letter-spacing: var(--text-eyebrow-s--letter-spacing);                 /* 1.8px */
+  --text-eyebrow--font-weight: var(--text-eyebrow-s--font-weight);
+
+  --text-eyebrow-lg: var(--text-eyebrow-m);                            /* 14px */
+  --text-eyebrow-lg--line-height: var(--text-eyebrow-m--line-height);                      /* 14px */
+  --text-eyebrow-lg--letter-spacing: var(--text-eyebrow-m--letter-spacing);              /* 2.1px */
+  --text-eyebrow-lg--font-weight: var(--text-eyebrow-m--font-weight);
+
+  --text-eyebrow-xl: var(--text-eyebrow-l);                                /* 16px */
+  --text-eyebrow-xl--line-height: var(--text-eyebrow-l--line-height);                      /* 16px */
+  --text-eyebrow-xl--letter-spacing: var(--text-eyebrow-l--letter-spacing);              /* 2.4px */
+  --text-eyebrow-xl--font-weight: var(--text-eyebrow-l--font-weight);
+
+  --text-subtitle: var(--text-body-xl-semibold);                              /* 18px */
+  --text-subtitle--line-height: var(--text-body-xl-semibold--line-height);            /* 26px */
+  --text-subtitle--letter-spacing: var(--text-body-xl-semibold--letter-spacing); /* normal */
+  --text-subtitle--font-weight: var(--text-body-xl-semibold--font-weight);
+
+  --text-title: var(--text-display-s);                                  /* 20px */
+  --text-title--line-height: var(--text-display-s--line-height);               /* 28px */
+  --text-title--letter-spacing: var(--text-display-s--letter-spacing);                  /* -0.4px */
+  --text-title--font-weight: var(--text-display-s--font-weight);
+
+  --text-heading: var(--text-heading-m);                                 /* 24px */
+  --text-heading--line-height: var(--text-heading-m--line-height);             /* 32px */
+  --text-heading--letter-spacing: var(--text-heading-m--letter-spacing);                /* -0.48px */
+  --text-heading--font-weight: var(--text-heading-m--font-weight);
+
+  --text-hero-title-mobile: var(--text-display-l);                      /* 28px */
+  --text-hero-title-mobile--line-height: var(--text-display-l--line-height); /* 32px */
+  --text-hero-title-mobile--letter-spacing: var(--text-display-l--letter-spacing);      /* -0.56px */
+  --text-hero-title-mobile--font-weight: var(--text-display-l--font-weight);
+
+  --text-display: var(--text-display-xl);                                   /* 32px */
+  --text-display--line-height: var(--text-display-xl--line-height);             /* 40px */
+  --text-display--letter-spacing: var(--text-display-xl--letter-spacing);                /* -0.64px */
+  --text-display--font-weight: var(--text-display-xl--font-weight);
 
   /* ---- Elevation & effects ----
      Named for what they lift, not for how far. The stock Tailwind shadow-sm/
@@ -237,6 +480,107 @@
   --ease-emphasis: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
+/* Size-only consumers share the Figma size/leading values without resetting
+   inherited component weight/tracking or opting into Label's vertical trim.
+   Full typography styles continue to use text-body-*-regular/semibold/bold,
+   text-display-*, text-heading-* and text-label-* directly. */
+@utility text-size-body-s {
+  font-size: var(--text-body-s-regular);
+  line-height: var(--tw-leading, var(--text-body-s-regular--line-height));
+}
+
+@utility text-size-body-xl {
+  font-size: var(--text-body-xl-regular);
+  line-height: var(--tw-leading, var(--text-body-xl-regular--line-height));
+}
+
+@utility text-size-display-4xl {
+  font-size: var(--text-display-4xl);
+  line-height: var(--tw-leading, var(--text-display-4xl--line-height));
+}
+
+@utility text-size-body-m {
+  font-size: var(--text-body-m-regular);
+  line-height: var(--tw-leading, var(--text-body-m-regular--line-height));
+}
+
+@utility text-size-body-l {
+  font-size: var(--text-body-l-regular);
+  line-height: var(--tw-leading, var(--text-body-l-regular--line-height));
+}
+
+@utility text-size-display-s {
+  font-size: var(--text-display-s);
+  line-height: var(--tw-leading, var(--text-display-s--line-height));
+}
+
+@utility text-size-display-m {
+  font-size: var(--text-display-m);
+  line-height: var(--tw-leading, var(--text-display-m--line-height));
+}
+
+/* Label vertical trim: cap height to alphabetic baseline. Unsupported
+   browsers retain the original line box; no glyph clipping fallback. */
+@utility text-label-xl-bold {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
+
+@utility text-label-l-bold {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
+
+@utility text-label-m-bold {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
+
+@utility text-label-s-bold {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
+
+@utility text-label-xl-semibold {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
+
+@utility text-label-l-semibold {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
+
+@utility text-label-m-semibold {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
+
+@utility text-label-s-semibold {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
+
+@utility text-label-xl-regular {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
+
+@utility text-label-l-regular {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
+
+@utility text-label-m-regular {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
+
+@utility text-label-s-regular {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
+
 @utility text-hero-title-mobile {
   font-size: var(--text-hero-title-mobile);
   line-height: var(--text-hero-title-mobile--line-height);
@@ -245,8 +589,6 @@
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-bca-sans);
 }
 
@@ -282,15 +624,15 @@
 }
 
 @utility btn-primary {
-  background-color: var(--color-primary);
-  color: var(--color-on-primary);
+  background-color: var(--color-blue-500);
+  color: var(--color-neutral-100);
 
   &:hover {
-    background-color: var(--color-primary-hover);
+    background-color: var(--color-blue-400);
   }
 
   &:active {
-    background-color: var(--color-primary-active);
+    background-color: var(--color-blue-600);
   }
 }
 
@@ -1509,22 +1851,7 @@ html.lenis, html.lenis body {
   .bca-origin-user .bca-origin-pulse { animation: none; }
 }
 
-/* shadcn/ui documentation chrome. Separate tokens preserve BCA specimens. */
+/* Documentation uses the shared color palette and BCA font. */
 @theme {
   --font-docs: var(--font-bca-sans);
-  --color-docs-background: oklch(1 0 0);
-  --color-docs-foreground: oklch(0.145 0 0);
-  --color-docs-primary: oklch(0.205 0 0);
-  --color-docs-primary-foreground: oklch(0.985 0 0);
-  --color-docs-secondary: oklch(0.97 0 0);
-  --color-docs-secondary-foreground: oklch(0.205 0 0);
-  --color-docs-muted: oklch(0.97 0 0);
-  --color-docs-muted-foreground: oklch(0.556 0 0);
-  --color-docs-accent: oklch(0.97 0 0);
-  --color-docs-accent-foreground: oklch(0.205 0 0);
-  --color-docs-destructive: oklch(0.577 0.245 27.325);
-  --color-docs-destructive-foreground: oklch(0.985 0 0);
-  --color-docs-border: oklch(0.922 0 0);
-  --color-docs-input: oklch(0.922 0 0);
-  --color-docs-ring: oklch(0.708 0 0);
 }

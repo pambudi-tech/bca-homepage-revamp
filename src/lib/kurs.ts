@@ -7,9 +7,9 @@ export type KursEntry = {
 };
 
 const CURRENCIES: { code: string; flag: string }[] = [
-  { code: "USD", flag: "/assets/cycle1/flag-usd.svg" },
-  { code: "SGD", flag: "/assets/cycle1/flag-sgd.svg" },
-  { code: "CNH", flag: "/assets/cycle1/flag-cnh.svg" },
+  { code: "USD", flag: "/assets/prioritas/kurs/flags/Flag=united%20states.svg" },
+  { code: "SGD", flag: "/assets/prioritas/kurs/flags/Flag=singapore.svg" },
+  { code: "CNH", flag: "/assets/prioritas/kurs/flags/Flag=china.svg" },
   { code: "EUR", flag: "/assets/cycle1/flag-eur.svg" },
   { code: "GBP", flag: "/assets/cycle1/flag-gbp.svg" },
 ];

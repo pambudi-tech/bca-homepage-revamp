@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+
+import { PreviewViewportContext } from "./PreviewViewport";
 
 /**
  * True at the `xl` breakpoint (1280px+), where the desktop layouts render.
@@ -14,6 +16,7 @@ import { useEffect, useState } from "react";
  * which `display: none` can decide.
  */
 export function useIsDesktop() {
+  const previewWidth = useContext(PreviewViewportContext);
   const [isDesktop, setIsDesktop] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1280px)");
@@ -22,5 +25,5 @@ export function useIsDesktop() {
     mq.addEventListener("change", sync);
     return () => mq.removeEventListener("change", sync);
   }, []);
-  return isDesktop;
+  return previewWidth === null ? isDesktop : previewWidth >= 1280;
 }

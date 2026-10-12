@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ElementType } from "react";
 import { useTranslations } from "next-intl";
 import type { KursEntry } from "@/lib/kurs";
@@ -334,7 +336,7 @@ export default function HeroWidget({
           />
           <div className="relative flex flex-1 items-center justify-center gap-6">
             <div className="flex items-center justify-center px-2">
-              <p className="whitespace-nowrap text-lg font-semibold text-white text-shadow-hero">
+              <p className="whitespace-nowrap text-size-body-xl font-semibold text-white text-shadow-hero">
                 {t("searchPrompt")}
               </p>
             </div>
@@ -363,7 +365,7 @@ export default function HeroWidget({
                       e.currentTarget.blur();
                     }
                   }}
-                  className="relative z-10 h-7 w-full bg-transparent px-6 text-base font-semibold text-white focus:outline-none"
+                  className="relative z-10 h-7 w-full bg-transparent px-6 text-size-body-l font-semibold text-white focus:outline-none"
                 />
                 <SearchPlaceholderCarousel placeholders={placeholders} visible={!searchValue && !searchFocused} live={live} />
               </div>
@@ -388,7 +390,7 @@ export default function HeroWidget({
               <div className="flex h-20 min-w-0 flex-1 items-center gap-4 rounded-3xl bg-white py-5 pr-2 pl-4">
                 <img src="/assets/quick-action/login.svg" alt="" className="size-10 shrink-0" />
                 <div className="flex w-[120px] shrink-0 flex-col items-start gap-1 whitespace-nowrap">
-                  <p className="text-base font-bold text-neutral-800">{t("loginCepat.title")}</p>
+                  <p className="text-size-body-l font-bold text-neutral-800">{t("loginCepat.title")}</p>
                 </div>
 
                 <div className="flex h-16 min-w-0 flex-1 items-center gap-2">
@@ -403,8 +405,8 @@ export default function HeroWidget({
                       {/* Always in the markup — visibility is CSS-only (opacity),
                           so this copy is crawlable, not gated behind a hover-only mount. */}
                       <div className="pointer-events-none absolute bottom-[calc(100%+16px)] left-1/2 z-30 w-56 -translate-x-1/2 rounded-2xl border border-neutral-200 bg-white p-4 text-left opacity-0 shadow-panel transition-opacity duration-200 group-hover/login:opacity-100">
-                        <p className="text-sm font-bold text-neutral-800">{dest.label}</p>
-                        <p className="mt-1 text-sm font-normal text-neutral-700">{dest.description}</p>
+                        <p className="text-size-body-m font-bold text-neutral-800">{dest.label}</p>
+                        <p className="mt-1 text-size-body-m font-normal text-neutral-700">{dest.description}</p>
                         {/* Message-bubble tail — rotated square with only its
                             leading corner rounded, so the tip reads as soft
                             rather than a sharp triangle point. */}
@@ -414,11 +416,11 @@ export default function HeroWidget({
                         />
                       </div>
                       <span className="flex size-10 shrink-0 items-center justify-center">
-                        <img src={dest.icon} alt="" className={`${dest.iconClass} object-contain`} />
+                        <IconAsset src={dest.icon} alt="" className={`${dest.iconClass} object-contain`} />
                       </span>
                       {/* Fills the remaining width so long labels wrap
                           instead of overflowing the card. */}
-                      <span className="min-w-0 flex-1 text-sm font-semibold text-neutral-800">
+                      <span className="min-w-0 flex-1 text-size-body-m font-semibold text-neutral-800">
                         {dest.label}
                       </span>
                       <ExternalArrow />
@@ -450,13 +452,13 @@ export default function HeroWidget({
                     className="relative z-10 size-10 shrink-0"
                   />
                   <div className="relative z-10 flex w-[120px] flex-col items-start gap-1 whitespace-nowrap">
-                    <p className="text-base font-bold text-neutral-800">{t("quickActions.promo.title")}</p>
+                    <p className="text-size-body-l font-bold text-neutral-800">{t("quickActions.promo.title")}</p>
                   </div>
                 </button>
                 {/* Same tooltip language as the login destination cards —
                     always in the markup, visibility is CSS-only (opacity). */}
                 <div className="pointer-events-none absolute bottom-[calc(100%+16px)] left-1/2 z-30 w-56 -translate-x-1/2 rounded-2xl border border-neutral-200 bg-white p-4 text-left opacity-0 shadow-panel transition-opacity duration-200 group-hover/promo:opacity-100">
-                  <p className="text-sm font-normal text-neutral-700">
+                  <p className="text-size-body-m font-normal text-neutral-700">
                     Temukan promo terbaik dari kami, khusus untuk Anda
                   </p>
                   <span
@@ -519,19 +521,19 @@ export default function HeroWidget({
                       className="relative z-10 flex items-center gap-4 transition-transform duration-300 ease-in-out"
                       style={{ transform: collapsed ? "translateX(16px)" : "translateX(0px)" }}
                     >
-                      <img src={action.icon} alt="" className="size-10 shrink-0" />
+                      <IconAsset src={action.icon} alt="" className="size-10 shrink-0" />
                       <div
                         className={`flex min-w-0 flex-col items-start gap-1 overflow-hidden text-left whitespace-nowrap transition-[opacity,transform] duration-200 ease-in-out ${collapsed ? "translate-x-3 opacity-0" : "translate-x-0 opacity-100"
                           }`}
                       >
                         <p
-                          className={`text-base font-bold ${isLogin && loginOpen ? "text-blue-800" : "text-neutral-800"
+                          className={`text-size-body-l font-bold ${isLogin && loginOpen ? "text-blue-800" : "text-neutral-800"
                             }`}
                         >
                           {action.title}
                         </p>
                         <p
-                          className={`text-sm font-normal ${isLogin && loginOpen ? "text-blue-800" : "text-neutral-700"
+                          className={`text-size-body-m font-normal ${isLogin && loginOpen ? "text-blue-800" : "text-neutral-700"
                             }`}
                         >
                           {action.subtitle}
@@ -561,9 +563,9 @@ export default function HeroWidget({
                     className="flex h-16 min-w-0 flex-1 items-center justify-center gap-4 rounded-2xl border border-neutral-300 bg-white px-4 transition-colors duration-200 hover:border-blue-300 hover:bg-cyan-100"
                   >
                     <span className="flex size-10 shrink-0 items-center justify-center">
-                      <img src={dest.icon} alt="" className={`${dest.iconClass} object-contain`} />
+                      <IconAsset src={dest.icon} alt="" className={`${dest.iconClass} object-contain`} />
                     </span>
-                    <span className="text-sm font-semibold whitespace-nowrap text-neutral-800">
+                    <span className="text-size-body-m font-semibold whitespace-nowrap text-neutral-800">
                       {dest.label}
                     </span>
                     <ExternalArrow />
@@ -603,7 +605,7 @@ export default function HeroWidget({
             href="https://www.bca.co.id/id/informasi/kurs"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-[120px] text-base font-semibold text-white underline text-shadow-hero"
+            className="w-[120px] text-size-body-l font-semibold text-white underline text-shadow-hero"
           >
             {t("kursToday")}
           </a>
@@ -636,21 +638,21 @@ export default function HeroWidget({
                 >
                   <div className="flex items-center gap-3">
                     <img src={entry.flag} alt={entry.code} className="size-6" />
-                    <p className="w-12 text-base font-semibold text-white">{entry.code}</p>
+                    <p className="w-12 text-size-body-l font-semibold text-white">{entry.code}</p>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-0.5 font-semibold text-blue-300 opacity-90">
                       <span className="flex w-12 pt-[2px]">
-                        <span className="text-xs uppercase tracking-[2.1px]">{t("beli")}</span>
+                        <span className="text-size-body-s uppercase tracking-[2.1px]">{t("beli")}</span>
                       </span>
-                      <span className="w-20 text-right text-base">{entry.beli}</span>
+                      <span className="w-20 text-right text-size-body-l">{entry.beli}</span>
                     </div>
                     <div className="h-5 w-px bg-white/40" />
                     <div className="flex items-center gap-0.5 font-semibold text-blue-300 opacity-90">
                       <span className="flex w-12 pt-[2px]">
-                        <span className="text-xs uppercase tracking-[2.1px]">{t("jual")}</span>
+                        <span className="text-size-body-s uppercase tracking-[2.1px]">{t("jual")}</span>
                       </span>
-                      <span className="w-20 text-right text-base">{entry.jual}</span>
+                      <span className="w-20 text-right text-size-body-l">{entry.jual}</span>
                     </div>
                   </div>
                 </a>
@@ -674,7 +676,7 @@ export default function HeroWidget({
           <img src="/assets/cycle1/chevron-right.svg" alt="" className="size-6" />
         </button>
 
-        <p className="absolute bottom-7 right-5 flex h-10 w-40 items-center text-xs font-normal text-neutral-100/50">
+        <p className="absolute bottom-7 right-5 flex h-10 w-40 items-center text-size-body-s font-normal text-neutral-100/50">
           {t("kursDisclaimer")}
         </p>
       </div>

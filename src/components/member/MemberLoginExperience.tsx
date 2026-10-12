@@ -1,5 +1,7 @@
 "use client";
 
+import { IconAsset } from "@/components/icons/IconAsset";
+
 import { useActionState, useEffect, useState, type MouseEvent } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
@@ -14,27 +16,28 @@ import "./member-login.css";
 
 type LoginMethod = "bcaId" | "email";
 type Brand = "prioritas" | "solitaire";
+export type MemberLoginPreview = { method?: LoginMethod; identifier?: string; password?: string; touched?: boolean; credentialsError?: boolean; notice?: boolean; pending?: boolean };
 
-const TEXT_BUTTON_CLASS = "font-semibold text-blue-500 transition-colors hover:text-[var(--color-primary-hover)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-500";
-const TEXT_BUTTON_SMALL_CLASS = `${TEXT_BUTTON_CLASS} text-sm leading-5`;
+const TEXT_BUTTON_CLASS = "font-semibold text-blue-500 transition-colors hover:text-[var(--color-blue-400)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-500";
+const TEXT_BUTTON_SMALL_CLASS = `${TEXT_BUTTON_CLASS} text-size-body-m leading-5`;
 
 function EyeIcon({ visible }: { visible: boolean }) {
-  return <img aria-hidden src={`/assets/member-login/eye${visible ? "" : "-off"}.svg`} alt="" className="size-6" />;
+  return <IconAsset aria-hidden src={`/assets/member-login/eye${visible ? "" : "-off"}.svg`} alt="" className="size-6" />;
 }
 
 
-export default function MemberLoginExperience({ brand, magazineSlug, redirectTo }: { brand: Brand; magazineSlug?: string; redirectTo?: string }) {
+export default function MemberLoginExperience({ brand, magazineSlug, redirectTo, preview }: { brand: Brand; magazineSlug?: string; redirectTo?: string; preview?: MemberLoginPreview }) {
   const t = useTranslations("memberLogin");
   const router = useRouter();
   const [loginState, formAction, pending] = useActionState<MemberLoginState, FormData>(loginMember, { status: "idle" });
-  const [method, setMethod] = useState<LoginMethod>("bcaId");
-  const [bcaId, setBcaId] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [identifierTouched, setIdentifierTouched] = useState(false);
+  const [method, setMethod] = useState<LoginMethod>(preview?.method ?? "bcaId");
+  const [bcaId, setBcaId] = useState(preview?.method === "email" ? "" : preview?.identifier ?? "");
+  const [email, setEmail] = useState(preview?.method === "email" ? preview.identifier ?? "" : "");
+  const [password, setPassword] = useState(preview?.password ?? "");
+  const [identifierTouched, setIdentifierTouched] = useState(preview?.touched ?? false);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [showCredentialsError, setShowCredentialsError] = useState(false);
-  const [notice, setNotice] = useState("");
+  const [showCredentialsError, setShowCredentialsError] = useState(preview?.credentialsError ?? false);
+  const [notice, setNotice] = useState(preview?.notice ? t("prototypeNotice") : "");
   const backHref = `/${brand}`;
   const identifier = method === "bcaId" ? bcaId : email;
   const validIdentifier = method === "bcaId"
@@ -69,6 +72,7 @@ export default function MemberLoginExperience({ brand, magazineSlug, redirectTo 
   }
 
   useEffect(() => {
+    if (preview) return;
     if (loginState.status === "success" && loginState.brand) {
       const requestedPath = redirectTo && routing.locales.some((locale) => redirectTo.startsWith(`/${locale}/`))
         ? redirectTo.replace(/^\/[^/]+/, "")
@@ -78,10 +82,10 @@ export default function MemberLoginExperience({ brand, magazineSlug, redirectTo 
         : `/${loginState.brand}/member/overview`;
       router.replace(destination);
     }
-  }, [loginState, redirectTo, router]);
+  }, [loginState, redirectTo, router, preview]);
 
   useEffect(() => {
-    if (loginState.status !== "error" || pending) return;
+    if (preview || loginState.status !== "error" || pending) return;
 
     const showTimer = window.setTimeout(() => setShowCredentialsError(true), 0);
     const dismissTimer = window.setTimeout(() => setShowCredentialsError(false), 5000);
@@ -90,15 +94,15 @@ export default function MemberLoginExperience({ brand, magazineSlug, redirectTo 
       window.clearTimeout(showTimer);
       window.clearTimeout(dismissTimer);
     };
-  }, [loginState, pending]);
+  }, [loginState, pending, preview]);
 
   return (
-    <main id="main-content" className="member-login relative isolate flex min-h-dvh flex-col overflow-hidden bg-neutral-200 text-neutral-800">
+    <main id={preview ? undefined : "main-content"} className={`member-login relative isolate flex ${preview ? "min-h-[680px]" : "min-h-dvh"} flex-col overflow-hidden bg-neutral-200 text-neutral-800`}>
       <div aria-hidden className="member-login-light pointer-events-none absolute inset-0 -z-10" />
 
       <header className="member-login-header relative mx-auto grid w-full max-w-[1512px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-4 lg:px-10 lg:py-10">
-        <Link href={backHref} onClick={handleBack} className={`member-login-back inline-flex w-fit items-center gap-2 text-sm leading-5 ${TEXT_BUTTON_CLASS}`}>
-          <img aria-hidden src="/assets/member-login/arrow-left.svg" alt="" className="size-5" /> <span>{t("backHome")}</span>
+        <Link href={backHref} onClick={handleBack} className={`member-login-back inline-flex w-fit items-center gap-2 text-size-body-m leading-5 ${TEXT_BUTTON_CLASS}`}>
+          <IconAsset aria-hidden src="/assets/member-login/arrow-left.svg" alt="" className="size-5" /> <span>{t("backHome")}</span>
         </Link>
         <div className="member-login-brands flex items-center justify-center gap-5 sm:gap-8" aria-label={t("brandsLabel")}>
           <img src="/assets/soliprio/solitaire-logo.svg" alt="BCA Solitaire" className="member-login-solitaire h-11 w-auto" />
@@ -116,16 +120,16 @@ export default function MemberLoginExperience({ brand, magazineSlug, redirectTo 
 
       <div className="member-login-center flex w-full flex-1 items-center justify-center px-4 py-10 sm:px-6">
         <div className="relative flex w-full flex-col items-center">
-          {loginState.status === "error" ? <LoginAlert message={t("credentialsError")} visible={showCredentialsError} /> : null}
+          {loginState.status === "error" || preview?.credentialsError ? <LoginAlert message={t("credentialsError")} visible={showCredentialsError} /> : null}
         <section className="member-login-card w-full max-w-[392px] rounded-xl border border-neutral-300/70 bg-white p-4 pb-6 shadow-card sm:p-7" aria-label={t("pageTitle")}>
           <h1 className="sr-only">{t("pageTitle")}</h1>
           <div role="tablist" aria-label={t("methodLabel")} className="relative grid h-12 grid-cols-2 rounded-xl border border-neutral-300 bg-neutral-200 p-1">
             <span aria-hidden className={`pointer-events-none absolute bottom-1 left-1 top-1 z-0 w-[calc(50%-4px)] rounded-lg bg-white shadow-sm transition-transform duration-300 ease-emphasis motion-reduce:transition-none ${method === "email" ? "translate-x-full" : "translate-x-0"}`} />
-            <button type="button" role="tab" aria-selected={method === "bcaId"} onClick={() => selectMethod("bcaId")} className={`relative z-10 h-full rounded-lg text-base font-semibold leading-6 transition-colors focus-visible:outline-2 focus-visible:outline-blue-500 ${method === "bcaId" ? "text-neutral-900" : "text-neutral-700 hover:text-blue-500"}`}>{t("bcaId")}</button>
-            <button type="button" role="tab" aria-selected={method === "email"} onClick={() => selectMethod("email")} className={`relative z-10 h-full rounded-lg text-base font-semibold leading-6 transition-colors focus-visible:outline-2 focus-visible:outline-blue-500 ${method === "email" ? "text-neutral-900" : "text-neutral-700 hover:text-blue-500"}`}>{t("email")}</button>
+            <button type="button" role="tab" aria-selected={method === "bcaId"} onClick={() => selectMethod("bcaId")} className={`relative z-10 h-full rounded-lg text-size-body-l font-semibold leading-6 transition-colors focus-visible:outline-2 focus-visible:outline-blue-500 ${method === "bcaId" ? "text-neutral-900" : "text-neutral-700 hover:text-blue-500"}`}>{t("bcaId")}</button>
+            <button type="button" role="tab" aria-selected={method === "email"} onClick={() => selectMethod("email")} className={`relative z-10 h-full rounded-lg text-size-body-l font-semibold leading-6 transition-colors focus-visible:outline-2 focus-visible:outline-blue-500 ${method === "email" ? "text-neutral-900" : "text-neutral-700 hover:text-blue-500"}`}>{t("email")}</button>
           </div>
 
-          <p className="mt-6 text-sm leading-5 text-neutral-700">{t("intro")}</p>
+          <p className="mt-6 text-size-body-m leading-5 text-neutral-700">{t("intro")}</p>
           <form action={formAction} onSubmit={() => setShowCredentialsError(false)} className="mt-6">
             <TextField
               key={method}
@@ -162,15 +166,15 @@ export default function MemberLoginExperience({ brand, magazineSlug, redirectTo 
                 trailingAdornment={<button type="button" onClick={() => setPasswordVisible((visible) => !visible)} aria-label={t(passwordVisible ? "hidePassword" : "showPassword")} className="inline-flex size-8 items-center justify-center rounded-full text-neutral-700 hover:text-blue-500 focus-visible:outline-2 focus-visible:outline-blue-500"><EyeIcon visible={passwordVisible} /></button>}
               />
             </div>
-            <div className="mt-2 text-right"><button type="button" onClick={() => setNotice(t("prototypeNotice"))} className={TEXT_BUTTON_SMALL_CLASS}>{t("forgotPassword")}</button></div>
-            <button type="submit" disabled={!canSubmit || pending} className="btn-base btn-primary mt-7 w-full font-semibold disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:text-neutral-600 disabled:hover:bg-neutral-300">{t("submit")}</button>
+            <div className="mt-2 text-right"><button data-flow-action="login-help" type="button" onClick={() => setNotice(t("prototypeNotice"))} className={TEXT_BUTTON_SMALL_CLASS}>{t("forgotPassword")}</button></div>
+            <button type="submit" disabled={!canSubmit || (preview?.pending ?? pending)} className="btn-base btn-primary mt-7 w-full font-semibold disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:text-neutral-600 disabled:hover:bg-neutral-300">{t("submit")}</button>
           </form>
 
-          <div className="mt-5 space-y-2 text-center text-sm text-neutral-700">
+          <div className="mt-5 space-y-2 text-center text-size-body-m text-neutral-700">
             <p>{t("noAccount")} <button type="button" onClick={() => setNotice(t("prototypeNotice"))} className={TEXT_BUTTON_SMALL_CLASS}>{t(method === "email" ? "registerEmail" : "register")}</button></p>
             <p>{t("noBcaId")} <button type="button" onClick={() => setNotice(t("prototypeNotice"))} className={TEXT_BUTTON_SMALL_CLASS}>{t("tutorial")}</button></p>
           </div>
-          {notice && <p role="status" className="mt-5 rounded-lg bg-blue-100 px-4 py-3 text-center text-sm leading-5 text-blue-700">{notice}</p>}
+          {notice && <p role="status" className="mt-5 rounded-lg bg-blue-100 px-4 py-3 text-center text-size-body-m leading-5 text-blue-700">{notice}</p>}
         </section>
         </div>
       </div>

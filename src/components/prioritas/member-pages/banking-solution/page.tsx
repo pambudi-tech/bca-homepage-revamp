@@ -1,3 +1,4 @@
+import MemberPageSurface from "@/components/prioritas/MemberPageSurface";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import BankingSolutionIndexExperience from "@/components/prioritas/BankingSolutionIndexExperience";
 import MemberSectionTabs from "@/components/prioritas/MemberSectionTabs";
@@ -27,6 +28,8 @@ export default async function PrioritasMemberBankingPage({ params, searchParams 
         ]}
       />
     </PrioritasMemberHeader>
+    <MemberPageSurface>
     <BankingSolutionIndexExperience activeTab={activeSection} memberArea />
+    </MemberPageSurface>
   </>;
 }

@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-12",
+  "journeys": 16,
+  "cases": 105,
+  "activeStages": 315,
+  "desktop": 315,
+  "mobile": 315,
+  "solitaireSceneStatePairs": 100,
+  "solitaireRenders": 200,
+  "totalRenders": 830,
+  "issues": 0,
+  "viewports": {
+    "desktop": [
+      1344,
+      978
+    ],
+    "mobile": [
+      390,
+      844
+    ]
+  },
+  "sourceViewports": {
+    "desktop": 1440,
+    "mobile": 390
+  },
+  "checks": [
+    "case and stage",
+    "scene and state",
+    "source width",
+    "preview brand",
+    "one inert preview",
+    "nonzero crop",
+    "contained dialog/menu bounds",
+    "document overflow",
+    "broken visible image assets"
+  ],
+  "limits": [
+    "Source-driven frozen previews; no banking or partner actions executed.",
+    "Full-screen panels and long modules retain bounded scrolling; contained dialogs fit the preview.",
+    "Ordinary network map is omitted; real map failure surface and real desktop/mobile controls/cards are reused."
+  ]
+}

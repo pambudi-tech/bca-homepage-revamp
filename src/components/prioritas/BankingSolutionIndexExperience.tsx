@@ -9,22 +9,22 @@ import { insightAssets } from "@/components/prioritas/wealth-insight-assets";
 const root = "/assets/prioritas/banking-solution";
 const existing = "/assets/prioritas/banking";
 const privilegeAssets = [
-  { key: "jcb", image: `${root}/jcb-welcome-bonus.png`, imagePosition: "55% center", id: "jcb-black" },
-  { key: "vehicle", image: `${existing}/privilege-vehicle.png`, id: "kkb" },
-  { key: "branch", image: `${existing}/privilege-branch.png`, id: "layanan-cabang" },
-  { key: "insurance", image: `${root}/insurance.png`, id: "asuransi" },
-  { key: "fees", image: `${root}/special-transaction-fees.png`, id: "biaya-transaksi" },
-  { key: "transaction", image: `${existing}/privilege-transaction.png`, id: "fitur-transaksi" },
-  { key: "media", image: `${root}/information-media.jpg`, id: "media-informasi" },
-  { key: "advisor", image: `${root}/branch-service-advisor.png`, id: "personal-banker" },
-  { key: "family", image: `${root}/branch-service-family.png`, id: "young-community" },
-  { key: "contact", image: `${root}/contact-center.png`, id: "contact-center" },
-  { key: "credit", image: `${existing}/privilege-credit.png`, id: "kartu-kredit" },
-  { key: "home", image: `${existing}/privilege-home.png`, id: "kpr" },
-  { key: "motorcycle", image: `${root}/motorcycle-loan.png`, id: "ksm" },
-  { key: "merchant", image: `${root}/merchant-edc.png`, id: "merchant-edc" },
-  { key: "deposit", image: `${existing}/privilege-deposit.png`, id: "safe-deposit-box" },
-  { key: "forex", image: `${root}/foreign-exchange.png`, id: "valuta-asing" },
+  { key: "jcb", image: `${root}/jcb-welcome-bonus.webp`, imagePosition: "55% center", id: "jcb-black" },
+  { key: "vehicle", image: `${existing}/privilege-vehicle.webp`, id: "kkb" },
+  { key: "branch", image: `${existing}/privilege-branch.webp`, id: "layanan-cabang" },
+  { key: "insurance", image: `${root}/insurance.webp`, id: "asuransi" },
+  { key: "fees", image: `${root}/special-transaction-fees.webp`, id: "biaya-transaksi" },
+  { key: "transaction", image: `${existing}/privilege-transaction.webp`, id: "fitur-transaksi" },
+  { key: "media", image: `${root}/information-media.webp`, id: "media-informasi" },
+  { key: "advisor", image: `${root}/branch-service-advisor.webp`, id: "personal-banker" },
+  { key: "family", image: `${root}/branch-service-family.webp`, id: "young-community" },
+  { key: "contact", image: `${root}/contact-center.webp`, id: "contact-center" },
+  { key: "credit", image: `${existing}/privilege-credit.webp`, id: "kartu-kredit" },
+  { key: "home", image: `${existing}/privilege-home.webp`, id: "kpr" },
+  { key: "motorcycle", image: `${root}/motorcycle-loan.webp`, id: "ksm" },
+  { key: "merchant", image: `${root}/merchant-edc.webp`, id: "merchant-edc" },
+  { key: "deposit", image: `${existing}/privilege-deposit.webp`, id: "safe-deposit-box" },
+  { key: "forex", image: `${root}/foreign-exchange.webp`, id: "valuta-asing" },
 ] as const;
 
 const privilegeCardKeys = [
@@ -68,7 +68,7 @@ export default function BankingSolutionIndexExperience({ activeTab, backdrops = 
   const memberBase = usePathname().startsWith("/solitaire/member") ? "/solitaire/member" : "/prioritas/member";
   const isSolitaire = (publicBasePath === "/solitaire" && !memberArea) || (memberArea && memberBase === "/solitaire/member");
 
-  return <main className={`overflow-hidden ${isSolitaire ? "bg-neutral-200" : "bg-pgold-200"}`}>
+  return <main className="overflow-hidden">
     <div className="mx-auto w-full max-w-[1280px] px-4 py-10 xl:px-0">
       {activeTab === "privilege" ? <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3">
         {privilegeCardKeys.map((key) => {

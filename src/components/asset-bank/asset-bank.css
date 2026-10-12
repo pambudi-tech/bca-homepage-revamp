@@ -1,0 +1,10 @@
+/* Preview surfaces use the same documentation palette as the component catalog. */
+.asset-surface-checker {
+  background-color: var(--color-neutral-100);
+  background-image: conic-gradient(var(--color-neutral-200) 25%, transparent 0 50%, var(--color-neutral-200) 0 75%, transparent 0);
+  background-size: 20px 20px;
+  color: var(--color-neutral-900);
+}
+.asset-surface-light { background: var(--color-neutral-100); color: var(--color-neutral-900); }
+.asset-surface-dark { background: var(--color-neutral-900); color: var(--color-neutral-100); }
+.asset-dialog::backdrop { background: color-mix(in oklch, var(--color-neutral-900) 55%, transparent); }

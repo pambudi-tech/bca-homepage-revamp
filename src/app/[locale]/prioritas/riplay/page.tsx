@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getInformationPageLinks } from "@/components/prioritas/information-page-links";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import BackToTop from "@/components/home/BackToTop";
 import PrioritasDetailExperience from "@/components/prioritas/PrioritasDetailExperience";
@@ -15,10 +16,9 @@ export async function generateMetadata({ params }: { params: Promise<PageParams>
 export default async function PrioritasRiplayPage({ params }: { params: Promise<PageParams> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const relatedLinks = await getInformationPageLinks("prioritas", "riplay");
   const t = await getTranslations("prioritasRiplay");
   const detailT = await getTranslations("lifestylePrivilegeDetail");
-  const aboutT = await getTranslations("prioritasAbout");
-  const branchT = await getTranslations("prioritasFindBranch");
 
   const titles: Record<(typeof PRIORITAS_RIPLAY_SECTIONS)[number]["id"], string> = {
     solitaire: t("solitaireTitle"),
@@ -35,10 +35,7 @@ export default async function PrioritasRiplayPage({ params }: { params: Promise<
         showHero={false}
         showRecommendations={false}
         alignMobileContentToIndexTitle
-        relatedPages={{ title: t("relatedTitle"), links: [
-          { href: "/prioritas/tentang-kami", label: aboutT("title") },
-          { href: "/prioritas/temukan-kami", label: branchT("title") },
-        ] }}
+        relatedPages={{ title: t("relatedTitle"), links: relatedLinks }}
         customSections={PRIORITAS_RIPLAY_SECTIONS.map((section) => ({ ...section, title: titles[section.id] }))}
         copy={{
           subNav: {
