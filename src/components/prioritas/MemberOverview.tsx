@@ -57,7 +57,7 @@ export default async function MemberOverview({ events, promos, now, voucherStatu
           <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-10 px-4 py-6 xl:px-0">
           <section id="overview-signature" aria-labelledby="overview-signature-title">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-              <h2 id="overview-signature-title" className={`text-title xl:text-heading ${isSolitaire ? "text-neutral-800" : "text-pbrown-600"}`}>{t("signature.title")}</h2>
+              <h2 id="overview-signature-title" className={`text-display-m ${isSolitaire ? "text-neutral-800" : "text-pbrown-600"}`}>{t("signature.title")}</h2>
               <OverviewSectionLink href={`${memberBase}/privilege`} label={t("signature.all")} className="hidden xl:flex xl:w-fit" solitaire={isSolitaire} />
             </div>
             <div className="flex flex-col gap-8 xl:block">
@@ -84,7 +84,7 @@ export default async function MemberOverview({ events, promos, now, voucherStatu
           </section>
 
           <section id="overview-financial" aria-labelledby="overview-financial-title">
-            <h2 id="overview-financial-title" className={`mb-6 text-title xl:text-heading ${isSolitaire ? "text-neutral-800" : "text-pbrown-600"}`}>{t("financial.title")}</h2>
+            <h2 id="overview-financial-title" className={`mb-6 text-display-m ${isSolitaire ? "text-neutral-800" : "text-pbrown-600"}`}>{t("financial.title")}</h2>
             <div className={`relative flex min-h-[320px] flex-col overflow-hidden rounded-xl border bg-neutral-100 md:flex-row ${isSolitaire ? "border-neutral-300" : "border-pbrown-100"}`}>
               <div className="relative z-10 order-2 flex h-[180px] w-full flex-none flex-col items-start justify-between gap-0 p-4 md:order-1 md:h-auto md:w-[42%] md:flex-auto md:justify-center md:gap-10 md:p-10">
                 <p className="max-w-[380px] text-size-display-s leading-6 font-semibold tracking-[-0.02em] text-black md:text-[28px] md:leading-8">{t("financial.description")}</p>
@@ -101,7 +101,7 @@ export default async function MemberOverview({ events, promos, now, voucherStatu
 
           <section id="overview-magazine" aria-labelledby="overview-magazine-title">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-              <h2 id="overview-magazine-title" className={`text-title xl:text-heading ${isSolitaire ? "text-neutral-800" : "text-pbrown-600"}`}>{t("magazine.title")}</h2>
+              <h2 id="overview-magazine-title" className={`text-display-m ${isSolitaire ? "text-neutral-800" : "text-pbrown-600"}`}>{t("magazine.title")}</h2>
               <OverviewSectionLink href={`${memberBase}/e-magazine`} label={t("viewAll")} className="hidden md:flex md:w-fit" solitaire={isSolitaire} />
             </div>
             <div className="hide-scrollbar -mx-4 flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0">
@@ -112,7 +112,7 @@ export default async function MemberOverview({ events, promos, now, voucherStatu
 
           <section aria-labelledby="overview-event-title">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-              <h2 id="overview-event-title" className={`text-title xl:text-heading ${isSolitaire ? "text-neutral-800" : "text-pbrown-600"}`}>{t("event.title")}</h2>
+              <h2 id="overview-event-title" className={`text-display-m ${isSolitaire ? "text-neutral-800" : "text-pbrown-600"}`}>{t("event.title")}</h2>
               <OverviewSectionLink href={`${memberBase}/privilege?section=event`} label={t("viewAll")} className="hidden xl:flex xl:w-fit" solitaire={isSolitaire} />
             </div>
             <div className="flex flex-col gap-8 xl:block">
@@ -128,7 +128,7 @@ export default async function MemberOverview({ events, promos, now, voucherStatu
 
           <section aria-labelledby="overview-promo-title">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-              <h2 id="overview-promo-title" className={`text-title xl:text-heading ${isSolitaire ? "text-neutral-800" : "text-pbrown-600"}`}>{t("promo.title")}</h2>
+              <h2 id="overview-promo-title" className={`text-display-m ${isSolitaire ? "text-neutral-800" : "text-pbrown-600"}`}>{t("promo.title")}</h2>
               <OverviewSectionLink href={`${memberBase}/privilege?section=promo`} label={t("viewAll")} className="hidden xl:flex xl:w-fit" solitaire={isSolitaire} />
             </div>
             <div className="flex flex-col gap-8 xl:block">

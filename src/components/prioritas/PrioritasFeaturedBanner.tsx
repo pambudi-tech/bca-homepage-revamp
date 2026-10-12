@@ -100,9 +100,9 @@ export default function PrioritasFeaturedBanner({ titles, cta, backdrops, slideH
             <span className="flex h-8 items-center rounded-md bg-white px-2 xl:h-10">
               <img src={activeSlide.brandLogo} alt="" className="h-[20.5px] w-auto object-contain xl:h-6" />
             </span>
-            <h3 data-blueprint-part="cardTitle" className="min-h-20 max-w-full overflow-hidden text-subtitle text-white line-clamp-3 xl:min-h-[96px] xl:text-heading">{titles[activeIndex]}</h3>
+            <h3 data-blueprint-part="cardTitle" className="min-h-20 max-w-full overflow-hidden text-display-m text-white line-clamp-3 xl:min-h-[96px]">{titles[activeIndex]}</h3>
           </div>
-        ) : <h3 data-blueprint-part="cardTitle" className="min-h-20 max-w-full overflow-hidden text-subtitle text-white line-clamp-3 xl:min-h-[96px] xl:text-heading">{titles[activeIndex]}</h3>}
+        ) : <h3 data-blueprint-part="cardTitle" className="min-h-20 max-w-full overflow-hidden text-display-m text-white line-clamp-3 xl:min-h-[96px]">{titles[activeIndex]}</h3>}
         {buttonTheme === "solitaire" ? (
           <button type="button" className={solitaireButtonClassName({ kind: "text", surface: "inverse", size: "large" })}>
             <span className="prio-button__label">{activeCta}</span>

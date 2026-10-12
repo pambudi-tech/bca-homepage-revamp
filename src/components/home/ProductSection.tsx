@@ -311,7 +311,7 @@ function CardContent({
         {layout === "solitaire" ? (
           <>
             <div className="w-full" style={swap.copy}>
-              <p data-blueprint-part="cardTitle" className="w-full text-heading text-white text-shadow-hero">
+              <p data-blueprint-part="cardTitle" className="w-full text-display-m text-white text-shadow-hero">
                 {copy.title}
               </p>
             </div>
@@ -542,7 +542,7 @@ function MobileCardContent({
         }}
       >
         <div className="w-full" style={swap.copy}>
-          <p data-blueprint-part="cardTitle" className="w-full text-subtitle text-white text-shadow-hero">
+          <p data-blueprint-part="cardTitle" className={`w-full ${layout === "solitaire" ? "text-display-m" : "text-subtitle"} text-white text-shadow-hero`}>
             {copy.title}
           </p>
           <div

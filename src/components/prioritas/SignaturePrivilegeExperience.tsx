@@ -29,7 +29,7 @@ import { FEATURED_BANNER_SLIDES, PRIORITAS_EVENT_FEATURED_BANNER_SLIDES } from "
 const ASSET_ROOT = "/assets/prioritas/signature-privilege";
 
 
-const prioritasSignatureVoucherCounts: Record<string, number> = {
+const signatureVoucherCounts: Record<string, number> = {
   "executive-airport-lounge": 50,
   "airport-transfer-domestik": 2,
   "padel-court": 1,
@@ -316,9 +316,9 @@ export default function SignaturePrivilegeExperience({ promos, signaturePromos =
               {visibleSignatureCards.map(({ id, image }, index) => {
                 const promo = signaturePromos.find((item) => item.id === id);
                 const cardImage = id === "padel-court" ? promo?.cover || `${ASSET_ROOT}/${image}` : image.startsWith("/") ? image : `${ASSET_ROOT}/${image}`;
-                const voucherCount = prioritasSignatureVoucherCounts[id];
-                const badgeLabel = memberArea && !isSolitaire
-                  ? solitaireOnlySignaturePrivileges.has(id)
+                const voucherCount = signatureVoucherCounts[id];
+                const badgeLabel = memberArea
+                  ? !isSolitaire && solitaireOnlySignaturePrivileges.has(id)
                     ? t("solitaireOnlyBadge")
                     : voucherCount
                       ? t("voucherAvailability", { count: voucherCount })

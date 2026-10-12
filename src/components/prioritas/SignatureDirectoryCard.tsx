@@ -16,7 +16,7 @@ export default function SignatureDirectoryCard({ href, image, title, tone = "pri
                 <div className={`absolute inset-0 bg-gradient-to-t ${isSolitaire ? "from-black/70 via-black/15" : "from-pbrown-900/90 via-pbrown-900/20"} to-transparent`} />
                 {badgeLabel ? <span
                   className={`glass-panel ${isSolitaire ? "glass-panel-solitaire" : "glass-panel-prioritas"} absolute right-2 top-4 z-20 inline-flex max-w-[calc(100%-1rem)] items-center rounded-xl px-3 py-2 text-right text-size-body-s font-semibold leading-4 text-white shadow-card sm:top-2 sm:text-size-body-m`}
-                  style={{ backgroundColor: "color-mix(in srgb, var(--color-pbrown-600) 30%, transparent)", isolation: "isolate" }}
+                  style={{ backgroundColor: `color-mix(in srgb, var(${isSolitaire ? "--color-neutral-800" : "--color-pbrown-600"}) 30%, transparent)`, isolation: "isolate" }}
                 >{badgeLabel}</span> : null}
                 <div className={`absolute left-4 top-4 z-30 ${previewViewport ? desktop ? "hidden" : "" : "xl:hidden"}`}>
                   <svg viewBox="0 0 32 32" className={`size-8 -rotate-90 transition-opacity duration-300 ${active ? "opacity-100" : "opacity-0"}`} aria-hidden>

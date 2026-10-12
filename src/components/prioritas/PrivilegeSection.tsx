@@ -86,7 +86,7 @@ export function PrivilegeCard({
         className={`glass-panel glass-panel-prioritas absolute z-20 flex flex-col items-start justify-between overflow-hidden rounded-2xl px-4 pb-5 pt-4 ${previewViewport ? desktop ? "bottom-4 left-4 h-[180px] w-[400px] max-w-[calc(100%-2rem)]" : "inset-x-2 bottom-2 h-[160px] w-auto" : "inset-x-2 bottom-2 h-[160px] w-auto xl:inset-x-auto xl:bottom-4 xl:left-4 xl:h-[180px] xl:w-[400px] xl:max-w-[calc(100%-2rem)]"}`}
         style={{ isolation: "isolate" }}
       >
-        <h3 data-blueprint-part="cardTitle" className={`line-clamp-3 max-w-full text-white ${previewViewport ? desktop ? "text-heading" : "text-subtitle" : "text-subtitle xl:text-heading"}`}>
+        <h3 data-blueprint-part="cardTitle" className="line-clamp-3 max-w-full text-display-m text-white">
           {copy.title}
         </h3>
         <ArrowAction>{copy.action}</ArrowAction>
