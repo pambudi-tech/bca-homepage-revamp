@@ -13,6 +13,10 @@ const result = await build({
   meta: { skipDownload: true },
 });
 
+if (!result.output) {
+  throw new Error('Expected standard Next output. Run npm run build to use the verified bundling path.');
+}
+
 // A single bundled function can be exposed under many HTML/RSC route aliases.
 // Count the actual Lambda objects, not route names or Next's “ƒ” markers.
 const functions = new Map();

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build --webpack && npm run check:vercel-functions",
+    "build": "node scripts/build-next.mjs && npm run check:vercel-functions",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
