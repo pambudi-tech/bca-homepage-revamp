@@ -31,7 +31,7 @@ function CopyValue({ label, value, tone }: { label: string; value: string; tone:
     }
   }
   return <div className="min-w-0">
-    <TextField label={label} value={value} readOnly tone={tone} fieldSize="medium" labelClassName="text-label-s-semibold" className="font-mono" trailingAdornment={
+    <TextField label={label} value={value} readOnly tone={tone} fieldSize="medium" labelClassName="text-label-m-semibold" className="font-mono" trailingAdornment={
       <PrioritasButton tone={tone} kind="icon" variant="secondary" size="small" onClick={copy} aria-label={t('copyField', { label })}>
         {status === 'copied' ? <Check aria-hidden className="size-4 text-green-700" /> : <Copy aria-hidden className="size-4" />}
       </PrioritasButton>
@@ -74,7 +74,7 @@ export default function ProjectIndex() {
               <div aria-hidden="true" className={`pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t ${brand === 'prioritas' ? 'from-pbrown-600' : 'from-neutral-900'} to-transparent`} />
               <h3 className="text-heading-l">{t(`brands.${brand}`)}</h3>
               <p className={`mt-2 text-body-m-regular ${brand === 'prioritas' ? 'text-pgold-100/85' : 'text-neutral-100/85'}`}>{t(`prototype.${brand}`)}</p>
-              <Link href={`/${brand}`} target="_blank" rel="noopener noreferrer" prefetch={false} className={(brand === 'prioritas' ? prioritasButtonClassName : solitaireButtonClassName)({ kind: 'text', surface: 'inverse', size: 'large', className: 'mt-5 self-start' })}>
+              <Link href={`/${brand}`} target="_blank" rel="noopener noreferrer" prefetch={false} className={(brand === 'prioritas' ? prioritasButtonClassName : solitaireButtonClassName)({ variant: 'primary', surface: 'inverse', size: 'large', className: 'mt-5 w-full' })}>
                 {t('openPrototype')}<ArrowRight aria-hidden className="size-4" /><span className="sr-only">{t('opensNewTab')}</span>
               </Link>
             </header>
@@ -88,7 +88,7 @@ export default function ProjectIndex() {
                     <CopyValue label={t('email')} value={memberDemoCredentials[brand].email} tone={brand} />
                     <CopyValue label={t('password')} value={memberDemoCredentials[brand].password} tone={brand} />
                   </div>
-                  <Link href={{ pathname: '/member/login', query: { from: brand } }} target="_blank" rel="noopener noreferrer" prefetch={false} className={(brand === 'prioritas' ? prioritasButtonClassName : solitaireButtonClassName)({ size: 'large', className: 'mt-5 w-full' })}>
+                  <Link href={{ pathname: '/member/login', query: { from: brand } }} target="_blank" rel="noopener noreferrer" prefetch={false} className={(brand === 'prioritas' ? prioritasButtonClassName : solitaireButtonClassName)({ variant: 'secondary', size: 'large', className: 'mt-5 w-full' })}>
                     {t('openLogin')}<ArrowRight aria-hidden className="size-4" /><span className="sr-only">{t('opensNewTab')}</span>
                   </Link>
                 </section>
